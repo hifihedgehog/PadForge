@@ -1285,4 +1285,11 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa an mga epekto han trigger ngan suga tikang ha mga game mod.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita an mga menu, layer ngan pagbalhin hin profile samtang nagdudula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli han DSX.exe</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick ngan trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kurog ngan haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Lihok ngan hikap</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga ngan tingog</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ngan menu</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Dugangi hin device</value></data>
 </root>

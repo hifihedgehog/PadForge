@@ -109,6 +109,8 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="FirstRun_Next" xml:space="preserve"><value>Na-esote</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ngwaọrụ</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Ntinye sitere na</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Tinye ngwaọrụ</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod egwuregwu</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Nabata mod egwuregwu DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port mod egwuregwu</value></data>
@@ -1248,4 +1250,7 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, ọsọ zuru ezu, usoro nke gị</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Jiri ya</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick na Trigger</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ọkụ na Ụda</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
 </root>

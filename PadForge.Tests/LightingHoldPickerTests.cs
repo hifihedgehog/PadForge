@@ -582,20 +582,22 @@ namespace PadForge.Tests
                 $"the row is {labelWidth + pickerWidth + resetWidth} wide, wider than the {cardRow} of the card below it");
         }
 
-        /// <summary>Every setting on the Lighting and Force Feedback tabs sits
-        /// in a card, the way the rest of a device's tabs are laid out. The
-        /// Lighting Control switch and the Lighting Hold row once sat loose
-        /// between the tab's text and its first card (owner, 2026-11-02).
-        /// The tab's text, its subtitle and route line, may sit outside.</summary>
+        /// <summary>Every setting of the Lighting and Force Feedback groups
+        /// sits in a card, the way the rest of a device's groups are laid
+        /// out. The Lighting Control switch and the Lighting Hold row once
+        /// sat loose between the tab's text and its first card (owner,
+        /// 2026-11-02). The group's text, its subtitle and route line, may
+        /// sit outside. Each was a tab with a scroller of its own, and is a
+        /// named group of a section since the page's six sections (#574).</summary>
         [Theory]
-        [InlineData("Pad_Lighting")]
-        [InlineData("Pad_ForceFeedback")]
-        public void EverySettingOnTheOutputTabs_SitsInACard(string tab)
+        [InlineData("TabLighting")]
+        [InlineData("TabForceFeedback")]
+        public void EverySettingOnTheOutputTabs_SitsInACard(string group)
         {
             var page = XDocument.Parse(RepoText("PadForge.App", "Views", "PadPage.xaml"));
-            string name = "{Binding " + tab + ", Source={x:Static strings:Strings.Instance}}";
-            var scroller = page.Descendants().Single(n => n.Name.LocalName == "ScrollViewer"
-                && (string)n.Attribute("AutomationProperties.Name") == name);
+            XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+            var scroller = page.Descendants().Single(n => n.Name.LocalName == "StackPanel"
+                && (string)n.Attribute(x + "Name") == group);
             string[] settings = { "CheckBox", "ComboBox", "Slider", "TextBox", "ToggleSwitch", "RadioButton", "SettingResetButton" };
             var loose = scroller.Descendants()
                 .Where(n => settings.Contains(n.Name.LocalName))

@@ -71,7 +71,7 @@ PadForge.sln
 │   │
 │   ├── Views/
 │   │   ├── HomePage.xaml / .cs              Engine state, slot cards, the extras in use, the offer for a new device
-│   │   ├── PadPage.xaml / .cs               Mapping grid, deadzones, force feedback, macros
+│   │   ├── PadPage.xaml / .cs               A controller's page: its header and six sections (buttons, sticks, rumble, motion, lights, macros)
 │   │   ├── DevicesPage.xaml / .cs           Card-based device list + visual raw input state
 │   │   ├── ExtrasPage.xaml / .cs            Optional features: a catalog of tiles and a page for each
 │   │   ├── ProfilesPage.xaml / .cs          Per-app profile management and auto-switching
@@ -107,7 +107,7 @@ PadForge.sln
 │   │   ├── ViewModelBase.cs            INotifyPropertyChanged base
 │   │   ├── MainViewModel.cs            Root: navigation, pads, engine status, commands
 │   │   ├── DashboardViewModel.cs       Home and the Extras pages: slot summaries, engine state, the extras' settings
-│   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, deadzones, macros
+│   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, deadzones, macros, and which section of the page shows
 │   │   ├── MappingItem.cs              Single mapping row: target, source, recording, options
 │   │   ├── MacroItem.cs                Macro: trigger, actions, timing, button style, extended targets
 │   │   ├── DevicesViewModel.cs         Device list, raw state display, slot assignment

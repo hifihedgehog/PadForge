@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Tunjukkan Lawatan Selamat Datang</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Peranti</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Didorong oleh</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah Peranti</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro di sebelah kiri, atau tekan Tambah untuk mencipta satu.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
@@ -3692,6 +3694,12 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), jadi sel mengekalkan label teksnya</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butang</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Kayu Bedik &amp; Pencetus</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Getaran &amp; Haptik</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Gerakan &amp; Sentuhan</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Cahaya &amp; Bunyi</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro &amp; Menu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Tetapan yang membentuk output pengawal maya slot ini sejurus sebelum dihantar kepada permainan: pembersihan SOCD untuk arah bertentangan yang ditekan serentak, dan Kekalkan Pengawal Berjaga untuk permainan yang menggugurkan pengawal sebaik sahaja ia melihat input tetikus atau papan kekunci.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Menghalakan getaran dan maklum balas daya permainan yang diterima pengawal maya ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>

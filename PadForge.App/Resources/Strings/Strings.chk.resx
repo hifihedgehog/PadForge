@@ -614,4 +614,5 @@
   <data name="Telemetry_Game_AssettoCorsa" xml:space="preserve"><value>Assetto Corsa me Assetto Corsa Competizione</value></data>
   <data name="Telemetry_Game_TruckSimulator" xml:space="preserve"><value>Euro Truck Simulator 2 me American Truck Simulator</value></data>
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
 </root>

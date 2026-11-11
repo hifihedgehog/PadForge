@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Прикажи ја воведната обиколка</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Уред</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Управувано од</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Додај уред</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ковање</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макро од левата страна или притиснете „Додај“ за да создадете ново.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СУРОВО</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>иконата на ќелијата од менито не е препознаена ({0}), па ќелијата ја задржува текстуалната ознака</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас-шејкери</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Излез</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Копчиња</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Палки и тригери</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Вибрации и хаптика</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Движење и допир</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Осветлување и аудио</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроа и менија</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Поставки што го обликуваат излезот на виртуелниот контролер на овој слот непосредно пред да се испрати до игрите: SOCD-чистење за спротивни насоки притиснати заедно и „Држи го контролерот буден“ за игри што го напуштаат контролерот штом ќе видат влез од глушец или тастатура.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шејкери</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ги пренасочува вибрациите и повратната сила од играта што ги прима овој виртуелен контролер кон аудиоизлез, како нискофреквентни тонови за бас-шејкери и субвуфери.</value></data>

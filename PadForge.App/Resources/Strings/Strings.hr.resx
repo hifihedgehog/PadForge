@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Prikaži uvodni obilazak</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Utor</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Uređaj</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Izvor ulaza</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Dodaj uređaj</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kovanje</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Odaberite makro s lijeve strane ili pritisnite Dodaj da biste ga stvorili.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>SIROVO</value></data>
@@ -3697,6 +3699,12 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona ćelije izbornika nije prepoznata ({0}) pa ćelija zadržava tekstnu oznaku</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Taktilni pretvarači</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izlaz</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tipke</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palice i okidači</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibracija i haptika</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Pokret i dodir</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Osvjetljenje i zvuk</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroi i izbornici</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Postavke koje oblikuju izlaz virtualnog kontrolera ovog utora neposredno prije slanja igrama: SOCD razrješavanje za istodobno pritisnute suprotne smjerove i Održavaj kontroler aktivnim za igre koje napuštaju kontroler čim primijete ulaz miša ili tipkovnice.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Taktilni pretvarači</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Usmjerava vibraciju igre i povratnu silu koje ovaj virtualni kontroler prima na izlaz zvuka kao niskofrekventne tonove za taktilne pretvarače i subwoofere.</value></data>

@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Vis velkomstomvisning</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Spor</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhet</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Styres av</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Legg til enhet</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smir</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Velg en makro til venstre, eller trykk Legg til for å opprette en.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RÅ</value></data>
@@ -3889,6 +3891,12 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikonet for menycellen ble ikke gjenkjent ({0}), så cellen beholder tekstetiketten</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Utgang</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knapper</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stikker og avtrekkere</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrasjon og haptikk</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Bevegelse og berøring</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Lys og lyd</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroer og menyer</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Innstillinger som former utgangen til den virtuelle kontrolleren i dette sporet rett før den sendes til spill: SOCD-rensing for motsatte retninger som trykkes samtidig, og Hold kontrolleren våken for spill som slipper kontrolleren i det øyeblikket de ser inndata fra mus eller tastatur.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ruter vibrasjonen og force feedback fra spillet som denne virtuelle kontrolleren mottar, til en lydutgang som lavfrekvente toner for bass shakers og subwoofere.</value></data>

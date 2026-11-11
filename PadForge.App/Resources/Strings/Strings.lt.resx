@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rodyti pasveikinimo apžvalgą</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Lizdas</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Įrenginys</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Įvestis iš</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Pridėti įrenginį</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kalama</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pasirinkite makrokomandą kairėje arba spustelėkite „Pridėti“, kad sukurtumėte naują.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Šalta</value></data>
@@ -3691,6 +3693,12 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>meniu langelio piktograma neatpažinta ({0}), todėl langelyje lieka tekstinis užrašas</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Išvestis</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mygtukai</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Svirtelės ir gaidukai</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibracija ir lietimo atsakas</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Judesys ir lietimas</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Apšvietimas ir garsas</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrokomandos ir meniu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nustatymai, formuojantys šio lizdo virtualaus valdiklio išvestį prieš pat siunčiant ją žaidimams: SOCD valymas vienu metu paspaustoms priešingoms kryptims ir „Neleisti valdikliui užmigti“ žaidimams, kurie atsisako valdiklio, kai tik pastebi pelės ar klaviatūros įvestį.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nukreipia šio virtualaus valdiklio gaunamą žaidimo vibraciją ir jėgos grįžtamąjį ryšį į garso išvestį kaip žemo dažnio tonus žemųjų dažnių vibratoriams ir žemadažniams garsiakalbiams.</value></data>

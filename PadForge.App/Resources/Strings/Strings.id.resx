@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Tampilkan tur sambutan</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Input dari</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah perangkat</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro di sebelah kiri, atau tekan Tambah untuk membuatnya.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
@@ -3889,6 +3891,12 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), sehingga sel tetap memakai label teksnya</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tombol</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stik dan pelatuk</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Getaran dan haptik</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Gerak dan sentuhan</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Pencahayaan dan audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro dan menu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Pengaturan yang membentuk output kontroler virtual slot ini tepat sebelum dikirim ke game: pembersihan SOCD untuk arah berlawanan yang ditekan bersamaan, dan Jaga kontroler tetap aktif untuk game yang meninggalkan kontroler begitu melihat input mouse atau keyboard.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Merutekan getaran game dan force feedback yang diterima kontroler virtual ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>

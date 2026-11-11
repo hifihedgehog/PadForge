@@ -1491,4 +1491,10 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, bug-os nga tulin, custom nga mga format</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita ini</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick kag trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kurog kag haptics</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga kag tunog</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro kag menu</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Magdugang sang device</value></data>
 </root>

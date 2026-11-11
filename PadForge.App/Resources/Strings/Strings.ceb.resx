@@ -3563,4 +3563,11 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Home_OpenExtras" xml:space="preserve"><value>Ablihi ang Mga dugang</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonektar ang {0} ug wala gigamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick ug trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Uyog ug haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Lihok ug paghikap</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga ug tingog</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ug menu</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Idugang og device</value></data>
 </root>

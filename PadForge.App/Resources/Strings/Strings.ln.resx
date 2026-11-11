@@ -1721,4 +1721,11 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ekangani mpe ezali kosalelama te.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kosalela yango</value></data>
   <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ndako etunaka mbala moko mpo na appareil moko moko ya sika oyo manette virtuelle moko te ezali kosalela. Kosalela yango esalaka manette virtuelle mpo na yango, mpe Sikoyo te esukisaka motuna mpo na appareil wana.</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ba stick na ba gâchette</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibration na haptique</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvement na tactile</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Miinda na audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Ba macro na ba menu</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Kobakisa appareil</value></data>
 </root>

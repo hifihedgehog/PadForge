@@ -114,6 +114,8 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="FirstRun_Skip" xml:space="preserve"><value>Tlola</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Sedirišwa</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Oketša Sedirišwa</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} e šomišwa ke lenaneo le lengwe, bjalo ka DSX. E tswalele goba o kgethe port ye nngwe.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Kopanya</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E kopantšwe</value></data>
@@ -1128,4 +1130,9 @@
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Abela lebelo, dipedale le digiere go tšwa dipapading tša go otlela.</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Diport, lebelo ka botlalo, difomate tša go ikgethela</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaele</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Dithupa le Ditrikara</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Thothomelo le Kwagalo</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le go Kgoma</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Seetša le Modumo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Dimakro le Malokelelo</value></data>
 </root>

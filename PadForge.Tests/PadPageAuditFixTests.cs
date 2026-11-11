@@ -144,12 +144,34 @@ namespace PadForge.Tests
         /// predicate with no eviction, so a user sitting on either tab when
         /// the slot became VR was left on a collapsed tab with no selected
         /// button. A row that only takes output hides both too (#557), and
-        /// evicts the same way.</summary>
+        /// evicts the same way.
+        ///
+        /// <para>The eviction stated each tab's rule a second time, in a
+        /// chain of one test per tab, and that copy fell out of step with the
+        /// rules four times. Since the six sections (#574) it is one rule
+        /// that reads the visibility the rules gave each group, so there is
+        /// no copy to forget.</para></summary>
         [Fact]
         public void AVrSlotEvictsASelectionOnACollapsedTab()
         {
             string cs = CodeBehind();
-            Assert.Contains("if ((isMidi || isVrSlot || outputOnlyRow) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))", cs);
+
+            // The rules: VR and an output-only row hide both groups.
+            Assert.Contains("TabSticks.Visibility = (isMidi || isVrSlot) ? Visibility.Collapsed : Visibility.Visible;", cs);
+            Assert.Contains("TabTriggers.Visibility = (isMidi || isKbm || isVrSlot || rawNoTriggers)", cs);
+            Assert.Matches(@"if \(outputOnlyRow\)\s*\{\s*TabSticks\.Visibility = Visibility\.Collapsed;\s*TabTriggers\.Visibility = Visibility\.Collapsed;\s*\}", cs);
+
+            // The eviction: the last thing the sync does, for whatever tab
+            // is selected, from the group's own visibility.
+            Assert.Matches(@"SyncSectionVisibility\(\);\s*EnsureSelectedTabAvailable\(\);\s*\}\s*/// <summary>The group that holds", cs);
+            Assert.Contains("return group == null || group.Visibility == Visibility.Visible;", cs);
+            Assert.Contains("3 => TabSticks,", cs);
+            Assert.Contains("4 => TabTriggers,", cs);
+
+            // No rule is stated a second time.
+            Assert.DoesNotContain("vm.SelectedConfigTab == 3", cs);
+            Assert.DoesNotContain("vm.SelectedConfigTab == 4", cs);
+            Assert.DoesNotContain("&& !hasForceFeedback)", cs);
         }
 
         /// <summary>The runtime clear guarded one of the two statements it was

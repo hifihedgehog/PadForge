@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Erakutsi ongietorri-bisita</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Zirrikitua</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Gailua</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Sarrera-iturria</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Gehitu gailua</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjatzen</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Hautatu makro bat ezkerrean, edo sakatu Gehitu bat sortzeko.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>GORDINA</value></data>
@@ -3688,6 +3690,12 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menuko gelaxkaren ikonoa ez da ezagutu ({0}), beraz gelaxkak testu-etiketa mantentzen du</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shaker-ak</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Irteera</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botoiak</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palankak eta katuak</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Dardara eta ukimena</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mugimendua eta ukipena</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Argiak eta soinua</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroak eta menuak</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Zirrikitu honetako kontrolagailu birtualaren irteera jokoetara bidali aurretik moldatzen duten ezarpenak: aldi berean sakatutako aurkako norabideen SOCD garbiketa, eta Mantendu kontrolagailua esna, sagu edo teklatu sarrera ikusi bezain laster kontrolagailua baztertzen duten jokoetarako.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker-ak</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jokoak kontrolagailu birtual honetara bidaltzen dituen bibrazioa eta indar-atzeraelikadura audio-irteera batera bideratzen ditu, maiztasun baxuko tonu gisa, bass shaker-entzat eta subwoofer-entzat.</value></data>

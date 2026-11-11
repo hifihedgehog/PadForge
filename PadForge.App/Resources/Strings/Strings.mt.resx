@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Uri t-tour tat-tislima</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Input minn</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Żid apparat</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Mixgħul</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Agħżel makro fuq ix-xellug, jew agħfas Żid biex toħloq waħda.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3633,6 +3635,12 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>l-ikona taċ-ċellola tal-menu ma ġietx rikonoxxuta ({0}), għalhekk iċ-ċellola żżomm it-tikketta tat-test tagħha</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buttuni</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks u Triggers</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrazzjoni u Feedback</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment u Mess</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Dawl u Awdjo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makros u Menus</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Settings li jsawru l-output tal-kontrollur virtwali ta' dan is-slot eżatt qabel ma jintbagħat lil-logħob: tindif SOCD għal direzzjonijiet opposti magħfusa flimkien, u “Żomm il-kontrollur imqajjem” għal-logħob li jwaqqgħu l-kontrollur hekk kif jaraw input tal-maws jew tat-tastiera.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jibgħat ir-rumble u l-force feedback tal-logħba li jirċievi dan il-kontrollur virtwali lejn output tal-awdjo bħala toni ta' frekwenza baxxa għal bass shakers u subwoofers.</value></data>

@@ -113,6 +113,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>E e latelang</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Go fedile</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Sedirisiwa</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Oketsa sedirisiwa</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Golaganya</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E golagantswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Gana</value></data>
@@ -1006,4 +1008,6 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} mo go {1} go fitlhela e emisiwa</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ditlaleletso</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Porofaele</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Di stick le di trigger</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Lesedi le modumo</value></data>
 </root>

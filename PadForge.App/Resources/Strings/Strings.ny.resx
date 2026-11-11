@@ -118,6 +118,8 @@
   <data name="FirstRun_Skip" xml:space="preserve"><value>Dumphani</value></data>
   <data name="FirstRun_Next" xml:space="preserve"><value>Chotsatira</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Chipangizo</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Kuchokera ku</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Onjezani chipangizo</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi kontrola ya PlayStation yomwe ili ndi nambala imeneyo.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lumikizani</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kanani</value></data>
@@ -1293,4 +1295,6 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} pa {1} kwa {2} ms</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Zowonjezera</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Mbiri</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ma stick ndi ma trigger</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Magetsi ndi mawu</value></data>
 </root>

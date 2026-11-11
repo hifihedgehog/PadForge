@@ -412,6 +412,10 @@ namespace PadForge
             // selected pad.
             if (_viewModel.Pads.Count > 0)
                 PadPageView.DataContext = _viewModel.Pads[0];
+            // The pad page's header shows the slot's power button, state
+            // word and stage chips from the slot's summary (#574), the one
+            // its Home card shows.
+            PadPageView.BindSlotState(_viewModel.Dashboard);
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);
@@ -2388,6 +2392,16 @@ namespace PadForge
                 _deviceService.SetSlotEnabled(args.SlotIndex, args.IsEnabled);
                 RefreshSlotPowerViews();
             };
+
+            // The pad page's header carries the same switch (#574), and its
+            // Add Device button opens the page where a device is given to a
+            // controller.
+            PadPageView.SlotEnabledToggled += (s, args) =>
+            {
+                _deviceService.SetSlotEnabled(args.SlotIndex, args.IsEnabled);
+                RefreshSlotPowerViews();
+            };
+            PadPageView.AddDeviceRequested += (s, e) => SelectNavItemByTag("Devices");
 
             HomePageView.EngineToggleRequested += (s, e) =>
             {

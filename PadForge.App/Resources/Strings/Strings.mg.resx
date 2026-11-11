@@ -149,6 +149,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Manaraka</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Vita</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Fitaovana</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Hanampy fitaovana</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mihaino amin'ny :{0}. Mandefa any amin'ny contrôleur laharana {2} ny {1}, nefa tsy misy contrôleur virtoaly misy contrôleur PlayStation manana io laharana io.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa, toy ny DSX, ny port {0}. Akatony izy na mifidiana port hafa.</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ity PC ity ihany</value></data>
@@ -1606,6 +1608,12 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Tsy misy</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(tsy voafaritra)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Fivoahana</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Bokotra</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick sy gâchette</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Fihovitrovitra sy fahatsapana</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Fihetsika sy fikasihana</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Jiro sy feo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro sy menu</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Fitaovana fivoahana</value></data>
   <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Averina ny fitaovana fivoahana</value></data>
   <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>Tsy mandeha ny fivoahan'ny feo.</value></data>

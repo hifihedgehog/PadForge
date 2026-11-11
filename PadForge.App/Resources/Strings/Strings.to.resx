@@ -724,4 +724,6 @@
   <data name="MacroAction_TriggerEffect_EndStrength" xml:space="preserve"><value>Mālohi ʻi he ngataʻanga</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Taimi</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ngaahi meʻa fakalahi</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ngalulu mo e Ongoʻi</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Maama mo e Leʻo</value></data>
 </root>

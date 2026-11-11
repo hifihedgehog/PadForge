@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>સ્વાગત પરિચય બતાવો</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>સ્લોટ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ઉપકરણ</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ઇનપુટ સ્રોત</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>ઉપકરણ ઉમેરો</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ફોર્જિંગ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ડાબી બાજુએ મેક્રો પસંદ કરો, અથવા નવો બનાવવા ઉમેરો દબાવો.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3686,6 +3688,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>મેનૂ સેલ આઇકન ઓળખાયું નથી ({0}), તેથી સેલ પોતાનું લખાણ લેબલ રાખે છે</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>બાસ શેકર</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>આઉટપુટ</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>બટન</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>સ્ટિક અને ટ્રિગર</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>રમ્બલ અને ફીડબેક</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>ગતિ અને સ્પર્શ</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>લાઇટિંગ અને ઑડિયો</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>મેક્રો અને મેનૂ</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>આ સ્લોટના વર્ચ્યુઅલ કંટ્રોલર આઉટપુટને રમતોને મોકલાય તે પહેલાં આકાર આપતા સેટિંગ: સાથે દબાયેલી વિરુદ્ધ દિશાઓ માટે SOCD સફાઈ, અને માઉસ કે કીબોર્ડ ઇનપુટ દેખાતાં જ કંટ્રોલર છોડી દેતી રમતો માટે કંટ્રોલર જાગતો રાખો.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>બાસ શેકર</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>આ વર્ચ્યુઅલ કંટ્રોલરને મળતા રમતના રમ્બલ અને ફોર્સ ફીડબેકને બાસ શેકર અને સબવૂફર માટે નીચી-આવૃત્તિના ટોન તરીકે ઑડિયો આઉટપુટ પર મોકલે છે.</value></data>

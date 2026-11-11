@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Мэндчилгээний танилцуулгыг харуулах</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Төхөөрөмж</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Оролтын эх үүсвэр</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Төхөөрөмж нэмэх</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Урлаж байна</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Зүүн талаас макро сонгох, эсвэл шинээр үүсгэхийн тулд Нэмэх товчийг дарна уу.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ТҮҮХИЙ</value></data>
@@ -3697,6 +3699,12 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>цэсний эх гадаргуу дэмжигдээгүй ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>цэсний нүдний дүрс танигдаагүй ({0}) тул нүд текст шошгоо хадгална</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Гаралт</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Товчлуурууд</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стикүүд ба гохууд</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Чичиргээ ба эргэх холбоо</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Хөдөлгөөн ба хүрэлт</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Гэрэл ба дуу</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Макро ба цэсүүд</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Чичиргээг аудио руу</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Чичиргээг аудио гаралт руу чиглүүлэх</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Энэ виртуал контроллерын хүлээн авсан тоглоомын чичиргээ болон хүчний эргэх холбоог сонгосон аудио гаралтад бага давтамжийн дуу болгон тоглуулна. Унтраахад бүх тохиргоо хадгалагдана.</value></data>

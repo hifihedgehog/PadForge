@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>स्वागत टूर दिखाएँ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>स्लॉट</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>डिवाइस</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>इनपुट स्रोत</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>डिवाइस जोड़ें</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>गढ़ाई जारी</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>बाईं ओर कोई मैक्रो चुनें, या नया बनाने के लिए “जोड़ें” दबाएँ।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>रॉ</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>मेनू सेल का आइकन पहचाना नहीं गया ({0}), इसलिए सेल अपना टेक्स्ट लेबल रखता है</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>बेस शेकर</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>आउटपुट</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>बटन</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>स्टिक और ट्रिगर</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>रंबल और हैप्टिक्स</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>मोशन और टच</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>लाइटिंग और ऑडियो</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>मैक्रो और मेनू</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>वे सेटिंग्स जो इस स्लॉट के वर्चुअल कंट्रोलर आउटपुट को गेम को भेजे जाने से ठीक पहले आकार देती हैं: एक साथ दबी विपरीत दिशाओं के लिए SOCD क्लीनिंग, और उन गेम के लिए “कंट्रोलर को जगाए रखें” जो माउस या कीबोर्ड इनपुट देखते ही कंट्रोलर को छोड़ देते हैं।</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बेस शेकर</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>इस वर्चुअल कंट्रोलर को मिलने वाले गेम रंबल और फ़ोर्स फ़ीडबैक को बेस शेकर और सबवूफ़र के लिए कम आवृत्ति के टोन के रूप में ऑडियो आउटपुट पर भेजता है।</value></data>

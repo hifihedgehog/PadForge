@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Εμφάνιση ξενάγησης καλωσορίσματος</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Υποδοχή</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Συσκευή</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Είσοδος από</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Προσθήκη συσκευής</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Σφυρηλάτηση</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Επιλέξτε μια μακροεντολή στα αριστερά ή πατήστε «Προσθήκη» για να δημιουργήσετε μία.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ΕΙΣΟΔΟΣ</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>το εικονίδιο του κελιού μενού δεν αναγνωρίστηκε ({0}), επομένως το κελί διατηρεί την ετικέτα κειμένου του</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Έξοδος</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Μοχλοί και σκανδάλες</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Δόνηση και ανάδραση</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Κίνηση και αφή</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Φωτισμός και ήχος</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Μακροεντολές και μενού</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Ρυθμίσεις που διαμορφώνουν την έξοδο του εικονικού χειριστηρίου αυτής της υποδοχής ακριβώς πριν σταλεί στα παιχνίδια: καθαρισμός SOCD για αντίθετες κατευθύνσεις που πατιούνται μαζί και «Διατήρηση χειριστηρίου ενεργού» για παιχνίδια που εγκαταλείπουν το χειριστήριο τη στιγμή που βλέπουν είσοδο ποντικιού ή πληκτρολογίου.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Δρομολογεί τη δόνηση και την ανάδραση δύναμης του παιχνιδιού που λαμβάνει αυτό το εικονικό χειριστήριο σε μια έξοδο ήχου, ως τόνους χαμηλής συχνότητας για δονητές μπάσων (bass shakers) και subwoofer.</value></data>

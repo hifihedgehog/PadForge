@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>تعارفی دورہ دکھائیں</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>سلاٹ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>آلہ</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ان پٹ ماخذ</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>آلہ شامل کریں</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ڈھلائی جاری</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>فہرست سے کوئی میکرو منتخب کریں، یا نیا بنانے کے لیے "شامل کریں" دبائیں۔</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>مینو کے خانے کا آئیکن پہچانا نہیں گیا ({0})، اس لیے خانے پر اس کا متنی لیبل برقرار ہے</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>بیس شیکرز</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>آؤٹ پٹ</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>بٹنز</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>اسٹکس اور ٹرگرز</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>وائبریشن اور ہیپٹکس</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>موشن اور ٹچ</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>لائٹس اور آواز</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>میکروز اور مینوز</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>وہ ترتیبات جو اس سلاٹ کے ورچوئل کنٹرولر آؤٹ پٹ کو گیمز کو بھیجے جانے سے عین پہلے ڈھالتی ہیں: ایک ساتھ دبائی گئی مخالف سمتوں کے لیے SOCD کلیننگ، اور ان گیمز کے لیے "کنٹرولر کو بیدار رکھیں" جو ماؤس یا کی بورڈ کا ان پٹ دیکھتے ہی کنٹرولر کو چھوڑ دیتی ہیں۔</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>بیس شیکرز</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>یہ ورچوئل کنٹرولر گیم کا جو رمبل اور فورس فیڈبیک وصول کرتا ہے، اسے بیس شیکرز اور سب ووفرز کے لیے کم فریکوئنسی ٹونز کی صورت میں آڈیو آؤٹ پٹ پر بھیجتا ہے۔</value></data>

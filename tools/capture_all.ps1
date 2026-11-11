@@ -917,7 +917,7 @@ function Ensure-DeviceAssigned {
     # realize, enumerate toggles, click the right one. The Xbox GIP dummy lost
     # that fight run after run, and pad-impulse-triggers plus
     # pad-lighting-guide-led stayed weeks stale because the tabs they need only
-    # appear when that device is selectable in the pad page DEVICE dropdown.
+    # appear when that device is selectable in the pad page's Driven by picker.
     #
     # An assignment is nothing but UserSetting.MapTo, so write it. The comment
     # further down this script has said to do exactly this since 2026-07-30.
@@ -2143,61 +2143,195 @@ function Find-AllSlots {
     return @()
 }
 
-function Tab {
-    param([string]$Name)
-    $padPage = Find-UIA -Aid "PadPageView"
-    $searchIn = if ($padPage) { $padPage } else { $script:uiaWin }
-    $el = Find-UIA -Parent $searchIn -Name $Name -CT ([System.Windows.Automation.ControlType]::RadioButton)
-    # One 500 ms retry was not enough. A slot card click opens the Pad page
-    # and the tab strip lands a beat later, so menu-macro-cell and
-    # menu-icon-packs failed every run on "Tab 'Menus' not found" while the
-    # strip plainly carries Menus. Recipes that happen to do other work
-    # between the card click and the tab (selecting a mapped device, say)
-    # were passing only because that work spent the time.
-    for ($ti = 0; (-not $el) -and $ti -lt 8; $ti++) {
-        Start-Sleep -Milliseconds 500
+# The pad page's tabs are six sections (PadForge 6, #574). A recipe still
+# names what it wants by the tab's name, and this table says where that is
+# now: the section's button in the header, then either a part button (Buttons
+# and Macros & Menus show one part at a time) or the heading of a group in
+# the section's scrolling column. Every value is an AutomationId, so a
+# translated run finds the same controls. A group's heading carries the id
+# its tab button had, and it is in the tree only while its section shows and
+# the selected device has that group.
+$script:PadTabs = @{
+    "Preview"           = @{ Section = "Section_Buttons"; Part = "TabController" }
+    "Mappings"          = @{ Section = "Section_Buttons"; Part = "MappingsTab" }
+    "Output"            = @{ Section = "Section_Buttons"; Part = "OutputTab" }
+    "Sticks"            = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabSticks" }
+    "Triggers"          = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabTriggers" }
+    "Mouse"             = @{ Section = "Section_Sticks"; Column = "SticksSectionScroll"; Group = "TabMouse" }
+    "Force Feedback"    = @{ Section = "Section_Rumble"; Column = "RumbleSectionScroll"; Group = "TabForceFeedback" }
+    "Impulse Triggers"  = @{ Section = "Section_Rumble"; Column = "RumbleSectionScroll"; Group = "TabImpulseTriggers" }
+    "Adaptive Triggers" = @{ Section = "Section_Rumble"; Column = "RumbleSectionScroll"; Group = "TabAdaptiveTriggers" }
+    "Wheel"             = @{ Section = "Section_Rumble"; Column = "RumbleSectionScroll"; Group = "TabWheel" }
+    "Bass Shakers"      = @{ Section = "Section_Rumble"; Column = "RumbleSectionScroll"; Group = "BassShakersTab" }
+    "Gyro"              = @{ Section = "Section_Motion"; Column = "MotionSectionScroll"; Group = "TabGyro" }
+    "Touchpad"          = @{ Section = "Section_Motion"; Column = "MotionSectionScroll"; Group = "TabTouchpad" }
+    "Pointer"           = @{ Section = "Section_Motion"; Column = "MotionSectionScroll"; Group = "TabPointer" }
+    "Lighting"          = @{ Section = "Section_Lights"; Column = "LightsSectionScroll"; Group = "TabLighting" }
+    "Audio"             = @{ Section = "Section_Lights"; Column = "LightsSectionScroll"; Group = "TabAudio" }
+    "Macros"            = @{ Section = "Section_Macros"; Part = "MacrosTab" }
+    "Menus"             = @{ Section = "Section_Macros"; Part = "MenusTab" }
+}
+
+# A section button or a part button of the pad page, by its AutomationId.
+# One 500 ms retry was not enough. A slot card click opens the Pad page and
+# its strip lands a beat later, so menu-macro-cell and menu-icon-packs failed
+# every run on "Tab 'Menus' not found" while the strip plainly carried Menus.
+# Recipes that happen to do other work between the card click and the tab
+# (selecting a mapped device, say) were passing only because that work spent
+# the time.
+function Find-PadStripButton {
+    param([string]$Aid, [int]$Tries = 9)
+    for ($ti = 0; $ti -lt $Tries; $ti++) {
+        if ($ti -gt 0) { Start-Sleep -Milliseconds 500 }
         $padPage = Find-UIA -Aid "PadPageView"
         $searchIn = if ($padPage) { $padPage } else { $script:uiaWin }
-        $el = Find-UIA -Parent $searchIn -Name $Name -CT ([System.Windows.Automation.ControlType]::RadioButton)
+        $el = Find-UIA -Parent $searchIn -Aid $Aid -CT ([System.Windows.Automation.ControlType]::RadioButton)
+        if ($el) { return $el }
     }
-    if (-not $el) { $el = Find-UIARetry -Name $Name -Retries 4 -DelayMs 500 }
-    if ($el) {
-        $clicked = Click-El $el -Label "Tab:$Name"
-        # A rect click on a tab can land and do nothing, the same way the
-        # SteamVR Install button did. The Gyro device tab was the case that
-        # proved it: the strip carried Gyro, the Wii Remote was the selected
-        # device, the click reported success at the tab's own center, and the
-        # content pane stayed on Preview through 3.6 s of retries. Confirm the
-        # selection took and drive the pattern when it did not.
-        try {
-            $sip = $el.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
-            if (-not $sip.Current.IsSelected) {
-                Write-Host "  .. Tab:$Name did not select on click, using SelectionItemPattern" -ForegroundColor DarkGray
-                $sip.Select()
-                Start-Sleep -Milliseconds 600
-                $clicked = $sip.Current.IsSelected
-            }
-        } catch {
-            # An element without SelectionItemPattern cannot be asked whether
-            # it took, so the click's own result stands, as it did before
-            # this check existed. Say so: a shot taken on an unverified tab
-            # is one to look at twice.
-            Write-Host "  .. Tab:$Name selection could not be verified ($($_.Exception.Message))" -ForegroundColor DarkGray
+    return $null
+}
+
+# Click a section button or a part button and confirm it took.
+function Select-PadStripButton {
+    param($El, [string]$Label)
+    $clicked = Click-El $El -Label $Label
+    # A rect click on a tab can land and do nothing, the same way the SteamVR
+    # Install button did. The Gyro device tab was the case that proved it:
+    # the strip carried Gyro, the Wii Remote was the selected device, the
+    # click reported success at the tab's own center, and the content pane
+    # stayed on Preview through 3.6 s of retries. Confirm the selection took
+    # and drive the pattern when it did not.
+    try {
+        $sip = $El.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)
+        if (-not $sip.Current.IsSelected) {
+            Write-Host "  .. $Label did not select on click, using SelectionItemPattern" -ForegroundColor DarkGray
+            $sip.Select()
+            Start-Sleep -Milliseconds 600
+            $clicked = $sip.Current.IsSelected
         }
-        return $clicked
+    } catch {
+        # An element without SelectionItemPattern cannot be asked whether it
+        # took, so the click's own result stands, as it did before this check
+        # existed. Say so: a shot taken on an unverified tab is one to look at
+        # twice.
+        Write-Host "  .. $Label selection could not be verified ($($_.Exception.Message))" -ForegroundColor DarkGray
     }
-    # Name what the strip DOES carry. "Tab X not found" on its own sent two
+    return $clicked
+}
+
+# The names of the section buttons the header shows now.
+function Get-PadSectionNames {
+    $pp = Find-UIA -Aid "PadPageView"
+    if (-not $pp) { return @() }
+    $rb = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::RadioButton)
+    # The section buttons are the page's own children. The part buttons sit
+    # under the content pane.
+    return @($pp.FindAll($TC, $rb) | ForEach-Object { $_.Current.Name })
+}
+
+# Bring a group of a stacked section to the top of its column, through the
+# column's scroll pattern, so the pointer stays parked. An element scrolled
+# out of view reads no rectangle, so the column is stepped down from its top
+# a part of a screen at a time until the group's heading reads one, and then
+# set so that the heading sits just under the column's top edge. False when
+# the group is not on the page, which is how a recipe learns the selected
+# device has no such part. -Quiet is for a caller that asks again and again
+# while the group may still be on its way.
+function Scroll-PadGroupToTop {
+    param([string]$ColumnAid, [string]$GroupAid, [string]$Label, [int]$Tries = 8, [switch]$Quiet)
+    $pane = $null; $head = $null
+    for ($i = 0; $i -lt $Tries -and -not ($pane -and $head); $i++) {
+        if ($i -gt 0) { Start-Sleep -Milliseconds 400 }
+        $padPage = Find-UIA -Aid "PadPageView"
+        $searchIn = if ($padPage) { $padPage } else { $script:uiaWin }
+        if (-not $pane) { $pane = Find-UIA -Parent $searchIn -Aid $ColumnAid }
+        if ($pane) { $head = Find-UIA -Parent $pane -Aid $GroupAid }
+    }
+    if (-not $pane) {
+        if (-not $Quiet) { Write-Host "  !! ${Label}: its section's column ($ColumnAid) is not on the page" -ForegroundColor Yellow }
+        return $false
+    }
+    if (-not $head) {
+        if (-not $Quiet) { Write-Host "  !! ${Label}: the page has no such group ($GroupAid) for the selected device" -ForegroundColor Yellow }
+        return $false
+    }
+    try {
+        $sp = $pane.GetCurrentPattern([System.Windows.Automation.ScrollPattern]::Pattern)
+        # A column that fits its pane has nothing to scroll, and every group
+        # in it is in view.
+        if (-not $sp.Current.VerticallyScrollable) { return $true }
+        $noScroll = [System.Windows.Automation.ScrollPattern]::NoScroll
+        $pr = Get-Rect $pane
+        if ($null -eq $pr) { return $false }
+        $view = $sp.Current.VerticalViewSize
+        if ($view -le 0 -or $view -ge 100) { return $true }
+        # The column's whole height, and how far it can move, in the units
+        # the rectangles are read in.
+        $range = ($pr.Height * 100.0 / $view) - $pr.Height
+        $stepPct = 100.0 * ($pr.Height * 0.7) / $range
+        $pct = 0.0
+        $hr = $null
+        while ($true) {
+            $sp.SetScrollPercent($noScroll, [math]::Min(100.0, $pct))
+            Microsoft.PowerShell.Utility\Start-Sleep -Milliseconds 150
+            $hr = Get-Rect $head
+            if ($null -ne $hr -and $hr.Y -ge $pr.Y -and ($hr.Y + $hr.Height) -le ($pr.Y + $pr.Height)) { break }
+            $hr = $null
+            if ($pct -ge 100.0) { break }
+            $pct += $stepPct
+        }
+        if ($null -eq $hr) {
+            Write-Host "  !! ${Label}: the group's heading never came into view" -ForegroundColor Yellow
+            return $false
+        }
+        # 16 is the group's own top margin, which stays above its heading.
+        $at = [math]::Min(100.0, $pct)
+        $want = $at + 100.0 * (($hr.Y - $pr.Y) - 16) / $range
+        $sp.SetScrollPercent($noScroll, [math]::Max(0.0, [math]::Min(100.0, $want)))
+        Start-Sleep -Milliseconds 500
+        return $true
+    } catch {
+        Write-Host "  !! ${Label}: the column would not scroll ($($_.Exception.Message))" -ForegroundColor Yellow
+        return $false
+    }
+}
+
+# Go to what was a tab of the pad page, by its English name: select its
+# section, then its part, or bring its group to the top of the section's
+# column. True once it is in view.
+function Tab {
+    param([string]$Name)
+    $t = $script:PadTabs[$Name]
+    if (-not $t) {
+        Write-Host "  !! Tab '$Name' is not a tab of the pad page" -ForegroundColor Red
+        return $false
+    }
+    $section = Find-PadStripButton -Aid $t.Section
+    if (-not $section) { $section = Find-UIARetry -Aid $t.Section -Retries 4 -DelayMs 500 }
+    $ok = $false
+    if ($section) {
+        if (Select-PadStripButton -El $section -Label "Section of ${Name}") {
+            if ($t.ContainsKey("Part")) {
+                # A part switch is in the tree once its section shows.
+                $part = Find-PadStripButton -Aid $t.Part
+                if ($part) { $ok = Select-PadStripButton -El $part -Label "Tab:$Name" }
+            } else {
+                $ok = Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name"
+            }
+        }
+    }
+    if ($ok) { return $true }
+    # Name what the header DOES carry. "Tab X not found" on its own sent two
     # shots through four releases with nobody able to say whether the tab was
-    # absent, renamed, or just late.
-    $ppT = Find-UIA -Aid "PadPageView"
-    if ($ppT) {
-        $rbT = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $have = @($ppT.FindAll($TC, $rbT) | ForEach-Object { $_.Current.Name })
-        Write-Host ("  !! Tab '$Name' not found. Strip carries ({0}): {1}" -f $have.Count, ($have -join " | ")) -ForegroundColor Yellow
+    # absent, renamed, or just late. A section the header does not show has
+    # nothing for the selected device.
+    if (Find-UIA -Aid "PadPageView") {
+        $have = @(Get-PadSectionNames)
+        Write-Host ("  !! Tab '$Name' not reached. The header carries ({0}): {1}" -f $have.Count, ($have -join " | ")) -ForegroundColor Yellow
     } else {
-        Write-Host "  !! Tab '$Name' not found, and PadPageView was not found either" -ForegroundColor Yellow
+        Write-Host "  !! Tab '$Name' not reached, and PadPageView was not found either" -ForegroundColor Yellow
     }
     # Leave a picture. UIA saying "not there" is one layer, and the Grip card
     # proved that layer can be wrong while the screen is right.
@@ -2219,12 +2353,37 @@ function Tab {
     return $false
 }
 
-# Select a device in the PadPage's mapped-device dropdown by name, so the
-# device-gated tabs (Impulse Triggers, Wheel, etc.) follow it. A slot can carry
-# several devices; the tabs reflect whichever is picked here. Walks every
-# ComboBox in the PadPage (device dropdown + Preset + Profile) and only selects
-# on the one whose items include the device name, so it never disturbs the
-# preset/profile combos.
+# Wait for what was a device-gated tab to come onto the pad page: Audio,
+# Adaptive Triggers, Pointer and the rest follow the selected device, and the
+# gate propagates up to about 10 s after a cold bring-up. Each try goes to
+# the tab, which is the only way to see a group: its heading is in the tree
+# only while its section shows. True with the tab in view.
+function Wait-PadTab {
+    param([string]$Name, [int]$Tries = 12, [int]$DelayMs = 1000)
+    $t = $script:PadTabs[$Name]
+    if (-not $t) { return $false }
+    for ($w = 0; $w -lt $Tries; $w++) {
+        Start-Sleep -Milliseconds $DelayMs
+        # A section with nothing for the device is not in the header yet.
+        $section = Find-PadStripButton -Aid $t.Section -Tries 1
+        if (-not $section) { continue }
+        if (-not (Select-PadStripButton -El $section -Label "Section of ${Name}")) { continue }
+        if ($t.ContainsKey("Part")) {
+            $part = Find-PadStripButton -Aid $t.Part -Tries 2
+            if ($part -and (Select-PadStripButton -El $part -Label "Tab:$Name")) { return $true }
+        } elseif (Scroll-PadGroupToTop -ColumnAid $t.Column -GroupAid $t.Group -Label "Tab:$Name" -Tries 1 -Quiet) {
+            return $true
+        }
+    }
+    return $false
+}
+
+# Select a device in the pad page's Driven by picker by name, so the
+# device-gated groups (Impulse Triggers, Wheel, etc.) follow it. A slot can
+# carry several devices, and the groups reflect whichever is picked here. The
+# picker is found by its AutomationId, Pad_DeviceCombo. It once had none, and
+# this walked every ComboBox of the page, opening each to read its items,
+# which a section of stacked groups would make a walk of dozens (#574).
 function Select-MappedDevice {
     param([string]$NamePart, [int]$Retries = 3)
     for ($smAttempt = 1; $smAttempt -le $Retries; $smAttempt++) {
@@ -2238,51 +2397,35 @@ function Select-MappedDeviceOnce {
     param([string]$NamePart)
     $padPage = Find-UIA -Aid "PadPageView"
     if (-not $padPage) { Write-Host "  !! Select-MappedDevice: no PadPageView" -ForegroundColor Yellow; return $false }
-    $cbCond = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::ComboBox)
+    $combo = Find-UIA -Parent $padPage -Aid "Pad_DeviceCombo"
+    if (-not $combo) { Write-Host "  !! Select-MappedDevice: no Driven by picker (Pad_DeviceCombo) on the page" -ForegroundColor Yellow; return $false }
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::ListItem)
-    foreach ($combo in $padPage.FindAll($TD, $cbCond)) {
-        $expand = $null
-        try { $expand = $combo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern); $expand.Expand(); Start-Sleep -Milliseconds 500 } catch { continue }
-        $match = $null
-        foreach ($it in $combo.FindAll($TD, $liCond)) {
-            if ($it.Current.Name -like "*$NamePart*") { $match = $it; break }
-        }
-        if ($match) {
-            try { $match.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() }
-            catch { Click-El $match -Label "device '$NamePart'" | Out-Null }
-            Start-Sleep -Milliseconds 1200
-            try { $expand.Collapse() } catch {}
-            Write-Host "  Selected mapped device '$NamePart'" -ForegroundColor Green
-            return $true
-        }
-        try { $expand.Collapse(); Start-Sleep -Milliseconds 200 } catch {}
-    }
-    Write-Host "  !! mapped device '$NamePart' not found in dropdown" -ForegroundColor Yellow
-    # NAME WHAT THE DROPDOWN ACTUALLY HOLDS. Three runs were spent guessing
-    # why a device "was not in the dropdown" when the answer is one list.
-    $cbDump = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::ComboBox)
-    $liDump = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::ListItem)
     # EXPAND BEFORE ENUMERATING. A closed WPF ComboBox realizes no items at
-    # all, so a dump of one reads "items:" with nothing after it and says
-    # nothing about whether the device is in the list.
-    foreach ($cb in (Find-AllSafe $padPage $cbDump)) {
-        $expDump = $null
-        try { $expDump = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern); $expDump.Expand() } catch {}
-        Start-Sleep -Milliseconds 500
-        $items = @()
-        foreach ($it in $cb.FindAll($TD, $liDump)) { $items += $it.Current.Name }
-        Write-Host ("    combo Aid='{0}' items: {1}" -f $cb.Current.AutomationId, ($items -join ' | '))
-        try { $expDump.Collapse() } catch {}
-        Start-Sleep -Milliseconds 200
+    # all, so a read of one says nothing about whether the device is in the
+    # list.
+    $expand = $null
+    try { $expand = $combo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern); $expand.Expand(); Start-Sleep -Milliseconds 500 }
+    catch { Write-Host "  !! Select-MappedDevice: the picker would not open ($($_.Exception.Message))" -ForegroundColor Yellow; return $false }
+    $match = $null
+    $items = @()
+    foreach ($it in $combo.FindAll($TD, $liCond)) {
+        $items += $it.Current.Name
+        if (-not $match -and $it.Current.Name -like "*$NamePart*") { $match = $it }
     }
+    if ($match) {
+        try { $match.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() }
+        catch { Click-El $match -Label "device '$NamePart'" | Out-Null }
+        Start-Sleep -Milliseconds 1200
+        try { $expand.Collapse() } catch {}
+        Write-Host "  Selected mapped device '$NamePart'" -ForegroundColor Green
+        return $true
+    }
+    try { $expand.Collapse(); Start-Sleep -Milliseconds 200 } catch {}
+    # NAME WHAT THE PICKER ACTUALLY HOLDS. Three runs were spent guessing why
+    # a device "was not in the dropdown" when the answer is one list.
+    Write-Host "  !! mapped device '$NamePart' not found in the picker. It holds: $($items -join ' | ')" -ForegroundColor Yellow
     return $false
 }
 
@@ -2365,27 +2508,19 @@ function Find-LowestTextBandY {
     return $null
 }
 
-# Open a slot's pad page from its Dashboard card. The card's center sits on
-# its controller-type strip, and a click there changes the slot's type: a
+# Open a slot's pad page from its Home card. The card's center once sat on
+# its controller-type strip, and a click there changed the slot's type: a
 # focused run on 2026-09-22 turned the Xbox slot into an Extended one that
-# way and photographed the Dashboard. On a card with a mapped device the
-# center lands 2 px below the strip (measured 2026-09-22: strip y 473-505,
-# center 507), which is the only reason the full pass never tripped on it.
-# The "Slot" title opens the page and touches nothing else. Returns the
-# PadPageView once it exists.
+# way and photographed the Dashboard. The card's title opens the page and
+# touches nothing else. It is the type's name since PadForge 6 (#574), where
+# the word "Slot" stood, so it is found by its AutomationId, Dash_SlotTitle,
+# in any language. Returns the PadPageView once it exists.
 function Open-SlotCard {
     param($Card, [string]$Label)
     $title = $null
-    try {
-        $tcond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::Text)
-        # The title renders as two TextBlocks, "Slot" and the number.
-        $title = @($Card.FindAll($TD, $tcond)) |
-            Where-Object { $_.Current.Name -eq 'Slot' } | Select-Object -First 1
-    } catch {}
+    try { $title = Find-UIA -Parent $Card -Aid "Dash_SlotTitle" } catch {}
     if (-not $title) {
-        Write-Host "  !! no 'Slot' title on $Label; not clicking the card body" -ForegroundColor Red
+        Write-Host "  !! no title (Dash_SlotTitle) on $Label; not clicking the card body" -ForegroundColor Red
         return $null
     }
     Click-El $title -Label "$Label title" -Delay 1500 | Out-Null
@@ -4784,7 +4919,7 @@ Assert-Staged (Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLab
 # tab gates on the SELECTED device being IsMouse (CapType == Mouse == 18); a KBM
 # slot with no device assigned surfaces no Mouse tab. "All Mice (Merged)" is a
 # first-class UserDevice (CapType 18) in the cache, so assigning + selecting it
-# lights TabMouse, the same shape the Wheel tab uses (assign G29, select it).
+# shows the Mouse group, the same shape the Wheel group uses (assign G29, select it).
 # Best effort: Ensure-DeviceAssigned below writes this one, and that is checked.
 Assign-DeviceToSlot -DeviceNamePart "All Mice (Merged)" -SlotNumberLabel "5" | Out-Null
 # WHEN THIS KEEPS FAILING, STOP DRIVING THE UI. A device assignment is
@@ -7306,29 +7441,20 @@ if ($Only.Count -gt 0) {
         Write-Host "  Found $((Get-Count $cards)) slot card(s)"
         if ((Get-Count $cards) -ge 2) {
             Open-SlotCard $cards[1] "PlayStation Slot card" | Out-Null
-            # The device-gated tabs flip visible only after the slot's config
-            # binds and capability gating propagates, up to ~10 s on a cold
-            # bring-up. Poll for the Audio tab the way the full run polls for
-            # Adaptive Triggers, instead of asking once and giving up.
-            $padPage = $null; $audioTab = $null
-            $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                [System.Windows.Automation.ControlType]::RadioButton)
-            for ($w = 0; $w -lt 12 -and -not $audioTab; $w++) {
-                Start-Sleep -Milliseconds 1000
-                $padPage = Find-UIA -Aid "PadPageView"
-                if ($padPage) {
-                    $tabs = $padPage.FindAll($TC, $rbCond)
-                    $audioTab = $tabs | Where-Object { $_.Current.Name -eq "Audio" } | Select-Object -First 1
-                }
-            }
+            # The device-gated groups come onto the page only after the
+            # slot's config binds and capability gating propagates, up to
+            # ~10 s on a cold bring-up. Wait for the Audio group the way the
+            # full run waits for Adaptive Triggers, instead of asking once
+            # and giving up.
+            $audioTab = Wait-PadTab -Name "Audio" -Tries 12 -DelayMs 1000
             if (-not $audioTab) {
-                $names = if ($padPage) { ($padPage.FindAll($TC, $rbCond) | ForEach-Object { $_.Current.Name }) -join ', ' } else { '(no PadPageView)' }
-                Write-Host "  !! Audio tab never appeared. Tabs seen: $names" -ForegroundColor Red
+                $names = if (Find-UIA -Aid "PadPageView") { (Get-PadSectionNames) -join ', ' } else { '(no PadPageView)' }
+                Write-Host "  !! The Audio group never appeared. Sections seen: $names" -ForegroundColor Red
             }
             foreach ($t in $psWanted) {
-                if ($audioTab) {
-                    Click-El $audioTab -Label "Tab:Audio" -Delay 1000 | Out-Null
+                # Each shot starts from the group's top: the one before it
+                # may have scrolled the column.
+                if ($audioTab -and (Tab "Audio")) {
                     Start-Sleep -Milliseconds 900
                     if ($t.Scroll -ne 0) { ScrollContent -Clicks $t.Scroll; Start-Sleep -Milliseconds 500 }
                     Cap $t.Shot
@@ -7411,11 +7537,8 @@ if ($Only.Count -gt 0) {
         # Xbox is card 0 and PlayStation card 1 in type-group order.
         $padPage = if ((Get-Count $cards) -ge 2) { Open-SlotCard $cards[0] "Xbox slot card" } else { $null }
         if ($padPage) {
-            $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                [System.Windows.Automation.ControlType]::RadioButton)
-            $tabs = $padPage.FindAll($TC, $rbCond)
-            if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "Preview tab" -Delay 1000 | Out-Null }
+            Tab "Preview" | Out-Null
+            Start-Sleep -Milliseconds 600
             Dismiss-AssignBanner | Out-Null
             Wait-EngineForging | Out-Null
             if (Set-ViewMode '2D') {
@@ -7517,9 +7640,9 @@ if ($Only.Count -gt 0) {
     # Both need slot 0's authored content, which the setup block writes
     # whether or not -Only is in play (Ensure-MacrosLoaded is inside the
     # assignment block, so a focused run rebuilds it here instead).
-    # Open-SlotCard clicks the card's "Slot" title. The card's center is its
+    # Open-SlotCard clicks the card's title. The card's center was its
     # controller-type strip, and on a slot with no device mapped, which is
-    # every focused run, a click there changes the slot's type: the 4.5.3
+    # every focused run, a click there changed the slot's type: the 4.5.3
     # menu-icon-packs came from a slot 1 turned into a PlayStation slot.
     $xboxSlotTargets = @("macro-disconnect", "macro-switch-layer", "macro-set-chroma-color", "macro-add-from-list", "pad-menus", "menu-macro-cell", "menu-icon-packs")
     $xboxWanted = @($xboxSlotTargets | Where-Object { Want $_ })
@@ -7614,11 +7737,8 @@ if ($Only.Count -gt 0) {
         $ppT = if ((Get-Count $cdT) -ge 1) { Open-SlotCard $cdT[0] "Xbox slot card (tour)" } else { $null }
         if ($ppT) {
             if (Want "pad-controller-3d") {
-                $rbCondT = New-Object System.Windows.Automation.PropertyCondition(
-                    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                    [System.Windows.Automation.ControlType]::RadioButton)
-                $tabsT = $ppT.FindAll($TC, $rbCondT)
-                if ((Get-Count $tabsT) -gt 0) { Click-El $tabsT[0] -Label "3D View Tab" -Delay 1000 }
+                Tab "Preview" | Out-Null
+                Start-Sleep -Milliseconds 600
                 Cap "pad-controller-3d"
             }
             if ($needXboxPad) {
@@ -7631,7 +7751,7 @@ if ($Only.Count -gt 0) {
                         if (Tab "Bass Shakers") { Start-Sleep -Milliseconds 800; Cap "pad-bass-shakers" }
                         else { Write-Host "  !! Bass Shakers tab not found" -ForegroundColor Yellow }
                     }
-                } else { Write-Host "  !! the Xbox pad is not in the DEVICE dropdown -- SKIPPED the Guide LED and Bass Shakers" -ForegroundColor Red }
+                } else { Write-Host "  !! the Xbox pad is not in the Driven by picker -- SKIPPED the Guide LED and Bass Shakers" -ForegroundColor Red }
             }
         } else { Write-Host "  !! the Xbox slot did not open -- SKIPPED $($xboxTourWanted -join ', ')" -ForegroundColor Red }
     }
@@ -7727,19 +7847,10 @@ if ($Only.Count -gt 0) {
                         } else { Write-Host "  !! Gyro tab not found -- SKIPPED pad-gyro-grip" -ForegroundColor Red }
                     }
                     if ((Want "pad-pointer") -or (Want "wii-pointer-mode")) {
-                        # The Pointer tab gates on HasIrCamera, which
+                        # The Pointer group gates on HasIrCamera, which
                         # propagates a few seconds after the slot binds.
-                        $ptrOk = $false
-                        $rbW = New-Object System.Windows.Automation.PropertyCondition(
-                            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                            [System.Windows.Automation.ControlType]::RadioButton)
-                        $ppW = Find-UIA -Aid "PadPageView"
-                        for ($w = 0; $w -lt 8 -and -not $ptrOk; $w++) {
-                            Start-Sleep -Milliseconds 800
-                            if ($ppW -and ($ppW.FindAll($TC, $rbW) | Where-Object { $_.Current.Name -eq "Pointer" })) { $ptrOk = $true }
-                        }
-                        if (-not ($ptrOk -and (Tab "Pointer"))) {
-                            Write-Host "  !! Pointer tab never appeared -- SKIPPED pad-pointer, wii-pointer-mode" -ForegroundColor Red
+                        if (-not (Wait-PadTab -Name "Pointer" -Tries 8 -DelayMs 800)) {
+                            Write-Host "  !! The Pointer group never appeared -- SKIPPED pad-pointer, wii-pointer-mode" -ForegroundColor Red
                         } else {
                             Start-Sleep -Milliseconds 800
                             if (Want "pad-pointer") { Cap "pad-pointer" }
@@ -8066,16 +8177,14 @@ if ((Get-Count $slots) -ge 1) {
     Write-Host "[$(Next)/$total] Controller - 3D view"
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "3D View Tab" -Delay 1000 }
+        Tab "Preview" | Out-Null
+        Start-Sleep -Milliseconds 600
     }
     Cap "pad-controller-3d"
 
-    # 4a. Config tab row (Controller-Slots.md): the Controller tab shows the full
-    # per-slot tab strip. Same view as the 3D shot; the wiki points at the strip.
+    # 4a. The header's section row (Controller-Slots.md): the six sections,
+    # with the parts of Buttons under them. Same view as the 3D shot. The
+    # docs point at the row.
     Cap "pad-config-tabs"
 
     # 4b. Mapping annotations on the 3D model (3D-and-2D-Visualization.md +
@@ -8538,34 +8647,25 @@ if ($slotsHost) {
     if ((Get-Count $cards) -ge 2) {
         Open-SlotCard $cards[1] "PlayStation Slot card" | Out-Null
 
-        # Land on the Controller tab first so the PadPage is fully realized
-        # and the conditional AT/Lighting tabs have time to flip to Visible
-        # via the PadPage code-behind's hasAdaptiveTriggers / hasLightbar
-        # gating. The capability flags depend on HM profile load, which
-        # can take several seconds for a fresh slot.
+        # Give the conditional Adaptive Triggers and Lighting groups time to
+        # come onto the page via the PadPage code-behind's
+        # hasAdaptiveTriggers / hasLightbar gating, then land on the preview
+        # so the PadPage is fully realized for the shots that follow. The
+        # capability flags depend on HM profile load, which can take several
+        # seconds for a fresh slot.
         $padPage = Find-UIA -Aid "PadPageView"
         if ($padPage) {
-            $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-                [System.Windows.Automation.ControlType]::RadioButton)
-
-            # Poll for AT tab visibility — it flips visible only after the
-            # slot's PlayStationSlotConfig is bound and capability gating
-            # has propagated. Up to ~10s on a cold HM bring-up.
-            $atVisible = $false
-            for ($w = 0; $w -lt 10 -and -not $atVisible; $w++) {
-                Start-Sleep -Milliseconds 1000
-                $tabs = $padPage.FindAll($TC, $rbCond)
-                if ($tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" }) {
-                    $atVisible = $true
-                }
-            }
-            $tabs = $padPage.FindAll($TC, $rbCond)
-            if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "PS Controller Tab" -Delay 1000 | Out-Null }
-            $tabs = $padPage.FindAll($TC, $rbCond)
-            Write-Host "  PadPage tabs visible to UIA: $((Get-Count $tabs)) (AT visible: $atVisible)"
-            for ($ti = 0; $ti -lt (Get-Count $tabs); $ti++) {
-                Write-Host "    [$ti] Name='$($tabs[$ti].Current.Name)'"
+            # Wait for the Adaptive Triggers group. It comes onto the page
+            # only after the slot's PlayStationSlotConfig is bound and
+            # capability gating has propagated. Up to ~10s on a cold HM
+            # bring-up.
+            $atVisible = Wait-PadTab -Name "Adaptive Triggers" -Tries 10 -DelayMs 1000
+            Tab "Preview" | Out-Null
+            Start-Sleep -Milliseconds 600
+            $sectionsSeen = @(Get-PadSectionNames)
+            Write-Host "  PadPage sections visible to UIA: $((Get-Count $sectionsSeen)) (AT visible: $atVisible)"
+            for ($ti = 0; $ti -lt (Get-Count $sectionsSeen); $ti++) {
+                Write-Host "    [$ti] Name='$($sectionsSeen[$ti])'"
             }
 
             # The PlayStation controller-page screenshot must ALWAYS show a
@@ -8628,40 +8728,35 @@ if ($slotsHost) {
             }
 
             Write-Host "[$(Next)/$total] Adaptive Triggers"
-            $atTab = $tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" } | Select-Object -First 1
-            if ($atTab) {
-                Click-El $atTab -Label "AT Tab" -Delay 1000 | Out-Null
+            if (Tab "Adaptive Triggers") {
+                Start-Sleep -Milliseconds 700
                 Cap "pad-adaptive-triggers"
             } else {
-                Write-Host "  !! Adaptive Triggers tab not in UIA tree" -ForegroundColor Yellow
+                Write-Host "  !! The Adaptive Triggers group is not on the page" -ForegroundColor Yellow
             }
 
             Write-Host "[$(Next)/$total] Lighting"
-            # Re-enumerate (selection state changes can affect what's visible).
-            $tabs = $padPage.FindAll($TC, $rbCond)
-            $lightTab = $tabs | Where-Object { $_.Current.Name -eq "Lighting" } | Select-Object -First 1
-            if ($lightTab) {
-                Click-El $lightTab -Label "Lighting Tab" -Delay 1000 | Out-Null
+            if (Tab "Lighting") {
+                Start-Sleep -Milliseconds 700
                 Cap "pad-lighting"
             } else {
-                Write-Host "  !! Lighting tab not in UIA tree" -ForegroundColor Yellow
+                Write-Host "  !! The Lighting group is not on the page" -ForegroundColor Yellow
             }
 
             # The DualSense on this slot also surfaces Gyro (#120 engage gate),
             # Audio (#147 haptic tones expanded the tab), and Touchpad. Capture
-            # each by name; re-enumerate every time since selection can change
-            # the realized tab set. These follow SelectedMappedDevice, so they
-            # are present whenever the DualSense is the slot's selected device.
+            # each by name. Tab finds each group afresh, since a selection
+            # can change which groups the page holds. These follow
+            # SelectedMappedDevice, so they are present whenever the
+            # DualSense is the slot's selected device.
             foreach ($gt in @(
                 @{ Name = "Gyro";     File = "pad-gyro" },
                 @{ Name = "Audio";    File = "pad-audio" },
                 @{ Name = "Touchpad"; File = "pad-touchpad" }
             )) {
                 Write-Host "[$(Next)/$total] $($gt.Name)"
-                $tabs = $padPage.FindAll($TC, $rbCond)
-                $theTab = $tabs | Where-Object { $_.Current.Name -eq $gt.Name } | Select-Object -First 1
-                if ($theTab) {
-                    Click-El $theTab -Label "$($gt.Name) Tab" -Delay 1000 | Out-Null
+                if (Tab $gt.Name) {
+                    Start-Sleep -Milliseconds 700
                     Cap $gt.File
 
                     # 4.3.0 additions live below the fold on two of these tabs.
@@ -8695,7 +8790,7 @@ if ($slotsHost) {
                         ScrollContent -Clicks 16
                     }
                 } else {
-                    Write-Host "  !! $($gt.Name) tab not in UIA tree -- SKIPPED $($gt.File)" -ForegroundColor Red
+                    Write-Host "  !! The $($gt.Name) group is not on the page -- SKIPPED $($gt.File)" -ForegroundColor Red
                 }
             }
 
@@ -8729,11 +8824,8 @@ if ((Get-Count $cards) -gt 2) {
     Open-SlotCard $cards[2] "Nintendo Slot card" | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "Nintendo Controller Tab" -Delay 2500 | Out-Null }
+        Tab "Preview" | Out-Null
+        Start-Sleep -Milliseconds 2100
         Cap "pad-nintendo-configbar"
     } else { Write-Host "  !! PadPageView not found for the Nintendo slot" -ForegroundColor Yellow }
 } else { Write-Host "  !! Nintendo slot card not found" -ForegroundColor Yellow }
@@ -8757,11 +8849,8 @@ if ((Get-Count $cards) -gt $extendedIdx) {
     Open-SlotCard $cards[$extendedIdx] "Extended Slot card" | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "Extended Controller Tab" -Delay 1000 }
+        Tab "Preview" | Out-Null
+        Start-Sleep -Milliseconds 600
 
         # Switch profile to "Custom" to show the config bar with axis/button/POV dropdowns.
         $profileCombo = Find-UIA -Parent $padPage -Aid "HMaestroProfileCombo"
@@ -8924,11 +9013,8 @@ if ((Get-Count $cards) -gt $midiIdx) {
     Open-SlotCard $cards[$midiIdx] "MIDI Slot card" | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
     if ($padPage) {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "MIDI Controller Tab" -Delay 1000 }
+        Tab "Preview" | Out-Null
+        Start-Sleep -Milliseconds 600
     }
     Cap "pad-midi-configbar"
 } else {
@@ -8960,11 +9046,8 @@ if ((Get-Count $cards) -gt $vrIdx) {
         Write-Host "  !! VR card click did not open a pad page -- SKIPPED all three VR shots" -ForegroundColor Red
         $n++
     } else {
-        $rbCond = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-            [System.Windows.Automation.ControlType]::RadioButton)
-        $tabs = $padPage.FindAll($TC, $rbCond)
-        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
+        Tab "Preview" | Out-Null
+        Start-Sleep -Milliseconds 800
         # The Controller tab renders the hand-controller preview. It is the
         # lead image of features/vr-controllers.md and NOTHING in this
         # harness had ever captured it: the converter mapped
@@ -9087,13 +9170,10 @@ if ($SkipToTail) {
 # --- Pointer tab (Wii Remote on the Extended slot) ---
 # Use the SlotsItemsControl cards (proven to work late in the run for the
 # KBM/MIDI captures) rather than Find-AllSlots, which returns nothing here.
-# Click each slot card and try the Pointer tab; it appears only on the slot
-# whose selected device is the Wii Remote (Extended slot).
+# Click each slot card and try the Pointer group. It is on the page only for
+# the slot whose selected device is the Wii Remote (Extended slot).
 Write-Host "[3b] Pointer tab"
 $ptrDone = $false
-$rbCondP = New-Object System.Windows.Automation.PropertyCondition(
-    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-    [System.Windows.Automation.ControlType]::RadioButton)
 # Count the cards once.
 Nav "Dashboard"; Start-Sleep -Milliseconds 1200
 $slotsHostP = Find-UIA -Aid "SlotsItemsControl"
@@ -9120,24 +9200,18 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     try { $cdsCount = ([object[]]$cds).Length } catch { $cdsCount = 0 }
     if ($ci -ge $cdsCount) { continue }
     Open-SlotCard $cds[$ci] "slot card $ci (Pointer probe)" | Out-Null
-    # Land on the Controller tab first so the PadPage realizes, then poll for
-    # the Pointer tab to flip visible (Wii's HasIrCamera gate propagates a
-    # few seconds after slot bind, like the PS-slot AT/Lighting gating).
+    # Land on the preview first so the PadPage realizes, then wait for the
+    # Pointer group to come onto the page (Wii's HasIrCamera gate propagates
+    # a few seconds after slot bind, like the PS-slot AT/Lighting gating).
     $padPageP = Find-UIA -Aid "PadPageView"
     if (-not $padPageP) { continue }
     # The Extended slot now carries several Wii-family devices; the Pointer tab
     # gates on HasIrCamera, which only the Wii Remote has. Explicitly select it so
     # a non-Remote default selection can't hide the tab (no-op on other slots).
     Select-MappedDevice "Wii Remote" | Out-Null
-    $tabsP = $padPageP.FindAll($TC, $rbCondP)
-    if ((Get-Count $tabsP) -gt 0) { Click-El $tabsP[0] -Label "Controller Tab (Pointer probe)" -Delay 800 | Out-Null }
-    $ptrVisible = $false
-    for ($w = 0; $w -lt 6 -and -not $ptrVisible; $w++) {
-        Start-Sleep -Milliseconds 800
-        $tabsP = $padPageP.FindAll($TC, $rbCondP)
-        if ($tabsP | Where-Object { $_.Current.Name -eq "Pointer" }) { $ptrVisible = $true }
-    }
-    Write-Host ("    card $ci tabs: " + (($tabsP | ForEach-Object { $_.Current.Name }) -join ', '))
+    Tab "Preview" | Out-Null
+    $ptrVisible = Wait-PadTab -Name "Pointer" -Tries 6 -DelayMs 800
+    Write-Host ("    card $ci sections: " + ((Get-PadSectionNames) -join ', '))
     if ($ptrVisible -and (Tab "Pointer")) {
         Start-Sleep -Milliseconds 800; Cap "pad-pointer"; $ptrDone = $true
         # Pointer Mode card set to FPS Mouse (Wii-Controllers.md): switch the

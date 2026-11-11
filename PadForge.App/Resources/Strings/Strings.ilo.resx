@@ -1170,4 +1170,10 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, kasukat ti DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Dagiti port, kapardas, dagiti bukod a format</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Dagiti button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Dagiti stick ken trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble ken haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Garaw ken sagid</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Silaw ken uni</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Dagiti macro ken menu</value></data>
 </root>

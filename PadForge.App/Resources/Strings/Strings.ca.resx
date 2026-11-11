@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Mostra la visita de benvinguda</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ranura</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositiu</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjant</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecciona una macro a l'esquerra o prem Afegeix per crear-ne una.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Freda</value></data>
@@ -3696,6 +3698,12 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>no s'ha reconegut la icona de la cel·la del menú ({0}), així que la cel·la conserva l'etiqueta de text</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortida</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botons</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palanques i gallets</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibració i tacte</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment i tacte</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Llums i so</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros i menús</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Opcions que ajusten la sortida del comandament virtual d'aquesta ranura just abans d'enviar-la als jocs: la depuració SOCD per a direccions oposades premudes alhora, i Mantén el comandament actiu per als jocs que deixen de fer cas al comandament tan bon punt detecten entrada de ratolí o de teclat.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envia la vibració i la retroacció de força del joc que rep aquest comandament virtual a una sortida d'àudio com a tons de baixa freqüència per a bass shakers i subwoofers.</value></data>

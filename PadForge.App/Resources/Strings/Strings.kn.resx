@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>ಸ್ವಾಗತ ಪ್ರವಾಸ ತೋರಿಸಿ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ಸ್ಲಾಟ್</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ಸಾಧನ</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಮೂಲ</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>ಸಾಧನ ಸೇರಿಸಿ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ರೂಪಿಸುತ್ತಿದೆ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ಎಡಭಾಗದಲ್ಲಿ ಮ್ಯಾಕ್ರೋ ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ ಹೊಸದನ್ನು ರಚಿಸಲು ಸೇರಿಸಿ ಒತ್ತಿ.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ತಣ್ಣಗಿದೆ</value></data>
@@ -3679,6 +3681,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ಮೆನು ಕೋಶ ಐಕಾನ್ ಗುರುತಿಸಲಾಗಿಲ್ಲ ({0}), ಆದ್ದರಿಂದ ಕೋಶ ತನ್ನ ಪಠ್ಯ ಲೇಬಲ್ ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ಬಟನ್‌ಗಳು</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>ಸ್ಟಿಕ್‌ಗಳು ಮತ್ತು ಟ್ರಿಗರ್‌ಗಳು</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>ಕಂಪನ ಮತ್ತು ಹ್ಯಾಪ್ಟಿಕ್ಸ್</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>ಚಲನೆ ಮತ್ತು ಸ್ಪರ್ಶ</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>ಬೆಳಕು ಮತ್ತು ಧ್ವನಿ</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ನ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಔಟ್‌ಪುಟ್ ಆಟಗಳಿಗೆ ಕಳುಹಿಸುವ ಮೊದಲು ಅದನ್ನು ರೂಪಿಸುವ ಸೆಟ್ಟಿಂಗ್‌ಗಳು: ಒಟ್ಟಿಗೆ ಒತ್ತಿದ ವಿರುದ್ಧ ದಿಕ್ಕುಗಳಿಗೆ SOCD ಶುದ್ಧೀಕರಣ, ಮತ್ತು ಮೌಸ್ ಅಥವಾ ಕೀಬೋರ್ಡ್ ಇನ್ಪುಟ್ ಕಂಡ ಕ್ಷಣವೇ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಕೈಬಿಡುವ ಆಟಗಳಿಗೆ ಕಂಟ್ರೋಲರ್ ಎಚ್ಚರವಾಗಿಡಿ.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ಬಾಸ್ ಶೇಕರ್‌ಗಳು</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ಈ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಪಡೆಯುವ ಆಟದ ಕಂಪನ ಮತ್ತು ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಅನ್ನು ಬಾಸ್ ಶೇಕರ್‌ಗಳು ಮತ್ತು ಸಬ್‌ವೂಫರ್‌ಗಳಿಗಾಗಿ ಕಡಿಮೆ ಆವರ್ತನದ ಸ್ವರಗಳಾಗಿ ಆಡಿಯೊ ಔಟ್‌ಪುಟ್‌ಗೆ ರವಾನಿಸುತ್ತದೆ.</value></data>

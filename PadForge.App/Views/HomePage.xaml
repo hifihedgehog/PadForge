@@ -92,36 +92,6 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
-
-        <!-- Stage ledger glyphs (#175 item 10): ember when the stage
-             carries a non-default configuration, ashen steel when inert.
-             Font stages (gyro / lighting / touchpad / audio) share the
-             text style; the Zacksly stick / trigger shapes share the
-             path style. -->
-        <Style x:Key="StageGlyphText" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="Opacity" Value="0.65"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHot}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-                    <Setter Property="Opacity" Value="1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="StageGlyphShape" TargetType="Path">
-            <Setter Property="Stretch" Value="Uniform"/>
-            <Setter Property="Fill" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="Opacity" Value="0.65"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHot}" Value="True">
-                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                    <Setter Property="Opacity" Value="1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
 
     <!-- Glow bleed (#175 clip report 2026-07-06): ScrollViewer.Padding sits
@@ -732,7 +702,6 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
                                 <!-- Row 0: [Flame] [Type chip] Type name #N ... [X] -->
@@ -967,7 +936,8 @@
                                          flame (18), the chip and its gap (34), the
                                          two gaps here (12) and "#16" (17.6,
                                          Cascadia @10). -->
-                                    <TextBlock MaxWidth="126" TextTrimming="CharacterEllipsis" Margin="7,0,0,0">
+                                    <TextBlock MaxWidth="126" TextTrimming="CharacterEllipsis" Margin="7,0,0,0"
+                                               AutomationProperties.AutomationId="Dash_SlotTitle">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
                                                 <Setter Property="FontSize" Value="14"/>
@@ -1262,77 +1232,13 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!-- Row 4: pipeline stage ledger (#175 item 10).
-                                     One tab glyph per configuration stage the
-                                     slot's assigned devices actually have,
-                                     mirroring the Pad page capability gates.
-                                     Ember when the stage carries a non-default
-                                     configuration, ashen steel when inert.
-                                     Hover = per-device readout in the fan-in
-                                     annotation idiom: mono value tokens, Body
-                                     device suffix, one line per covered device
-                                     (STOCK for the untouched ones). Wrapped so
-                                     long readouts never clip at the screen
-                                     edge. Inert stages carry no tooltip. -->
-                                <ItemsControl Grid.Row="4" ItemsSource="{Binding StageLedger}"
-                                              Margin="1,7,0,0">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0,0,9,0" Background="Transparent"
-                                                  ToolTipService.IsEnabled="{Binding HasSummary}"
-                                                  ToolTipService.InitialShowDelay="400"
-                                                  ToolTipService.ShowDuration="20000">
-                                                <Grid.ToolTip>
-                                                    <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <!-- Icon, name, settings (user direction 2026-07-06):
-                                                                     the same order as the card's main device label. -->
-                                                                <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </Grid.ToolTip>
-                                                <!-- Zacksly stick silhouette (Sticks stage). -->
-                                                <Grid Width="12" Height="12"
-                                                      Visibility="{Binding IsStickShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickOuterRingGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickInnerDiscGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                                </Grid>
-                                                <!-- Zacksly trigger silhouette (Triggers stage). -->
-                                                <Grid Width="12" Height="12"
-                                                      Visibility="{Binding IsTriggerShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyTriggerOuterBodyGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                                                </Grid>
-                                                <!-- Font stages (gyro / lighting / touchpad / audio). -->
-                                                <reset:GlyphText Text="{Binding Glyph}">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock" BasedOn="{StaticResource StageGlyphText}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Glyph}" Value="">
-                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </reset:GlyphText>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-
                                 <!-- Hover chevron (#175 phase 2 item 3): the
                                      whole card opens the controller page, so
                                      hovering reveals the app's forward glyph
                                      (E72A, same as the PadPage routing arrows)
                                      at the right edge. Opacity swap only; no
                                      layout shift, no hit-testing. -->
-                                <reset:GlyphText Grid.RowSpan="5" Text="&#xE72A;"
+                                <reset:GlyphText Grid.RowSpan="4" Text="&#xE72A;"
                                            FontFamily="Segoe MDL2 Assets" FontSize="12"
                                            IsHitTestVisible="False"
                                            HorizontalAlignment="Right" VerticalAlignment="Center"

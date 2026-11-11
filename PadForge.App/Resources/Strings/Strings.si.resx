@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>සාදර චාරිකාව පෙන්වන්න</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ස්ලොට්</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>උපාංගය</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ආදාන මූලාශ්‍රය</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>උපාංගයක් එක් කරන්න</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>වම් පසින් මැක්‍රෝවක් තෝරන්න, නැතහොත් එකක් සෑදීමට එක් කරන්න ඔබන්න.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>අමු</value></data>
@@ -3656,6 +3658,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>මෙනු කොටු අයිකනය හඳුනා නොගැනිණි ({0}), එබැවින් කොටුව එහි පාඨ ලේබලය තබා ගනී</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ප්‍රතිදානය</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>බොත්තම්</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>ස්ටික් සහ ට්‍රිගර</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>කම්පනය සහ හැප්ටික්</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>චලනය සහ ස්පර්ශය</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>ආලෝකය සහ ශබ්දය</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>මැක්‍රෝ සහ මෙනු</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ක්‍රීඩාවලට යැවීමට මොහොතකට පෙර මෙම ස්ලොට් එකේ අතථ්‍ය පාලක ප්‍රතිදානය හැඩගස්වන සැකසීම්: එකවර ඔබන ප්‍රතිවිරුද්ධ දිශා සඳහා SOCD පිරිසිදු කිරීම, සහ මූසික හෝ යතුරුපුවරු ආදානය දුටු මොහොතේ පාලකය අත හරින ක්‍රීඩා සඳහා “පාලකය අවදියෙන් තබන්න”.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය, බාස් ෂේකර් සහ සබ්වූෆර් සඳහා අඩු සංඛ්‍යාත නාද ලෙස ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරයි.</value></data>

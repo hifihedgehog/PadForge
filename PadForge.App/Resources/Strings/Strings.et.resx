@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näita tervitustutvustust</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Pesa</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Seade</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Sisend seadmelt</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Lisa seade</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Sepistab</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Valige vasakult makro või vajutage uue loomiseks Lisa.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>TOORES</value></data>
@@ -3697,6 +3699,12 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menüü lahtri ikooni ei tuvastatud ({0}), seega jääb lahtrile tekstisilt</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Väljund</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nupud</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Kangid ja päästikud</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Värin ja haptika</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Liikumine ja puude</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Valgustus ja heli</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrod ja menüüd</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Sätted, mis kujundavad selle pesa virtuaalse kontrolleri väljundit vahetult enne mängudele saatmist: SOCD puhastamine korraga vajutatud vastassuundade jaoks ja Hoia kontroller ärkvel mängude jaoks, mis loobuvad kontrollerist kohe, kui näevad hiire või klaviatuuri sisendit.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Suunab selle virtuaalse kontrolleri vastu võetud mängu vibratsiooni ja jõutagasiside heliväljundisse madalsageduslike toonidena bassivibraatorite ja subwooferite jaoks.</value></data>

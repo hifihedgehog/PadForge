@@ -944,4 +944,11 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe ke badle</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, full speed, custom format</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Use karo</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick aur Trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble aur Haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Motion aur Touch</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Light aur Awaaz</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro aur Menu</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Device add karo</value></data>
 </root>

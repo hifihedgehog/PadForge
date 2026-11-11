@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>نمایش تور خوشامدگویی</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>اسلات</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>دستگاه</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ورودی از</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>افزودن دستگاه</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>در حال آهنگری</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>یک ماکرو را از فهرست انتخاب کنید یا برای ساختن ماکرو «افزودن» را فشار دهید.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>نماد خانه منو شناخته نشد ({0})، بنابراین خانه برچسب متنی خود را نگه می‌دارد</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>خروجی</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>دکمه‌ها</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>استیک‌ها و ماشه‌ها</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>لرزش و بازخورد لمسی</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>حرکت و لمس</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>نورپردازی و صدا</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکروها و منوها</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>تنظیماتی که خروجی کنترلر مجازی این اسلات را درست پیش از فرستادن به بازی‌ها شکل می‌دهند: پاک‌سازی SOCD برای جهت‌های متضادی که هم‌زمان فشرده می‌شوند، و «بیدار نگه داشتن کنترلر» برای بازی‌هایی که به‌محض دیدن ورودی ماوس یا صفحه‌کلید، کنترلر را کنار می‌گذارند.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین برای لرزاننده‌های بیس و ساب‌ووفرها به یک خروجی صدا هدایت می‌کند.</value></data>

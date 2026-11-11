@@ -1183,4 +1183,10 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, bilog na speed, mga custom na format</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamiton</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick asin trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kurog asin haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Hiro asin dutdot</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ilaw asin tunog</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro asin menu</value></data>
 </root>

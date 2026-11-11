@@ -269,6 +269,8 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrolnan virtual</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparato</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Input di</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Agregá aparato</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selektá un makro na banda robes, òf primi Agregá pa krea un.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -2497,4 +2499,10 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pòrt, sustituto di DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pòrtnan, velosidat máksimo, formatonan personalisá</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Usa e</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Boton</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick i trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrashon i háptika</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Movementu i toke</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Lus i zonido</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro i menu</value></data>
 </root>

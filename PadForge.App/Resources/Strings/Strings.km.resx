@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>បង្ហាញដំណើរទស្សនាស្វាគមន៍</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>រន្ធ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ឧបករណ៍</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>បញ្ចូលពី</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>បន្ថែមឧបករណ៍</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>កំពុងដំណើរការ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ជ្រើសម៉ាក្រូនៅខាងឆ្វេង ឬចុច «បន្ថែម» ដើម្បីបង្កើតមួយ។</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ដើម</value></data>
@@ -3692,6 +3694,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>មិនស្គាល់រូបតំណាងក្រឡាម៉ឺនុយ ({0}) ដូច្នេះក្រឡារក្សាស្លាកអត្ថបទរបស់វា</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>លទ្ធផល</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ប៊ូតុង</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>ដងបញ្ជា និងទ្រីហ្គឺ</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>រំញ័រ និងកម្លាំងតប</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>ចលនា និងការប៉ះ</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>ពន្លឺ និងសំឡេង</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>ម៉ាក្រូ និងម៉ឺនុយ</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ការកំណត់ដែលកែលទ្ធផលឧបករណ៍បញ្ជានិម្មិតរបស់រន្ធនេះ មុនពេលវាត្រូវបានផ្ញើទៅហ្គេម៖ ការសម្អាត SOCD សម្រាប់ទិសផ្ទុយគ្នាដែលចុចព្រមគ្នា និង «រក្សាឧបករណ៍បញ្ជាឱ្យភ្ញាក់» សម្រាប់ហ្គេមដែលបោះបង់ឧបករណ៍បញ្ជាភ្លាមៗនៅពេលឃើញការបញ្ចូលពីកណ្ដុរ ឬក្ដារចុច។</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>បញ្ជូនការញ័រ និងកម្លាំងតបពីហ្គេមដែលឧបករណ៍បញ្ជានិម្មិតនេះទទួល ទៅលទ្ធផលសំឡេងជាសំឡេងប្រេកង់ទាប សម្រាប់ឧបករណ៍រំញ័របាស និងសាប់វូហ្វឺរ។</value></data>

@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Wys verwelkomingstoer</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Gleuf</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Toestel</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Aangedryf deur</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Voeg toestel by</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smee</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Kies links 'n makro, of druk Voeg by om een te skep.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3579,6 +3581,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>kieslyssel-ikoon nie herken nie ({0}), so die sel behou sy teksetiket</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knoppies</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stokkies en snellers</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrasie en haptiese terugvoer</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Beweging en raak</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Beligting en oudio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro's en kieslyste</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Instellings wat hierdie gleuf se virtuele controller-uitvoer vorm net voordat dit na speletjies gestuur word: SOCD-skoonmaak vir teenoorgestelde rigtings wat saam gedruk word, en Hou controller wakker vir speletjies wat die controller laat val sodra hulle muis- of sleutelbordinvoer sien.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuur die spelvibrasie en kragterugvoer wat hierdie virtuele controller ontvang as laagfrekwensie-tone na ’n oudio-uitvoer vir bass shakers en subwoofers.</value></data>

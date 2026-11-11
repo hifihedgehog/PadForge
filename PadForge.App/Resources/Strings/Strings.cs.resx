@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Zobrazit uvítací prohlídku</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Zařízení</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Vstup ze zařízení</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Přidat zařízení</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kuje se</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Vyberte makro vlevo, nebo ho vytvořte stisknutím tlačítka Přidat.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>VSTUP</value></data>
@@ -3889,6 +3891,12 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona buňky nabídky nebyla rozpoznána ({0}), takže buňce zůstává textový popisek</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Výstup</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tlačítka</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Páčky a spouště</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrace a haptika</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Pohyb a dotyk</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Světla a zvuk</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra a nabídky</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nastavení, která upravují výstup virtuálního ovladače tohoto slotu těsně před odesláním do her: čištění SOCD pro současně stisknuté protilehlé směry a Udržovat ovladač aktivní pro hry, které ovladač opustí ve chvíli, kdy zaznamenají vstup myši nebo klávesnice.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Směruje vibrace a silovou zpětnou vazbu ze hry, které tento virtuální ovladač dostává, na zvukový výstup jako nízkofrekvenční tóny pro bass shakery a subwoofery.</value></data>

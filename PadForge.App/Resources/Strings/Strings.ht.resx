@@ -280,6 +280,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Montre vizit akèy la</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Plas</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparèy</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Sous</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ajoute aparèy</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ap fòje</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chwazi yon makwo sou bò gòch, oswa peze Ajoute pou kreye youn.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frèt</value></data>
@@ -3068,6 +3070,12 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sipèpozisyon chanjman pwofil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Montre bag oswa griy sou ekran an pandan yon meni aktif. Meni yo toujou mache menm lè sipèpozisyon an etenn.</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sòti</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Bouton</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick ak gachèt</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrasyon ak retou fòs</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvman ak manyen</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Limyè ak son</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makwo ak meni</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibrasyon nan odyo</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reyinisyalize vibrasyon nan odyo</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Voye vibrasyon an nan yon sòti odyo</value></data>

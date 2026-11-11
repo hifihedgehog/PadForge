@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Показать ознакомительный тур</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Устройство</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Источник ввода</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Добавить устройство</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ковка</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Выберите макрос слева или нажмите «Добавить», чтобы создать новый.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ВХОД</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячейки меню не распознан ({0}), поэтому у ячейки остается текстовая подпись</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас-шейкеры</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Выход</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Кнопки</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стики и триггеры</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Вибрация и отклик</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Движение и касание</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Подсветка и звук</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Макросы и меню</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Настройки, которые формируют выход виртуального контроллера этого слота прямо перед отправкой в игры: очистка SOCD для одновременно нажатых противоположных направлений и «Поддерживать активность контроллера» для игр, которые бросают контроллер, как только видят ввод с мыши или клавиатуры.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шейкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Направляет вибрацию и силовую обратную связь от игры, которые получает этот виртуальный контроллер, на аудиовыход в виде низкочастотных тонов для бас-шейкеров и сабвуферов.</value></data>

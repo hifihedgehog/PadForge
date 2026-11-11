@@ -706,4 +706,8 @@
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Kaukauwa B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Gauna</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick kei na Trigger</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Yavala kei na Tara</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Rarama kei na Rorogo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro kei na Menu</value></data>
 </root>

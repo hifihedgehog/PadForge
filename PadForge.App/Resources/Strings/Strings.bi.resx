@@ -167,6 +167,8 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Ol slot</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Divaes</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Input i kam long</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Putum wan divaes</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pot</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod blong gem</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>I letem ol mod blong gem we oli mekem blong DSX oli setem ol adaptive triga, laetba, ol laet blong plea mo laet blong mute blong ol PlayStation kontrola blong yu.</value></data>
@@ -1573,4 +1575,10 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tekem ol efek blong triga mo laet long ol mod blong gem.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP adres, kod blong akses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, samting we i tekem ples blong DSX.exe</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stik mo triga</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Seksek mo feedback</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Muv mo taj</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Laet mo saon</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro mo menu</value></data>
 </root>

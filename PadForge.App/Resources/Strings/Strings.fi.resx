@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Näytä tervetuloesittely</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Paikka</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Laite</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Syöttölaite</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Lisää laite</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Taotaan</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Valitse makro vasemmalta tai luo uusi painamalla Lisää.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAAKA</value></data>
@@ -3889,6 +3891,12 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>valikon solun kuvaketta ei tunnistettu ({0}), joten solu säilyttää tekstinimensä</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bassotäristimet</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Lähtö</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Painikkeet</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sauvat ja liipaisimet</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Värinä ja haptiikka</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Liike ja kosketus</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Valot ja ääni</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot ja valikot</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Asetukset, jotka muokkaavat tämän paikan virtuaaliohjaimen lähtöä juuri ennen sen lähettämistä peleihin: SOCD-siivous yhtä aikaa painetuille vastakkaisille suunnille sekä Pidä ohjain hereillä -toiminto peleille, jotka hylkäävät ohjaimen heti havaitessaan hiiren tai näppäimistön syötettä.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassotäristimet</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Reitittää tämän virtuaaliohjaimen vastaanottaman pelin tärinän ja voimapalautteen äänilähtöön matalataajuisina sävyinä bassotäristimille ja subwoofereille.</value></data>

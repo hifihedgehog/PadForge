@@ -98,6 +98,7 @@ namespace PadForge.ViewModels
             // structural refresh never drops the selected card's glow.
             foreach (var s in SlotSummaries)
                 s.IsSelected = s.PadIndex == _selectedPadIndex;
+            SyncSelectedSlotSummary();
 
             ShowAddController = canAddMore;
         }
@@ -112,6 +113,35 @@ namespace PadForge.ViewModels
             _selectedPadIndex = padIndex;
             foreach (var s in SlotSummaries)
                 s.IsSelected = s.PadIndex == padIndex;
+            SyncSelectedSlotSummary();
+        }
+
+        private SlotSummary _selectedSlotSummary;
+
+        /// <summary>The summary of the slot whose pad page is in focus, null
+        /// while no pad page is. The pad page's header reads the slot's state
+        /// from it (#574): the power button, the state word and the stage
+        /// chips, the same values the slot's Home card shows. It follows a
+        /// rebuild of the summaries, so the header never holds a summary
+        /// that left the list.</summary>
+        public SlotSummary SelectedSlotSummary
+        {
+            get => _selectedSlotSummary;
+            private set => SetProperty(ref _selectedSlotSummary, value);
+        }
+
+        private void SyncSelectedSlotSummary()
+        {
+            SlotSummary found = null;
+            foreach (var s in SlotSummaries)
+            {
+                if (s.PadIndex == _selectedPadIndex)
+                {
+                    found = s;
+                    break;
+                }
+            }
+            SelectedSlotSummary = found;
         }
 
         // ─────────────────────────────────────────────

@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Sýna kynningarferð</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Rauf</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Tæki</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Inntak frá</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Bæta við tæki</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smíðar</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Veldu fjölva til vinstri eða ýttu á „Bæta við“ til að búa til nýjan.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>HRÁTT</value></data>
@@ -3889,6 +3891,12 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>tákn valmyndarreits ekki þekkt ({0}), svo reiturinn heldur textamerkingu sinni</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bassahristarar</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Úttak</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Hnappar</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Pinnar og gikkir</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Titringur og snertisvörun</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Hreyfing og snerting</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Lýsing og hljóð</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Fjölvar og valmyndir</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Stillingar sem móta úttak sýndarstýringar þessarar raufar rétt áður en það er sent til leikja: SOCD-hreinsun fyrir gagnstæðar stefnur sem ýtt er á samtímis, og „Halda leikjastýringu vakandi“ fyrir leiki sem sleppa leikjastýringunni um leið og þeir sjá inntak frá mús eða lyklaborði.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bassahristarar</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Beinir titringi og kraftsvörun sem þessi sýndarstýring fær frá leiknum á hljóðúttak sem lágtíðnitónum fyrir bassahristara og bassahátalara.</value></data>

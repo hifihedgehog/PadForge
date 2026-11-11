@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Pokaži uvodni ogled</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Reža</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Naprava</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Vhod iz</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Dodaj napravo</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kovanje</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Izberite makro na levi ali pa pritisnite „Dodaj“, da ga ustvarite.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>SUROVO</value></data>
@@ -3889,6 +3891,12 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona celice menija ni prepoznana ({0}), zato celica ohrani besedilno oznako</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Basovski tresalniki</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izhod</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Gumbi</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palice in sprožilci</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibracije in haptika</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Gibanje in dotik</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Osvetlitev in zvok</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makri in meniji</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Nastavitve, ki oblikujejo izhod navideznega krmilnika te reže tik preden se pošlje igram: čiščenje SOCD za sočasno pritisnjene nasprotne smeri in ohranjanje budnosti krmilnika za igre, ki krmilnik opustijo, takoj ko zaznajo vnos miške ali tipkovnice.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basovski tresalniki</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Vibriranje igre in povratno silo, ki ju prejme ta navidezni krmilnik, usmeri na zvočni izhod kot nizkofrekvenčne tone za basovske tresalnike in nizkotonce.</value></data>

@@ -3161,6 +3161,8 @@
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>왼쪽에서 매크로를 선택하거나 추가를 눌러 새로 만드세요.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>장치</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>입력 장치</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>장치 추가</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>미리 보기</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>추가 기능</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>선택 기능입니다. 켜기 전에는 방해되지 않습니다.</value></data>
@@ -3827,6 +3829,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>출력</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>스틱 및 트리거</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>진동 및 햅틱</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>모션 및 터치</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>조명 및 오디오</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>매크로 및 메뉴</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력을 게임으로 보내기 직전에 다듬는 설정입니다. 동시에 눌린 반대 방향을 정리하는 SOCD 클리닝과, 마우스나 키보드 입력을 보면 컨트롤러를 놓아 버리는 게임을 위한 컨트롤러 활성 유지가 있습니다.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>

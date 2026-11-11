@@ -239,6 +239,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     OnPropertyChanged(nameof(OutputTypeDisplayName));
+                    // The header's type chip draws the type (#574).
+                    OnPropertyChanged(nameof(TypeGeometry));
+                    OnPropertyChanged(nameof(TypeGlyph));
                     // Bass Shakers tab (#236): slot-type gate follows the
                     // output type, never a physical-device capability.
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
@@ -1659,7 +1662,7 @@ namespace PadForge.ViewModels
                     // the in-place identity nudge. Refreshing it here read the
                     // OUTGOING device's endpoint and nothing raised the property
                     // again after the bind, so the combo kept the old value.
-                    if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
+                    if (IsTabShown(AudioTabIndex)) RefreshMirrorSources();
                     else OnPropertyChanged(nameof(SelectedMirrorSourceId));
                     // Swap the Lighting tab's bound config to the new
                     // device's per-device entry. UI bindings that resolve
@@ -1723,7 +1726,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
             OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
             RefreshEqBands();
-            if (SelectedConfigTab == AudioTabIndex) RefreshMirrorSources();
+            if (IsTabShown(AudioTabIndex)) RefreshMirrorSources();
             else OnPropertyChanged(nameof(SelectedMirrorSourceId));
             OnPropertyChanged(nameof(MirrorEngageSelectedInput));
             OnPropertyChanged(nameof(SelectedMappedDevice));
@@ -5349,6 +5352,7 @@ namespace PadForge.ViewModels
             // MappingsViewLoaded let the grid-to-domain writer treat the
             // dead grid as a source of truth inside the delete window.
             SelectedConfigTab = 0;
+            ResetSectionMemory();
             MappingsViewLoaded = false;
             // The ViewModel half of the shift-layer clear above. Menus,
             // rumble-audio and SOCD each get their reload here; layers had
@@ -8174,42 +8178,65 @@ namespace PadForge.ViewModels
         private int _selectedConfigTab;
 
         /// <summary>
-        /// 0=Controller, 1=Macros, 2=Mappings, 3=Sticks, 4=Triggers, 5=Force Feedback
+        /// 0 Preview, 1 Macros, 2 Mappings, 3 Sticks, 4 Triggers, 5 Force
+        /// Feedback, 6 Adaptive Triggers, 7 Lighting, 8 Gyro, 9 Impulse
+        /// Triggers, 10 Touchpad, 11 Wheel, 12 Audio, 13 Pointer, 14 Mouse,
+        /// 15 Menus, 16 Bass Shakers, 17 Output. The page shows the section
+        /// that holds the tab (PadViewModel.Sections.cs).
         /// </summary>
         public int SelectedConfigTab
         {
             get => _selectedConfigTab;
             set
             {
-                if (!SetProperty(ref _selectedConfigTab, value)) return;
-                if (value == AudioTabIndex)
-                {
-                    // Entering the Audio tab: re-derive the sound-macro list,
-                    // the selected device's speaker capability, and the
-                    // mirror-source endpoint list.
-                    OnPropertyChanged(nameof(SoundMacros));
-                    OnPropertyChanged(nameof(HasNoSoundMacros));
-                    OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
-                    OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
-                    OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
-                    OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
-                    OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
-                    OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
-                    OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
-                    OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
-                    OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
-                    OnPropertyChanged(nameof(MirrorEngageSelectedInput));
-                    RefreshMirrorSources();
-                }
-                else if (value == BassShakersTabIndex)
-                {
-                    // Entering the Bass Shakers tab: re-enumerate render
-                    // endpoints so hot-plugged devices show up, and re-seed
-                    // the rows from the slot set.
-                    RefreshRumbleAudioEndpoints();
-                    ReloadRumbleAudio();
-                }
+                if (_selectedConfigTab == value) return;
+                int oldSection = SelectedSection;
+                int section = SectionOfTab(value);
+                // Remembered before the change is raised, so a listener that
+                // asks which part shows reads the new one.
+                if (section >= 0) _lastTabOfSection[section] = value;
+                SetProperty(ref _selectedConfigTab, value);
+                section = SelectedSection;
+                if (section != oldSection) OnPropertyChanged(nameof(SelectedSection));
+                if (section == ButtonsSection) OnPropertyChanged(nameof(ButtonsPartIndex));
+                else if (section == MacrosSection) OnPropertyChanged(nameof(MacrosPartIndex));
+                // Audio and Bass Shakers are groups of a stacked section. A
+                // jump to one by its number refreshes it here. When its
+                // section comes on the page some other way, the page asks
+                // for the refresh, since only the page knows whether the
+                // selected device has the group.
+                if (value == AudioTabIndex) RefreshAudioGroup();
+                else if (value == BassShakersTabIndex) RefreshBassShakersGroup();
             }
+        }
+
+        /// <summary>The Audio group comes on the page: re-derive the
+        /// sound-macro list, the selected device's speaker capability, and
+        /// the mirror-source endpoint list.</summary>
+        public void RefreshAudioGroup()
+        {
+            OnPropertyChanged(nameof(SoundMacros));
+            OnPropertyChanged(nameof(HasNoSoundMacros));
+            OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+            OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
+            OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
+            OnPropertyChanged(nameof(SelectedDeviceHasHeadsetAndSpeakerPath));
+            OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
+            OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+            OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
+            OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+            OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
+            OnPropertyChanged(nameof(MirrorEngageSelectedInput));
+            RefreshMirrorSources();
+        }
+
+        /// <summary>The Bass Shakers group comes on the page: re-enumerate
+        /// render endpoints so hot-plugged devices show up, and re-seed the
+        /// rows from the slot set.</summary>
+        public void RefreshBassShakersGroup()
+        {
+            RefreshRumbleAudioEndpoints();
+            ReloadRumbleAudio();
         }
 
         /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>

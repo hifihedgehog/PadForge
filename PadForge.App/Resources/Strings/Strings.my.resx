@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>ကြိုဆိုရေး လမ်းညွှန်ပြသမှုကို ပြရန်</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ဆလော့</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>စက်ပစ္စည်း</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>အဝင်ရင်းမြစ်</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>စက်ပစ္စည်း ထည့်ရန်</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ပုံသွင်းနေသည်</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ဘယ်ဘက်ရှိ မက်ခရိုတစ်ခုကို ရွေးပါ၊ သို့မဟုတ် အသစ်ဖန်တီးရန် ထည့် ကို နှိပ်ပါ။</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>မူရင်း</value></data>
@@ -3690,6 +3692,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>မီနူးအကွက် အိုင်ကွန်ကို မသိရှိပါ ({0})၊ ထို့ကြောင့် အကွက်သည် ၎င်း၏ စာသားတံဆိပ်ကို ဆက်ထားသည်</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>အထွက်</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ခလုတ်များ</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>စတစ်နှင့် ထရီဂါများ</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>တုန်ခါမှုနှင့် ထိတွေ့တုံ့ပြန်မှု</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>လှုပ်ရှားမှုနှင့် ထိတွေ့မှု</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>မီးအလင်းနှင့် အသံ</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>မက်ခရိုနှင့် မီနူးများ</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ဂိမ်းများသို့ မပို့မီ ဤဆလော့၏ ဗာချွယ်ကွန်ထရိုလာ အထွက်ကို ပုံဖော်သည့် ဆက်တင်များ- ဆန့်ကျင်ဘက် ဦးတည်ချက်များ တပြိုင်နက် နှိပ်ခြင်းအတွက် SOCD သန့်စင်ခြင်းနှင့် မောက်စ် သို့မဟုတ် ကီးဘုတ် အဝင်ကို မြင်သည်နှင့် ကွန်ထရိုလာကို စွန့်လွှတ်သည့် ဂိမ်းများအတွက် “ကွန်ထရိုလာကို နိုးထားရန်”။</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာ လက်ခံသော ဂိမ်း၏ တုန်ခါမှုနှင့် အားပြန်တုံ့ပြန်မှုကို ဘေ့စ် ရှိတ်ကာများနှင့် ဆပ်ဝူးဖာများအတွက် ကြိမ်နှုန်းနိမ့် အသံများအဖြစ် အသံအထွက်တစ်ခုသို့ လမ်းကြောင်းပေးသည်။</value></data>

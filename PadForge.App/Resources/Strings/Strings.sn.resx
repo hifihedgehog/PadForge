@@ -112,6 +112,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Zvinotevera</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Zvapera</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mudziyo</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Inodzorwa na</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Wedzera Mudziyo</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pota {0} iri kushandiswa nechimwe chirongwa, somuenzaniso DSX. Chivhare kana usarudze imwe pota.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Batanidza</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ramba</value></data>
@@ -1324,4 +1326,8 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Nguva</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Zvekuwedzera</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Purofaira</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Tsvimbo neMatrigger</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Kufamba neKubata</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Mwenje neInzwi</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mamacro neMenyu</value></data>
 </root>

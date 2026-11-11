@@ -241,6 +241,8 @@ namespace PadForge.Tests
             SettingsManager.KeyboardMouseSlotOrder.Add(0);
             var padVm = vm.Pads[0];
             padVm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
+            padVm.SelectedConfigTab = 15;  // Menus, which Macros & Menus remembers
+            padVm.SelectedConfigTab = 4;   // Triggers, which Sticks & Triggers remembers
             padVm.SelectedConfigTab = 2;   // Mappings
             padVm.MappingsViewLoaded = true;
 
@@ -248,6 +250,13 @@ namespace PadForge.Tests
 
             Assert.Equal(0, padVm.SelectedConfigTab);
             Assert.False(padVm.MappingsViewLoaded);
+            // Each section is back on its first tab too (#574), so the next
+            // controller's Macros & Menus opens on Macros, not on the
+            // deleted one's Menus.
+            Assert.Equal(0, padVm.ButtonsPartIndex);
+            Assert.Equal(0, padVm.MacrosPartIndex);
+            Assert.Equal(1, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.MacrosSection));
+            Assert.Equal(3, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.SticksSection));
         }
 
         [Fact]

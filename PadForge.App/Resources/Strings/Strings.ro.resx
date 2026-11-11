@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Afișare tur de bun venit</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitiv</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Controlat de</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjare</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selectați o macrocomandă din stânga sau apăsați Adăugare pentru a crea una.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>BRUT</value></data>
@@ -3889,6 +3891,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>pictograma celulei de meniu nu a fost recunoscută ({0}), așa că celula își păstrează eticheta text</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Transductoare tactile</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ieșire</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butoane</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stickuri și trăgace</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrații și haptică</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mișcare și atingere</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Iluminare și audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrocomenzi și meniuri</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Setări care modelează ieșirea controlerului virtual al acestui slot chiar înainte de a fi trimisă jocurilor: curățarea SOCD pentru direcțiile opuse apăsate împreună și Menținere controler activ pentru jocurile care renunță la controler imediat ce detectează intrare de la mouse sau tastatură.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Transductoare tactile</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Direcționează vibrațiile jocului și force feedback-ul primite de acest controler virtual către o ieșire audio, ca tonuri de joasă frecvență pentru transductoare tactile și subwoofere.</value></data>

@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>வரவேற்புச் சுற்றுப்பயணத்தைக் காட்டு</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ஸ்லாட்</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>சாதனம்</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>உள்ளீட்டு மூலம்</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>சாதனத்தைச் சேர்</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>செயலில்</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>இடதுபுறத்தில் ஒரு மேக்ரோவைத் தேர்ந்தெடுக்கவும், அல்லது புதிதாக உருவாக்க சேர் என்பதை அழுத்தவும்.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>மூலம்</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>மெனு கல ஐகான் அடையாளம் காணப்படவில்லை ({0}), எனவே கலம் தன் உரை லேபிளையே வைத்திருக்கும்</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>வெளியீடு</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>பட்டன்கள்</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>ஸ்டிக்குகள் &amp; டிரிகர்கள்</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>அதிர்வு &amp; ஹாப்டிக்ஸ்</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>இயக்கம் &amp; தொடுதல்</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>ஒளி &amp; ஒலி</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>மேக்ரோக்கள் &amp; மெனுக்கள்</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>இந்த ஸ்லாட்டின் மெய்நிகர் கட்டுப்படுத்தி வெளியீடு கேம்களுக்கு அனுப்பப்படுவதற்குச் சற்று முன் அதை வடிவமைக்கும் அமைப்புகள்: ஒரே நேரத்தில் அழுத்தப்படும் எதிரெதிர்த் திசைகளுக்கான SOCD சீர்செய்தல், மற்றும் சுட்டி அல்லது விசைப்பலகை உள்ளீட்டைக் கண்டவுடனேயே கட்டுப்படுத்தியைக் கைவிடும் கேம்களுக்கான கட்டுப்படுத்தியை விழிப்பில் வை.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி பெறும் கேம் அதிர்வையும் ஃபோர்ஸ் ஃபீட்பேக்கையும், பாஸ் ஷேக்கர்களுக்கும் சப்வூஃபர்களுக்குமான குறைந்த அதிர்வெண் தொனிகளாக ஓர் ஆடியோ வெளியீட்டுக்கு அனுப்பும்.</value></data>

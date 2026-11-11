@@ -148,6 +148,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Ibikurikira</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Byarangiye</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Igikoresho</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeraho igikoresho</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod z'imikino</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Yemerera mod z'imikino zakorewe DSX gushyiraho adaptive trigger, lightbar, amatara y'abakinnyi n'itara rya mute bya kontorola zawe za PlayStation.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Emera mod z'imikino za DSX</value></data>
@@ -1362,6 +1364,12 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nta na kimwe</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(ntibyashyizweho)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ibisohoka</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buto</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Uduti na Trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ukunyeganyega n'ibyiyumvo</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Imigendere n'ugukoraho</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Amatara n'amajwi</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
   <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Trigger y'ibumoso</value></data>
   <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Trigger y'iburyo</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Gerageza</value></data>

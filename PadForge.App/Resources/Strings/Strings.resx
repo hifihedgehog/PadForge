@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Driven by</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Add Device</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forging</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Select a macro on the left, or press Add to create one.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3910,6 +3912,12 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buttons</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks &amp; Triggers</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble &amp; Haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Motion &amp; Touch</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Lights &amp; Sound</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros &amp; Menus</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Settings that shape this slot's virtual controller output right before it is sent to games: SOCD cleaning for opposing directions pressed together, and Keep Controller Awake for games that drop the controller the moment they see mouse or keyboard input.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble and force feedback this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>

@@ -1017,4 +1017,8 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nka diphello tsa trigger le tsa mabone ho tswa ho di-mod tsa dipapadi.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sebaka sa DSX.exe</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaele</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks le Triggers</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le ho Ama</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Mabone le Molumo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros le Dimenyu</value></data>
 </root>

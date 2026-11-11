@@ -104,6 +104,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Okulandelayo</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Kugqityiwe</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Isixhobo</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Yongeza isixhobo</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Izibuko</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ii-mod zemidlalo</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Yamkela ii-mod zemidlalo ze-DSX</value></data>
@@ -1655,4 +1657,10 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Amazibuko, isantya esipheleleyo, iifomathi zakho</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Iprofayile</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Sebenzisa</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Amaqhosha</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Iintonga &amp; Ii-trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ukungcangcazela &amp; I-haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Intshukumo &amp; Ukuchukumisa</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanya &amp; Isandi</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Iimakhro &amp; Iimenyu</value></data>
 </root>

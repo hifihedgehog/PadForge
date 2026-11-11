@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Таныстыруды көрсету</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ұяшық</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Құрылғы</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Құрылғы қосу</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Соғуда</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Сол жақтан макросты таңдаңыз немесе жаңасын жасау үшін «Қосу» түймесін басыңыз.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ШИКІ</value></data>
@@ -3693,6 +3695,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>мәзір ұяшығының белгішесі танылмады ({0}), сондықтан ұяшық мәтіндік белгісін сақтайды</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Шығыс</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Түймелер</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стиктер және триггерлер</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Діріл және хаптика</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Қозғалыс және сенсор</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Жарық және дыбыс</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Макростар және мәзірлер</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Осы ұяшықтың виртуалды контроллер шығысын ойындарға жіберер алдында қалыптастыратын параметрлер: бір мезгілде басылған қарама-қарсы бағыттарға арналған SOCD тазалау және тінтуір немесе пернетақта енгізуін көрген бойда контроллерді тастайтын ойындарға арналған «Контроллерді ояу ұстау».</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Осы виртуалды контроллер алатын ойын дірілі мен күштік кері байланысты бас шейкерлері мен сабвуферлер үшін төмен жиілікті тондар ретінде дыбыс шығысына бағыттайды.</value></data>

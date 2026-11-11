@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ipakita ang welcome tour</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Pinapagana ng</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Magdagdag ng device</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Nagpapanday</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pumili ng macro sa kaliwa, o pindutin ang Idagdag para gumawa ng isa.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3509,6 +3511,12 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>hindi nakilala ang icon ng menu cell ({0}), kaya pinananatili ng cell ang text label nito</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga Button</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga Stick at Trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble at Haptics</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Galaw at Touch</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ilaw at Audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga Macro at Menu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Mga setting na humuhubog sa output ng virtual controller ng slot na ito bago ito ipadala sa mga laro: SOCD cleaning para sa magkasalungat na direksyong sabay na pinipindot, at Keep Controller Awake para sa mga larong nag-aalis ng controller sa sandaling makakita ng mouse o keyboard input.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Nagruruta ng game rumble at force feedback na natatanggap ng virtual controller na ito sa isang audio output bilang mga low-frequency na tone para sa mga bass shaker at subwoofer.</value></data>

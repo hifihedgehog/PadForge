@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ցույց տալ ողջույնի շրջայցը</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Սլոթ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Ազդանշանի աղբյուր</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ավելացնել սարք</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Դարբնում է</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեք մակրո ձախ կողմում կամ սեղմեք Ավելացնել՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3656,6 +3658,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ընտրացանկի բջջի պատկերակը չճանաչվեց ({0}), ուստի բջիջը պահպանում է տեքստային պիտակը</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ելք</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ձողեր և ձգաններ</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Թրթռոց և հետադարձ կապ</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Շարժում և հպում</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Լույս և ձայն</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Մակրոներ և ընտրացանկեր</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Կարգավորումներ, որոնք ձևավորում են այս սլոթի վիրտուալ կառավարիչի ելքը անմիջապես խաղերին ուղարկելուց առաջ՝ SOCD մաքրում միաժամանակ սեղմված հակադիր ուղղությունների համար, և «Կառավարիչն արթուն պահել» այն խաղերի համար, որոնք կառավարիչը թողնում են հենց մկնիկի կամ ստեղնաշարի մուտք տեսնելիս։</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը ուղղորդում է աուդիո ելքին՝ որպես ցածր հաճախականության տոներ բաս շեյքերների և սաբվուֆերների համար։</value></data>

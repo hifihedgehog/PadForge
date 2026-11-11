@@ -181,6 +181,8 @@
   <data name="FirstRun_Done" xml:space="preserve"><value>Pinis</value></data>
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Ol virtual kontrola</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Masin</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Kisim input long</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Putim masin</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod bilong gem</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kisim ol DSX mod bilong gem</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pot bilong ol mod bilong gem</value></data>
@@ -1741,4 +1743,10 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, senis bilong DSX.exe</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} i konek na i no stap long wok nau.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Yusim</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ol stik na triga</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Seksek na filim</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Muvmen na tasim</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ol lait na nois</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Ol makro na menu</value></data>
 </root>

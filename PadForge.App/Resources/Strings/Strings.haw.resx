@@ -148,6 +148,8 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="FirstRun_Done" xml:space="preserve"><value>Pau</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Hāmeʻa</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Hoʻokele ʻia e</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Hoʻohui i hāmeʻa</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ke hoʻohana ʻia nei ka port {0} e kekahi polokalamu ʻē aʻe, e like me DSX. E pani iā ia a i ʻole e koho i kekahi port ʻē aʻe.</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hōʻole</value></data>
 
@@ -938,4 +940,9 @@
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Ikaika B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Manawa</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nā mea keu</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nā pihi</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Nā stick a me nā trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Haʻalulu a me force feedback</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Kukui a me ka leo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Nā macro a me nā papa kuhikuhi</value></data>
 </root>

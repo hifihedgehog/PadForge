@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Ցուցադրել ողջոյնի շրջայցը</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Խցիկ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Մուտքի աղբիւր</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Աւելցնել սարք</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Կը դարբնէ</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեցէք մաքրօ մը ձախին, կամ սեղմեցէք «Աւելցնել»՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ՀՈՒՄ</value></data>
@@ -3660,6 +3662,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ցանկի բջիջի պատկերակը չճանչցուեցաւ ({0}), ուստի բջիջը կը պահէ իր գրաւոր պիտակը</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Պասի թրթռիչներ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ելք</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Լծակներ եւ ձգաններ</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Թրթռում եւ հպական արձագանգ</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Շարժում եւ հպում</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Լոյսեր եւ ձայն</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Մաքրօներ եւ ցանկեր</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Կարգաւորումներ, որոնք կը ձեւաւորեն այս խցիկին վիրթուալ կառավարիչի ելքը խաղերուն ղրկուելէն անմիջապէս առաջ՝ SOCD մաքրում միաժամանակ սեղմուած հակադիր ուղղութիւններու համար, եւ «Կառավարիչը արթուն պահել» այն խաղերուն համար, որոնք կառավարիչը կը լքեն մուկի կամ ստեղնաշարի մուտք տեսնելու պահուն։</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Պասի թրթռիչներ</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Խաղի թրթռումը եւ ուժային արձագանգը, որ այս վիրթուալ կառավարիչը կը ստանայ, կ'ուղղէ ձայնային ելքի մը՝ որպէս ցածր հաճախականութեան հնչիւններ պասի թրթռիչներու եւ ցածրաձայն բարձրախօսներու համար։</value></data>

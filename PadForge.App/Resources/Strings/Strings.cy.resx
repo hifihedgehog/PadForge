@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Dangos y Daith Groeso</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dyfais</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Mewnbwn gan</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ychwanegu Dyfais</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Gofannu</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Dewiswch facro ar y chwith, neu pwyswch Ychwanegu i greu un.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>CRAI</value></data>
@@ -3692,6 +3694,12 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ni chydnabuwyd eicon cell y ddewislen ({0}), felly mae'r gell yn cadw ei label testun</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Allbwn</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botymau</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ffyn a Sbardunau</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Dirgryniad ac Adborth</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Symudiad a Chyffwrdd</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Goleuo a Sain</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros a Dewislenni</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Gosodiadau sy'n siapio allbwn rheolydd rhithwir y slot hwn ychydig cyn iddo gael ei anfon i gemau: glanhau SOCD ar gyfer cyfeiriadau gwrthgyferbyniol a wasgir gyda'i gilydd, a Cadw'r rheolydd yn effro ar gyfer gemau sy'n gollwng y rheolydd cyn gynted ag y gwelant fewnbwn llygoden neu fysellfwrdd.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Yn llwybro dirgryniad ac adborth grym y gêm y mae'r rheolydd rhithwir hwn yn eu derbyn i allbwn sain fel tonau amledd isel ar gyfer siglwyr bas ac isseinyddion.</value></data>

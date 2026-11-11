@@ -287,6 +287,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Onyesha ziara ya kukaribisha</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Nafasi</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Kifaa</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Chanzo cha ingizo</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeza kifaa</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Inaunda</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro upande wa kushoto, au bonyeza Ongeza ili kuunda mpya.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Baridi</value></data>
@@ -3637,6 +3639,12 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikoni ya seli ya menyu haikutambuliwa ({0}), kwa hivyo seli inabaki na lebo yake ya maandishi</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Towe</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Vitufe</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Vijiti na Vichochezi</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Mtetemo na Mrejesho</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mwendo na Mguso</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Taa na Sauti</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro na Menyu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Mipangilio inayounda towe la kidhibiti pepe cha nafasi hii kabla ya kutumwa kwa michezo: usafishaji wa SOCD kwa mielekeo kinzani inayobonyezwa pamoja, na Weka Kidhibiti Kikiwa Macho kwa michezo inayoacha kidhibiti mara inapoona ingizo la kipanya au kibodi.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Huelekeza mtetemo wa mchezo na force feedback ambayo kidhibiti pepe hiki hupokea kwenye towe la sauti kama toni za masafa ya chini kwa bass shakers na subwoofer.</value></data>

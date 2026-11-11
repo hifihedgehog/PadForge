@@ -130,6 +130,8 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Tendakuéra</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Tenda</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mba'e'oka</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Omboguata</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Embojoapy mba'e'oka</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Mbojoaju</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Mbotove</value></data>
@@ -1083,4 +1085,10 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Emondo ambue hendápe</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Emboja'o mando kuéra PadForge ndive ambue PC-pe.</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Joaju jey, puerto, identidad ñeñangareko, joaju direcciónpe</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Votõ kuéra</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palanca ha gatillo</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ryrýi ha force feedback</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Ñemongu'e ha ñepoko</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Tesape ha audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ha menúkuéra</value></data>
 </root>

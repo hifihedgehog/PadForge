@@ -1,24 +1,33 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Xunit;
 
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The pad page's first tier could not fit at the supported minimum window
-    /// width, and not only there. Measured with tools/rowmeasure against the
-    /// real controls, the real styles and the app font, worst locale:
+    /// The pad page's header has to fit at the supported minimum window
+    /// width in every language. Its first tier once could not. Measured
+    /// with tools/rowmeasure against the real controls, the
+    /// real styles and the app font, the scope label, the identity chip, the
+    /// preset chip and six tabs needed 1316.7 where the 900 minimum with the
+    /// navigation pane open (244 wide) left 648, so the right-docked tab
+    /// strip was handed a negative width and clipped away entirely.
     ///
-    /// <para>scope label 74.0 + identity chip 190.0 + preset chip 516.7 + six
-    /// tabs 528.0 = 1316.7. At the 900 minimum with the navigation pane open
-    /// (244 wide) the tier has 648. The left cluster alone takes 788.7, so the
-    /// right-docked tab strip was handed a negative width and clipped away
-    /// entirely. At the shipped default window of 1100 the tier has 848
-    /// against the same 1316.7, so the tabs were already losing width at the
-    /// size the app opens at.</para>
+    /// <para>The header that took the two tiers' place (#574) is measured
+    /// by the same tool. Its margin is 12 a side, so a line holds 632 at
+    /// that minimum. Worst language for each piece: the title 362.0, the
+    /// Preset chip 617.3 at its combo's cap and 237.3 without the combo,
+    /// the power button 388.0 with its state word whole, the six sections
+    /// on one line 1079.3, the widest single section 251.3. So the sections
+    /// wrap, the power button's word is capped, the title trims, and the
+    /// Preset chip's combo gives way. Nothing runs past the edge.</para>
     /// </summary>
     public class PadHeaderWidthTests
     {
+        private static readonly XNamespace X = "http://schemas.microsoft.com/winfx/2006/xaml";
+
         private static string RepoRoot()
         {
             var d = new DirectoryInfo(AppContext.BaseDirectory);
@@ -31,8 +40,11 @@ namespace PadForge.Tests
         private static string PadPage() => File.ReadAllText(Path.Combine(
             RepoRoot(), "PadForge.App", "Views", "PadPage.xaml"));
 
-        /// <summary>The tier wraps. A panel that cannot wrap gives the last
-        /// child whatever is left, which was nothing.</summary>
+        private static XElement Named(XDocument page, string name)
+            => Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Name") == name);
+
+        /// <summary>The header's lines wrap. A panel that cannot wrap gives
+        /// the last child whatever is left, which was nothing.</summary>
         [Fact]
         public void TheFirstTierWraps()
         {
@@ -40,6 +52,17 @@ namespace PadForge.Tests
 
             Assert.Contains("<WrapPanel Orientation=\"Horizontal\" VerticalAlignment=\"Center\">", xaml);
             Assert.DoesNotContain("<DockPanel LastChildFill=\"False\" VerticalAlignment=\"Center\">", xaml);
+
+            // The title's line and the device's line are each a WrapPanel in
+            // the first column of a two-column grid.
+            var page = XDocument.Parse(xaml);
+            foreach (string inLine in new[] { "PadTitle", "DrivenByLabel" })
+            {
+                var wrap = Named(page, inLine).Ancestors().First(a => a.Name.LocalName == "WrapPanel");
+                Assert.Equal("Horizontal", (string)wrap.Attribute("Orientation"));
+                Assert.Equal("Grid", wrap.Parent!.Name.LocalName);
+                Assert.Null(wrap.Attribute("Grid.Column"));
+            }
         }
 
         /// <summary>The tab strip is an ordinary wrapped child now. Left
@@ -51,11 +74,13 @@ namespace PadForge.Tests
             Assert.DoesNotContain("<StackPanel DockPanel.Dock=\"Right\" Orientation=\"Horizontal\">", PadPage());
         }
 
-        /// <summary>The tabs wrap among themselves. Measured with
-        /// tools/rowmeasure, the six tabs need 837 in Tamil against the 648 a
-        /// line holds at the 900 minimum with the navigation pane open, so on a
-        /// line of their own in a horizontal stack the last tabs ran past the
-        /// edge (#505).</summary>
+        /// <summary>The strips wrap among themselves. Measured with
+        /// tools/rowmeasure, the six sections need 1079 in Malayalam
+        /// against the 632 a line holds at the 900 minimum with the
+        /// navigation pane open, and English needs more than 632 too, so in
+        /// a horizontal stack the last sections would run past the edge, as
+        /// the last of the six tabs once did (#505). The part switch of
+        /// Buttons needs 375 in the worst language and wraps as well.</summary>
         [Fact]
         public void TheTabGroupWrapsItsTabs()
         {
@@ -65,7 +90,15 @@ namespace PadForge.Tests
             string before = xaml.Substring(0, firstTab);
             int wrap = before.LastIndexOf("<WrapPanel Orientation=\"Horizontal\">", StringComparison.Ordinal);
             int stack = before.LastIndexOf("<StackPanel", StringComparison.Ordinal);
-            Assert.True(wrap > stack, "the panel that holds the slot tabs must be a WrapPanel");
+            Assert.True(wrap > stack, "the panel that holds the parts of Buttons must be a WrapPanel");
+
+            var page = XDocument.Parse(xaml);
+            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabController", "TabOutput", "TabMacros", "TabMenus" })
+            {
+                var strip = Named(page, button).Parent!;
+                Assert.Equal("WrapPanel", strip.Name.LocalName);
+                Assert.Equal("Horizontal", (string)strip.Attribute("Orientation"));
+            }
         }
 
         /// <summary>The raw hat strip on the Devices page wraps. Measured
@@ -91,7 +124,70 @@ namespace PadForge.Tests
                 PadPage());
         }
 
-        /// <summary>The measurement harness carries the tier, so the next
+        /// <summary>The power button sits at the right of the title's line
+        /// and takes what it needs first, so its width is bounded: the state
+        /// word is capped at 196, which makes the button 254 at most and
+        /// leaves the title's column 378 at the minimum. Uncapped, "Virtual
+        /// controller failed" in Tamil made the button 388 and left the
+        /// title 244 of the 362 it needs.</summary>
+        [Fact]
+        public void ThePowerButtonsWordIsCapped()
+        {
+            var page = XDocument.Parse(PadPage());
+            var word = Named(page, "SlotStateWord");
+            Assert.Equal("196", (string)word.Attribute("MaxWidth"));
+            Assert.Equal("CharacterEllipsis", (string)word.Attribute("TextTrimming"));
+            var host = Named(page, "SlotPowerHost");
+            Assert.Equal("1", (string)host.Attribute("Grid.Column"));
+            var columns = host.Parent!.Element(host.Parent.Name.Namespace + "Grid.ColumnDefinitions")!.Elements().ToList();
+            Assert.Equal(new[] { "*", "Auto" }, columns.Select(c => (string)c.Attribute("Width")));
+        }
+
+        /// <summary>The title stays beside the type chip and ends in an
+        /// ellipsis when its line is shorter than it. A DockPanel hands the
+        /// title the width the chip leaves. A horizontal stack would hand it
+        /// all it asks for, and the WrapPanel would then clip it.</summary>
+        [Fact]
+        public void TheTitleTrimsBesideItsChip()
+        {
+            var page = XDocument.Parse(PadPage());
+            var title = Named(page, "PadTitle");
+            Assert.Equal("CharacterEllipsis", (string)title.Attribute("TextTrimming"));
+            Assert.Equal("DockPanel", title.Parent!.Name.LocalName);
+            Assert.Same(title, title.Parent.Elements().Last());
+            Assert.Null(title.Parent.Attribute("LastChildFill"));
+            var chip = title.Parent.Elements().First();
+            Assert.Equal("Left", chip.Attributes().Single(a => a.Name.LocalName == "DockPanel.Dock").Value);
+            Assert.Equal("34", (string)chip.Attribute("Width"));
+        }
+
+        /// <summary>The Preset chip is a grid whose middle column holds the
+        /// combo, so on a short line the combo narrows and the reset beside
+        /// it stays in view. In a horizontal stack the combo took up to its
+        /// 380 cap whatever the line held: 617 for the whole chip in
+        /// Swahili, against a column of 378.</summary>
+        [Fact]
+        public void ThePresetChipsComboGivesWay()
+        {
+            var page = XDocument.Parse(PadPage());
+            var chip = Named(page, "HMaestroProfileBar");
+            var grid = Assert.Single(chip.Elements());
+            Assert.Equal("Grid", grid.Name.LocalName);
+            var columns = grid.Element(grid.Name.Namespace + "Grid.ColumnDefinitions")!.Elements().ToList();
+            Assert.Equal(new[] { "Auto", "*", "Auto" }, columns.Select(c => (string)c.Attribute("Width")));
+            foreach (string combo in new[] { "HMaestroProfileCombo", "KbmSurfacesCombo" })
+            {
+                var box = Named(page, combo);
+                Assert.Same(grid, box.Parent);
+                Assert.Equal("1", (string)box.Attribute("Grid.Column"));
+                Assert.Equal("380", (string)box.Attribute("MaxWidth"));
+            }
+            var resets = grid.Elements().Where(e => e.Name.LocalName == "SettingResetButton").ToList();
+            Assert.Equal(2, resets.Count);
+            Assert.All(resets, r => Assert.Equal("2", (string)r.Attribute("Grid.Column")));
+        }
+
+        /// <summary>The measurement harness carries the header, so the next
         /// change to it can be measured rather than estimated.</summary>
         [Fact]
         public void TheHarnessMeasuresTheTier()
@@ -100,10 +196,16 @@ namespace PadForge.Tests
                 RepoRoot(), "tools", "rowmeasure", "Program.cs"));
 
             Assert.Contains("BuildPadHeader();", prog);
-            Assert.Contains("hdr-scope", prog);
-            Assert.Contains("hdr-identity", prog);
-            Assert.Contains("hdr-tab-part", prog);
-            Assert.Contains("Pad page first tier", prog);
+            Assert.Contains("hdr-title", prog);
+            Assert.Contains("hdr-preset", prog);
+            Assert.Contains("hdr-preset-floor", prog);
+            Assert.Contains("hdr-power", prog);
+            Assert.Contains("hdr-section-part", prog);
+            Assert.Contains("hdr-parts-buttons", prog);
+            Assert.Contains("Pad page header", prog);
+            // The cap the page gives the state word is the one the harness
+            // reports against.
+            Assert.Contains("const double wordCap = 196,", prog);
         }
     }
 }

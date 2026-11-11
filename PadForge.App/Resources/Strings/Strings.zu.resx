@@ -215,6 +215,8 @@
   <data name="Tour_Cards_Title" xml:space="preserve"><value>Izilawuli ezibonakalayo</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Isikhala</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Idivayisi</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Engeza idivayisi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Buka kuqala</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Okwengeziwe</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Imbobo</value></data>
@@ -1940,6 +1942,12 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Ama-overlay</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>I-overlay yokushintsha iphrofayela</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Okukhiphayo</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Izinkinobho</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Izinduku namathrigha</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ukudlidliza nempendulo</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Ukunyakaza nokuthinta</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Ukukhanyisa nomsindo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Ama-macro namamenyu</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Ukudlidliza kuya emsindweni</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Setha kabusha ukudlidliza kuya emsindweni</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Idivayisi yokukhipha</value></data>

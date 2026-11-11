@@ -702,4 +702,5 @@
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Ahoɔden B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Berɛ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nkekaho</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Kanea ne Nnyegyeɛ</value></data>
 </root>

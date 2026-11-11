@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Rādīt iepazīšanās ekskursiju</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slots</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ierīce</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Ievade no</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Pievienot ierīci</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kalšana</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Atlasiet makrosu kreisajā pusē vai nospiediet „Pievienot”, lai to izveidotu.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>JĒLDATI</value></data>
@@ -3889,6 +3891,12 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>izvēlnes šūnas ikona netika atpazīta ({0}), tāpēc šūnai paliek teksta nosaukums</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Basu vibratori</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izvade</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Pogas</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sviras un mēlītes</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrācija un atgriezeniskā saite</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Kustība un skāriens</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Apgaismojums un audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrosi un izvēlnes</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Iestatījumi, kas veido šī slota virtuālā kontrollera izvadi tieši pirms tās nosūtīšanas spēlēm: SOCD apstrāde vienlaikus nospiestiem pretējiem virzieniem un „Uzturēt kontrolleri aktīvu” spēlēm, kas atsakās no kontrollera, tiklīdz konstatē peles vai tastatūras ievadi.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Basu vibratori</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Novirza šī virtuālā kontrollera saņemto spēles vibrāciju un spēka atgriezenisko saiti uz audio izvadi kā zemfrekvences toņus basu vibratoriem un zemfrekvenču skaļruņiem.</value></data>

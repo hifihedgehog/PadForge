@@ -126,6 +126,8 @@
   <!-- ═══ Dashboard ═══ -->
   <data name="FirstRun_Done" xml:space="preserve"><value>Tukusqa</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Kamachiq</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Dispositivota yapay</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} puertota huk programa llamk'achishan, DSX hina. Chay programata wisq'ay, utaq huk puertota akllay.</value></data>
@@ -1424,4 +1426,10 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Puertokuna, hunt'a velocidad, kikinchasqa formatokuna</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Llank'achiy</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botonkuna</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palancakuna &amp; Gatillokuna</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibración &amp; Háptica</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Kuyuy &amp; Llamiy</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>K'anchaykuna &amp; Audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrokuna &amp; Menúkuna</value></data>
 </root>

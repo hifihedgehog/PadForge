@@ -3161,6 +3161,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Sélectionnez une macro à gauche, ou appuyez sur Ajouter pour en créer une.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Appareil</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Piloté par</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ajouter un appareil</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Aperçu</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Fonctions facultatives. Chacune reste discrète tant que vous ne l'activez pas.</value></data>
@@ -3827,6 +3829,12 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icône de case du menu non reconnue ({0}), la case conserve donc son libellé texte</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortie</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Boutons</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks et gâchettes</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrations et haptique</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvement et toucher</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Éclairage et audio</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros et menus</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Réglages qui façonnent la sortie de la manette virtuelle de cet emplacement juste avant son envoi aux jeux : nettoyage SOCD pour les directions opposées pressées ensemble, et maintien actif pour les jeux qui lâchent la manette dès qu'ils détectent la souris ou le clavier.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration et le retour de force de jeu reçus par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>

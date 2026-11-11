@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>స్వాగత టూర్ చూపించు</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>స్లాట్</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>పరికరం</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>ఇన్పుట్ మూలం</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>పరికరం జోడించు</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ఫోర్జింగ్</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ఎడమ వైపున మాక్రోను ఎంచుకోండి, లేదా కొత్తది సృష్టించడానికి జోడించు నొక్కండి.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>మెను సెల్ ఐకాన్ గుర్తించబడలేదు ({0}), కాబట్టి సెల్ తన పాఠ్య లేబుల్ను ఉంచుతుంది</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>అవుట్పుట్</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>బటన్లు</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>స్టిక్లు &amp; ట్రిగ్గర్లు</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>వైబ్రేషన్ &amp; హాప్టిక్స్</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>మోషన్ &amp; టచ్</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>లైటింగ్ &amp; ఆడియో</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>మాక్రోలు &amp; మెనూలు</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>ఈ స్లాట్ వర్చువల్ కంట్రోలర్ అవుట్పుట్ గేమ్లకు పంపబడటానికి ముందు దాన్ని తీర్చిదిద్దే సెట్టింగులు: ఒకేసారి నొక్కిన వ్యతిరేక దిశలకు SOCD శుభ్రపరచడం, మౌస్ లేదా కీబోర్డ్ ఇన్పుట్ చూడగానే కంట్రోలర్ను వదిలేసే గేమ్ల కోసం కంట్రోలర్ను మేల్కొని ఉంచడం.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ అందుకునే గేమ్ రంబుల్, ఫోర్స్ ఫీడ్బ్యాక్ను బాస్ షేకర్లు, సబ్వూఫర్ల కోసం తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా ఆడియో అవుట్పుట్కు పంపుతుంది.</value></data>

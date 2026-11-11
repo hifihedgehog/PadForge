@@ -3161,6 +3161,8 @@
   <data name="Instr_Raw" xml:space="preserve"><value>原始</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>在左侧选择一个宏，或点击“添加”新建一个。</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>设备</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>输入来源</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>添加设备</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>预览</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>附加功能</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>可选功能。每一项在你开启之前都不会打扰你。</value></data>
@@ -3827,6 +3829,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>输出</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>按键</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>摇杆与扳机</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>震动与触觉</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>体感与触控</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>灯光与音频</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>宏与菜单</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>在发送给游戏之前对该槽位虚拟控制器输出进行整形的设置：SOCD 清理用于处理同时按下的相反方向，保持控制器活跃用于应对一检测到鼠标或键盘输入就放弃控制器的游戏。</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>

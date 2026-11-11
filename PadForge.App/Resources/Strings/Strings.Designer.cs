@@ -385,6 +385,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_ShowTour => Get("Settings_ShowTour");
     public string Dashboard_Slot => Get("Dashboard_Slot");
     public string Pad_ScopeDevice => Get("Pad_ScopeDevice");
+    public string Pad_DrivenBy => Get("Pad_DrivenBy");
+    public string Pad_AddDevice => Get("Pad_AddDevice");
     public string Engine_Forging => Get("Engine_Forging");
     public string Macro_EmptyHint => Get("Macro_EmptyHint");
     public string Instr_Raw => Get("Instr_Raw");
@@ -4093,6 +4095,12 @@ public class Strings : INotifyPropertyChanged
     // Bass Shakers tab (issue #236, rumble to audio)
     public string Pad_Tab_BassShakers => Get("Pad_Tab_BassShakers");
     public string Pad_Tab_Output => Get("Pad_Tab_Output");
+    public string Pad_Section_Buttons => Get("Pad_Section_Buttons");
+    public string Pad_Section_Sticks => Get("Pad_Section_Sticks");
+    public string Pad_Section_Rumble => Get("Pad_Section_Rumble");
+    public string Pad_Section_Motion => Get("Pad_Section_Motion");
+    public string Pad_Section_Lights => Get("Pad_Section_Lights");
+    public string Pad_Section_Macros => Get("Pad_Section_Macros");
     public string Pad_Output_Subtitle => Get("Pad_Output_Subtitle");
     public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
     public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");

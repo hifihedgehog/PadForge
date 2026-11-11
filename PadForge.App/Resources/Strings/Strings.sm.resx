@@ -1139,4 +1139,9 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Faʻaali menu, layer ma suiga o profile a o e taʻalo.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sui mo DSX.exe</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Faʻaaogā</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick ma Trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Gatete ma Lagona</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Gaioiga ma Paʻi</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Moli ma Leo</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro ma Menu</value></data>
 </root>

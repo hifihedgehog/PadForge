@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Hiện chuyến tham quan chào mừng</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Khe</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Thiết bị</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Nguồn đầu vào</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Thêm thiết bị</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Đang rèn</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chọn một macro ở bên trái, hoặc nhấn Thêm để tạo mới.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>THÔ</value></data>
@@ -3889,6 +3891,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>không nhận ra biểu tượng của ô menu ({0}), nên ô giữ nhãn văn bản</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Đầu ra</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nút bấm</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Cần analog và cò</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rung và xúc giác</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Chuyển động và cảm ứng</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Đèn và âm thanh</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro và menu</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Các thiết lập định hình đầu ra tay cầm ảo của khe này ngay trước khi nó được gửi đến trò chơi: xử lý SOCD cho các hướng đối nhau được nhấn cùng lúc, và Giữ tay cầm thức cho những trò chơi bỏ tay cầm ngay khi thấy đầu vào chuột hoặc bàn phím.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Định tuyến rung và phản hồi lực của trò chơi mà tay cầm ảo này nhận được sang một đầu ra âm thanh dưới dạng các âm tần số thấp cho bộ rung bass và loa siêu trầm.</value></data>

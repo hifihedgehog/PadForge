@@ -136,6 +136,8 @@
   <data name="FirstRun_Next" xml:space="preserve"><value>Tom ntej</value></data>
   <data name="FirstRun_Done" xml:space="preserve"><value>Tiav lawm</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Khoom siv</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Tswj los ntawm</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Ntxiv khoom siv</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Lwm qhov program, xws li DSX, tab tom siv port {0}. Kaw nws los yog xaiv lwm lub port.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Txuas</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Txuas lawm</value></data>
@@ -1357,4 +1359,10 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Saum lub vijtsam</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej thiab kev hloov profile thaum koj ua si.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Cov khawm</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Cov stick thiab trigger</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kev co thiab force feedback</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Kev txav thiab kev kov</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Teeb thiab suab</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Cov macro thiab menu</value></data>
 </root>

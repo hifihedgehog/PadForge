@@ -26,6 +26,15 @@ namespace PadForge.Views
         /// </summary>
         public event EventHandler<string> ControllerElementRecordRequested;
 
+        /// <summary>Raised by the header's power button (#574) with the
+        /// slot's index and the state to give it, as the flame on the
+        /// slot's Home card raises its own.</summary>
+        public event EventHandler<(int SlotIndex, bool IsEnabled)> SlotEnabledToggled;
+
+        /// <summary>Raised by the header's Add Device button (#574). The
+        /// Devices page is where a device is given to a controller.</summary>
+        public event EventHandler AddDeviceRequested;
+
         private PadViewModel _currentPadVm;
 
         /// <summary>RecorderService reference set by MainWindow at startup
@@ -91,10 +100,21 @@ namespace PadForge.Views
             DataContextChanged += OnDataContextChanged;
         }
 
+        /// <summary>Hands the header the view model that knows each slot's
+        /// state (#574). The power button, its state word and the stage
+        /// chips read <see cref="DashboardViewModel.SelectedSlotSummary"/>,
+        /// the summary the slot's Home card shows, so the page and the card
+        /// never disagree. MainWindow calls it once at startup.</summary>
+        public void BindSlotState(DashboardViewModel dashboard)
+        {
+            SlotPowerHost.DataContext = dashboard;
+            StageChips.DataContext = dashboard;
+        }
+
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyViewMode();
-            SyncTabStripSelection();
+            SyncSectionSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
@@ -273,7 +293,7 @@ namespace PadForge.Views
                 _currentMidiConfig.PropertyChanged += OnMidiConfigBarPropertyChanged;
 
             ApplyViewMode();
-            SyncTabStripSelection();
+            SyncSectionSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
@@ -907,61 +927,118 @@ namespace PadForge.Views
             // trigger axes. Force Feedback and tabs 6 through 14 follow the
             // selected device's capabilities above. Bass Shakers and Output
             // are slot-type gates (PadViewModel.RumbleAudioTabVisible and
-            // OutputTabVisible). Kick the user back to the Controller tab if
-            // they're sitting on a now-hidden one.
-            if (DataContext is PadViewModel vm)
+            // OutputTabVisible).
+            //
+            // Each of tabs 3 to 14 is a group of a section now (#574), and
+            // the lines above gave every group its visibility. A section
+            // whose groups are all hidden leaves the header, and a selection
+            // on a hidden tab moves. One rule covers every tab, where a chain
+            // of one test per tab stood. The chain stated each rule a second
+            // time and fell out of step with the lines above four times
+            // (VR's Sticks and Triggers, a raw device's Triggers and Force
+            // Feedback, Lighting, the Wheel), which left the user on a
+            // collapsed tab or threw them off a shown one.
+            SyncSectionVisibility();
+            EnsureSelectedTabAvailable();
+        }
+
+        /// <summary>The group that holds a tab's content in its section, null
+        /// for the tabs that are parts of Buttons and of Macros and
+        /// Menus.</summary>
+        private FrameworkElement GroupOfTab(int tab) => tab switch
+        {
+            3 => TabSticks,
+            4 => TabTriggers,
+            5 => TabForceFeedback,
+            6 => TabAdaptiveTriggers,
+            7 => TabLighting,
+            8 => TabGyro,
+            9 => TabImpulseTriggers,
+            10 => TabTouchpad,
+            11 => TabWheel,
+            PadViewModel.AudioTabIndex => TabAudio,
+            13 => TabPointer,
+            14 => TabMouse,
+            PadViewModel.BassShakersTabIndex => TabBassShakers,
+            _ => null,
+        };
+
+        /// <summary>The scrolling column of a stacked section, null for
+        /// Buttons and for Macros and Menus.</summary>
+        private ScrollViewer ScrollOfSection(int section) => section switch
+        {
+            PadViewModel.SticksSection => SticksSectionScroll,
+            PadViewModel.RumbleSection => RumbleSectionScroll,
+            PadViewModel.MotionSection => MotionSectionScroll,
+            PadViewModel.LightsSection => LightsSectionScroll,
+            _ => null,
+        };
+
+        /// <summary>The header button of a section.</summary>
+        private RadioButton ButtonOfSection(int section) => section switch
+        {
+            PadViewModel.ButtonsSection => SectionButtons,
+            PadViewModel.SticksSection => SectionSticks,
+            PadViewModel.RumbleSection => SectionRumble,
+            PadViewModel.MotionSection => SectionMotion,
+            PadViewModel.LightsSection => SectionLights,
+            PadViewModel.MacrosSection => SectionMacros,
+            _ => null,
+        };
+
+        /// <summary>Whether a tab has anything to show for this controller
+        /// and its selected device. Preview, Mappings, Macros and Menus
+        /// always do. Output and Bass Shakers follow the view model's
+        /// slot-type gates, read from the view model: this runs from the
+        /// gate's own change notice, which can come before the binding moves
+        /// the element. Every other tab is a group whose visibility
+        /// SyncTabVisibility set.</summary>
+        private bool IsTabAvailable(int tab)
+        {
+            if (DataContext is not PadViewModel vm) return tab == 0;
+            if (tab == PadViewModel.OutputTabIndex) return vm.OutputTabVisible;
+            if (tab == PadViewModel.BassShakersTabIndex) return vm.RumbleAudioTabVisible;
+            if (PadViewModel.SectionOfTab(tab) < 0) return false;
+            var group = GroupOfTab(tab);
+            return group == null || group.Visibility == Visibility.Visible;
+        }
+
+        /// <summary>The first tab of a section that has something to show,
+        /// in page order, or -1 when the section is empty for this
+        /// controller.</summary>
+        private int FirstAvailableTab(int section)
+        {
+            foreach (int tab in PadViewModel.TabsOfSection(section))
+                if (IsTabAvailable(tab))
+                    return tab;
+            return -1;
+        }
+
+        /// <summary>Shows a section's header button while the section has
+        /// something for this controller and its selected device. A
+        /// controller with no gyro, touchpad or pointer has no Motion and
+        /// Touch, as it had none of those three tabs.</summary>
+        private void SyncSectionVisibility()
+        {
+            if (SectionButtons == null) return;
+            for (int section = 0; section < PadViewModel.SectionCount; section++)
             {
-                // VR hides Sticks and Triggers the same way MIDI does, and was
-                // the one collapsing predicate with no eviction here, so a user
-                // sitting on either when the slot became VR was left on a
-                // collapsed tab with no selected button.
-                if ((isMidi || isVrSlot || outputOnlyRow) && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
-                    vm.SelectedConfigTab = 0;
-                else if (isKbm && vm.SelectedConfigTab == 4)
-                    vm.SelectedConfigTab = 0;
-                // Triggers (4) also hides for a raw device with no trigger
-                // axes, and Force Feedback (5) hides whenever the device has
-                // none. Both were absent from this chain, so a user sitting
-                // on either when the device changed was left on a collapsed
-                // tab with no selected button (round 34).
-                else if (vm.SelectedConfigTab == 4 && rawNoTriggers)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 5 && !hasForceFeedback)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 6 && !hasAdaptiveTriggers)
-                    vm.SelectedConfigTab = 0;
-                // Must match TabLighting's visibility predicate exactly
-                // (hasLightbar || hasGuideLed || hasPeripheralLighting).
-                // Testing only hasLightbar bounced guide-LED-only devices
-                // (Xbox pads, the 2015 Steam Controller, Switch) straight off
-                // a tab that was visible and populated for them.
-                else if (vm.SelectedConfigTab == 7 && !(hasLightbar || hasGuideLed || hasPeripheralLighting))
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 8 && !hasGyro)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 9 && !hasImpulseTriggers)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 10 && !hasTouchpad)
-                    vm.SelectedConfigTab = 0;
-                // Same shape as the Lighting tab above: TabWheel shows on
-                // (hasWheel || hasGenericWheel), so a generic SDL force-feedback
-                // wheel could not stay on its own tab to reach the auto-center
-                // slider.
-                else if (vm.SelectedConfigTab == 11 && !(hasWheel || hasGenericWheel))
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 13 && !hasIrPointer) // 13 = Pointer
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == 14 && !hasMouse) // 14 = Mouse (#200)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == PadViewModel.BassShakersTabIndex
-                         && !vm.RumbleAudioTabVisible) // 16 = Bass Shakers (#236)
-                    vm.SelectedConfigTab = 0;
-                else if (vm.SelectedConfigTab == PadViewModel.OutputTabIndex
-                         && !vm.OutputTabVisible) // 17 = Output (#270 follow-up)
-                    vm.SelectedConfigTab = 0;
+                var button = ButtonOfSection(section);
+                if (button != null)
+                    button.Visibility = FirstAvailableTab(section) >= 0 ? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+
+        /// <summary>Moves a selection off a tab that has nothing to show: to
+        /// the first tab of the same section that has, so the user stays in
+        /// the section they were reading, else to the preview.</summary>
+        private void EnsureSelectedTabAvailable()
+        {
+            if (DataContext is not PadViewModel vm) return;
+            int tab = vm.SelectedConfigTab;
+            if (IsTabAvailable(tab)) return;
+            int fallback = FirstAvailableTab(PadViewModel.SectionOfTab(tab));
+            GoToTab(vm, fallback >= 0 ? fallback : 0, keepScroll: true);
         }
 
         private void BindActiveModelView()
@@ -1166,80 +1243,180 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Custom tab strip
+        //  Sections and their parts (#574)
         // ─────────────────────────────────────────────
 
+        /// <summary>A part button of Buttons or of Macros and Menus. Its
+        /// Tag is the tab's number.</summary>
         private void TabBtn_Click(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton rb && TryGetTagIndex(rb, out int idx) && DataContext is PadViewModel vm)
-                vm.SelectedConfigTab = idx;
+                GoToTab(vm, idx, keepScroll: true);
         }
 
-        private void SyncTabStripSelection()
+        /// <summary>A section button of the header. Its Tag is the section's
+        /// number.</summary>
+        private void SectionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton rb && TryGetTagIndex(rb, out int section))
+                GoToSection(section);
+        }
+
+        /// <summary>True while this page sets the strips' checks itself, so
+        /// the two Checked handlers below leave those alone.</summary>
+        private bool _syncingStrip;
+
+        /// <summary>A section button checked by something other than a click.
+        /// UI Automation's Select, which a screen reader's activate gesture
+        /// and a UI script both use on a radio button, sets the check and
+        /// raises no Click, so a section selected that way showed its
+        /// underline over another section's content. A click raises this
+        /// first and Click after it, and going to the section twice changes
+        /// nothing the second time.</summary>
+        private void SectionBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_syncingStrip) return;
+            if (sender is RadioButton rb && TryGetTagIndex(rb, out int section))
+                GoToSection(section);
+        }
+
+        /// <summary>The same for a part button of Buttons or of Macros and
+        /// Menus.</summary>
+        private void TabBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_syncingStrip) return;
+            if (sender is RadioButton rb && TryGetTagIndex(rb, out int idx) && DataContext is PadViewModel vm)
+                GoToTab(vm, idx, keepScroll: true);
+        }
+
+        /// <summary>Opens a section where it was left: on the part it last
+        /// showed, and at the place its column was scrolled to. A part or
+        /// group that has since gone gives way to the section's first one
+        /// that shows.</summary>
+        private void GoToSection(int section)
         {
             if (DataContext is not PadViewModel vm) return;
-            int selected = vm.SelectedConfigTab;
+            int tab = vm.LastTabOfSection(section);
+            if (PadViewModel.SectionOfTab(tab) != section || !IsTabAvailable(tab))
+                tab = FirstAvailableTab(section);
+            if (tab >= 0)
+                GoToTab(vm, tab, keepScroll: true);
+        }
 
-            // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
-            // Mappings, tags 0-2, plus Menus at tag 15, #9 B-17, and Bass
-            // Shakers at tag 16, #236) and tier 2 (device tabs, tags 3-14).
-            // Exactly one tab is checked across
-            // BOTH tiers (#175 item 18): a checked tier-1 pivot over an
-            // active device tab lied about what's on screen. The idle tier
-            // drops to hover affordance (both tab styles keep their
-            // IsMouseOver triggers when unchecked). Navigation rides Click
-            // (not Checked), so re-clicking a still-checked tab still
-            // switches back.
-            bool slotTier = selected <= 2 || selected == 15 || selected == 16 || selected == 17;
-            foreach (var rb in FindVisualChildren<RadioButton>(this))
+        /// <summary>True while a tab is being selected from this page, so
+        /// the change handler leaves a stacked section's column where the
+        /// user scrolled it. A tab selected from anywhere else is a jump to
+        /// that group, and its heading is brought to the top.</summary>
+        private bool _keepScroll;
+
+        private void GoToTab(PadViewModel vm, int tab, bool keepScroll)
+        {
+            bool was = _keepScroll;
+            _keepScroll = keepScroll;
+            try { vm.SelectedConfigTab = tab; }
+            finally { _keepScroll = was; }
+            // A click on the part or section already selected changes no
+            // value, and WPF has still moved the check to what was clicked
+            // or left it there. Either way the strip is put right.
+            SyncSectionSelection();
+        }
+
+        /// <summary>Checks the header button of the section that holds the
+        /// selected tab, and in Buttons and in Macros and Menus the button of
+        /// the part that shows. The buttons are named, never searched for in
+        /// the visual tree: a part switch is in the tree only while its
+        /// section shows, and its checks must be right when it comes back.</summary>
+        private void SyncSectionSelection()
+        {
+            if (DataContext is not PadViewModel vm || SectionButtons == null) return;
+            bool was = _syncingStrip;
+            _syncingStrip = true;
+            try
             {
-                if (!TryGetTagIndex(rb, out int idx)) continue;
-                if (rb.GroupName == "PadTab")
-                    rb.IsChecked = slotTier && idx == selected;
-                else if (rb.GroupName == "PadTabDevice")
-                    rb.IsChecked = !slotTier && idx == selected;
+                int section = vm.SelectedSection;
+                for (int s = 0; s < PadViewModel.SectionCount; s++)
+                {
+                    var button = ButtonOfSection(s);
+                    if (button != null) button.IsChecked = s == section;
+                }
+                int buttonsPart = vm.ButtonsPartIndex;
+                TabController.IsChecked = buttonsPart == 0;
+                TabMappings.IsChecked = buttonsPart == 1;
+                TabOutput.IsChecked = buttonsPart == 2;
+                int macrosPart = vm.MacrosPartIndex;
+                TabMacros.IsChecked = macrosPart == 0;
+                TabMenus.IsChecked = macrosPart == 1;
             }
+            finally { _syncingStrip = was; }
+        }
+
+        /// <summary>Brings a group's heading to the top of its section's
+        /// column. Waits for layout first: the header-less TabControl
+        /// template only realizes the selected section's content, so a
+        /// section that has just been selected has no positions yet.</summary>
+        private void ScrollGroupToTop(int tab)
+        {
+            var group = GroupOfTab(tab);
+            var scroll = ScrollOfSection(PadViewModel.SectionOfTab(tab));
+            if (group == null || scroll == null) return;
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+            {
+                if (!group.IsVisible || scroll.Content is not Visual column || !group.IsDescendantOf(column))
+                    return;
+                double top = group.TransformToAncestor(column).Transform(new Point(0, 0)).Y;
+                scroll.ScrollToVerticalOffset(Math.Max(0, top));
+            });
         }
 
         /// <summary>The config TabControl uses a header-less template, so WPF's
         /// built-in Ctrl+Tab handling in <c>TabControl.OnKeyDown</c> throws
         /// "Value cannot be null (container)" out of <c>IndexFromContainer</c>
         /// (discussion #140). Catch Ctrl+Tab here in the tunneling PreviewKeyDown,
-        /// before that bubbling handler runs, swallow it, and cycle the visible
-        /// tab strip ourselves instead.</summary>
+        /// before that bubbling handler runs, swallow it, and cycle the
+        /// sections ourselves instead. The handler is on the outer control,
+        /// and a tunneling event reaches it before the part switch's own
+        /// TabControl inside a section.</summary>
         private void ConfigTabControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Tab || (Keyboard.Modifiers & ModifierKeys.Control) == 0)
                 return;
             e.Handled = true;
-            try { CycleConfigTab((Keyboard.Modifiers & ModifierKeys.Shift) != 0); }
+            try { CycleSection((Keyboard.Modifiers & ModifierKeys.Shift) != 0); }
             catch { /* tab navigation must never crash the app */ }
         }
 
-        /// <summary>Move to the next (or previous) visible config tab, wrapping.
-        /// Cycles the visible tab-strip RadioButtons so it matches the tabs shown
-        /// for this controller type / device. Setting <c>SelectedConfigTab</c>
-        /// updates the content and, via PropertyChanged, the strip highlight.</summary>
-        private void CycleConfigTab(bool backward)
+        /// <summary>Move to the next (or previous) section the header shows
+        /// for this controller type and device, wrapping. Each opens where
+        /// it was left, as a click on its button does.</summary>
+        private void CycleSection(bool backward)
         {
             if (DataContext is not PadViewModel vm) return;
-            var tags = new List<int>();
-            foreach (var rb in FindVisualChildren<RadioButton>(this))
-                // Both tiers. The device-tier tabs sit in their own radio group
-                // ("PadTabDevice") so WPF never auto-unchecks across tiers, and
-                // filtering on the base group alone made Ctrl+Tab skip every
-                // one of them: the strip showed tabs the keyboard could not
-                // reach.
-                if ((rb.GroupName == "PadTab" || rb.GroupName == "PadTabDevice")
-                    && rb.IsVisible && rb.IsEnabled && TryGetTagIndex(rb, out int idx))
-                    tags.Add(idx);
-            if (tags.Count == 0) return;
-            int cur = tags.IndexOf(vm.SelectedConfigTab);
+            var sections = new List<int>();
+            for (int s = 0; s < PadViewModel.SectionCount; s++)
+                if (FirstAvailableTab(s) >= 0)
+                    sections.Add(s);
+            if (sections.Count == 0) return;
+            int cur = sections.IndexOf(vm.SelectedSection);
             int next = cur < 0
                 ? 0
-                : (((cur + (backward ? -1 : 1)) % tags.Count) + tags.Count) % tags.Count;
-            vm.SelectedConfigTab = tags[next];
+                : (((cur + (backward ? -1 : 1)) % sections.Count) + sections.Count) % sections.Count;
+            GoToSection(sections[next]);
         }
+
+        /// <summary>The header's power button: turn the slot on or off.</summary>
+        private void SlotPower_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            // Invert GROUND TRUTH, not the summary, as the Home card's flame
+            // does: the summary can be a refresh behind a controller
+            // shortcut that flipped the slot while the window was inactive.
+            SlotEnabledToggled?.Invoke(this,
+                (vm.PadIndex, !PadForge.Common.Input.SettingsManager.SlotEnabled[vm.PadIndex]));
+        }
+
+        /// <summary>The header's Add Device button.</summary>
+        private void AddDevice_Click(object sender, RoutedEventArgs e)
+            => AddDeviceRequested?.Invoke(this, EventArgs.Empty);
 
         private static bool TryGetTagIndex(FrameworkElement el, out int index)
         {
@@ -1247,18 +1424,6 @@ namespace PadForge.Views
             if (el.Tag is string s && int.TryParse(s, out i)) { index = i; return true; }
             index = -1;
             return false;
-        }
-
-        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
-        {
-            int count = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T t) yield return t;
-                foreach (var desc in FindVisualChildren<T>(child))
-                    yield return desc;
-            }
         }
 
         // ─────────────────────────────────────────────
@@ -1299,15 +1464,17 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
 
         /// <summary>Drives the four voice-activity meters and the endpoint
-        /// status line while the Bass Shakers tab is on screen. Runs ONLY
-        /// while the page is loaded AND tab 16 is selected; every other
-        /// state stops the timer so a background page costs nothing.</summary>
+        /// status line while the Bass Shakers group is on the page. Runs
+        /// ONLY while the page is loaded, the slot has the group AND its
+        /// section, Rumble and Haptics, is selected. Every other state stops
+        /// the timer so a background page costs nothing.</summary>
         private System.Windows.Threading.DispatcherTimer _bassShakerMeterTimer;
 
         private void SyncBassShakerMeterTimer()
         {
             bool wanted = IsLoaded && _currentPadVm != null
-                && _currentPadVm.SelectedConfigTab == PadViewModel.BassShakersTabIndex;
+                && _currentPadVm.RumbleAudioTabVisible
+                && _currentPadVm.IsTabShown(PadViewModel.BassShakersTabIndex);
             if (!wanted)
             {
                 _bassShakerMeterTimer?.Stop();
@@ -2937,8 +3104,45 @@ namespace PadForge.Views
         {
             if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
             {
-                SyncTabStripSelection();
-                // Bass Shakers meters (#236) run only while tab 16 shows.
+                SyncSectionSelection();
+                // Bass Shakers meters (#236) run only while their group
+                // shows.
+                SyncBassShakerMeterTimer();
+                // A tab selected from outside this page is a jump to its
+                // group. One selected here keeps the column where it was.
+                if (!_keepScroll && sender is PadViewModel tabVm)
+                    ScrollGroupToTop(tabVm.SelectedConfigTab);
+            }
+            else if (e.PropertyName == nameof(PadViewModel.SelectedSection))
+            {
+                // Another section came on the page. The Audio and Bass
+                // Shakers groups read their device lists when they come on,
+                // as each did when its tab was selected. The view model
+                // does that for a jump to the group by its number, and the
+                // page does it here when the section opens on another of
+                // its groups and the slot or device has this one.
+                if (sender is PadViewModel sectionVm)
+                {
+                    int tab = sectionVm.SelectedConfigTab;
+                    if (sectionVm.SelectedSection == PadViewModel.LightsSection
+                        && tab != PadViewModel.AudioTabIndex
+                        && IsTabAvailable(PadViewModel.AudioTabIndex))
+                        sectionVm.RefreshAudioGroup();
+                    else if (sectionVm.SelectedSection == PadViewModel.RumbleSection
+                             && tab != PadViewModel.BassShakersTabIndex
+                             && IsTabAvailable(PadViewModel.BassShakersTabIndex))
+                        sectionVm.RefreshBassShakersGroup();
+                }
+            }
+            else if (e.PropertyName == nameof(PadViewModel.RumbleAudioTabVisible)
+                     || e.PropertyName == nameof(PadViewModel.OutputTabVisible))
+            {
+                // Slot-type gates of a group and of a part. The section's
+                // button follows, a selection on the tab moves within its
+                // section before the view model's own fallback to the
+                // preview runs, and the meters stop with their group.
+                SyncSectionVisibility();
+                EnsureSelectedTabAvailable();
                 SyncBassShakerMeterTimer();
             }
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
@@ -2994,7 +3198,8 @@ namespace PadForge.Views
                 // PlayStation slot type doesn't fire OutputType change, so
                 // SyncTabVisibility wouldn't run otherwise — leaving the
                 // tabs stale until app relaunch or slot switch. Re-sync
-                // here so the tab strip follows profile changes too.
+                // here so the groups and the header's sections follow
+                // profile changes too.
                 SyncTabVisibility();
 
                 // Which preview to draw depends on the PROFILE now, not

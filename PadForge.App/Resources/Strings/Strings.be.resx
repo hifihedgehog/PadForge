@@ -302,6 +302,8 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Паказаць вітальную экскурсію</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Прылада</value></data>
+  <data name="Pad_DrivenBy" xml:space="preserve"><value>Крыніца ўводу</value></data>
+  <data name="Pad_AddDevice" xml:space="preserve"><value>Дадаць прыладу</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Каванне</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Выберыце макрас злева або націсніце «Дадаць», каб стварыць новы.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СЫРЫЯ</value></data>
@@ -3889,6 +3891,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячэйкі меню не распазнаны ({0}), таму ячэйка пакідае тэкставы подпіс</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Басавыя шэйкеры</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Выхад</value></data>
+  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Кнопкі</value></data>
+  <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стыкі і куркі</value></data>
+  <data name="Pad_Section_Rumble" xml:space="preserve"><value>Вібрацыя і водгук</value></data>
+  <data name="Pad_Section_Motion" xml:space="preserve"><value>Рух і сэнсар</value></data>
+  <data name="Pad_Section_Lights" xml:space="preserve"><value>Святло і гук</value></data>
+  <data name="Pad_Section_Macros" xml:space="preserve"><value>Макрасы і меню</value></data>
   <data name="Pad_Output_Subtitle" xml:space="preserve"><value>Налады, якія фармуюць выхад віртуальнага кантролера гэтага слота непасрэдна перад адпраўкай у гульні: ачыстка SOCD для супрацьлеглых напрамкаў, націснутых разам, і «Трымаць кантролер актыўным» для гульняў, што адкідаюць кантролер, як толькі бачаць увод мышы або клавіятуры.</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басавыя шэйкеры</value></data>
   <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Накіроўвае вібрацыю гульні і сілавую зваротную сувязь, якія атрымлівае гэты віртуальны кантролер, на аўдыявыхад у выглядзе нізкачашчынных тонаў для басавых шэйкераў і сабвуфераў.</value></data>

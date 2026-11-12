@@ -96,7 +96,7 @@ namespace PadForge.Controls
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            if (e.Handled || Keyboard.Modifiers != ModifierKeys.None || e.OriginalSource != this)
+            if (e.Handled || HeldModifiers.Now != ModifierKeys.None || e.OriginalSource != this)
                 return;
             if (e.Key is Key.Enter or Key.Space)
             {

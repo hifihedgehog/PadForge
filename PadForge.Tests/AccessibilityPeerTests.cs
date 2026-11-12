@@ -46,16 +46,17 @@ namespace PadForge.Tests
         private static AutomationPeer PeerOf(UIElement element)
             => UIElementAutomationPeer.CreatePeerForElement(element);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool SetKeyboardState(byte[] keys);
-
-        /// <summary>Clears this thread's key state before keys are sent.
-        /// ClickBorder and CurveEditor read Keyboard.Modifiers, which is this
-        /// thread's state (GetKeyState), and while it holds a modifier both
-        /// leave Enter, Space and the arrows to the page. Both key tests failed
-        /// together that way in one full run on 2026-11-07. SetKeyboardState
-        /// writes this thread's table only and sends nothing to Windows.</summary>
-        private static void NoKeysHeld() => Assert.True(SetKeyboardState(new byte[256]));
+        /// <summary>Says that no modifier key is held while keys are sent,
+        /// on this test's thread, until the returned object is disposed.
+        /// ClickBorder and CurveEditor leave Enter, Space and the arrows to
+        /// the page while a modifier is held, and they ask HeldModifiers
+        /// which are. The keyboard's own answer is the state of the real
+        /// keys. Both key tests failed together through it in one full run
+        /// on 2026-11-07. Clearing this thread's key table before the keys
+        /// were sent was the first fix, and the ClickBorder test failed the
+        /// same way once more on 2026-11-11.</summary>
+        private static IDisposable NoKeysHeld()
+            => PadForge.Controls.HeldModifiers.Say(System.Windows.Input.ModifierKeys.None);
 
         [Fact]
         public void ASegmentButton_ReadsAsARadioButton_SelectedWhenItsChoiceIsCurrent() => RunSta(() =>
@@ -379,7 +380,7 @@ namespace PadForge.Tests
             try
             {
                 window.Show();
-                NoKeysHeld();
+                using var noKeys = NoKeysHeld();
                 var source = PresentationSource.FromVisual(release);
                 System.Windows.Input.KeyEventArgs KeyDown(System.Windows.Input.Key key)
                     => new(System.Windows.Input.Keyboard.PrimaryDevice, source, 0, key) { RoutedEvent = System.Windows.Input.Keyboard.KeyDownEvent };
@@ -400,6 +401,16 @@ namespace PadForge.Tests
                 release.RaiseEvent(other);
                 Assert.Equal(2, clicks);
                 Assert.False(other.Handled);
+
+                // With a modifier held the key is the page's: no click, and
+                // the key is not handled.
+                using (PadForge.Controls.HeldModifiers.Say(System.Windows.Input.ModifierKeys.Control))
+                {
+                    var withControl = KeyDown(System.Windows.Input.Key.Enter);
+                    release.RaiseEvent(withControl);
+                    Assert.Equal(2, clicks);
+                    Assert.False(withControl.Handled);
+                }
 
                 // A key press that rose from inside it belongs to what it
                 // rose from.
@@ -606,7 +617,7 @@ namespace PadForge.Tests
                     PadForge.Resources.Strings.Strings.Instance.CurveEditor_PointFormat, n, count, x, y);
                 Assert.Equal(Point(1, 3, 0, 0), value.Value);
 
-                NoKeysHeld();
+                using var noKeys = NoKeysHeld();
                 var source = PresentationSource.FromVisual(editor);
                 System.Windows.Input.KeyEventArgs Key(System.Windows.Input.Key key)
                     => new(System.Windows.Input.Keyboard.PrimaryDevice, source, 0, key) { RoutedEvent = System.Windows.Input.Keyboard.KeyDownEvent };

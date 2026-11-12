@@ -797,7 +797,7 @@ namespace PadForge.Controls
                 return;
             string before = PointText;
             double[] lut = CurveLut.GetOrBuild(CurveString);
-            KeyResult result = ApplyKey(_controlPoints, ref _keyIndex, Keyboard.Modifiers, e.Key,
+            KeyResult result = ApplyKey(_controlPoints, ref _keyIndex, HeldModifiers.Now, e.Key,
                 x => lut != null ? CurveLut.Lookup(lut, x) : x);
             if (result == KeyResult.Ignored)
                 return;

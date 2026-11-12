@@ -23,7 +23,7 @@ namespace PadForge.Views
     /// is on, a click records its row, and it flashes while the row records,
     /// as every other preview control does.
     /// </summary>
-    public sealed class TouchSensorStrip : UserControl
+    public sealed class TouchSensorStrip : UserControl, IPictureWithPick
     {
         /// <summary>The capacitive roles, in the order the capsules show.</summary>
         internal static readonly string[] Roles = { "LeftStickTouch", "RightStickTouch", "LeftGripTouch", "RightGripTouch" };
@@ -31,6 +31,9 @@ namespace PadForge.Views
         /// <summary>Raised with the role a capsule records, in the preview
         /// element grammar PadPage translates to the slot's raw row.</summary>
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the capsules were made again (#574).</summary>
+        public event EventHandler PickBoundsChanged;
 
         private static SolidColorBrush Frozen(byte a, byte r, byte g, byte b)
         {
@@ -201,6 +204,18 @@ namespace PadForge.Views
             }
             Visibility = _capsules.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
             UpdateFlash(_vm?.CurrentRecordingTarget);
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's capsule is drawn (#574), for the page's
+        /// ring on the picked control. A capsule's ends are round.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = true;
+            string role = RoleOf(target, _vm?.ProfileId);
+            return role != null && _capsules.TryGetValue(role, out var capsule)
+                && PicturePick.TryMap(capsule, this, PicturePick.OwnRect(capsule), out bounds);
         }
 
         /// <summary>One capsule's look: the flash while its row records, ember

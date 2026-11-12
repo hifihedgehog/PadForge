@@ -23,7 +23,7 @@ using PadForge.ViewModels;
 
 namespace PadForge.Views
 {
-    public partial class ControllerModelView : UserControl
+    public partial class ControllerModelView : UserControl, IPictureWithPick
     {
         // ─────────────────────────────────────────────
         //  Events
@@ -31,6 +31,19 @@ namespace PadForge.Views
 
         /// <summary>Raised when the user clicks a 3D model part to start recording a mapping.</summary>
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the model is drawn elsewhere in the view:
+        /// another model was loaded, or the camera or the model turned,
+        /// moved or changed size (#574).</summary>
+        public event EventHandler PickBoundsChanged;
+
+        // Control -> its shape, read once for each model: its points, and
+        // the triangles of the rest of the model that can stand in front of
+        // them. The ring on the picked control is the box of its points in
+        // view.
+        private readonly Dictionary<string, ControllerModelPickBox.Shape> _pickShapes = new(StringComparer.Ordinal);
+        // How the model was last put on the screen, to tell a change.
+        private Matrix3D _lastToScreen;
 
         // ─────────────────────────────────────────────
         //  State
@@ -358,6 +371,7 @@ namespace PadForge.Views
             // transform graphs for the view's lifetime.
             _stickTransforms3D.Clear();
             _stickParts.Clear();
+            _pickShapes.Clear();
             // The retained trigger angles key on the OUTGOING model the same
             // way, and they are passed by ref as the running state of the
             // smoothing. Left set, a switch carried the old model's pull angles
@@ -572,6 +586,7 @@ namespace PadForge.Views
             // catches up.
             // Iconic gate: IsVisible stays TRUE while minimized.
             if (!IsVisible || PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized) return;
+            TrackWhereTheModelIsDrawn();
             if (!_dirty || _vm == null || _currentModel == null)
                 return;
             _dirty = false;
@@ -1990,6 +2005,71 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Where a control is drawn (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The matrix that puts a point of the model on the
+        /// viewport: the model's own turn, size and lift, then the camera.
+        /// False while the viewport has no size.</summary>
+        private bool TryGetToScreen(out Matrix3D toScreen)
+        {
+            toScreen = Matrix3D.Identity;
+            var viewport = ModelViewPort.Viewport;
+            if (viewport == null || !(viewport.ActualWidth >= 1) || !(viewport.ActualHeight >= 1)
+                || viewport.Camera == null)
+                return false;
+            var placed = ModelVisual3D.Transform;
+            if (placed != null) toScreen = placed.Value;
+            toScreen.Append(Viewport3DHelper.GetTotalTransform(viewport));
+            return true;
+        }
+
+        /// <summary>Says when the model is drawn elsewhere, once for each
+        /// frame that moved it. Dragging and the wheel write the camera and
+        /// the model's angles directly, so nothing else reports them.</summary>
+        private void TrackWhereTheModelIsDrawn()
+        {
+            if (PickBoundsChanged == null || _currentModel == null) return;
+            if (!TryGetToScreen(out Matrix3D toScreen) || toScreen == _lastToScreen) return;
+            _lastToScreen = toScreen;
+            PickBoundsChanged.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn: the box that the
+        /// part of it in view covers, at rest (ControllerModelPickBox). Its
+        /// parts are the ones that flash while the target records, or the
+        /// part its label points at. A box about as wide as it is tall is
+        /// a round control's.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (string.IsNullOrEmpty(target) || _currentModel == null) return false;
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ArtRole(
+                    Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId));
+                if (string.IsNullOrEmpty(target)) return false;
+            }
+            var parts = ResolveFlashGroups(target);
+            if (parts == null || parts.Count == 0)
+            {
+                string named = target.EndsWith("Neg", StringComparison.Ordinal) ? target[..^3] : target;
+                var anchor = ResolveAnnotationAnchor(named);
+                if (anchor == null) return false;
+                parts = new List<Model3DGroup> { anchor };
+            }
+            if (!TryGetToScreen(out Matrix3D toScreen)) return false;
+
+            if (!_pickShapes.TryGetValue(target, out var shape))
+                _pickShapes[target] = shape = ControllerModelPickBox.Read(
+                    _currentModel.model3DGroup, parts, _currentModel.DefaultMaterials);
+            if (!ControllerModelPickBox.TryGetBox(shape, toScreen, out Rect drawn)) return false;
+            round = ControllerModelPickBox.IsRound(drawn);
+            return PicturePick.TryMap(ModelViewPort.Viewport, this, drawn, out bounds);
+        }
+
+        // ─────────────────────────────────────────────
         //  Map All flash animation
         // ─────────────────────────────────────────────
 
@@ -2252,6 +2332,7 @@ namespace PadForge.Views
             _currentModel = null;
             _stickTransforms3D.Clear();
             _stickParts.Clear();
+            _pickShapes.Clear();
             _vm = null;
         }
     }

@@ -14,13 +14,22 @@ using PadForge.ViewModels;
 
 namespace PadForge.Views
 {
-    public partial class ControllerModel2DView : UserControl
+    public partial class ControllerModel2DView : UserControl, IPictureWithPick
     {
         // ─────────────────────────────────────────────
         //  Events
         // ─────────────────────────────────────────────
 
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the model's art was laid out again, so a
+        /// control may be drawn elsewhere (#574).</summary>
+        public event EventHandler PickBoundsChanged;
+
+        // Control -> where the art draws it, in the canvas's pixels: the
+        // outline the layout traced for it where it has one, its box
+        // otherwise. The page rings the picked control there (#574).
+        private readonly Dictionary<string, Rect> _pickRects = new();
 
         // ─────────────────────────────────────────────
         //  State
@@ -241,6 +250,7 @@ namespace PadForge.Views
             _stickHighlights.Clear();
             _padClickTarget.Clear();
             _padAreas.Clear();
+            _pickRects.Clear();
             _hoverTarget = null;
 
             int baseW, baseH;
@@ -427,6 +437,11 @@ namespace PadForge.Views
                 // not the empty box around it).
                 if (!string.IsNullOrEmpty(ov.HitPath))
                     hitRect.Clip = BuildHitGeometry(ov.HitPath, ov.Width, ov.Height);
+                Rect drawn = hitRect.Clip is { } traced && !traced.Bounds.IsEmpty
+                    ? traced.Bounds
+                    : new Rect(0, 0, ov.Width, ov.Height);
+                drawn.Offset(ov.X, ov.Y);
+                _pickRects[ov.TargetName] = drawn;
                 Canvas.SetLeft(hitRect, ov.X);
                 Canvas.SetTop(hitRect, ov.Y);
                 Panel.SetZIndex(hitRect, 10);
@@ -527,6 +542,36 @@ namespace PadForge.Views
             // inline) so the Viewbox has re-measured the resized canvas
             // before anchors translate.
             QueueAnnotationRebuild();
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn (#574): the art that
+        /// flashes while the target records. A raw row names its art through
+        /// the wire table, a direction is its axis, and a stick's axes and
+        /// its button are the stick. A stick is round, and so is a button
+        /// whose art is about as wide as it is tall.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (string.IsNullOrEmpty(target) || _pickRects.Count == 0) return false;
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = NintendoPreviewMap.ArtRole(NintendoPreviewMap.ToPreview(target, _vm?.ProfileId));
+                if (string.IsNullOrEmpty(target)) return false;
+            }
+            if (target.EndsWith("Neg", StringComparison.Ordinal)) target = target[..^3];
+            string name = target;
+            if (!_pickRects.TryGetValue(name, out Rect drawn))
+            {
+                name = ResolveFlashTarget(target);
+                if (!_pickRects.TryGetValue(name, out drawn)) return false;
+            }
+            _elementTypes.TryGetValue(name, out var kind);
+            double shape = drawn.Width / drawn.Height;
+            round = kind == OverlayElementType.StickRing
+                || (kind == OverlayElementType.Button && shape > 0.8 && shape < 1.25);
+            return PicturePick.TryMap(ModelCanvas, this, drawn, out bounds);
         }
 
         /// <summary>The touchpad-click sprite each 2D asset folder ships, or

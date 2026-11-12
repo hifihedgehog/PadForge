@@ -39,10 +39,14 @@ namespace PadForge.Views
     /// the body (axis) from a tip band (click). No arrows; arrows are the
     /// schematic view's grammar, not the drawn packs'.</para>
     /// </summary>
-    public partial class VRPreviewView : UserControl
+    public partial class VRPreviewView : UserControl, IPictureWithPick
     {
         /// <summary>Raised when the user clicks an element to map it.</summary>
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised once the two hands are drawn: before that the
+        /// picture has no control to ring.</summary>
+        public event EventHandler PickBoundsChanged;
 
         // Base art size; every element position below is in these pixels.
         private const double ArtW = 975, ArtH = 726;
@@ -176,6 +180,28 @@ namespace PadForge.Views
                 AddElement(el, DisplayName(el.Target, st));
 
             _built = true;
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn (#574): the element
+        /// that flashes while the target records. A touch ring is its
+        /// button's, a click its trigger's or grip's, and a stick's four
+        /// directions and its click are the stick. Buttons and sticks are
+        /// round. A trigger and a grip are not.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (!_built || string.IsNullOrEmpty(target)) return false;
+            string key = ElementKeyFor(target);
+            foreach (var el in Elements)
+            {
+                if (el.Target != key) continue;
+                round = !key.EndsWith("Trigger", StringComparison.Ordinal)
+                     && !key.EndsWith("Grip", StringComparison.Ordinal);
+                return PicturePick.TryMap(VrCanvas, this, new Rect(el.X, el.Y, el.W, el.H), out bounds);
+            }
+            return false;
         }
 
         /// <summary>The movable stick-cap layer: above the base (and its

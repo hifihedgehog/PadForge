@@ -549,6 +549,14 @@ namespace PadForge.ViewModels
         /// <summary>Whether this mapping supports a negative direction (stick axes only).</summary>
         public bool HasNegDirection => NegSettingName != null;
 
+        /// <summary>Which of several like controls the row belongs to, on a
+        /// slot that has more than one to a category: a custom Extended
+        /// slot's sticks past the second share the right stick's category,
+        /// and its POVs the D-pad's. Null where a category is one control,
+        /// which is every other row. The rows under the picture, and the
+        /// ring on it, are the picked control's own (#574).</summary>
+        public string Control { get; init; }
+
         // ─────────────────────────────────────────────
         //  Source (physical input)
         // ─────────────────────────────────────────────

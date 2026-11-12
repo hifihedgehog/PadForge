@@ -16,9 +16,13 @@ namespace PadForge.Views
     /// MIDI preview showing a piano keyboard for notes and vertical sliders for CCs.
     /// Dynamically generated from MidiSlotConfig (StartNote, NoteCount, StartCc, CcCount).
     /// </summary>
-    public partial class MidiPreviewView : UserControl
+    public partial class MidiPreviewView : UserControl, IPictureWithPick
     {
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the sliders and the keys were laid out
+        /// again (#574).</summary>
+        public event EventHandler PickBoundsChanged;
 
         private PadViewModel _vm;
 
@@ -299,6 +303,23 @@ namespace PadForge.Views
             _layoutBuilt = true;
             _lastTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             _dirty = true;
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn (#574): a control's
+        /// slider, or a note's key. Neither is round.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (!_layoutBuilt || string.IsNullOrEmpty(target)) return false;
+            Shape part = null;
+            foreach (var w in _ccWidgets)
+                if (target == $"MidiCC{w.CcIndex}" || target == $"MidiCC{w.CcIndex}Neg") { part = w.Background; break; }
+            if (part == null)
+                foreach (var w in _keyWidgets)
+                    if (target == w.FlashName) { part = w.Rect; break; }
+            return part != null && PicturePick.TryMap(part, this, PicturePick.OwnRect(part), out bounds);
         }
 
         // ─────────────────────────────────────────────

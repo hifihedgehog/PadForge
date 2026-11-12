@@ -1521,7 +1521,8 @@ namespace PadForge.ViewModels
                     string pickedTarget = picked?.TargetSettingName;
                     MappingCategory? family = picked != null && IsFamilyCategory(picked.Category)
                         ? picked.Category : null;
-                    rowView.Filter = o => RowMatchesPick(o as MappingItem, pickedTarget, family)
+                    string control = picked?.Control;
+                    rowView.Filter = o => RowMatchesPick(o as MappingItem, pickedTarget, family, control)
                                        && RowMatchesSurface(o as MappingItem, "All", kbmCfg);
                 }
                 else if (string.IsNullOrEmpty(_mappingInputSearch) && !surfaceNarrows)
@@ -3460,12 +3461,15 @@ namespace PadForge.ViewModels
                 return;
             }
 
-            // Stick axes (paired)
+            // Stick axes (paired). Every stick past the second shares the
+            // right stick's category, and every POV below the D-pad's, so
+            // each row says which control it is: a pick on the picture is
+            // one control's rows (#574).
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"RawAxis{stickAxisX[i]}", cat, $"RawAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"RawAxis{stickAxisY[i]}", cat, $"RawAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"RawAxis{stickAxisX[i]}", cat, $"RawAxis{stickAxisX[i]}Neg") { Control = "Stick" + i });
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"RawAxis{stickAxisY[i]}", cat, $"RawAxis{stickAxisY[i]}Neg") { Control = "Stick" + i });
             }
 
             // Trigger axes (unpaired)
@@ -3483,10 +3487,10 @@ namespace PadForge.ViewModels
             for (int i = 0; i < cfg.PovCount; i++)
             {
                 string label = cfg.PovCount == 1 ? Strings.Instance.Extended_DPad : string.Format(Strings.Instance.Extended_POV_Format, i + 1);
-                Mappings.Add(new MappingItem($"{label} Up", $"RawPov{i}Up", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Down", $"RawPov{i}Down", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Left", $"RawPov{i}Left", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Right", $"RawPov{i}Right", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Up", $"RawPov{i}Up", MappingCategory.DPad) { Control = "Pov" + i });
+                Mappings.Add(new MappingItem($"{label} Down", $"RawPov{i}Down", MappingCategory.DPad) { Control = "Pov" + i });
+                Mappings.Add(new MappingItem($"{label} Left", $"RawPov{i}Left", MappingCategory.DPad) { Control = "Pov" + i });
+                Mappings.Add(new MappingItem($"{label} Right", $"RawPov{i}Right", MappingCategory.DPad) { Control = "Pov" + i });
             }
 
         }

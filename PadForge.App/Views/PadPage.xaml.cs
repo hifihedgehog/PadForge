@@ -103,6 +103,10 @@ namespace PadForge.Views
             Loaded += PadPage_Loaded;
             Unloaded += PadPage_Unloaded;
             DataContextChanged += OnDataContextChanged;
+            // Each picture says when a control it draws has moved, and the
+            // ring on the picked control moves with it (#574).
+            foreach (var picture in PicturesWithPick())
+                picture.PickBoundsChanged += OnPickBoundsChanged;
         }
 
         /// <summary>Hands the header the view model that knows each slot's
@@ -122,6 +126,105 @@ namespace PadForge.Views
         public void BindSteamVrState(SettingsViewModel settings)
         {
             SteamVrStateHost.DataContext = settings;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The ring on the picked control (#574)
+        // ─────────────────────────────────────────────
+
+        private bool _pickRingQueued;
+
+        /// <summary>The pictures that can say where a control is drawn. The
+        /// touch sensors' capsules come first: they lie over the model, and
+        /// a capsule is what was clicked.</summary>
+        private IEnumerable<IPictureWithPick> PicturesWithPick()
+        {
+            yield return TouchSensors;
+            yield return ControllerModel3D;
+            yield return ControllerModel2D;
+            yield return ControllerSchematic;
+            yield return MidiPreview;
+            yield return KBMPreview;
+            yield return VRPreview;
+        }
+
+        private void OnPickBoundsChanged(object sender, EventArgs e) => QueuePickRingSync();
+
+        private void PictureHost_SizeChanged(object sender, SizeChangedEventArgs e) => QueuePickRingSync();
+
+        /// <summary>Places the ring once the layout has settled. A pick, a
+        /// change of view and a picture drawn again all change the layout
+        /// first, and where a control is drawn is read from the layout. One
+        /// placement serves every request made before it runs.</summary>
+        private void QueuePickRingSync()
+        {
+            if (_pickRingQueued) return;
+            _pickRingQueued = true;
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, new Action(() =>
+            {
+                _pickRingQueued = false;
+                SyncPickRing();
+            }));
+        }
+
+        /// <summary>Puts the ring on the picked control, or takes it away:
+        /// with nothing picked, in the list, or on a picture that does not
+        /// draw the control. A D-pad's four directions and a stick's axes
+        /// are ringed as the one control they are, and a ring around
+        /// several parts is round.</summary>
+        private void SyncPickRing()
+        {
+            Rect? at = null;
+            bool round = false;
+            if (DataContext is PadViewModel vm && vm.IsButtonsPictureView)
+            {
+                int parts = 0;
+                foreach (string target in vm.PickedTargets())
+                {
+                    if (!TryFindOnPicture(target, out Rect part, out bool partRound)) continue;
+                    if (at is not Rect so) { at = part; round = partRound; parts = 1; }
+                    else if (part != so) { at = Rect.Union(so, part); parts++; }
+                }
+                if (parts > 1) round = true;
+            }
+            var place = at is Rect control
+                ? PicturePick.Place(control, round, new Size(PickRingLayer.ActualWidth, PickRingLayer.ActualHeight))
+                : default;
+            if (!(place.Line.Width > 0))
+            {
+                PickRing.Visibility = Visibility.Collapsed;
+                PickRingBand.Visibility = Visibility.Collapsed;
+                return;
+            }
+            PutPickRing(PickRing, place.Line, place.LineRadius);
+            PutPickRing(PickRingBand, place.Band, place.BandRadius);
+        }
+
+        /// <summary>Where the picture that shows draws a target's control,
+        /// in the ring layer's coordinates.</summary>
+        private bool TryFindOnPicture(string target, out Rect drawn, out bool round)
+        {
+            drawn = default;
+            round = false;
+            foreach (var picture in PicturesWithPick())
+            {
+                var view = (FrameworkElement)picture;
+                if (view.Visibility != Visibility.Visible) continue;
+                if (!picture.TryGetPickBounds(target, out Rect own, out round)) continue;
+                drawn = view.TransformToVisual(PickRingLayer).TransformBounds(own);
+                return true;
+            }
+            return false;
+        }
+
+        private static void PutPickRing(Border ring, Rect at, double radius)
+        {
+            Canvas.SetLeft(ring, at.X);
+            Canvas.SetTop(ring, at.Y);
+            ring.Width = at.Width;
+            ring.Height = at.Height;
+            ring.CornerRadius = new CornerRadius(radius);
+            ring.Visibility = Visibility.Visible;
         }
 
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
@@ -279,6 +382,8 @@ namespace PadForge.Views
                 _currentPadVm.DeleteTouchpadGestureRequested += OnDeleteTouchpadGestureRequested;
             }
             ResubscribeSelectedDeviceInfo();
+            // Another slot has another pick, or none.
+            QueuePickRingSync();
 
             // Track the active slot's ExtendedSlotConfig so we can refresh the
             // Extended config bar when a profile switch mutates its fields
@@ -479,6 +584,9 @@ namespace PadForge.Views
 
             SyncTabVisibility();
             BindActiveModelView();
+            // Another picture shows, which draws the picked control
+            // elsewhere or not at all.
+            QueuePickRingSync();
         }
 
         /// <summary>The Falcon card (#521): shown for a Falcon row. It holds
@@ -3495,6 +3603,12 @@ namespace PadForge.Views
             else if (e.PropertyName == nameof(PadViewModel.PickedTarget))
             {
                 SyncPickedRowSelection();
+            }
+            else if (e.PropertyName == nameof(PadViewModel.PickedRow))
+            {
+                // The pick, the view or the rows changed: the ring goes to
+                // the picked control, or goes away with it.
+                QueuePickRingSync();
             }
             else if (e.PropertyName == nameof(PadViewModel.RumbleAudioTabVisible)
                      || e.PropertyName == nameof(PadViewModel.OutputTabVisible))

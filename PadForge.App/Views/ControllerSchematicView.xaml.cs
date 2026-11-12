@@ -17,9 +17,12 @@ namespace PadForge.Views
     /// Programmatic schematic view for custom Extended controllers.
     /// Displays stick position circles, trigger bars, POV compasses, and button grids.
     /// </summary>
-    public partial class ControllerSchematicView : UserControl
+    public partial class ControllerSchematicView : UserControl, IPictureWithPick
     {
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the controls were laid out again (#574).</summary>
+        public event EventHandler PickBoundsChanged;
 
         private PadViewModel _vm;
         private bool _dirty;
@@ -258,6 +261,33 @@ namespace PadForge.Views
             SchematicCanvas.Height = totalHeight;
             _layoutBuilt = true;
             _dirty = true;
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn (#574): the widget
+        /// that flashes while the target records. A stick's two axes are
+        /// its circle, a trigger its bar, a button its dot, and a POV's
+        /// four directions its circle. All but a trigger's bar are
+        /// round.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (!_layoutBuilt || string.IsNullOrEmpty(target)) return false;
+            string axis = target.EndsWith("Neg", StringComparison.Ordinal) ? target[..^3] : target;
+            Shape part = null;
+            foreach (var w in _stickWidgets)
+                if (axis == $"RawAxis{w.AxisXIndex}" || axis == $"RawAxis{w.AxisYIndex}") { part = w.OuterCircle; round = true; break; }
+            if (part == null)
+                foreach (var w in _triggerWidgets)
+                    if (axis == $"RawAxis{w.AxisIndex}") { part = w.Background; break; }
+            if (part == null)
+                foreach (var w in _buttonWidgets)
+                    if (target == $"RawBtn{w.ButtonIndex}") { part = w.Circle; round = true; break; }
+            if (part == null)
+                foreach (var w in _povWidgets)
+                    if (target.StartsWith(w.FlashPrefix, StringComparison.Ordinal)) { part = w.Outer; round = true; break; }
+            return part != null && PicturePick.TryMap(part, this, PicturePick.OwnRect(part), out bounds);
         }
 
         // ─────────────────────────────────────────────

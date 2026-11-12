@@ -157,6 +157,18 @@ namespace PadForge.Tests
                         Step("drew " + file + ", first laid out in " + shown + " ms, " + GroupsMade(ground));
                     }
 
+                    // Where the ring on the picked control went, in the
+                    // ring layer's own coordinates.
+                    void Ring(string file)
+                    {
+                        var ring = (Border)page.FindName("PickRing");
+                        var layer = (Canvas)page.FindName("PickRingLayer");
+                        string at = ring.Visibility == Visibility.Visible
+                            ? FormattableString.Invariant($"at {Canvas.GetLeft(ring):0.#},{Canvas.GetTop(ring):0.#} size {ring.Width:0.#}x{ring.Height:0.#} radius {ring.CornerRadius.TopLeft:0.#} in a layer {layer.ActualWidth:0.#}x{layer.ActualHeight:0.#}")
+                            : "none";
+                        File.AppendAllText(Path.Combine(dir, "rings.txt"), file + ": " + at + Environment.NewLine);
+                    }
+
                     void Lookups(string file)
                     {
                         var lost = LostLookups(ground);
@@ -251,6 +263,57 @@ namespace PadForge.Tests
                         string picked = file.Replace(".png", "-picked.png");
                         Picture(picked, () => vm.PickedTarget = vm.Mappings.First().TargetSettingName, TallHeight / 2);
                         Lookups(picked);
+                        Ring(picked);
+                        // More picks of each kind of picture: a control of
+                        // several rows, a stick, a trigger, a key, a note.
+                        // The ring is on the whole control each time.
+                        var more = new List<string>();
+                        switch (type)
+                        {
+                            case PadForge.Engine.VirtualControllerType.Xbox:
+                                more.AddRange(new[] { "DPadUp", "LeftThumbAxisX", "LeftTrigger", "LeftShoulder" });
+                                break;
+                            case PadForge.Engine.VirtualControllerType.KeyboardMouse:
+                                more.AddRange(new[] { "KbmKey57", "KbmMouseX", "KbmScroll" });
+                                break;
+                            case PadForge.Engine.VirtualControllerType.Midi:
+                                more.Add("MidiNote0");
+                                break;
+                            case PadForge.Engine.VirtualControllerType.Extended:
+                                more.Add("RawBtn0");
+                                more.AddRange(vm.Mappings.Where(m => m.Category == MappingCategory.Triggers).Take(1).Select(m => m.TargetSettingName));
+                                more.AddRange(vm.Mappings.Where(m => m.Category == MappingCategory.DPad).Take(1).Select(m => m.TargetSettingName));
+                                break;
+                            case PadForge.Engine.VirtualControllerType.Vr:
+                                more.AddRange(new[] { "VrRTrigger", "VrLStickX", "VrRGripClick" });
+                                break;
+                        }
+                        foreach (string target in more)
+                        {
+                            string also = file.Replace(".png", "-picked-" + target.ToLowerInvariant() + ".png");
+                            Picture(also, () => vm.PickedTarget = target);
+                            Ring(also);
+                        }
+                        if (type == PadForge.Engine.VirtualControllerType.Xbox)
+                        {
+                            // The 2D model. The page shows it by a setting of
+                            // the window's, which a page in no window lacks,
+                            // so it is shown by hand and put back after.
+                            var model3D = (UIElement)page.FindName("ControllerModel3D");
+                            var model2D = (ControllerModel2DView)page.FindName("ControllerModel2D");
+                            model3D.Visibility = Visibility.Collapsed;
+                            model2D.Visibility = Visibility.Visible;
+                            model2D.Bind(vm);
+                            foreach (string target in new[] { "ButtonA", "DPadUp", "LeftThumbAxisX", "LeftTrigger", "LeftShoulder" })
+                            {
+                                string flat = file.Replace(".png", "-2d-picked-" + target.ToLowerInvariant() + ".png");
+                                Picture(flat, () => vm.PickedTarget = target);
+                                Ring(flat);
+                            }
+                            model2D.Unbind();
+                            model2D.Visibility = Visibility.Collapsed;
+                            model3D.Visibility = Visibility.Visible;
+                        }
                         vm.PickedTarget = null;
                         if (type == PadForge.Engine.VirtualControllerType.Midi)
                         {

@@ -287,6 +287,21 @@ namespace PadForge.ViewModels
         /// options stand at the bar's end. Null with nothing picked.</summary>
         public MappingItem PickedRow => RowOfTarget(_pickedTarget);
 
+        /// <summary>The targets of the controls the pick names: the picked
+        /// row's, and with a D-pad direction or a stick's axis picked, those
+        /// of every row of that control, which are the rows the bar under
+        /// the picture holds. The picture rings what they draw.</summary>
+        internal IReadOnlyList<string> PickedTargets()
+        {
+            var picked = PickedRow;
+            if (picked == null) return Array.Empty<string>();
+            if (!IsFamilyCategory(picked.Category)) return new[] { picked.TargetSettingName };
+            var targets = new List<string>();
+            foreach (var m in Mappings)
+                if (SameControl(m, picked)) targets.Add(m.TargetSettingName);
+            return targets;
+        }
+
         /// <summary>The bar's heading: the picked control's name. On a
         /// gamepad a stick's axes and the D-pad's directions are one
         /// control, named as the list's group is. Any other control is its
@@ -359,8 +374,15 @@ namespace PadForge.ViewModels
             var rowB = RowOfTarget(b);
             if (rowA == null || rowB == null) return false;
             if (ReferenceEquals(rowA, rowB)) return true;
-            return IsFamilyCategory(rowA.Category) && rowA.Category == rowB.Category;
+            return SameControl(rowA, rowB);
         }
+
+        /// <summary>Whether two rows are of one control on the picture:
+        /// both of one family, and of the same control where the slot has
+        /// several to the category.</summary>
+        internal static bool SameControl(MappingItem a, MappingItem b)
+            => a != null && b != null && IsFamilyCategory(a.Category) && a.Category == b.Category
+               && string.Equals(a.Control, b.Control, StringComparison.Ordinal);
 
         /// <summary>The row a target names, by its own name or by its
         /// opposite direction's, or null.</summary>
@@ -383,14 +405,17 @@ namespace PadForge.ViewModels
             => category is MappingCategory.DPad or MappingCategory.LeftStick or MappingCategory.RightStick;
 
         /// <summary>Whether a row belongs under the picture for a pick: the
-        /// picked row itself, or any row of the picked row's family. Names
-        /// and a category are compared, never row objects, so the answer
-        /// holds after the rows are rebuilt.</summary>
-        internal static bool RowMatchesPick(MappingItem m, string pickedTarget, MappingCategory? family)
+        /// picked row itself, or any row of the picked row's control, which
+        /// is its family and, on a slot with several controls to a
+        /// category, the one it names. Names and a category are compared,
+        /// never row objects, so the answer holds after the rows are
+        /// rebuilt.</summary>
+        internal static bool RowMatchesPick(MappingItem m, string pickedTarget, MappingCategory? family, string control)
         {
             if (m == null || string.IsNullOrEmpty(pickedTarget)) return false;
             if (string.Equals(m.TargetSettingName, pickedTarget, StringComparison.OrdinalIgnoreCase)) return true;
-            return family.HasValue && m.Category == family.Value;
+            return family.HasValue && m.Category == family.Value
+                && string.Equals(m.Control, control, StringComparison.Ordinal);
         }
 
         // ─────────────────────────────────────────────

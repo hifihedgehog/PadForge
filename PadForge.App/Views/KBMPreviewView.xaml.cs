@@ -14,9 +14,13 @@ using PadForge.ViewModels;
 
 namespace PadForge.Views
 {
-    public partial class KBMPreviewView : UserControl
+    public partial class KBMPreviewView : UserControl, IPictureWithPick
     {
         public event EventHandler<string> ControllerElementRecordRequested;
+
+        /// <summary>Raised when the keyboard and the mouse were drawn again,
+        /// or one of them came or went (#574).</summary>
+        public event EventHandler PickBoundsChanged;
 
         private PadViewModel _vm;
         private bool _dirty;
@@ -228,6 +232,38 @@ namespace PadForge.Views
             ApplySurfaceVisibility();
             _layoutBuilt = true;
             _dirty = true;
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>Where a target's control is drawn (#574): the key, the
+        /// mouse button, the wheel for its click and for scrolling, or the
+        /// movement circle for the pointer's four directions. Only the
+        /// movement circle is round. A control on a half the slot does not
+        /// drive, or one the slot's mouse lacks, is not drawn.</summary>
+        public bool TryGetPickBounds(string target, out Rect bounds, out bool round)
+        {
+            bounds = default;
+            round = false;
+            if (!_layoutBuilt || string.IsNullOrEmpty(target)) return false;
+            FrameworkElement part = null;
+            foreach (var w in _keyWidgets)
+                if (w.TargetName == target) { part = w.Border; break; }
+            if (part == null && _parts != null)
+            {
+                part = target switch
+                {
+                    "KbmMBtn0" => _parts.LmbHit,
+                    "KbmMBtn1" => _parts.RmbHit,
+                    "KbmMBtn2" => _parts.WheelHit,
+                    "KbmMBtn3" => _parts.X1Hit,
+                    "KbmMBtn4" => _parts.X2Hit,
+                    "KbmScroll" or "KbmScrollNeg" or "KbmScrollH" or "KbmScrollHNeg" => _parts.WheelHit,
+                    _ => target.StartsWith("KbmMouse", StringComparison.Ordinal) ? _moveCircle : null,
+                };
+                round = ReferenceEquals(part, _moveCircle) && part != null;
+            }
+            return part != null && PicturePick.Shows(part, this)
+                && PicturePick.TryMap(part, this, PicturePick.OwnRect(part), out bounds);
         }
 
         /// <summary>Shows only the halves the slot actually drives (#408).
@@ -264,6 +300,7 @@ namespace PadForge.Views
             MouseRow.Height = mouse
                 ? new GridLength(keyboard ? 2 : 1, GridUnitType.Star)
                 : new GridLength(0);
+            PickBoundsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         // ─────────────────────────────────────────────

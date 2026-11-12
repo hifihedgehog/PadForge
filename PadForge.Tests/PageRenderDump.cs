@@ -313,6 +313,47 @@ namespace PadForge.Tests
                             model2D.Unbind();
                             model2D.Visibility = Visibility.Collapsed;
                             model3D.Visibility = Visibility.Visible;
+
+                            // The options of a picked control, open under the
+                            // bar: each kind of source, a source added and
+                            // each kind of that, the trim settings and the
+                            // formula, and the list's open row.
+                            vm.PickedTarget = "LeftTrigger";
+                            vm.IsPickedOptionsOpen = true;
+                            var row = vm.PickedRow;
+                            var toOptions = (ScrollViewer)page.FindName("ButtonsScroll");
+                            // The options stand under the picture and the
+                            // bar, so the page is scrolled to its foot.
+                            void Options(string name, Action show)
+                            {
+                                string shot = "opts-" + name + ".png";
+                                Picture(shot, () =>
+                                {
+                                    show();
+                                    Lay(ground, Height);
+                                    toOptions.ScrollToEnd();
+                                });
+                                Lookups(shot);
+                            }
+                            Options("direct", () => { });
+                            foreach (string kind in new[] { "Toggle", "RapidTrigger", "Incremental", "InvertOnHold", "Ramped" })
+                                Options("kind-" + kind.ToLowerInvariant(), () => row.PrimaryKindSource.Kind = kind);
+                            row.PrimaryKindSource.Kind = "Direct";
+                            row.AddExtraSourceCommand.Execute(null);
+                            var added = row.ExtraSources[row.ExtraSources.Count - 1];
+                            Options("added", () => { });
+                            foreach (string kind in new[] { "RapidTrigger", "Incremental", "InvertOnHold", "Ramped" })
+                                Options("added-" + kind.ToLowerInvariant(), () => added.Kind = kind);
+                            added.Kind = "Direct";
+                            Options("trim", () => row.CombineMode = "StickTrim");
+                            Options("formula", () => row.CombineMode = "Custom");
+                            row.CombineMode = "";
+                            Picture("opts-list-added.png", () => vm.SelectedConfigTab = PadViewModel.MappingsTabIndex, TallHeight / 2);
+                            Lookups("opts-list-added.png");
+                            vm.SelectedConfigTab = 0;
+                            row.ExtraSources.Remove(added);
+                            vm.IsPickedOptionsOpen = false;
+                            toOptions.ScrollToHome();
                         }
                         vm.PickedTarget = null;
                         if (type == PadForge.Engine.VirtualControllerType.Midi)
@@ -343,6 +384,27 @@ namespace PadForge.Tests
                             buttonsScroll.ScrollToHome();
                         }
                     }
+
+                    // A motion row's options, on a slot whose type has motion
+                    // rows: by speed, and by angle.
+                    vm.OutputType = PadForge.Engine.VirtualControllerType.PlayStation;
+                    vm.SelectedConfigTab = 0;
+                    vm.PickedTarget = PadForge.Engine.Data.MappingSetMigrator.MotionPitchTarget;
+                    vm.IsPickedOptionsOpen = true;
+                    var toMotion = (ScrollViewer)page.FindName("ButtonsScroll");
+                    Picture("opts-motion.png", () => { Lay(ground, Height); toMotion.ScrollToEnd(); });
+                    Lookups("opts-motion.png");
+                    Picture("opts-motion-angle.png", () =>
+                    {
+                        vm.PickedRow.MotionResponse = "Angle";
+                        Lay(ground, Height);
+                        toMotion.ScrollToEnd();
+                    });
+                    Lookups("opts-motion-angle.png");
+                    vm.PickedRow.MotionResponse = "";
+                    vm.IsPickedOptionsOpen = false;
+                    vm.PickedTarget = null;
+                    toMotion.ScrollToHome();
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
                 finally
@@ -415,6 +477,15 @@ namespace PadForge.Tests
                     if (binding == null || bound.Status == BindingStatus.Active) continue;
                     bool ancestor = binding.RelativeSource != null && binding.RelativeSource.Mode == RelativeSourceMode.FindAncestor;
                     if (!ancestor && string.IsNullOrEmpty(binding.ElementName)) continue;
+                    // A line of a picker's item that shows only in the open
+                    // list, or only in the closed box, looks for the list
+                    // item around it. In the closed box there is none, and
+                    // the binding says what the line does then. That is the
+                    // app's own way of telling the two apart, and no lookup
+                    // gone wrong.
+                    if (ancestor && binding.RelativeSource.AncestorType == typeof(ComboBoxItem)
+                        && binding.FallbackValue != DependencyProperty.UnsetValue)
+                        continue;
                     lost.Add(part.GetType().Name + " '" + (part as FrameworkElement)?.Name + "' " + property.Name + " <- " + binding.Path?.Path + " from "
                         + (ancestor ? "the nearest " + binding.RelativeSource.AncestorType?.Name : "the element " + binding.ElementName) + ": " + bound.Status);
                 }

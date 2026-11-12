@@ -1540,11 +1540,11 @@ namespace PadForge.Tests
             // The checkbox is the source's own Invert, shown by that flag
             // alone: once in the primary's rows, whose DataContext is the
             // row's PrimaryKindSource, and once in the row of an extra
-            // source, and nowhere else. The primary's is a row of its own
-            // under Primary Mode (#574), a label and a switch, and the flag
-            // shows the whole row. It stands before the Ramp settings, so it
-            // is inside the primary's rows. An extra source's is a checkbox
-            // in its strip and carries the flag itself.
+            // source, and nowhere else. Each is a row of its own (#574), a
+            // label and a switch, and the flag shows the whole row. The
+            // primary's stands under Primary Mode, before the Ramp settings,
+            // so it is inside the primary's rows. An extra source's stands
+            // under its Source Type.
             string xaml = RepoText("PadForge.App", "Views", "PadPage.xaml");
             const string shownBy = "Visibility=\"{Binding IsKeyInvertShown, Converter={StaticResource BoolToVisibilityConverter}}\"";
             const string holder = "<StackPanel DataContext=\"{Binding PrimaryKindSource}\" x:Name=\"PrimaryModeRows\">";
@@ -1556,7 +1556,7 @@ namespace PadForge.Tests
             int inPrimary = xaml.IndexOf(shownBy, strip, StringComparison.Ordinal);
             Assert.True(inPrimary > 0 && inPrimary < stripEnd, "no switch for a primary key source's saved Invert");
             int inExtra = xaml.IndexOf(shownBy, stripEnd, StringComparison.Ordinal);
-            Assert.True(inExtra > extras, "no checkbox for an extra key source's saved Invert");
+            Assert.True(inExtra > extras, "no switch for an extra key source's saved Invert");
             Assert.Equal(-1, xaml.IndexOf(shownBy, inExtra + 1, StringComparison.Ordinal));
             Assert.Equal(inPrimary, xaml.IndexOf(shownBy, StringComparison.Ordinal));
 
@@ -1577,9 +1577,16 @@ namespace PadForge.Tests
             Assert.Contains(bound, primaryBox);
             Assert.DoesNotContain("IsEnabled", primaryBox);
 
-            // An extra source's.
-            int open = xaml.LastIndexOf("<CheckBox", inExtra, StringComparison.Ordinal);
-            string box = xaml[open..xaml.IndexOf("/>", inExtra, StringComparison.Ordinal)];
+            // An extra source's: the row the flag shows, and the switch in it.
+            int extraOpen = xaml.LastIndexOf("<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"", inExtra, StringComparison.Ordinal);
+            int extraClose = xaml.IndexOf("</controls:FlexLinePanel>", inExtra, StringComparison.Ordinal);
+            Assert.True(extraOpen > extras && extraClose > inExtra, "the flag is not on an option row of the extra source");
+            Assert.DoesNotContain("</controls:FlexLinePanel>", xaml[extraOpen..inExtra]);
+            string extraRow = xaml[extraOpen..extraClose];
+            int open = extraRow.IndexOf("<CheckBox", StringComparison.Ordinal);
+            Assert.True(open > 0 && extraRow.IndexOf("<CheckBox", open + 1, StringComparison.Ordinal) < 0, "one switch in the row");
+            string box = extraRow[open..extraRow.IndexOf("/>", open, StringComparison.Ordinal)];
+            Assert.Contains("Style=\"{StaticResource SwitchCheckBox}\"", box);
             Assert.Contains(content, box);
             Assert.Contains(bound, box);
             Assert.DoesNotContain("IsEnabled", box);

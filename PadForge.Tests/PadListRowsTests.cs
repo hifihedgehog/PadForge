@@ -460,10 +460,18 @@ namespace PadForge.Tests
             // show in one of two places.
             var deadzone = Keyed(page, "MappingRowDeadzone");
             Assert.Equal("DataTemplate", deadzone.Name.LocalName);
-            var rows = sourcePart.Descendants().Concat(details.Descendants()).Concat(deadzone.Descendants())
+            var every = sourcePart.Descendants().Concat(details.Descendants()).Concat(deadzone.Descendants())
                 .Where(e => (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}").ToList();
-            Assert.Equal(20, rows.Count);
-            Assert.All(rows, r => Assert.Equal("FlexLinePanel", r.Name.LocalName));
+            Assert.All(every, r => Assert.Equal("FlexLinePanel", r.Name.LocalName));
+            // A source added to the row has the same rows for itself
+            // (AnAddedSourceIsRowsUnderALineOfItsOwn). The row's own are
+            // the rest: its source and value, its deadzone, and its options,
+            // the tuning of its kind and the motion and trim settings among
+            // them (TheTuningMotionAndTrimSettingsAreRows).
+            var addedSources = Assert.Single(details.Descendants(), e => (string)e.Attribute("ItemsSource") == "{Binding ExtraSources}");
+            var rows = every.Where(r => !r.Ancestors().Contains(addedSources)).ToList();
+            Assert.Equal(37, rows.Count);
+            Assert.Equal(26, every.Count - rows.Count);
             Assert.DoesNotContain("{StaticResource RowOptionLine}", PageText());
             Assert.DoesNotContain("{StaticResource RowOptionLabel}\"", PageText().Replace("BasedOn=\"{StaticResource RowOptionLabel}\"", ""));
             // Source and Value are the first part, and nothing else is.
@@ -476,8 +484,11 @@ namespace PadForge.Tests
             // of the rows' never applied (seen 2026-11-11).
             var resets = rows.Select(r => r.Elements().Last())
                 .Where(e => e.Name.LocalName == "SettingResetButton" || (string)e.Attribute("Style") == "{StaticResource ResetButton}").ToList();
-            Assert.Equal(17, resets.Count);
-            Assert.Equal(10, resets.Count(e => e.Name.LocalName == "SettingResetButton"));
+            Assert.Equal(34, resets.Count);
+            Assert.Equal(24, resets.Count(e => e.Name.LocalName == "SettingResetButton"));
+            resets.AddRange(every.Except(rows).Select(r => r.Elements().Last())
+                .Where(e => e.Name.LocalName == "SettingResetButton" || (string)e.Attribute("Style") == "{StaticResource ResetButton}"));
+            Assert.Equal(34 + 24, resets.Count);
             Assert.All(resets, e =>
             {
                 Assert.Equal("True", (string)e.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
@@ -486,10 +497,9 @@ namespace PadForge.Tests
             });
             Assert.DoesNotContain(page.Descendants(), e => e.Name.LocalName == "SettingResetButton" && e.Attribute("Style") != null);
             // Whatever is not one row of a setting takes a whole row of the
-            // grid: the note, the motion and trim settings, the formula, the
-            // extra sources and Add Source.
+            // grid: the note, the formula, the added sources and Add Source.
             var whole = root.Elements().Where(e => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "TileGridPanel.FullRow") == "True").ToList();
-            Assert.Equal(new[] { "TextBlock", "StackPanel", "WrapPanel", "StackPanel", "ItemsControl", "Button" }, whole.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "TextBlock", "StackPanel", "ItemsControl", "Button" }, whole.Select(e => e.Name.LocalName));
             Assert.All(root.Elements().Except(whole), e => Assert.True(
                 e.Name.LocalName == "FlexLinePanel" || Name(e) == "PrimaryModeRows"
                 || (string)e.Attribute("ContentTemplate") == "{StaticResource MappingRowDeadzone}", e.Name.LocalName + " is neither a row nor a whole row"));
@@ -669,6 +679,311 @@ namespace PadForge.Tests
                 && (string)e.Attribute("Orientation") == "Horizontal");
         }
 
+        private const string ShownBy = ", Converter={StaticResource BoolToVisibilityConverter}}";
+        private const string HiddenBy = ", Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}";
+
+        /// <summary>The tuning of a kind, a motion row's settings and the
+        /// trim settings are rows of the options, one for each setting.
+        /// Each was a strip of settings one after the other, with check
+        /// boxes of the old look. The tuning of the row's own source is a
+        /// grid of rows for each kind, under Primary Mode. The motion and
+        /// the trim settings are tiles of the options, each shown by what
+        /// showed it in its strip. No strip is left in the options.</summary>
+        [Fact]
+        public void TheTuningMotionAndTrimSettingsAreRows()
+        {
+            var details = Keyed(Page(), "MappingRowOptions");
+            var root = Assert.Single(details.Elements());
+            var primary = Named(details, "PrimaryModeRows");
+            string Label(XElement row) => (string)row.Elements().First().Attribute("Text");
+            string Key(string text) => text.Substring("{Binding ".Length, text.IndexOf(',') - "{Binding ".Length);
+
+            var tuning = primary.Elements().Where(e => e.Name.LocalName == "TileGridPanel").ToList();
+            Assert.Equal(new[] { "IsRampedKind", "IsIncrementalKind", "IsRapidTriggerKind" },
+                tuning.Select(g => Key((string)g.Attribute("Visibility"))));
+            Assert.All(tuning, g =>
+            {
+                Assert.Equal("{DynamicResource RowOptionsGrid}", (string)g.Attribute("Style"));
+                Assert.All(g.Elements(), r =>
+                {
+                    Assert.Equal("{DynamicResource RowOptionLine}", (string)r.Attribute("Style"));
+                    Assert.Null(r.Attribute("Visibility"));
+                    Assert.Equal("{DynamicResource RowOptionLabel}", (string)r.Elements().First().Attribute("Style"));
+                    Assert.Equal("SettingResetButton", r.Elements().Last().Name.LocalName);
+                });
+            });
+            Assert.Equal(new[] { "Pad_Mapping_Ramp_Attack", "Pad_Mapping_Ramp_Release", "Pad_Mapping_Ramp_Reverse", "Pad_Mapping_Ramp_Autocenter" },
+                tuning[0].Elements().Select(r => Key(Label(r))));
+            Assert.Equal(new[] { "Pad_Mapping_Rate", "Pad_Mapping_Sticky", "Pad_Mapping_Min", "Pad_Mapping_Max" },
+                tuning[1].Elements().Select(r => Key(Label(r))));
+            Assert.Equal(new[] { "Pad_Mapping_RapidTrigger_Distance" }, tuning[2].Elements().Select(r => Key(Label(r))));
+            Assert.Equal(new[]
+                {
+                    "Reset_MappingSourceItem_ParamAttackTime_4288", "Reset_MappingSourceItem_ParamReleaseTime_4292",
+                    "Reset_MappingSourceItem_ParamReverseMultiplier_4296", "Reset_MappingSourceItem_ParamAutocenter_4299",
+                    "Reset_MappingSourceItem_ParamRate_4305", "Reset_MappingSourceItem_ParamSticky_4308",
+                    "Reset_MappingSourceItem_ParamMin_4311", "Reset_MappingSourceItem_ParamMax_4314",
+                    "Reset_MappingSourceItem_ParamRapidTriggerDistance_4316",
+                },
+                tuning.SelectMany(g => g.Elements()).Select(r => (string)r.Elements().Last().Attribute("AutomationProperties.AutomationId")));
+            // A slider has the rows' look and no width of its own, a number
+            // is the page's value text, and a check box is a switch.
+            var parts = tuning.SelectMany(g => g.Descendants()).ToList();
+            Assert.All(parts.Where(e => e.Name.LocalName == "Slider"), s =>
+            {
+                Assert.Equal("{DynamicResource RowOptionSlider}", (string)s.Attribute("Style"));
+                Assert.Null(s.Attribute("Width"));
+                Assert.NotNull(s.Attribute("AutomationProperties.Name"));
+            });
+            Assert.All(parts.Where(e => e.Name.LocalName == "TextBox"), b => Assert.Equal("{StaticResource DzValueEdit}", (string)b.Attribute("Style")));
+            Assert.All(parts.Where(e => e.Name.LocalName == "CheckBox"), b => Assert.Equal("{StaticResource SwitchCheckBox}", (string)b.Attribute("Style")));
+
+            // The motion and the trim settings: tiles of the options.
+            XElement Tile(string label) => Assert.Single(root.Elements(), e => e.Name.LocalName == "FlexLinePanel"
+                && (string)e.Elements().First().Attribute("Text") == "{Binding " + label + S);
+            foreach (var (label, gate, reset) in new[]
+            {
+                ("Pad_Mapping_MotionMode", "CanUseMotionAngle", "MotionResponse"),
+                ("Pad_Mapping_MotionTopSpeed", "ShowMotionSpeedSettings", "MotionSpeed"),
+                ("Pad_Mapping_MotionStartSpeed", "ShowMotionSpeedSettings", "MotionMinSpeed"),
+                ("Pad_Mapping_MotionLeanAngle", "ShowMotionAngleSettings", "MotionAngle"),
+                ("Pad_Mapping_MotionDeadzone", "IsMotionAxisRow", "MotionDeadzone"),
+            })
+            {
+                var row = Tile(label);
+                Assert.Equal("{Binding " + gate + ShownBy, (string)row.Attribute("Visibility"));
+                Assert.Equal(reset, (string)row.Elements().Last().Attribute("CommandParameter"));
+            }
+            var mode = Tile("Pad_Mapping_MotionMode");
+            var modePicker = Assert.Single(mode.Elements(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{DynamicResource RowOptionModePicker}", (string)modePicker.Attribute("Style"));
+            Assert.Equal("{Binding MotionResponse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)modePicker.Attribute("SelectedValue"));
+            foreach (var (label, command) in new[]
+            {
+                ("Pad_Mapping_TrimDeadzone", "ResetTrimDeadzoneCommand"),
+                ("Pad_Mapping_TrimRate", "ResetTrimRateCommand"),
+                ("Pad_Mapping_TrimReset", "ResetTrimResetOnReleaseCommand"),
+            })
+            {
+                var row = Tile(label);
+                Assert.Equal("{Binding ShouldShowTrimSettings" + ShownBy, (string)row.Attribute("Visibility"));
+                var reset = row.Elements().Last();
+                Assert.Equal("{Binding " + command + "}", (string)reset.Attribute("Command"));
+                Assert.Equal("{StaticResource ResetButton}", (string)reset.Attribute("Style"));
+            }
+            Assert.Equal("{StaticResource SwitchCheckBox}", (string)Assert.Single(Tile("Pad_Mapping_TrimReset").Elements(), e => e.Name.LocalName == "CheckBox").Attribute("Style"));
+
+            // No strip of settings is left: every wrap panel of the options
+            // is a cloud of the formula's chips.
+            var formula = Named(details, "FormulaEditor");
+            Assert.All(details.Descendants().Where(e => e.Name.LocalName == "WrapPanel"), w => Assert.Contains(formula, w.Ancestors()));
+            Assert.DoesNotContain("ResetButtonTight", details.ToString());
+        }
+
+        /// <summary>A source added to a row is the options' own rows, for
+        /// that source, under a line of its own. No board draws one. It was
+        /// a blue chip that held a type picker, a source picker, Record,
+        /// Clear, four check boxes, a dial, a deadzone, the inputs and
+        /// tuning of its kind and a small x, all in one wrapping line. Its
+        /// head names it and ends in Remove. Then come its type, its source
+        /// with Record and Clear, the inputs of its kind, the tuning of its
+        /// kind, how it is read, its dials and its deadzone, each shown by
+        /// what showed it in the chip. Every reset keeps its id, and the Up
+        /// and Down pickers stand once for the two kinds that have them.</summary>
+        [Fact]
+        public void AnAddedSourceIsRowsUnderALineOfItsOwn()
+        {
+            var page = Page();
+            var details = Keyed(page, "MappingRowOptions");
+            var list = Assert.Single(details.Descendants(), e => (string)e.Attribute("ItemsSource") == "{Binding ExtraSources}");
+            Assert.Equal("ItemsControl", list.Name.LocalName);
+            Assert.Equal("True", (string)list.Attributes().First(a => a.Name.LocalName == "TileGridPanel.FullRow"));
+            var block = Assert.Single(Assert.Single(Assert.Single(list.Elements()).Elements()).Elements());
+            Assert.Equal("Border", block.Name.LocalName);
+            Assert.Equal("0,1,0,0", (string)block.Attribute("BorderThickness"));
+            Assert.Equal("{DynamicResource CardStrokeColorDefaultBrush}", (string)block.Attribute("BorderBrush"));
+            Assert.Null(block.Attribute("Background"));
+            Assert.Null(block.Attribute("CornerRadius"));
+            var parts = Assert.Single(block.Elements()).Elements().ToList();
+            Assert.Equal(new[] { "FlexLinePanel", "TileGridPanel" }, parts.Select(e => e.Name.LocalName));
+
+            // The head: the name, the direction badge, and Remove at its end.
+            var head = parts[0];
+            Assert.Equal("True", (string)head.Attribute("EndsApart"));
+            Assert.Equal("40", (string)head.Attribute("MinLineHeight"));
+            var headParts = head.Elements().ToList();
+            Assert.Equal(3, headParts.Count);
+            Assert.Equal("{StaticResource EditorSubHead}", (string)headParts[0].Attribute("Style"));
+            Assert.Equal("{Binding Pad_HeaderSource" + S, (string)headParts[0].Attribute("Text"));
+            Assert.Equal("{Binding DirectionBadge}", (string)Assert.Single(headParts[1].Elements(), e => e.Name.LocalName == "TextBlock").Attribute("Text"));
+            var remove = headParts[2];
+            Assert.Equal("{StaticResource QuietTextButton}", (string)remove.Attribute("Style"));
+            Assert.Equal("{Binding Common_Remove" + S, (string)remove.Attribute("Content"));
+            Assert.Equal("{Binding DataContext.RemoveExtraSourceCommand, ElementName=RowOptionsRoot}", (string)remove.Attribute("Command"));
+            Assert.Equal("{Binding}", (string)remove.Attribute("CommandParameter"));
+            Assert.Equal("{Binding Pad_Mapping_RemoveSource_Tooltip" + S, (string)remove.Attribute("ToolTip"));
+            Assert.Equal("True", (string)remove.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+
+            // The rows: a grid as the options' own, so they flow in columns
+            // under the bar and stand one under the other in the list. A
+            // row that shows while two things hold stands in a tile that
+            // does.
+            var grid = parts[1];
+            Assert.Equal("{DynamicResource RowOptionsGrid}", (string)grid.Attribute("Style"));
+            var tiles = grid.Elements().ToList();
+            XElement RowIn(XElement tile) => tile.Name.LocalName == "Border"
+                ? Assert.Single(tile.Elements(), e => e.Name.LocalName == "FlexLinePanel") : tile;
+            string GateOf(XElement tile) => tile.Name.LocalName == "Border"
+                ? string.Join(" and ", tile.Descendants().Where(e => e.Name.LocalName == "Condition")
+                    .Select(c => ((string)c.Attribute("Binding")).Substring("{Binding ".Length).TrimEnd('}') + " " + (string)c.Attribute("Value")))
+                : (string)tile.Attribute("Visibility");
+            string Shown(string flag) => "{Binding " + flag + ShownBy;
+            string reads = "{Binding IsKindDescriptorless" + HiddenBy;
+            var expected = new (string Label, string Gate, string Reset)[]
+            {
+                ("ResetLabel_SourceType", null, "Reset_MappingSourceItem_Kind_4734"),
+                ("Pad_Invert", Shown("IsKeyInvertShown"), null),
+                ("Pad_HeaderSource", reads, null),
+                ("ResetLabel_ModifierInput", Shown("IsInvertOnHoldKind"), "Reset_MappingSourceItem_ParamModifierInputChoice_4848"),
+                ("ResetLabel_UpInput", Shown("UsesUpDownKeys"), "Reset_MappingSourceItem_ParamUpInputChoice_5090"),
+                ("ResetLabel_DownInput", Shown("UsesUpDownKeys"), "Reset_MappingSourceItem_ParamDownInputChoice_5149"),
+                ("Pad_Mapping_RapidTrigger_Distance", Shown("IsRapidTriggerKind"), "Reset_MappingSourceItem_ParamRapidTriggerDistance_5377"),
+                ("Pad_Mapping_Rate", Shown("IsIncrementalKind"), "Reset_MappingSourceItem_ParamRate_5200"),
+                ("Pad_Mapping_Sticky", Shown("IsIncrementalKind"), "Reset_MappingSourceItem_ParamSticky_5207"),
+                ("Pad_Mapping_Min", Shown("IsIncrementalKind"), "Reset_MappingSourceItem_ParamMin_5213"),
+                ("Pad_Mapping_Max", Shown("IsIncrementalKind"), "Reset_MappingSourceItem_ParamMax_5219"),
+                ("Pad_Mapping_Ramp_Attack", Shown("IsRampedKind"), "Reset_MappingSourceItem_ParamAttackTime_5350"),
+                ("Pad_Mapping_Ramp_Release", Shown("IsRampedKind"), "Reset_MappingSourceItem_ParamReleaseTime_5359"),
+                ("Pad_Mapping_Ramp_Reverse", Shown("IsRampedKind"), "Reset_MappingSourceItem_ParamReverseMultiplier_5368"),
+                ("Pad_Mapping_Ramp_Autocenter", Shown("IsRampedKind"), "Reset_MappingSourceItem_ParamAutocenter_5375"),
+                ("Pad_Invert", reads, "Reset_MappingSourceItem_Invert_4926"),
+                ("Pad_Half", reads, "Reset_MappingSourceItem_HalfAxis_4931"),
+                ("Pad_Either", reads, "Reset_MappingSourceItem_Bidirectional_4937"),
+                ("Pad_InvertOutput", "IsKindDescriptorless False and IsInvertOutputApplicable True", "Reset_MappingSourceItem_InvertOutput_4943"),
+                ("Mapping_GyroSensitivity", Shown("IsGyroSource"), null),
+                ("Mapping_GyroSensitivity", Shown("IsGyroLeanSource"), null),
+                ("Pad_Mapping_Accel", Shown("IsParamAccelApplicable"), null),
+                ("Mapping_MouseCursorSensitivity", Shown("IsMouseCursorSource"), null),
+                ("Mapping_IrPointerSensitivity", Shown("IsIrPointerSource"), null),
+                ("Mapping_IrPointerSensitivity", Shown("IsMouseMotionSource"), null),
+                ("Pad_HeaderDeadZone", "IsKindDescriptorless False and IsDeadZoneApplicable True", null),
+            };
+            Assert.Equal(expected.Length, tiles.Count);
+            for (int i = 0; i < expected.Length; i++)
+            {
+                var row = RowIn(tiles[i]);
+                Assert.Equal("{DynamicResource RowOptionLine}", (string)row.Attribute("Style"));
+                var label = row.Elements().First();
+                Assert.Equal("{DynamicResource RowOptionLabel}", (string)label.Attribute("Style"));
+                Assert.Equal("{Binding " + expected[i].Label + S, (string)label.Attribute("Text"));
+                Assert.Equal(expected[i].Gate, GateOf(tiles[i]));
+                // A row in a tile has no gate of its own, and the tile is
+                // hidden until its conditions hold.
+                if (tiles[i].Name.LocalName == "Border")
+                {
+                    Assert.Null(row.Attribute("Visibility"));
+                    Assert.Equal("Collapsed", SetterOf(Assert.Single(tiles[i].Descendants(), e => e.Name.LocalName == "Style"), "Visibility"));
+                }
+                var last = row.Elements().Last();
+                if (expected[i].Reset != null)
+                {
+                    Assert.Equal("SettingResetButton", last.Name.LocalName);
+                    Assert.Equal(expected[i].Reset, (string)last.Attribute("AutomationProperties.AutomationId"));
+                    Assert.Equal("{Binding ResetSettingCommand}", (string)last.Attribute("Command"));
+                }
+            }
+            // The source and the three inputs take a whole row: a picker of
+            // 320, the device, and the row's buttons.
+            Assert.All(new[] { 2, 3, 4, 5 }, i =>
+                Assert.Equal("True", (string)tiles[i].Attributes().First(a => a.Name.LocalName == "TileGridPanel.FullRow")));
+
+            // Its type: a mode picker over the source's own kinds.
+            var kind = Assert.Single(tiles[0].Elements(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{Binding KindChoices}", (string)kind.Attribute("ItemsSource"));
+            Assert.Equal("{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)kind.Attribute("SelectedValue"));
+            Assert.Equal("{DynamicResource RowOptionModePicker}", (string)kind.Attribute("Style"));
+            Assert.Equal("{Binding Pad_Mapping_Kind_Tooltip" + S, (string)kind.Attribute("ToolTip"));
+
+            // Its source: the picker of every input of the slot's devices,
+            // the device, Record with the page's record look, and Clear.
+            var source = tiles[2].Elements().ToList();
+            Assert.Equal(new[] { "TextBlock", "ComboBox", "TextBlock", "Button", "Button" }, source.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding DataContext.AvailableInputsView, ElementName=RowOptionsRoot}", (string)source[1].Attribute("ItemsSource"));
+            Assert.Equal("{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)source[1].Attribute("SelectedItem"));
+            Assert.Equal("{StaticResource RowOptionPicker}", (string)source[1].Attribute("Style"));
+            Assert.Equal("{Binding Pad_Mapping_ExtraSourcePickerTooltip" + S, (string)source[1].Attribute("ToolTip"));
+            Assert.Equal("MappingComboBox_PreviewKeyDown", (string)source[1].Attribute("PreviewKeyDown"));
+            Assert.Equal("{Binding DeviceLabel}", SetterOf(Assert.Single(source[2].Descendants(), e => e.Name.LocalName == "Style"), "Text"));
+            Assert.Equal("{StaticResource RecordButton}", (string)source[3].Attribute("Style"));
+            Assert.Equal("{Binding RecordButtonIcon}", (string)source[3].Attribute("Content"));
+            Assert.Equal("{Binding ToggleRecordCommand}", (string)source[3].Attribute("Command"));
+            Assert.Equal("{Binding RecordButtonText, TargetNullValue='', FallbackValue=''}", (string)source[3].Attribute("AutomationProperties.Name"));
+            Assert.Equal("{StaticResource RowIconButton}", (string)source[4].Attribute("Style"));
+            Assert.Equal("{Binding ClearCommand}", (string)source[4].Attribute("Command"));
+            Assert.Equal("{Binding Common_Clear" + S, (string)source[4].Attribute("AutomationProperties.Name"));
+
+            // The inputs of a kind: the picker, the device, Record and the reset.
+            foreach (var (i, list2, choice, device, icon, command) in new[]
+            {
+                (3, "ParamInputsView", "ParamModifierInputChoice", "ParamModifierDeviceLabel", "RecordIconParamModifier", "RecordParamModifierCommand"),
+                (4, "KeyInputsView", "ParamUpInputChoice", "ParamUpDeviceLabel", "RecordIconParamUp", "RecordParamUpCommand"),
+                (5, "KeyInputsView", "ParamDownInputChoice", "ParamDownDeviceLabel", "RecordIconParamDown", "RecordParamDownCommand"),
+            })
+            {
+                var row = tiles[i].Elements().ToList();
+                Assert.Equal(new[] { "TextBlock", "ComboBox", "TextBlock", "Button", "SettingResetButton" }, row.Select(e => e.Name.LocalName));
+                Assert.Equal("{Binding DataContext." + list2 + ", ElementName=RowOptionsRoot}", (string)row[1].Attribute("ItemsSource"));
+                Assert.Equal("{Binding " + choice + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)row[1].Attribute("SelectedItem"));
+                Assert.Equal("{StaticResource RowOptionPicker}", (string)row[1].Attribute("Style"));
+                Assert.Equal("{Binding " + device + "}", SetterOf(Assert.Single(row[2].Descendants(), e => e.Name.LocalName == "Style"), "Text"));
+                Assert.Equal("{StaticResource RecordButton}", (string)row[3].Attribute("Style"));
+                Assert.Equal("{Binding " + icon + "}", (string)row[3].Attribute("Content"));
+                Assert.Equal("{Binding " + command + "}", (string)row[3].Attribute("Command"));
+                Assert.Equal(choice, (string)row[4].Attribute("CommandParameter"));
+            }
+
+            // How it is read: switches, with what enabled each check box.
+            foreach (var (i, flag, enabled) in new[]
+            {
+                (15, "Invert", "IsInvertApplicable"), (16, "HalfAxis", "IsHalfAxisApplicable"),
+                (17, "Bidirectional", "HalfAxis"), (18, "InvertOutput", (string)null),
+            })
+            {
+                var box = Assert.Single(RowIn(tiles[i]).Elements(), e => e.Name.LocalName == "CheckBox");
+                Assert.Equal("{StaticResource SwitchCheckBox}", (string)box.Attribute("Style"));
+                Assert.Equal("{Binding " + flag + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)box.Attribute("IsChecked"));
+                Assert.Equal(enabled == null ? null : "{Binding " + enabled + "}", (string)box.Attribute("IsEnabled"));
+            }
+
+            // The dials and the deadzone: the rows' sliders, the page's
+            // value text, and the reset each had.
+            foreach (var (i, bound, reset) in new[]
+            {
+                (19, "GyroSensitivity", "ResetGyroSensitivityCommand"), (20, "Sensitivity", "ResetSensitivityCommand"),
+                (21, "ParamAccel", "ResetParamAccelCommand"), (22, "MouseCursorSensitivity", "ResetMouseCursorSensitivityCommand"),
+                (23, "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"), (24, "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"),
+                (25, "DeadZone", "ResetDeadZoneCommand"),
+            })
+            {
+                var row = RowIn(tiles[i]);
+                var slider = Assert.Single(row.Elements(), e => e.Name.LocalName == "Slider");
+                Assert.Equal("{Binding " + bound + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)slider.Attribute("Value"));
+                Assert.Equal(i == 25 ? "{DynamicResource RowOptionDeadzoneSlider}" : "{DynamicResource RowOptionSlider}", (string)slider.Attribute("Style"));
+                Assert.Null(slider.Attribute("Width"));
+                Assert.Equal("{StaticResource DzValueEdit}", (string)Assert.Single(row.Elements(), e => e.Name.LocalName == "TextBox").Attribute("Style"));
+                var last = row.Elements().Last();
+                Assert.Equal("{Binding " + reset + "}", (string)last.Attribute("Command"));
+                Assert.Equal("{StaticResource ResetButton}", (string)last.Attribute("Style"));
+            }
+
+            // The chip is gone, with its glyphs and its small hot buttons.
+            string text = list.ToString();
+            Assert.DoesNotContain("58B6E4", text);
+            Assert.DoesNotContain("EmberIconButtonHot", text);
+            Assert.DoesNotContain("WrapPanel", text);
+            Assert.DoesNotContain("\u21B3", text);
+        }
+
         // ── the bar under the picture ──────────────────────────────────
 
         /// <summary>The bar's row is the one the pick names. On a gamepad a
@@ -796,8 +1111,26 @@ namespace PadForge.Tests
             var device = Assert.Single(picker.Descendants(), e => (string)e.Attribute("Text") == "{Binding DeviceLabel}");
             Assert.Equal("{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert, FallbackValue=Visible}",
                 (string)device.Attribute("Visibility"));
-            Assert.Contains(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding ToggleRecordCommand}"
-                && (string)e.Attribute("IsEnabled") == "{Binding IsRecordable}");
+            // Record has the page's record look: the ember dot and the
+            // word, and a square and Stop while the row listens. Its content
+            // is the row's glyph for which of the two it is, and the face
+            // draws the rest.
+            var record = Assert.Single(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding ToggleRecordCommand}");
+            Assert.Equal("{Binding IsRecordable}", (string)record.Attribute("IsEnabled"));
+            Assert.Equal("{StaticResource RecordButton}", (string)record.Attribute("Style"));
+            Assert.Equal("{Binding RecordButtonIcon}", (string)record.Attribute("Content"));
+            Assert.Equal("{Binding RecordButtonText, TargetNullValue=''}", (string)record.Attribute("AutomationProperties.Name"));
+            Assert.Empty(record.Elements());
+            // The glyphs the face follows are the row's own, and a source's.
+            var listening = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            Assert.Equal(MenuEditorItem.RecordGlyph, listening.RecordButtonIcon);
+            listening.IsRecording = true;
+            Assert.Equal(MenuEditorItem.StopGlyph, listening.RecordButtonIcon);
+            var extra = new MappingSourceItem();
+            Assert.All(new[] { extra.RecordButtonIcon, extra.RecordIconParamUp, extra.RecordIconParamDown, extra.RecordIconParamModifier },
+                glyph => Assert.Equal(MenuEditorItem.RecordGlyph, glyph));
+            extra.IsRecording = true;
+            Assert.Equal(MenuEditorItem.StopGlyph, extra.RecordButtonIcon);
             Assert.Contains(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding ClearCommand}");
             // The current row's caption is in the text color.
             var current = Assert.Single(blocks.Descendants(), e => e.Name.LocalName == "DataTrigger"
@@ -825,7 +1158,19 @@ namespace PadForge.Tests
             Assert.Equal("20,4,12,12", (string)options.Attribute("Padding"));
             var host = Assert.Single(options.Elements(), e => e.Name.LocalName == "ContentControl");
             Assert.Equal("{Binding PickedRow}", (string)host.Attribute("Content"));
-            Assert.Equal("{StaticResource MappingRowOptions}", (string)host.Attribute("ContentTemplate"));
+            // The template is the host's only while it has a row: set
+            // outright, it is built for no row too, and its lookups through
+            // the row find nothing.
+            Assert.Null(host.Attribute("ContentTemplate"));
+            var hostStyle = Assert.Single(host.Descendants(), e => e.Name.LocalName == "Style");
+            Assert.Equal("{StaticResource MappingRowOptions}", (string)Assert.Single(hostStyle.Elements(),
+                e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "ContentTemplate").Attribute("Value"));
+            var noRow = Assert.Single(hostStyle.Descendants(), e => e.Name.LocalName == "Trigger");
+            Assert.Equal("Content", (string)noRow.Attribute("Property"));
+            Assert.Equal("{x:Null}", (string)noRow.Attribute("Value"));
+            var none = Assert.Single(noRow.Elements());
+            Assert.Equal("ContentTemplate", (string)none.Attribute("Property"));
+            Assert.Equal("{x:Null}", (string)none.Attribute("Value"));
 
             // The board's layout of those rows, which they take from this
             // host: columns of 380 at least with 40 between and no space

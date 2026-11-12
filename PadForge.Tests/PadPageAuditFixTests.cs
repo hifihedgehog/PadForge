@@ -76,7 +76,8 @@ namespace PadForge.Tests
         /// it. An ungated reset left a lone button sitting behind nothing.
         /// The gate is the reset's own, or its row's: an option row of the
         /// mapping table (#574) holds the setting's label, its switch and
-        /// its reset, and hides as one.</summary>
+        /// its reset, and hides as one. Or it is the gate of a tile around
+        /// the row, where the row shows while two things hold.</summary>
         [Theory]
         [InlineData("Reset_MappingItem_InvertOutput_5776")]
         [InlineData("Reset_MappingSourceItem_InvertOutput_4943")]
@@ -102,7 +103,17 @@ namespace PadForge.Tests
             Assert.True(open >= 0, $"{automationId} has no gate and stands in no option row");
             Assert.DoesNotContain("</controls:FlexLinePanel>", x.Substring(open, start - open));
             string tag = x.Substring(open, x.IndexOf('>', open) - open);
-            Assert.Contains("Visibility=", tag);
+            if (tag.Contains("Visibility=", StringComparison.Ordinal)) return;
+
+            // The row has none either: it stands in a tile that is hidden
+            // until its conditions hold, with no tile closed in between.
+            int tile = x.LastIndexOf("<Border>", open, StringComparison.Ordinal);
+            Assert.True(tile >= 0, $"{automationId}: neither the reset, its row nor a tile around the row is gated");
+            string above = x.Substring(tile, open - tile);
+            Assert.DoesNotContain("</Border>", above);
+            Assert.Contains("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", above);
+            Assert.Contains("<MultiDataTrigger.Conditions>", above);
+            Assert.Contains("<Setter Property=\"Visibility\" Value=\"Visible\"/>", above);
         }
 
         // C279: the shared slider style ticks coarser than this range.

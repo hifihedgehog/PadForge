@@ -213,25 +213,32 @@ namespace PadForge.Tests
         [Fact]
         public void BothEditorsOfferTheCheckboxGatedOnApplicability()
         {
-            // Two sites, deliberately: the grid row's primary and the
-            // ExtraSources chips (which is also where a bipolar row's neg leg
-            // hydrates). A checkbox without the visibility gate would render
-            // on every source and silently do nothing on most of them. The
-            // primary's is a switch in an option row (#574), and the gate is
-            // on the row, just before the switch. An extra source's carries
-            // the gate itself, just after its binding.
+            // Two sites, deliberately: the row's own source and a source
+            // added to the row (which is also where a bipolar row's neg leg
+            // hydrates). A switch without the gate would show on every
+            // source and silently do nothing on most of them. Each is a
+            // switch in an option row (#574). The row's own has the gate on
+            // its row, just before the switch. An added source's row stands
+            // in a tile that shows while two things hold: the source reads
+            // its descriptor, and Invert is spoken for.
             string xaml = Read("PadForge.App", "Views", "PadPage.xaml");
 
             int first = xaml.IndexOf("Binding InvertOutput,", StringComparison.Ordinal);
             int second = xaml.IndexOf("Binding InvertOutput,", first + 1, StringComparison.Ordinal);
-            Assert.True(first > 0 && second > first, "expected the checkbox in BOTH editors");
+            Assert.True(first > 0 && second > first, "expected the switch in BOTH editors");
+            Assert.Equal(-1, xaml.IndexOf("Binding InvertOutput,", second + 1, StringComparison.Ordinal));
 
-            foreach (int site in new[] { first, second })
-            {
-                int from = Math.Max(0, site - 600);
-                string around = xaml.Substring(from, Math.Min(1200, xaml.Length - from));
-                Assert.Contains("IsInvertOutputApplicable", around);
-            }
+            int from = Math.Max(0, first - 600);
+            Assert.Contains("IsInvertOutputApplicable", xaml.Substring(from, first - from));
+
+            // The tile's conditions are the nearest ones before the switch,
+            // with no tile closed in between.
+            int tile = xaml.LastIndexOf("<MultiDataTrigger.Conditions>", second, StringComparison.Ordinal);
+            Assert.True(tile > first, "an added source's Invert Output stands in no gated tile");
+            string gate = xaml.Substring(tile, xaml.IndexOf("</MultiDataTrigger.Conditions>", tile, StringComparison.Ordinal) - tile);
+            Assert.Contains("<Condition Binding=\"{Binding IsKindDescriptorless}\" Value=\"False\"/>", gate);
+            Assert.Contains("<Condition Binding=\"{Binding IsInvertOutputApplicable}\" Value=\"True\"/>", gate);
+            Assert.DoesNotContain("</Border>", xaml.Substring(tile, second - tile));
         }
     }
 }

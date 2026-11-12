@@ -682,15 +682,15 @@ namespace PadForge.Tests
             return d.FullName;
         }
 
-        /// <summary>The six Up and Down dropdowns bind the key list: the
-        /// Incremental pair and the Ramp pair of an added source, and the
-        /// pair among the row's own options. The two modifier dropdowns
-        /// keep the full list. Each reaches the row through the root of the
-        /// options' template (#574): the list's open row and the bar under
-        /// the picture both show them, and only the list has a table row
-        /// above them.</summary>
+        /// <summary>The four Up and Down dropdowns bind the key list: the
+        /// pair of an added source, which its Incremental and its Ramp
+        /// kind share, and the pair among the row's own options. The two
+        /// modifier dropdowns keep the full list. Each reaches the row
+        /// through the root of the options' template (#574): the list's
+        /// open row and the bar under the picture both show them, and only
+        /// the list has a table row above them.</summary>
         [Fact]
-        public void TheSixUpAndDownDropdownsBindTheKeyList()
+        public void TheFourUpAndDownDropdownsBindTheKeyList()
         {
             string xaml = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "PadPage.xaml"));
             Assert.DoesNotContain("AncestorType={x:Type DataGridRow}", xaml);
@@ -699,9 +699,9 @@ namespace PadForge.Tests
                 .Select(m => (List: m.Groups[1].Value, Field: m.Groups[2].Value))
                 .ToList();
 
-            Assert.Equal(8, bindings.Count);
-            Assert.Equal(3, bindings.Count(b => b.Field == "ParamUpInputChoice"));
-            Assert.Equal(3, bindings.Count(b => b.Field == "ParamDownInputChoice"));
+            Assert.Equal(6, bindings.Count);
+            Assert.Equal(2, bindings.Count(b => b.Field == "ParamUpInputChoice"));
+            Assert.Equal(2, bindings.Count(b => b.Field == "ParamDownInputChoice"));
             Assert.Equal(2, bindings.Count(b => b.Field == "ParamModifierInputChoice"));
             foreach (var b in bindings)
                 Assert.Equal(b.Field == "ParamModifierInputChoice"

@@ -731,7 +731,8 @@ namespace PadForge.Tests
                 "<DataGrid.RowStyle><Style TargetType=\"DataGridRow\"><Setter Property=\"Template\"><Setter.Value>" +
                 "<ControlTemplate TargetType=\"DataGridRow\"><StackPanel>" +
                 "<TextBlock Text=\"{Binding Label}\" Height=\"30\"/>" +
-                "<DataGridDetailsPresenter Visibility=\"{TemplateBinding DetailsVisibility}\"/>" +
+                "<ContentPresenter Content=\"{Binding}\" ContentTemplate=\"{TemplateBinding DetailsTemplate}\"" +
+                " Visibility=\"{TemplateBinding DetailsVisibility}\"/>" +
                 "</StackPanel></ControlTemplate></Setter.Value></Setter></Style></DataGrid.RowStyle>" +
                 "<DataGrid.RowDetailsTemplate><DataTemplate><TextBlock Text=\"options\" Height=\"50\"/></DataTemplate>" +
                 "</DataGrid.RowDetailsTemplate></DataGrid>");

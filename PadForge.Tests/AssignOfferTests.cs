@@ -202,7 +202,13 @@ namespace PadForge.Tests
             Assert.True(start > 0, "the mapping row's template was not found; re-anchor this lock");
             int end = xaml.IndexOf("</ControlTemplate>", start, StringComparison.Ordinal);
             string row = xaml.Substring(start, end - start);
-            Assert.Matches(@"<DataGridDetailsPresenter Grid\.Row=""1""\s+Visibility=""\{TemplateBinding DetailsVisibility\}""/>", row);
+            // The body is a plain presenter of the table's details
+            // template, shown by the row's own details visibility, which
+            // is the row's selection. WPF's row details part is not in
+            // the row: it throws on a click in a table with no columns
+            // (MappingTableInputTests).
+            Assert.Matches(@"<ContentPresenter x:Name=""RowBody"" Grid\.Row=""1""\s+Content=""\{Binding\}""\s+ContentTemplate=""\{TemplateBinding DetailsTemplate\}""\s+Visibility=""\{TemplateBinding DetailsVisibility\}""/>", row);
+            Assert.DoesNotContain("<DataGridDetailsPresenter", row);
             // Nothing in the row hides a part of it by what the row holds.
             Assert.DoesNotContain("DataGridCellsPresenter", row);
             Assert.DoesNotContain("IsTrivialDirect", row);

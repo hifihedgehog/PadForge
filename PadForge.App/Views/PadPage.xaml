@@ -4363,8 +4363,19 @@
                                                             </LinearGradientBrush>
                                                         </Rectangle.Fill>
                                                     </Rectangle>
-                                                    <DataGridDetailsPresenter Grid.Row="1"
-                                                        Visibility="{TemplateBinding DetailsVisibility}"/>
+                                                    <!-- The open row's body: the table's details template on
+                                                         the row's item, shown while the row is selected. A
+                                                         plain presenter, never WPF's DataGridDetailsPresenter.
+                                                         That part answers every left click inside it by asking
+                                                         the table for its first column, and this table has
+                                                         none, so a click inside an open row threw
+                                                         ArgumentOutOfRangeException (seen 2026-11-11). Drawing
+                                                         the grid lines and that click are all the stock part
+                                                         adds, and the table draws no grid lines. -->
+                                                    <ContentPresenter x:Name="RowBody" Grid.Row="1"
+                                                                      Content="{Binding}"
+                                                                      ContentTemplate="{TemplateBinding DetailsTemplate}"
+                                                                      Visibility="{TemplateBinding DetailsVisibility}"/>
                                                 </SelectiveScrollingGrid>
                                             </Border>
                                             <ControlTemplate.Triggers>

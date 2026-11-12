@@ -22,8 +22,8 @@ namespace PadForge.Tests
     /// <summary>Draws the controller's page to pictures without a screen (#574), to hold a section
     /// against its board: the page itself under the app's own resources and theme, showing macros
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
-    /// a real setup may not have: a trigger of every kind of input, a recording, and an open
-    /// step of every action type. The page stands in no window, so nothing it does as it loads
+    /// a real setup may not have: a trigger of every kind of input, a recording, an open step
+    /// of every action type, and a menu of every style. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -135,10 +135,11 @@ namespace PadForge.Tests
                     Step("the page is made");
                     vm.SelectedConfigTab = PadViewModel.MacrosTabIndex;
 
-                    foreach (var (file, macro) in states)
+                    // Shows a state, lets it settle, and pictures it.
+                    void Picture(string file, Action show)
                     {
                         var clock = System.Diagnostics.Stopwatch.StartNew();
-                        vm.SelectedMacro = macro;
+                        show();
                         Lay(ground);
                         long shown = clock.ElapsedMilliseconds;
                         Settle(dispatcher);
@@ -151,6 +152,18 @@ namespace PadForge.Tests
                         using var stream = File.Create(Path.Combine(dir, file));
                         png.Save(stream);
                         Step("drew " + file + ", first laid out in " + shown + " ms, " + GroupsMade(ground));
+                    }
+
+                    void Lookups(string file)
+                    {
+                        var lost = LostLookups(ground);
+                        File.AppendAllLines(Path.Combine(dir, "lookups.txt"),
+                            new[] { file + ": " + lost.Count + " lookups found nothing" }.Concat(lost.Select(l => "   " + l)));
+                    }
+
+                    foreach (var (file, macro) in states)
+                    {
+                        Picture(file, () => vm.SelectedMacro = macro);
                         // How long picking another step takes: its fields are
                         // made anew each time.
                         if (macro.SelectedAction != null && macro.Actions.Count > 1)
@@ -172,9 +185,17 @@ namespace PadForge.Tests
                             Step("picking a step lays out in " + string.Join(", ", times) + " ms");
                             Step("right after a pick: " + GroupsMade(ground));
                         }
-                        var lost = LostLookups(ground);
-                        File.AppendAllLines(Path.Combine(dir, "lookups.txt"),
-                            new[] { file + ": " + lost.Count + " lookups found nothing" }.Concat(lost.Select(l => "   " + l)));
+                        Lookups(file);
+                    }
+
+                    // A menu of every style, in the menus' part of the section.
+                    foreach (PadForge.Engine.Menus.MenuKind kind in Enum.GetValues(typeof(PadForge.Engine.Menus.MenuKind)))
+                    {
+                        var menu = new MenuEditorItem(new PadForge.Engine.Menus.MenuDefinitionEntry { MenuId = 1 + (int)kind, Name = kind + " Menu", Kind = kind });
+                        vm.Menus.Add(menu);
+                        string file = "menus-" + kind.ToString().ToLowerInvariant() + ".png";
+                        Picture(file, () => vm.ListedMenu = menu);
+                        Lookups(file);
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }

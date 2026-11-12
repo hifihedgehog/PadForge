@@ -15848,7 +15848,7 @@
                                        Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
                         </StackPanel>
                     </Grid>
-                                    <StackPanel x:Name="MenuEditorHost" DataContext="{Binding SelectedMenu}"
+                                    <StackPanel x:Name="MenuEditorHost" Grid.IsSharedSizeScope="True" DataContext="{Binding SelectedMenu}"
                                                 Visibility="{Binding DataContext.HasSelectedMenu,
                                                     RelativeSource={RelativeSource AncestorType=TabItem},
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
@@ -15895,9 +15895,12 @@
                                                 </ui:Button>
                                             </controls:FlexLinePanel>
                                         </DockPanel>
-                                        <!-- The editor's rows, under a hairline. -->
-                                        <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Padding="20,14,12,14">
-                                            <StackPanel Grid.IsSharedSizeScope="True">
+                                        <!-- Opens: the menu's style, and what opens and steers it. A keyboard's
+                                             layout and openers, a cell menu's stick or pad, and a hotbar's four
+                                             inputs each show for their own style. -->
+                                        <Border x:Name="MenuOpensBlock" Style="{StaticResource EditorBlock}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource EditorBlockHead}" Text="{Binding Menu_Keyboard_OpensWith, Source={x:Static strings:Strings.Instance}}"/>
                             <!-- Style row. All four setting combos below auto-size to
                                  their WIDEST ITEM and share one width group: MinWidth-only
                                  combos resized to the selected option (column rhythm
@@ -15934,7 +15937,6 @@
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
-
                             <!-- Keyboard (#566): how the keys are laid out and picked. -->
                             <Grid Margin="0,0,0,4"
                                   Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -15973,91 +15975,6 @@
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
-
-                            <!-- Web Menus (#471): a Touch Grid menu can be a page on the
-                                 web controller's phone deck. A radial menu cannot, so
-                                 the row shows for Touch Grid, and on any menu while the
-                                 flag is set so it stays visible and resettable. -->
-                            <Grid Margin="0,0,0,8"
-                                  Visibility="{Binding ShowWebControllerRow, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <CheckBox VerticalAlignment="Center" Content="{Binding Menu_ShowOnWebController, Source={x:Static strings:Strings.Instance}}"
-                                              ToolTip="{Binding Menu_ShowOnWebController_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              IsChecked="{Binding ShowOnWebController, Mode=TwoWay}"/>
-                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ShowOnWebController" SettingLabel="{Binding Menu_ShowOnWebController, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ShowOnWebController"/>
-                                </StackPanel>
-                            </Grid>
-
-                            <!-- Layer gate (#413, @brawler14801 on discussion #409). The
-                                 field, its persistence and the runtime gate all existed.
-                                 Only the editor did not, so an imported or starter
-                                 profile could carry a layer-gated menu and a hand-built
-                                 one could not. Same shape and the same two visibility
-                                 triggers as the macro editor's Layer row: shown when the
-                                 slot has layers, or when this menu already carries a
-                                 scope so it is always visible and clearable. -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ShowsLayerRow}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Text="{Binding Menu_Layer, Source={x:Static strings:Strings.Instance}}"
-                                           ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <!-- The picker's collection is reconciled in place and
-                                         never replaced, so the width behavior's ItemsSource
-                                         watch would never fire. The version counter tells
-                                         it when labels changed under a stable identity. -->
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding LayerChoices}"
-                                              common:ComboBoxWidthBehavior.SizeToItems="True"
-                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              common:ComboBoxWidthBehavior.ItemsVersion="{Binding LayerChoicesVersion}"
-                                              ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              SelectedValue="{Binding LayerMask, Mode=TwoWay}"
-                                              SelectedValuePath="LayerMask"
-                                              DisplayMemberPath="LayerName"/>
-                                    <ui:Button Command="{Binding ResetLayerCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Layer, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </Grid>
-
-                            <!-- Stay-open (#413): the layer holds the menu open and the
-                                 surface only steers. A modifier on the gate above, so it
-                                 lives directly under it and shows once a real layer is
-                                 chosen (or while the flag is set, so a loaded file's
-                                 flag is always visible and resettable). -->
-                            <Grid Margin="0,0,0,8"
-                                  Visibility="{Binding ShowLayerHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <CheckBox Content="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"
-                                              ToolTip="{Binding Menu_LayerHoldsOpen_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              IsChecked="{Binding LayerHoldsOpen, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                    <ui:Button Command="{Binding ResetLayerHoldsOpenCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </Grid>
-
                             <!-- Opens With (#566): any input on the slot's devices, or two
                                  held together, the row shape of a keyboard control. -->
                             <Grid Margin="0,0,0,4" DataContext="{Binding OpenRow}"
@@ -16131,7 +16048,6 @@
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
-
                             <!-- Opens On (#566): the macro trigger's press modes. Steam's
                                  Long_Press and Double_Press on Show Keyboard import here, so
                                  a short press keeps its own binding, and its Release imports
@@ -16172,7 +16088,6 @@
                                     <ui:Button Command="{Binding ResetOpenPressCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_OpenPress, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
-
                             <!-- Open When a Text Box Is Selected (#566). -->
                             <Grid Margin="0,0,0,4"
                                   Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -16198,7 +16113,6 @@
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
-
                             <!-- Host input row (Reset + Record per canon). A keyboard
                                  menu steers from its Keyboard Controls card (#566). -->
                             <Grid Margin="0,0,0,8"
@@ -16246,7 +16160,6 @@
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
-
                             <!-- Custom opener steer axes (Custom host only): any
                                  recorded axis on any device, which is how joysticks,
                                  wheels, and other non-gamepad devices host menus. -->
@@ -16362,68 +16275,6 @@
                                     <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
-
-                            <!-- Click input: the button On Click / On Click Release
-                                 use, assignable on EVERY opener. The old behavior
-                                 hard-wired it to the under-stick button, a gamepad
-                                 convention joysticks and wheels do not share. -->
-                            <Grid Margin="0,0,0,8"
-                                  Visibility="{Binding ShowsClickRow, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Text="{Binding Menu_ClickInput, Source={x:Static strings:Strings.Instance}}"
-                                           ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <StackPanel Orientation="Vertical">
-                                        <ComboBox MinWidth="260" ItemsSource="{Binding ClickChoicesView}"
-                                                  ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
-                                                  SelectedValue="{Binding ClickSelected, Mode=TwoWay}">
-                                            <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                        </ComboBox>
-                                        <TextBlock FontSize="10"
-                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
-                                                   Text="{Binding ClickSubtitle}">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ClickSelected}" Value="">
-                                                            <Setter Property="FontStyle" Value="Italic"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <ui:Button AutomationProperties.Name="{Binding ClickRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
-                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                               CommandParameter="Click"
-                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
-                                               VerticalAlignment="Top">
-                                        <controls:GlyphText Text="{Binding ClickRecordIcon}" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{DynamicResource EmberBrush}"/>
-                                    </ui:Button>
-                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_Click, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </Grid>
-
                             <!-- Hotbar: the four controls Steam's hotbar runs on, Down,
                                  Left, Right and Up of its opener. Each records any button
                                  on the slot's devices, and an empty one reads the
@@ -16697,7 +16548,6 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
-
                             <!-- Pad half (touchpad hosts only). A keyboard points with
                                  the whole pad (#566). -->
                             <Grid Margin="0,0,0,8"
@@ -16720,50 +16570,13 @@
                                     <ui:Button Command="{Binding ResetHostHalfCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_HostHalf, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
-
-                            <!-- Fire mode -->
-                            <Grid Margin="0,0,0,4"
-                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Text="{Binding Menu_FireMode, Source={x:Static strings:Strings.Instance}}"
-                                           ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding FireOptions}"
-                                              common:ComboBoxWidthBehavior.SizeToItems="True"
-                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              DisplayMemberPath="Label" SelectedValuePath="Value"
-                                              SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}">
-                                        <ComboBox.ItemContainerStyle>
-                                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                                <Setter Property="ToolTip" Value="{Binding Description}"/>
-                                            </Style>
-                                        </ComboBox.ItemContainerStyle>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_FireMode, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </Grid>
-                            <!-- Persistent caption for the selected fire mode. A tooltip
-                                 alone failed its one field test: "On Click" reads as
-                                 self-explanatory while actually requiring a stick or
-                                 trackpad CLICK, and the user walked straight past it. -->
-                            <Grid Margin="0,0,0,10"
-                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="{Binding SelectedFireDescription}"
-                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
-                                           Margin="0,2,0,0" FontSize="12"/>
-                            </Grid>
-
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Cells: how many a cell menu has, and each one's name, binding and
+                                             icon. A keyboard has none. -->
+                                        <Border x:Name="MenuCellsBlock" Style="{StaticResource EditorBlock}" Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource EditorBlockHead}" Text="{Binding Menu_CellBindings, Source={x:Static strings:Strings.Instance}}"/>
                             <!-- Cells + center -->
                             <Grid Margin="0,0,0,8"
                                   Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -16792,236 +16605,6 @@
                                     <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Cells, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
-
-                            <!-- Engage deadzone -->
-                            <Grid Margin="0,0,0,8"
-                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
-                                           ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Slider Width="160" Minimum="1" Maximum="95"
-                                            ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
-                                            Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                    <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
-                                                  Value="{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                            </Grid>
-
-                            <!-- Keyboard Controls card (#566): the steering inputs and every
-                                 control of the layout, each recorded from any device on the
-                                 slot, with Map All and a reset for the whole card. -->
-                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12"
-                                    Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <StackPanel Grid.IsSharedSizeScope="True">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                        <TextBlock Text="{Binding Menu_Keyboard_Controls, Source={x:Static strings:Strings.Instance}}"
-                                                   FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                        <TextBlock Text="{Binding KeyboardControlsSummary}" Margin="10,0,0,0" VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
-                                        <Button Content="{Binding MapAllText}" Margin="12,0,0,0" Padding="10,4"
-                                                Command="{Binding DataContext.MenuKeyboardMapAllCommand, RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                ToolTip="{Binding Menu_Keyboard_MapAll_Tip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ui:Button Command="{Binding ResetKeyboardControlsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Menu_Reset_KeyboardControls, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Menu_Keyboard_Controls_Desc, Source={x:Static strings:Strings.Instance}}"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                               TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left"
-                                               Margin="0,0,0,10" FontSize="12"/>
-                                    <!-- Engage Deadzone: how far a steering control is pushed
-                                         before the highlight moves, the setting a ring and a
-                                         grid engage at. -->
-                                    <Grid Margin="0,0,0,8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <Slider Width="160" Minimum="1" Maximum="95"
-                                                    AutomationProperties.AutomationId="MenuKeyboard_EngageDeadzone"
-                                                    AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
-                                                    ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                    Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                            <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
-                                                          AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
-                                                          Value="{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <ItemsControl ItemsSource="{Binding KeyboardControlRows}" ItemTemplate="{StaticResource KeyboardControlRowTemplate}"
-                                                  Focusable="False" IsTabStop="False"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Keyboard card (#566): where the keys go and what the
-                                 keyboard shows. -->
-                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12"
-                                    Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <StackPanel Grid.IsSharedSizeScope="True">
-                                    <TextBlock Text="{Binding Menu_Keyboard_Card, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8"
-                                               FontWeight="SemiBold" TextWrapping="Wrap"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                    <Grid Margin="0,0,0,4">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_TypesThrough, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ComboBox MinWidth="260" ItemsSource="{Binding TypesThroughOptions}"
-                                                      common:ComboBoxWidthBehavior.SizeToItems="True"
-                                                      ToolTip="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
-                                                      DisplayMemberPath="Label" SelectedValuePath="Value"
-                                                      SelectedValue="{Binding TypesThrough, Mode=TwoWay}"/>
-                                            <ui:Button Command="{Binding ResetTypesThroughCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_TypesThrough, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="0,0,0,10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="1" Text="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                   TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
-                                                   Margin="0,2,0,0" FontSize="12"/>
-                                    </Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_FunctionRow, Source={x:Static strings:Strings.Instance}}"
-                                                  ToolTip="{Binding Menu_FunctionRow_Caption, Source={x:Static strings:Strings.Instance}}"
-                                                  IsChecked="{Binding FunctionRow, Mode=TwoWay}"/>
-                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FunctionRow" SettingLabel="{Binding Menu_FunctionRow, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_FunctionRow"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Menu_FunctionRow_Caption, Source={x:Static strings:Strings.Instance}}" Margin="28,0,0,10"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_WordSuggestions, Source={x:Static strings:Strings.Instance}}"
-                                                  ToolTip="{Binding Menu_WordSuggestions_Caption, Source={x:Static strings:Strings.Instance}}"
-                                                  IsChecked="{Binding Suggestions, Mode=TwoWay}"/>
-                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Suggestions" SettingLabel="{Binding Menu_WordSuggestions, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_Suggestions"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Menu_WordSuggestions_Caption, Source={x:Static strings:Strings.Instance}}" Margin="28,0,0,10"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"/>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_SymbolsPage, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_SymbolsPage_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <TextBox Width="360" Text="{Binding Symbols, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     ToolTip="{Binding Menu_SymbolsPage_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                     TextWrapping="Wrap" AcceptsReturn="False" MaxLength="400"/>
-                                            <ui:Button Command="{Binding ResetSymbolsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_Symbols, Source={x:Static strings:Strings.Instance}}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Overlay geometry card -->
-                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12">
-                                <!-- Own shared-size scope: this card's labels line up with each
-                                     other, not with the wider editor rows outside it. -->
-                                <StackPanel Grid.IsSharedSizeScope="True">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
-                                                   FontWeight="SemiBold" TextWrapping="Wrap"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                        <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Menu_Reset_Geometry, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Menu_Keyboard_Overlay_Caption, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"
-                                               Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                                Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}"
-                                                  ToolTip="{Binding Menu_ShowLabels_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                  IsChecked="{Binding ShowLabels}"/>
-                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ShowLabels" SettingLabel="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ShowLabels_12924"/>
-                                    </StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_Position, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                                    ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}">
-                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5"
-                                                          Value="{Binding PosXPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PosXPercent" SettingLabel="{Binding ResetLabel_PositionX, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_PosXPercent_12937" Margin="4,0,8,0"/>
-                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
-                                                          Value="{Binding PosYPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PosYPercent" SettingLabel="{Binding ResetLabel_PositionY, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_PosYPercent_12939"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid Margin="0,0,0,8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox Width="200" Minimum="10" Maximum="400" SmallChange="10"
-                                                          ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          Value="{Binding ScalePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScalePercent" SettingLabel="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ScalePercent_12954"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox Width="200" Minimum="5" Maximum="100" SmallChange="5"
-                                                          ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
-                                                          Value="{Binding OpacityPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OpacityPercent" SettingLabel="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_OpacityPercent_12971"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Cell bindings -->
-                            <TextBlock Text="{Binding Menu_CellBindings, Source={x:Static strings:Strings.Instance}}"
-                                       FontWeight="SemiBold" Margin="0,0,0,6"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                       Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <!-- Cell rows share their own auto column for the "Center"/"Item N"
                                  header (Menu_CellCenter is a word, not a number, and is longer
                                  than 72px in several locales). The pickers keep their rhythm
@@ -17133,7 +16716,432 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Keyboard: a keyboard menu's own controls and behavior. -->
+                                        <Border x:Name="MenuKeyboardBlock" Style="{StaticResource EditorBlock}" Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource EditorBlockHead}" Text="{Binding Menu_Keyboard_Card, Source={x:Static strings:Strings.Instance}}"/>
+                            <!-- Keyboard Controls card (#566): the steering inputs and every
+                                 control of the layout, each recorded from any device on the
+                                 slot, with Map All and a reset for the whole card. -->
+                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12"
+                                    Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <StackPanel Grid.IsSharedSizeScope="True">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Menu_Keyboard_Controls, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding KeyboardControlsSummary}" Margin="10,0,0,0" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
+                                        <Button Content="{Binding MapAllText}" Margin="12,0,0,0" Padding="10,4"
+                                                Command="{Binding DataContext.MenuKeyboardMapAllCommand, RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                                ToolTip="{Binding Menu_Keyboard_MapAll_Tip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ui:Button Command="{Binding ResetKeyboardControlsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Menu_Reset_KeyboardControls, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Menu_Keyboard_Controls_Desc, Source={x:Static strings:Strings.Instance}}"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left"
+                                               Margin="0,0,0,10" FontSize="12"/>
+                                    <!-- Engage Deadzone: how far a steering control is pushed
+                                         before the highlight moves, the setting a ring and a
+                                         grid engage at. -->
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Slider Width="160" Minimum="1" Maximum="95"
+                                                    AutomationProperties.AutomationId="MenuKeyboard_EngageDeadzone"
+                                                    AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                    ToolTip="{Binding Menu_Keyboard_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                    Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                            <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                                          AutomationProperties.Name="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                                          Value="{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <ItemsControl ItemsSource="{Binding KeyboardControlRows}" ItemTemplate="{StaticResource KeyboardControlRowTemplate}"
+                                                  Focusable="False" IsTabStop="False"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- Keyboard card (#566): where the keys go and what the
+                                 keyboard shows. -->
+                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12"
+                                    Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <StackPanel Grid.IsSharedSizeScope="True">
+                                    <TextBlock Text="{Binding Menu_Keyboard_Card, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8"
+                                               FontWeight="SemiBold" TextWrapping="Wrap"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_TypesThrough, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <ComboBox MinWidth="260" ItemsSource="{Binding TypesThroughOptions}"
+                                                      common:ComboBoxWidthBehavior.SizeToItems="True"
+                                                      ToolTip="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
+                                                      DisplayMemberPath="Label" SelectedValuePath="Value"
+                                                      SelectedValue="{Binding TypesThrough, Mode=TwoWay}"/>
+                                            <ui:Button Command="{Binding ResetTypesThroughCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_TypesThrough, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="1" Text="{Binding Menu_TypesThrough_Caption, Source={x:Static strings:Strings.Instance}}"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
+                                                   Margin="0,2,0,0" FontSize="12"/>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_FunctionRow, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Menu_FunctionRow_Caption, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding FunctionRow, Mode=TwoWay}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FunctionRow" SettingLabel="{Binding Menu_FunctionRow, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_FunctionRow"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Menu_FunctionRow_Caption, Source={x:Static strings:Strings.Instance}}" Margin="28,0,0,10"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_WordSuggestions, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Menu_WordSuggestions_Caption, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding Suggestions, Mode=TwoWay}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Suggestions" SettingLabel="{Binding Menu_WordSuggestions, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_Suggestions"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Menu_WordSuggestions_Caption, Source={x:Static strings:Strings.Instance}}" Margin="28,0,0,10"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuKeyboardCardLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_SymbolsPage, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_SymbolsPage_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <TextBox Width="360" Text="{Binding Symbols, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ToolTip="{Binding Menu_SymbolsPage_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                     TextWrapping="Wrap" AcceptsReturn="False" MaxLength="400"/>
+                                            <ui:Button Command="{Binding ResetSymbolsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_Symbols, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- More, a fold at the card's foot: the settings a menu seldom needs.
+                                             Its hint names them. -->
+                                        <controls:MoreRow x:Name="MenuMore" StateKey="Pad.Menus.More" Margin="0"
+                                                          AutomationProperties.AutomationId="Pad_More_Menu"
+                                                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
+                                            <controls:MoreRow.Hint>
+                                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
+                                                    <Binding Path="Menu_Layer" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="Menu_ClickInput" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="Menu_FireMode" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="Menu_Deadzone" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="Dashboard_MenuOverlay" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </controls:MoreRow.Hint>
+                                            <StackPanel>
+                            <!-- Layer gate (#413, @brawler14801 on discussion #409). The
+                                 field, its persistence and the runtime gate all existed.
+                                 Only the editor did not, so an imported or starter
+                                 profile could carry a layer-gated menu and a hand-built
+                                 one could not. Same shape and the same two visibility
+                                 triggers as the macro editor's Layer row: shown when the
+                                 slot has layers, or when this menu already carries a
+                                 scope so it is always visible and clearable. -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ShowsLayerRow}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Layer, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <!-- The picker's collection is reconciled in place and
+                                         never replaced, so the width behavior's ItemsSource
+                                         watch would never fire. The version counter tells
+                                         it when labels changed under a stable identity. -->
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding LayerChoices}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              common:ComboBoxWidthBehavior.ItemsVersion="{Binding LayerChoicesVersion}"
+                                              ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              SelectedValue="{Binding LayerMask, Mode=TwoWay}"
+                                              SelectedValuePath="LayerMask"
+                                              DisplayMemberPath="LayerName"/>
+                                    <ui:Button Command="{Binding ResetLayerCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Layer, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Stay-open (#413): the layer holds the menu open and the
+                                 surface only steers. A modifier on the gate above, so it
+                                 lives directly under it and shows once a real layer is
+                                 chosen (or while the flag is set, so a loaded file's
+                                 flag is always visible and resettable). -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding ShowLayerHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <CheckBox Content="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Menu_LayerHoldsOpen_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding LayerHoldsOpen, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetLayerHoldsOpenCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Web Menus (#471): a Touch Grid menu can be a page on the
+                                 web controller's phone deck. A radial menu cannot, so
+                                 the row shows for Touch Grid, and on any menu while the
+                                 flag is set so it stays visible and resettable. -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding ShowWebControllerRow, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <CheckBox VerticalAlignment="Center" Content="{Binding Menu_ShowOnWebController, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Menu_ShowOnWebController_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding ShowOnWebController, Mode=TwoWay}"/>
+                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ShowOnWebController" SettingLabel="{Binding Menu_ShowOnWebController, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ShowOnWebController"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Click input: the button On Click / On Click Release
+                                 use, assignable on EVERY opener. The old behavior
+                                 hard-wired it to the under-stick button, a gamepad
+                                 convention joysticks and wheels do not share. -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding ShowsClickRow, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_ClickInput, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding ClickChoicesView}"
+                                                  ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding ClickSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding ClickSubtitle}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ClickSelected}" Value="">
+                                                            <Setter Property="FontStyle" Value="Italic"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <ui:Button AutomationProperties.Name="{Binding ClickRecordText, TargetNullValue=''}" Command="{Binding DataContext.MenuRecordTargetCommand,
+                                                   RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                               CommandParameter="Click"
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
+                                        <controls:GlyphText Text="{Binding ClickRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_Click, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Fire mode -->
+                            <Grid Margin="0,0,0,4"
+                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_FireMode, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding FireOptions}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Value"
+                                              SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}">
+                                        <ComboBox.ItemContainerStyle>
+                                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                <Setter Property="ToolTip" Value="{Binding Description}"/>
+                                            </Style>
+                                        </ComboBox.ItemContainerStyle>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_FireMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Persistent caption for the selected fire mode. A tooltip
+                                 alone failed its one field test: "On Click" reads as
+                                 self-explanatory while actually requiring a stick or
+                                 trackpad CLICK, and the user walked straight past it. -->
+                            <Grid Margin="0,0,0,10"
+                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedFireDescription}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
+                                           Margin="0,2,0,0" FontSize="12"/>
+                            </Grid>
+                            <!-- Engage deadzone -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Slider Width="160" Minimum="1" Maximum="95"
+                                            ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
+                                            Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                                  Value="{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+                            <!-- Overlay geometry card -->
+                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12">
+                                <!-- Own shared-size scope: this card's labels line up with each
+                                     other, not with the wider editor rows outside it. -->
+                                <StackPanel Grid.IsSharedSizeScope="True">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Menu_Reset_Geometry, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Menu_Keyboard_Overlay_Caption, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,8"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left" FontSize="12"
+                                               Visibility="{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                Visibility="{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <CheckBox VerticalAlignment="Center" Content="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Menu_ShowLabels_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding ShowLabels}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ShowLabels" SettingLabel="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ShowLabels_12924"/>
+                                    </StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Position, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                    ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}">
+                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5"
+                                                          Value="{Binding PosXPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PosXPercent" SettingLabel="{Binding ResetLabel_PositionX, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_PosXPercent_12937" Margin="4,0,8,0"/>
+                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
+                                                          Value="{Binding PosYPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PosYPercent" SettingLabel="{Binding ResetLabel_PositionY, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_PosYPercent_12939"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <ui:NumberBox Width="200" Minimum="10" Maximum="400" SmallChange="10"
+                                                          ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                          Value="{Binding ScalePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScalePercent" SettingLabel="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_ScalePercent_12954"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuGeometryLabel"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                   Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <ui:NumberBox Width="200" Minimum="5" Maximum="100" SmallChange="5"
+                                                          ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                          Value="{Binding OpacityPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OpacityPercent" SettingLabel="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_OpacityPercent_12971"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
                             <controls:FoldList>
                             <!-- Icon Packages card (#390), the Sound Packages
                                  card's shape on the Menus tab. -->
@@ -17174,7 +17182,7 @@
                             </controls:FoldCard>
                             </controls:FoldList>
                                             </StackPanel>
-                                        </Border>
+                                        </controls:MoreRow>
                                     </StackPanel>
                                 </Grid>
                             </TabItem>

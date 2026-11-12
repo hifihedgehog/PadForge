@@ -379,6 +379,67 @@ namespace PadForge.Tests
             Assert.Equal(2, host.Descendants().Count(e => (string)e.Attribute("Visibility") == combination));
         }
 
+        /// <summary>The menu editor's rows stand in blocks, as its board
+        /// draws them: Opens holds the menu's style and what opens and
+        /// steers it, Cells a cell menu's cells, Keyboard a keyboard menu's
+        /// own cards, and More, a fold at the card's foot, what a menu
+        /// seldom needs. Every row kept the rule that shows it, and the
+        /// label column's width is shared across the blocks.</summary>
+        [Fact]
+        public void TheMenuEditorsRowsStandInOpens_Cells_Keyboard_AndMore()
+        {
+            var page = Page();
+            var host = Named(page, "MenuEditorHost");
+            Assert.Equal("True", (string)host.Attribute("Grid.IsSharedSizeScope"));
+            var opens = Named(host, "MenuOpensBlock");
+            var cells = Named(host, "MenuCellsBlock");
+            var keyboard = Named(host, "MenuKeyboardBlock");
+            var more = Named(host, "MenuMore");
+            Assert.Equal(new[] { "DockPanel", "Border", "Border", "Border", "MoreRow" }, host.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { opens, cells, keyboard, more }, host.Elements().Skip(1));
+            Assert.All(new[] { opens, cells, keyboard }, b => Assert.Equal("{StaticResource EditorBlock}", (string)b.Attribute("Style")));
+            // A block's head has the blocks' look.
+            Assert.All(new[] { opens, cells, keyboard }, b => Assert.Equal("{StaticResource EditorBlockHead}",
+                (string)Assert.Single(b.Elements()).Elements().First().Attribute("Style")));
+
+            string Gate(XElement row) => ((string)row.Attribute("Visibility") ?? "{Binding ").Substring("{Binding ".Length).Split(',')[0];
+            const string cellMenu = "{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}";
+            const string keys = "{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}";
+            Assert.Null(opens.Attribute("Visibility"));
+            Assert.Equal(cellMenu, (string)cells.Attribute("Visibility"));
+            Assert.Equal(keys, (string)keyboard.Attribute("Visibility"));
+
+            // Opens: the style, then each style's own rows under its rule.
+            var opensRows = Assert.Single(opens.Elements()).Elements().Skip(1).ToList();
+            Assert.Equal(new[]
+                {
+                    "", "", "IsKeyboard", "IsKeyboard", "DataContext.IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard",
+                    "IsCellMenu", "IsCellMenu", "ShowsCustomAxesRows", "ShowsCustomAxesRows",
+                    "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "ShowsHostHalfRow",
+                },
+                opensRows.Select(Gate));
+            Assert.Contains("{Binding KindIndex, Mode=TwoWay}", opensRows[0].ToString());
+            Assert.Contains("ElementName=MenuEditorHost", (string)opensRows[4].Attribute("Visibility"));
+
+            // Cells: how many, then the cells. Keyboard: its two cards.
+            var cellRows = Assert.Single(cells.Elements()).Elements().Skip(1).ToList();
+            Assert.Equal(2, cellRows.Count);
+            Assert.Contains("Menu_Cells", cellRows[0].ToString());
+            Assert.Equal("{Binding Cells}", (string)cellRows[1].Attribute("ItemsSource"));
+            Assert.All(cellRows, r => Assert.Equal("IsCellMenu", Gate(r)));
+            var keyboardRows = Assert.Single(keyboard.Elements()).Elements().Skip(1).ToList();
+            Assert.Equal(2, keyboardRows.Count);
+            Assert.All(keyboardRows, r => Assert.Equal("IsKeyboard", Gate(r)));
+
+            // More: the rest, each under its own rule.
+            Assert.Equal("Pad.Menus.More", (string)more.Attribute("StateKey"));
+            Assert.Equal("0", (string)more.Attribute("Margin"));
+            var moreRows = Assert.Single(more.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
+            Assert.Equal(new[] { "", "ShowLayerHold", "ShowWebControllerRow", "ShowsClickRow", "IsCellMenu", "IsCellMenu", "IsCellMenu", "", "" },
+                moreRows.Select(Gate));
+            Assert.Equal("FoldList", moreRows[^1].Name.LocalName);
+        }
+
         /// <summary>A row of a setting in the macro editor, as the board
         /// draws it: 44 tall, a label of 190 with 12 after it, the
         /// control, and the reset 10 after that at the row's end. The section gives its

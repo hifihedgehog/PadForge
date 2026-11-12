@@ -293,5 +293,84 @@ namespace PadForge.Tests
 
             Assert.Matches(@"private void RenameName_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(\(sender as FrameworkElement\)\?\.Tag is not TextBox box\) return;\s*box\.Focus\(\);\s*box\.SelectAll\(\);", Code());
         }
+
+        /// <summary>The macro editor's rows stand in the board's blocks:
+        /// When holds what fires the macro, Do its actions, and More, a
+        /// fold at the card's foot, what a macro seldom needs. Every row
+        /// kept the rule that shows it. The rows of the trigger's
+        /// combination that went under More took the combination's rule
+        /// with them, and Repeat shows by its own.</summary>
+        [Fact]
+        public void TheMacroEditorsRowsStandInWhen_Do_AndMore()
+        {
+            var page = Page();
+            var host = Named(page, "MacroEditorHost");
+            var when = Named(host, "MacroWhenBlock");
+            var act = Named(host, "MacroDoBlock");
+            var more = Named(host, "MacroMore");
+            // In that order under the head, and nothing after More.
+            Assert.Equal(new[] { "DockPanel", "Border", "Border", "MoreRow" }, host.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { when, act, more }, host.Elements().Skip(1));
+            foreach (var block in new[] { when, act })
+                Assert.Equal("{StaticResource EditorBlock}", (string)block.Attribute("Style"));
+            var blockLook = Keyed(page, "EditorBlock");
+            Assert.Equal("0,1,0,0", SetterOf(blockLook, "BorderThickness"));
+            Assert.Equal("20,14,12,14", SetterOf(blockLook, "Padding"));
+            var headLook = Keyed(page, "EditorBlockHead");
+            Assert.Equal("13", SetterOf(headLook, "FontSize"));
+            Assert.Equal("SemiBold", SetterOf(headLook, "FontWeight"));
+            Assert.Equal("{DynamicResource EmberHotBrush}", SetterOf(headLook, "Foreground"));
+
+            const string combination = "{Binding ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}";
+            string Gate(XElement row) => ((string)row.Attribute("Visibility") ?? "").Substring("{Binding ".Length).Split(',')[0];
+
+            // When: the head, the combination's inputs, then the way the
+            // macro fires and that way's own settings.
+            var whenRows = Assert.Single(when.Elements()).Elements().ToList();
+            Assert.Equal(8, whenRows.Count);
+            Assert.Equal("{StaticResource EditorBlockHead}", (string)whenRows[0].Attribute("Style"));
+            Assert.Equal("{Binding Macro_Trigger" + S, (string)whenRows[0].Attribute("Text"));
+            var inputs = whenRows[1];
+            Assert.Equal(combination, (string)inputs.Attribute("Visibility"));
+            string inputsText = inputs.ToString();
+            foreach (string part in new[] { "SlotMacroTriggerChoicesView", "RecordTriggerCommand", "ClearTriggerCommand", "Macro_RecordHint", "RecordingLiveText", "TriggerInputItems" })
+                Assert.Contains(part, inputsText);
+            Assert.Contains("{Binding TriggerMode, Mode=TwoWay}", whenRows[2].ToString());
+            Assert.Null(whenRows[2].Attribute("Visibility"));
+            Assert.Equal(new[] { "ShowsHoldTimeRow", "IsDoublePressMode", "ShowsInlineIntervalRow", "IsCustomExpressionMode" },
+                whenRows.Skip(3).Take(4).Select(Gate));
+            Assert.Equal("FormulaEditor", Name(whenRows[6]));
+            Assert.Contains("Macro_AlwaysDesc", whenRows[7].ToString());
+
+            // Do: the head, the actions, their buttons, and the editor of
+            // the selected one, which shows only while one is selected.
+            var doRows = Assert.Single(act.Elements()).Elements().ToList();
+            Assert.Equal(4, doRows.Count);
+            Assert.Equal("{Binding Macro_ActionSequence" + S, (string)doRows[0].Attribute("Text"));
+            Assert.Contains(doRows[1].Descendants(), e => Name(e) == "ActionsList");
+            Assert.Contains("AddActionCommand", doRows[2].ToString());
+            Assert.Equal("{Binding SelectedAction}", (string)doRows[3].Attribute("DataContext"));
+            Assert.Contains("ElementName=MacroEditorHost", (string)doRows[3].Attribute("Visibility"));
+
+            // More: the layer, the rest of the combination under the
+            // combination's rule, and Repeat under its own.
+            Assert.Equal("Pad.Macros.More", (string)more.Attribute("StateKey"));
+            Assert.Equal("0", (string)more.Attribute("Margin"));
+            var moreRows = Assert.Single(more.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
+            Assert.Equal(5, moreRows.Count);
+            Assert.Contains("{Binding LayerMask, Mode=TwoWay}", moreRows[0].ToString());
+            var rest = moreRows[1];
+            Assert.Equal(combination, (string)rest.Attribute("Visibility"));
+            string[] kept = { "TriggerSource", "TriggerAxisThreshold", "TriggerAxisDirectionIndex", "ConsumeTriggerButtons" };
+            Assert.Equal(kept, rest.Elements().Select(r => kept.First(k => r.ToString().Contains(k, StringComparison.Ordinal))));
+            // The old axis trigger's two rows show only for a trigger that
+            // has one.
+            Assert.All(rest.Elements().Skip(1).Take(2), r => Assert.Equal("HasLegacyAxisTrigger", Gate(r)));
+            Assert.All(moreRows.Skip(2), r => Assert.Equal("ShowsRepeatSection", Gate(r)));
+
+            // The combination's rule stands on those two groups and nowhere
+            // else.
+            Assert.Equal(2, host.Descendants().Count(e => (string)e.Attribute("Visibility") == combination));
+        }
     }
 }

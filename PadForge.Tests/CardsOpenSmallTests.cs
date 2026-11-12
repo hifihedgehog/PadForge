@@ -111,7 +111,24 @@ namespace PadForge.Tests
                 new[] { "{Binding SoundMasterVolume", "DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay" },
                 new[] { "SelectedMirrorSourceId", "DeviceConfig.AudioMirrorEngageMode", "DeviceConfig.AudioToneFilterMode", "DeviceConfig.HeadphoneVolume",
                         "DeviceConfig.Ds5AudioBufferLength", "DeviceConfig.AudioOutputPath", "DeviceConfig.AudioCrossfeedLevel", "SoundTestCommand" }),
+            // A macro opens on what fires it and what it does, as its board
+            // draws it. Its hint is put together from the names of what is
+            // under More, until the page's string round gives it a string of
+            // its own.
+            ("Pad_More_Macro", "Pad.Macros.More", "Macro_Layer+Macro_Source+Macro_Threshold+Macro_AxisDirection+Macro_ConsumeTrigger+Macro_Repeat",
+                new[] { "{Binding TriggerMode, Mode=TwoWay}", "RecordTriggerCommand", "TriggerInputItems", "SlotMacroTriggerChoicesView", "ActionsList", "AddActionCommand" },
+                new[] { "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "TriggerAxisThreshold", "TriggerAxisDirectionIndex",
+                        "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}", "{Binding RepeatCount, Mode=TwoWay}" }),
         };
+
+        /// <summary>A More row's hint: the key of its string, or the keys of
+        /// the strings it is put together from, joined by a plus.</summary>
+        private static string HintOf(XElement row)
+        {
+            var composed = row.Elements().FirstOrDefault(e => e.Name.LocalName == "MoreRow.Hint");
+            if (composed == null) return Key(row, "Hint");
+            return string.Join("+", composed.Descendants().Where(e => e.Name.LocalName == "Binding").Select(e => (string)e.Attribute("Path")));
+        }
 
         [Fact]
         public void TheCardsThatFoldAreTheTables()
@@ -221,7 +238,7 @@ namespace PadForge.Tests
                 var row = rows.Single(r => Id(r) == want.Id);
                 Assert.Equal(want.StateKey, (string)row.Attribute("StateKey"));
                 Assert.Equal("Common_More", Key(row, "Header"));
-                Assert.Equal(want.Hint, Key(row, "Hint"));
+                Assert.Equal(want.Hint, HintOf(row));
 
                 string under = row.ToString();
                 // Up front: what stands before the row in its own panel. A

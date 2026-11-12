@@ -452,6 +452,65 @@ namespace PadForge.Tests
             Assert.True(Item(MappingSetMigrator.MotionYawTarget).IsInputActive);
             Assert.Equal("0", Item(MappingSetMigrator.MotionRollTarget).CurrentValueText);
             Assert.False(Item(MappingSetMigrator.MotionRollTarget).IsInputActive);
+            // The meter beside each row: the value's share of full scale.
+            Assert.Equal(1.0, Item(MappingSetMigrator.MotionPitchTarget).LiveLevel, 3);
+            Assert.Equal(0.5, Item(MappingSetMigrator.MotionYawTarget).LiveLevel, 3);
+            Assert.Equal(0.0, Item(MappingSetMigrator.MotionRollTarget).LiveLevel, 3);
+        }
+
+        /// <summary>The value meter (#574): each row's live value as a
+        /// share of its own full scale. A button is on or off, a stick
+        /// counts either way from rest, an Xbox or PlayStation trigger is
+        /// a ushort, a touchpad coordinate is in thousandths, and a MIDI
+        /// control change is its 7-bit value.</summary>
+        [Theory]
+        // Buttons.
+        [InlineData(1, true, false, "ButtonA", VirtualControllerType.Xbox, 1.0)]
+        [InlineData(0, true, false, "ButtonA", VirtualControllerType.Xbox, 0.0)]
+        // Sticks, either way from rest, and never past full.
+        [InlineData(16384, false, false, "LeftThumbAxisX", VirtualControllerType.Xbox, 0.5)]
+        [InlineData(-32767, false, false, "LeftThumbAxisX", VirtualControllerType.Xbox, 1.0)]
+        [InlineData(-32768, false, false, "RawAxis0", VirtualControllerType.Extended, 1.0)]
+        // Triggers: a ushort on a gamepad, 0 to 32767 on a raw slot or a VR hand.
+        [InlineData(65535, false, false, "LeftTrigger", VirtualControllerType.Xbox, 1.0)]
+        [InlineData(32768, false, false, "RightTrigger", VirtualControllerType.PlayStation, 0.5)]
+        [InlineData(16384, false, false, "RawAxis2", VirtualControllerType.Extended, 0.5)]
+        [InlineData(32767, false, false, "VrLTrigger", VirtualControllerType.Vr, 1.0)]
+        // A touchpad coordinate, which counts as button-class elsewhere.
+        [InlineData(500, true, true, "TouchpadX1", VirtualControllerType.PlayStation, 0.5)]
+        [InlineData(1, true, false, "TouchpadClick", VirtualControllerType.PlayStation, 1.0)]
+        // A MIDI control change.
+        [InlineData(127, false, false, "MidiCC7", VirtualControllerType.Midi, 1.0)]
+        [InlineData(64, false, false, "MidiCC7", VirtualControllerType.Midi, 0.504)]
+        public void TheMeterShowsARowsValueAsAShareOfItsFullScale(int value, bool discrete, bool touchpadAxis, string target,
+            VirtualControllerType type, double expected)
+            => Assert.Equal(expected, InputService.LiveLevelOf(value, discrete, touchpadAxis, target, type), 3);
+
+        [Fact]
+        public void TheMeterFollowsAGamepadsCombinedOutput()
+        {
+            var vm = new MainViewModel();
+            var svc = new InputService(vm) { SettingsService = new SettingsService(vm) };
+            var pad = vm.Pads[0];
+            pad.OutputType = VirtualControllerType.Xbox;
+            vm.SelectedNavTag = "Pad1";
+            using var manager = new InputManager();
+            typeof(InputService).GetField("_inputManager", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(svc, manager);
+            manager.CombinedOutputStates[0] = new PadForge.Engine.Gamepad
+            {
+                Buttons = PadForge.Engine.Gamepad.A,
+                LeftTrigger = 32768,
+                ThumbLX = -16384,
+            };
+            typeof(InputService).GetMethod("UpdateMappingLiveValues", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(svc, null);
+
+            MappingItem Item(string t) => pad.Mappings.Single(m => m.TargetSettingName == t);
+            Assert.Equal(1.0, Item("ButtonA").LiveLevel, 3);
+            Assert.Equal(0.0, Item("ButtonB").LiveLevel, 3);
+            Assert.Equal(0.5, Item("LeftTrigger").LiveLevel, 3);
+            Assert.Equal(0.0, Item("RightTrigger").LiveLevel, 3);
+            Assert.Equal(0.5, Item("LeftThumbAxisX").LiveLevel, 3);
+            Assert.Equal(0.0, Item("LeftThumbAxisY").LiveLevel, 3);
         }
 
         [Fact]

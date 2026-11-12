@@ -112,6 +112,8 @@ namespace PadForge.Common
             SetBrush("SteelPillLineBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xC9, 0xCD, 0xD6));
             // The chosen segment of a segmented switch, on the field's fill.
             SetBrush("SteelSegmentBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xD9, 0xDD, 0xE6));
+            // A band across a card: the header of a group of rows.
+            SetBrush("SteelBandBrush", dark ? Color.FromRgb(0x0F, 0x15, 0x20) : Color.FromRgb(0xF3, 0xF4, 0xF7));
             // The sidebar's rows. The selected one takes the raised fill and
             // one under the pointer a fainter lift. A controller's pill and
             // the Add Controller entry clear the row's own fills (their

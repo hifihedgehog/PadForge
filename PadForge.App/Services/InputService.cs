@@ -2580,7 +2580,11 @@ namespace PadForge.Services
                 {
                     if (padVm == null) continue;
                     foreach (var m in padVm.Mappings)
-                        if (m != null) m.IsInputActive = false;
+                    {
+                        if (m == null) continue;
+                        m.IsInputActive = false;
+                        m.LiveLevel = 0;
+                    }
                     padVm.ClearPipelineLiveness();
                 }
 
@@ -6116,6 +6120,7 @@ namespace PadForge.Services
                         mapping.CurrentValueText = memo.GyroText;
                     }
                     mapping.IsInputActive = false;
+                    mapping.LiveLevel = 0;
                     continue;
                 }
                 if (target == MappingSetMigrator.MotionAccelTarget)
@@ -6137,6 +6142,7 @@ namespace PadForge.Services
                         ? amemo.AccelText
                         : string.Empty;
                     mapping.IsInputActive = false;
+                    mapping.LiveLevel = 0;
                     continue;
                 }
 
@@ -6150,6 +6156,7 @@ namespace PadForge.Services
                     int axisValue = (int)Math.Round(Math.Clamp(rowValue, -1f, 1f) * 32767f);
                     mapping.CurrentValueText = LiveValueString(axisValue);
                     mapping.IsInputActive = Math.Abs(axisValue) > 1500;
+                    mapping.LiveLevel = Math.Abs(axisValue) / 32767.0;
                     continue;
                 }
 
@@ -6163,6 +6170,7 @@ namespace PadForge.Services
                         ? _inputManager.CombinedPressureStates[padIndex][pressureIndex] * 257 : 0;
                     mapping.CurrentValueText = LiveValueString(pull);
                     mapping.IsInputActive = pull > 1500;
+                    mapping.LiveLevel = pull / 65535.0;
                     continue;
                 }
 
@@ -6189,6 +6197,8 @@ namespace PadForge.Services
                         : isMidiCc
                             ? Math.Abs(combined.Value - 64) > 2
                             : Math.Abs(combined.Value) > 1500;
+                    mapping.LiveLevel = LiveLevelOf(combined.Value, mapping.IsTargetDiscrete,
+                        mapping.IsTouchpadAxisTarget, target, outputType);
                     continue;
                 }
 
@@ -6196,6 +6206,7 @@ namespace PadForge.Services
                 {
                     mapping.CurrentValueText = string.Empty;
                     mapping.IsInputActive = false;
+                    mapping.LiveLevel = 0;
                     continue;
                 }
                 // The fallback device is the guid the grip keys on (#392).
@@ -6204,6 +6215,10 @@ namespace PadForge.Services
                 mapping.IsInputActive = mapping.IsTargetDiscrete
                     ? fallbackValue != 0
                     : Math.Abs(fallbackValue) > 1500;
+                // The device's own number, on the device's own scale: the
+                // meter says on or off, never a share of a scale nobody
+                // knows here.
+                mapping.LiveLevel = mapping.IsInputActive ? 1 : 0;
             }
 
             // ── Pipeline heat chips (#175 item 10): recompute from this
@@ -6218,6 +6233,31 @@ namespace PadForge.Services
                 if (!string.IsNullOrEmpty(mask)) engagedMask = mask;
             }
             padVm.RefreshPipelineChips(engagedMask);
+        }
+
+        /// <summary>A row's live value as a share of its full scale, 0 to
+        /// 1, for the value meter beside the row (#574). A touchpad
+        /// coordinate is in thousandths. It is asked first, since those
+        /// rows count as button-class for the deadzone. A button-class
+        /// output is on or off. A MIDI control change is its 7-bit value.
+        /// An Xbox or PlayStation trigger is a ushort. Every other analog
+        /// output is on the plus or minus 32767 stick scale, a raw trigger
+        /// slot and a VR pull included (0 to 32767), and counts by its
+        /// size either way from rest.</summary>
+        internal static double LiveLevelOf(int value, bool discrete, bool touchpadAxis, string target,
+            VirtualControllerType outputType)
+        {
+            double full = 32767;
+            if (touchpadAxis)
+                full = 1000;
+            else if (discrete)
+                return value != 0 ? 1 : 0;
+            else if (target != null && target.StartsWith("MidiCC", StringComparison.Ordinal))
+                full = 127;
+            else if ((outputType == VirtualControllerType.Xbox || outputType == VirtualControllerType.PlayStation)
+                     && (target == "LeftTrigger" || target == "RightTrigger"))
+                full = 65535;
+            return Math.Clamp(Math.Abs((double)value) / full, 0, 1);
         }
 
         /// <summary>Reads a target's current post-combine output value

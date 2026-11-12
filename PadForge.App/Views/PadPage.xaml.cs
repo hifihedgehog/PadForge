@@ -1275,14 +1275,64 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm || MappingDataGrid == null) return;
             var row = vm.RowOfTarget(vm.PickedTarget);
             if (row == null || !MappingDataGrid.Items.Contains(row)) return;
-            if (!ReferenceEquals(MappingDataGrid.SelectedItem, row))
+            // A row in a folded group is on no page. Its group opens, so
+            // the control that was open under the picture shows in the list.
+            if (vm.ListIsGrouped && !vm.IsListGroupOpen(row.Category))
             {
-                // A plain row draws as one line until this is set, as a
-                // click on it sets it (MappingRow_PreviewMouseLeftButtonDown).
-                if (row.IsTrivialDirect && !row.IsExpandedOverride)
-                    row.IsExpandedOverride = true;
-                MappingDataGrid.SelectedItem = row;
+                vm.SetListGroupOpen(row.Category, true);
+                SyncLiveListGroups();
             }
+            if (!ReferenceEquals(MappingDataGrid.SelectedItem, row))
+                MappingDataGrid.SelectedItem = row;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The list's groups (#574). The view model holds which ones are
+        //  folded, by category. A group's Expander is rebuilt, or handed
+        //  another group, whenever the table's rows change, so it takes
+        //  its state from the view model each time, and gives the view
+        //  model the state the user sets on it.
+        // ─────────────────────────────────────────────
+
+        /// <summary>A group's Expander came on the page.</summary>
+        private void ListGroup_Synced(object sender, RoutedEventArgs e) => SyncListGroup(sender as Expander);
+
+        /// <summary>A group's Expander was handed another group.</summary>
+        private void ListGroup_ContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+            => SyncListGroup(sender as Expander);
+
+        /// <summary>Opens or folds a group's Expander as the view model
+        /// holds its category. An Expander that is no group's, one inside
+        /// a row, is left alone.</summary>
+        private void SyncListGroup(Expander group)
+        {
+            if (group?.DataContext is not CollectionViewGroup { Name: MappingCategory category }) return;
+            if (DataContext is not PadViewModel vm) return;
+            bool open = vm.IsListGroupOpen(category);
+            if (group.IsExpanded != open) group.IsExpanded = open;
+        }
+
+        /// <summary>Brings every group on the page in step with the view
+        /// model, after the page's own code opened one.</summary>
+        private void SyncLiveListGroups()
+        {
+            var groups = MappingDataGrid?.Items.Groups;
+            if (groups == null) return;
+            foreach (object group in groups)
+            {
+                if (MappingDataGrid.ItemContainerGenerator.ContainerFromItem(group) is GroupItem item)
+                    SyncListGroup(FindDescendant<Expander>(item));
+            }
+        }
+
+        /// <summary>A group was opened or folded, by its band or by a screen
+        /// reader. The event bubbles, so one from an Expander inside a row
+        /// is passed over.</summary>
+        private void ListGroup_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Expander group || !ReferenceEquals(e.OriginalSource, group)) return;
+            if (group.DataContext is not CollectionViewGroup { Name: MappingCategory category }) return;
+            if (DataContext is PadViewModel vm) vm.SetListGroupOpen(category, group.IsExpanded);
         }
 
         /// <summary>Buttons went from the picture to the list or back. The
@@ -5474,12 +5524,12 @@ namespace PadForge.Views
         //  Multi-source rows used to force their details strip open
         //  permanently via code-behind DetailsVisibility writes (#175
         //  phase two item 10 killed that: two devices on a slot turned
-        //  four outputs into a scroll wall). Details now follow the
-        //  grid's stock VisibleWhenSelected mode, and an unselected
-        //  fan-in row collapses to the compact one-liner through the
-        //  row template's HasExtraSources / IsRowSelected trigger.
-        //  SelectionChanged mirrors selection onto each MappingItem so
-        //  that trigger can bind plain DataContext state.
+        //  four outputs into a scroll wall). Details follow the grid's
+        //  stock VisibleWhenSelected mode, and every row that is not
+        //  selected is its one line (#574) through the row template's
+        //  IsRowSelected trigger. SelectionChanged mirrors selection
+        //  onto each MappingItem so that trigger can bind plain
+        //  DataContext state.
         // ─────────────────────────────────────────────
 
         /// <summary>
@@ -5538,17 +5588,16 @@ namespace PadForge.Views
             // Auto sizing paint first, producing a brief wide-Options
             // flash before the measure pass tightened the column.
             //
-            // #175 telemetry board: compact rows (trivial + collapsed
-            // fan-in) collapse their cells presenter, which leaves their
-            // cells ungenerated and invisible to the width pass.
-            // Temporarily expand every compact row so each column's
-            // honest content width is measured, then restore the compact
-            // state. All inside this one dispatcher callback, so no
-            // frame renders the expanded state.
+            // A closed row hides its cells presenter, which leaves its
+            // cells ungenerated and invisible to the width pass, and
+            // every row but the selected one is closed (#574). Open them
+            // all for the measurement so each column's honest content
+            // width is taken, then close them again. All inside this one
+            // dispatcher callback, so no frame renders the open state.
             var expandedForMeasure = new List<MappingItem>();
             foreach (var item in grid.Items)
             {
-                if (item is MappingItem mi && (mi.IsTrivialDirect || mi.HasExtraSources) && !mi.IsExpandedOverride)
+                if (item is MappingItem mi && !mi.IsRowSelected && !mi.IsExpandedOverride)
                 {
                     mi.IsExpandedOverride = true;
                     expandedForMeasure.Add(mi);
@@ -5751,32 +5800,52 @@ namespace PadForge.Views
             return null;
         }
 
-        /// <summary>#175 telemetry board / phase two item 10: first click
-        /// on a compact row opens it back into the full editing row. The
-        /// row's cells are collapsed while compact, so the click never
+        /// <summary>A click on a closed row opens it into the full editing
+        /// row. A closed row's cells are collapsed, so the click never
         /// reaches a DataGridCell and WPF's own selection logic won't run.
-        /// Selecting here makes the opened row behave exactly like a
-        /// clicked full row (details strip opens via the
-        /// VisibleWhenSelected path). Trivial rows additionally need the
-        /// expansion override; fan-in rows expand on selection alone.
+        /// Selecting here opens the row: its cells show, and the details
+        /// strip opens via the VisibleWhenSelected path.
         /// The click leaves keyboard focus where the window's click handler
         /// put it, which is nowhere for a row, so a key the slot maps,
         /// pressed to test the mapping, never reaches the table. Tab reaches
-        /// the row from the keyboard. Clicks on already-expanded rows fall
-        /// through to normal cell handling.</summary>
+        /// the row from the keyboard. Clicks on an open row fall through to
+        /// normal cell handling.</summary>
         private void MappingRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
             if (row.IsSelected || MappingDataGrid == null) return;
-            if (mi.IsTrivialDirect && !mi.IsExpandedOverride)
+            // The closed line's own buttons act on the row and leave it
+            // closed. Opening here would take the button from under the
+            // pointer before its click (#574).
+            if (IsInsideButton(e.OriginalSource as DependencyObject, row)) return;
+            MappingDataGrid.SelectedItem = mi;
+        }
+
+        /// <summary>Whether an element is a button inside
+        /// <paramref name="within"/>, or sits in one. The walk goes up the
+        /// visual tree, and up the logical one where an element has no
+        /// visual parent: a run of text, or content whose host is not
+        /// built yet.</summary>
+        internal static bool IsInsideButton(DependencyObject element, DependencyObject within)
+        {
+            while (element != null && !ReferenceEquals(element, within))
             {
-                mi.IsExpandedOverride = true;
-                MappingDataGrid.SelectedItem = mi;
+                if (element is ButtonBase) return true;
+                DependencyObject parent = element is Visual || element is System.Windows.Media.Media3D.Visual3D
+                    ? VisualTreeHelper.GetParent(element)
+                    : null;
+                element = parent ?? LogicalTreeHelper.GetParent(element);
             }
-            else if (mi.HasExtraSources)
-            {
+            return false;
+        }
+
+        /// <summary>The chevron at a closed row's end opens the row: it
+        /// selects it, which shows its editor and the details under
+        /// it.</summary>
+        private void MappingRowOpen_Click(object sender, RoutedEventArgs e)
+        {
+            if (MappingDataGrid != null && (sender as FrameworkElement)?.DataContext is MappingItem mi)
                 MappingDataGrid.SelectedItem = mi;
-            }
         }
 
         /// <summary>Enter/Space on a focused row toggles it open and
@@ -5799,34 +5868,20 @@ namespace PadForge.Views
             if (RowKeyAction(e.Key) != MappingRowKeyAction.Toggle) return;
             if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
             if (MappingDataGrid == null) return;
-            if (row.IsSelected)
-            {
-                MappingDataGrid.SelectedItem = null;
-            }
-            else
-            {
-                if (mi.IsTrivialDirect && !mi.IsExpandedOverride)
-                    mi.IsExpandedOverride = true;
-                MappingDataGrid.SelectedItem = mi;
-            }
+            MappingDataGrid.SelectedItem = row.IsSelected ? null : mi;
             e.Handled = true;
         }
 
         private void MappingDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not DataGrid grid) return;
-            // #175 telemetry board: a trivial row expanded by click drops
-            // back to its compact line once deselected. Phase two item 10:
-            // IsRowSelected mirrors selection for the fan-in compact-swap
-            // trigger, so deselecting a multi-source row collapses it.
+            // IsRowSelected mirrors selection for the row template's
+            // trigger: a row that loses the selection closes to its one
+            // line, and the row that takes it opens.
             foreach (var removed in e.RemovedItems)
             {
                 if (removed is MappingItem rm)
-                {
                     rm.IsRowSelected = false;
-                    if (rm.IsExpandedOverride)
-                        rm.IsExpandedOverride = false;
-                }
             }
             foreach (var added in e.AddedItems)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PadForge.Engine;
 using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
@@ -248,6 +249,56 @@ namespace PadForge.ViewModels
             if (m == null || string.IsNullOrEmpty(pickedTarget)) return false;
             if (string.Equals(m.TargetSettingName, pickedTarget, StringComparison.OrdinalIgnoreCase)) return true;
             return family.HasValue && m.Category == family.Value;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The list's groups (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The types whose rows are the fixed gamepad grid: buttons,
+        /// the D-pad, the triggers and the two sticks, with the touchpad and
+        /// motion rows where the type has them. Keyboard + Mouse, MIDI and
+        /// VR have row sets of their own, and an Extended or Nintendo slot's
+        /// rows follow its preset.</summary>
+        internal static bool HasGamepadRows(VirtualControllerType type)
+            => type is not (VirtualControllerType.KeyboardMouse or VirtualControllerType.Midi
+                            or VirtualControllerType.Vr or VirtualControllerType.Extended
+                            or VirtualControllerType.Nintendo);
+
+        /// <summary>Whether the table's rows stand under a header for each
+        /// kind of output. A gamepad's list has them. The rows under the
+        /// picture never do: they are one control's.</summary>
+        internal bool ListIsGrouped => IsButtonsListView && HasGamepadRows(OutputType);
+
+        /// <summary>Gives the table's rows their group headers, or takes
+        /// them away. The view is left alone when it is already as wanted,
+        /// since a change builds every row again.</summary>
+        private void SyncListGroups(System.ComponentModel.ICollectionView rowView)
+        {
+            var groups = rowView?.GroupDescriptions;
+            if (groups == null) return;
+            bool want = ListIsGrouped;
+            if (want == groups.Count > 0) return;
+            if (want)
+                groups.Add(new System.Windows.Data.PropertyGroupDescription(nameof(MappingItem.Category)));
+            else
+                groups.Clear();
+        }
+
+        private readonly HashSet<MappingCategory> _closedListGroups = new HashSet<MappingCategory>();
+
+        /// <summary>Whether a group of the list shows its rows. Every group
+        /// starts open. The state is kept here by category, since the table
+        /// builds its groups again whenever its rows change. Session only,
+        /// never saved.</summary>
+        public bool IsListGroupOpen(MappingCategory category) => !_closedListGroups.Contains(category);
+
+        /// <summary>Records that a group of the list was opened or folded.
+        /// The page shows it (PadPage.SyncListGroup).</summary>
+        public void SetListGroupOpen(MappingCategory category, bool open)
+        {
+            if (open) _closedListGroups.Remove(category);
+            else _closedListGroups.Add(category);
         }
 
         // ─────────────────────────────────────────────

@@ -157,6 +157,35 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- A mapping row's live value (#574): a track 4 tall, filled in
+             ember to the value's share of the output's full scale. -->
+        <Style x:Key="ValueMeter" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
+            <Setter Property="Height" Value="4"/>
+            <Setter Property="Maximum" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border Background="{DynamicResource SteelFieldBrush}"
+                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="2"/>
+                            <Rectangle x:Name="PART_Track" Margin="1"/>
+                            <Border x:Name="PART_Indicator" Margin="1" HorizontalAlignment="Left"
+                                    Background="{TemplateBinding Foreground}" CornerRadius="1"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A mapping row's own buttons (#574): Record, Clear and the
+             chevron, 12 apart at the row's end. They are icon buttons of
+             the quiet reset's size with the glyph in the text color, as
+             the boards draw them. None is a Tab stop: the row is one. -->
+        <Style x:Key="RowIconButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Margin" Value="12,0,0,0"/>
+            <Setter Property="IsTabStop" Value="False"/>
+        </Style>
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -1505,6 +1534,7 @@
                         <!-- Add Layer, with the list: a new layer's rows are
                              edited there. -->
                         <ui:Button x:Name="AddShiftLayerButton" Style="{StaticResource QuietButton}"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    Content="{Binding Pad_Shift_AddLayer, Source={x:Static strings:Strings.Instance}}"
                                    MinHeight="34" Padding="10,0" Margin="0,0,12,0" VerticalAlignment="Center"
                                    ToolTip="{Binding Pad_Shift_AddLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -2079,27 +2109,35 @@
                         </Border>
                     </Popup>
 
-                    <!-- Mapping DataGrid. HorizontalAlignment=Left so the DataGrid
-                         doesn't stretch wider than its columns sum to. Without
-                         this, any Auto / SizeToCells column absorbs the leftover
-                         horizontal slack and bloats. With HorizontalAlignment=Left,
-                         each column genuinely auto-collapses to its own content
-                         and any empty space sits to the right of the grid. -->
+                    <!-- Mapping DataGrid. It fills the card (#574), so a row is
+                         the card's width: a closed row's line ends with its
+                         buttons at the card's edge, and an open row's cells
+                         stand at its start with the room after them empty.
+                         Every column is Auto and sized by the page's code
+                         (AutoFitFlexibleColumns), so none takes the room that
+                         is left. The table has no column headings: a closed
+                         row needs none, and an open row's cells name
+                         themselves. It has no grid lines of its own either:
+                         a row draws the hairline over itself, since the
+                         table's lines belong to a row's cells and a closed
+                         row hides them. The 1 over the table lays the first
+                         hairline on the line under the head or the picture. -->
                     <DataGrid AutomationProperties.Name="{Binding Pad_Mappings, Source={x:Static strings:Strings.Instance}}" Grid.Row="2"
                               x:Name="MappingDataGrid"
-                              Margin="16,8,16,12"
+                              Margin="1,-1,1,1"
                               EnableRowVirtualization="True"
                               VirtualizingPanel.VirtualizationMode="Recycling"
-                              HorizontalAlignment="Left"
-                              MinRowHeight="40"
+                              VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                              HorizontalAlignment="Stretch"
+                              MinRowHeight="39"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               SelectionMode="Single"
-                              HeadersVisibility="Column"
-                              GridLinesVisibility="Horizontal"
+                              HeadersVisibility="None"
+                              GridLinesVisibility="None"
                               IsReadOnly="True"
                               VerticalScrollBarVisibility="Visible"
                               Grid.IsSharedSizeScope="True"
@@ -2118,6 +2156,112 @@
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.Style>
+                        <!-- The list's groups (#574), as the List board draws them:
+                             a band for each kind of output with its name and how
+                             many outputs it holds, then its rows. The band folds
+                             the group. The view model groups the rows by category
+                             in a gamepad's list only (PadViewModel.ListIsGrouped),
+                             so the rows under the picture stand under no band.
+                             A group is an Expander: GroupItem looks for one in
+                             its template to learn whether its rows show, which
+                             keeps the rows virtualized while the table is
+                             grouped, and its peer tells a screen reader whether
+                             the group is open. The page's code keeps each one in
+                             step with the state the view model holds by category
+                             (ListGroup_Synced, ListGroup_Toggled), since the
+                             table builds its groups again whenever its rows
+                             change. -->
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="GroupItem">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="GroupItem">
+                                                    <Expander IsExpanded="True" Focusable="False"
+                                                              AutomationProperties.Name="{Binding Text, ElementName=ListGroupTitle, TargetNullValue=''}"
+                                                              Loaded="ListGroup_Synced" DataContextChanged="ListGroup_ContextChanged"
+                                                              Expanded="ListGroup_Toggled" Collapsed="ListGroup_Toggled">
+                                                        <Expander.Template>
+                                                            <ControlTemplate TargetType="Expander">
+                                                                <StackPanel>
+                                                                    <ToggleButton x:Name="Band" Cursor="Hand" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                                                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                                  AutomationProperties.Name="{TemplateBinding AutomationProperties.Name}"
+                                                                                  Content="{TemplateBinding Header}">
+                                                                        <ToggleButton.Template>
+                                                                            <ControlTemplate TargetType="ToggleButton">
+                                                                                <Border MinHeight="36" Padding="16,0"
+                                                                                        Background="{DynamicResource SteelBandBrush}"
+                                                                                        BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                                                                                    <ContentPresenter VerticalAlignment="Center"/>
+                                                                                </Border>
+                                                                            </ControlTemplate>
+                                                                        </ToggleButton.Template>
+                                                                    </ToggleButton>
+                                                                    <ContentPresenter x:Name="Rows" Visibility="Collapsed"/>
+                                                                </StackPanel>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsExpanded" Value="True">
+                                                                        <Setter TargetName="Rows" Property="Visibility" Value="Visible"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Expander.Template>
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <!-- Down while the group is open, sideways
+                                                                     while it is closed, as a folded part's is. -->
+                                                                <Path FlowDirection="LeftToRight" Data="M 3.5,5.25 L 7,8.75 L 10.5,5.25" Width="14" Height="14"
+                                                                      Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.2"
+                                                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                                      VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                                                    <Path.Style>
+                                                                        <Style TargetType="Path">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type Expander}}}" Value="False">
+                                                                                    <Setter Property="RenderTransform">
+                                                                                        <Setter.Value>
+                                                                                            <RotateTransform Angle="-90"/>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Path.Style>
+                                                                </Path>
+                                                                <!-- The category's name: its place in
+                                                                     MappingCategory picks one of the names. -->
+                                                                <TextBlock x:Name="ListGroupTitle" FontFamily="{StaticResource BodyFontFamily}" FontSize="13" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           VerticalAlignment="Center" Margin="10,0,0,0">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding Converter="{StaticResource IndexTextConverter}">
+                                                                            <Binding Path="Name"/>
+                                                                            <Binding Path="Preview_Buttons" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Preview_DPad" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Pad_Triggers" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Menu_Host_LeftStick" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Menu_Host_RightStick" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Pad_Touchpad" Source="{x:Static strings:Strings.Instance}"/>
+                                                                            <Binding Path="Pad_Gyro_Passthrough_Header" Source="{x:Static strings:Strings.Instance}"/>
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                                <TextBlock Text="{Binding ItemCount}" FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <ItemsPresenter/>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
                         <!-- The look of every cell. Each template column bases a cell
                              style on it that names its cells for screen readers, which
                              would otherwise read WPF's "Item: ..., Column Display
@@ -2192,28 +2336,29 @@
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <!-- Each row is a Tab stop for keyboard and screen
                                      reader users. WPF makes a DataGridRow unfocusable,
-                                     and a compact row hides the cells that could take
+                                     and a closed row hides the cells that could take
                                      focus, so Tab skipped the whole table. On a row the
                                      keys a slot maps do nothing (#61), and a click leaves
                                      focus to the window, which clears it. -->
                                 <Setter Property="Focusable" Value="True"/>
-                                <!-- Compact rows (trivial + collapsed fan-in) have
-                                     their cells collapsed, so a click never reaches a
-                                     DataGridCell and WPF's own selection logic won't
-                                     fire. The handler expands + selects the row (#175
-                                     telemetry board / phase two item 10). Enter/Space
-                                     on a focused row toggles it open and closed. -->
+                                <!-- A closed row has its cells collapsed, so a click
+                                     never reaches a DataGridCell and WPF's own
+                                     selection logic won't fire. The handler selects
+                                     the row, which opens it. Enter/Space on a focused
+                                     row toggles it open and closed. -->
                                 <EventSetter Event="PreviewMouseLeftButtonDown" Handler="MappingRow_PreviewMouseLeftButtonDown"/>
                                 <EventSetter Event="PreviewKeyDown" Handler="MappingRow_PreviewKeyDown"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <!-- Rowfire (#175 artifact .mrow::after): the
-                                             underline lives at the CELLS' bottom edge,
-                                             above the details presenter, exactly where
-                                             the pitch draws it. -->
+                                        <!-- The row draws the hairline over itself.
+                                             Rowfire (#175 artifact .mrow::after): the
+                                             underline lives at the row line's bottom
+                                             edge, above the details presenter, exactly
+                                             where the pitch draws it. -->
                                         <ControlTemplate TargetType="DataGridRow">
                                             <Border x:Name="DGR_Border"
                                                     Background="{TemplateBinding Background}"
+                                                    BorderBrush="{DynamicResource SteelPaneLineBrush}" BorderThickness="0,1,0,0"
                                                     SnapsToDevicePixels="True">
                                                 <SelectiveScrollingGrid>
                                                     <SelectiveScrollingGrid.RowDefinitions>
@@ -2223,76 +2368,112 @@
                                                     <DataGridCellsPresenter x:Name="CellsHost"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                                    <!-- Compact line (#175 telemetry board):
-                                                         a plain Direct row with no options collapses
-                                                         to one 26px mono line so a whole config reads
-                                                         on one screen. Clicking it expands the row
-                                                         back to the full editor via IsExpandedOverride
-                                                         (set in code-behind). The liveness flame is the
-                                                         static liveness cue. Rowfire below still
-                                                         animates on compact rows.
-                                                         Phase two item 10: unselected fan-in rows
-                                                         (HasExtraSources) collapse to this same line
-                                                         plus a "+N" tail and the combine token, and
-                                                         expand via selection instead of the override.
-                                                         The output segment is a shared-size column
-                                                         (scope = the DataGrid) so collapsed lines read
-                                                         as an aligned board, same construction as the
-                                                         pipeline-tip listing's shared output column. -->
-                                                    <Grid x:Name="CompactLine" Height="26" Margin="10,0,8,0"
-                                                          Visibility="Collapsed">
+                                                    <!-- A closed row's line (#574), as the List board
+                                                         draws it: the output's name, what drives it,
+                                                         a meter of its live value, then Record, Clear
+                                                         and the chevron that opens the row. Every row
+                                                         that is not selected shows it, so a whole
+                                                         config reads on one screen (#175 telemetry
+                                                         board). A click on the line opens the row.
+                                                         The meter is the liveness cue, and Rowfire
+                                                         below still animates on a closed row.
+                                                         A row fed by more than one source adds a "+N"
+                                                         tail and the combine token (#175 phase two
+                                                         item 10). The name is a shared-size column
+                                                         (scope = the DataGrid) so the lines read as an
+                                                         aligned board, same construction as the
+                                                         pipeline-tip listing's shared output column.
+                                                         The line is as wide as the table's viewport and
+                                                         holds still when the table scrolls sideways. A
+                                                         row is as wide as the table's columns, which an
+                                                         open row's cells can make wider than the card,
+                                                         and a line of that width put its buttons past
+                                                         the card's edge. -->
+                                                    <Border x:Name="CompactLine" Visibility="Collapsed" HorizontalAlignment="Left"
+                                                            Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}"
+                                                            SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical">
+                                                    <Grid MinHeight="38" Margin="16,0,8,0">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="CompactRowOutput"/>
+                                                            <ColumnDefinition Width="Auto" MinWidth="212" SharedSizeGroup="CompactRowOutput"/>
+                                                            <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <!-- Liveness flame (brand canon, supersedes
-                                                                 dots): ashen outline at rest, ember fill +
-                                                                 static glow while input flows through the
-                                                                 row. Static setters, reduced-motion safe. -->
-                                                            <Path FlowDirection="LeftToRight" Margin="0,0,8,0">
-                                                                <Path.Style>
-                                                                    <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding IsInputActive}" Value="True">
-                                                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                                                                                <Setter Property="Stroke" Value="{x:Null}"/>
-                                                                                <Setter Property="Effect">
-                                                                                    <Setter.Value>
-                                                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                                                                                    </Setter.Value>
-                                                                                </Setter>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Path.Style>
-                                                            </Path>
-                                                            <TextBlock Text="{Binding TargetLabel}"
-                                                                       FontWeight="SemiBold" FontSize="12"
-                                                                       Foreground="{DynamicResource EmberHotBrush}"
-                                                                       VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                            <TextBlock Text="←"
-                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                       FontSize="11"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                       VerticalAlignment="Center" Margin="8,0,6,0"/>
-                                                            <TextBlock Text="{Binding SourceDisplayText, Mode=OneWay}"
-                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                       FontSize="11"
-                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                       VerticalAlignment="Center"
-                                                                       TextTrimming="CharacterEllipsis"/>
-                                                            <!-- Source device (user report 2026-07-04: "Button A
-                                                                 from which device?!"): the compact line carries
-                                                                 the feeding device, dimmer, after the source. -->
+                                                        <!-- The output's name. Its column is as wide as the widest
+                                                             name of the table and never under 200 and the 12 after
+                                                             it, so the rows read as one board. -->
+                                                        <TextBlock Text="{Binding TargetLabel}"
+                                                                   FontFamily="{StaticResource BodyFontFamily}" FontSize="14"
+                                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                                        <!-- What drives it: the source as a chip, the device that
+                                                             feeds it beside the chip (user report 2026-07-04: "Button A
+                                                             from which device?!"), then the fan-in tail. The three
+                                                             stand together at the column's start. When the row is
+                                                             narrow the device's name gives way: the tail is docked
+                                                             first, so it keeps its width, and the name is the last
+                                                             child and takes what is left. -->
+                                                        <DockPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                            <Border x:Name="SourceChip" DockPanel.Dock="Left" MinHeight="26" Padding="10,0" CornerRadius="6" BorderThickness="1"
+                                                                    Background="{DynamicResource SteelRaisedBrush}"
+                                                                    BorderBrush="{DynamicResource SteelPillLineBrush}">
+                                                                <TextBlock x:Name="SourceChipText" Text="{Binding SourceDisplayText, Mode=OneWay}"
+                                                                           FontFamily="{StaticResource BodyFontFamily}" FontSize="14"
+                                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <!-- Fan-in tail: "+N" for the extra sources feeding
+                                                                     this output. Collapses on a row with none. -->
+                                                                <TextBlock FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                           FontSize="12" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource ColdBrush}"
+                                                                           VerticalAlignment="Center" Margin="8,0,0,0"
+                                                                           Text="{Binding ExtraSources.Count, Mode=OneWay, StringFormat={}+{0}}">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                                <!-- Combine token chip: the engine's locale-neutral
+                                                                     mode value (MaxAbs / OR / XOR), display-uppercased.
+                                                                     Cold chip family: combining is a source-side
+                                                                     affair. Hidden alongside the +N tail, and when the
+                                                                     mode is still the implicit-default empty sentinel. -->
+                                                                <Border CornerRadius="3" BorderThickness="1"
+                                                                        Padding="5,1" Margin="8,0,0,0"
+                                                                        VerticalAlignment="Center"
+                                                                        Background="#0D58B6E4"
+                                                                        ToolTip="{Binding Pad_CombineChip_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                                    <Border.BorderBrush>
+                                                                        <SolidColorBrush Color="#3D58B6E4"/>
+                                                                    </Border.BorderBrush>
+                                                                    <Border.Style>
+                                                                        <Style TargetType="Border">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding CombineMode}" Value="">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Border.Style>
+                                                                    <TextBlock Text="{Binding CombineModeDisplayName, Converter={StaticResource UpperConverter}}"
+                                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                               FontSize="9.5"
+                                                                               Foreground="{DynamicResource ColdBrush}"/>
+                                                                </Border>
+                                                            </StackPanel>
                                                             <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
-                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                       FontSize="10"
+                                                                       FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
                                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                       Opacity="0.7"
-                                                                       VerticalAlignment="Center" Margin="10,0,0,0">
+                                                                       VerticalAlignment="Center" Margin="4,0,0,0" TextTrimming="CharacterEllipsis">
                                                                 <TextBlock.Style>
                                                                     <Style TargetType="TextBlock">
                                                                         <Style.Triggers>
@@ -2303,60 +2484,42 @@
                                                                     </Style>
                                                                 </TextBlock.Style>
                                                             </TextBlock>
-                                                            <!-- Fan-in tail: "+N" for the extra sources
-                                                                 feeding this output, same grammar as the
-                                                                 pipeline-tip overflow tail. Collapses on
-                                                                 trivial lines (no extras by definition). -->
-                                                            <TextBlock FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                       FontSize="11" FontWeight="SemiBold"
-                                                                       Foreground="{DynamicResource ColdBrush}"
-                                                                       VerticalAlignment="Center" Margin="8,0,0,0"
-                                                                       Text="{Binding ExtraSources.Count, Mode=OneWay, StringFormat={}+{0}}">
-                                                                <TextBlock.Style>
-                                                                    <Style TargetType="TextBlock">
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </TextBlock.Style>
-                                                            </TextBlock>
-                                                            <!-- Combine token chip: the engine's locale-
-                                                                 neutral mode value (MaxAbs / OR / XOR…),
-                                                                 display-uppercased like the column headers.
-                                                                 Cold chip family: combining is a source-
-                                                                 side affair. Hidden alongside the +N tail,
-                                                                 and when the mode is still the implicit-
-                                                                 default empty sentinel. -->
-                                                            <Border CornerRadius="3" BorderThickness="1"
-                                                                    Padding="5,1" Margin="8,0,0,0"
-                                                                    VerticalAlignment="Center"
-                                                                    Background="#0D58B6E4"
-                                                                    Cursor="Hand"
-                                                                    ToolTip="{Binding Pad_CombineChip_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                                                <Border.BorderBrush>
-                                                                    <SolidColorBrush Color="#3D58B6E4"/>
-                                                                </Border.BorderBrush>
-                                                                <Border.Style>
-                                                                    <Style TargetType="Border">
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding CombineMode}" Value="">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Border.Style>
-                                                                <TextBlock Text="{Binding CombineModeDisplayName, Converter={StaticResource UpperConverter}}"
-                                                                           FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                           FontSize="9.5"
-                                                                           Foreground="{DynamicResource ColdBrush}"/>
-                                                            </Border>
+                                                        </DockPanel>
+                                                        <!-- The value meter, then the row's own buttons. They act on
+                                                             the row and leave it closed, and are no Tab stops: the
+                                                             row is one, and Enter or Space on it opens the editor,
+                                                             which has Record and Clear of its own. -->
+                                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <ProgressBar Style="{StaticResource ValueMeter}" Width="96" Margin="12,0,0,0"
+                                                                         Value="{Binding LiveLevel, Mode=OneWay}"
+                                                                         AutomationProperties.Name="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <ui:Button Command="{Binding ToggleRecordCommand}" IsEnabled="{Binding IsRecordable}"
+                                                                       Style="{StaticResource RowIconButton}"
+                                                                       AutomationProperties.Name="{Binding RecordButtonText, TargetNullValue=''}">
+                                                                <controls:GlyphText Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                                <ui:Button.ToolTip>
+                                                                    <TextBlock Text="{Binding RecordButtonText}"/>
+                                                                </ui:Button.ToolTip>
+                                                            </ui:Button>
+                                                            <ui:Button Command="{Binding ClearCommand}"
+                                                                       Style="{StaticResource RowIconButton}"
+                                                                       AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                                       ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
+                                                                <Path FlowDirection="LeftToRight" Data="M 4,4 L 12,12 M 12,4 L 4,12" Width="16" Height="16"
+                                                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                      StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                                            </ui:Button>
+                                                            <ui:Button Click="MappingRowOpen_Click"
+                                                                       Style="{StaticResource RowIconButton}"
+                                                                       AutomationProperties.Name="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}"
+                                                                       ToolTip="{Binding Pad_HeaderOptions, Source={x:Static strings:Strings.Instance}}">
+                                                                <Path FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3" Width="10" Height="10"
+                                                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                      StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                                            </ui:Button>
                                                         </StackPanel>
                                                     </Grid>
+                                                    </Border>
                                                     <Rectangle x:Name="Rowfire" Height="1.5"
                                                                VerticalAlignment="Bottom"
                                                                Margin="8,0,8,0" Opacity="0"
@@ -2373,46 +2536,30 @@
                                                 </SelectiveScrollingGrid>
                                             </Border>
                                             <ControlTemplate.Triggers>
-                                                <!-- Compact swap (#175 telemetry board): trivial
-                                                     Direct rows hide the cell set and show the
-                                                     one-line summary until clicked (expansion
-                                                     override) or selected.
-                                                     Discussion #348: the IsRowSelected condition
-                                                     is load-bearing. A selected Unassigned row
-                                                     BECOMES trivial the moment its first source
-                                                     lands, and nothing sets the override on that
-                                                     path, so without it the cells (Record, Clear,
-                                                     Invert, Half, Bidirectional) collapsed under
-                                                     the still-open details strip until the row
-                                                     was clicked again. Same shape as the fan-in
-                                                     trigger below. -->
+                                                <!-- A row that is not open is its one line (#574): the
+                                                     cells give way to it until the row is selected, which
+                                                     opens the editor and the details under it. Only plain
+                                                     rows and fan-in rows had a line, and a row with an
+                                                     option set stood open at all times.
+                                                     IsRowSelected mirrors the table's selection (set in
+                                                     SelectionChanged). Discussion #348: a selected row stays
+                                                     open whatever its sources become, so the cells under an
+                                                     open details strip never collapse. The IsExpandedOverride
+                                                     condition keeps the column fit honest: it opens every
+                                                     row off-frame through that flag to measure its cells. -->
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsTrivialDirect}" Value="True"/>
                                                         <Condition Binding="{Binding IsRowSelected}" Value="False"/>
                                                         <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
                                                     <Setter TargetName="CompactLine" Property="Visibility" Value="Visible"/>
                                                 </MultiDataTrigger>
-                                                <!-- Fan-in compact swap (#175 phase two item 10):
-                                                     an unselected multi-source row collapses to
-                                                     the one-line summary. Selecting it brings back
-                                                     the full cells and opens the details editor.
-                                                     IsRowSelected mirrors DataGrid selection (set
-                                                     in SelectionChanged). The IsExpandedOverride
-                                                     condition keeps the Loaded-time column-width
-                                                     measure pass honest: it force-expands compact
-                                                     rows off-frame through that flag. -->
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding HasExtraSources}" Value="True"/>
-                                                        <Condition Binding="{Binding IsRowSelected}" Value="False"/>
-                                                        <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
-                                                    <Setter TargetName="CompactLine" Property="Visibility" Value="Visible"/>
-                                                </MultiDataTrigger>
+                                                <!-- A row nothing drives says so in a quiet chip. -->
+                                                <DataTrigger Binding="{Binding IsMapped}" Value="False">
+                                                    <Setter TargetName="SourceChip" Property="Background" Value="Transparent"/>
+                                                    <Setter TargetName="SourceChipText" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </DataTrigger>
                                                 <!-- Reduced motion (#175 item 98): rowfire only
                                                      animates when the OS animation preference
                                                      (ClientAreaAnimation) is on. -->
@@ -2453,17 +2600,13 @@
                                     </Setter.Value>
                                 </Setter>
                                 <Style.Triggers>
-                                    <!-- Selected row: a subtle ember wash. The stock selection
-                                         fill reads near-white in dark mode and is retina-searing
-                                         against the steel ground. Kept below the recording tint
-                                         (#30) so an armed row still reads hotter. The recording
-                                         triggers sit after this one so they win when both hold. -->
+                                    <!-- The open row lies on the card's lifted fill, as the
+                                         board's does. The stock selection fill reads
+                                         near-white in dark mode. The recording triggers
+                                         sit after this one so an armed row reads ember
+                                         when both hold (#30). -->
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background">
-                                            <Setter.Value>
-                                                <SolidColorBrush Color="#24FF6B2C"/>
-                                            </Setter.Value>
-                                        </Setter>
+                                        <Setter Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
                                     </Trigger>
                                     <!-- Reduced motion (#175 item 98): the looping arm-flash
                                          only runs when ClientAreaAnimation is on. Otherwise

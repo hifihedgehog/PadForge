@@ -182,22 +182,30 @@ namespace PadForge.Tests
 
         // ── discussion #348: the row keeps its cells while selected ────
 
-        /// <summary>A selected Unassigned row becomes IsTrivialDirect the
-        /// moment its first source lands, and nothing sets the expansion
-        /// override on that path, so the compact-swap trigger collapsed
-        /// the cells (Record, Clear, Invert, Half, Bidirectional) under the
-        /// open details strip. The fix is the IsRowSelected=False condition
-        /// the fan-in trigger already carried. Source-text lock, since the
-        /// template trigger has no in-process seam.</summary>
+        /// <summary>A selected Unassigned row became a plain mapping the
+        /// moment its first source landed, and the trigger that swaps a
+        /// plain row's cells for its one line then collapsed the cells
+        /// (Record, Clear, Invert, Half, Bidirectional) under the open
+        /// details strip. The fix was to condition that trigger on the row
+        /// not being selected. Every row that is not selected is its one
+        /// line now (#574), by one trigger, and the condition is what keeps
+        /// a selected row open whatever its sources become. Source-text
+        /// lock, since the template trigger has no in-process seam.</summary>
         [Fact]
-        public void TrivialRowCompactSwap_IsGatedOnNotSelected()
+        public void TheSwapToARowsOneLine_IsGatedOnNotSelected()
         {
             string xaml = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
                 Path.Combine("PadForge.App", "Views", "PadPage.xaml")));
-            int i = xaml.IndexOf("<Condition Binding=\"{Binding IsTrivialDirect}\" Value=\"True\"/>", StringComparison.Ordinal);
-            Assert.True(i > 0, "trivial-direct trigger not found; re-anchor this lock");
-            int end = xaml.IndexOf("</MultiDataTrigger.Conditions>", i, StringComparison.Ordinal);
-            string conditions = xaml.Substring(i, end - i);
+            const string swap = "<Setter TargetName=\"CompactLine\" Property=\"Visibility\" Value=\"Visible\"/>";
+            int setter = xaml.IndexOf(swap, StringComparison.Ordinal);
+            Assert.True(setter > 0, "the trigger that shows a row's one line was not found; re-anchor this lock");
+            // One trigger shows the line: a second would be a way around
+            // the condition.
+            Assert.Equal(-1, xaml.IndexOf(swap, setter + swap.Length, StringComparison.Ordinal));
+            int start = xaml.LastIndexOf("<MultiDataTrigger.Conditions>", setter, StringComparison.Ordinal);
+            int end = xaml.IndexOf("</MultiDataTrigger.Conditions>", start, StringComparison.Ordinal);
+            Assert.True(start > 0 && end > start && end < setter, "the line's trigger has no conditions of its own");
+            string conditions = xaml.Substring(start, end - start);
             Assert.Contains("<Condition Binding=\"{Binding IsRowSelected}\" Value=\"False\"/>", conditions);
             Assert.Contains("<Condition Binding=\"{Binding IsExpandedOverride}\" Value=\"False\"/>", conditions);
         }

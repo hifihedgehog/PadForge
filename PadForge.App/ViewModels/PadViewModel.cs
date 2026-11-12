@@ -1525,6 +1525,7 @@ namespace PadForge.ViewModels
                     rowView.Filter = o => RowMatchesSearch(o as MappingItem, search)
                                        && RowMatchesSurface(o as MappingItem, scope, kbmCfg);
                 }
+                SyncListGroups(rowView);
                 shown = 0;
                 foreach (var _ in rowView) shown++;
             }
@@ -2887,11 +2888,10 @@ namespace PadForge.ViewModels
                 InitializeMidiMappings();
             else if (OutputType == VirtualControllerType.Vr)
                 InitializeVrMappings();
-            else if (OutputType is VirtualControllerType.Extended
-                     or VirtualControllerType.Nintendo)
-                InitializeRawSurfaceMappings();
-            else
+            else if (HasGamepadRows(OutputType))
                 InitializeGamepadMappings();
+            else
+                InitializeRawSurfaceMappings();
 
             // Menus (#9 B-17) live on the same slot MappingSet the rows
             // do, so every path that rebuilds the mapping view (profile

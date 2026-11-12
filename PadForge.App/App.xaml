@@ -69,6 +69,9 @@
                     <SolidColorBrush x:Key="SteelPillLineBrush" Color="#263142"/>
                     <!-- The chosen segment of a segmented switch. -->
                     <SolidColorBrush x:Key="SteelSegmentBrush" Color="#263142"/>
+                    <!-- A band across a card: the header of a group of rows,
+                         one step under the card's own fill. -->
+                    <SolidColorBrush x:Key="SteelBandBrush" Color="#0F1520"/>
                     <SolidColorBrush x:Key="SteelPaneHoverBrush" Color="#121925"/>
                     <!-- Inside a card: a full-width row under the pointer
                          (a More row, a folded part's line), a reset

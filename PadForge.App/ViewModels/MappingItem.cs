@@ -69,7 +69,6 @@ namespace PadForge.ViewModels
         {
             RaiseMotionRowNote();
             OnPropertyChanged(nameof(IsMultiSource));
-            OnPropertyChanged(nameof(HasExtraSources));
             OnPropertyChanged(nameof(HasAnySource));
             OnPropertyChanged(nameof(VariableCount));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
@@ -297,8 +296,8 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True when the primary is plain Direct (the default). A
-        /// Toggle primary reads the same descriptor but is not Direct, so it
-        /// keeps the full editing row (<see cref="IsTrivialDirect"/>).</summary>
+        /// Toggle primary reads the same descriptor but is not Direct, so
+        /// its row is no plain mapping (<see cref="IsTrivialDirect"/>).</summary>
         public bool IsPrimaryDirect =>
             string.Equals(PrimaryKindSource?.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
 
@@ -1145,13 +1144,25 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isInputActive, value);
         }
 
-        /// <summary>True when the row is a plain one-liner (#175 telemetry
+        private double _liveLevel;
+
+        /// <summary>The row's live value as a share of its full scale, 0
+        /// to 1: what the value meter beside the row fills to (#574). Set
+        /// by InputService with the value itself
+        /// (<c>InputService.LiveLevelOf</c>). A row whose value is no one
+        /// number, as the two motion rows that list three axes, stays at
+        /// 0.</summary>
+        public double LiveLevel
+        {
+            get => _liveLevel;
+            set => SetProperty(ref _liveLevel, value);
+        }
+
+        /// <summary>True when the row is a plain mapping (#175 telemetry
         /// board): a single Direct primary source, no negative-direction
         /// pair, no invert / half / bidirectional option, and no custom
-        /// combine formula. Trivial rows render as a compact mono line in
-        /// the Mappings grid so a whole config reads on one screen;
-        /// anything richer keeps the full editing row. Re-notified from
-        /// every contributing setter.</summary>
+        /// combine formula. The list's DIRECT chip counts these rows.
+        /// Re-notified from every contributing setter.</summary>
         public bool IsTrivialDirect =>
             !string.IsNullOrEmpty(_sourceDescriptor)
             && string.IsNullOrEmpty(_negSourceDescriptor)
@@ -1162,10 +1173,10 @@ namespace PadForge.ViewModels
 
         private bool _isExpandedOverride;
 
-        /// <summary>Per-row escape hatch from the compact trivial rendering
-        /// (#175 telemetry board). Set by the Pad page's row click handler
-        /// so a compact row opens back into the full editing row; cleared
-        /// when the row is deselected. UI-only state, never persisted.</summary>
+        /// <summary>Shows a closed row's cells without selecting it. The Pad
+        /// page's column fit sets it on every closed row while it measures
+        /// the cells and clears it in the same pass. UI-only state, never
+        /// persisted.</summary>
         public bool IsExpandedOverride
         {
             get => _isExpandedOverride;
@@ -1176,21 +1187,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Mirror of the row's DataGrid selection state (#175 phase
         /// two item 10). Written by the Pad page's SelectionChanged handler
-        /// so the row template's compact-swap trigger can condition on
-        /// selection with a plain DataContext binding. UI-only state, never
-        /// persisted.</summary>
+        /// so the row template can show a row that is not selected as its
+        /// one line with a plain DataContext binding (#574). UI-only state,
+        /// never persisted.</summary>
         public bool IsRowSelected
         {
             get => _isRowSelected;
             set => SetProperty(ref _isRowSelected, value);
         }
-
-        /// <summary>True when the row actually fans in extra sources (#175
-        /// phase two item 10). Narrower than <see cref="IsMultiSource"/>,
-        /// which is also true for a non-Direct primary with no extras.
-        /// Those rows keep their full cells (the Up/Down pickers live
-        /// there), so the collapsed one-line rendering keys off this.</summary>
-        public bool HasExtraSources => ExtraSources.Count > 0;
 
         // ─────────────────────────────────────────────
         //  Options

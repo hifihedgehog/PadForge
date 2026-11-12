@@ -137,6 +137,11 @@ namespace PadForge.ViewModels
             // bindings keep the old language's value until the next
             // IsMapAllActive flip.
             OnPropertyChanged(nameof(MapAllButtonText));
+            // The first section's name and the picture's hint are read off
+            // Strings.Instance the same way (#574).
+            OnPropertyChanged(nameof(FirstSectionName));
+            OnPropertyChanged(nameof(PictureHintText));
+            OnPropertyChanged(nameof(PictureLineText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
             // The line under the picture and the two folded output cards'
             // values are worded from the string table the same way (#574).
@@ -260,6 +265,10 @@ namespace PadForge.ViewModels
                     // The foot of the picture's card is a Keyboard + Mouse
                     // slot's (#574).
                     OnPropertyChanged(nameof(ShowKbmFoot));
+                    OnPropertyChanged(nameof(ShowPickedValue));
+                    OnPropertyChanged(nameof(ShowVrFoot));
+                    OnPropertyChanged(nameof(FirstSectionName));
+                    OnPropertyChanged(nameof(PictureHintText));
                     OnPropertyChanged(nameof(PictureIsCardFoot));
                     // The table scope only exists on a Keyboard + Mouse slot.
                     // Its box disappears with the slot type, so leaving the
@@ -1501,6 +1510,7 @@ namespace PadForge.ViewModels
 
             // The visible side: the TABLE ROWS live-filter as the user
             // types, which is what a search box over a table means.
+            bool firstPick = false;
             var rowView = CollectionViewSource.GetDefaultView(Mappings);
             if (rowView != null)
             {
@@ -1513,14 +1523,21 @@ namespace PadForge.ViewModels
 
                 if (pictureBar)
                 {
+                    // The picture always has a control picked, as its boards
+                    // open with one (#574): at the page's first show, after a
+                    // change of the slot's type, and whenever the rows are
+                    // built again, a pick that names no row goes to the first
+                    // row the slot shows. The change is told once the rows
+                    // follow it, as a pick's is.
+                    if (RowOfTarget(_pickedTarget) == null) firstPick = PickFirstRow(kbmCfg);
+
                     // The bar under the picture holds the picked control's
                     // rows and no others. The slot's surface mode still
                     // applies. The list's scope does not: its box is not on
                     // the page there.
                     var picked = RowOfTarget(_pickedTarget);
                     string pickedTarget = picked?.TargetSettingName;
-                    MappingCategory? family = picked != null && IsFamilyCategory(picked.Category)
-                        ? picked.Category : null;
+                    MappingCategory? family = FamilyOf(picked);
                     string control = picked?.Control;
                     rowView.Filter = o => RowMatchesPick(o as MappingItem, pickedTarget, family, control)
                                        && RowMatchesSurface(o as MappingItem, "All", kbmCfg);
@@ -1535,6 +1552,9 @@ namespace PadForge.ViewModels
                                        && RowMatchesSurface(o as MappingItem, scope, kbmCfg);
                 }
                 SyncListGroups(rowView);
+                // The bar's own rows follow the same changes: rows built
+                // again, and what the slot drives.
+                RefreshPickedRows();
                 shown = 0;
                 foreach (var _ in rowView) shown++;
             }
@@ -1547,7 +1567,24 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MappingPickerFilterActive));
             // The rows may be new objects (a rebuild ends here), so the
             // picked row is read again.
+            if (firstPick) OnPropertyChanged(nameof(PickedTarget));
             RaisePickedChanged();
+        }
+
+        /// <summary>Picks the slot's first row that its surface mode shows,
+        /// as the picture's boards open with their first control picked
+        /// (#574), and says whether it did: nothing changes when no row
+        /// shows. The caller tells of the change. The pick is session state,
+        /// never saved.</summary>
+        private bool PickFirstRow(KbmSlotConfig kbmCfg)
+        {
+            foreach (var m in Mappings)
+            {
+                if (string.IsNullOrEmpty(m.TargetSettingName) || !RowMatchesSurface(m, "All", kbmCfg)) continue;
+                _pickedTarget = m.TargetSettingName;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>Rebuilds the device-filter popup rows from the current
@@ -3115,7 +3152,10 @@ namespace PadForge.ViewModels
 
             // Note outputs — each note is a button (Note On/Off).
             for (int i = 0; i < mc.NoteCount; i++)
-                Mappings.Add(new MappingItem($"Note {noteNumbers[i]}", $"MidiNote{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem($"Note {noteNumbers[i]}", $"MidiNote{i}", MappingCategory.Buttons)
+                {
+                    PictureName = MidiSlotConfig.PitchName(noteNumbers[i]),
+                });
         }
 
         /// <summary>
@@ -3337,7 +3377,7 @@ namespace PadForge.ViewModels
                     if (i < 0) return;   // this pad has no such control
                     Mappings.Add(new MappingItem(
                         MacroButtonNames.RawButtonLabel(ProfileId, i + 1),
-                        $"RawBtn{i}", MappingCategory.Buttons));
+                        $"RawBtn{i}", MappingCategory.Buttons) { Role = role });
                 }
                 foreach (var role in new[] {
                     "ButtonA", "ButtonB", "ButtonX", "ButtonY",
@@ -3418,7 +3458,7 @@ namespace PadForge.ViewModels
                     if (i < 0) return;   // this pad has no such control
                     Mappings.Add(new MappingItem(
                         MacroButtonNames.RawButtonLabel(ProfileId, i + 1),
-                        $"RawBtn{i}", MappingCategory.Buttons));
+                        $"RawBtn{i}", MappingCategory.Buttons) { Role = role });
                 }
                 void AddDPad(string label, string target) =>
                     Mappings.Add(new MappingItem(label, target, MappingCategory.DPad));
@@ -3529,14 +3569,16 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Real-world readout: degrees of physical rotation per
-        /// one full screen turn at the current H sensitivity. Steam-style
-        /// reference; 360° baseline at multiplier 1.0.</summary>
+        /// <summary>Real-world readout: whole degrees of physical rotation
+        /// per one full screen turn at the current H sensitivity, which its
+        /// row under Sensitivity's More says (Pad_Gyro_DegPerTurn_Format).
+        /// Steam-style reference, 360 at multiplier 1.0.</summary>
         public double GyroSensitivityH_DegPerTurn
-            => _gyroSensitivityH > 0 ? 360.0 / _gyroSensitivityH : 0;
+            => _gyroSensitivityH > 0 ? Math.Round(360.0 / _gyroSensitivityH) : 0;
 
+        /// <summary>The same for the V sensitivity.</summary>
         public double GyroSensitivityV_DegPerTurn
-            => _gyroSensitivityV > 0 ? 360.0 / _gyroSensitivityV : 0;
+            => _gyroSensitivityV > 0 ? Math.Round(360.0 / _gyroSensitivityV) : 0;
 
         private double _gyroDeadZoneDegPerSec = 3.0;
         public double GyroDeadZoneDegPerSec
@@ -8286,11 +8328,12 @@ namespace PadForge.ViewModels
         /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>
         public const int AudioTabIndex = 12;
 
-        private bool _annotationOverlayEnabled;
+        private bool _annotationOverlayEnabled = true;
 
         /// <summary>Controller-preview annotation overlay, shared by the 2D and
-        /// 3D hosts (#175 roadmap 1). Session-only by design: not written to
-        /// PadSetting, not in the MarkDirty allowlist.</summary>
+        /// 3D hosts (#175 roadmap 1). On at first, as the Buttons board opens
+        /// with the button labels shown (#574). Session-only by design: not
+        /// written to PadSetting, not in the MarkDirty allowlist.</summary>
         public bool AnnotationOverlayEnabled
         {
             get => _annotationOverlayEnabled;
@@ -8350,8 +8393,13 @@ namespace PadForge.ViewModels
             {
                 if (!SetProperty(ref _currentRecordingTarget, value)) return;
                 // The bar under the picture follows what is being recorded,
-                // and the line there says so (#574).
-                if (!string.IsNullOrEmpty(value)) PickedTarget = value;
+                // and the line there says so (#574). A recording that starts
+                // ends any word on why the last one could not.
+                if (!string.IsNullOrEmpty(value))
+                {
+                    PickedTarget = value;
+                    ClearRecordRefusal();
+                }
                 RaiseListeningChanged();
             }
         }

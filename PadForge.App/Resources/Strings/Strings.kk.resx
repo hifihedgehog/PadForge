@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Көшіру</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Қою</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Көшірмесін жасау</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Атын өзгерту</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Қосулы</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Өшірулі</value></data>
   <data name="Common_On" xml:space="preserve"><value>Қосулы</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Құрылғы</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Құрылғы қосу</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Сурет</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Тізім</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} шығыс</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Қозғалыс</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Басқару элементін басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Пернені немесе тінтуір түймесін басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Нотаны немесе жүгірткіні басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Барлығын тағайындау» A және B жанасу шығыстарын өткізіп жібереді. Біреуін тағайындау үшін A немесе B түймесінің айналасындағы сақинаны басыңыз.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} үшін күтілуде. Құрылғыңыздағы кірісті басыңыз.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, енгізу көзі</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Көбірек параметр</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Азырақ параметр</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Негізгі түйме</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Иық түймесі</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Жүйе түймесі</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Түйме</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Бағыт тақтасы</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Стик</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Триггер</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Сенсорлық тақта</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Қозғалыс сенсоры</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Пернетақта пернесі</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Тінтуір түймесі</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Тінтуір қозғалысы</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Айналдыру дөңгелегі</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Басқару өзгерісі (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Жанасу сенсоры</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Аналогтық басу</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, сол қол</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, оң қол</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Жұптың екі түймесі де басылып тұрғанда ойын қай басуды көреді</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Жұптың екі пернесі де басылып тұрғанда ойын қай басуды көреді</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Стикті сәл ауытқытып ұстайды, сондықтан ойындар контроллер нұсқауларын көрсете береді</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Соғуда</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Сол жақтан макросты таңдаңыз немесе жаңасын жасау үшін «Қосу» түймесін басыңыз.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Тізімнен макросты таңдаңыз немесе жаңасын жасау үшін «Макростар» жанындағы + түймесін басыңыз.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ШИКІ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ШЫҒЫС</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Суық</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импульстік триггерлер</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульстік триггерлер</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Әр триггер үшін күшейту, моторларды алмастыру, бейімделгіш триггер дірілдері</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Әр триггер күшейтуі, мотор алмастыру, бейімделгіш триггер дірілі, Тұрақты триггер күші</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Триггерлердің жеке мотор командаларын (Xbox Impulse Triggers) виртуалды контроллерден тағайындалған физикалық Xbox One, Elite немесе Series контроллеріне жібереді. Ойын басқаратын триггер дірілі автоматты түрде өтеді. Төмендегі басқару элементтері әр триггер үшін қарқындылықты масштабтайды.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Сол триггер</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Оң триггер</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стиктер</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Әр стиктің өлі аймақтары, анти-өлі аймақтары, сезімталдық қисықтары және орталық ығысуын калибрлеу. Төмендегі әр бөлім белсенді шығыстағы бір аналогтық стикке арналған. Кеңейтілген профильдерде төрт стикке дейін болуы мүмкін. Стандартты геймпадтарда екеу болады.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Триггерлер</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Әр триггердің өлі аймақтары, анти-өлі аймақтары, ең үлкен ауқымды масштабтау және сезімталдық қисықтары. Төмендегі әр бөлім белсенді шығыстағы бір триггер осіне арналған. Кеңейтілген профильдер «Стиктер» қойындысымен ортақ сегіз оське дейін көрсете алады.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Әр триггердің өлі аймақтары, анти-өлі аймақтары, ең үлкен ауқымды масштабтау және сезімталдық қисықтары. Әр триггер карточкасы белсенді шығыстағы бір триггер осіне арналған. Кеңейтілген профильдер стиктер мен триггерлерге ортақ сегіз оське дейін көрсете алады.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Күштік кері байланыс</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge ойыннан келетін күштік кері байланыс оқиғаларын қалай масштабтайтынын және оларды физикалық контроллердің діріл моторларына немесе хаптикалық жетектеріне қалай бағыттайтынын баптайды. «Дыбыстық діріл» үстіне жүйелік дыбыспен басқарылатын қабат қосады.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Осы құрылғы</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Бүкіл контроллер</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Діріл {0} құрылғысында хаптикалық импульстер ретінде ойнатылады, олар құрылғыға тікелей жіберіледі. Діріл күштірек болса, күштірек импульс таңдалып, жиірек қайталанады.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ ішінде {0} үшін хаптикалық кері байланыс өшірілген, сондықтан оны сол жерде қайта қоспайынша ештеңе ойнатылмайды.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Бұл құрылғы әлі жауап бермеді. Ол оянғанда оның дірілі ойнатылады.</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>гарнитуралар, тінтуір кілемшелері және динамиктер</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>гарнитуралар</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Жарық жолағы</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Ойындар жарықтандыруды жазған сайын басқаруды өзіне алады.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Алты таңбалы hex түсті енгізіңіз (RRGGBB немесе #RRGGBB) және қолдану үшін Enter басыңыз немесе басқа жерді басыңыз.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Бұл түсті палитрадан алып тастау</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Дыбыстық дірілді қалпына келтіру</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Қалпына келтіру: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Тағайындауларды тазалау</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Бұл қойындыдағы барлық тағайындаулар тазаланады. Көз тағайындаулары, қосымша көздер және біріктіру параметрлері әдепкі мәндерге қайтарылады.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Бұл қабаттағы барлық тағайындаулар тазаланады. Көз тағайындаулары, қосымша көздер және біріктіру параметрлері әдепкі мәндерге қайтарылады.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Ойыншы үлгісі</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Дыбысты өшіру LED режимі</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED жарықтығы</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV қосқыштары</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Түймелер</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Импортталған профильдер…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Кеңейтілген контроллер</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Пайдаланушы импорттаған HIDMaestro профильдерін басқару: қосылған құрылғыдан жаңасын түсіріп алу, барын JSON форматына экспорттау немесе енді қажет емесін жою.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Құрылғыны 1:1 клондау</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Таңдалған құрылғыдағы әр осьті, түймені және POV қосқышын нөмірі бірдей виртуалды шығысқа тікелей тағайындау. Схеманы құрылғыға сәйкес өлшейді және ұяшықтағы осы құрылғының жолдарын 1:1 тікелей өткізумен ауыстырады.</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Күштік кері байланыс</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Арна</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI шығысы</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI арнасы (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC саны</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC шығыстарының саны (ең көп мәні «Бастапқы CC» мәніне байланысты)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Бұл перне жұбын алып тастайды.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Қарама-қарсы жұптың бірінші пернесі.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Қарама-қарсы жұптың екінші пернесі.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Бір мезгілдегі қарама-қарсы бағыттар (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Контроллерді белсенді ұстау</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Кейбір ойындар тінтуір не пернетақта кірісін көрген сәтте дірілді тоқтатып, түйме нұсқауларын ауыстырады. Стикті сәл ауытқытып ұстау ойынның бұл контроллерді белсенді құрылғы ретінде қабылдауын сақтайды. Ұстау сол стиктің екі осі де ұсталатын деңгейден төмен тұрғанда ғана іске қосылады, сондықтан өздігінен ауытқитын стик әлі де тыныштықта деп саналады. Кез келген осьте деңгейден асатын кіріс ұстауды босатады және өзгеріссіз өтеді. Ойында ештеңе қозғалмауы үшін ауытқуды ойынның өз өлі аймағынан төмен ұстаңыз.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Белсенді ұстау</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Шертуді қалпына келтіру</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Тақта жартысын қалпына келтіру</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Іске қосу режимін қалпына келтіру</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Торкөздерді қалпына келтіру</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Іске қосылу өлі аймағын қалпына келтіру</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Мәзір геометриясын қалпына келтіру</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Торкөзді қалпына келтіру</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Барлығын тазалау</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Көз</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Мән</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опциялар</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Ось-түйме өлі аймағы</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Төңкеру</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Белгіленсе, жібергенде ось біркелкі орталыққа оралады. Белгіленбесе, соңғы орнында қалады.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Ұсталып тұрғанда жолдың шығысын төңкеретін түйме</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Модификатор: ұсталып тұрғанда жолдың шығыс таңбасы ауысады.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Көз қосу</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Көз қосу</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Бұл жолға тағы бір физикалық кіріс қосу</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Бұл көзді алып тастау</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Теңшелетін</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Орталықты калибрлеу</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Орталық нүкте</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Орталық</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Өлі аймақ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Орталық ығысулар, өлі аймақ пішіні және осьтер бойынша мәндер, әр осьтің қисығы, ауқым, рөлдеу</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Ауқым</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Стикті дұрыстаудың ұсынылатын жолы «Шекараны калибрлеу». Ол стик физикалық тұрғыдан жете алатын шетті айналып өлшейді, содан кейін әр орынды осы өлшенген шетке қатысты пропорционалды түрде қайта масштабтайды, сонда толық табиғи қозғалыс әр бұрышта және әр ауытқуда ешнәрсе қиылмай, мінсіз шеңберге тағайындалады. Төмендегі төрт жүгірткі тек негізгі осьтерді шектейді. Оларды ауқымды түзету үшін емес, әдейі шектеу үшін пайдаланыңыз.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Шекараны калибрлеу» стик жете алатын шетті өлшеп, оны толық шеңберге келтіреді. Төрт жүгірткі әр бағытты ғана шектейді.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Үлгі алынуда...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Орталық ығысуы X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Орталық ығысуы Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Атауы</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Іске қосқыш</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Қашан</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Орындалу</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Басқанда</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Жібергенде</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Бұл макрос қай ауыстыру қабатына жататыны. «Кез келген қабат» белсенді қабатқа қарамастан іске қосылады. Негізгі және аталған қабаттар тағайындау жолы сияқты, тек сол қабат белсенді болғанда ғана іске қосылады.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Кез келген қабат</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Бұл виртуалды контроллер белсенді болғанда үздіксіз жұмыс істейді. Іске қосқыш түйме қажет емес.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Әрекеттер тізбегі</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Орындау</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Қабат, Көз, Шек, Бағыт, Іске қосқыш түймелерін бөгеу, Қайталау</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Әрекет қосу</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Әрекетті өңдеу</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Түрі</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуалды түймелер</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Виртуалды осьтер және рөл</value></data>
@@ -1537,7 +1571,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Тінтуірді жіберу: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу/өшіру</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Жарық жолағының түсін орнату</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Тағайындалған PlayStation ұяшығының жарық жолағын таңдалған RGB түсіне ауыстырады. «Реактивті» режимі бапталған сөну уақытында толық қарқындылықтан қараға дейін сөніп, басқаруды «Жарықтандыру» қойындысының параметрлеріне қайтарады. «Жабысқақ» режимі «Жарық жолағын қайта анықтауды тазалау» әрекеті орындалғанша түсті ұстап тұрады. Ойын басқаратын жазулар бәрібір қайта анықтаудан басым болады.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Тағайындалған PlayStation ұяшығының жарық жолағын таңдалған RGB түсіне ауыстырады. «Реактивті» режимі бапталған сөну уақытында толық қарқындылықтан қараға дейін сөніп, басқаруды «Жарық жолағы» карточкасының параметрлеріне қайтарады. «Жабысқақ» режимі «Жарық жолағын қайта анықтауды тазалау» әрекеті орындалғанша түсті ұстап тұрады. Ойын басқаратын жазулар бәрібір қайта анықтаудан басым болады.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Жарық жолағын жыпылықтату: {0} (сөну {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Тазаланғанша жарық жолағын ұстау: {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Жарық жолағын қайта анықтауды тазалау</value></data>
@@ -1545,7 +1579,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтағы жарық жолағын кез келген белсенді қайта анықтауды босатады. Оны басқа макрос арқылы болдырмау үшін «Жабысқақ» режиміндегі «Жарық жолағының түсін орнату» әрекетімен бірге пайдаланыңыз.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Жарық жолағының режимін орнату</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Жарық жолағының режимі: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтың жарық жолағы режимін белгілі бір мәнге орнатады. Басқа әрекет немесе пайдаланушы өзгерткенше «Жарықтандыру» қойындысындағы өзгеріс сияқты сақталады.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтың жарық жолағы режимін белгілі бір мәнге орнатады. Басқа әрекет немесе пайдаланушы өзгерткенше «Жарық жолағы» карточкасындағы өзгеріс сияқты сақталады.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Жарық жолағы режимдерін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} жарық жолағы режимін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Ұяшықтың жарық жолағы режимін төменде таңдалған режимдер бойынша ауыстырады. Әр іске қосылу келесі белгіленген режимге өтеді. Цикл орны әр әрекет үшін бөлек және қолданба қайта іске қосылғанда басынан басталады.</value></data>
@@ -1560,7 +1594,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Сөну</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Бәсеңдеу</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитра</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Палитра бос болса, ұяшықтың өз «Жарықтандыру» қойындысындағы палитра пайдаланылады.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Палитра бос болса, ұяшықтың «Жарық жолағы» карточкасындағы палитра пайдаланылады.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Макрос қай жарық жолағы режимдерін кезектейтінін таңдаңыз. Әр іске қосылу келесі белгіленген режимге өтеді.</value></data>
 
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Триггер дірілін тоқтату</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Ұяшықтағы кез келген белсенді макрос триггер дірілін босатады. Ұстауды макрос арқылы тоқтату үшін «Жабысқақ» режиміндегі «Триггер дірілін қайта анықтау» әрекетімен бірге пайдаланыңыз.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Гироскопты қосу күйін орнату</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ұяшықтың гироскоп қосылу күйін макрос арқылы орнатады. «Ауыстырғыш» ағымдағы күйді ауыстырады. «Қосу» гироскопты мәжбүрлеп қосады. «Өшіру» оны мәжбүрлеп ажыратады. «Гироскоп» қойындысындағы қосу түймесіне тәуелсіз. Екі көз НЕМЕСЕ арқылы біріктіріледі, сондықтан біреуі екіншісі қосқанды өшіре алмайды.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ұяшықтың гироскоп қосылу күйін макрос арқылы орнатады. «Ауыстырғыш» ағымдағы күйді ауыстырады. «Қосу» гироскопты мәжбүрлеп қосады. «Өшіру» оны мәжбүрлеп ажыратады. «Қозғалыс және сенсор» бөліміндегі «Көздеуді қосу түймесі» параметріне тәуелсіз. Екі көз НЕМЕСЕ арқылы біріктіріледі, сондықтан біреуі екіншісі қосқанды өшіре алмайды.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Ауыстырғыш</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Қосу</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Сенсорлық тақта</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Сенсорлық тақта</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Әр сенсорлық тақтаның кірісі. Қимылдар (сырғыту, түрту, қысу, пішіндер) және үздіксіз шығыс режимдері (виртуалды стик / D-pad, тінтуір) «Тағайындаулар» қойындысында байланыстыруға болатын тағайындау көздеріне айналады.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Әр сенсорлық тақтаның кірісі. Қимылдар (сырғыту, түрту, қысу, пішіндер) және үздіксіз шығыс режимдері (виртуалды стик / D-pad, тінтуір) кез келген шығысқа байланыстыруға болатын тағайындау көздеріне айналады.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Сенсорлық тақта</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Сенсорлық тақта нөмірі</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Төмендегі параметрлер осы контроллердің қай сенсорлық тақтасына қолданылатыны. Әр сенсорлық тақта өз қимылдарын, тінтуір сезімін және меңзер аймағын сақтайды.</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Осы геймпадтың қозғалыс сенсоры тінтуір мен стик шығысын қалай басқаратынын баптаңыз. Тыныштықтағы ауытқуды нөлдеу үшін тегіс бетте калибрлеңіз, содан кейін сезімталдықты, тегістеуді және қосу ережелерін қалауыңызша реттеңіз.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрлеу</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Гироскоп пен акселерометрдің ағымдағы мәндері</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Сезімталдық</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Бірліктер, Кеңістік, осьтерді төңкеру, Нақты әлемге калибрлеу</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Бірліктер, осьтерді төңкеру, Нақты әлемге калибрлеу</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>Бір айналымға ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Жауапты пішіндеу</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Өлі аймақ, тегістеу, Үдеу, Шығыс қисығы</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Санақ жүйесі</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Жергілікті, Ойыншы немесе Әлем</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Кеңістік</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Гироскоп қозғалысы қалай түсіндірілетіні. «Жергілікті» контроллердің шикі осьтерін пайдаланады. «Ойыншы» көлденең қозғалысты нақты әлемдегі тік бағытқа (гравитацияға) проекциялайды, сондықтан геймпадты қалай ұстасаңыз да, білекті бірдей бұрау камераны әрқашан бұрады. «Әлем» бұған қоса тік қозғалысты әлем осьтеріне қайта проекциялайды.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Ұстау тәсілі</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Тік</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Ұстау тәсілі</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Контроллердің қалай ұсталатыны. Гироскопты, акселерометрді және гравитацияны тағайындаулар үшін де, виртуалды контроллер хабарлайтын қозғалыс үшін де бірге бұрады. D-pad та сол жүйеге ілеседі, сондықтан ұстау күйінде «Жоғары» жоғары бағытта болады.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Контроллердің қалай ұсталатыны</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Сызықтық</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Агрессивті</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Бәсең</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Қосу бағытын қалпына келтіру</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Қозғалысты тікелей өткізу</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Гироскоп баптауларын қозғалысты тікелей өткізуге қолдану</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Осы қойындыдағы қосымша гироскоп баптауларын (өлі аймақ, сезімталдық, тегістеу, жауап қисығы, төңкеру) виртуалды контроллер ойынға не эмуляторға хабарлайтын қозғалысқа қолданады. Тек калибрленген көрсеткішті жіберіп, ойынның өз сезімталдығы мен тегістеуін қолдануына мүмкіндік беру үшін мұны өшіріңіз. Калибрлеу ауытқуын түзету кез келген жағдайда әрқашан қолданылады.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«Гироскоп» карточкаларындағы қосымша баптауларды (өлі аймақ, сезімталдық, тегістеу, жауап қисығы, төңкеру) виртуалды контроллер ойынға не эмуляторға хабарлайтын қозғалысқа қолданады. Тек калибрленген көрсеткішті жіберіп, ойынның өз сезімталдығы мен тегістеуін қолдануына мүмкіндік беру үшін мұны өшіріңіз. Калибрлеу ауытқуын түзету кез келген жағдайда әрқашан қолданылады.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Тікелей өткізу баптауларын қалпына келтіру</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін гироскоп сезімталдығының көбейткіші. 1.0 = қозғалтқыштың әдепкі мәні (500°/с → толық ауытқу). 1.0 мәнінен жоғары мәндер сезімталырақ. 1.0 мәнінен төмен мәндердің сезімталдығы азырақ.</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Толық еңкейту ауқымын қалпына келтіру</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Еңкейту өлі аймағын қалпына келтіру</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Гироскоп еңкейтуін қалпына келтіру</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Бірнеше көз белсенді болғанда осы жолдың көздері қалай біріктірілетіні. Өзгерту үшін жолды таңдаңыз да, төмендегі мәліметтер жолағында өзгертіңіз.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Бірнеше көз белсенді болғанда осы жолдың көздері қалай біріктірілетіні. Жолды ашып, оны «Біріктіру» параметрінде өзгертіңіз.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Инерция</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Трекбол режимі: стикті сілтеп жіберсеңіз, меңзер қозғалысын жалғастырып, біртіндеп тоқтайды. Стикті қайта қозғау оны ұстап алады.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Сілтеуден кейін меңзер қаншалықты алысқа сырғитыны. Ауқымның жоғарғы шегінде стикті қайта қозғағанша тоқтамайды.</value></data>
@@ -2341,7 +2380,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Триггер осі</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Әр мотор үшін күшейту, триггер дірілі, моторларды алмастыру</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Әр мотор үшін күшейту, триггер дірілі, Рөл бұрышы дірілі, Тұрақты күш</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Жалпы күшейту</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Сол мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Оң мотор</value></data>
@@ -2350,6 +2389,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Бұл контроллерде триггер моторлары жоқ, сондықтан Xbox импульстік триггерлерін пайдаланатын ойындардың дірілі сезілмейді. Оның орнына әр триггер арнасын сол жақтағы негізгі моторға қосыңыз.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Дірілді сынау</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Мотор белсенділігі</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Сол</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Оң</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Өшіргенше осы құрылғыға үздіксіз күш беріңіз. Кез келген көзден келетін, ойын басқаратын күш белсенді кезде басымдыққа ие болады, ал ойын тоқтағанда бұл күш қайта жалғасады.</value></data>
@@ -2428,7 +2469,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Жазу үшін түймелерді басыңыз немесе осьті/триггерді қозғаңыз. Осьтер 50% шегінен асқанда анықталады.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Тізімнен қосу</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Іске қосқыш кірісін жазудың орнына ұяшық құрылғыларынан таңдаңыз. «Сенсорлық тақта» қойындысында қосылған сенсорлық тақта қимылдары осында шығады.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Іске қосқышты тазалау</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Іске қосқыш кірісін жазудың орнына ұяшық құрылғыларынан таңдаңыз. «Қозғалыс және сенсор» бөлімінде қосылған сенсорлық тақта қимылдары осында шығады.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Кірісті алып тастау</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Кез келген кірісті басыңыз…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>төңкерілген</value></data>
@@ -2684,7 +2726,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Тағайындалған барлық құрылғылары желіден тыс болғанда виртуалды контроллер жойылғанға дейінгі секунд саны. 0 өшіреді. Сол түрдегі қалған контроллерлер бос орынды толтыру үшін жоғары жылжып, төменгі ұяшықтарға қайта байланысады.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунд (0 = ешқашан)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Ауыстыру қабаты</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Қабат қосу</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ауыстыру қабатын қосу. Түйме ұсталып тұрғанда не ауыстырылғанда белсенді болатын екінші тағайындау кестесі.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Негізгі</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ауыстыру қабаты</value></data>
@@ -2785,7 +2827,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Қозғалыспен рөлдеу</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° мен {1}° аралығында</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Көлбеудің өлі аймақтары, Контроллер бағдары</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>«Қозғалыс: көлбеу» кірісінің параметрлері: контроллерді рөл сияқты еңкейтіңіз. «Тағайындаулар» бөліміндегі кіріс тізімінен «Қозғалыс: көлбеу» кірісін стик осіне тағайындаңыз.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>«Қозғалыс: көлбеу» кірісінің параметрлері: контроллерді рөл сияқты еңкейтіңіз. «Түймелер» бөлімінде «Қозғалыс: көлбеу» кірісін стик осіне тағайындаңыз.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Қозғалыспен рөлдеуді қалпына келтіру</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (оң стик)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (сол стик)</value></data>
@@ -2794,7 +2836,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Оң стик сақинасы</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick кірістерін баптау</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick кірістерінің параметрлері: стикті бағыттаңыз, камера соған сәйкес бұрылады, дәл бұру үшін шетінің бойымен жүргізіңіз. «Тағайындаулар» бөліміндегі кіріс тізімінен «Flick Stick (оң стик)» кірісін кез келген қабатта «Тінтуір X» шығысына тағайындаңыз.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick кірістерінің параметрлері: стикті бағыттаңыз, камера соған сәйкес бұрылады, дәл бұру үшін шетінің бойымен жүргізіңіз. «Пернелер және тінтуір» бөлімінде «Flick Stick (оң стик)» кірісін кез келген қабатта «Тінтуір X» шығысына тағайындаңыз.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick параметрлерін қалпына келтіру</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° бұрылысқа нүкте саны</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Камераны толық 360° бұру үшін тінтуір санақтары. Ойындағы тінтуір сезімталдығына байланысты: сілтеу толық бұрылмаса, көтеріңіз, артық бұрылса, төмендетіңіз.</value></data>
@@ -2886,7 +2928,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Дыбыс</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макрос дыбыстары мен көшірмеленген жүйелік дыбыс таңдалған контроллердің кірістірілген динамигі арқылы USB немесе Bluetooth арқылы ойнатылады. Құрылғыны жоғарыдағы ашылмалы тізімнен таңдаңыз. Мұндағы барлық параметрлер соған қатысты.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Дыбыс шығысы</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Көшірме көзі, хаптика, Құлаққап дыбыс деңгейі, Кроссфид, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Көшірме көзі, Құлаққап дыбыс деңгейі, буфер, Шығыс жолы</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Дыбыстар таңдалған контроллерге автоматты түрде бағытталады. USB арқылы геймпадтың өз дыбыс құрылғысы аппараттық контейнер бойынша анықталады. Bluetooth арқылы дыбыс Sony HID кадрларында таратылады.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Көшірме көзі</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Контроллер динамигіне қай ойнату құрылғысының дыбысын көшіру керек. Белгілі бір дыбыстарды бөлек ойнату құрылғысына жіберетін ойындар осы құрылғыны нысанаға ала алады.</value></data>
@@ -2899,10 +2941,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Барлық дыбыстарды тоқтату</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Осы геймпадтағы барлық макрос дыбыстарын тоқтату</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Дыбыс макростары</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Дыбыстарды макростар ойнатады: іске қосқыш (түйме басу, жіберу, ұстау немесе формула) және «Дыбыс ойнату» әрекеті. Оларды осы жерде немесе «Макростар» қойындысында құрыңыз. Кідірістер, қайталаулар және ауыстырғыштар толық жұмыс істейді.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Дыбыстарды макростар ойнатады: іске қосқыш (түйме басу, жіберу, ұстау немесе формула) және «Дыбыс ойнату» әрекеті. Оларды осы жерде немесе «Макростар және мәзірлер» бөлімінде құрыңыз. Кідірістер, қайталаулар және ауыстырғыштар толық жұмыс істейді.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Жаңа дыбыс макросы</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Әзірге дыбыс макростары жоқ. Біреуін жасап, дыбыс файлы мен іске қосқышты таңдаңыз.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Бұл макросты «Макростар» қойындысында ашу</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Бұл макросты «Макростар және мәзірлер» бөлімінде ашу</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Дыбыс макросы {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Дыбыс ойнату</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Дыбыс файлын (.wav, .mp3, .m4a, .aac, .wma, .flac) осы геймпадтың шығыс құрылғысында ойнату</value></data>
@@ -3178,6 +3220,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Жұмыс істеп тұр</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Жұмыс істеп тұр, драйвер қосылған</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Жұмыс істеп тұр, контроллерлер белсенді</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR орнатылған</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR орнатылмаған</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR жұмыс істеп тұр</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR жұмыс істеп тұр, драйвер қосылған</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR жұмыс істеп тұр, контроллерлер белсенді</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Басқа OpenVR драйвері HIDMaestro драйверінің атын пайдаланады, сондықтан SteamVR оны PadForge драйверінің орнына жүктей алады және виртуалды VR контроллерлері көрінбейді. Мұны түзету үшін сол драйверді жойыңыз: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Тізбекті контроллер (COM порты)</value></data>
@@ -3321,7 +3368,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Медиа {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Тінтуір</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Тінтуір қимылдары</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Қимыл түймесін ұстап, сілтеңіз, жібергенде бір әрекет орындалады: солға, оңға, жоғары, төмен немесе сілтеу қашықтығынан аз болса, жай шерту. Бес қимылды «Тағайындаулар» қойындысында тағайындаңыз немесе оларды макрос іске қосқыштары ретінде пайдаланыңыз.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Қимыл түймесін ұстап, сілтеңіз, жібергенде бір әрекет орындалады: солға, оңға, жоғары, төмен немесе сілтеу қашықтығынан аз болса, жай шерту. Бес қимылды кез келген шығысқа тағайындаңыз немесе оларды макрос іске қосқыштары ретінде пайдаланыңыз.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Тінтуір қимылдарын қосу</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Осы ұяшықтағы осы тінтуір үшін қимыл тану құралын іске қосады. Қимыл түймесі қимыл кезінде қалыпты шертуін сақтайды, сондықтан басқа жерде тағайындамайтын бүйір түймені таңдаңыз.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Қимыл түймелері</value></data>
@@ -3355,7 +3402,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Қабатты ауыстыру</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma түсін орнату</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Әрекет орындалып тұрғанда осы виртуалды контроллерге тағайындалған Razer құрылғыларын және олармен бір түрдегі барлық басқа Razer құрылғыларын бір түске бояйды.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Жоғарыда көрсетілген уақыт бойы осы түсті осы виртуалды контроллерге тағайындалған Razer құрылғыларына және олармен бір түрдегі барлық басқа Razer құрылғыларына, ал Razer Chroma жолы тағайындалған болса, барлық Razer құрылғыларына бояйды. Ол кез келген виртуалды контроллердің «Жарықтандыру» қойындысынан басым болады, содан кейін жарықтандыруды қайтарады. Түсті іске қосқыш ұсталып тұрғанша ұстау үшін «Ұстап тұрғанда» режимін «Жібергенше» параметрімен бірге пайдаланыңыз. Екі макрос бір мезгілде бояса, тізімде төменірек тұрғаны басым болады, сондықтан толық басу макросын оның жұмсақ басу егізінің астына қойыңыз. Екі виртуалды контроллердегі макростар Razer құрылғысының бір түрін бояса, ойыншы нөмірі кішісі басым болады. Razer Synapse іске қосулы болуы керек.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Жоғарыда көрсетілген уақыт бойы осы түсті осы виртуалды контроллерге тағайындалған Razer құрылғыларына және олармен бір түрдегі барлық басқа Razer құрылғыларына, ал Razer Chroma жолы тағайындалған болса, барлық Razer құрылғыларына бояйды. Ол кез келген виртуалды контроллер «Жарық және дыбыс» бөлімінде орнатқан жарықтандырудан басым болады, содан кейін жарықтандыруды қайтарады. Түсті іске қосқыш ұсталып тұрғанша ұстау үшін «Ұстап тұрғанда» режимін «Жібергенше» параметрімен бірге пайдаланыңыз. Екі макрос бір мезгілде бояса, тізімде төменірек тұрғаны басым болады, сондықтан толық басу макросын оның жұмсақ басу егізінің астына қойыңыз. Екі виртуалды контроллердегі макростар Razer құрылғысының бір түрін бояса, ойыншы нөмірі кішісі басым болады. Razer Synapse іске қосулы болуы керек.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast экранын көрсету</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Осы ұяшыққа кіріс беретін Bliss-Box портындағы әр Dreamcast геймпадының VMU экранында суреттерді ойнатады, содан кейін әр портты өз экран параметріне қайтарады.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast суреттерін көрсету: {0} × {1} мс, қайталау саны {2}</value></data>
@@ -3649,10 +3696,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Басқанда геймпадтың жинақталған гироскоп көздеу сілтемелерін нөлдейді. Тегістеу тарихы тазаланады, «Қозғалыс: көлбеу» бейтарап күйі қайта түсіріледі, гравитация бағасы контроллердің ағымдағы орнынан қайта есептеледі, ал «Қозғалыс: еңкею», бұрылу және қисаю жолдары жасаған бұрылыс жойылады.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Кез келген құрылғы)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Мәзірлер</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Мәзірлер физикалық стикті немесе сенсорлық тақтаны экрандағы сақинаға не торға айналдырады. Мәзір қосып, оны не ашатынын таңдаңыз, содан кейін әр торкөзге атау беріп, байланыстыру тағайындаңыз.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Мәзірлер физикалық стикті немесе сенсорлық тақтаны экрандағы сақинаға не торға айналдырады. Мәзір жасау үшін «Мәзірлер» жанындағы + түймесін басыңыз, оны не ашатынын таңдаңыз, содан кейін әр торкөзге атау мен әрекет беріңіз.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Жаңа мәзір</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Мәзір {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Мәзір атауы</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Қосулы</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Ашылу</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Стиль</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Радиалды сақина</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Сенсорлы тор</value></data>
@@ -3672,12 +3721,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Торкөздер</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Орталық торкөз</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Белгілерді көрсету</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Экрандағы орны</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Өлшемі</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Мөлдір еместік</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Іске қосылу өлі аймағы</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Торкөз байланыстырулары</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Торкөз {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Торкөз қосу</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Соңғы торкөзді алып тастау</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Торкөзді өңдеу</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Атау</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Әрекет</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Белгіше</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Орталық</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Жоқ</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Пернетақта пернесі</value></data>
@@ -3690,7 +3743,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Басу жіберілгенде бір рет іске қосылады: торкөзге бағыттап, стикті немесе трекпадты басып, содан кейін жіберіңіз.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Жібергенде бір рет іске қосылады: саусағыңызды тақтадан көтеріңіз немесе торкөз ерекшеленіп тұрғанда стикті ортаға қайтарыңыз.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Торкөз ерекшеленіп тұрған бүкіл уақытта байланыстыру ұсталады. Басу қажет емес.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Мәзірде қанша торкөз бар. Радиалды сақина үшін бұл тек сақинаны санайды, орталық торкөз бөлек.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Стик немесе саусақ «Іске қосылу өлі аймағы» ішінде тұрғанда таңдалатын орталық торкөзді қосады.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Стиктер үшін мәзір ашылып, сақина торкөздері ерекшеленуі үшін қаншалықты итеру керек. Радиалды мәзірлерде бұл стиктер мен сенсорлық тақталар үшін орталық аймақ та болып табылады: оның ішінде, бар болса, орталық торкөз таңдалады.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Әр торкөздің белгісін экрандағы оверлейде көрсету.</value></data>
@@ -3700,8 +3752,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Оверлей өлшемі, қалыпты өлшемінің пайызымен.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Оверлейдің мөлдір еместігі. 100% толығымен тұтас.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Оверлейде осы торкөзде көрсетілетін мәтін.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Іске қосылғанда бұл торкөз не істейтіні: «Пернетақта пернесі» пернетақта пернесін басады, «Контроллер түймесі» осы ұяшықтың виртуалды контроллеріндегі түймені басады. «Жоқ» деп орнатылған торкөз «Тағайындаулар» жолдары мен макрос іске қосқыштары үшін мәзір элементі көзі ретінде бәрібір іске қосылады.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Виртуалды контроллер схемасынан емес, осы ұяшыққа тағайындалған физикалық контроллерлерден оқылады. Төмендегі торкөз байланыстырулары мәзірдің шығысы болып табылады.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Іске қосылғанда бұл торкөз не істейтіні: «Пернетақта пернесі» пернетақта пернесін басады, «Контроллер түймесі» осы ұяшықтың виртуалды контроллеріндегі түймені басады. «Жоқ» деп орнатылған торкөз тағайындаулар мен макрос іске қосқыштары үшін мәзір элементі көзі ретінде бәрібір іске қосылады.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Виртуалды контроллер схемасынан емес, осы ұяшыққа тағайындалған физикалық контроллерлерден оқылады. Мәзірдің не шығаратынын төмендегі торкөздер көрсетеді.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Теңшелетін осьтер</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Басқару X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Басқару Y</value></data>
@@ -3726,13 +3778,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Шығыс</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Түймелер</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Пернелер және тінтуір</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноталар және реттегіштер</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Қолдар</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стиктер және триггерлер</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Діріл және хаптика</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Қозғалыс және сенсор</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Жарық және дыбыс</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макростар және мәзірлер</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас шейкерлері</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Осы виртуалды контроллер алатын ойын дірілі мен күштік кері байланысты бас шейкерлері мен сабвуферлер үшін төмен жиілікті тондар ретінде дыбыс шығысына бағыттайды.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ойын дірілін бас шейкерлері немесе сабвуфер арқылы төмен тондар ретінде ойнатады.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Шығыс құрылғысы, арна, күшейту, әр мотор үшін тон</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense және Nintendo Switch Pro виртуалды контроллерлерімен, сондай-ақ рөлдер сияқты күштік кері байланысы бар кеңейтілген виртуалды контроллерлермен және Steam Deck Controller (Composite) құрылғысымен жұмыс істейді. Ойын кері байланысы мен Дірілді сынау дыбыс шығысы арқылы ойнайды. Макростың дірілі контроллерде қалады.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Дірілді дыбысқа беруді қалпына келтіру</value></data>
@@ -3761,19 +3816,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Осы кері байланыс арнасын тон ретінде ойнатады. Өшірулі кезде күшейту мен жиілік сақталады.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Осы арнаның тон жиілігі, 20-дан 120 Гц-ке дейін. Шейкеріңіз ең күшті жауап беретін жерді табу үшін жиілік сыпыруын іске қосыңыз.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Негізгі күшейтуге дейінгі осы арнаның дыбыс деңгейі.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Күшейту</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Сынау</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Осы арнаның тонын орнатылған күшейтумен 1.5 секунд ойнатады.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Төмен моторды қалпына келтіру</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Жоғары моторды қалпына келтіру</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Сол жақ триггерді қалпына келтіру</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Оң жақ триггерді қалпына келтіру</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Шейкерлерді тексеру</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Жиілік сыпыруы</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Төмен мотор бағыттауында тонды сегіз секундта 20-дан 120 Гц-ке дейін сыпырады. Шейкеріңіздің ең күшті жауап беретін жерін белгілеп, дауыс жиіліктерін сол жерге қойыңыз.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Тоқтату</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Сынақ тонын немесе сыпыруды тоқтатады.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Кез келген NFC тегі</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC тегі: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Енгізулерді сүзу (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Шығыстар мен кірістерді сүзу</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Тек сәйкес келетін жолдар мен кірістерді көрсетеді. Мұнда теру үшін Ctrl+F пернелерін басыңыз.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Таңдау құралдары қай құрылғылардың енгізулерін ұсынатынын таңдаңыз</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Таңдау құралында көрсетіледі</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Кез келген дауыс тіркесі</value></data>
@@ -3880,6 +3938,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Беруді қалпына келтіру</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Параметрлік эквалайзер</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Контроллер дыбысына арналған жолақтық сүзгілер. Дыбыс кодталар алдында қолданылады, сондықтан төмендегі лимитер күшейтілген жолақтың бұрмалануына жол бермейді.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Преамп, жолақтар, импорттау</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Преамп</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Жолақтардың алдындағы жалпы деңгей. AutoEq профильдері күшейтулері бұрмаламауы үшін теріс преампты қамтиды, оны импорттау мұны сіз үшін орнатады.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Қосулы</value></data>
@@ -4104,7 +4163,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Түртіп немесе ауытқытып ашуға қайтару.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Басқару құралы</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Қабат осы мәзірді ашық ұстап тұрғанда бөлектелген элементті басқаратын физикалық кіріс.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Осы ұяшыққа тағайындалған физикалық контроллерлерден оқылады. Қабат мәзірді ашады, ал бұл кіріс оны басқарады. Шығысты элемент тағайындаулары анықтайды.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Осы ұяшыққа тағайындалған физикалық контроллерлерден оқылады. Қабат мәзірді ашады, ал бұл кіріс оны басқарады. Мәзірдің не шығаратынын оның торкөздері көрсетеді.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Белгіше өлшемі</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Белгішенің мәзірдің әдеттегі белгіше өлшеміне қатысты өлшемі, 25%-дан 200%-ға дейін. Белгішені тазалау оны 100%-ға қайтарады.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Басу кірісі басылып тұрғанда бөлектелген элементтің тағайындауын ұстап тұрады. Бөлектелген радиалды орталық стик тыныш тұрғанда да іске қосыла алады.</value></data>
@@ -4227,7 +4286,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-тың құжатталмаған IPolicyConfig интерфейсінің орналасуы бойынша Antoine Aflalo сілтемесі, оны PadForge контроллердің дыбыс соңғы нүктесін қайта қосу үшін қолданады. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Дыбыс қойындысы импорттайтын параметрлік EQ профилінің пішімі, автор Jaakko Pasanen. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллердегі «Параметрлік эквалайзер» импорттайтын параметрлік EQ профилінің пішімі, автор Jaakko Pasanen. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Text Block макростары мен пернетақта аккорд ілмегінің астарындағы SendInput әдістері: Unicode теру, пакет шектеулері, Win пернесін бүркемелеу перне және таңбаланған енгізілген кіріс. GPL-2.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4431,6 +4490,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Бағыт</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Қадам</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>мен</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Тұтқа</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} осы контроллердің триггерлерін орнатып тұр.</value></data>
@@ -4475,7 +4535,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Тұтқа жеткілікті алыс жылжымады, сондықтан ауқым бұрынғыша қалады. Сыпыру жүріп жатқанда оны барлық шетіне жылжытыңыз.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon сыпыру аяқталғанға дейін жабылды.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Novint Falcon құрылғысымен Force Dimension SDK арқылы ойнауға мүмкіндік береді, оны Force Dimension сайтынан орнатасыз. Тұтқа стик ретінде, тұтқадағы төрт түйме түймелер ретінде жұмыс істейді, ал PadForge ойынның дірілі мен әсерлерін тұтқаға күш ретінде береді. Falcon сезімін әр ұяшықтың «Күштік кері байланыс» қойындысы реттейді.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Novint Falcon құрылғысымен Force Dimension SDK арқылы ойнауға мүмкіндік береді, оны Force Dimension сайтынан орнатасыз. Тұтқа стик ретінде, тұтқадағы төрт түйме түймелер ретінде жұмыс істейді, ал PadForge ойынның дірілі мен әсерлерін тұтқаға күш ретінде береді. Falcon сезімін әр контроллердің «Діріл және хаптика» бөліміндегі «Novint Falcon» карточкасы реттейді.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon басқару</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Әр Falcon құрылғысын Force Dimension dhd64.dll файлы арқылы ашады. Ашық Falcon тек PadForge-ге тиесілі, сондықтан бұл қосулы кезде FalconJoyForce пен Force Dimension құралдары оны аша алмайды. Өшірулі болса, PadForge барлық Falcon құрылғыларын жабады.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon кітапханасы {0} болып орнатылды. PadForge оны бірнеше секунд ішінде жүктейді, ал басқа көшірмеде ашық тұрған Falcon осы көшірмеде қайта ашылады.</value></data>
@@ -4643,7 +4703,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Белгіленген уақытқа</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Тоқтатылғанша</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Уақыт</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Осы ұяшықтағы әрбір DualSense және DualSense Edge құрылғысында ойнайды. Ойынның өз триггер эффектісі мен ойын модының эффектісі бірінші орында, ал эффект аяқталғанда Бейімделгіш триггерлер қойындысының параметрі қайтады. Аймақтар тыныштықтағы 0-ден толық басылған 9-ға дейін жүреді. Bow, Galloping және Machine ресми DualSense эффектілері емес, микробағдарламаны жаңарту оларды жоюы мүмкін. Бейімделгіш триггер дірілдерін түрлендіру қосулы Xbox контроллерлері дірілдеу эффектілерін триггер дірілі ретінде сезінеді.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Осы ұяшықтағы әрбір DualSense және DualSense Edge құрылғысында ойнайды. Ойынның өз триггер эффектісі мен ойын модының эффектісі бірінші орында, ал эффект аяқталғанда «Бейімделгіш триггерлер» карточкасының параметрі қайтады. Аймақтар тыныштықтағы 0-ден толық басылған 9-ға дейін жүреді. Bow, Galloping және Machine ресми DualSense эффектілері емес, микробағдарламаны жаңарту оларды жоюы мүмкін. Бейімделгіш триггер дірілдерін түрлендіру қосулы Xbox контроллерлері дірілдеу эффектілерін триггер дірілі ретінде сезінеді.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0}: {1}, {2} мс</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}: {1}, ұсталып тұрғанда</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}: {1}, тоқтатылғанша</value></data>

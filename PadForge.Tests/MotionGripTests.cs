@@ -646,14 +646,16 @@ namespace PadForge.Tests
             Assert.Contains("SelectedValue=\"{Binding MotionGrip, Mode=TwoWay}\"", xaml);
             Assert.Contains("ResetMotionGripCommand", xaml);
             Assert.Contains("Binding Pad_Gyro_Grip_Header,", xaml);
-            // The five gyro-rate cards are named so the page can hide them on
-            // an accelerometer-only device, which now sees the Gyro tab.
-            foreach (var card in new[] { "GyroPassthroughCard", "GyroCalibrationCard", "GyroSensitivityCard", "GyroResponseCard", "GyroEngageCard" })
+            // The six gyro-rate cards are named so the page can hide them on
+            // an accelerometer-only device, which now sees the Gyro group.
+            // Reference Frame is one since Space left Sensitivity (#574).
+            foreach (var card in new[] { "GyroPassthroughCard", "GyroCalibrationCard", "GyroSensitivityCard", "GyroResponseCard", "GyroEngageCard", "GyroSpaceCard" })
                 Assert.Contains($"x:Name=\"{card}\"", xaml);
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml.cs");
             Assert.Contains("hasGyro = ud.HasGyro || ud.HasAccel;", page);
             Assert.Contains("hasGyroRate = ud.HasGyro;", page);
             Assert.Contains("GyroEngageCard.Visibility = rateVis;", page);
+            Assert.Contains("GyroSpaceCard.Visibility = rateVis;", page);
             // A user grip change re-references the edited device's resting
             // grips (the per-device recenter, guarded against loads).
             Assert.Contains("if (e.PropertyName == nameof(PadViewModel.MotionGrip)", mw);

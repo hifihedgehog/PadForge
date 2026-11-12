@@ -297,6 +297,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Pangaran</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Kun</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Pirmi</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Mga virtual button</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Keyboard asin teksto</value></data>
@@ -322,9 +323,9 @@
   <data name="Macro_None" xml:space="preserve"><value>(mayo)</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pindoton an {0} sa laog nin {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pindoton an {0} sa laog nin {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Buhian an {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Maghalat nin {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Maghalat nin {0} ms</value></data>
 
 
   <!-- ═══ Macro action: Rumble ═══ -->
@@ -417,7 +418,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, Space, pagbaliktad kan mga axis, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, pagbaliktad kan mga axis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Baliktadon an pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Baliktadon an yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Baliktadon an roll (X)</value></data>
@@ -923,6 +924,7 @@
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>I-reset an halangkaw na motor</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>I-reset an kaliwang trigger</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>I-reset an tuong trigger</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Probaran an mga shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Pondohon</value></data>
   <data name="About_Libinput" xml:space="preserve">
     <value>libinput</value>
@@ -1109,6 +1111,7 @@
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direksyon</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>sagkod</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModPeripheralLights_Format" xml:space="preserve"><value>Ini-set kan {0} an mga ilaw kan device na ini.</value></data>
   <data name="Falcon_Axis_LeftRight" xml:space="preserve"><value>Wala/Tuo</value></data>
@@ -1188,6 +1191,9 @@
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamiton</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key asin mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota asin kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick asin trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kurog asin haptics</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Hiro asin dutdot</value></data>
@@ -1195,8 +1201,34 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro asin menu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} na output</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Hiro</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click nin sarong kontrol, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Mag-click nin sarong key o sarong button kan mouse, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Mag-click nin sarong nota o sarong slider, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Dai kaiba sa "I-map an gabos" an mga output nin dutdot kan A asin B. Mag-click sa singsing sa palibot kan A o B tanganing i-map an saro.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghahalat sa {0}. Pindota an input sa saimong device.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, pinapalakaw kan</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas dakol na opsyon</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mas dikit na opsyon</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Button sa atubangan</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Button kan sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Button</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad nin direksyon</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor nin hiro</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Key kan keyboard</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Button kan mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Paghiro kan mouse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Scroll wheel</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor nin dutdot</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog na pagguyod</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, walang kamot</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tuong kamot</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble gikan sa bass kan audio kan sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ipinapadara an rumble kan mga pangenot na motor sa mga trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Rumble kan trigger gikan sa bass kan audio kan sistema</value></data>
@@ -1208,9 +1240,20 @@
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Irekord an saimong sadiri</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Liwanag kan LED, Pattern kan player, Mode kan mute LED</value></data>
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>An silaw kan buton na Guide o Home</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain kada motor, rumble kan trigger, pagsalyo kan motor</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain kada trigger, pagsalyo kan motor, mga vibration kan adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain kada motor, rumble kan trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain kada trigger, pagsalyo kan motor, mga vibration kan adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Pagbaliktad, Momentum, Response, Akselerasyon, fling</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, haptics, Volume kan headphone, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Volume kan headphone, buffer, Output Path</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Mga offset kan sentro, korte kan deadzone asin halaga kada axis, curve kada axis, range, steering</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Gibohon</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Ribayan an pangaran</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Bagong menu</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Hal-on an huring cell</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Pangaran</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksyon</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Bilog na controller</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player o Kinaban</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
 </root>

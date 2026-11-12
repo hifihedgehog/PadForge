@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>පිටපත් කරන්න</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>අලවන්න</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>අනුපිටපත් කරන්න</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>නැවත නම් කරන්න</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>සබල කර ඇත</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>අබල කර ඇත</value></data>
   <data name="Common_On" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>උපාංගය</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ආදාන මූලාශ්‍රය</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>උපාංගයක් එක් කරන්න</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>රූපය</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ලැයිස්තුව</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ප්‍රතිදාන: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>චලනය</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>පාලනයක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>යතුරක් හෝ මූසික බොත්තමක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ස්වරයක් හෝ ස්ලයිඩරයක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“සියල්ල සිතියම්ගත කරන්න” A සහ B ස්පර්ශ ප්‍රතිදාන මඟ හරියි. එකක් බැඳීමට A හෝ B වටා ඇති වළල්ල ක්ලික් කරන්න.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} පටිගත කරමින්. ඔබේ උපාංගයේ ආදානය ඔබන්න.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} සඳහා ආදාන මූලාශ්‍රය</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>තවත් විකල්ප</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>අඩු විකල්ප</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>මුහුණත බොත්තම</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>උරහිස් බොත්තම</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>පද්ධති බොත්තම</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>බොත්තම</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>දිශා පෑඩය</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>ස්ටික්</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ට්‍රිගරය</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>ටච්පෑඩ්</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>චලන සංවේදකය</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>යතුරුපුවරු යතුර</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>මූසික බොත්තම</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>මූසික චලනය</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>අනුචලන රෝදය</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>පාලන වෙනස (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>ස්පර්ශ සංවේදකය</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>ඇනලොග් ඇදීම</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, වම් අත</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, දකුණු අත</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>යුගලයක බොත්තම් දෙකම ඔබා ඇති විට ක්‍රීඩා දකින එබීම</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>යුගලයක යතුරු දෙකම ඔබා ඇති විට ක්‍රීඩා දකින එබීම</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ක්‍රීඩා පාලක ඉඟි දිගටම පෙන්වන ලෙස කුඩා ස්ටික් අපගමනයක් රඳවයි</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>වම් පසින් මැක්‍රෝවක් තෝරන්න, නැතහොත් එකක් සෑදීමට එක් කරන්න ඔබන්න.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>ලැයිස්තුවෙන් මැක්‍රෝවක් තෝරන්න, නැතහොත් එකක් සෑදීමට මැක්‍රෝ අසල ඇති + ඔබන්න.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>අමු</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ප්‍රතිදාන</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>සීතලයි</value></data>
@@ -862,7 +891,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ආවේග ට්‍රිගර</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ආවේග ට්‍රිගර</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>එක් එක් ට්‍රිගරයේ ලාභය, මෝටර මාරු කිරීම, අනුවර්තී ට්‍රිගර කම්පන</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>එක් එක් ට්‍රිගරයේ ලාභය, මෝටර මාරු කිරීම, අනුවර්තී ට්‍රිගර කම්පන, නියත ට්‍රිගර බලය</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>අතථ්‍ය පාලකයෙන් පවරා ඇති භෞතික Xbox One, Elite, හෝ Series පාලකය වෙත එක් එක් ට්‍රිගරයේ මෝටර් විධාන (Xbox Impulse Triggers) යොමු කරයි. ක්‍රීඩාව මඟින් පාලනය වන ට්‍රිගර කම්පනය ස්වයංක්‍රීයව හරහා යයි. පහත පාලන එක් එක් ට්‍රිගරය සඳහා ප්‍රබලතාව පරිමාණය කරයි.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>වම් ට්‍රිගරය</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>දකුණු ට්‍රිගරය</value></data>
@@ -932,9 +961,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ස්ටික්</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>එක් එක් ස්ටික් සඳහා ඩෙඩ්සෝන්, ප්‍රති-ඩෙඩ්සෝන්, සංවේදීතා වක්‍ර සහ මධ්‍ය ඕෆ්සෙට් ක්‍රමාංකනය. පහත සෑම කොටසක්ම සක්‍රිය ප්‍රතිදානයේ එක් ඇනලොග් ස්ටික් එකක් ඉලක්ක කරයි. විස්තෘත පැතිකඩවලට ස්ටික් හතරක් දක්වා තිබිය හැක. සම්මත ගේම්පෑඩවල ස්ටික් දෙකක් ඇත.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ට්‍රිගර</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>එක් එක් ට්‍රිගරය සඳහා ඩෙඩ්සෝන්, ප්‍රති-ඩෙඩ්සෝන්, උපරිම පරාස පරිමාණය සහ සංවේදීතා වක්‍ර. පහත සෑම කොටසක්ම සක්‍රිය ප්‍රතිදානයේ එක් ට්‍රිගර අක්ෂයක් ඉලක්ක කරයි. විස්තෘත පැතිකඩවලට ස්ටික් ටැබය සමඟ බෙදා ගන්නා අක්ෂ අටක් දක්වා ලබා දිය හැක.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>එක් එක් ට්‍රිගරය සඳහා ඩෙඩ්සෝන්, ප්‍රති-ඩෙඩ්සෝන්, උපරිම පරාස පරිමාණය සහ සංවේදීතා වක්‍ර. සෑම ට්‍රිගර කාඩ්පතක්ම සක්‍රිය ප්‍රතිදානයේ එක් ට්‍රිගර අක්ෂයක් ඉලක්ක කරයි. විස්තෘත පැතිකඩවලට ස්ටික් සහ ට්‍රිගර අතර බෙදා ගන්නා අක්ෂ අටක් දක්වා ලබා දිය හැක.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>බල ප්‍රතිපෝෂණය</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ක්‍රීඩාවෙන් එන බල ප්‍රතිපෝෂණ සිදුවීම් PadForge පරිමාණය කරන ආකාරය සහ ඒවා භෞතික පාලකයේ කම්පන මෝටර හෝ හැප්ටික් ක්‍රියාකාරක වෙත යොමු කරන ආකාරය සුසර කරයි. ශ්‍රව්‍ය කම්පනය ඊට ඉහළින් පද්ධති ශ්‍රව්‍යයෙන් ධාවනය වන ස්ථරයක් එක් කරයි.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>මෙම උපාංගය</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>මුළු පාලකය</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>කම්පනය {0} මත හැප්ටික් ස්පන්දන ලෙස වාදනය වන අතර, සෘජුවම උපාංගයට යවනු ලැබේ. ප්‍රබල කම්පනයක් ප්‍රබල ස්පන්දනයක් තෝරා එය වේගයෙන් පුනරාවර්තනය කරයි.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ තුළ {0} සඳහා හැප්ටික් ප්‍රතිපෝෂණය අක්‍රිය කර ඇත, එබැවින් ඔබ එය එහි නැවත සක්‍රිය කරන තෙක් එය කිසිවක් වාදනය නොකරයි.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>මෙම උපාංගය තවමත් පිළිතුරු දී නැත. එය අවදි වූ පසු එහි කම්පනය වාදනය වේ.</value></data>
@@ -1001,6 +1032,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>හෙඩ්සෙට්, මූසික පෑඩ සහ ස්පීකර</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>හෙඩ්සෙට්</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ලයිට්බාර්</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ක්‍රීඩා ආලෝකකරණය ලියන සෑම විටම පාලනය ලබා ගනී.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ඉලක්කම් හයක hex වර්ණයක් (RRGGBB හෝ #RRGGBB) ඇතුළත් කර, යෙදීමට Enter ඔබන්න හෝ වෙනත් තැනක ක්ලික් කරන්න.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>මෙම වර්ණය වර්ණ තලයෙන් ඉවත් කරන්න</value></data>
@@ -1018,7 +1050,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>ශ්‍රව්‍ය කම්පනය යළි සකසන්න</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} යළි සකසන්න</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>සිතියම්ගත කිරීම් හිස් කරන්න</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>මෙම ටැබයේ ඇති සෑම සිතියම්ගත කිරීමක්ම හිස් කෙරේ. මූලාශ්‍ර පැවරීම්, අමතර මූලාශ්‍ර සහ ඒකාබද්ධ කිරීමේ සැකසීම් පෙරනිමි අගයන්ට යළි සැකසේ.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>මෙම ස්ථරයේ ඇති සෑම සිතියම්ගත කිරීමක්ම හිස් කෙරේ. මූලාශ්‍ර පැවරීම්, අමතර මූලාශ්‍ර සහ ඒකාබද්ධ කිරීමේ සැකසීම් පෙරනිමි අගයන්ට යළි සැකසේ.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>ක්‍රීඩක රටාව</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>නිහඬ LED ප්‍රකාරය</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED දීප්තිය</value></data>
@@ -1084,6 +1116,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>බොත්තම්</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ආයාත කළ පැතිකඩ…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>විස්තෘත පාලකය</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>පරිශීලකයා ආයාත කළ HIDMaestro පැතිකඩ කළමනාකරණය කරන්න: සම්බන්ධිත උපාංගයකින් නව එකක් ග්‍රහණය කරන්න, පවතින එකක් JSON වෙත අපනයනය කරන්න, හෝ ඔබට තවදුරටත් අවශ්‍ය නැති එකක් මකන්න.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>උපාංගය 1:1 ක්ලෝන කරන්න</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>තෝරාගත් උපාංගයේ සෑම අක්ෂයක්, බොත්තමක් සහ හැට් එකක්ම එකම අංකය ඇති අතථ්‍ය ප්‍රතිදානයට සෘජුවම සිතියම්ගත කරන්න. පිරිසැලසුම උපාංගයට ගැළපෙන ප්‍රමාණයට සකසා, ස්ලොට් එකේ මෙම උපාංගයේ පේළි 1:1 පාස්ත්‍රූ එකකින් ප්‍රතිස්ථාපනය කරයි.</value></data>
@@ -1131,6 +1164,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>බල ප්‍රතිපෝෂණය</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>නාලිකාව</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI ප්‍රතිදානය</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI නාලිකාව (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC ගණන</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC ප්‍රතිදාන ගණන (උපරිමය ආරම්භක CC මත රඳා පවතී)</value></data>
@@ -1162,7 +1196,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>මෙම යතුරු යුගලය ඉවත් කරයි.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>ප්‍රතිවිරුද්ධ යුගලයේ පළමු යතුර.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>ප්‍රතිවිරුද්ධ යුගලයේ දෙවන යතුර.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>එකවර ප්‍රතිවිරුද්ධ ප්‍රධාන දිශා (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>පාලකය අවදියෙන් තබන්න</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>සමහර ක්‍රීඩා මූසික හෝ යතුරුපුවරු ආදානය දුටු විගසම කම්පනය නවත්වා ඒවායේ බොත්තම් ඉඟි මාරු කරයි. කුඩා ස්ටික් අපගමනයක් රඳවා තැබීමෙන් ක්‍රීඩාව මෙම පාලකය සක්‍රිය උපාංගය ලෙස දිගටම සලකයි. මෙම රඳවා තැබීම ක්‍රියාත්මක වන්නේ එම ස්ටික් එකේ අක්ෂ දෙකම රඳවන මට්ටමට පහළින් ඇති විට පමණි, එබැවින් තනිවම සෙලවෙන ස්ටික් එකක් තවමත් නිශ්චල ලෙස ගණන් ගැනේ. ඕනෑම අක්ෂයක එම මට්ටම ඉක්මවන ආදානය එය මුදා හරින අතර නොවෙනස්ව ඉදිරියට යයි. ක්‍රීඩාව තුළ කිසිවක් නොසෙලවෙන ලෙස අපගමනය ක්‍රීඩාවේම ඩෙඩ්සෝන් එකට වඩා අඩුවෙන් තබන්න.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>අවදියෙන් තබන්න</value></data>
@@ -1182,7 +1215,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>ක්ලික් කිරීම යළි සකසන්න</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>පෑඩ් භාගය යළි සකසන්න</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>ක්‍රියාත්මක වීමේ ප්‍රකාරය යළි සකසන්න</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>කොටු යළි සකසන්න</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>සක්‍රිය කිරීමේ ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>මෙනු ජ්‍යාමිතිය යළි සකසන්න</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>කොටුව යළි සකසන්න</value></data>
@@ -1238,6 +1270,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>සියල්ල හිස් කරන්න</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>මූලාශ්‍රය</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>අගය</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>විකල්ප</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>අක්ෂයෙන්-බොත්තමට ඩෙඩ්සෝන්</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>ප්‍රතිලෝම කරන්න</value></data>
@@ -1275,7 +1308,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, මුදා හැරීමේදී අක්ෂය ක්‍රමයෙන් මධ්‍යයට ආපසු යයි. සලකුණු නොකළ විට, එය අවසාන පිහිටීම රඳවා ගනී.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>ඔබාගෙන සිටින අතරතුර පේළියේ ප්‍රතිදානය ප්‍රතිලෝම කරන බොත්තම</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>විකරණය: ඔබාගෙන සිටින අතරතුර, පේළියේ ප්‍රතිදානයේ ලකුණ පෙරළේ.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ මූලාශ්‍රයක් එක් කරන්න</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>මූලාශ්‍රයක් එක් කරන්න</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>මෙම පේළියට තවත් භෞතික ආදානයක් එක් කරන්න</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>මෙම මූලාශ්‍රය ඉවත් කරන්න</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1395,10 +1428,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>අභිරුචි</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>මධ්‍යය ක්‍රමාංකනය කරන්න</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>මධ්‍ය ලක්ෂ්‍යය</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>මධ්‍යය</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ඩෙඩ්සෝන්</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>මධ්‍ය ලක්ෂ්‍ය සීරුමාරු, ඩෙඩ්සෝන් හැඩය සහ අක්ෂ අගයන්, එක් එක් අක්ෂයට වක්‍රයක්, පරාසය, සුක්කානම් හැසිරවීම</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>පරාසය</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>ස්ටික් එකක් නිවැරදි කිරීමට නිර්දේශිත ක්‍රමය මායිම ක්‍රමාංකනය කිරීමයි. එය ස්ටික් එකට භෞතිකව ළඟා විය හැකි මායිම හරහා ගමන් කර, එම මැනූ මායිමට අනුව සෑම පිහිටීමක්ම සමානුපාතිකව නැවත පරිමාණය කරයි, එවිට සෑම කෝණයකම සහ සෑම අපගමනයකම සම්පූර්ණ ස්වාභාවික චලනය කිසිවක් කපා නොහැර පරිපූර්ණ වෘත්තයකට සිතියම්ගත වේ. පහත ස්ලයිඩර හතර ප්‍රධාන අක්ෂ පමණක් සීමා කරයි. පරාසය හිතාමතාම සීමා කිරීමට ඒවා භාවිත කරන්න, එය නිවැරදි කිරීමට නොවේ.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“මායිම ක්‍රමාංකනය කරන්න” ස්ටික් එකට ළඟා විය හැකි මායිම මැන, එය සම්පූර්ණ වෘත්තයකට නැවත හැඩගස්වයි. ස්ලයිඩර හතර කරන්නේ එක් එක් දිශාව සීමා කිරීම පමණි.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>නියැදි ගනිමින්...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>මධ්‍ය ඕෆ්සෙට් X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>මධ්‍ය ඕෆ්සෙට් Y</value></data>
@@ -1417,7 +1451,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>නම</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>සක්‍රියකාරකය</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>සිදු වූ විට</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>ක්‍රියාත්මක වීම</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>එබූ විට</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>මුදා හළ විට</value></data>
@@ -1449,9 +1483,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>මෙම මැක්‍රෝව අයත් වන මාරු ස්ථරය. ඕනෑම ස්ථරයක් තේරූ විට, සක්‍රිය ස්ථරය කුමක් වුවත් මැක්‍රෝව ක්‍රියාත්මක වේ. මූලික සහ නම් කළ ස්ථර ක්‍රියාත්මක වන්නේ එම ස්ථරය සක්‍රිය අතරතුර පමණි, හරියටම සිතියම්ගත කිරීමේ පේළියක් මෙන්.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ඕනෑම ස්ථරයක්</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකය සක්‍රිය අතරතුර අඛණ්ඩව ධාවනය වේ. සක්‍රියකාරක බොත්තමක් අවශ්‍ය නැත.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>ක්‍රියා අනුපිළිවෙල</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>කරන්න</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>ස්ථරය, මූලාශ්‍රය, සීමා අගය, දිශාව, සක්‍රියකාරක බොත්තම් අවශෝෂණය කරන්න, පුනරාවර්තනය</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>ක්‍රියාවක් එක් කරන්න</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>ක්‍රියාව සංස්කරණය කරන්න</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>වර්ගය</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>අතථ්‍ය බොත්තම්</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>අතථ්‍ය අක්ෂ සහ සුක්කානම</value></data>
@@ -1520,11 +1554,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>බොත්තම {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1}ms ක් ඔබන්න</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1} ms ක් ඔබන්න</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} මුදා හරින්න</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>යතුරු {0} {1}ms ක්</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>යතුරු {0} {1} ms ක්</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>යතුරු {0} මුදා හරින්න</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms රැඳී සිටින්න</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms රැඳී සිටින්න</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} සකසන්න</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>පද්ධති හඬ පරිමාව ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>පද්ධති හඬ පරිමාව ← {0} (උපරිම {1}%)</value></data>
@@ -1536,15 +1570,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>මූසිකය මුදා හරින්න {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ ටොගල් කරන්න</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ලයිට්බාර් වර්ණය සකසන්න</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>පවරා ඇති PlayStation ස්ලොට් එකේ ලයිට්බාර් එක තෝරාගත් RGB වර්ණයකින් අභිබවා යන්න. ප්‍රතික්‍රියාශීලී ප්‍රකාරය සකසා ඇති ක්ෂය කාලය තුළ සම්පූර්ණ තීව්‍රතාවයේ සිට කළු දක්වා මැකී යයි, ඉන්පසු ආලෝකකරණ ටැබයේ සැකසීම් වෙත නැවත භාර දෙයි. ඇලෙන ප්‍රකාරය ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න ක්‍රියාවක් ධාවනය වන තුරු වර්ණය රඳවා ගනී. ක්‍රීඩාව මඟින් කරන ලිවීම් තවමත් අභිබවා යාමට වඩා ප්‍රමුඛත්වය ගනී.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ලයිට්බාර් {0} දල්වන්න (ක්ෂය {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>පවරා ඇති PlayStation ස්ලොට් එකේ ලයිට්බාර් එක තෝරාගත් RGB වර්ණයකින් අභිබවා යන්න. ප්‍රතික්‍රියාශීලී ප්‍රකාරය සකසා ඇති ක්ෂය කාලය තුළ සම්පූර්ණ තීව්‍රතාවයේ සිට කළු දක්වා මැකී යයි, ඉන්පසු ලයිට්බාර් කාඩ්පතේ සැකසීම් වෙත නැවත භාර දෙයි. ඇලෙන ප්‍රකාරය ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න ක්‍රියාවක් ධාවනය වන තුරු වර්ණය රඳවා ගනී. ක්‍රීඩාව මඟින් කරන ලිවීම් තවමත් අභිබවා යාමට වඩා ප්‍රමුඛත්වය ගනී.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ලයිට්බාර් {0} දල්වන්න (ක්ෂය {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ඉවත් කරන තුරු ලයිට්බාර් {0} රඳවන්න</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ඕනෑම සක්‍රිය ලයිට්බාර් අභිබවා යාමක් මුදා හරියි. වෙනත් මැක්‍රෝවකින් එය අහෝසි කිරීමට, ඇලෙන ලයිට්බාර් වර්ණය සකසන්න ක්‍රියාවක් සමඟ එක්ව භාවිත කරන්න.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාරය සකසන්න</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාරය {0} ලෙස සකසන්න</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය නිශ්චිත අගයකට සකසයි. වෙනත් ක්‍රියාවක් හෝ පරිශීලකයා එය වෙනස් කරන තුරු ආලෝකකරණ ටැබයේ සංස්කරණයක් මෙන් පවතී.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය නිශ්චිත අගයකට සකසයි. වෙනත් ක්‍රියාවක් හෝ පරිශීලකයා එය වෙනස් කරන තුරු ලයිට්බාර් කාඩ්පතේ කළ සංස්කරණයක් මෙන් පවතී.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර {0} ක් හරහා චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>පහත තෝරාගත් ප්‍රකාර හරහා ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය ඉදිරියට ගෙන යයි. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ගමන් කරයි. චක්‍රයේ පිහිටීම එක් එක් ක්‍රියාවට වෙන් වන අතර යෙදුම නැවත ආරම්භ කළ විට යළි සැකසේ.</value></data>
@@ -1559,14 +1593,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ක්ෂය</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>මැකීම</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>පැලට්</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>හිස් පැලට් එකක් ස්ලොට් එකේම ආලෝකකරණ ටැබයේ පැලට් භාවිත කරයි.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>හිස් පැලට් එකක් ස්ලොට් එකේ ලයිට්බාර් කාඩ්පතේ ඇති වර්ණ තලය භාවිත කරයි.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>ප්‍රකාරය</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>මැක්‍රෝව චක්‍රීය කළ යුතු ලයිට්බාර් ප්‍රකාර තෝරන්න. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ගෙන යයි.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>කම්පනය</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>මැක්‍රෝවකින් ස්ලොට් එකේ භෞතික උපාංග කම්පනය ධාවනය කරයි. ප්‍රතික්‍රියාශීලී ප්‍රකාරය රඳවන කාලය තුළ සම්පූර්ණ ප්‍රබලතාවයෙන් ධාවනය වී, පසුව මැකීමේ කාලය තුළ ශුන්‍යය දක්වා මැකී යයි. ඇලෙන ප්‍රකාරය කම්පනය නවත්වන්න ක්‍රියාවක් ධාවනය වන තුරු සම්පූර්ණ ප්‍රබලතාවයෙන් රඳවයි. max() හරහා ක්‍රීඩාවේ කම්පනය මත ස්ථර වන බැවින් පරිශීලකයාගේ ප්‍රතිචාරය සැමවිටම දැනේ.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>කම්පන ස්පන්දනය {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>කම්පන ස්පන්දනය {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ඉවත් කරන තුරු කම්පනය {0} රඳවන්න</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>කම්පනය නවත්වන්න</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>කම්පනය නවත්වන්න</value></data>
@@ -1577,7 +1611,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ට්‍රිගර කම්පනය නවත්වන්න</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>ස්ලොට් එකේ ඕනෑම සක්‍රිය මැක්‍රෝ ට්‍රිගර කම්පනයක් මුදා හරියි. මැක්‍රෝවකින් රඳවා තැබීම අවසන් කිරීමට, ඇලෙන ට්‍රිගර කම්පන අභිබවා යාමක් සමඟ එක්ව භාවිත කරන්න.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ගයිරෝ සක්‍රිය බව සකසන්න</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>මැක්‍රෝවකින් ස්ලොට් එකේ ගයිරෝ සක්‍රිය තත්ත්වය සකසයි. ටොගල් වත්මන් තත්ත්වය පෙරළයි. සක්‍රිය ගයිරෝ බලෙන් සක්‍රිය කරයි. අක්‍රිය එය බලෙන් අක්‍රිය කරයි. ගයිරෝ ටැබයේ සක්‍රිය කිරීමේ බොත්තමෙන් ස්වාධීනයි. මූලාශ්‍ර දෙක OR ලෙස ඒකාබද්ධ වන බැවින්, එකක් සක්‍රිය කළ දෙය අනෙකට අක්‍රිය කළ නොහැක.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>මැක්‍රෝවකින් ස්ලොට් එකේ ගයිරෝ සක්‍රිය තත්ත්වය සකසයි. ටොගල් වත්මන් තත්ත්වය පෙරළයි. සක්‍රිය ගයිරෝ බලෙන් සක්‍රිය කරයි. අක්‍රිය එය බලෙන් අක්‍රිය කරයි. චලනය සහ ස්පර්ශය යටතේ ඇති ඉලක්ක සක්‍රිය කිරීමේ බොත්තමෙන් ස්වාධීනයි. මූලාශ්‍ර දෙක OR ලෙස ඒකාබද්ධ වන බැවින්, එකක් සක්‍රිය කළ දෙය අනෙකට අක්‍රිය කළ නොහැක.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>ප්‍රකාරය</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>ටොගල්</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>සක්‍රිය</value></data>
@@ -1725,7 +1759,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>ටච්පෑඩ්</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ටච්පෑඩ්</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ටච්පෑඩය අනුව ආදානය. අභින (ස්වයිප්, තට්ටු කිරීම්, හැකිළීම්, හැඩ) සහ අඛණ්ඩ ප්‍රතිදාන ප්‍රකාර (අතථ්‍ය ස්ටික් / D-pad, මූසිකය) සිතියම්ගත කිරීම් ටැබයේ බැඳිය හැකි සිතියම්ගත කිරීමේ මූලාශ්‍ර බවට පත් වේ.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ටච්පෑඩය අනුව ආදානය. අභින (ස්වයිප්, තට්ටු කිරීම්, හැකිළීම්, හැඩ) සහ අඛණ්ඩ ප්‍රතිදාන ප්‍රකාර (අතථ්‍ය ස්ටික් / D-pad, මූසිකය) ඕනෑම ප්‍රතිදානයකට බැඳිය හැකි සිතියම්ගත කිරීමේ මූලාශ්‍ර බවට පත් වේ.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ටච්පෑඩ්</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ටච්පෑඩ් අංකය</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>පහත සැකසීම් අදාළ වන්නේ මෙම පාලකයේ කුමන ටච්පෑඩයටද යන්න. සෑම ටච්පෑඩයක්ම තමන්ගේම අභින, මූසික හැඟීම සහ දර්ශක කලාපය තබා ගනී.</value></data>
@@ -2015,10 +2049,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ගයිරෝ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>මෙම පෑඩයේ චලන සංවේදකය මූසික සහ ස්ටික් ප්‍රතිදානය පාලනය කරන ආකාරය සුසර කරන්න. නිශ්චල ඇදීම ශුන්‍ය කිරීමට සමතල පෘෂ්ඨයක් මත ක්‍රමාංකනය කරන්න, ඉන්පසු සංවේදීතාව, සුමට කිරීම සහ සක්‍රිය කිරීමේ නීති ඔබේ රුචියට සකසන්න.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ක්‍රමාංකනය</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>සජීවී ගයිරෝස්කෝප සහ ත්වරණමාන කියවීම්</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>සංවේදීතාව</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ඒකක, අවකාශය, අක්ෂ ප්‍රතිලෝම කිරීම, සැබෑ ලෝක ක්‍රමාංකනය</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ඒකක, අක්ෂ ප්‍රතිලෝම කිරීම, සැබෑ ලෝක ක්‍රමාංකනය</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>එක් වටයකට ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ප්‍රතිචාර හැඩගැස්වීම</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ඩෙඩ්සෝන්, සුමට කිරීම, ත්වරණය, ප්‍රතිදාන වක්‍රය</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>යොමු රාමුව</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>ස්ථානීය, ක්‍රීඩකයා හෝ ලෝකය</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>අවකාශය</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>ගයිරෝ චලනය අර්ථකථනය කරන ආකාරය. ස්ථානීය අමු පාලක අක්ෂ භාවිත කරයි. ක්‍රීඩකයා තිරස් චලනය සැබෑ ලෝකයේ සිරස (ගුරුත්වය) මතට ප්‍රක්ෂේපණය කරයි, එබැවින් ඔබ පෑඩය අල්ලාගෙන සිටින ආකාරය කුමක් වුවද එකම මැණික්කටු කරකැවීම සැමවිටම කැමරාව හරවයි. ලෝකය අමතරව සිරස් චලනය ලෝක අක්ෂ මතට නැවත ප්‍රක්ෂේපණය කරයි.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>අල්ලා ඇති ආකාරය</value></data>
@@ -2090,6 +2128,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>කෙළින්</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>ග්‍රහණය</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>පාලකය අල්ලාගෙන සිටින ආකාරය. සිතියම්ගත කිරීම් සඳහා සහ අතථ්‍ය පාලකය වාර්තා කරන චලනය සඳහා ගයිරෝව, ත්වරණමානය සහ ගුරුත්වය එකට භ්‍රමණය කරයි. D-pad එකද එම රාමුවම අනුගමනය කරයි, එබැවින් එම ග්‍රහණයේදී ඉහළ යනු ඉහළයි.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>පාලකය අල්ලාගෙන සිටින ආකාරය</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>රේඛීය</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>තීව්‍ර</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>ලිහිල්</value></data>
@@ -2122,7 +2161,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>සක්‍රිය කිරීමේ දිශාව යළි සකසන්න</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>චලන පාස්ත්‍රූ</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ගයිරෝ සුසර කිරීම චලන පාස්ත්‍රූ වෙත යොදන්න</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>මෙම ටැබයේ අභිමත ගයිරෝ සුසර කිරීම (ඩෙඩ්සෝන්, සංවේදීතාව, සුමට කිරීම, ප්‍රතිචාර වක්‍රය, ප්‍රතිලෝම කිරීම) අතථ්‍ය පාලකය ක්‍රීඩාවට හෝ ඉමියුලේටරයට වාර්තා කරන චලනය මත ධාවනය කරයි. ක්‍රමාංකනය කළ කියවීම පමණක් යවා, ක්‍රීඩාවට තමන්ගේම සංවේදීතාව සහ සුමට කිරීම යෙදීමට ඉඩ දීමට එය අක්‍රිය කරන්න. ක්‍රමාංකන ඇදීම් නිවැරදි කිරීම කෙසේ වෙතත් සැමවිටම යෙදේ.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ගයිරෝ කාඩ්පත්වල අභිමත සුසර කිරීම (ඩෙඩ්සෝන්, සංවේදීතාව, සුමට කිරීම, ප්‍රතිචාර වක්‍රය, ප්‍රතිලෝම කිරීම) අතථ්‍ය පාලකය ක්‍රීඩාවට හෝ ඉමියුලේටරයට වාර්තා කරන චලනය මත ධාවනය කරයි. ක්‍රමාංකනය කළ කියවීම පමණක් යවා, ක්‍රීඩාවට තමන්ගේම සංවේදීතාව සහ සුමට කිරීම යෙදීමට ඉඩ දීමට එය අක්‍රිය කරන්න. ක්‍රමාංකන ඇදීම් නිවැරදි කිරීම කෙසේ වෙතත් සැමවිටම යෙදේ.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>පාස්ත්‍රූ සුසර කිරීම යළි සකසන්න</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>මූලාශ්‍රය අනුව ගයිරෝ සංවේදීතා ගුණකය. 1.0 = එන්ජිමේ පෙරනිමිය (500°/s → සම්පූර්ණ අපගමනය). 1.0 ට වැඩි අගයන් වඩා සංවේදී වේ. 1.0 ට අඩු අගයන් අඩුවෙන් සංවේදී වේ.</value></data>
@@ -2139,7 +2178,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>සම්පූර්ණ ඇලවීම් පරාසය යළි සකසන්න</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>ඇලවීම් ඩෙඩ්සෝන් යළි සකසන්න</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ගයිරෝ ඇලවීම යළි සකසන්න</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>මූලාශ්‍ර එකකට වඩා සක්‍රිය විට මෙම පේළියේ මූලාශ්‍ර ඒකාබද්ධ වන ආකාරය. එය වෙනස් කිරීමට පේළිය තෝරා පහත විස්තර තීරුව භාවිත කරන්න.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>මූලාශ්‍ර එකකට වඩා සක්‍රිය විට මෙම පේළියේ මූලාශ්‍ර ඒකාබද්ධ වන ආකාරය. එය “ඒකාබද්ධ කිරීම” යටතේ වෙනස් කිරීමට පේළිය විවෘත කරන්න.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>ගම්‍යතාව</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ට්‍රැක්බෝල් ප්‍රකාරය: ස්ටික් එක ඉක්මනින් තල්ලු කර මුදා හරින්න, කර්සරය දිගටම ගමන් කර සෙමින් නතර වේ. ස්ටික් එක නැවත චලනය කිරීමෙන් එය නවතී.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>ෆ්ලික් කිරීමකින් පසු කර්සරය කොපමණ දුරක් ලිස්සා යනවාද යන්න. පරාසයේ ඉහළම අගයේදී ඔබ ස්ටික් එක නැවත චලනය කරන තුරු එය දිගටම ගමන් කරයි.</value></data>
@@ -2336,7 +2375,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ට්‍රිගර අක්ෂය</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>එක් එක් මෝටරයේ ලාභය, ට්‍රිගර කම්පනය, මෝටර මාරු කිරීම</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>එක් එක් මෝටරයේ ලාභය, ට්‍රිගර කම්පනය, සුක්කානම් කෝණ කම්පනය, නියත බලය</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>සමස්ත ලාභය</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>වම් මෝටරය</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>දකුණු මෝටරය</value></data>
@@ -2345,6 +2384,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>මෙම පාලකයේ ට්‍රිගර මෝටර නැත, එබැවින් Xbox ආවේග ට්‍රිගර භාවිත කරන ක්‍රීඩාවල කම්පනය නොදැනේ. ඒ වෙනුවට එක් එක් ට්‍රිගර නාලිකාව එම පැත්තේම ප්‍රධාන මෝටරයට ඒකාබද්ධ කරන්න.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>කම්පනය පරීක්ෂා කරන්න</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>මෝටර ක්‍රියාකාරිත්වය</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>වම</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>දකුණ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ඔබ ටොගල් කර අක්‍රිය කරන තුරු මෙම උපාංගයට අඛණ්ඩ බලයක් යොදන්න. ඕනෑම ප්‍රභවයකින් ක්‍රීඩාව එවන බලය සක්‍රියව ඇති අතරතුර එය මෙය අභිබවා යන අතර, ක්‍රීඩාව නැවැත්වූ විට මෙය නැවත ආරම්භ වේ.</value></data>
@@ -2423,7 +2464,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>පටිගත කිරීමට බොත්තම් ඔබන්න හෝ අක්ෂයක්/ට්‍රිගරයක් චලනය කරන්න. 50% ඉක්මවා අපගමනය වූ විට අක්ෂ හඳුනා ගැනේ.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>ලැයිස්තුවෙන් එක් කරන්න</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>පටිගත කරනවා වෙනුවට ස්ලොට් එකේ උපාංගවලින් ට්‍රිගර ආදානයක් තෝරන්න. ටච්පෑඩ් පටිත්තෙහි සක්‍රිය කළ ටච්පෑඩ් අභින මෙහි දිස් වේ.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>සක්‍රියකාරකය හිස් කරන්න</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>පටිගත කරනවා වෙනුවට ස්ලොට් එකේ උපාංගවලින් ට්‍රිගර ආදානයක් තෝරන්න. චලනය සහ ස්පර්ශය යටතේ සක්‍රිය කළ ටච්පෑඩ් අභින මෙහි දිස් වේ.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>ආදානය ඉවත් කරන්න</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>ඕනෑම ආදානයක් ඔබන්න…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ප්‍රතිලෝම</value></data>
@@ -2647,7 +2689,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>අතථ්‍ය පාලකයක සියලු සිතියම්ගත උපාංග නොබැඳි විට එය විනාශ කිරීමට පෙර තත්පර ගණන. 0 අක්‍රිය කරයි. එම වර්ගයේම ඉතිරි පාලක හිඩැස පිරවීමට ඉහළට මාරු වී පහළ ස්ලොට්වලට නැවත බැඳේ.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>තත්පර (0 = කිසිදා නැත)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ මාරු ස්ථරය</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ස්ථරයක් එක් කරන්න</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>මාරු ස්ථරයක් එක් කරන්න. බොත්තමක් ඔබාගෙන සිටින විට හෝ ටොගල් කළ විට සක්‍රිය වන දෙවන සිතියම්ගත කිරීම් වගුවකි.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>මූලික</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>මාරු ස්ථරය</value></data>
@@ -2748,7 +2790,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° සිට {1}° දක්වා</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ඇලවීමේ ඩෙඩ්සෝන්, පාලකයේ දිශානතිය</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>චලන ඇලවීම් ආදානය සඳහා සැකසීම්: පාලකය සුක්කානමක් මෙන් ඇල කරන්න. සිතියම්ගත කිරීම් තුළ ආදාන පතන ලැයිස්තුවෙන් "චලන ඇලවීම" ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>චලන ඇලවීම් ආදානය සඳහා සැකසීම්: පාලකය සුක්කානමක් මෙන් ඇල කරන්න. බොත්තම් යටතේ "චලන ඇලවීම" ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම යළි සකසන්න</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ෆ්ලික් ස්ටික් (වම් ස්ටික්)</value></data>
@@ -2757,7 +2799,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>දකුණු ස්ටික් වළල්ල</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ෆ්ලික් ස්ටික්</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ආදාන සඳහා සුසර කිරීම</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ආදාන සඳහා සැකසීම්: ස්ටික් එක යොමු කරන්න, කැමරාව ඊට ගැළපෙන සේ හැරේ. සියුම් හැරවීමට දාරය දිගේ ස්වීප් කරන්න. ඕනෑම ස්ථරයක, සිතියම්ගත කිරීම් තුළ ආදාන පතන ලැයිස්තුවෙන් "ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)" මූසික X වෙත සිතියම්ගත කරන්න.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ෆ්ලික් ස්ටික් ආදාන සඳහා සැකසීම්: ස්ටික් එක යොමු කරන්න, කැමරාව ඊට ගැළපෙන සේ හැරේ. සියුම් හැරවීමට දාරය දිගේ ස්වීප් කරන්න. ඕනෑම ස්ථරයක, යතුරු සහ මූසිකය යටතේ "ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)" මූසික X වෙත සිතියම්ගත කරන්න.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ෆ්ලික් ස්ටික් යළි සකසන්න</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° සඳහා ලක්ෂ්‍ය</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>සම්පූර්ණ 360° කැමරා හැරවීමක් සඳහා මූසික ගණන් කිරීම්. ක්‍රීඩාවේ මූසික සංවේදීතාව මත රඳා පවතී: ෆ්ලික් එකක් අඩුවෙන් හැරේ නම් එය වැඩි කරන්න, වැඩියෙන් හැරේ නම් අඩු කරන්න.</value></data>
@@ -2849,7 +2891,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ශ්‍රව්‍ය</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>මැක්‍රෝ ශබ්ද සහ පිළිබිඹු කළ පද්ධති ශ්‍රව්‍ය, USB හෝ Bluetooth හරහා, තෝරාගත් පාලකයේ ඇතුළත් ස්පීකරයෙන් වාදනය වේ. ඉහත පතන ලැයිස්තුවෙන් උපාංගය තෝරන්න. මෙහි ඇති සෑම සැකසීමක්ම එය අනුගමනය කරයි.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ශබ්ද ප්‍රතිදානය</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය, හැප්ටික්ස්, හෙඩ්ෆෝන් හඬ පරිමාව, ක්‍රොස්ෆීඩ්, පරාමිතික EQ, සීමාකාරකය</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය, හෙඩ්ෆෝන් හඬ පරිමාව, බෆරය, ප්‍රතිදාන මාර්ගය</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ශබ්ද ස්වයංක්‍රීයව තෝරාගත් පාලකයට යොමු වේ. USB හරහා, පෑඩයේම ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය දෘඪාංග බහාලුම අනුව ගළපනු ලැබේ. Bluetooth හරහා, ශ්‍රව්‍ය Sony HID රාමු තුළ ප්‍රවාහය කෙරේ.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>පාලක ස්පීකරයට පිළිබිඹු කළ යුතු වාදන උපාංගය. නිශ්චිත ශබ්ද වෙනම වාදන උපාංගයකට යවන ක්‍රීඩා සඳහා මෙය එම උපාංගයට යොමු කළ හැක.</value></data>
@@ -2862,10 +2904,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>සියලු ශබ්ද නවත්වන්න</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>මෙම පෑඩයේ සියලු මැක්‍රෝ ශබ්ද නවත්වන්න</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ශබ්ද මැක්‍රෝ</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ශබ්ද වාදනය කරනු ලබන්නේ මැක්‍රෝ මගිනි: ක්‍රියාරම්භකයක් (බොත්තම් එබීම, මුදා හැරීම, ඔබාගෙන සිටීම හෝ සූත්‍රය) සහ "ශබ්දය වාදනය කරන්න" ක්‍රියාවක්. ඒවා මෙහි හෝ මැක්‍රෝ ටැබයේ සාදන්න. ප්‍රමාද, පුනරාවර්තන සහ ටොගල් සියල්ල ක්‍රියා කරයි.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ශබ්ද වාදනය කරනු ලබන්නේ මැක්‍රෝ මගිනි: ක්‍රියාරම්භකයක් (බොත්තම් එබීම, මුදා හැරීම, ඔබාගෙන සිටීම හෝ සූත්‍රය) සහ "ශබ්දය වාදනය කරන්න" ක්‍රියාවක්. ඒවා මෙහි හෝ මැක්‍රෝ සහ මෙනු යටතේ සාදන්න. ප්‍රමාද, පුනරාවර්තන සහ ටොගල් සියල්ල ක්‍රියා කරයි.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>නව ශබ්ද මැක්‍රෝව</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>තවම ශබ්ද මැක්‍රෝ නැත. එකක් සාදා ශබ්ද ගොනුවක් සහ ක්‍රියාරම්භකයක් තෝරන්න.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>මෙම මැක්‍රෝව මැක්‍රෝ ටැබයේ විවෘත කරන්න</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>මෙම මැක්‍රෝව මැක්‍රෝ සහ මෙනු යටතේ විවෘත කරන්න</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ශබ්ද මැක්‍රෝව {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>ශබ්දය වාදනය කරන්න</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>මෙම පෑඩයේ ප්‍රතිදාන උපාංගයේ ශබ්ද ගොනුවක් (.wav, .mp3, .m4a, .aac, .wma, .flac) වාදනය කරන්න</value></data>
@@ -3141,6 +3183,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>ධාවනය වෙමින්</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>ධාවනය වෙමින්, ධාවකය සම්බන්ධිතයි</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>ධාවනය වෙමින්, පාලක සක්‍රියයි</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR ස්ථාපිතයි</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ස්ථාපනය කර නැත</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ධාවනය වෙමින්</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR ධාවනය වෙමින්, ධාවකය සම්බන්ධිතයි</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR ධාවනය වෙමින්, පාලක සක්‍රියයි</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>වෙනත් OpenVR ධාවකයක් HIDMaestro හි ධාවක නාමය භාවිත කරයි, එබැවින් SteamVR විසින් PadForge හි ධාවකය වෙනුවට එය පූරණය කළ හැකි අතර අතථ්‍ය VR පාලක නොපෙන්වනු ඇත. මෙය නිරාකරණය කිරීමට එම ධාවකය ඉවත් කරන්න: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>අනුක්‍රමික පාලකය (COM තොට)</value></data>
@@ -3284,7 +3331,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>පාරිභෝගික {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>මූසිකය</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>මූසික අභින</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>අභින බොත්තම ඔබාගෙන, ෆ්ලික් කරන්න. මුදා හරින විට එක් ක්‍රියාවක් ක්‍රියාත්මක වේ: වම, දකුණ, ඉහළ, පහළ, හෝ ෆ්ලික් දුරට අඩු සාමාන්‍ය ක්ලික් එකක්. අභින පහ සිතියම්ගත කිරීම් ටැබය මත සිතියම්ගත කරන්න, නැතහොත් ඒවා මැක්‍රෝ ට්‍රිගර ලෙස භාවිත කරන්න.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>අභින බොත්තම ඔබාගෙන, ෆ්ලික් කරන්න. මුදා හරින විට එක් ක්‍රියාවක් ක්‍රියාත්මක වේ: වම, දකුණ, ඉහළ, පහළ, හෝ ෆ්ලික් දුරට අඩු සාමාන්‍ය ක්ලික් එකක්. අභින පහ ඕනෑම ප්‍රතිදානයකට සිතියම්ගත කරන්න, නැතහොත් ඒවා මැක්‍රෝ ට්‍රිගර ලෙස භාවිත කරන්න.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>මූසික අභින සබල කරන්න</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකේ මෙම මූසිකය සඳහා අභින හඳුනාගැනීම සූදානම් කරයි. අභින කරන අතරතුර අභින බොත්තම එහි සාමාන්‍ය ක්ලික් එක තබා ගනී, එබැවින් ඔබ වෙනත් ලෙස සිතියම්ගත නොකරන පැති බොත්තමක් තෝරන්න.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>අභින බොත්තම්</value></data>
@@ -3318,7 +3365,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>ස්ථරය මාරු කරන්න</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma වර්ණය සකසන්න</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට පවරා ඇති Razer උපාංග සහ ඒවායේ වර්ගවල අනෙකුත් සෑම Razer උපාංගයක්ම, ක්‍රියාව ක්‍රියාත්මක වන අතරතුර එක් වර්ණයකින් වර්ණ ගන්වයි.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ඉහත කාලසීමාව සඳහා, මෙම අතථ්‍ය පාලකයට පවරා ඇති Razer උපාංග සහ ඒවායේ වර්ගවල අනෙකුත් සෑම Razer උපාංගයක් මතම, නැතහොත් Razer Chroma පේළිය පවරා ඇති විට සෑම Razer උපාංගයක් මතම මෙම වර්ණය යොදයි. එය ඕනෑම අතථ්‍ය පාලකයක ආලෝකකරණ ටැබය අභිබවා යන අතර, පසුව ආලෝකකරණය ආපසු භාර දෙයි. ට්‍රිගරය ඔබාගෙන සිටින තාක් වර්ණය රඳවා ගැනීමට, While Held සමඟ Until Release භාවිත කරන්න. මැක්‍රෝ දෙකක් එකවර වර්ණ යොදන විට, ලැයිස්තුවේ පහළින් ඇති එක ජය ගනී, එබැවින් සම්පූර්ණ එබීමේ මැක්‍රෝව එහි මෘදු එබීමේ නිවුන් මැක්‍රෝවට පහළින් තබන්න. අතථ්‍ය පාලක දෙකක මැක්‍රෝ එකම වර්ගයේ Razer උපාංගයක් වර්ණ ගන්වන විට, කුඩා ක්‍රීඩක අංකය ජය ගනී. Razer Synapse ක්‍රියාත්මක විය යුතුය.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ඉහත කාලසීමාව සඳහා, මෙම අතථ්‍ය පාලකයට පවරා ඇති Razer උපාංග සහ ඒවායේ වර්ගවල අනෙකුත් සෑම Razer උපාංගයක් මතම, නැතහොත් Razer Chroma පේළිය පවරා ඇති විට සෑම Razer උපාංගයක් මතම මෙම වර්ණය යොදයි. එය ඕනෑම අතථ්‍ය පාලකයක් ආලෝකය සහ ශබ්දය යටතේ සකසන ආලෝකකරණය අභිබවා යන අතර, පසුව ආලෝකකරණය ආපසු භාර දෙයි. ට්‍රිගරය ඔබාගෙන සිටින තාක් වර්ණය රඳවා ගැනීමට, While Held සමඟ Until Release භාවිත කරන්න. මැක්‍රෝ දෙකක් එකවර වර්ණ යොදන විට, ලැයිස්තුවේ පහළින් ඇති එක ජය ගනී, එබැවින් සම්පූර්ණ එබීමේ මැක්‍රෝව එහි මෘදු එබීමේ නිවුන් මැක්‍රෝවට පහළින් තබන්න. අතථ්‍ය පාලක දෙකක මැක්‍රෝ එකම වර්ගයේ Razer උපාංගයක් වර්ණ ගන්වන විට, කුඩා ක්‍රීඩක අංකය ජය ගනී. Razer Synapse ක්‍රියාත්මක විය යුතුය.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast තිරය පෙන්වන්න</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>මෙම ස්ලොට් එකට ආදානය සපයන Bliss-Box තොටක ඇති සෑම Dreamcast පෑඩ් එකකම VMU මත පින්තූර වාදනය කර, පසුව සෑම තොටක්ම එහිම තිර සැකසුමට ආපසු ලබා දෙයි.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast පින්තූර පෙන්වන්න: {0} × {1} ms, පුනරාවර්තන ගණන {2}</value></data>
@@ -3612,10 +3659,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>එබීමේදී පෑඩ් එකේ සමුච්චිත ගයිරෝ ඉලක්ක යොමු ශුන්‍ය කරයි. සුමට කිරීමේ ඉතිහාසය හිස් වේ, චලන ඇල වීමේ උදාසීනය නැවත ග්‍රහණය කරයි, ගුරුත්ව ඇස්තමේන්තුව පාලකයේ වත්මන් ඉරියව්වෙන් නැවත ආරම්භ වේ, සහ චලන පිච්, යෝ, සහ රෝල් පේළි ගොඩනැඟූ කරකැවීම අහෝසි වේ.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ඕනෑම උපාංගයක්)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>මෙනු</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>මෙනු භෞතික ස්ටික් එකක් හෝ ටච්පෑඩ් එකක් තිරය මත වළල්ලක් හෝ ජාලකයක් බවට පත් කරයි. මෙනුවක් එක් කර, එය විවෘත කරන දේ තෝරා, පසුව සෑම කොටුවකටම ලේබලයක් සහ බැඳීමක් දෙන්න.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>මෙනු භෞතික ස්ටික් එකක් හෝ ටච්පෑඩ් එකක් තිරය මත වළල්ලක් හෝ ජාලකයක් බවට පත් කරයි. එකක් සෑදීමට මෙනු අසල ඇති + ඔබා, එය විවෘත කරන දේ තෝරා, පසුව සෑම කොටුවකටම නමක් සහ ක්‍රියාවක් දෙන්න.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>නව මෙනුව</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>මෙනුව {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>මෙනු නාමය</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>සබලයි</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>විවෘත කිරීම</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>විලාසය</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>රේඩියල් වළල්ල</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>ස්පර්ශ ජාලකය</value></data>
@@ -3635,12 +3684,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>කොටු</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>මධ්‍ය කොටුව</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>ලේබල පෙන්වන්න</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>තිර පිහිටීම</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>ප්‍රමාණය</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>පාරාන්ධතාව</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>සක්‍රිය කිරීමේ ඩෙඩ්සෝන්</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>කොටු බැඳීම්</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>කොටුව {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>කොටුවක් එක් කරන්න</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>අවසාන කොටුව ඉවත් කරන්න</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>කොටුව සංස්කරණය කරන්න</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>නම</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>ක්‍රියාව</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>අයිකනය</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>මධ්‍යය</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>කිසිවක් නැත</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>යතුරුපුවරු යතුර</value></data>
@@ -3653,7 +3706,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ක්ලික් එක මුදා හරින විට එක් වරක් ක්‍රියාත්මක වේ: කොටුව දෙසට යොමු කර, ස්ටික් එක හෝ ට්‍රැක්පෑඩ් එක ක්ලික් කර, පසුව ක්ලික් එක අත හරින්න.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>ඔබ අත හරින විට එක් වරක් ක්‍රියාත්මක වේ: ඔබේ ඇඟිල්ල පෑඩ් එකෙන් ඔසවන්න, හෝ කොටුවක් උද්දීපනය කර ඇති අතරතුර ස්ටික් එක මධ්‍යයට ආපසු යාමට ඉඩ දෙන්න.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>කොටුව උද්දීපනය කර ඇති මුළු කාලය පුරාම බැඳීම ඔබා තබා ඇත. ක්ලික් කිරීමක් අවශ්‍ය නැත.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>මෙනුවේ ඇති කොටු ගණන. රේඩියල් වළල්ලක් සඳහා මෙය වළල්ල පමණක් ගණන් කරයි. මධ්‍ය කොටුව වෙනම වේ.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>ස්ටික් එක හෝ ඇඟිල්ල සක්‍රිය කිරීමේ ඩෙඩ්සෝන් තුළ ඇති අතරතුර තෝරාගන්නා මධ්‍ය කොටුවක් එක් කරයි.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>ස්ටික් සඳහා, මෙනුව විවෘත වීමට සහ වළලු කොටු උද්දීපනය වීමට පෙර කොතරම් තල්ලු කළ යුතුද යන්න. රේඩියල් මෙනුවල එය ස්ටික් සහ ටච්පෑඩ් දෙකටම මධ්‍ය කලාපය ද වේ: එය තුළ, මධ්‍ය කොටුවක් ඇත්නම් එය තෝරා ගැනේ.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>සෑම කොටුවකම ලේබලය තිරයේ ඕවර්ලේ මත අඳින්න.</value></data>
@@ -3663,8 +3715,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>ඕවර්ලේ ප්‍රමාණය, එහි සාමාන්‍ය ප්‍රමාණයේ ප්‍රතිශතයෙන්.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ඕවර්ලේ පාරාන්ධතාව. 100% යනු සම්පූර්ණයෙන්ම ඝනයි.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ඕවර්ලේ තුළ මෙම කොටුවේ පෙන්වන පාඨය.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>මෙම කොටුව ක්‍රියාත්මක වන විට කරන දේ: “යතුරුපුවරු යතුර” යතුරුපුවරු යතුරක් ඔබයි, “පාලක බොත්තම” මෙම ස්ලොට් එකේ අතථ්‍ය පාලකයේ බොත්තමක් ඔබයි. “කිසිවක් නැත” ලෙස සකසා ඇති කොටුවක් තවමත් සිතියම්ගත කිරීම් පේළි සහ මැක්‍රෝ ට්‍රිගර සඳහා මෙනු අයිතම මූලාශ්‍රයක් ලෙස ක්‍රියාත්මක වේ.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>අතථ්‍ය පාලකයේ පිරිසැලසුමෙන් නොව, මෙම ස්ලොට් එකට පවරා ඇති භෞතික පාලකවලින් කියවයි. පහත කොටු බැඳීම් මෙනුව ප්‍රතිදානය කරන දේ වේ.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>මෙම කොටුව ක්‍රියාත්මක වන විට කරන දේ: “යතුරුපුවරු යතුර” යතුරුපුවරු යතුරක් ඔබයි, “පාලක බොත්තම” මෙම ස්ලොට් එකේ අතථ්‍ය පාලකයේ බොත්තමක් ඔබයි. “කිසිවක් නැත” ලෙස සකසා ඇති කොටුවක් තවමත් සිතියම්ගත කිරීම් සහ මැක්‍රෝ ට්‍රිගර සඳහා මෙනු අයිතම මූලාශ්‍රයක් ලෙස ක්‍රියාත්මක වේ.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>අතථ්‍ය පාලකයේ පිරිසැලසුමෙන් නොව, මෙම ස්ලොට් එකට පවරා ඇති භෞතික පාලකවලින් කියවයි. මෙනුව ප්‍රතිදානය කරන දේ පහත කොටු පවසයි.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>අභිරුචි අක්ෂ</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>හැසිරවීම X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>හැසිරවීම Y</value></data>
@@ -3689,13 +3741,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ප්‍රතිදානය</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>බොත්තම්</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>යතුරු සහ මූසිකය</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ස්වර සහ පාලන</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>අත්</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>ස්ටික් සහ ට්‍රිගර</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>කම්පනය සහ හැප්ටික්</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>චලනය සහ ස්පර්ශය</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ආලෝකය සහ ශබ්දය</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>මැක්‍රෝ සහ මෙනු</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>බාස් ෂේකර්</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>මෙම අතථ්‍ය පාලකයට ලැබෙන ක්‍රීඩා කම්පනය සහ බල ප්‍රතිපෝෂණය, බාස් ෂේකර් සහ සබ්වූෆර් සඳහා අඩු සංඛ්‍යාත නාද ලෙස ශ්‍රව්‍ය ප්‍රතිදානයකට යොමු කරයි.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ක්‍රීඩා කම්පනය බාස් ෂේකර් හෝ සබ්වූෆරයක් හරහා අඩු සංඛ්‍යාත නාද ලෙස වාදනය කරයි.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ප්‍රතිදාන උපාංගය, නාලිකා, ලාභය, එක් එක් මෝටරයට නාදයක්</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, සහ Nintendo Switch Pro අතථ්‍ය පාලක සමඟත්, ධාවන සුක්කානම් වැනි බල ප්‍රතිපෝෂණය සහිත Extended අතථ්‍ය පාලක සහ Steam Deck Controller (Composite) සමඟත් ක්‍රියා කරයි. ක්‍රීඩා ප්‍රතිපෝෂණය සහ කම්පන පරීක්ෂණය ශ්‍රව්‍ය ප්‍රතිදානය හරහා වාදනය වේ. මැක්‍රෝ කම්පනය පාලකය මතම පවතී.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>කම්පනය ශ්‍රව්‍යයට යළි සකසන්න</value></data>
@@ -3724,19 +3779,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>මෙම ප්‍රතිපෝෂණ නාලිකාව නාදයක් ලෙස වාදනය කරයි. එය අක්‍රිය අතරතුර ලාභය සහ සංඛ්‍යාතය සකසා තිබේ.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>මෙම නාලිකාව සඳහා නාද සංඛ්‍යාතය, 20 සිට 120 Hz දක්වා. ඔබේ ෂේකරය වඩාත් ප්‍රබලව ප්‍රතිචාර දක්වන තැන සොයා ගැනීමට සංඛ්‍යාත ස්වීප් එක ධාවනය කරන්න.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ප්‍රධාන වර්ධනයට පෙර මෙම නාලිකාවේ ශබ්ද තීව්‍රතාව.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ලාභය</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>පරීක්ෂා කරන්න</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>මෙම නාලිකාවේ ස්වරය එයට සකසා ඇති වර්ධනයෙන් තත්පර 1.5ක් වාදනය කරයි.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>අඩු සංඛ්‍යාත මෝටරය යළි සකසන්න</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>ඉහළ සංඛ්‍යාත මෝටරය යළි සකසන්න</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>වම් ට්‍රිගරය යළි සකසන්න</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>දකුණු ට්‍රිගරය යළි සකසන්න</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>ෂේකර් පරීක්ෂා කරන්න</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>සංඛ්‍යාත ස්වීප්</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>අඩු සංඛ්‍යාත මෝටරයේ මාර්ගය ඔස්සේ තත්පර අටක් තුළ 20 සිට 120 Hz දක්වා ස්වරයක් ස්වීප් කරයි. ඔබේ ෂේකරය වඩාත් ප්‍රබලව ප්‍රතිචාර දක්වන තැන සටහන් කර, හඬ සංඛ්‍යාත එතැනට සකසන්න.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>නවත්වන්න</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>පරීක්ෂණ ස්වරය හෝ ස්වීප් එක නවත්වයි.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>ඕනෑම NFC ටැගයක්</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC ටැගය: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ආදාන පෙරහන් කරන්න (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ප්‍රතිදාන සහ ආදාන පෙරහන් කරන්න</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>ගැළපෙන පේළි සහ ආදාන පමණක් පෙන්වයි. මෙහි ටයිප් කිරීමට Ctrl+F ඔබන්න.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>තෝරකවල පෙන්වන්නේ කුමන උපාංගවල ආදානදැයි තෝරන්න</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>තෝරකයේ පෙන්වයි</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>ඕනෑම හඬ වාක්‍ය ඛණ්ඩයක්</value></data>
@@ -3843,6 +3901,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>පෝෂණය යළි සකසන්න</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>පරාමිතික EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>පාලකයේ ශ්‍රව්‍ය මත එක් එක් කලාපය සඳහා පෙරහන්. ශ්‍රව්‍ය කේතනය කිරීමට පෙර යොදන බැවින්, පහත ඇති සීමාකාරකය වර්ධනය කළ කලාපයක් ක්ලිප් වීම වළක්වයි.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>ප්‍රීඇම්ප්, කලාප, ආයාත කිරීම</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>ප්‍රීඇම්ප්</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>කලාපවලට පෙර සමස්ත මට්ටම. AutoEq පැතිකඩ ඒවායේ වර්ධන ක්ලිප් නොවන ලෙස සෘණ ප්‍රීඇම්ප් එකක් සමඟ එන අතර, එකක් ආයාත කිරීමෙන් මෙය ඔබ වෙනුවෙන් සැකසේ.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>සක්‍රිය</value></data>
@@ -4065,7 +4124,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ස්පර්ශයෙන් හෝ අපගමනයෙන් විවෘත කිරීමට යළි සකසන්න.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>හසුරුවන ආදානය</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ස්ථරය මෙම මෙනුව විවෘතව තබා ඇති අතරතුර උද්දීපිත කොටුව හසුරුවන භෞතික ආදානය.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>මෙම ස්ලොට් එකට පවරා ඇති භෞතික පාලකවලින් කියවේ. ස්ථරය මෙනුව විවෘත කරයි. මෙම ආදානය එය හසුරුවයි. කොටු බැඳීම් එහි ප්‍රතිදානය තීරණය කරයි.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>මෙම ස්ලොට් එකට පවරා ඇති භෞතික පාලකවලින් කියවේ. ස්ථරය මෙනුව විවෘත කරන අතර, මෙම ආදානය එය හසුරුවයි. එය ප්‍රතිදානය කරන දේ එහි කොටු පවසයි.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>අයිකන ප්‍රමාණය</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>මෙනුවේ සාමාන්‍ය අයිකන ප්‍රමාණයට සාපේක්ෂව අයිකන ප්‍රමාණය, 25% සිට 200% දක්වා. අයිකනය ඉවත් කිරීමෙන් එය 100% වෙත යළි සැකසේ.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>"ක්ලික් ආදානය" ඔබාගෙන සිටින අතරතුර උද්දීපිත කොටුවේ බැඳීම රඳවා තබයි. ස්ටික් එක නිශ්චලව ඇති විට උද්දීපිත රේඩියල් මධ්‍යයක් ක්‍රියාත්මක විය හැක.</value></data>
@@ -4188,7 +4247,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge පාලකයක ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය නැවත සක්‍රිය කිරීමට භාවිත කරන, Windows හි ලේඛනගත නොකළ IPolicyConfig අතුරුමුහුණතේ පිරිසැලසුම සඳහා Antoine Aflalo විසින් මූලාශ්‍රය. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ශ්‍රව්‍ය ටැබය ආයාත කරන පරාමිතික EQ පැතිකඩ ආකෘතිය, Jaakko Pasanen විසින්. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>පාලකයක පරාමිතික EQ ආයාත කරන පරාමිතික EQ පැතිකඩ ආකෘතිය, Jaakko Pasanen විසින්. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>පෙළ කොටස් මැක්‍රෝ සහ යතුරුපුවරු සංයෝජන ග්‍රහණය පිටුපස ඇති SendInput ශිල්පීය ක්‍රම: Unicode ටයිප් කිරීම, කාණ්ඩ සීමා, Win යතුර ආවරණය කරන යතුර, සහ ටැග් කළ එන්නත් කළ ආදානය. GPL-2.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4392,6 +4451,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>දිශාව</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>පියවර</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>සිට</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>හසුරුව</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} මෙම පාලකයේ ට්‍රිගර සකසමින් සිටී.</value></data>
@@ -4436,7 +4496,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>හසුරුව ප්‍රමාණවත් දුරක් ගමන් නොකළ බැවින් චලන පරාසය පෙර පරිදිම පවතී. මැනීම ක්‍රියාත්මක වන අතරතුර එය සෑම කෙළවරකටම ගෙන යන්න.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>මැනීම අවසන් වීමට පෙර Falcon වැසී ගියේය.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>ඔබ Force Dimension වෙතින් ස්ථාපනය කරන Force Dimension හි SDK හරහා Novint Falcon එකකින් ක්‍රීඩා කරයි. හසුරුව ස්ටික් එකක් වේ, ග්‍රහණයේ බොත්තම් හතර බොත්තම් වේ, සහ PadForge ක්‍රීඩාවේ කම්පනය සහ ප්‍රයෝග හසුරුව මත බලයක් ලෙස යොදයි. Falcon දැනෙන ආකාරය එක් එක් ස්ලොට් එකේ බල ප්‍රතිපෝෂණය ටැබය මගින් සකසයි.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>ඔබ Force Dimension වෙතින් ස්ථාපනය කරන Force Dimension හි SDK හරහා Novint Falcon එකකින් ක්‍රීඩා කරයි. හසුරුව ස්ටික් එකක් වේ, ග්‍රහණයේ බොත්තම් හතර බොත්තම් වේ, සහ PadForge ක්‍රීඩාවේ කම්පනය සහ ප්‍රයෝග හසුරුව මත බලයක් ලෙස යොදයි. Falcon දැනෙන ආකාරය එක් එක් පාලකයේ කම්පනය සහ හැප්ටික් යටතේ ඇති Novint Falcon කාඩ්පත මගින් සකසයි.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon පාලනය කරන්න</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>එක් එක් Falcon එක Force Dimension හි dhd64.dll හරහා විවෘත කරයි. විවෘත Falcon එකක් PadForge සතු පමණක් වන බැවින්, මෙය සක්‍රිය අතරතුර FalconJoyForce සහ Force Dimension හි මෙවලම්වලට එය විවෘත කළ නොහැක. අක්‍රිය කළ විට, PadForge සියලුම Falcon වසා දමයි.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon පුස්තකාලය {0} ලෙස සකසා ඇත. PadForge තත්පර කිහිපයක් ඇතුළත එය පූරණය කරන අතර, වෙනත් පිටපතක විවෘතව ඇති Falcon එකක් මෙම පිටපතෙන් නැවත විවෘත වේ.</value></data>
@@ -4604,7 +4664,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>නියමිත කාලයක් සඳහා</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>නවත්වන තුරු</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>කාලය</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>මෙම ස්ලොට් එකේ සෑම DualSense සහ DualSense Edge එකක් මතම වාදනය වේ. ක්‍රීඩාවක තමන්ගේම ට්‍රිගර ප්‍රයෝගයට සහ ක්‍රීඩා මොඩ් එකක ප්‍රයෝගයට ප්‍රමුඛතාව ලැබෙන අතර, ප්‍රයෝගය අවසන් වූ විට අනුවර්තී ට්‍රිගර පටිත්තේ සැකසුම නැවත ක්‍රියාත්මක වේ. කලාප නිශ්චලව ඇති විට 0 සිට සම්පූර්ණයෙන් ඇද ඇති විට 9 දක්වා විහිදේ. දුන්න, අශ්ව දිවීම සහ යන්ත්‍රය නිල DualSense ප්‍රයෝග නොවන අතර, ස්ථිරාංග යාවත්කාලීනයකින් ඒවා ඉවත් විය හැක. “අනුවර්තී ට්‍රිගර කම්පන පරිවර්තනය කරන්න” සක්‍රිය කර ඇති Xbox පාලකවලට කම්පන ප්‍රයෝග ට්‍රිගර කම්පනය ලෙස දැනේ.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>මෙම ස්ලොට් එකේ සෑම DualSense සහ DualSense Edge එකක් මතම වාදනය වේ. ක්‍රීඩාවක තමන්ගේම ට්‍රිගර ප්‍රයෝගයට සහ ක්‍රීඩා මොඩ් එකක ප්‍රයෝගයට ප්‍රමුඛතාව ලැබෙන අතර, ප්‍රයෝගය අවසන් වූ විට අනුවර්තී ට්‍රිගර කාඩ්පතේ සැකසුම නැවත ක්‍රියාත්මක වේ. කලාප නිශ්චලව ඇති විට 0 සිට සම්පූර්ණයෙන් ඇද ඇති විට 9 දක්වා විහිදේ. දුන්න, අශ්ව දිවීම සහ යන්ත්‍රය නිල DualSense ප්‍රයෝග නොවන අතර, ස්ථිරාංග යාවත්කාලීනයකින් ඒවා ඉවත් විය හැක. “අනුවර්තී ට්‍රිගර කම්පන පරිවර්තනය කරන්න” සක්‍රිය කර ඇති Xbox පාලකවලට කම්පන ප්‍රයෝග ට්‍රිගර කම්පනය ලෙස දැනේ.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1} මත {2} ms සඳහා {0}</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>ඔබාගෙන සිටින අතරතුර {1} මත {0}</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>නවත්වන තුරු {1} මත {0}</value></data>

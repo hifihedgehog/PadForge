@@ -103,6 +103,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ekyuma</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ensibuko</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongerako Ekyuma</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Yunga</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kiyungiddwa</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Gaana</value></data>
@@ -216,9 +217,10 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Motor ya ddyo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Ensibuko</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Omuwendo</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Ebbanga</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Gattako ensibuko</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Gattako ensibuko</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Ggyawo ensibuko eno</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Gatta ensibuko wamu</value></data>
@@ -282,9 +284,9 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Eppeesa {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Nyiga {0} okumala {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Nyiga {0} okumala {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Ta {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Linda {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Linda {0} ms</value></data>
 
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Langi</value></data>
 
@@ -721,4 +723,12 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ekitangaala ky'eppeesa lya Guide oba Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fayiro za Zip ez'amaloboozi ga macro z'amaloboozi</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Fayiro za Zip ez'ebifaananyi by'obusenge bwa menu</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu empya</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Ggyawo akasenge akasembayo</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Erinnya</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Ensibuko, Threshold, Oludda, Consume Trigger Buttons, Ddamu</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ekyuma kino</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yonna</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kebera shakers</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Omuzannyi oba Ensi</value></data>
 </root>

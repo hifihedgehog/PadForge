@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Copiere</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Lipire</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicare</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Redenumire</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Activat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Dezactivat</value></data>
   <data name="Common_On" xml:space="preserve"><value>Activat</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitiv</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Controlat de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imagine</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listă</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ieșiri: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Mișcare</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Faceți clic pe un control, apoi apăsați intrarea care să-l comande.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Faceți clic pe o tastă sau pe un buton de mouse, apoi apăsați intrarea care să-l comande.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Faceți clic pe o notă sau pe un glisor, apoi apăsați intrarea care să-l comande.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mapare completă omite ieșirile de atingere ale butoanelor A și B. Faceți clic pe inelul din jurul lui A sau B pentru a lega una dintre ele.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Se așteaptă {0}. Apăsați intrarea de pe dispozitiv.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, controlat de</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mai multe opțiuni</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mai puține opțiuni</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buton frontal</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buton de umăr</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buton de sistem</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Buton</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Cruce direcțională</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trăgaci</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Senzor de mișcare</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tastă de tastatură</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Buton de mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mișcarea mouse-ului</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rotiță de derulare</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Schimbare de control (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Senzor de atingere</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Apăsare analogică</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, mâna stângă</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, mâna dreaptă</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ce apăsare vede jocul când ambele butoane ale unei perechi sunt ținute apăsate</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ce apăsare vede jocul când ambele taste ale unei perechi sunt ținute apăsate</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menține o mică deplasare a stickului ca jocurile să afișeze în continuare indicațiile controlerului</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjare</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selectați o macrocomandă din stânga sau apăsați Adăugare pentru a crea una.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selectați o macrocomandă din listă sau apăsați + de lângă Macrocomenzi pentru a crea una.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>BRUT</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>IEȘIRE</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Rece</value></data>
@@ -917,7 +946,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Trăgace cu impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Trăgace cu impuls</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amplificare per trăgaci, interschimbare motoare, vibrații trăgace adaptive</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amplificare per trăgaci, interschimbare motoare, vibrații trăgace adaptive, Forță constantă pe trăgace</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmite comenzile pentru motoarele fiecărui trăgaci (Xbox Impulse Triggers) de la controlerul virtual la controlerul fizic Xbox One, Elite sau Series atribuit. Vibrațiile trăgacelor comandate de joc trec automat. Comenzile de mai jos scalează intensitatea pentru fiecare trăgaci.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trăgaci stâng</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trăgaci drept</value></data>
@@ -987,9 +1016,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stickuri</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zone moarte, anti-zone moarte, curbe de sensibilitate și calibrarea decalajului centrului pentru fiecare stick. Fiecare secțiune de mai jos vizează un stick analogic de pe ieșirea activă. Profilurile de tip Extins pot avea până la patru stickuri. Gamepadurile standard au două.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Trăgace</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zone moarte, anti-zone moarte, scalarea intervalului maxim și curbe de sensibilitate pentru fiecare trăgaci. Fiecare secțiune de mai jos vizează o axă de trăgaci de pe ieșirea activă. Profilurile de tip Extins pot expune până la opt axe, partajate cu fila Stickuri.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zone moarte, anti-zone moarte, scalarea intervalului maxim și curbe de sensibilitate pentru fiecare trăgaci. Fiecare card de trăgaci vizează o axă de trăgaci de pe ieșirea activă. Profilurile de tip Extins pot expune până la opt axe, partajate între stickuri și trăgace.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Reglează modul în care PadForge scalează evenimentele force feedback venite de la joc și cum le direcționează către motoarele de vibrație sau actuatoarele haptice ale controlerului fizic. Vibrațiile audio adaugă peste acestea un nivel comandat de sunetul sistemului.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Acest dispozitiv</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Întregul controler</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrațiile se redau pe {0} ca impulsuri haptice, trimise direct către dispozitiv. O vibrație mai puternică alege un impuls mai puternic și îl repetă mai rapid.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Feedbackul haptic este dezactivat pentru {0} în Logi Options+, așa că nu se redă nimic până când nu îl reactivați acolo.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Acest dispozitiv nu a răspuns încă. Vibrațiile se redau după ce se trezește.</value></data>
@@ -1077,6 +1108,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>plăci de bază și plăci video</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepaduri, căști și suporturi pentru căști</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bară luminoasă</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jocurile preiau controlul ori de câte ori scriu iluminarea.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introduceți o culoare hexazecimală de șase cifre (RRGGBB sau #RRGGBB) și apăsați Enter sau faceți clic în altă parte pentru a o aplica.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Elimină această culoare din paletă</value></data>
@@ -1094,7 +1126,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Resetare vibrații audio</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Resetare {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Golire mapări</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Toate mapările din această filă vor fi golite. Atribuirile surselor, sursele suplimentare și setările de combinare revin la valorile implicite.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Toate mapările din acest strat vor fi golite. Atribuirile surselor, sursele suplimentare și setările de combinare revin la valorile implicite.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Model jucător</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mod LED dezactivare sunet</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminozitate LED</value></data>
@@ -1247,6 +1279,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-uri</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Butoane</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profiluri importate…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Controler Extins</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gestionați profilurile HIDMaestro importate de utilizator: capturați unul nou de la un dispozitiv conectat, exportați unul existent în JSON sau ștergeți unul de care nu mai aveți nevoie.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonare dispozitiv 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mapează fiecare axă, buton și POV de pe dispozitivul selectat direct pe ieșirea virtuală cu același număr. Dimensionează aranjamentul după dispozitiv și înlocuiește rândurile acestui dispozitiv din slot cu o transmitere directă 1:1.</value></data>
@@ -1294,6 +1327,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Canal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Ieșire MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Număr CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Numărul de ieșiri CC (maximul depinde de CC inițial)</value></data>
@@ -1325,7 +1359,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Elimină această pereche de taste.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Prima tastă a perechii opuse.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>A doua tastă a perechii opuse.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direcții cardinale opuse simultane (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Menținere controler activ</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Unele jocuri opresc vibrațiile și schimbă indicațiile de butoane în momentul în care detectează intrare de la mouse sau tastatură. Menținerea unei mici deplasări a stickului face ca jocul să trateze în continuare acest controler ca dispozitiv activ. Menținerea se activează doar cât timp ambele axe ale acelui stick se află sub nivelul menținut, așa că un stick cu drift contează în continuare ca fiind în repaus. O intrare peste nivel pe oricare axă o eliberează și trece nemodificată. Păstrați deplasarea sub zona moartă a jocului, astfel încât nimic să nu se miște în joc.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Menținere activ</value></data>
@@ -1345,7 +1378,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Resetare clic</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Resetare jumătate pad</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Resetare mod de declanșare</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Resetare celule</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Resetare zonă moartă de activare</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Resetare geometrie meniu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Resetare celulă</value></data>
@@ -1401,6 +1433,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Golire totală</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sursă</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valoare</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opțiuni</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zonă moartă axă-buton</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inversare</value></data>
@@ -1438,7 +1471,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Când este bifat, axa revine treptat în centru la eliberare. Când nu este bifat, își păstrează ultima poziție.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Butonul care inversează ieșirea rândului cât timp este ținut apăsat</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificator: cât timp este ținut apăsat, ieșirea rândului își schimbă semnul.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Adăugare sursă</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Adăugare sursă</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Adaugă încă o intrare fizică la acest rând</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Elimină această sursă</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Punctul {0} din {1}, intrare {2}%, ieșire {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibrare centru</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punct central</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Centru</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zonă moartă</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Decalaje de centru, forma zonei moarte și valori pe axă, o curbă pentru fiecare axă, interval, direcție</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Interval</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrare limită este metoda recomandată pentru a corecta un stick. Aceasta parcurge marginea pe care stickul o poate atinge fizic, apoi rescalează proporțional fiecare poziție față de acea margine măsurată, astfel încât întreaga mișcare nativă, la orice unghi și orice deplasare, să fie mapată pe un cerc ideal, fără nimic tăiat. Cele patru glisoare de mai jos limitează doar axele cardinale. Folosiți-le pentru a limita intenționat intervalul, nu pentru a-l corecta.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrare limită măsoară marginea pe care stickul o poate atinge și o remodelează într-un cerc complet. Cele patru glisoare doar limitează fiecare direcție.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Eșantionare...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Decalaj centru X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Decalaj centru Y</value></data>
@@ -1581,7 +1615,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nume</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Declanșator</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Când</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Declanșare</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>La apăsare</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>La eliberare</value></data>
@@ -1613,9 +1647,9 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Stratul de comutare căruia îi aparține această macrocomandă. Cu Orice strat, macrocomanda se declanșează indiferent de stratul activ. Cu Bază sau un strat cu nume, se declanșează doar cât timp acel strat este activ, exact ca un rând de mapare.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Orice strat</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Rulează continuu cât timp acest controler virtual este activ. Nu este necesar niciun buton declanșator.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Secvență de acțiuni</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Execută</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Strat, Sursă, Prag, Direcție, Blocare butoane declanșatoare, Repetare</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Adăugare acțiune</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Editare acțiune</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tip</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Butoane virtuale</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Axe virtuale și volan</value></data>
@@ -1700,7 +1734,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Eliberare mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Comutare suprapunere touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Setare culoare bară luminoasă</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Înlocuiește culoarea barei luminoase a slotului PlayStation atribuit cu o culoare RGB aleasă. Reactiv se estompează de la intensitate maximă la negru pe durata intervalului de atenuare configurat, apoi revine la setările din fila Iluminare. Persistent păstrează culoarea până când rulează o acțiune Anulare înlocuire bară luminoasă. Scrierile comandate de joc au în continuare prioritate față de înlocuire.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Înlocuiește culoarea barei luminoase a slotului PlayStation atribuit cu o culoare RGB aleasă. Reactiv se estompează de la intensitate maximă la negru pe durata intervalului de atenuare configurat, apoi revine la setările cardului Bară luminoasă. Persistent păstrează culoarea până când rulează o acțiune Anulare înlocuire bară luminoasă. Scrierile comandate de joc au în continuare prioritate față de înlocuire.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Clipire bară luminoasă {0} (atenuare {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Menținere bară luminoasă {0} până la anulare</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Anulare înlocuire bară luminoasă</value></data>
@@ -1708,7 +1742,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Eliberează orice înlocuire activă a barei luminoase pe slotul atribuit. Folosiți-o împreună cu o acțiune Setare culoare bară luminoasă în modul Persistent pentru a o anula printr-o altă macrocomandă.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Setare mod bară luminoasă</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Setare mod bară luminoasă la {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setează modul barei luminoase a slotului atribuit la o anumită valoare. Rămâne, ca o modificare din fila Iluminare, până când îl schimbă o altă acțiune sau utilizatorul.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setează modul barei luminoase a slotului atribuit la o anumită valoare. Rămâne, ca o modificare din cardul Bară luminoasă, până când îl schimbă o altă acțiune sau utilizatorul.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Parcurgere moduri bară luminoasă</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Parcurgere a {0} moduri ale barei luminoase</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Avansează modul barei luminoase a slotului prin modurile selectate mai jos. Fiecare declanșare trece la următorul mod bifat. Poziția în ciclu este proprie fiecărei acțiuni și se resetează la repornirea aplicației.</value></data>
@@ -1723,7 +1757,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Atenuare</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Estompare</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletă</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>O paletă goală folosește paleta din fila Iluminare a slotului.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>O paletă goală folosește paleta din cardul Bară luminoasă al slotului.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Alegeți modurile barei luminoase pe care macrocomanda le va parcurge. Fiecare declanșare avansează la următorul mod bifat.</value></data>
 
@@ -1741,7 +1775,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Oprire vibrații trăgace</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Eliberează orice vibrație activă a trăgacelor pornită de o macrocomandă pe slot. Folosiți-o împreună cu o Înlocuire vibrații trăgace în modul Persistent pentru a încheia menținerea dintr-o macrocomandă.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Setare activare giroscop</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Setează starea de activare a giroscopului slotului dintr-o macrocomandă. Comutare inversează starea curentă. Activat forțează activarea giroscopului. Dezactivat forțează dezactivarea lui. Independent de butonul de activare din fila Giroscop. Cele două surse se combină prin SAU, așa că niciuna nu poate dezactiva ce a activat cealaltă.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Setează starea de activare a giroscopului slotului dintr-o macrocomandă. Comutare inversează starea curentă. Activat forțează activarea giroscopului. Dezactivat forțează dezactivarea lui. Independent de setarea Buton de activare a țintirii din secțiunea Mișcare și atingere. Cele două surse se combină prin SAU, așa că niciuna nu poate dezactiva ce a activat cealaltă.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Comutare</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Activat</value></data>
@@ -1889,7 +1923,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Intrare pentru fiecare touchpad. Gesturile (glisări, atingeri, ciupiri, forme) și modurile de ieșire continuă (stick virtual / D-pad, mouse) devin surse de mapare pe care le puteți lega în fila Mapări.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Intrare pentru fiecare touchpad. Gesturile (glisări, atingeri, ciupiri, forme) și modurile de ieșire continuă (stick virtual / D-pad, mouse) devin surse de mapare pe care le puteți lega la orice ieșire.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numărul touchpadului</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Touchpadul acestui controler căruia i se aplică setările de mai jos. Fiecare touchpad își păstrează propriile gesturi, comportamentul de mouse și regiunea indicatorului.</value></data>
@@ -2179,10 +2213,14 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Reglați modul în care senzorul de mișcare al acestui controler comandă ieșirea de mouse și de stick. Calibrați pe o suprafață plană pentru a anula driftul în repaus, apoi ajustați după preferință sensibilitatea, netezirea și regulile de activare.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrare</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroscop și accelerometru în timp real</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilitate</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unități, Spațiu, inversare axe, Calibrare la lumea reală</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unități, inversare axe, Calibrare la lumea reală</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pe rotație</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Modelarea răspunsului</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zonă moartă, netezire, Accelerație, Curbă de ieșire</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Sistem de referință</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Jucător sau Lume</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Spațiu</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Cum este interpretată mișcarea giroscopului. Local folosește axele brute ale controlerului. Jucător proiectează mișcarea orizontală pe verticala reală (gravitația), astfel încât aceeași răsucire a încheieturii rotește întotdeauna camera, indiferent cum țineți controlerul. Lume reproiectează în plus mișcarea verticală pe axele lumii.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Ținut ca</value></data>
@@ -2254,6 +2292,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Vertical</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Prindere</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Cum este ținut controlerul. Rotește împreună giroscopul, accelerometrul și gravitația, pentru mapări și pentru mișcarea raportată de controlerul virtual. D-pad-ul urmează același sistem de referință, așa că Sus este sus în poziția respectivă.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Cum este ținut controlerul</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Liniară</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresivă</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Relaxată</value></data>
@@ -2286,7 +2325,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetare direcție de activare</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmitere directă a mișcării</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplicare reglaje giroscop la transmiterea directă a mișcării</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplică reglajele opționale ale giroscopului din această filă (zonă moartă, sensibilitate, netezire, curbă de răspuns, inversare) asupra mișcării pe care controlerul virtual o raportează jocului sau emulatorului. Dezactivați opțiunea pentru a trimite doar citirea calibrată și a lăsa jocul să aplice propria sensibilitate și netezire. Corecția driftului prin calibrare se aplică oricum.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplică reglajele opționale din cardurile Giroscop (zonă moartă, sensibilitate, netezire, curbă de răspuns, inversare) asupra mișcării pe care controlerul virtual o raportează jocului sau emulatorului. Dezactivați opțiunea pentru a trimite doar citirea calibrată și a lăsa jocul să aplice propria sensibilitate și netezire. Corecția driftului prin calibrare se aplică oricum.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetare reglaje transmitere directă</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicator de sensibilitate a giroscopului pentru fiecare sursă. 1.0 = valoarea implicită a motorului (500°/s → deplasare completă). Valorile peste 1.0 sunt mai sensibile. Valorile sub 1.0 sunt mai puțin sensibile.</value></data>
@@ -2303,7 +2342,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Resetare interval de înclinare completă</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Resetare zonă moartă la înclinare</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Resetare înclinare giroscop</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cum se combină sursele acestui rând când sunt active mai multe. Selectați rândul pentru a schimba modul în banda de detalii de mai jos.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cum se combină sursele acestui rând când sunt active mai multe. Deschideți rândul pentru a schimba modul din setarea Combinare.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Inerție</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mod trackball: împingeți scurt stickul și eliberați-l, iar cursorul continuă să se deplaseze până se oprește treptat. O nouă mișcare a stickului îl oprește.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Cât de departe alunecă cursorul după o împingere scurtă. La capătul de sus al intervalului, continuă până când mișcați din nou stickul.</value></data>
@@ -2504,7 +2543,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axa trăgaciului</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amplificare per motor, vibrații trăgace, interschimbare motoare</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amplificare per motor, vibrații trăgace, Vibrații după unghiul de virare, Forță constantă</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Amplificare generală</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor stâng</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor drept</value></data>
@@ -2513,6 +2552,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Acest controler nu are motoare în trăgace, așa că vibrațiile jocurilor care folosesc trăgacele cu impuls Xbox nu s-ar simți. Transferați în schimb fiecare canal de trăgaci în motorul principal de pe aceeași parte.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testare vibrații</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitatea motoarelor</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Stâng</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Drept</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplică o forță continuă acestui dispozitiv până când o dezactivați. Forța comandată de joc, din orice sursă, are prioritate cât timp este activă, iar forța constantă se reia când jocul se oprește.</value></data>
@@ -2591,7 +2632,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Apăsați butoane sau mișcați o axă/un trăgaci pentru a înregistra. Axele sunt detectate când sunt deplasate peste 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Adăugare din listă</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Alegeți o intrare declanșatoare de pe dispozitivele slotului în loc să o înregistrați. Gesturile de touchpad activate în fila Touchpad apar aici.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Golire declanșator</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Alegeți o intrare declanșatoare de pe dispozitivele slotului în loc să o înregistrați. Gesturile de touchpad activate în secțiunea Mișcare și atingere apar aici.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Eliminare intrare</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Apăsați orice intrare…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inversată</value></data>
@@ -2852,7 +2894,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Secunde până la distrugerea unui controler virtual când toate dispozitivele mapate pe el sunt deconectate. 0 dezactivează. Controlerele rămase de același tip urcă pentru a umple golul și se leagă din nou la sloturile inferioare.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>secunde (0 = niciodată)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Strat de comutare</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Adăugare strat</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Adaugă un strat de comutare. Un al doilea tabel de mapare care se activează cât timp un buton este ținut apăsat sau comutat.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bază</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Strat de comutare</value></data>
@@ -2953,7 +2995,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direcție prin mișcare</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° până la {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zone moarte ale înclinării, Orientarea controlerului</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Setări pentru intrarea „Mișcare: înclinare”: înclinați controlerul ca pe un volan. Mapați „Mișcare: înclinare” pe o axă de stick din lista derulantă de intrări din Mapări.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Setări pentru intrarea „Mișcare: înclinare”: înclinați controlerul ca pe un volan. Mapați „Mișcare: înclinare” pe o axă de stick în secțiunea Butoane.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetare direcție prin mișcare</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick drept)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick stâng)</value></data>
@@ -2962,7 +3004,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Inel stick drept</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Reglaje pentru intrările Flick Stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Setări pentru intrările Flick Stick: îndreptați stickul, iar camera se rotește în aceeași direcție; mișcați stickul de-a lungul marginii pentru rotiri fine. Mapați „Flick Stick (stick drept)” pe Mouse X din lista derulantă de intrări din Mapări, pe orice strat.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Setări pentru intrările Flick Stick: îndreptați stickul și camera se rotește în aceeași direcție, iar pentru rotiri fine mișcați-l de-a lungul marginii. Mapați „Flick Stick (stick drept)” pe Mouse X în secțiunea Taste și mouse, pe orice strat.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Resetare Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Puncte per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Unități de mouse pentru o rotație completă a camerei de 360°. Depinde de sensibilitatea mouse-ului din joc: măriți valoarea dacă un flick rotește prea puțin, micșorați-o dacă rotește prea mult.</value></data>
@@ -3054,7 +3096,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Sunetele macrocomenzilor și sunetul de sistem oglindit se redau prin difuzorul integrat al controlerului selectat, prin USB sau Bluetooth. Alegeți dispozitivul din lista derulantă de mai sus. Toate setările de aici se aplică acestuia.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ieșire sunet</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sursă de oglindire, haptică, Volum căști, Crossfeed, Parametric EQ, Limitator</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sursă de oglindire, Volum căști, buffer, Cale de ieșire</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sunetele sunt direcționate automat către controlerul selectat. Prin USB, punctul final audio propriu al controlerului este identificat după containerul hardware. Prin Bluetooth, sunetul este transmis în cadre HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sursă de oglindire</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Dispozitivul de redare oglindit în difuzorul controlerului. Jocurile care trimit anumite sunete către un dispozitiv de redare separat îl pot viza pe acesta.</value></data>
@@ -3067,10 +3109,10 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Oprire toate sunetele</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Oprește toate sunetele macrocomenzilor de pe acest controler</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macrocomenzi de sunet</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sunetele sunt redate de macrocomenzi: un declanșator (apăsare, eliberare sau menținere de buton ori formulă) plus o acțiune Redare sunet. Creați-le aici sau în fila Macrocomenzi. Întârzierile, repetările și comutările funcționează toate.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sunetele sunt redate de macrocomenzi: un declanșator (apăsare, eliberare sau menținere de buton ori formulă) plus o acțiune Redare sunet. Creați-le aici sau în secțiunea Macrocomenzi și meniuri. Întârzierile, repetările și comutările funcționează toate.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Macrocomandă de sunet nouă</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nu există încă macrocomenzi de sunet. Creați una și alegeți un fișier de sunet și un declanșator.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Deschide această macrocomandă în fila Macrocomenzi</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Deschide această macrocomandă în secțiunea Macrocomenzi și meniuri</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Macrocomandă de sunet {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Redare sunet</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Redă un fișier de sunet (.wav, .mp3, .m4a, .aac, .wma, .flac) pe dispozitivul de ieșire al acestui controler</value></data>
@@ -3347,6 +3389,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>În execuție</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>În execuție, driver conectat</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>În execuție, controlere active</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instalat</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR neinstalat</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR în execuție</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR în execuție, driver conectat</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR în execuție, controlere active</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Un alt driver OpenVR folosește numele de driver al HIDMaestro, așa că SteamVR îl poate încărca în locul celui al PadForge, iar controlerele VR virtuale nu vor apărea. Eliminați acel driver pentru a remedia: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Controler serial (port COM)</value></data>
@@ -3516,7 +3563,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesturi de mouse</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Țineți apăsat butonul de gest, faceți o mișcare scurtă, iar la eliberare se declanșează o acțiune: stânga, dreapta, sus, jos sau un simplu clic sub distanța de mișcare. Mapați cele cinci gesturi în fila Mapări sau folosiți-le ca declanșatoare de macrocomenzi.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Țineți apăsat butonul de gest, faceți o mișcare scurtă, iar la eliberare se declanșează o acțiune: stânga, dreapta, sus, jos sau un simplu clic sub distanța de mișcare. Mapați cele cinci gesturi pe orice ieșire sau folosiți-le ca declanșatoare de macrocomenzi.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Activare gesturi de mouse</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Pregătește recunoașterea gesturilor pentru acest mouse pe acest slot. Butonul de gest își păstrează clicul normal în timpul gesturilor, așa că alegeți un buton lateral pe care nu îl mapați altfel.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Butoane de gest</value></data>
@@ -3550,7 +3597,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Comutare strat</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Setare culoare Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Colorează cu o singură culoare dispozitivele Razer atribuite acestui controler virtual, precum și toate celelalte dispozitive Razer de aceleași tipuri, cât timp rulează acțiunea.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Pe durata de mai sus, aplică această culoare dispozitivelor Razer atribuite acestui controler virtual și tuturor celorlalte dispozitive Razer de aceleași tipuri, sau tuturor dispozitivelor Razer când este atribuit rândul Razer Chroma. Are prioritate față de fila Iluminare a oricărui controler virtual, apoi îi redă controlul iluminării. Pentru a menține culoarea cât timp declanșatorul este ținut apăsat, folosiți Cât timp e ținut cu Până la eliberare. Când două macrocomenzi colorează simultan, câștigă cea aflată mai jos în listă, așa că puneți o macrocomandă pentru apăsare completă sub perechea ei pentru apăsare ușoară. Când macrocomenzile de pe două controlere virtuale colorează același tip de dispozitiv Razer, câștigă numărul de jucător mai mic. Necesită Razer Synapse în execuție.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Pe durata de mai sus, aplică această culoare dispozitivelor Razer atribuite acestui controler virtual și tuturor celorlalte dispozitive Razer de aceleași tipuri, sau tuturor dispozitivelor Razer când este atribuit rândul Razer Chroma. Are prioritate față de iluminarea pe care o setează orice controler virtual în secțiunea Iluminare și audio, apoi îi redă controlul iluminării. Pentru a menține culoarea cât timp declanșatorul este ținut apăsat, folosiți Cât timp e ținut cu Până la eliberare. Când două macrocomenzi colorează simultan, câștigă cea aflată mai jos în listă, așa că puneți o macrocomandă pentru apăsare completă sub perechea ei pentru apăsare ușoară. Când macrocomenzile de pe două controlere virtuale colorează același tip de dispozitiv Razer, câștigă numărul de jucător mai mic. Necesită Razer Synapse în execuție.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Afișare ecran Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Redă imagini pe VMU-ul fiecărui controler Dreamcast dintr-un port Bliss-Box care alimentează acest slot, apoi readuce fiecare port la propria setare de ecran.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Afișare imagini Dreamcast: {0} × {1} ms, număr de repetări {2}</value></data>
@@ -3844,10 +3891,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>La apăsare, readuce la zero referințele acumulate de țintire cu giroscopul ale controlerului. Istoricul netezirii se golește, poziția neutră pentru Mișcare: înclinare se recaptează, estimarea gravitației se reinițializează din poziția curentă a controlerului, iar rotația acumulată de rândurile Mișcare: tangaj, girație și ruliu este anulată.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Orice dispozitiv)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Meniuri</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Meniurile transformă un stick fizic sau un touchpad într-un inel sau o grilă pe ecran. Adăugați un meniu, alegeți ce îl deschide, apoi etichetați fiecare celulă și atribuiți-i o legătură.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Meniurile transformă un stick fizic sau un touchpad într-un inel sau o grilă pe ecran. Apăsați + de lângă Meniuri pentru a crea unul, alegeți ce îl deschide, apoi dați fiecărei celule un nume și o acțiune.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Meniu nou</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Meniul {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Numele meniului</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Activat</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Deschidere</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stil</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Inel radial</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Grilă tactilă</value></data>
@@ -3867,12 +3916,16 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Celule</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Celulă centrală</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Afișare etichete</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Poziție pe ecran</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Dimensiune</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Opacitate</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Zonă moartă de activare</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Legăturile celulelor</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Celula {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Adăugare celulă</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Eliminare ultima celulă</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Editare celulă</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nume</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Acțiune</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Pictogramă</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Centru</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Fără</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastă de tastatură</value></data>
@@ -3885,7 +3938,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Se declanșează o dată la eliberarea clicului: indicați celula, apăsați stickul sau trackpadul, apoi eliberați clicul.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Se declanșează o dată când eliberați: ridicați degetul de pe pad sau lăsați stickul să revină în centru cât timp o celulă este evidențiată.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Legătura este menținută tot timpul cât celula este evidențiată. Nu este nevoie de clic.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Câte celule are meniul. Pentru un inel radial, se numără doar inelul; celula centrală este separată.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adaugă o celulă centrală, selectată cât timp stickul sau degetul se află în Zona moartă de activare.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Pentru stickuri, cât de mult trebuie împins înainte ca meniul să se deschidă și celulele inelului să fie evidențiate. La meniurile radiale, este și regiunea centrală pentru stickuri și touchpaduri: în interiorul ei, celula centrală este selectată, dacă există.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Desenează eticheta fiecărei celule pe suprapunerea de pe ecran.</value></data>
@@ -3895,8 +3947,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Dimensiunea suprapunerii, în procente din dimensiunea normală.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacitatea suprapunerii. 100% înseamnă complet opac.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Textul afișat pe această celulă în suprapunere.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce face această celulă când se declanșează: „Tastă de tastatură” apasă o tastă, „Buton de controler” apasă un buton al controlerului virtual al acestui slot. O celulă setată pe „Fără” se declanșează totuși ca sursă de element de meniu pentru rândurile din Mapări și pentru declanșatoarele macrocomenzilor.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Citit de pe controlerele fizice atribuite acestui slot, nu din aranjamentul controlerului virtual. Legăturile celulelor de mai jos sunt ceea ce emite meniul.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce face această celulă când se declanșează: „Tastă de tastatură” apasă o tastă, „Buton de controler” apasă un buton al controlerului virtual al acestui slot. O celulă setată pe „Fără” se declanșează totuși ca sursă de element de meniu pentru mapări și pentru declanșatoarele macrocomenzilor.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Citit de pe controlerele fizice atribuite acestui slot, nu din aranjamentul controlerului virtual. Celulele de mai jos stabilesc ce emite meniul.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Axe personalizate</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Control X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Control Y</value></data>
@@ -3921,13 +3973,16 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Transductoare tactile</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ieșire</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butoane</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taste și mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note și controale</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mâini</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stickuri și trăgace</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrații și haptică</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mișcare și atingere</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Iluminare și audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macrocomenzi și meniuri</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Transductoare tactile</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Direcționează vibrațiile jocului și force feedback-ul primite de acest controler virtual către o ieșire audio, ca tonuri de joasă frecvență pentru transductoare tactile și subwoofere.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Redă vibrațiile jocului ca tonuri joase prin transductoare tactile sau printr-un subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispozitiv de ieșire, canale, amplificare, un ton pentru fiecare motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funcționează cu controlerele virtuale Xbox, DualShock 3, DualShock 4 / DualSense și Nintendo Switch Pro, plus controlerele virtuale Extins cu force feedback, cum ar fi volanele de curse, și Steam Deck Controller (Composite). Feedbackul jocului și Testare vibrații se redau prin ieșirea audio. Vibrațiile din macrocomenzi rămân pe controler.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetare vibrații în audio</value></data>
@@ -3956,19 +4011,22 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Redă acest canal de feedback ca ton. Amplificarea și frecvența rămân setate cât timp este dezactivat.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frecvența tonului pentru acest canal, de la 20 la 120 Hz. Rulați baleierea de frecvență pentru a afla unde răspunde cel mai puternic transductorul.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volumul acestui canal înainte de amplificarea principală.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Amplificare</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Testare</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Redă tonul acestui canal timp de 1.5 secunde, la amplificarea setată.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Resetare motor de joasă frecvență</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Resetare motor de înaltă frecvență</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Resetare trăgaci stâng</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Resetare trăgaci drept</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Verificare transductoare</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Baleiere de frecvență</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Baleiază un ton de la 20 la 120 Hz timp de opt secunde pe direcționarea motorului de joasă frecvență. Notați unde răspunde cel mai puternic transductorul și setați acolo frecvențele vocilor.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Oprire</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Oprește tonul de test sau baleierea.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Orice etichetă NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etichetă NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrare intrări (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrare ieșiri și intrări</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Afișează doar rândurile și intrările care se potrivesc. Apăsați Ctrl+F pentru a scrie aici.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Alegeți dispozitivele ale căror intrări sunt oferite de selectoare</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Afișate în selector</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Orice frază vocală</value></data>
@@ -4077,6 +4135,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Resetare nivel de amestec</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Egalizator parametric</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtre pe benzi aplicate sunetului controlerului. Se aplică înainte de codificarea sunetului, așa că limitatorul de mai jos împiedică distorsionarea unei benzi amplificate.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamplificare, benzi, import</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificare</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nivelul general înaintea benzilor. Profilurile AutoEq vin cu o preamplificare negativă, astfel încât amplificările lor să nu distorsioneze, iar importarea unui profil o setează automat.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Activ</value></data>
@@ -4307,7 +4366,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Resetează la deschiderea prin atingere sau deplasare.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Controlat cu</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Intrarea fizică ce controlează celula evidențiată cât timp stratul menține acest meniu deschis.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Citit de pe controlerele fizice atribuite acestui slot. Stratul deschide meniul; această intrare îl controlează. Legăturile celulelor determină ieșirea lui.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Citit de pe controlerele fizice atribuite acestui slot. Stratul deschide meniul, iar această intrare îl controlează. Celulele sale stabilesc ce emite.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Dimensiunea pictogramei</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Dimensiunea pictogramei raportată la dimensiunea normală a pictogramelor meniului, de la 25% la 200%. Golirea pictogramei o resetează la 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Menține legătura celulei evidențiate cât timp Intrarea de clic este ținută apăsată. Un centru radial evidențiat se poate declanșa cât timp stickul este în repaus.</value></data>
@@ -4432,7 +4491,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referință de Antoine Aflalo pentru structura interfeței nedocumentate IPolicyConfig din Windows, pe care PadForge o folosește pentru a reactiva punctul final audio al unui controler. MIT. Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formatul de profil de egalizator parametric pe care îl importă fila Audio, de Jaakko Pasanen. MIT. Doar documentație, nu este inclus niciun cod.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formatul de profil de egalizator parametric pe care îl importă Egalizator parametric din pagina unui controler, de Jaakko Pasanen. MIT. Doar documentație, nu este inclus niciun cod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Tehnicile SendInput din spatele macrocomenzilor Bloc de text și al interceptării combinațiilor de taste: tastarea Unicode, limitele de lot, tasta de mascare a tastei Win și intrarea injectată marcată. GPL-2.0-or-later, citit doar ca documentație, nu este inclus niciun cod GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direcție</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Pas</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>până la</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Mâner</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} setează trăgacele acestui controler.</value></data>
@@ -4716,7 +4776,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Mânerul nu a parcurs o distanță suficientă, deci cursa rămâne neschimbată. Mutați-l la fiecare margine cât timp rulează măsurarea.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon s-a închis înainte de terminarea măsurării.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Joacă jocuri cu un Novint Falcon prin Force Dimension SDK, pe care îl instalați de la Force Dimension. Mânerul este un stick, cele patru butoane ale mânerului sunt butoane, iar PadForge transmite mânerului vibrațiile și efectele jocului sub formă de forță. Fila Force feedback a fiecărui slot stabilește cum se simte Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Joacă jocuri cu un Novint Falcon prin Force Dimension SDK, pe care îl instalați de la Force Dimension. Mânerul este un stick, cele patru butoane ale mânerului sunt butoane, iar PadForge transmite mânerului vibrațiile și efectele jocului sub formă de forță. Cardul Novint Falcon din secțiunea Vibrații și haptică a fiecărui controler stabilește cum se simte Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Controlare Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Deschide fiecare Falcon prin dhd64.dll de la Force Dimension. Un Falcon deschis aparține exclusiv PadForge, deci FalconJoyForce și instrumentele Force Dimension nu îl pot deschide cât timp opțiunea este activată. Dezactivată, PadForge închide toate dispozitivele Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Biblioteca Falcon este setată la {0}. PadForge o încarcă în câteva secunde, iar un Falcon deschis pe altă copie se deschide din nou pe aceasta.</value></data>
@@ -4929,7 +4989,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Pentru o durată stabilită</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Până la oprire</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Durată</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Se redă pe toate controlerele DualSense și DualSense Edge de pe acest slot. Efectul propriu al unui joc și cel al unei modificări de joc au prioritate, iar setarea din fila Trăgace adaptive revine când efectul se încheie. Zonele merg de la 0 în repaus până la 9 la apăsare completă. Arc, Galop și Mașină nu sunt efecte oficiale DualSense, iar o actualizare de firmware le-ar putea elimina. Controlerele Xbox cu Conversie vibrații trăgace adaptive activată simt efectele vibrante ca vibrații de trăgaci.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Se redă pe toate controlerele DualSense și DualSense Edge de pe acest slot. Efectul propriu al unui joc și cel al unei modificări de joc au prioritate, iar setarea din cardul Trăgace adaptive revine când efectul se încheie. Zonele merg de la 0 în repaus până la 9 la apăsare completă. Arc, Galop și Mașină nu sunt efecte oficiale DualSense, iar o actualizare de firmware le-ar putea elimina. Controlerele Xbox cu Conversie vibrații trăgace adaptive activată simt efectele vibrante ca vibrații de trăgaci.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} pe {1} timp de {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} pe {1} cât timp este menținut</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} pe {1} până la oprire</value></data>
@@ -4958,7 +5018,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Până la anulare</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Durată</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Păstrează culorile lor</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Acțiunea aprinde aceleași taste pe fiecare tastatură pe care o luminează acest controler virtual, peste culorile date de fila Iluminare. Numerele arată ordinea alegerii. Numărătoarea inversă stinge tastele pe rând, începând cu ultima aleasă, așa că alege de la 1 la 0 pentru un timp de reîncărcare pe rândul de cifre. O tastatură sau un mouse se aprinde doar cât timp este activată opțiunea Controlul iluminării acestui dispozitiv.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Acțiunea aprinde aceleași taste pe fiecare tastatură pe care o luminează acest controler virtual, peste culorile pe care acesta le setează pentru ele în secțiunea Iluminare și audio. Numerele arată ordinea alegerii. Numărătoarea inversă stinge tastele pe rând, începând cu ultima aleasă, așa că alegeți de la 1 la 0 pentru un timp de reîncărcare pe rândul de cifre. O tastatură sau un mouse se aprinde doar cât timp este activată opțiunea Controlul iluminării acestui dispozitiv.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Altele</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, numărul {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Suprapunere ecran</value></data>
@@ -5018,7 +5078,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Punctele de acționare analogică ale tastelor nu au fost preluate.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD a trimis acest controller către alt dispozitiv printr-un adaptor. PadForge îl redă pe acest PC, iar Legătură la distanță îl trimite către alt PC pe care rulează PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge citește două manete, iar aici este numită a treia.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emularea volanului nu a fost preluată. Mapați volanul în fila Mapări.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emularea volanului nu a fost preluată. Mapați volanul în secțiunea Butoane.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Acest profil numește o acțiune specială care lipsește din Actions.xml de lângă dosarul său Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Această setare nu a fost preluată: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD a împiedicat aceste intrări să ajungă în Windows. Activați Blocare intrări mapate pentru {0} în pagina Dispozitive, care le blochează pe cele mapate de acest profil.</value></data>
@@ -5026,8 +5086,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Se confirmă când maneta revine în centru sau când stratul se încheie. Butonul Apply din reWASD nu este folosit.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Acest fișier ține separate două controllere. În PadForge, orice controller de pe slot activează aceste mapări.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Viteza de mișcare sau flick-ul nu au fost preluate.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Acestea nu au fost preluate. Setați-le în fila Touchpad.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nimic din acest fișier nu deschide acest strat. Atribuiți-i un buton în fila Mapări.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Acestea nu au fost preluate. Setați-le în secțiunea Mișcare și atingere.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nimic din acest fișier nu deschide acest strat. În secțiunea Butoane, faceți clic dreapta pe strat și alegeți Configurare activator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Butoanele sale rulează acestea când sunt apăsate: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Comandă rapidă de profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Face ce face o comandă rapidă de profil: încarcă un profil indicat prin nume, pe următorul sau pe cel anterior, afișează sau ascunde fereastra ori dezactivează și reactivează controllerele virtuale.</value></data>
@@ -5197,7 +5257,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Celula selectată se declanșează o dată, ca o atingere scurtă, când „Declanșare” este eliberată. Cu „Ascundere după declanșare” activată, se declanșează de îndată ce „Declanșare” ascunde bara.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>O celulă se declanșează o dată, ca o atingere scurtă, când „Declanșare” ascunde bara cu „Ascundere după declanșare” activată. Cu „Recentrare de fiecare dată” activată, celula din mijloc este cea care se declanșează.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Celula selectată este menținută tot timpul cât bara este afișată. Deplasarea eliberează o celulă și o menține pe următoarea.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Inel radial, Grilă tactilă și Bară rapidă declanșează asocierile celulelor. Tastatură introduce tastele aspectului Windows în uz.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Inel radial, Grilă tactilă și Bară rapidă declanșează acțiunile celulelor lor. Tastatură introduce tastele aspectului Windows în uz.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Aspect</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cum își aranjează tastatura tastele și cum le alege un controler.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>O singură evidențiere, mutată cu un stick sau cu patru intrări, aspectul folosit de Windows, Xbox și Steam.</value></data>
@@ -5304,11 +5364,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Butoanele consolei portabile PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luminile tastelor PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Un macro nu poate apăsa {0}. O mapare din fila Mapări poate.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>O macrocomandă nu poate apăsa {0}. O mapare din secțiunea Butoane poate.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge rulează opt suprapuneri ecran, iar aceasta este al nouălea sau al zecelea reticul din reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge citește Giroscop: ruliu ca stânga și dreapta, iar Giroscop: girație ca înclinare, setarea implicită din reWASD. Preferințele reWASD le pot inversa, iar acest fișier nu spune dacă au fost inversate.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>În modul Tilt, înclinarea din reWASD este o rotire în jurul axei verticale, iar un senzor de mișcare nu dă niciun unghi pentru acea rotire.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge citește o diagonală a touchpadului ca două direcții simultan, lucru pe care touchpadul îl raportează doar când Mod D-pad din fila Touchpad este 8 direcții.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge citește o diagonală a touchpadului ca două direcții simultan, lucru pe care touchpadul îl raportează doar când setarea sa Mod D-pad din secțiunea Mișcare și atingere este 8 direcții.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge citește direcția giroscopului dincolo de un prag, iar reWASD nu dă nicio unitate pentru marginea unei zone de giroscop.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows plasa cursorul acolo unde indică maneta. În PadForge, maneta mișcă în schimb cursorul.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} citește maneta înainte de rotirea ei. DS4Windows o citea după.</value></data>

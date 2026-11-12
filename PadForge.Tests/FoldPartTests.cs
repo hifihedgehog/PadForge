@@ -411,6 +411,27 @@ namespace PadForge.Tests
             Assert.All(shadowed, e => Assert.Equal("Transparent", (string)e.Attribute("Color")));
         }
 
+        /// <summary>A quiet plain button has no fill and no edge while it
+        /// cannot be used, as a quiet button has none. Left to the theme, a
+        /// Bass Shakers tone's Test and the Stop beside the sweep drew a
+        /// box while the shakers were off (2026-11-12). Under the pointer
+        /// and pressed it still has no edge.</summary>
+        [Fact]
+        public void AQuietPlainButton_HasNoFillAndNoEdge_AlsoWhileItCannotBeUsed()
+        {
+            var app = XDocument.Parse(RepoText("PadForge.App", "App.xaml"));
+            var quiet = Assert.Single(app.Descendants(), e => e.Name.LocalName == "Style" && (string)e.Attribute(Xaml + "Key") == "QuietPlainButton");
+            Assert.Equal("{StaticResource DefaultButtonStyle}", (string)quiet.Attribute("BasedOn"));
+            string Setter(string property) => (string)Assert.Single(quiet.Elements(),
+                e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property).Attribute("Value");
+            Assert.Equal("Transparent", Setter("Background"));
+            Assert.Equal("Transparent", Setter("BorderBrush"));
+            var shadowed = quiet.Elements().Single(e => e.Name.LocalName == "Style.Resources").Elements().ToList();
+            Assert.Equal(new[] { "ButtonBorderBrushPointerOver", "ButtonBorderBrushPressed", "ButtonBackgroundDisabled", "ButtonBorderBrushDisabled" },
+                shadowed.Select(e => (string)e.Attribute(Xaml + "Key")));
+            Assert.All(shadowed, e => Assert.Equal("Transparent", (string)e.Attribute("Color")));
+        }
+
         /// <summary>A reset button rests with no ring and a dim glyph, and
         /// takes both back under the pointer or keyboard focus. Every reset
         /// style in the app is based on that one style.</summary>

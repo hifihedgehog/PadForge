@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopieer</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Plak</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliseer</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Hernoem</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aangeskakel</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Afgeskakel</value></data>
   <data name="Common_On" xml:space="preserve"><value>Aan</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Toestel</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Aangedryf deur</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Voeg toestel by</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Prent</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lys</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Uitsette: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Beweging</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik op 'n kontrole en druk dan die invoer wat dit moet aandryf.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klik op 'n sleutel of 'n muisknoppie en druk dan die invoer wat dit moet aandryf.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klik op 'n noot of 'n skuifbalk en druk dan die invoer wat dit moet aandryf.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“Wys alles toe” slaan die aanrakingsuitsette van A en B oor. Klik op die ring rondom A of B om een toe te wys.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Luister tans vir {0}. Druk die invoer op jou toestel.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, aangedryf deur</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Meer opsies</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Minder opsies</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Aksieknoppie</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Skouerknoppie</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Stelselknoppie</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Knoppie</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Rigtingpad</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stokkie</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Sneller</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Raakplaat</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Bewegingsensor</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Sleutelbordsleutel</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Muisknoppie</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Muisbeweging</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rolwiel</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Beheerverandering</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Raaksensor</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analoë trek</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, linkerhand</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, regterhand</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Watter druk speletjies sien wanneer albei knoppies van 'n paar vasgehou word</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Watter druk speletjies sien wanneer albei sleutels van 'n paar vasgehou word</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hou 'n klein stokkie-uitwyking vas sodat speletjies controller-aanwysings bly wys</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smee</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Kies links 'n makro, of druk Voeg by om een te skep.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Kies 'n makro in die lys, of druk + langs Makro's om een te skep.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>UIT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-snellers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-snellers</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Versterking per sneller, motorverwisseling, aanpasbare-snellervibrasies</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Versterking per sneller, motorruil, aanpasbare-snellervibrasies, Konstante snellerkrag</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Stuur motorbevele per sneller (Xbox Impulse Triggers) vanaf die virtuele controller aan na die toegewysde fisiese Xbox One-, Elite- of Series-controller. Snellervibrasie wat deur speletjies aangedryf word, word outomaties deurgegee. Die kontroles hieronder skaal die sterkte per sneller.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linkersneller</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Regtersneller</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stokkies</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Dooisones, anti-dooisones, sensitiwiteitskurwes en middelverskuiwing-kalibrasie per stokkie. Elke afdeling hieronder geld vir een analoogstokkie op die aktiewe uitvoer. Uitgebreide profiele kan tot vier stokkies hê. Standaard gamepads het twee.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Snellers</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Dooisones, anti-dooisones, maksimumreeks-skalering en sensitiwiteitskurwes per sneller. Elke afdeling hieronder geld vir een snellerás op die aktiewe uitvoer. Uitgebreide profiele kan tot agt asse beskikbaar stel wat met die Stokkies-oortjie gedeel word.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Dooisones, anti-dooisones, maksimumreeks-skalering en sensitiwiteitskurwes per sneller. Elke snellerkaart geld vir een snellerás op die aktiewe uitvoer. Uitgebreide profiele kan tot agt asse beskikbaar stel, gedeel tussen stokkies en snellers.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Kragterugvoer</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Stel in hoe PadForge kragterugvoer-gebeure van die speletjie skaal en hoe dit dit na die fisiese controller se vibrasiemotors of haptiese aktueerders roeteer. Oudiovibrasie voeg 'n laag by wat deur stelseloudio aangedryf word.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Hierdie toestel</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hele controller</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrasie speel op {0} as haptiese pulse, direk na die toestel gestuur. Sterker vibrasie kies 'n sterker puls en herhaal dit vinniger.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptiese terugvoer is vir {0} in Logi Options+ afgeskakel, so dit speel niks totdat jy dit daar weer aanskakel nie.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Hierdie toestel het nog nie geantwoord nie. Sy vibrasie speel sodra dit wakker word.</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, muismatte en luidsprekers</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ligbalk</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Speletjies neem oor wanneer hulle beligting skryf.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Voer 'n sessyfer-hex-kleur in (RRGGBB of #RRGGBB) en druk Enter of klik weg om toe te pas.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Verwyder hierdie kleur uit die palet</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Stel oudiovibrasie terug</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Stel {0} terug</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Vee toewysings uit</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Elke toewysing op hierdie oortjie sal uitgevee word. Brontoewysings, ekstra bronne en kombineerinstellings word teruggestel na verstekke.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Elke toewysing op hierdie laag sal uitgevee word. Brontoewysings, ekstra bronne en kombineerinstellings word teruggestel na verstekke.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spelerpatroon</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Demp-LED-modus</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-helderheid</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV's</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knoppies</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ingevoerde profiele…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Uitgebreide controller</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Bestuur gebruiker-ingevoerde HIDMaestro-profiele: vang 'n nuwe een vas vanaf 'n gekoppelde toestel, voer 'n bestaande een na JSON uit, of vee een uit wat jy nie meer nodig het nie.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Kloon toestel 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Wys elke as, knoppie en hoedskakelaar op die gekose toestel reguit na dieselfde genommerde virtuele uitvoer. Pas die uitleg by die toestel aan en vervang hierdie toestel se rye op die gleuf met 'n 1:1-deurlating.</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Kragterugvoer</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanaal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI-uitvoer</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-kanaal (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-getal</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Aantal CC-uitsette (maksimum hang af van Start-CC)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwyder hierdie sleutelpaar.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Eerste sleutel van die teenoorgestelde paar.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Tweede sleutel van die teenoorgestelde paar.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelyktydige teenoorgestelde hoofrigtings (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Hou controller wakker</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Sommige speletjies stop vibrasie en wissel hul knoppie-aanwysings sodra hulle muis- of sleutelbordinvoer sien. 'n Klein vasgehoue stokkie-uitwyking laat die speletjie hierdie controller as die aktiewe toestel bly beskou. Die vashouding is net aktief solank albei asse van daardie stokkie onder die vasgehoue vlak is, sodat 'n dryfende stokkie steeds as rustend tel. Invoer verby die vlak op enige as laat dit los en gaan onveranderd deur. Hou die uitwyking onder die speletjie se eie dooisone sodat niks in die speletjie beweeg nie.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Hou wakker</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Stel klik terug</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Stel padhelfte terug</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Stel aktiveringsmodus terug</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Stel selle terug</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Stel aktiveringsdooisone terug</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Stel kieslysgeometrie terug</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Stel sel terug</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Vee alles uit</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsies</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>As-na-knoppie-dooisone</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Keer om</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Wanneer gemerk, keer die as by loslating terug na die middel. Wanneer nie gemerk nie, behou dit sy laaste posisie.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Knoppie wat die ry se afvoer omkeer solank dit vasgehou word</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Wysiger: solank dit vasgehou word, keer die ry se afvoer van teken om.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Voeg bron by</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Voeg bron by</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Voeg nog 'n fisiese invoer by hierdie ry</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Verwyder hierdie bron</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Pasgemaak</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibreer middel</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Middelpunt</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Middel</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dooisone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Middelpuntverskuiwings, dooisonevorm en waardes per as, 'n kurwe vir elke as, reeks, stuur</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Reeks</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibreer grens is die aanbevole manier om 'n stokkie reg te stel. Dit tas die rand af wat die stokkie fisies kan bereik en herskaal dan elke posisie proporsioneel teen daardie gemete rand, sodat die volle natuurlike beweging, by elke hoek en elke uitwyking, sonder afknipping op 'n ideale sirkel afgebeeld word. Die vier skuifies hieronder begrens net die hoofasse. Gebruik hulle om die reeks doelbewus te beperk, nie om dit reg te stel nie.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibreer grens meet die rand wat die stokkie kan bereik en vorm dit om tot 'n volle sirkel. Die vier skuifies begrens net elke rigting.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Meet tans...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middelverskuiwing X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middelverskuiwing Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Naam</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Sneller</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Wanneer</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Aktiveer</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Met druk</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Met loslaat</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Aan watter skuiflaag hierdie makro behoort. Enige laag aktiveer ongeag die aktiewe laag. Basis- en benoemde lae aktiveer net solank daardie laag aktief is, presies soos 'n toewysingsry.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Enige laag</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Loop aaneenlopend solank hierdie virtuele controller aktief is. Geen snellerknoppie nodig nie.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Aksiereeks</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Doen</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Laag, Bron, Drempel, Rigting, Verbruik snellerknoppies, Herhaal</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Voeg aksie by</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Wysig aksie</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipe</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuele knoppies</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuele asse &amp; stuurwiel</value></data>
@@ -1521,11 +1555,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Knoppie {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Druk {0} vir {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Druk {0} vir {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Los {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Sleutels {0} vir {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Sleutels {0} vir {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Los sleutels {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wag {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wag {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Stel {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Stelselvolume ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Stelselvolume ← {0} (maks {1}%)</value></data>
@@ -1537,15 +1571,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muis los {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Wissel raakplaat-overlay</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Stel ligbalkkleur</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Oorheers die toegewysde PlayStation-gleuf se ligbalk met 'n gekose RGB-kleur. Reaktief vervaag van volle intensiteit na swart oor die ingestelde vervalvenster en gee dan terug aan die instellings van die Beligting-oortjie. Klewerig hou die kleur vas totdat 'n Vee ligbalkoorheersing uit-aksie loop. Skryfhandelinge deur die speletjie behou steeds voorrang bo die oorheersing.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Flits ligbalk {0} (verval {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Oorheers die toegewysde PlayStation-gleuf se ligbalk met 'n gekose RGB-kleur. Reaktief vervaag van volle intensiteit na swart oor die ingestelde vervalvenster en gee dan terug aan die instellings van die Ligbalk-kaart. Klewerig hou die kleur vas totdat 'n Vee ligbalkoorheersing uit-aksie loop. Skryfhandelinge deur die speletjie behou steeds voorrang bo die oorheersing.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Flits ligbalk {0} (verval {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hou ligbalk {0} tot dit uitgevee word</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Vee ligbalkoorheersing uit</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Vee ligbalkoorheersing uit</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Gee enige aktiewe ligbalkoorheersing op die toegewysde gleuf vry. Kombineer met 'n klewerige Stel ligbalkkleur-aksie om dit via 'n ander makro ongedaan te maak.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Stel ligbalkmodus</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Stel ligbalkmodus na {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stel die toegewysde gleuf se ligbalkmodus na 'n spesifieke waarde. Bly bestaan soos 'n wysiging in die Beligting-oortjie totdat 'n ander aksie of die gebruiker dit verander.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stel die toegewysde gleuf se ligbalkmodus na 'n spesifieke waarde. Bly bestaan soos 'n wysiging op die Ligbalk-kaart totdat 'n ander aksie of die gebruiker dit verander.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Wissel deur ligbalkmodusse</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Wissel deur {0} ligbalkmodusse</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Skuif die gleuf se ligbalkmodus deur die modusse wat hieronder gekies is. Elke aktivering gaan na die volgende gemerkte modus. Die siklusposisie is per aksie en word teruggestel wanneer die program herbegin.</value></data>
@@ -1560,14 +1594,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Verval</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Vervaag</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>'n Leë palet gebruik die gleuf se eie Beligting-oortjie-palet.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>'n Leë palet gebruik die palet op die gleuf se Ligbalk-kaart.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies deur watter ligbalkmodusse die makro moet wissel. Elke aktivering gaan na die volgende gemerkte modus.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibrasie</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Dryf die gleuf se fisiese toestelvibrasie vanuit 'n makro aan. Reaktief loop teen volle sterkte vir die houvenster en vervaag dan oor die vervaagvenster na nul. Klewerig hou teen volle sterkte totdat 'n Stop vibrasie-aksie loop. Word via max() oor speletjiegedrewe vibrasie gelê sodat gebruikergedrewe terugvoer altyd gevoel word.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibrasiepuls {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibrasiepuls {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Hou vibrasie {0} tot dit uitgevee word</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop vibrasie</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop vibrasie</value></data>
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Stop snellervibrasie</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Gee enige aktiewe makro-snellervibrasie op die gleuf vry. Kombineer met 'n klewerige Oorheers snellervibrasie om die hou vanuit 'n makro te beëindig.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Stel giro-aktivering</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stel die gleuf se giro-aktiveringstoestand vanuit 'n makro. Wissel draai die huidige toestand om. Aan dwing giro-aktivering af. Af dwing deaktivering af. Onafhanklik van die aktiveringsknoppie van die Giro-oortjie. Die twee bronne word met OF gekombineer, sodat nie een kan uitskakel wat die ander geaktiveer het nie.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Stel die gleuf se giro-aktiveringstoestand vanuit 'n makro. Wissel draai die huidige toestand om. Aan dwing giro-aktivering af. Af dwing deaktivering af. Onafhanklik van die Mik-aktiveerknoppie onder Beweging en raak. Die twee bronne word met OF gekombineer, sodat nie een kan uitskakel wat die ander geaktiveer het nie.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Wissel</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aan</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Raakplaat</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Raakplaat</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per raakplaat. Gebare (veegbewegings, tikke, knyp, vorms) en deurlopende uitsetmodusse (virtuele stokkie / D-pad, muis) word toewysingsbronne wat jy op die Toewysings-oortjie kan bind.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per raakplaat. Gebare (veegbewegings, tikke, knyp, vorms) en deurlopende uitsetmodusse (virtuele stokkie / D-pad, muis) word toewysingsbronne wat jy aan enige uitset kan bind.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Raakplaat</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Raakplaatnommer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Op watter raakplaat van hierdie controller die instellings hieronder van toepassing is. Elke raakplaat hou sy eie gebare, muisgevoel en wyserarea.</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stel in hoe hierdie controller se bewegingsensor muis- en stokkie-uitset aandryf. Kalibreer op 'n plat oppervlak om rusdrywing na nul te stel, en stel dan sensitiwiteit, gladmaking en aktiveringsreëls na smaak in.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasie</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Lewendige giro- en versnellingsmeterlesings</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiwiteit</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenhede, Ruimte, keer asse om, Werklikheidskalibrasie</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenhede, keer asse om, Werklikheidskalibrasie</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per omwenteling</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reaksievorm</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dooisone, gladmaking, Versnelling, Uitsetkurwe</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Verwysingsraam</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokaal, Speler of Wêreld</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruimte</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Hoe giro-beweging vertolk word. Lokaal gebruik die rou controller-asse. Speler projekteer horisontale beweging op die werklike vertikaal (swaartekrag) sodat dieselfde polsdraai altyd die kamera draai, ongeag hoe jy die controller hou. Wêreld projekteer bykomend vertikale beweging op wêreldasse.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Vasgehou as</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Regop</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Greep</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Hoe die controller gehou word. Draai die giro, die versnellingsmeter en swaartekrag saam, vir toewysings en vir die beweging wat die virtuele controller rapporteer. Die D-pad volg dieselfde raam, so Op is op in die greep.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Hoe die controller gehou word</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineêr</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressief</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Soepel</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Stel aktiveerrigting terug</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdeurlating</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Pas giro-instelling toe op bewegingsdeurlating</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Voer hierdie oortjie se opsionele giro-instelling (dooisone, sensitiwiteit, gladmaking, reaksiekurwe, keer om) uit op die beweging wat die virtuele controller aan die speletjie of emulator rapporteer. Skakel dit af om slegs die gekalibreerde lesing te stuur en die speletjie sy eie sensitiwiteit en gladmaking te laat toepas. Kalibrasie-dryfregstelling geld in elk geval altyd.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Voer die Giro-kaarte se opsionele instelling (dooisone, sensitiwiteit, gladmaking, reaksiekurwe, keer om) uit op die beweging wat die virtuele controller aan die speletjie of emulator rapporteer. Skakel dit af om slegs die gekalibreerde lesing te stuur en die speletjie sy eie sensitiwiteit en gladmaking te laat toepas. Kalibrasie-dryfregstelling geld in elk geval altyd.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Stel deurlatinginstelling terug</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Giro-sensitiwiteitsvermenigvuldiger per bron. 1.0 = die enjin se verstek (500°/s → volle uitwyking). Waardes bo 1.0 is sensitiewer. Waardes onder 1.0 is minder sensitief.</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Stel volle kantelreeks terug</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Stel kanteling-dooisone terug</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Stel giro-kanteling terug</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hoe hierdie ry se bronne saamsmelt wanneer meer as een aktief is. Kies die ry om dit in die detailstrook hieronder te verander.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hoe hierdie ry se bronne saamsmelt wanneer meer as een aktief is. Maak die ry oop om dit onder Kombineer te verander.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-modus: gooi die stokkie en los, en die wyser beweeg voort en loop uit tot stilstand. Beweeg die stokkie weer om dit te vang.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Hoe ver die wyser ná 'n gooi uitloop. Heel bo in die reeks gaan dit voort totdat jy die stokkie weer beweeg.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Snellerias</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Versterking per motor, snellervibrasie, motorverwisseling</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Versterking per motor, snellervibrasie, Stuurhoekvibrasie, Konstante krag</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Algehele versterking</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Regtermotor</value></data>
@@ -2312,6 +2351,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Hierdie controller het geen snellermotors nie, so speletjies wat Xbox-impulssnellers gebruik, sou nie gevoel word nie. Vou eerder elke snellerkanaal in die hoofmotor aan dieselfde kant in.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Toets vibrasie</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktiwiteit</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Linker</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Regter</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Pas 'n deurlopende krag op hierdie toestel toe totdat jy dit afskakel. Krag wat deur 'n speletjie gestuur word, van enige bron, geniet voorrang terwyl dit aktief is en hervat wanneer die speletjie stop.</value></data>
@@ -2370,6 +2411,7 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Druk knoppies of beweeg 'n as/sneller om op te neem. Asse word opgespoor wanneer hulle verder as 50% uitgewyk word.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Voeg by uit lys</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Maak sneller skoon</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Verwyder invoer</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Druk enige invoer…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>omgekeer</value></data>
@@ -2571,7 +2613,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekondes voordat 'n virtuele controller vernietig word wanneer al sy toegewysde toestelle vanlyn is. 0 skakel dit af. Oorblywende controllers van dieselfde tipe skuif op om die gaping te vul en bind weer aan laer gleuwe.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekondes (0 = nooit)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift-laag</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Voeg laag by</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Voeg 'n Shift-laag by. 'n Tweede toewysingstabel wat aktief is terwyl 'n knoppie gehou of gewissel word.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
@@ -2672,7 +2714,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegingstuur</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° tot {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Leun-dooisones, Controller-oriëntasie</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellings vir die Motion Lean-invoer: kantel die controller soos 'n stuurwiel. Wys "Motion Lean" toe aan 'n stokkie-as vanaf die invoer-aftreklys in Toewysings.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellings vir die Beweging-leun-invoer: kantel die controller soos 'n stuurwiel. Wys "Beweging-leun" toe aan 'n stokkie-as onder Knoppies.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Stel bewegingstuur terug</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (regterstokkie)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linkerstokkie)</value></data>
@@ -2681,7 +2723,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Regterstokkie-ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Instellings vir die Flick Stick-invoere</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Instellings vir die Flick Stick-invoere: rig die stokkie en die kamera draai om te pas, veeg langs die rand om fyn te draai. Wys "Flick Stick (regterstokkie)" toe aan muis X vanaf die invoer-aftreklys in Toewysings, op enige laag.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Instellings vir die Flick Stick-invoere: rig die stokkie en die kamera draai om te pas, veeg langs die rand om fyn te draai. Wys "Flick Stick (regterstokkie)" toe aan muis X onder Sleutels en muis, op enige laag.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Stel Flick Stick terug</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Tellings per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Muistellings vir een volle 360°-kamerabeurt. Hang af van die speletjie se muissensitiwiteit: verhoog dit as 'n flick te min draai, verlaag dit as dit te ver draai.</value></data>
@@ -2773,7 +2815,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Oudio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroklanke en gespieëlde stelseloudio speel deur die gekose controller se ingeboude luidspreker, oor USB of Bluetooth. Kies die toestel in die aftreklys hierbo. Elke instelling hier volg dit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Klankuitvoer</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spieëlbron, haptiese terugvoer, Oorfoonvolume, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spieëlbron, Oorfoonvolume, buffer, Uitvoerpad</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Klanke word outomaties na die gekose controller gestuur. Oor USB word die controller se eie oudio-eindpunt volgens hardewarehouer gepas. Oor Bluetooth word die oudio in Sony HID-rame gestroom.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spieëlbron</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Watter afspeeltoestel na die controller se luidspreker gespieël moet word. Speletjies wat spesifieke klanke na 'n aparte afspeeltoestel stuur, kan hierdie een teiken.</value></data>
@@ -2786,10 +2828,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Stop alle klanke</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Stop elke makroklank op hierdie controller</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Klankmakro's</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Klanke word deur makro's gespeel: 'n sneller (knoppie-druk, los, hou of formule) plus 'n Speel klank-aksie. Bou dit hier of op die Makro's-oortjie. Vertragings, herhalings en wissels werk almal.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Klanke word deur makro's gespeel: 'n sneller (knoppie-druk, los, hou of formule) plus 'n Speel klank-aksie. Bou dit hier of onder Makro's en kieslyste. Vertragings, herhalings en wissels werk almal.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nuwe klankmakro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Nog geen klankmakro's nie. Skep een en kies 'n klanklêer en 'n sneller.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Maak hierdie makro oop op die Makro's-oortjie</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Maak hierdie makro oop onder Makro's en kieslyste</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Klankmakro {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Speel klank</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Speel 'n klanklêer (.wav, .mp3, .m4a, .aac, .wma, .flac) op hierdie controller se uitvoertoestel</value></data>
@@ -3064,6 +3106,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Aktief</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Aktief, drywer gekoppel</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Aktief, controllers in gebruik</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR geïnstalleer</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR nie geïnstalleer nie</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR aktief</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR aktief, drywer gekoppel</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR aktief, controllers in gebruik</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Nog 'n OpenVR-drywer gebruik HIDMaestro se drywernaam, so SteamVR kan dit laai in die plek van PadForge s'n en die virtuele VR-controllers sal nie verskyn nie. Verwyder daardie drywer om dit op te los: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Seriële controller (COM-poort)</value></data>
@@ -3207,7 +3254,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Verbruiker {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Muis</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Muisgebare</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hou die gebaarknoppie vas, beweeg die muis, en een aksie vuur wanneer jy los: links, regs, op, af, of ’n gewone klik onder die bewegingsafstand. Wys die vyf gebare op die Toewysings-oortjie toe of gebruik hulle as makro-snellers.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hou die gebaarknoppie vas, beweeg die muis, en een aksie vuur wanneer jy los: links, regs, op, af, of ’n gewone klik onder die bewegingsafstand. Wys die vyf gebare aan enige uitset toe of gebruik hulle as makro-snellers.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Skakel muisgebare aan</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Aktiveer die gebaarherkenner vir hierdie muis op hierdie gleuf. Die gebaarknoppie behou sy gewone klik tydens die gebaar, so kies ’n sykoppie wat jy andersins nie toewys nie.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gebaarknoppies</value></data>
@@ -3241,7 +3288,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Wissel laag</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Stel Chroma-kleur</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Verf die Razer-toestelle wat aan hierdie virtuele controller toegewys is, en elke ander Razer-toestel van hul soort, in een kleur terwyl die aksie loop.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Vir die tydsduur hierbo verf dit hierdie kleur op die Razer-toestelle wat aan hierdie virtuele controller toegewys is en op elke ander Razer-toestel van hul soort, of op elke Razer-toestel wanneer die Razer Chroma-ry toegewys is. Dit oorheers enige virtuele controller se Beligting-oortjie, en gee dan die beligting terug. Om die kleur te hou solank die sneller vasgehou word, gebruik Terwyl vasgehou met Tot los. Wanneer twee makro’s gelyk verf, wen die een laer in die lys, so plaas ’n volledige-druk-makro onder sy sagte-druk-tweeling. Wanneer makro’s op twee virtuele controllers dieselfde soort Razer-toestel verf, wen die kleiner spelernommer. Vereis dat Razer Synapse loop.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Vir die tydsduur hierbo verf dit hierdie kleur op die Razer-toestelle wat aan hierdie virtuele controller toegewys is en op elke ander Razer-toestel van hul soort, of op elke Razer-toestel wanneer die Razer Chroma-ry toegewys is. Dit oorheers die beligting wat enige virtuele controller onder Beligting en oudio stel, en gee dan die beligting terug. Om die kleur te hou solank die sneller vasgehou word, gebruik Terwyl vasgehou met Tot los. Wanneer twee makro’s gelyk verf, wen die een laer in die lys, so plaas ’n volledige-druk-makro onder sy sagte-druk-tweeling. Wanneer makro’s op twee virtuele controllers dieselfde soort Razer-toestel verf, wen die kleiner spelernommer. Vereis dat Razer Synapse loop.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Wys Dreamcast-skerm</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Speel prentjies op die VMU van elke Dreamcast-pad in ’n Bliss-Box-poort wat hierdie gleuf voed, en stel dan elke poort terug na sy eie skerminstelling.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Wys Dreamcast-prentjies: {0} × {1} ms, herhaaltelling {2}</value></data>
@@ -3535,10 +3582,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Stel die pad se opgehoopte giro-rigverwysings by druk op nul. Gladmaakgeskiedenis word uitgevee, die Beweging Leun-neutraal word weer vasgelê, die swaartekragskatting word weer gesaai uit die controller se huidige houding, en die draai wat die rye Beweging Pitch, Yaw en Roll opgebou het, word ongedaan gemaak.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Enige toestel)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Kieslyste</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Kieslyste verander ’n fisiese stokkie of raakplaat in ’n ring of rooster op die skerm. Voeg ’n kieslys by, kies wat dit oopmaak, en gee dan elke sel ’n etiket en ’n toewysing.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Kieslyste verander ’n fisiese stokkie of raakplaat in ’n ring of rooster op die skerm. Druk + langs Kieslyste om een te skep, kies wat dit oopmaak, en gee dan elke sel ’n naam en ’n aksie.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Nuwe kieslys</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Kieslys {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Kieslysnaam</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aangeskakel</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Oopmaak</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Styl</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radiale ring</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Raakrooster</value></data>
@@ -3558,12 +3607,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Selle</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Middelsel</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Wys etikette</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Skermposisie</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Grootte</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Deursigtigheid</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Aktiveringsdooisone</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Seltoewysings</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Sel {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Voeg sel by</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Verwyder laaste sel</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Wysig sel</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Naam</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksie</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikoon</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Middel</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Sleutelbordsleutel</value></data>
@@ -3576,7 +3629,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Vuur een keer wanneer die klik los: wys na die sel, klik die stokkie of raakplaat in, en laat dan die klik gaan.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Vuur een keer wanneer jy los: lig jou vinger van die pad af, of laat die stokkie terugspring na die middel terwyl ’n sel gemerk is.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Die toewysing word vasgehou solank die sel gemerk is. Geen klik nodig nie.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Hoeveel selle die kieslys het. By ’n radiale ring tel dit net die ring; die middelsel is apart.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Voeg ’n middelsel by, gekies solank die stokkie of vinger binne die aktiveringsdooisone rus.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Vir stokkies, hoe ver om te druk voordat die kieslys oopgaan en ringselle oplig. By radiale kieslyste is dit ook die middelstreek vir beide stokkies en raakplate: daarbinne is die middelsel gekies as een bestaan.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Teken elke sel se etiket op die skermoverlay.</value></data>
@@ -3586,8 +3638,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlay-grootte, in persent van sy normale grootte.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay-deursigtigheid. 100% is heeltemal vas.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Teks wat op hierdie sel in die overlay gewys word.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat hierdie sel doen wanneer dit vuur: "Sleutelbordsleutel" druk ’n sleutelbordsleutel, "Controller-knoppie" druk ’n knoppie op hierdie gleuf se virtuele controller. ’n Sel op "Geen" vuur steeds as kieslysitembron vir Toewysings-rye en makro-snellers.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Gelees van die fisiese controllers wat aan hierdie gleuf toegewys is, nie van die virtuele controller se uitleg nie. Die seltoewysings hieronder is wat die kieslys uitvoer.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat hierdie sel doen wanneer dit vuur: "Sleutelbordsleutel" druk ’n sleutelbordsleutel, "Controller-knoppie" druk ’n knoppie op hierdie gleuf se virtuele controller. ’n Sel op "Geen" vuur steeds as kieslysitembron vir toewysings en makro-snellers.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Gelees van die fisiese controllers wat aan hierdie gleuf toegewys is, nie van die virtuele controller se uitleg nie. Die selle hieronder bepaal wat die kieslys uitvoer.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Pasgemaakte asse</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Stuur X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Stuur Y</value></data>
@@ -3612,13 +3664,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knoppies</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Sleutels en muis</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note en kontroles</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Hande</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stokkies en snellers</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrasie en haptiese terugvoer</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Beweging en raak</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Beligting en oudio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro's en kieslyste</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuur die spelvibrasie en kragterugvoer wat hierdie virtuele controller ontvang as laagfrekwensie-tone na ’n oudio-uitvoer vir bass shakers en subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Speel spelvibrasie as lae tone deur bass shakers of ’n subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Uitvoertoestel, kanale, versterking, 'n toon vir elke motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werk met virtuele Xbox-, DualShock 3-, DualShock 4 / DualSense- en Nintendo Switch Pro-controllers, plus Uitgebreide virtuele controllers met kragterugvoer, soos wedrenstuurwiele, en die Steam Deck Controller (Composite). Spelterugvoer en Toets vibrasie speel deur die oudio-uitvoer. Makrovibrasie bly op die controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Stel vibrasie na oudio terug</value></data>
@@ -3647,19 +3702,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Speel hierdie terugvoerkanaal as ’n toon. Versterking en frekwensie bly gestel terwyl dit af is.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Toonfrekwensie vir hierdie kanaal, 20 tot 120 Hz. Voer die frekwensieveeg uit om te vind waar jou shaker die sterkste reageer.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Luidheid van hierdie kanaal voor die hoofversterking.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Versterking</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Toets</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Speel hierdie kanaal se toon 1.5 sekondes lank teen sy ingestelde versterking.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Stel lae motor terug</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Stel hoë motor terug</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Stel linkersneller terug</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Stel regtersneller terug</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Toets die shakers</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frekwensieveeg</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Veeg 'n toon oor agt sekondes van 20 tot 120 Hz deur die lae-motorroete. Let op waar jou shaker die sterkste reageer en stel die stemfrekwensies daar.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stop</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stop die toetstoon of veeg.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Enige NFC-etiket</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-etiket: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtreer insette (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtreer uitsette en insette</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Wys net die rye en insette wat ooreenstem. Druk Ctrl+F om hier te tik.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Kies watter toestelle se insette die kiesers aanbied</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Gewys in die kieser</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Enige spraakfrase</value></data>
@@ -3753,6 +3811,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Stel voeding terug</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametriese EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Per-band-filters oor die controller-oudio. Toegepas voordat die oudio geënkodeer word, so die begrenser hieronder keer dat 'n versterkte band vervorm.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Voorversterker, bande, invoer</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Voorversterker</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Algehele vlak voor die bande. AutoEq-profiele bevat 'n negatiewe voorversterker sodat hul versterkings nie vervorm nie, en deur een in te voer word dit vir jou gestel.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aan</value></data>
@@ -3948,7 +4007,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Stel terug na oopmaak by aanraking of uitwyking.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Stuur met</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Die fisiese invoer wat die uitgeligte sel stuur terwyl die laag hierdie kieslys oophou.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Gelees vanaf die fisiese controllers wat aan hierdie gleuf toegewys is. Die laag open die kieslys, hierdie invoer stuur dit. Seltoewysings bepaal sy uitvoer.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Gelees vanaf die fisiese controllers wat aan hierdie gleuf toegewys is. Die laag open die kieslys, en hierdie invoer stuur dit. Sy selle bepaal wat dit uitvoer.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ikoongrootte</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Ikoongrootte relatief tot die kieslys se normale ikoongrootte, van 25% tot 200%. As die ikoon uitgevee word, word dit na 100% teruggestel.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Hou die uitgeligte sel se toewysing vas terwyl die Klik-invoer vasgehou word. 'n Uitgeligte radiale middelpunt kan afgaan terwyl die stokkie rus.</value></data>
@@ -4066,7 +4125,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="About_KaldiDesc" xml:space="preserve"><value>Die spraakdekodeerder, transducer-biblioteek en lineêre algebra binne libvosk.dll. Kaldi en OpenFst: Apache-2.0. OpenBLAS en CLAPACK: BSD 3-Clause, met aparte kennisgewings vir GotoBLAS2 binne OpenBLAS en vir die f2c-looptyd.</value></data>
   <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Uitlegte vir die strategie- en werkskerm-beginprofiele, en die turbo-gedrag wat die drukgeskaleerde turbo vermy. GPL-3.0-or-later, slegs as dokumentasie gelees, geen GPL-kode word gelewer nie.</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Verwysing deur Antoine Aflalo vir die uitleg van Windows se ongedokumenteerde IPolicyConfig-koppelvlak, wat PadForge gebruik om 'n controller se oudio-eindpunt weer te aktiveer. MIT. Slegs dokumentasie, geen kode word gelewer nie.</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Die parametriese EQ-profielformaat wat die Oudio-oortjie invoer, deur Jaakko Pasanen. MIT. Slegs dokumentasie, geen kode word gelewer nie.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Die parametriese EQ-profielformaat wat 'n controller se Parametriese EQ invoer, deur Jaakko Pasanen. MIT. Slegs dokumentasie, geen kode word gelewer nie.</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-tegnieke agter Teksblok-makro's en die sleutelbordakkoordhaak: Unicode-tik, bondelbeperkings, die Win-sleutel se maskeersleutel, en gemerkte ingespuitde invoer. GPL-2.0-or-later, slegs as dokumentasie gelees, geen GPL-kode word gelewer nie.</value></data>
   <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU-protokolverwysing agter die bewegingsbediener, deur v1993. Unlicense.</value></data>
   <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 Bluetooth-uitvoerverslagraamwerk, deur Christopher Rosell. MIT.</value></data>
@@ -4240,6 +4299,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Rigting</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Stap</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>tot</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Handvatsel</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} stel hierdie controller se snellers.</value></data>
@@ -4284,7 +4344,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Die handvatsel het nie ver genoeg beweeg nie, so die reikwydte bly soos dit was. Beweeg dit na elke rand terwyl die meting loop.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Die Falcon het toegemaak voordat die meting klaar was.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Speel speletjies met 'n Novint Falcon deur Force Dimension se SDK, wat jy by Force Dimension installeer. Die handvatsel is 'n stokkie, die greep se vier knoppies is knoppies, en PadForge sit die speletjie se vibrasie en effekte as krag op die handvatsel. Elke gleuf se Kragterugvoer-oortjie stel hoe die Falcon voel.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Speel speletjies met 'n Novint Falcon deur Force Dimension se SDK, wat jy by Force Dimension installeer. Die handvatsel is 'n stokkie, die greep se vier knoppies is knoppies, en PadForge sit die speletjie se vibrasie en effekte as krag op die handvatsel. Die Novint Falcon-kaart onder elke controller se Vibrasie en haptiese terugvoer stel hoe die Falcon voel.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Bestuur Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Maak elke Falcon oop deur Force Dimension se dhd64.dll. 'n Oop Falcon behoort aan PadForge alleen, so FalconJoyForce en Force Dimension se nutsprogramme kan dit nie oopmaak terwyl dit aan is nie. Wanneer dit af is, maak PadForge elke Falcon toe.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-biblioteek gestel op {0}. PadForge laai dit binne 'n paar sekondes, en 'n Falcon wat op 'n ander kopie oop is, maak weer oop op hierdie een.</value></data>
@@ -4452,7 +4512,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Vir 'n vasgestelde tyd</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Totdat dit gestop word</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Tyd</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Speel op elke DualSense en DualSense Edge op hierdie gleuf. 'n Speletjie se eie snellereffek en 'n speletjie-mod s'n kry voorrang, en die instelling van die Aanpasbare snellers-oortjie keer terug wanneer die effek eindig. Sones loop van 0 in rus tot 9 by vol trek. Boog, Galop en Masjien is nie amptelike DualSense-effekte nie, en 'n firmware-opdatering kan hulle verwyder. Xbox-controllers met Vertaal aanpasbare-snellervibrasies aan voel die vibrerende effekte as snellervibrasie.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Speel op elke DualSense en DualSense Edge op hierdie gleuf. 'n Speletjie se eie snellereffek en 'n speletjie-mod s'n kry voorrang, en die instelling van die Aanpasbare snellers-kaart keer terug wanneer die effek eindig. Sones loop van 0 in rus tot 9 by vol trek. Boog, Galop en Masjien is nie amptelike DualSense-effekte nie, en 'n firmware-opdatering kan hulle verwyder. Xbox-controllers met Vertaal aanpasbare-snellervibrasies aan voel die vibrerende effekte as snellervibrasie.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} op {1} vir {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} op {1} terwyl dit gehou word</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} op {1} totdat dit gestop word</value></data>

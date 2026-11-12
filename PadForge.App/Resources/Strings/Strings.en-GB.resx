@@ -231,6 +231,8 @@
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Use A but if A is at rest, fall back to B</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibrate Centre</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centre Point</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Centre</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analogue pull</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Centre offsets, deadzone shape and per-axis values, a curve for each axis, range, steering</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Centre Offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Centre Offset Y</value></data>
@@ -474,7 +476,6 @@
   <data name="Menu_HasCenter" xml:space="preserve"><value>Centre Cell</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Centre</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Fires once when you let go: lift your finger off the pad, or let the stick snap back to centre while a cell is highlighted.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>How many cells the menu has. For a radial ring this counts the ring only; the centre cell is separate.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adds a centre cell, selected while the stick or finger rests inside the Engage Deadzone.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>For sticks, how far to push before the menu opens and ring cells highlight. On radial menus it is also the centre region for both sticks and touchpads: inside it, the centre cell is selected when one exists.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Where the overlay's centre sits on screen, as a percentage. 50 and 50 is the middle.</value></data>

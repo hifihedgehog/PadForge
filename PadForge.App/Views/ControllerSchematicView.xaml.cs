@@ -24,6 +24,11 @@ namespace PadForge.Views
         /// <summary>Raised when the controls were laid out again (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
+        /// <summary>Raised with the control under the pointer, by the name a
+        /// click on it records, and with null when the pointer leaves it
+        /// (#574).</summary>
+        public event EventHandler<string> HoverTargetChanged;
+
         private PadViewModel _vm;
         private bool _dirty;
         private bool _layoutBuilt;
@@ -373,9 +378,21 @@ namespace PadForge.Views
             var label = CreateLabel(string.Format(Strings.Instance.Preview_Stick_Format, index + 1), x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
+            // The axis a click at a point records: its quadrant's direction.
+            string StickTarget(Point pos)
+            {
+                double cx = pos.X - StickSize / 2;
+                double cy = pos.Y - StickSize / 2;
+                if (Math.Abs(cx) > Math.Abs(cy))
+                    return cx > 0 ? $"RawAxis{axisXIdx}" : $"RawAxis{axisXIdx}Neg";
+                return cy > 0 ? $"RawAxis{axisYIdx}" : $"RawAxis{axisYIdx}Neg";
+            }
+
             // Hover: show direction arrow for hovered quadrant
             outer.MouseMove += (s, e) =>
             {
+                // The page rings the control a click here records (#574).
+                HoverTargetChanged?.Invoke(this, StickTarget(e.GetPosition(outer)));
                 if (_flashTarget != null) return; // don't override active flash
                 var pos = e.GetPosition(outer);
                 double hx = pos.X - StickSize / 2, hy = pos.Y - StickSize / 2;
@@ -393,6 +410,7 @@ namespace PadForge.Views
             };
             outer.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 dirArrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -402,15 +420,7 @@ namespace PadForge.Views
             // Click-to-record: quadrant detection
             outer.MouseLeftButtonDown += (s, e) =>
             {
-                var pos = e.GetPosition(outer);
-                double cx = pos.X - StickSize / 2;
-                double cy = pos.Y - StickSize / 2;
-                string target;
-                if (Math.Abs(cx) > Math.Abs(cy))
-                    target = cx > 0 ? $"RawAxis{axisXIdx}" : $"RawAxis{axisXIdx}Neg";
-                else
-                    target = cy > 0 ? $"RawAxis{axisYIdx}" : $"RawAxis{axisYIdx}Neg";
-                ControllerElementRecordRequested?.Invoke(this, target);
+                ControllerElementRecordRequested?.Invoke(this, StickTarget(e.GetPosition(outer)));
             };
 
             return new StickWidget
@@ -467,12 +477,14 @@ namespace PadForge.Views
             // Hover highlight
             bg.MouseEnter += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, $"RawAxis{axisIdx}");
                 if (_flashTarget != null) return;
                 bg.Stroke = HoverBrush;
                 bg.StrokeThickness = 2.5;
             };
             bg.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 bg.SetResourceReference(Shape.StrokeProperty, DimKey);
                 bg.StrokeThickness = 1;
@@ -565,10 +577,25 @@ namespace PadForge.Views
             var label = CreateLabel(povLabel, x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
 
+            // The direction a click at a point records: its quadrant's.
+            string PovTarget(Point pos)
+            {
+                double cx = pos.X - PovSize / 2;
+                double cy = pos.Y - PovSize / 2;
+                string dir;
+                if (Math.Abs(cx) > Math.Abs(cy))
+                    dir = cx > 0 ? "Right" : "Left";
+                else
+                    dir = cy > 0 ? "Down" : "Up";
+                return $"RawPov{index}{dir}";
+            }
+
             // Hover: show direction arrow for hovered quadrant
             outer.Cursor = Cursors.Hand;
             outer.MouseMove += (s, e) =>
             {
+                // The page rings the control a click here records (#574).
+                HoverTargetChanged?.Invoke(this, PovTarget(e.GetPosition(outer)));
                 if (_flashTarget != null) return;
                 var pos = e.GetPosition(outer);
                 double hx = pos.X - PovSize / 2, hy = pos.Y - PovSize / 2;
@@ -585,6 +612,7 @@ namespace PadForge.Views
             };
             outer.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 arrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -599,15 +627,7 @@ namespace PadForge.Views
             // Click-to-record: detect direction by click position relative to center
             outer.MouseLeftButtonDown += (s, e) =>
             {
-                var pos = e.GetPosition(outer);
-                double cx = pos.X - PovSize / 2;
-                double cy = pos.Y - PovSize / 2;
-                string dir;
-                if (Math.Abs(cx) > Math.Abs(cy))
-                    dir = cx > 0 ? "Right" : "Left";
-                else
-                    dir = cy > 0 ? "Down" : "Up";
-                ControllerElementRecordRequested?.Invoke(this, $"RawPov{index}{dir}");
+                ControllerElementRecordRequested?.Invoke(this, PovTarget(e.GetPosition(outer)));
                 e.Handled = true;
             };
 
@@ -651,12 +671,14 @@ namespace PadForge.Views
 
             circle.MouseEnter += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, $"RawBtn{index}");
                 if (_flashTarget != null) return;
                 circle.Stroke = HoverBrush;
                 circle.StrokeThickness = 2.5;
             };
             circle.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 circle.SetResourceReference(Shape.StrokeProperty, DimKey);
                 circle.StrokeThickness = 1.5;

@@ -511,7 +511,34 @@ namespace PadForge.Tests
             Assert.Equal(0.0, Item("RightTrigger").LiveLevel, 3);
             Assert.Equal(0.5, Item("LeftThumbAxisX").LiveLevel, 3);
             Assert.Equal(0.0, Item("LeftThumbAxisY").LiveLevel, 3);
+
+            // The bar's value is the same share in percent, signed as the
+            // value is (#574). The raw number stays the list's.
+            string Percent(int p) => string.Format(PadForge.Resources.Strings.Strings.Instance.Pad_Value_Percent_Format, p);
+            Assert.Equal(Percent(100), Item("ButtonA").CurrentPercentText);
+            Assert.Equal(Percent(0), Item("ButtonB").CurrentPercentText);
+            Assert.Equal(Percent(50), Item("LeftTrigger").CurrentPercentText);
+            Assert.Equal(Percent(-50), Item("LeftThumbAxisX").CurrentPercentText);
+            Assert.Equal("-16384", Item("LeftThumbAxisX").CurrentValueText);
+            Assert.Equal("{0} %", PadForge.Resources.Strings.Strings.Instance.Pad_Value_Percent_Format);
         }
+
+        /// <summary>The bar's value as the boards read it (#574): a whole
+        /// percent of the row's full scale, the meter's own share, signed as
+        /// the value is. A button is 100 or 0.</summary>
+        [Theory]
+        [InlineData(1, true, false, "ButtonA", VirtualControllerType.Xbox, 100)]
+        [InlineData(0, true, false, "ButtonA", VirtualControllerType.Xbox, 0)]
+        [InlineData(16384, false, false, "LeftThumbAxisX", VirtualControllerType.Xbox, 50)]
+        [InlineData(-32767, false, false, "LeftThumbAxisX", VirtualControllerType.Xbox, -100)]
+        [InlineData(-32768, false, false, "RawAxis0", VirtualControllerType.Extended, -100)]
+        [InlineData(65535, false, false, "LeftTrigger", VirtualControllerType.Xbox, 100)]
+        [InlineData(13107, false, false, "RightTrigger", VirtualControllerType.PlayStation, 20)]
+        [InlineData(500, true, true, "TouchpadX1", VirtualControllerType.PlayStation, 50)]
+        [InlineData(64, false, false, "MidiCC7", VirtualControllerType.Midi, 50)]
+        public void TheBarsValueIsAWholePercentOfTheFullScale(int value, bool discrete, bool touchpadAxis, string target,
+            VirtualControllerType type, int expected)
+            => Assert.Equal(expected, InputService.LivePercentOf(value, discrete, touchpadAxis, target, type));
 
         [Fact]
         public void TheRestAtZeroRuleIsWiredWithTheOtherProviders()

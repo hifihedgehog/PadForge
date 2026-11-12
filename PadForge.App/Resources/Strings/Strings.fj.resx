@@ -240,7 +240,7 @@
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Sereka {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Sereka na key {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wawa {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wawa {0} ms</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Sereka na mouse {0}</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Taura</value></data>
@@ -307,7 +307,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iwase, Space, vukica na axis, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iwase, vukica na axis, Real-World Calibration</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Taura</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick imatau</value></data>
@@ -724,5 +724,16 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Rarama ni bulukau Guide se Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faile zip ni domo me baleta na macro ni domo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faile zip ni iyaloyalo me baleta na sela ni menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Kaukauwa ni motor yadua, yavavala ni trigger, veisau motor</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Kaukauwa ni motor yadua, yavavala ni trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Key kei na Mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note kei na Control</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Liga</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu vou</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kauta tani na sela i otioti</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Yaca</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Vakaruataka</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakadikeva na shaker</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Dauqito se Vuravura</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Imawi</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Imatau</value></data>
 </root>

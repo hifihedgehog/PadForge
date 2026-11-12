@@ -368,6 +368,7 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset tanan</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Panason tanan</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Balor</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Mga pilian</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Baliskaron</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Tunga</value></data>
@@ -406,7 +407,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Ngalan</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Kon</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Sa pagpindot</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Sa pagbuy-i</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Samtang ginauyatan</value></data>
@@ -464,11 +465,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Button {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pinduta ang {0} sa sulod sang {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pinduta ang {0} sa sulod sang {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Buy-i ang {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Mga key {0} sa sulod sang {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Mga key {0} sa sulod sang {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Buy-i ang mga key {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Maghulat {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Maghulat {0} ms</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volume sang sistema ← {0}</value></data>
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>Volume sang app ← {0}</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pagpindot sang mouse {0}</value></data>
@@ -707,6 +708,7 @@
 
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Idugang gikan sa listahan</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Panasa ang trigger</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Kuhaa ang input</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Pinduta ang bisan ano nga input…</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Baliskaron ang axis</value></data>
@@ -861,14 +863,14 @@
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Sa ibabaw sang screen</value></data>
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Sa idalom sang screen</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output sang tunog</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, haptics, Volume sang headphone, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Volume sang headphone, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default sang sistema</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>I-test</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Magpatunog sang malip-ot nga beep sa napili nga output device</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Untata ang tanan nga tunog</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Untata ang tanan nga macro sound sa sini nga pad</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Bag-o nga sound macro</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Buksi ini nga macro sa Macros tab</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Buksi ini nga macro sa Mga macro kag menu</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>I-play ang tunog</value></data>
   <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Untata ang mga tunog</value></data>
   <data name="MacroAction_PlaySound_Format" xml:space="preserve"><value>I-play ang {0} ({1}%)</value></data>
@@ -1091,7 +1093,6 @@
   <data name="Menu_Half_Left" xml:space="preserve"><value>Wala nga tunga</value></data>
   <data name="Menu_Half_Right" xml:space="preserve"><value>Tuo nga tunga</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Ipakita ang mga label</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Posisyon sa screen</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Kadakuon</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Tunga</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Wala</value></data>
@@ -1107,6 +1108,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Sulayi</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>I-reset ang wala nga trigger</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>I-reset ang tuo nga trigger</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Sulayi ang mga shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Untata</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Bisan ano nga NFC tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC tag: {0}</value></data>
@@ -1497,15 +1499,45 @@
   <data name="Home_Offer_Format" xml:space="preserve"><value>Naka-connect ang {0} kag wala ginagamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita ini</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key kag mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota kag kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Mga stick kag trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Kurog kag haptics</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Suga kag tunog</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro kag menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Magdugang sang device</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ka output</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Motion</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Mag-click sang kontrol, dayon pinduta ang input nga magapadalagan sini.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Mag-click sang key ukon button sang mouse, dayon pinduta ang input nga magapadalagan sini.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Mag-click sang nota ukon slider, dayon pinduta ang input nga magapadalagan sini.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Ginalaktawan sang Map All ang mga output sang paghikap sa A kag B. I-click ang lingin sa palibot sang A ukon B para i-map ang isa sa ila.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ginahulat ang input para sa {0}. Pinduta ang input sa imo device.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ginapadalagan sang</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas madamo nga pilian</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mas diutay nga pilian</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Button sa atubangan</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Button sa abaga</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Button sang sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Button</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad sang direksyon</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor sang motion</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Key sang keyboard</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Button sang mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Paghulag sang mouse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Scroll wheel</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor sang paghikap</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog nga pagguyod</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, wala nga kamot</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tuo nga kamot</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senyas kon ang stick sa steering mode umabot sa full lock</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble halin sa bass sang audio sang sistema</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ginapadala ang rumble sang main motor sa mga trigger</value></data>
@@ -1516,7 +1548,26 @@
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, tap, pinch, mga porma</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Magrekord sang imo kaugalingon</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kasanag sang LED, Pattern sang player, Mode sang mute LED</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain sang kada motor, rumble sang trigger, pagbaylo sang motor</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain sang kada trigger, pagbaylo sang motor, adaptive trigger nga vibration</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain sang kada motor, rumble sang trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain sang kada trigger, pagbaylo sang motor, adaptive trigger nga vibration, Constant Trigger Force</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Output nga device, mga channel, gain, tono para sa kada motor</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Himua</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direksyon, Consume Trigger Buttons, Utrohon</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Pagbukas</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Ilisi ang ngalan</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Bag-o nga menu</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kuhaa ang ulihi nga cell</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>I-edit ang cell</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksyon</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ini nga device</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Bug-os nga controller</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, mga band, pag-import</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Na-install ang SteamVR</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Wala na-install ang SteamVR</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Nagadalagan ang SteamVR</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>Nagadalagan ang SteamVR, konektado ang driver</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
 </root>

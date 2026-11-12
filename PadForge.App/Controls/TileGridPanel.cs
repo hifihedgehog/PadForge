@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PadForge.Controls
 {
@@ -191,8 +192,30 @@ namespace PadForge.Controls
             double width = double.IsInfinity(availableSize.Width)
                 ? across * itemWidth + Math.Max(0, across - 1) * Gap
                 : availableSize.Width;
-            return new Size(shown.Count == 0 ? 0 : width, shown.Count == 0 ? 0 : total);
+            var size = new Size(shown.Count == 0 ? 0 : width, shown.Count == 0 ? 0 : total);
+            if (size != _measured)
+            {
+                _measured = size;
+                // The parent is asked to measure again. WPF asks it after a
+                // measure that changes the grid's size, with one exception:
+                // UIElement.Arrange measures an element whose measure is out
+                // of date before it arranges it, and does not tell the
+                // parent. A window's resize measures and arranges its root
+                // before the layout pass runs (HwndSource on WM_SIZE). When
+                // that arrange reached the grid while the measure for its new
+                // tiles still waited in the layout queue, the ItemsPresenter
+                // above it kept the old height, and the picked control's
+                // blocks under the picture had no room (#574, 2026-11-12).
+                // While the parent is measuring the grid the call does
+                // nothing. After a measure run from the layout queue it
+                // repeats the call WPF makes itself.
+                (VisualTreeHelper.GetParent(this) as UIElement)?.InvalidateMeasure();
+            }
+            return size;
         }
+
+        // The size the last measure came to.
+        private Size _measured;
 
         protected override Size ArrangeOverride(Size finalSize)
         {

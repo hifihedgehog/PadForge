@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopier</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Indsæt</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliker</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Omdøb</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktiveret</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Deaktiveret</value></data>
   <data name="Common_On" xml:space="preserve"><value>Til</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Enhed</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Styret af</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tilføj enhed</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Billede</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Bevægelse</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik på en kontrol, og tryk på det input, der skal styre den.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klik på en tast eller en museknap, og tryk på det input, der skal styre den.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klik på en tone eller en skyder, og tryk på det input, der skal styre den.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Knappen Tildel alle springer over berøringsoutputtene for A og B. Klik på ringen omkring A eller B for at binde et af dem.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Lytter efter {0}. Tryk på inputtet på din enhed.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, styret af</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Flere indstillinger</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Færre indstillinger</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Frontknap</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Skulderknap</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Systemknap</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Knap</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Retningspad</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Bevægelsessensor</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tastaturtast</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Museknap</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Musebevægelse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rullehjul</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Berøringssensor</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analogt træk</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, venstre hånd</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, højre hånd</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Hvilket tryk spil ser, når begge knapper i et par holdes nede</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Hvilket tryk spil ser, når begge taster i et par holdes nede</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Holder et lille stickudslag, så spil bliver ved med at vise controllerikoner</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Smeder</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Vælg en makro til venstre, eller tryk på Tilføj for at oprette en.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Vælg en makro på listen, eller tryk på + ved siden af Makroer for at oprette en.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RÅ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>UD</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kold</value></data>
@@ -917,7 +946,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forstærkning pr. trigger, ombytning af motorer, vibrationer fra adaptive triggere</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Triggerforstærkning, motorombytning, adaptive triggervibrationer, Konstant triggerkraft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Videresender motorkommandoer for hver trigger (Xbox Impulse Triggers) fra den virtuelle controller til den tildelte fysiske Xbox One-, Elite- eller Series-controller. Triggervibration styret af spillet videresendes automatisk. Kontrolelementerne nedenfor skalerer styrken for hver trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Venstre trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Højre trigger</value></data>
@@ -987,9 +1016,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Dødzoner, anti-dødzoner, følsomhedskurver og kalibrering af centerforskydning for hver stick. Hvert afsnit nedenfor gælder én analog stick på det aktive output. Udvidede profiler kan have op til fire sticks. Almindelige gamepads har to.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggere</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Dødzoner, anti-dødzoner, skalering af maksimalt område og følsomhedskurver for hver trigger. Hvert afsnit nedenfor gælder én triggerakse på det aktive output. Udvidede profiler kan have op til otte akser, som deles med fanen Sticks.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Dødzoner, anti-dødzoner, skalering af maksimalt område og følsomhedskurver for hver trigger. Hvert triggerkort gælder én triggerakse på det aktive output. Udvidede profiler kan have op til otte akser, som deles mellem sticks og triggere.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Justerer, hvordan PadForge skalerer force feedback-hændelser fra spillet, og hvordan de sendes videre til den fysiske controllers vibrationsmotorer eller haptiske aktuatorer. Lydvibration tilføjer et lag oveni, der styres af systemlyden.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Denne enhed</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hele controlleren</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibration afspilles på {0} som haptiske impulser, der sendes direkte til enheden. Kraftigere vibration vælger en kraftigere impuls og gentager den hurtigere.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptisk feedback er slået fra for {0} i Logi Options+, så den afspiller intet, før du slår det til igen der.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Denne enhed har ikke svaret endnu. Dens vibration afspilles, når den vågner.</value></data>
@@ -1077,6 +1108,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bundkort og grafikkort</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter, headsets og headsetholdere</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lysbjælke</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spil overtager, når de skriver belysning.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Angiv en sekscifret hexfarve (RRGGBB eller #RRGGBB), og tryk på Enter, eller klik et andet sted for at anvende den.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Fjern denne farve fra paletten</value></data>
@@ -1094,7 +1126,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Nulstil lydvibration</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Nulstil {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Ryd tildelinger</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Alle tildelinger på denne fane ryddes. Kildetildelinger, ekstra kilder og kombinationsindstillinger nulstilles til standard.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Alle tildelinger på dette lag ryddes. Kildetildelinger, ekstra kilder og kombinationsindstillinger nulstilles til standard.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spillermønster</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Tilstand for lydløs-LED</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-lysstyrke</value></data>
@@ -1247,6 +1279,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV'er</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knapper</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importerede profiler…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Udvidet controller</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Administrer HIDMaestro-profiler importeret af brugeren: optag en ny fra en tilsluttet enhed, eksporter en eksisterende til JSON, eller slet en, du ikke længere har brug for.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klon enhed 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Tildel hver akse, knap og hatkontakt på den valgte enhed direkte til det virtuelle output med samme nummer. Tilpasser layoutet til enheden og erstatter denne enheds rækker på pladsen med en 1:1-videresendelse.</value></data>
@@ -1294,6 +1327,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI-output</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-kanal (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Antal CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Antal CC-output (maks. afhænger af Første CC)</value></data>
@@ -1325,7 +1359,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Fjerner dette tastepar.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Første tast i det modsatte par.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Anden tast i det modsatte par.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Samtidige modsatte hovedretninger (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Hold controlleren vågen</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Nogle spil stopper vibrationen og skifter deres knapikoner, så snart de ser input fra mus eller tastatur. Ved at holde et lille udslag på en stick bliver spillet ved med at behandle denne controller som den aktive enhed. Fastholdelsen træder kun i kraft, mens begge akser på sticken ligger under det fastholdte niveau, så en stick, der driver, stadig tæller som i hvile. Input ud over niveauet på en af akserne ophæver det og sendes uændret igennem. Hold udslaget under spillets egen dødzone, så intet bevæger sig i spillet.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Hold vågen</value></data>
@@ -1345,7 +1378,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Nulstil klik</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Nulstil halvdel af touchpad</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Nulstil affyringstilstand</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Nulstil celler</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Nulstil aktiveringsdødzone</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Nulstil menugeometri</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Nulstil celle</value></data>
@@ -1401,6 +1433,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ryd alle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Kilde</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Værdi</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Muligheder</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Dødzone for akse til knap</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverter</value></data>
@@ -1438,7 +1471,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Når den er markeret, glider aksen tilbage til midten ved slip. Når den ikke er markeret, beholder den sin sidste position.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Knap, der inverterer rækkens output, mens den holdes nede</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikator: mens den holdes nede, skifter rækkens output fortegn.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Tilføj kilde</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Tilføj kilde</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Tilføj endnu et fysisk input til denne række</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Fjern denne kilde</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Punkt {0} af {1}, input {2} %, output {3} %</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrer midten</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Midtpunkt</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Midte</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dødzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Midtforskydninger, dødzoneform og værdier pr. akse, en kurve til hver akse, område, styring</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Område</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrer grænse er den anbefalede måde at rette en stick til på. Den gennemløber den kant, sticken fysisk kan nå, og omskalerer derefter hver position forholdsmæssigt i forhold til den målte kant, så hele den oprindelige bevægelse, i alle vinkler og ved alle udslag, tildeles en ideel cirkel, uden at noget skæres af. De fire skydere nedenfor begrænser kun hovedakserne. Brug dem til at begrænse området med vilje, ikke til at rette det.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Knappen Kalibrer grænse måler den kant, sticken kan nå, og former den om til en hel cirkel. De fire skydere begrænser kun hver retning.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Måler...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Centerforskydning X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Centerforskydning Y</value></data>
@@ -1581,7 +1615,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Navn</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Udløser</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Når</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Udløs</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Ved tryk</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Ved slip</value></data>
@@ -1613,9 +1647,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Hvilket skiftelag denne makro hører til. Med Alle lag udløses makroen uanset det aktive lag. Basislaget og navngivne lag udløses kun, mens det pågældende lag er aktivt, præcis som en tildelingsrække.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Alle lag</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Kører konstant, mens denne virtuelle controller er aktiv. Ingen udløserknap nødvendig.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Handlingssekvens</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Gør</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Lag, Kilde, Tærskel, Retning, Bloker udløserknapper, Gentag</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tilføj handling</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Rediger handling</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Type</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuelle knapper</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuelle akser og rat</value></data>
@@ -1684,11 +1718,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Knap {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tryk på {0} i {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tryk på {0} i {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Slip {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Taster {0} i {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Taster {0} i {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Slip taster {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Vent {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Vent {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Angiv {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Systemlydstyrke ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Systemlydstyrke ← {0} (maks. {1}%)</value></data>
@@ -1700,15 +1734,15 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Museslip {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Slå touchpad-overlay til/fra</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Angiv lysbjælkefarve</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Tilsidesæt lysbjælken på den tildelte PlayStation-plads med en valgt RGB-farve. Reaktiv toner fra fuld intensitet til sort over det angivne henfaldsvindue og overlader derefter styringen til indstillingerne på fanen Belysning. Fastholdt holder farven, indtil en handling af typen Ryd tilsidesættelse af lysbjælke kører. Det, spil skriver, har stadig forrang over tilsidesættelsen.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Blink lysbjælke {0} (henfald {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Tilsidesæt lysbjælken på den tildelte PlayStation-plads med en valgt RGB-farve. Reaktiv toner fra fuld intensitet til sort over det angivne henfaldsvindue og overlader derefter styringen til indstillingerne på kortet Lysbjælke. Fastholdt holder farven, indtil en handling af typen Ryd tilsidesættelse af lysbjælke kører. Det, spil skriver, har stadig forrang over tilsidesættelsen.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Blink lysbjælke {0} (henfald {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hold lysbjælke {0}, indtil den ryddes</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Ryd tilsidesættelse af lysbjælke</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Ryd tilsidesættelse af lysbjælke</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Ophæver enhver aktiv tilsidesættelse af lysbjælken på den tildelte plads. Brug sammen med en fastholdt handling af typen Angiv lysbjælkefarve for at fortryde den via en anden makro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Angiv lysbjælketilstand</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Sæt lysbjælketilstand til {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sætter lysbjælketilstanden på den tildelte plads til en bestemt værdi. Bevares som en ændring på fanen Belysning, indtil en anden handling eller brugeren ændrer den.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sætter lysbjælketilstanden på den tildelte plads til en bestemt værdi. Bevares som en ændring på kortet Lysbjælke, indtil en anden handling eller brugeren ændrer den.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Skift mellem lysbjælketilstande</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Skift mellem {0} lysbjælketilstande</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Flytter pladsens lysbjælketilstand videre gennem de tilstande, der er valgt nedenfor. Hver udløsning går til den næste markerede tilstand. Positionen i cyklussen gælder for hver handling og nulstilles, når programmet genstartes.</value></data>
@@ -1723,14 +1757,14 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Henfald</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Udtoning</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palet bruger paletten fra pladsens egen fane Belysning.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palet bruger paletten på pladsens kort Lysbjælke.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Tilstand</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Vælg, hvilke lysbjælketilstande makroen skal skifte mellem. Hver udløsning går videre til den næste markerede tilstand.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Styrer vibrationen i pladsens fysiske enhed fra en makro. Reaktiv kører med fuld styrke i holdevinduet og toner derefter ud til nul over udtoningsvinduet. Fastholdt holder fuld styrke, indtil en handling af typen Stop vibration kører. Lægges oven på vibration styret af spillet via max(), så feedback styret af brugeren altid kan mærkes.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibrationspuls {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibrationspuls {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Hold vibration {0}, indtil den ryddes</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop vibration</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop vibration</value></data>
@@ -1741,7 +1775,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Stop triggervibration</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Ophæver enhver aktiv triggervibration fra makroer på pladsen. Brug sammen med en fastholdt Tilsidesættelse af triggervibration for at afslutte fastholdelsen fra en makro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Angiv gyroaktivering</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Angiver pladsens gyroaktivering fra en makro. Skift vender den aktuelle tilstand. Til tvinger gyroen aktiveret. Fra tvinger den deaktiveret. Uafhængig af aktiveringsknappen på fanen Gyro. De to kilder kombineres med ELLER, så ingen af dem kan deaktivere det, den anden har aktiveret.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Angiver pladsens gyroaktivering fra en makro. Skift vender den aktuelle tilstand. Til tvinger gyroen aktiveret. Fra tvinger den deaktiveret. Uafhængig af knappen til aktivering af sigte under Bevægelse og berøring. De to kilder kombineres med ELLER, så ingen af dem kan deaktivere det, den anden har aktiveret.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Tilstand</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Skift</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Til</value></data>
@@ -1889,7 +1923,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input for hver touchpad. Gestusser (strygninger, tryk, knib, figurer) og kontinuerlige outputtilstande (virtuel stick / D-pad, mus) bliver til tildelingskilder, som du kan binde på fanen Tildelinger.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input for hver touchpad. Gestusser (strygninger, tryk, knib, figurer) og kontinuerlige outputtilstande (virtuel stick / D-pad, mus) bliver til tildelingskilder, som du kan binde til ethvert output.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpadnummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Hvilken touchpad på denne controller indstillingerne nedenfor gælder for. Hver touchpad har sine egne gestusser, sin egen musefornemmelse og sit eget markørområde.</value></data>
@@ -2179,10 +2213,14 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Juster, hvordan denne controllers bevægelsessensor styrer mus- og stickoutput. Kalibrer på en plan overflade for at fjerne drift i hvile, og finjuster derefter følsomhed, udjævning og aktiveringsregler efter smag.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrering</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live-aflæsninger af gyroskop og accelerometer</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Følsomhed</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Måleenhed, Rum, inverter akser, Kalibrering til virkeligheden</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Måleenhed, inverter akser, Kalibrering til virkeligheden</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pr. omdrejning</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsformning</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Dødzone, udjævning, Acceleration, Outputkurve</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Referenceramme</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Spiller eller Verden</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Rum</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Hvordan gyrobevægelse fortolkes. Lokal bruger controllerens rå akser. Spiller projicerer vandret bevægelse på den virkelige lodrette akse (tyngdekraften), så den samme håndledsdrejning altid drejer kameraet, uanset hvordan du holder controlleren. Verden projicerer desuden lodret bevægelse på verdensakserne.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Holdes som</value></data>
@@ -2254,6 +2292,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Opret</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Greb</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Hvordan controlleren holdes. Roterer gyroen, accelerometeret og tyngdekraften samlet, både for tildelinger og for den bevægelse, den virtuelle controller rapporterer. Retningerne på D-pad følger samme ramme, så Op er op i grebet.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Hvordan controlleren holdes</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineær</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressiv</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Afslappet</value></data>
@@ -2286,7 +2325,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Nulstil aktiveringsretning</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Videresendelse af bevægelse</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Anvend gyrojustering på videresendelse af bevægelse</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Anvender denne fanes valgfrie gyrojustering (dødzone, følsomhed, udjævning, responskurve, invertering) på den bevægelse, den virtuelle controller rapporterer til spillet eller emulatoren. Slå det fra for kun at sende den kalibrerede aflæsning og lade spillet anvende sin egen følsomhed og udjævning. Korrektion af drift ved kalibrering gælder altid uanset hvad.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Anvender den valgfrie justering fra kortene under Gyro (dødzone, følsomhed, udjævning, responskurve, invertering) på den bevægelse, den virtuelle controller rapporterer til spillet eller emulatoren. Slå det fra for kun at sende den kalibrerede aflæsning og lade spillet anvende sin egen følsomhed og udjævning. Korrektion af drift ved kalibrering gælder altid uanset hvad.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Nulstil justering af videresendelse</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Følsomhed</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator for gyrofølsomhed pr. kilde. 1.0 = motorens standard (500°/s → fuldt udslag). Værdier over 1.0 er mere følsomme. Værdier under 1.0 er mindre følsomme.</value></data>
@@ -2303,7 +2342,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Nulstil område for fuld hældning</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Nulstil dødzone for hældning</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Nulstil gyrohældning</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hvordan rækkens kilder flettes, når mere end én er aktiv. Vælg rækken for at ændre det i detaljebjælken nedenfor.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hvordan rækkens kilder flettes, når mere end én er aktiv. Åbn rækken for at ændre det under Kombiner.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Inerti</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-tilstand: svirp sticken, og slip, så fortsætter markøren og glider langsomt i stå. Når du bevæger sticken igen, fanges den.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Hvor langt markøren glider efter et svirp. I toppen af området fortsætter den, indtil du bevæger sticken igen.</value></data>
@@ -2504,7 +2543,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Triggerakse</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forstærkning pr. motor, triggervibration, ombytning af motorer</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motorforstærkning, triggervibration, Vibration efter styrevinkel, Konstant kraft</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Samlet forstærkning</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Venstre motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Højre motor</value></data>
@@ -2513,6 +2552,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Denne controller har ingen triggermotorer, så spil, der bruger Xbox Impulse Triggers, ville ikke kunne mærkes. Flet i stedet hver triggerkanal ind i hovedmotoren på samme side.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitet</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Venstre</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Højre</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Påfør en konstant kraft på denne enhed, indtil du slår det fra. Kraft styret af et spil fra en hvilken som helst kilde tilsidesætter den, mens den er aktiv, og den genoptages, når spillet stopper.</value></data>
@@ -2591,7 +2632,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tryk på knapper, eller bevæg en akse/trigger for at optage. Akser registreres, når de har et udslag på over 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Tilføj fra liste</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Vælg et udløserinput fra pladsens enheder i stedet for at optage det. Touchpad-gestusser, der er aktiveret på fanen Touchpad, vises her.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Ryd udløser</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Vælg et udløserinput fra pladsens enheder i stedet for at optage det. Touchpad-gestusser, der er slået til under Bevægelse og berøring, vises her.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Fjern input</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Tryk på et vilkårligt input…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inverteret</value></data>
@@ -2852,7 +2894,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekunder, før en virtuel controller fjernes, når alle dens tildelte enheder er offline. 0 slår det fra. Resterende controllere af samme type rykker op for at udfylde hullet og bindes igen til lavere pladser.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekunder (0 = aldrig)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Skiftelag</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tilføj lag</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tilføj et skiftelag. En ekstra tildelingstabel, der aktiveres, mens en knap holdes nede eller er slået til.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Basis</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Skiftelag</value></data>
@@ -2953,7 +2995,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bevægelsesstyring</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° til {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Dødzoner for hældning, Controllerens retning</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Indstillinger for inputtet ”Bevægelse: hældning”: vip controlleren som et rat. Tildel ”Bevægelse: hældning” til en stickakse fra inputrullelisten under Tildelinger.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Indstillinger for inputtet ”Bevægelse: hældning”: vip controlleren som et rat. Tildel ”Bevægelse: hældning” til en stickakse under Knapper.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Nulstil bevægelsesstyring</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (højre stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (venstre stick)</value></data>
@@ -2962,7 +3004,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring for højre stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Justering af Flick stick-inputtene</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Indstillinger for Flick stick-inputtene: peg med sticken, så drejer kameraet med, og kør langs kanten for at finjustere vendingen. Tildel ”Flick stick (højre stick)” til Mus X fra inputrullelisten under Tildelinger på et vilkårligt lag.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Indstillinger for Flick stick-inputtene: peg med sticken, så drejer kameraet med, og kør langs kanten for at finjustere vendingen. Tildel ”Flick stick (højre stick)” til Mus X under Taster og mus på et vilkårligt lag.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Nulstil flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punkter pr. 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Antal musetællinger for én fuld kameradrejning på 360°. Afhænger af spillets musefølsomhed: hæv det, hvis et svirp drejer for lidt, og sænk det, hvis det drejer for meget.</value></data>
@@ -3054,7 +3096,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Lyd</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrolyde og spejlet systemlyd afspilles gennem den valgte controllers indbyggede højttaler via USB eller Bluetooth. Vælg enheden i rullelisten ovenfor. Alle indstillinger her følger den.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Lydoutput</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spejlkilde, haptik, Lydstyrke i hovedtelefoner, Crossfeed, parametrisk EQ, begrænser</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spejlkilde, Lydstyrke i hovedtelefoner, buffer, Outputvej</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Lyde sendes automatisk til den valgte controller. Via USB findes controllerens eget lydslutpunkt ud fra hardwarecontaineren. Via Bluetooth streames lyden i Sony HID-rammer.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spejlkilde</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Hvilken afspilningsenhed der skal spejles til controllerens højttaler. Spil, der sender bestemte lyde til en separat afspilningsenhed, kan bruge denne.</value></data>
@@ -3067,10 +3109,10 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Stop alle lyde</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Stop alle makrolyde på denne controller</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Lydmakroer</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Lyde afspilles af makroer: en udløser (knaptryk, slip, hold eller formel) plus en handling af typen Afspil lyd. Byg dem her eller på fanen Makroer. Forsinkelser, gentagelser og skift virker alle.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Lyde afspilles af makroer: en udløser (knaptryk, slip, hold eller formel) plus en handling af typen Afspil lyd. Byg dem her eller under Makroer og menuer. Forsinkelser, gentagelser og skift virker alle.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Ny lydmakro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Der er endnu ingen lydmakroer. Opret en, og vælg en lydfil og en udløser.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Åbn denne makro på fanen Makroer</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Åbn denne makro under Makroer og menuer</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Lydmakro {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Afspil lyd</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Afspil en lydfil (.wav, .mp3, .m4a, .aac, .wma, .flac) på denne controllers outputenhed</value></data>
@@ -3347,6 +3389,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Kører</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Kører, driver forbundet</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Kører, controllere aktive</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR installeret</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ikke installeret</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR kører</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR kører, driver forbundet</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR kører, controllere aktive</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>En anden OpenVR-driver bruger samme drivernavn som HIDMaestro, så SteamVR kan indlæse den i stedet for den fra PadForge, og de virtuelle VR-controllere vises ikke. Fjern den driver for at løse det: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Seriel controller (COM-port)</value></data>
@@ -3516,7 +3563,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Forbruger {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Musegestusser</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hold gestusknappen nede, svirp, og én handling udløses, når du slipper: venstre, højre, op, ned eller et almindeligt klik under svirpafstanden. Tildel de fem gestusser på fanen Tildelinger, eller brug dem som makroudløsere.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hold gestusknappen nede, svirp, og én handling udløses, når du slipper: venstre, højre, op, ned eller et almindeligt klik under svirpafstanden. Tildel de fem gestusser til ethvert output, eller brug dem som makroudløsere.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktiver musegestusser</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Aktiverer gestusgenkendelsen for denne mus på denne plads. Gestusknappen beholder sit normale klik under gestussen, så vælg en sideknap, du ikke ellers tildeler.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gestusknapper</value></data>
@@ -3550,7 +3597,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Skift lag</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Angiv Chroma-farve</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Farver de Razer-enheder, der er tildelt denne virtuelle controller, og alle andre Razer-enheder af samme slags i én farve, mens handlingen kører.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>I den varighed, der er angivet ovenfor, farver handlingen de Razer-enheder, der er tildelt denne virtuelle controller, og alle andre Razer-enheder af samme slags med denne farve, eller alle Razer-enheder, når rækken Razer Chroma er tildelt. Den tilsidesætter fanen Belysning på enhver virtuel controller og giver derefter belysningen tilbage. For at holde farven, så længe udløseren holdes nede, skal du bruge Mens den holdes med Indtil slip. Når to makroer farver samtidig, har den nederste på listen forrang, så placer en makro for fuldt tryk under dens tvilling for let tryk. Når makroer på to virtuelle controllere farver den samme slags Razer-enhed, har det laveste spillernummer forrang. Kræver, at Razer Synapse kører.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>I den varighed, der er angivet ovenfor, farver handlingen de Razer-enheder, der er tildelt denne virtuelle controller, og alle andre Razer-enheder af samme slags med denne farve, eller alle Razer-enheder, når rækken Razer Chroma er tildelt. Den tilsidesætter den belysning, enhver virtuel controller indstiller under Lys og lyd, og giver derefter belysningen tilbage. For at holde farven, så længe udløseren holdes nede, skal du bruge Mens den holdes med Indtil slip. Når to makroer farver samtidig, har den nederste på listen forrang, så placer en makro for fuldt tryk under dens tvilling for let tryk. Når makroer på to virtuelle controllere farver den samme slags Razer-enhed, har det laveste spillernummer forrang. Kræver, at Razer Synapse kører.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Vis Dreamcast-skærm</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Afspiller billeder på VMU'en i hver Dreamcast-controller i en Bliss-Box-port, der forsyner denne plads, og sætter derefter hver port tilbage til dens egen skærmindstilling.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Vis Dreamcast-billeder: {0} × {1} ms, antal gentagelser {2}</value></data>
@@ -3844,10 +3891,12 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Nulstiller controllerens akkumulerede referencer for gyrosigte ved tryk. Udjævningshistorikken ryddes, neutralstillingen for Bevægelse: hældning registreres igen, tyngdekraftsestimatet startes forfra ud fra controllerens aktuelle stilling, og den drejning, som rækkerne Bevægelse: tipning, drejning og krængning har opbygget, fortrydes.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Enhver enhed)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menuer</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menuer gør en fysisk stick eller touchpad til en ring eller et gitter på skærmen. Tilføj en menu, vælg, hvad der åbner den, og giv derefter hver celle en etiket og en binding.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menuer gør en fysisk stick eller touchpad til en ring eller et gitter på skærmen. Tryk på + ved siden af Menuer for at oprette en, vælg, hvad der åbner den, og giv derefter hver celle et navn og en handling.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Ny menu</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Menunavn</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktiveret</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Åbning</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stil</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radial ring</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Berøringsgitter</value></data>
@@ -3867,12 +3916,16 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Celler</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Midtercelle</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Vis etiketter</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Skærmposition</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Størrelse</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Uigennemsigtighed</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Aktiveringsdødzone</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Cellebindinger</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Celle {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Tilføj celle</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Fjern sidste celle</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Rediger celle</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Navn</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Handling</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikon</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Midte</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtast</value></data>
@@ -3885,7 +3938,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Udløses én gang, når klikket slippes: peg på cellen, klik sticken eller touchpadden ind, og slip så klikket.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Udløses én gang, når du slipper: løft fingeren fra padden, eller lad sticken springe tilbage til midten, mens en celle er markeret.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Bindingen holdes, hele tiden cellen er markeret. Intet klik nødvendigt.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Hvor mange celler menuen har. For en radial ring tælles kun ringen. Midtercellen er separat.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Tilføjer en midtercelle, som er valgt, mens sticken eller fingeren hviler inden for Aktiveringsdødzone.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>For sticks: hvor langt der skal skubbes, før menuen åbnes, og ringens celler markeres. I radiale menuer er det også midterområdet for både sticks og touchpads: inden for det vælges midtercellen, hvis der er en.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Vis hver celles etiket i overlayet på skærmen.</value></data>
@@ -3895,8 +3947,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlayets størrelse i procent af dets normale størrelse.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlayets uigennemsigtighed. 100% er helt dækkende.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Tekst, der vises på denne celle i overlayet.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Hvad denne celle gør, når den udløses: ”Tastaturtast” trykker på en tast på tastaturet, ”Controllerknap” trykker på en knap på den virtuelle controller på denne plads. En celle, der er sat til ”Ingen”, udløses stadig som en menupunktkilde for rækker under Tildelinger og makroudløsere.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Læses fra de fysiske controllere, der er tildelt denne plads, ikke fra den virtuelle controllers layout. Cellebindingerne nedenfor er det, menuen sender ud.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Hvad denne celle gør, når den udløses: ”Tastaturtast” trykker på en tast på tastaturet, ”Controllerknap” trykker på en knap på den virtuelle controller på denne plads. En celle, der er sat til ”Ingen”, udløses stadig som en menupunktkilde for tildelinger og makroudløsere.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Læses fra de fysiske controllere, der er tildelt denne plads, ikke fra den virtuelle controllers layout. Cellerne nedenfor angiver, hvad menuen sender ud.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Brugerdefinerede akser</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Styr X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Styr Y</value></data>
@@ -3921,13 +3973,16 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knapper</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taster og mus</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Toner og kontroller</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Hænder</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks og triggere</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble og haptik</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Bevægelse og berøring</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Lys og lyd</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makroer og menuer</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Sender den vibration og force feedback fra spillet, som denne virtuelle controller modtager, til et lydoutput som lavfrekvente toner til bass shakers og subwoofere.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Afspiller vibration fra spillet som dybe toner via bass shakers eller en subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Outputenhed, kanaler, forstærkning, en tone til hver motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Virker med virtuelle controllere af typen Xbox, DualShock 3, DualShock 4 / DualSense og Nintendo Switch Pro samt virtuelle controllere af typen Udvidet med force feedback, f.eks. racerrat, og Steam Deck Controller (Composite). Feedback fra spil og Test vibration afspilles via lydoutputtet. Vibration fra makroer bliver på controlleren.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Nulstil Vibration til lyd</value></data>
@@ -3956,19 +4011,22 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Afspiller denne feedbackkanal som en tone. Forstærkning og frekvens bevares, mens den er slået fra.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Tonefrekvens for denne kanal, 20 til 120 Hz. Kør frekvensgennemløbet for at finde, hvor din shaker reagerer kraftigst.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Lydstyrken for denne kanal før den samlede forstærkning.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Forstærkning</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Test</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Afspiller kanalens tone i 1.5 sekunder med den angivne forstærkning.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Nulstil lavfrekvent motor</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Nulstil højfrekvent motor</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Nulstil venstre trigger</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Nulstil højre trigger</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Test shakerne</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frekvensgennemløb</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Kører en tone fra 20 til 120 Hz over otte sekunder på routingen for den lavfrekvente motor. Bemærk, hvor din shaker reagerer kraftigst, og sæt stemmernes frekvenser der.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stop</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stopper testtonen eller gennemløbet.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Ethvert NFC-tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-tag: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrer input (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrer output og input</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Viser kun de rækker og input, der matcher. Tryk på Ctrl+F for at skrive her.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Vælg, hvilke enheders input vælgerne tilbyder</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Vist i vælgeren</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Enhver stemmesætning</value></data>
@@ -4077,6 +4135,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Nulstil tilførsel</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrisk EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtre pr. bånd på controllerens lyd. Anvendes, før lyden kodes, så begrænseren nedenfor forhindrer et forstærket bånd i at klippe.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Forforstærker, bånd, import</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Forforstærker</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Samlet niveau før båndene. AutoEq-profiler leveres med en negativ forforstærkning, så deres forstærkninger ikke klipper, og når du importerer en, indstilles dette for dig.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Til</value></data>
@@ -4307,7 +4366,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Nulstil til åbning ved berøring eller udslag.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Styr med</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Det fysiske input, der styrer den markerede celle, mens laget holder denne menu åben.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Læses fra de fysiske controllere, der er tildelt denne plads. Laget åbner menuen, og dette input styrer den. Cellebindingerne bestemmer dens output.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Læses fra de fysiske controllere, der er tildelt denne plads. Laget åbner menuen, og dette input styrer den. Dens celler angiver, hvad den sender ud.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ikonstørrelse</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Ikonstørrelse i forhold til menuens normale ikonstørrelse, fra 25% til 200%. Hvis ikonet ryddes, nulstilles den til 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Holder den markerede celles binding, mens Klikinput holdes nede. En markeret radial midte kan udløses, mens sticken hviler.</value></data>
@@ -4432,7 +4491,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Reference af Antoine Aflalo for layoutet af den udokumenterede grænseflade IPolicyConfig i Windows, som PadForge bruger til at genaktivere en controllers lydslutpunkt. MIT. Kun dokumentation, ingen kode følger med.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formatet for parametriske EQ-profiler, som fanen Lyd importerer, af Jaakko Pasanen. MIT. Kun dokumentation, ingen kode følger med.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formatet for parametriske EQ-profiler, som Parametrisk EQ på en controller importerer, af Jaakko Pasanen. MIT. Kun dokumentation, ingen kode følger med.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-teknikker bag makroer af typen Tekstblok og tastaturets hook til tastekombinationer: Unicode-skrivning, batchgrænser, maskeringstasten for Win-tasten og mærket injiceret input. GPL-2.0-or-later, kun læst som dokumentation, ingen GPL-kode følger med.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Retning</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Trin</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>til</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Håndtag</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} styrer denne controllers triggere.</value></data>
@@ -4716,7 +4776,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Håndtaget bevægede sig ikke langt nok, så rækkevidden forbliver uændret. Flyt det til alle kanter, mens målingen kører.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falconen blev lukket, før målingen var færdig.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Spil med en Novint Falcon via Force Dimensions SDK, som du installerer fra Force Dimension. Håndtaget er en stick, grebets fire knapper er knapper, og PadForge lægger spillets vibration og effekter på håndtaget som kraft. Fanen Force feedback for hver plads bestemmer, hvordan Falconen føles.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Spil med en Novint Falcon via Force Dimensions SDK, som du installerer fra Force Dimension. Håndtaget er en stick, grebets fire knapper er knapper, og PadForge lægger spillets vibration og effekter på håndtaget som kraft. Kortet Novint Falcon under Rumble og haptik på hver controller bestemmer, hvordan Falconen føles.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Styr Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Åbner hver Falcon via Force Dimensions dhd64.dll. En åben Falcon tilhører udelukkende PadForge, så FalconJoyForce og Force Dimensions værktøjer ikke kan åbne den, mens dette er slået til. Slået fra lukker PadForge alle Falcons.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-biblioteket er sat til {0}. PadForge indlæser det inden for få sekunder, og en Falcon, der er åben på en anden kopi, åbnes igen på denne.</value></data>
@@ -4929,7 +4989,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>I et bestemt tidsrum</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Indtil den stoppes</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Tid</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Afspilles på alle DualSense og DualSense Edge på denne plads. Et spils egen triggereffekt og et spilmods effekt har forrang, og indstillingen på fanen Adaptive triggere vender tilbage, når effekten slutter. Zoner går fra 0 i hvile til 9 ved fuldt træk. Bue, Galop og Maskine er ikke officielle DualSense-effekter, og en firmwareopdatering kan fjerne dem. Xbox-controllere med Omsæt vibrationer fra adaptive triggere slået til mærker de vibrerende effekter som triggervibration.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Afspilles på alle DualSense og DualSense Edge på denne plads. Et spils egen triggereffekt og et spilmods effekt har forrang, og indstillingen på kortet Adaptive triggere vender tilbage, når effekten slutter. Zoner går fra 0 i hvile til 9 ved fuldt træk. Bue, Galop og Maskine er ikke officielle DualSense-effekter, og en firmwareopdatering kan fjerne dem. Xbox-controllere med Omsæt vibrationer fra adaptive triggere slået til mærker de vibrerende effekter som triggervibration.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} på {1} i {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} på {1}, mens den holdes nede</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} på {1}, indtil den stoppes</value></data>
@@ -4958,7 +5018,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Indtil den ryddes</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Tid</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Behold deres farver</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Handlingen tænder de samme taster på alle tastaturer, som denne virtuelle controller styrer lyset på, oven på de farver, som fanen Belysning giver dem. Tallene viser rækkefølgen, tasterne blev valgt i. Nedtælling slukker tasterne én ad gangen, den sidst valgte først, så vælg 1 til 0 for en nedkøling på talrækken. Et tastatur eller en mus lyser kun, mens Styr denne enheds belysning er slået til.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Handlingen tænder de samme taster på alle tastaturer, som denne virtuelle controller styrer lyset på, oven på de farver, den giver dem under Lys og lyd. Tallene viser rækkefølgen, tasterne blev valgt i. Nedtælling slukker tasterne én ad gangen, den sidst valgte først, så vælg 1 til 0 for en nedkøling på talrækken. Et tastatur eller en mus lyser kun, mens Styr denne enheds belysning er slået til.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Andre</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nummer {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Skærmoverlay</value></data>
@@ -5018,7 +5078,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Aktiveringspunkter for analoge taster blev ikke overført.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendte denne controller til en anden enhed via en adapter. PadForge afspiller den på denne pc, og Fjernlink sender den til en anden pc, der kører PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge læser to sticks, og dette nævner en tredje.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Efterligning af rat blev ikke overført. Tildel ratten på fanen Tildelinger.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Efterligning af rat blev ikke overført. Tildel rattet under Knapper.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Denne profil nævner en specialhandling, der mangler i Actions.xml ved siden af dens Profiles-mappe: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Denne indstilling blev ikke overført: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD forhindrede disse input i at nå Windows. Slå Bloker tildelte input til for {0} på siden Enheder, som blokerer dem, som denne profil tildeler.</value></data>
@@ -5026,8 +5086,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Bekræfter, når stikken vender tilbage til midten, eller laget slutter. reWASDs knap Anvend bruges ikke.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Denne fil holder to controllere adskilt. I PadForge udløser enhver controller på sloten disse tildelinger.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Bevægelseshastigheden eller flicket blev ikke overført.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Disse blev ikke overført. Indstil dem på fanen Touchpad.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Intet i denne fil åbner dette lag. Giv det en knap på fanen Tildelinger.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Disse blev ikke overført. Indstil dem under Bevægelse og berøring.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Intet i denne fil åbner dette lag. Højreklik på laget under Knapper, og vælg Konfigurer aktivator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Dens knapper kører disse, når der trykkes: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilgenvej</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gør det, en profilgenvej gør: indlæser en navngivet profil, den næste eller den forrige, viser eller skjuler vinduet, eller slår de virtuelle controllere fra og til.</value></data>
@@ -5197,7 +5257,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Den valgte celle udløses én gang som et kort tryk, når Affyr slippes. Når Skjul efter affyring er slået til, udløses den, så snart Affyr skjuler baren.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>En celle udløses én gang som et kort tryk, når Affyr skjuler baren med Skjul efter affyring slået til. Når Centrer igen hver gang er slået til, er det midtercellen, der udløses.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Den valgte celle holdes, hele tiden baren vises. Et skridt slipper én celle og holder den næste.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial ring, Berøringsgitter og Hotbar udløser cellebindinger. Tastatur skriver tasterne i det Windows-layout, der er i brug.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radial ring, Berøringsgitter og Hotbar udløser handlingerne i deres celler. Tastatur skriver tasterne i det Windows-layout, der er i brug.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Layout</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hvordan tastaturet opstiller sine taster, og hvordan en controller vælger dem.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Én markering, flyttet med en stick eller fire input, det layout Windows, Xbox og Steam bruger.</value></data>
@@ -5304,11 +5364,11 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-håndholdt-knapper (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-tastelys (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke på {0}. En tildeling på fanen Tildelinger kan.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke på {0}. En tildeling under Knapper kan.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge kører otte skærmoverlays, og dette er reWASDs niende eller tiende trådkors.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge læser Gyro venstre og højre fra krængning og Hældning fra drejning, som er reWASDs standard. reWASDs Indstillinger kan bytte om på de to, og denne fil siger ikke, om det er sket.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>I tilstanden Tilt er reWASDs Lean en drejning om den lodrette akse, og en bevægelsessensor giver ingen vinkel for den drejning.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge læser en diagonal på touchpad'en som to retninger på én gang, hvilket touchpad'en kun melder, når D-pad-tilstand på fanen Touchpad er 8 retninger.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge læser en diagonal på touchpad'en som to retninger på én gang, hvilket touchpad'en kun melder, når dens D-pad-tilstand under Bevægelse og berøring er 8 retninger.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge læser gyroens retning forbi én tærskel, og reWASD angiver ingen enhed for kanten af en gyrozone.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows placerede markøren dér, hvor stikken peger. I PadForge flytter stikken i stedet markøren.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} læser stikken før dens rotation. DS4Windows læste den efter.</value></data>

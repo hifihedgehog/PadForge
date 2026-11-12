@@ -104,9 +104,13 @@ namespace PadForge.Views
             Unloaded += PadPage_Unloaded;
             DataContextChanged += OnDataContextChanged;
             // Each picture says when a control it draws has moved, and the
-            // ring on the picked control moves with it (#574).
+            // ring on the picked control moves with it (#574). It says which
+            // control is under the pointer too, which takes a ring of its own.
             foreach (var picture in PicturesWithPick())
+            {
                 picture.PickBoundsChanged += OnPickBoundsChanged;
+                picture.HoverTargetChanged += OnHoverTargetChanged;
+            }
         }
 
         /// <summary>Hands the header the view model that knows each slot's
@@ -134,6 +138,11 @@ namespace PadForge.Views
 
         private bool _pickRingQueued;
 
+        // The control under the pointer on a picture, by the name a click on
+        // it records, and the picture that reported it. Null with none.
+        private string _hoverTarget;
+        private object _hoverSource;
+
         /// <summary>The pictures that can say where a control is drawn. The
         /// touch sensors' capsules come first: they lie over the model, and
         /// a capsule is what was clicked.</summary>
@@ -149,6 +158,27 @@ namespace PadForge.Views
         }
 
         private void OnPickBoundsChanged(object sender, EventArgs e) => QueuePickRingSync();
+
+        /// <summary>A picture says which control is under the pointer, or
+        /// that none is. A leave from a picture the pointer has already left
+        /// for another changes nothing, whichever of the two is heard
+        /// first.</summary>
+        private void OnHoverTargetChanged(object sender, string target)
+        {
+            if (target == null)
+            {
+                if (_hoverSource == null || !ReferenceEquals(sender, _hoverSource)) return;
+                _hoverSource = null;
+                _hoverTarget = null;
+            }
+            else
+            {
+                if (ReferenceEquals(sender, _hoverSource) && string.Equals(target, _hoverTarget, StringComparison.Ordinal)) return;
+                _hoverSource = sender;
+                _hoverTarget = target;
+            }
+            QueuePickRingSync();
+        }
 
         private void PictureHost_SizeChanged(object sender, SizeChangedEventArgs e) => QueuePickRingSync();
 
@@ -169,35 +199,53 @@ namespace PadForge.Views
 
         /// <summary>Puts the ring on the picked control, or takes it away:
         /// with nothing picked, in the list, or on a picture that does not
-        /// draw the control. A D-pad's four directions and a stick's axes
-        /// are ringed as the one control they are, and a ring around
-        /// several parts is round.</summary>
+        /// draw the control. A control under the pointer takes the ring's
+        /// line alone, the Buttons board's hover, unless it is the picked
+        /// control or is drawn where that is.</summary>
         private void SyncPickRing()
         {
-            Rect? at = null;
-            bool round = false;
+            var place = default(PickRingPlacement);
+            var hover = default(PickRingPlacement);
             if (DataContext is PadViewModel vm && vm.IsButtonsPictureView)
             {
-                int parts = 0;
-                foreach (string target in vm.PickedTargets())
-                {
-                    if (!TryFindOnPicture(target, out Rect part, out bool partRound)) continue;
-                    if (at is not Rect so) { at = part; round = partRound; parts = 1; }
-                    else if (part != so) { at = Rect.Union(so, part); parts++; }
-                }
-                if (parts > 1) round = true;
+                place = RingAround(vm.PickedTargets());
+                string under = _hoverTarget == null ? null : MappingTargetOf(vm, _hoverTarget);
+                if (under != null) hover = RingAround(vm.HoveredTargets(under));
             }
-            var place = at is Rect control
-                ? PicturePick.Place(control, round, new Size(PickRingLayer.ActualWidth, PickRingLayer.ActualHeight))
-                : default;
-            if (!(place.Line.Width > 0))
+            if (place.Line.Width > 0)
+            {
+                PutPickRing(PickRing, place.Line, place.LineRadius);
+                PutPickRing(PickRingBand, place.Band, place.BandRadius);
+            }
+            else
             {
                 PickRing.Visibility = Visibility.Collapsed;
                 PickRingBand.Visibility = Visibility.Collapsed;
-                return;
             }
-            PutPickRing(PickRing, place.Line, place.LineRadius);
-            PutPickRing(PickRingBand, place.Band, place.BandRadius);
+            if (hover.Line.Width > 0 && hover.Line != place.Line) PutPickRing(HoverRing, hover.Line, hover.LineRadius);
+            else HoverRing.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>The ring around the controls targets name, on the
+        /// picture that shows. A D-pad's four directions and a stick's axes
+        /// are ringed as the one control they are, and a ring around
+        /// several parts is round. Empty where the picture draws none of
+        /// them.</summary>
+        private PickRingPlacement RingAround(IReadOnlyList<string> targets)
+        {
+            Rect? at = null;
+            bool round = false;
+            int parts = 0;
+            foreach (string target in targets)
+            {
+                if (!TryFindOnPicture(target, out Rect part, out bool partRound)) continue;
+                if (at is not Rect so) { at = part; round = partRound; parts = 1; }
+                else if (part != so) { at = Rect.Union(so, part); parts++; }
+            }
+            if (parts > 1) round = true;
+            return at is Rect control
+                ? PicturePick.Place(control, round, new Size(PickRingLayer.ActualWidth, PickRingLayer.ActualHeight))
+                : default;
         }
 
         /// <summary>Where the picture that shows draws a target's control,
@@ -1013,6 +1061,7 @@ namespace PadForge.Views
             if (GyroSensitivityCard != null) GyroSensitivityCard.Visibility = rateVis;
             if (GyroResponseCard != null) GyroResponseCard.Visibility = rateVis;
             if (GyroEngageCard != null) GyroEngageCard.Visibility = rateVis;
+            if (GyroSpaceCard != null) GyroSpaceCard.Visibility = rateVis;
 
             // Family-correct preview (#175): same PID split as the
             // capability gates above. Rebuild the art scene only when the
@@ -1245,25 +1294,34 @@ namespace PadForge.Views
 
         private void OnModelRecordRequested(object sender, string targetName)
         {
-            // Nintendo slots ride the raw surface: the preview art speaks
-            // the Xbox-style element grammar ("ButtonA", "LeftThumbAxisXNeg")
-            // but the mapping grid's rows are RawBtn/RawAxis/RawPov, so the
-            // record handler's row lookup would miss every click. Translate
-            // at the funnel; an element with no raw counterpart is ignored.
-            if (DataContext is PadViewModel vm
-                && (vm.OutputType == Engine.VirtualControllerType.Nintendo
-                    || (vm.OutputType == Engine.VirtualControllerType.Extended
-                        && MacroButtonNames.IsValveLetteredProfile(vm.ProfileId))))
+            if (DataContext is PadViewModel vm)
             {
-                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName, vm.ProfileId);
+                // The record handler's row lookup needs the slot's own row
+                // names, and an element with no row of that grammar is
+                // ignored.
+                targetName = MappingTargetOf(vm, targetName);
                 if (targetName == null) return;
+                // The clicked control is the picked one, whether or not a
+                // recording starts for it (none does with no device to listen
+                // to), so the bar under the picture shows its rows (#574).
+                vm.PickedTarget = targetName;
             }
-            // The clicked control is the picked one, whether or not a
-            // recording starts for it (none does with no device to listen
-            // to), so the bar under the picture shows its rows (#574).
-            if (DataContext is PadViewModel pickVm)
-                pickVm.PickedTarget = targetName;
             ControllerElementRecordRequested?.Invoke(this, targetName);
+        }
+
+        /// <summary>The row a picture's control names. Nintendo slots and a
+        /// Valve lettered profile ride the raw surface: the preview art
+        /// speaks the Xbox-style element grammar ("ButtonA",
+        /// "LeftThumbAxisXNeg") but the mapping grid's rows are
+        /// RawBtn/RawAxis/RawPov, so the name is translated. Null for an
+        /// element with no raw counterpart.</summary>
+        private static string MappingTargetOf(PadViewModel vm, string pictureTarget)
+        {
+            if (vm.OutputType == Engine.VirtualControllerType.Nintendo
+                || (vm.OutputType == Engine.VirtualControllerType.Extended
+                    && MacroButtonNames.IsValveLetteredProfile(vm.ProfileId)))
+                return Models2D.NintendoPreviewMap.ToRaw(pictureTarget, vm.ProfileId);
+            return pictureTarget;
         }
 
         /// <summary>Write the annotation-overlay toggle back to the VM so the
@@ -1297,18 +1355,17 @@ namespace PadForge.Views
         /// to give it more.</summary>
         private const double PictureMinHeight = 200;
 
-        /// <summary>The least room left in view under the picture and its
-        /// line: the heading and first row of a picked control's table. The
-        /// folded output cards get more when they need it.</summary>
-        private const double UnderPictureInView = 124;
-
         /// <summary>The picture's height in a viewport: what the viewport has
-        /// left after the line under the picture and the room kept in view
-        /// under that. The room is the output cards at their folded height,
-        /// so a page with nothing picked and every card folded fits the
-        /// viewport and has nothing to scroll, and never less than
-        /// <see cref="UnderPictureInView"/>. A fixed 124 cut the second
-        /// folded card off at the viewport's foot (seen 2026-11-11).
+        /// left after what is always in view with it, the bar under it with
+        /// its blocks on one line, and the output cards at their folded
+        /// height. So the first look, a control picked and every card
+        /// folded, fits the viewport and has nothing to scroll, as the
+        /// Buttons board has it (#574). A pick whose bar is taller pushes
+        /// the cards down by the difference, and the picture keeps its
+        /// height from one pick to the next. With the bar left out, the
+        /// bar a pick showed pushed the cards out of view (seen
+        /// 2026-11-12), and a fixed room of 124 under the picture before
+        /// that cut the second folded card off (seen 2026-11-11).
         ///
         /// <para>The height is a whole number of the screen's pixels, two
         /// less than fits. <paramref name="pixelsPerUnit"/> is the display
@@ -1319,10 +1376,10 @@ namespace PadForge.Views
         /// does at 150%, would be rounded by the page's grid with the rows
         /// around it. The thousandth keeps a sum a hair under a whole pixel
         /// from losing that pixel.</para></summary>
-        internal static double PictureHeightFor(double viewport, double line, double foldedCards, double pixelsPerUnit)
+        internal static double PictureHeightFor(double viewport, double line, double bar, double foldedCards, double pixelsPerUnit)
         {
             if (!(pixelsPerUnit > 0)) pixelsPerUnit = 1;
-            double room = viewport - line - Math.Max(UnderPictureInView, foldedCards);
+            double room = viewport - line - bar - foldedCards;
             double pixels = Math.Floor(room * pixelsPerUnit + 0.001) - 2;
             return Math.Max(PictureMinHeight, pixels / pixelsPerUnit);
         }
@@ -1332,17 +1389,19 @@ namespace PadForge.Views
         /// shows under its line. An open card therefore leaves the picture's
         /// height as it was, and the page under it grows and scrolls. Not a
         /// number while the group cannot be measured: it is hidden, as it is
-        /// in the list and for the moment it takes to come back from there,
-        /// or it has not been laid out.</summary>
+        /// in the list, or it has not been laid out. It goes by the group's
+        /// own Visibility, as the foot's and the bar's heights do, and not
+        /// by whether the page is on a screen: a page drawn off a screen
+        /// read no cards and sized its picture as if there were none.</summary>
         private double FoldedOutputHeight()
         {
             // The slot's own card stands over the output cards.
             double own = FoldedSlotCardHeight();
-            if (OutputGroup == null || !OutputGroup.IsVisible || OutputGroup.ActualHeight <= 0) return own > 0 ? own : double.NaN;
+            if (OutputGroup == null || OutputGroup.Visibility != Visibility.Visible || OutputGroup.ActualHeight <= 0) return own > 0 ? own : double.NaN;
             double height = OutputGroup.ActualHeight + OutputGroup.Margin.Top + OutputGroup.Margin.Bottom;
             foreach (var card in new[] { SocdFoldCard, KbmSocdFoldCard, KeepAwakeFoldCard })
             {
-                if (card == null || !card.IsVisible || !card.IsExpanded) continue;
+                if (card == null || card.Visibility != Visibility.Visible || !card.IsExpanded) continue;
                 if (card.Template?.FindName("ExpandSite", card) is FrameworkElement open)
                     height -= open.ActualHeight;
             }
@@ -1376,7 +1435,27 @@ namespace PadForge.Views
         /// <summary>The folded height last measured.</summary>
         private double _foldedOutputMeasured = double.NaN;
 
-        /// <summary>The folded height to size the picture from.
+        /// <summary>The bar's height with its blocks on one line, last
+        /// measured.</summary>
+        private double _barMeasured = double.NaN;
+
+        /// <summary>The bar's height while its blocks stand on one line,
+        /// with its margins: the bar of a control with one row, as the
+        /// control picked when the picture first shows is. Not a number
+        /// while the bar holds another control's rows, or is hidden or not
+        /// laid out, and the last measurement stands then. It goes by the
+        /// bar's own Visibility, as the foot's height does, and not by
+        /// whether the bar is on a screen yet.</summary>
+        private double OneLineBarHeight()
+        {
+            if (PictureBar == null || PictureBar.Visibility != Visibility.Visible || PictureBar.ActualHeight <= 0) return double.NaN;
+            if (PickedBlocks == null || PickedBlocks.Items.Count != 1) return double.NaN;
+            return PictureBar.ActualHeight + PictureBar.Margin.Top + PictureBar.Margin.Bottom;
+        }
+
+        /// <summary>The folded height, or the bar's one-line height, to
+        /// size the picture from. The rules below hold for both, with the
+        /// bar's showing in place of a type's having cards.
         ///
         /// <para>A controller type with no output cards needs none, and
         /// leaves the last measurement alone for the type that has
@@ -1485,13 +1564,16 @@ namespace PadForge.Views
 
         /// <summary>Lays Buttons out for its view. The picture's view is a
         /// page that scrolls: the picture gets a height of its own, what the
-        /// section's viewport has left after the top row, the line and some
-        /// room under it, and the picked control's rows and the output cards
+        /// section's viewport has left after the top row, the bar and the
+        /// folded cards, and the picked control's rows and the output cards
         /// follow at their full height. Sharing one screen among them was
         /// tried first, and an open row with an open card left the 3D view
         /// a strip that showed the middle of the controller (seen
         /// 2026-11-11). The list does not scroll the page: its table has the
-        /// section and scrolls its own rows.</summary>
+        /// section and scrolls its own rows. The List board draws the list
+        /// in the page's scroll, and with every row on the page a Keyboard +
+        /// Mouse slot's list first opened in 707 ms against 457 (measured
+        /// off screen, 2026-11-12), so the table keeps its own.</summary>
         private void SyncButtonsLayout()
         {
             if (ButtonsScroll == null || MappingDataGrid == null) return;
@@ -1522,12 +1604,25 @@ namespace PadForge.Views
             // What is always in view with the picture: the room the page
             // keeps under its last card, and the foot a Keyboard + Mouse
             // slot has at the card's foot. The top row sits above the page
-            // and is not part of its viewport, and the bar a recording
-            // shows lies over the picture's foot and takes no room.
+            // and is not part of its viewport. The line a recording shows
+            // is a row under the picture that the page grows by, as the
+            // Buttons board draws it, so the picture keeps its size while it
+            // shows. Then the bar under the picture, with its blocks on one
+            // line, and the folded cards.
             double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();
+            double bar = SteadyFoldedHeight(vm.ShowPictureBar, OneLineBarHeight(), ref _barMeasured);
             double folded = SteadyFoldedHeight(vm.OutputTabVisible || vm.ShowMidiCard, FoldedOutputHeight(), ref _foldedOutputMeasured);
-            double picture = PictureHeightFor(viewport, around, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
+            double picture = PictureHeightFor(viewport, around, bar, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
             ButtonsPictureRow.Height = new GridLength(picture);
+        }
+
+        /// <summary>The bar under the picture changed height: it came with a
+        /// pick, or its blocks stand on another number of lines. While it
+        /// shows the picture is sized again, from the bar's one-line height,
+        /// which the first pick measures.</summary>
+        private void PictureBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged && DataContext is PadViewModel vm && vm.ShowPictureBar) SyncButtonsLayout();
         }
 
         private void ButtonsRoot_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1630,9 +1725,9 @@ namespace PadForge.Views
             if (DataContext is PadViewModel vm) vm.IsPickedOptionsOpen = true;
         }
 
-        /// <summary>The header's More button opens its menu under itself. A
-        /// context menu is outside the page's tree, so it is handed the
-        /// page's view model for its commands.</summary>
+        /// <summary>The header's More button, and the list's, opens its menu
+        /// under itself. A context menu is outside the page's tree, so it is
+        /// handed the page's view model for its commands.</summary>
         private void MoreMenu_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button button || button.ContextMenu == null) return;
@@ -4326,9 +4421,9 @@ namespace PadForge.Views
                 case ViewModels.LightbarMode.PlayerNumber:
                 {
                     // #191 default: the idle floor. Preview the Sony
-                    // player color the hardware will actually show, under
-                    // the GAME WRITES WIN token (a game's write takes over
-                    // and persists for the session). For a device feeding
+                    // player color the hardware will actually show, over
+                    // the card's foot line that says a game's write takes
+                    // over and persists for the session. For a device feeding
                     // several virtual controllers that is the identity
                     // winner's color (smallest displayed number), not this
                     // slot's own; fall back to the slot number when no

@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Salin</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Tempel</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplikat</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Ganti nama</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktif</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Nonaktif</value></data>
   <data name="Common_On" xml:space="preserve"><value>Aktif</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Perangkat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input dari</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah perangkat</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Gerak</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik sebuah kontrol, lalu tekan input yang akan menggerakkannya.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klik sebuah tombol keyboard atau tombol mouse, lalu tekan input yang akan menggerakkannya.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klik sebuah not atau penggeser, lalu tekan input yang akan menggerakkannya.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Tombol Petakan semua melewatkan output sentuh A dan B. Klik cincin di sekitar A atau B untuk mengikatnya.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Menunggu input untuk {0}. Tekan input pada perangkat Anda.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input dari</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Lebih banyak opsi</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Lebih sedikit opsi</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Tombol depan</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Tombol bahu</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Tombol sistem</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Tombol</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Tombol arah</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stik</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Pelatuk</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Panel sentuh</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor gerak</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tombol keyboard</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Tombol mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Gerakan mouse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Roda gulir</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor sentuh</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Tarikan analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, tangan kiri</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tangan kanan</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Penekanan mana yang dilihat game saat kedua tombol dalam satu pasangan ditahan</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Penekanan mana yang dilihat game saat kedua tombol keyboard dalam satu pasangan ditahan</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menahan defleksi stik kecil agar game terus menampilkan petunjuk kontroler</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro di sebelah kiri, atau tekan Tambah untuk membuatnya.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro dalam daftar, atau tekan + di samping Makro untuk membuatnya.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUTPUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Dingin</value></data>
@@ -917,7 +946,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Pelatuk impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Pelatuk impuls</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain per pelatuk, tukar motor, getaran pelatuk adaptif</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain per pelatuk, tukar motor, getaran pelatuk adaptif, Gaya pelatuk konstan</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Meneruskan perintah motor per pelatuk (Xbox Impulse Triggers) dari kontroler virtual ke kontroler fisik Xbox One, Elite, atau Series yang ditetapkan. Getaran pelatuk yang dikendalikan game diteruskan secara otomatis. Kontrol di bawah menskalakan besarnya per pelatuk.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Pelatuk kiri</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pelatuk kanan</value></data>
@@ -987,9 +1016,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stik</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zona mati, anti-zona mati, kurva sensitivitas, dan kalibrasi offset tengah per stik. Setiap bagian di bawah menyasar satu stik analog pada output aktif. Profil Diperluas dapat memiliki hingga empat stik. Gamepad standar memiliki dua.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Pelatuk</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zona mati, anti-zona mati, penskalaan rentang maksimum, dan kurva sensitivitas per pelatuk. Setiap bagian di bawah menyasar satu sumbu pelatuk pada output aktif. Profil Diperluas dapat menyediakan hingga delapan sumbu yang dibagi dengan tab Stik.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zona mati, anti-zona mati, penskalaan rentang maksimum, dan kurva sensitivitas per pelatuk. Setiap kartu pelatuk menyasar satu sumbu pelatuk pada output aktif. Profil Diperluas dapat menyediakan hingga delapan sumbu, yang dibagi antara stik dan pelatuk.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Menyetel cara PadForge menskalakan peristiwa force feedback dari game dan cara merutekannya ke motor getaran atau aktuator haptik kontroler fisik. Getaran audio menambahkan lapisan yang digerakkan audio sistem di atasnya.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Perangkat ini</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Seluruh kontroler</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Getaran dimainkan di {0} sebagai denyut haptik, dikirim langsung ke perangkat. Getaran yang lebih kuat memilih denyut yang lebih kuat dan mengulangnya lebih cepat.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Umpan balik haptik untuk {0} dimatikan di Logi Options+, sehingga tidak ada yang dimainkan sampai Anda menyalakannya lagi di sana.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Perangkat ini belum menjawab. Getarannya dimainkan setelah perangkat bangun.</value></data>
@@ -1077,6 +1108,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboard dan kartu grafis</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, headset, dan dudukan headset</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bilah lampu</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Game mengambil alih setiap kali menulis pencahayaan.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna heksa enam digit (RRGGBB atau #RRGGBB), lalu tekan Enter atau klik di tempat lain untuk menerapkannya.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Hapus warna ini dari palet</value></data>
@@ -1094,7 +1126,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Atur ulang getaran audio</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Atur ulang {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Bersihkan pemetaan</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Semua pemetaan di tab ini akan dibersihkan. Penetapan sumber, sumber tambahan, dan pengaturan penggabungan diatur ulang ke default.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Semua pemetaan di lapisan ini akan dibersihkan. Penetapan sumber, sumber tambahan, dan pengaturan penggabungan diatur ulang ke default.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Pola pemain</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mode LED bisu</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Kecerahan LED</value></data>
@@ -1247,6 +1279,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Tombol</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profil yang diimpor…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontroler Diperluas</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Kelola profil HIDMaestro yang diimpor pengguna: tangkap profil baru dari perangkat yang tersambung, ekspor profil yang ada ke JSON, atau hapus yang tidak lagi Anda perlukan.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klon perangkat 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Memetakan setiap sumbu, tombol, dan hat pada perangkat yang dipilih langsung ke output virtual bernomor sama. Menyesuaikan ukuran tata letak dengan perangkat dan mengganti baris perangkat ini di slot dengan penerusan 1:1.</value></data>
@@ -1294,6 +1327,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Saluran</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Output MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Saluran MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Jumlah CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Jumlah output CC (maksimum bergantung pada CC awal)</value></data>
@@ -1325,7 +1359,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Menghapus pasangan tombol ini.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Tombol pertama dari pasangan berlawanan.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Tombol kedua dari pasangan berlawanan.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Arah utama berlawanan yang ditekan bersamaan (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Jaga kontroler tetap aktif</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Sebagian game menghentikan getaran dan mengganti petunjuk tombolnya begitu melihat input mouse atau keyboard. Menahan defleksi stik yang kecil membuat game tetap memperlakukan kontroler ini sebagai perangkat aktif. Penahanan hanya bekerja selama kedua sumbu stik itu berada di bawah level yang ditahan, sehingga stik yang mengalami drift tetap dianggap diam. Input yang melewati level itu pada salah satu sumbu melepas penahanan dan diteruskan tanpa perubahan. Jaga defleksi di bawah zona mati milik game agar tidak ada yang bergerak di dalam game.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Tetap aktif</value></data>
@@ -1345,7 +1378,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Atur ulang klik</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Atur ulang paruh panel</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Atur ulang mode pemicuan</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Atur ulang sel</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Atur ulang zona mati aktivasi</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Atur ulang geometri menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Atur ulang sel</value></data>
@@ -1401,6 +1433,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Bersihkan semua</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sumber</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Nilai</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsi</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona mati sumbu-ke-tombol</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Balikkan</value></data>
@@ -1438,7 +1471,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Jika dicentang, sumbu kembali ke tengah secara bertahap saat dilepas. Jika tidak dicentang, sumbu mempertahankan posisi terakhirnya.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Tombol yang membalik output baris selama ditahan</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Pengubah: selama ditahan, tanda output baris dibalik.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Tambah sumber</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Tambah sumber</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Tambahkan input fisik lain ke baris ini</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Hapus sumber ini</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Titik {0} dari {1}, input {2}%, output {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrasikan tengah</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Titik tengah</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Tengah</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona mati</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Offset tengah, bentuk zona mati dan nilai per sumbu, kurva tiap sumbu, rentang, kemudi</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rentang</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrasikan batas adalah cara yang disarankan untuk mengoreksi stik. Fitur ini menyapu tepi yang secara fisik dapat dicapai stik, lalu menskalakan ulang setiap posisi secara proporsional terhadap tepi terukur itu, sehingga seluruh gerak asli, pada setiap sudut dan setiap defleksi, dipetakan ke lingkaran ideal tanpa ada yang terpotong. Empat penggeser di bawah hanya membatasi sumbu-sumbu utama. Gunakan untuk membatasi rentang dengan sengaja, bukan untuk mengoreksinya.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrasikan batas mengukur tepi yang dapat dicapai stik dan membentuknya ulang menjadi lingkaran penuh. Keempat penggeser hanya membatasi setiap arah.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Mengambil sampel...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset tengah X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset tengah Y</value></data>
@@ -1581,7 +1615,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nama</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Pemicu</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Saat</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Picu</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Saat ditekan</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Saat dilepas</value></data>
@@ -1613,9 +1647,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Lapisan shift tempat makro ini berada. Lapisan mana pun terpicu apa pun lapisan yang sedang aktif. Lapisan dasar dan lapisan bernama hanya terpicu selama lapisan itu aktif, persis seperti baris pemetaan.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Lapisan mana pun</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Berjalan terus-menerus selama kontroler virtual ini aktif. Tidak memerlukan tombol pemicu.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Urutan tindakan</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Lakukan</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Lapisan, Sumber, Ambang batas, Arah, Serap tombol pemicu, Ulangi</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tambah tindakan</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Edit tindakan</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Jenis</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Tombol virtual</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Sumbu virtual &amp; setir</value></data>
@@ -1684,11 +1718,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Tombol {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tekan {0} selama {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tekan {0} selama {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lepas {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tombol {0} selama {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tombol {0} selama {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lepas tombol {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tunggu {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tunggu {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Atur {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volume sistem ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Volume sistem ← {0} (maks. {1}%)</value></data>
@@ -1700,15 +1734,15 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lepas mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alihkan overlay panel sentuh</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Atur warna bilah lampu</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Menimpa bilah lampu slot PlayStation yang ditetapkan dengan warna RGB pilihan. Reaktif memudar dari intensitas penuh ke hitam selama jendela peluruhan yang dikonfigurasi, lalu mengembalikan kendali ke pengaturan tab Pencahayaan. Lekat menahan warna sampai tindakan Hapus penimpaan bilah lampu berjalan. Penulisan dari game tetap diutamakan di atas penimpaan ini.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Kilatkan bilah lampu {0} (peluruhan {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Menimpa bilah lampu slot PlayStation yang ditetapkan dengan warna RGB pilihan. Reaktif memudar dari intensitas penuh ke hitam selama jendela peluruhan yang dikonfigurasi, lalu mengembalikan kendali ke pengaturan kartu Bilah lampu. Lekat menahan warna sampai tindakan Hapus penimpaan bilah lampu berjalan. Penulisan dari game tetap diutamakan di atas penimpaan ini.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Kilatkan bilah lampu {0} (peluruhan {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Tahan bilah lampu {0} sampai dihapus</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Hapus penimpaan bilah lampu</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Hapus penimpaan bilah lampu</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Melepas penimpaan bilah lampu apa pun yang aktif pada slot yang ditetapkan. Pasangkan dengan tindakan Atur warna bilah lampu bermode Lekat untuk membatalkannya lewat makro lain.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Atur mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Atur mode bilah lampu ke {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Mengatur mode bilah lampu slot yang ditetapkan ke nilai tertentu. Bertahan seperti perubahan di tab Pencahayaan sampai tindakan lain atau pengguna mengubahnya.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Mengatur mode bilah lampu slot yang ditetapkan ke nilai tertentu. Bertahan seperti perubahan di kartu Bilah lampu sampai tindakan lain atau pengguna mengubahnya.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Gilir mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Bergilir melalui {0} mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mode bilah lampu slot melalui mode-mode yang dipilih di bawah. Setiap kali terpicu, mode berpindah ke mode tercentang berikutnya. Posisi giliran berlaku per tindakan dan diatur ulang saat aplikasi dimulai ulang.</value></data>
@@ -1723,14 +1757,14 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Peluruhan</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Pudar</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong memakai palet dari tab Pencahayaan milik slot itu sendiri.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong memakai palet pada kartu Bilah lampu milik slot itu.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pilih mode bilah lampu mana saja yang akan digilir makro. Setiap kali terpicu, makro maju ke mode tercentang berikutnya.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Getaran</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Menggerakkan getaran perangkat fisik slot dari makro. Reaktif berjalan dengan kekuatan penuh selama jendela tahan, lalu memudar ke nol selama jendela pudar. Lekat bertahan pada kekuatan penuh sampai tindakan Hentikan getaran berjalan. Ditumpuk di atas getaran dari game melalui max() sehingga umpan balik dari pengguna selalu terasa.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Denyutkan getaran {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Denyutkan getaran {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Tahan getaran {0} sampai dihapus</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Hentikan getaran</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Hentikan getaran</value></data>
@@ -1741,7 +1775,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Hentikan getaran pelatuk</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Melepas getaran pelatuk dari makro apa pun yang aktif pada slot. Pasangkan dengan Penimpaan getaran pelatuk bermode Lekat untuk mengakhiri penahanan dari makro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Atur giroskop aktif</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Mengatur status aktif giroskop slot dari makro. Alih membalik status saat ini. Aktif memaksa giroskop aktif. Nonaktif memaksanya tidak aktif. Tidak bergantung pada tombol aktivasi di tab Giroskop. Kedua sumber digabung dengan OR, sehingga tidak ada yang dapat menonaktifkan apa yang diaktifkan sumber lainnya.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Mengatur status aktif giroskop slot dari makro. Alih membalik status saat ini. Aktif memaksa giroskop aktif. Nonaktif memaksanya tidak aktif. Tidak bergantung pada Tombol aktivasi bidik di bagian Gerak dan sentuhan. Kedua sumber digabung dengan OR, sehingga tidak ada yang dapat menonaktifkan apa yang diaktifkan sumber lainnya.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Alih</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aktif</value></data>
@@ -1889,7 +1923,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Panel sentuh</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Panel sentuh</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input per panel sentuh. Gestur (usapan, ketukan, cubitan, bentuk) dan mode output kontinu (stik virtual / D-pad, mouse) menjadi sumber pemetaan yang dapat Anda ikat di tab Pemetaan.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input per panel sentuh. Gestur (usapan, ketukan, cubitan, bentuk) dan mode output kontinu (stik virtual / D-pad, mouse) menjadi sumber pemetaan yang dapat Anda ikat ke output mana pun.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Panel sentuh</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nomor panel sentuh</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Panel sentuh mana pada kontroler ini yang dikenai pengaturan di bawah. Setiap panel sentuh menyimpan gestur, rasa mouse, dan wilayah penunjuknya sendiri.</value></data>
@@ -2179,10 +2213,14 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Setel cara sensor gerak gamepad ini menggerakkan output mouse dan stik. Kalibrasikan di permukaan datar untuk menolkan drift saat diam, lalu atur sensitivitas, penghalusan, dan aturan aktivasi sesuai selera.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasi</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Pembacaan langsung giroskop dan akselerometer</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivitas</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Satuan, Ruang, balikkan sumbu, Kalibrasi dunia nyata</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Satuan, balikkan sumbu, Kalibrasi dunia nyata</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per putaran</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Pembentukan respons</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona mati, penghalusan, Akselerasi, Kurva output</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Kerangka acuan</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Pemain, atau Dunia</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruang</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Cara gerakan giroskop ditafsirkan. Lokal memakai sumbu mentah kontroler. Pemain memproyeksikan gerakan horizontal ke vertikal dunia nyata (gravitasi) sehingga putaran pergelangan tangan yang sama selalu memutar kamera, bagaimanapun Anda memegang gamepad. Dunia juga memproyeksikan ulang gerakan vertikal ke sumbu dunia.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Dipegang sebagai</value></data>
@@ -2254,6 +2292,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Tegak</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Pegangan</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Cara kontroler dipegang. Memutar giroskop, akselerometer, dan gravitasi secara bersamaan, untuk pemetaan dan untuk gerakan yang dilaporkan kontroler virtual. D-pad mengikuti kerangka yang sama, sehingga Atas tetap atas dalam pegangan tersebut.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Cara kontroler dipegang</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresif</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Santai</value></data>
@@ -2286,7 +2325,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Atur ulang arah aktivasi</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Penerusan gerakan</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Terapkan penyetelan giroskop pada penerusan gerakan</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Menjalankan penyetelan giroskop opsional di tab ini (zona mati, sensitivitas, penghalusan, kurva respons, pembalikan) pada gerakan yang dilaporkan kontroler virtual ke game atau emulator. Nonaktifkan untuk mengirim hanya pembacaan terkalibrasi dan membiarkan game menerapkan sensitivitas dan penghalusannya sendiri. Koreksi drift dari kalibrasi selalu berlaku dalam kedua keadaan.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Menjalankan penyetelan opsional dari kartu Giroskop (zona mati, sensitivitas, penghalusan, kurva respons, pembalikan) pada gerakan yang dilaporkan kontroler virtual ke game atau emulator. Nonaktifkan untuk mengirim hanya pembacaan terkalibrasi dan membiarkan game menerapkan sensitivitas dan penghalusannya sendiri. Koreksi drift dari kalibrasi selalu berlaku dalam kedua keadaan.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Atur ulang penyetelan penerusan</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivitas</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Pengali sensitivitas giroskop per sumber. 1.0 = default mesin (500°/s → defleksi penuh). Nilai di atas 1.0 lebih sensitif. Nilai di bawah 1.0 kurang sensitif.</value></data>
@@ -2303,7 +2342,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Atur ulang rentang kemiringan penuh</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Atur ulang zona mati kemiringan</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Atur ulang kemiringan giroskop</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cara sumber-sumber baris ini digabung saat lebih dari satu aktif. Pilih baris untuk mengubahnya di strip detail di bawah.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cara sumber-sumber baris ini digabung saat lebih dari satu aktif. Buka baris untuk mengubahnya di pengaturan Gabungkan.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mode trackball: sentakkan stik lalu lepaskan, dan kursor terus bergerak, meluncur hingga berhenti. Menggerakkan stik lagi akan menangkapnya.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Seberapa jauh kursor meluncur setelah sentakan. Di ujung atas rentang, kursor terus bergerak sampai Anda menggerakkan stik lagi.</value></data>
@@ -2504,7 +2543,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Sumbu pelatuk</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain per motor, getaran pelatuk, tukar motor</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain per motor, getaran pelatuk, Getaran sudut kemudi, Gaya konstan</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gain keseluruhan</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor kiri</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor kanan</value></data>
@@ -2513,6 +2552,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Kontroler ini tidak memiliki motor pelatuk, sehingga game yang memakai pelatuk impuls Xbox tidak akan terasa. Sebagai gantinya, gabungkan setiap saluran pelatuk ke motor utama di sisi yang sama.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Uji getaran</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivitas motor</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kiri</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kanan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Menerapkan gaya terus-menerus pada perangkat ini sampai Anda menonaktifkannya. Gaya yang dikendalikan game dari sumber mana pun mengambil alih selama aktif, dan gaya ini berlanjut lagi saat game berhenti.</value></data>
@@ -2591,7 +2632,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tekan tombol atau gerakkan sumbu/pelatuk untuk merekam. Sumbu terdeteksi saat didefleksikan melewati 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Tambah dari daftar</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Pilih input pemicu dari perangkat slot alih-alih merekamnya. Gestur panel sentuh yang diaktifkan di tab Panel sentuh muncul di sini.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Bersihkan pemicu</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Pilih input pemicu dari perangkat slot alih-alih merekamnya. Gestur panel sentuh yang diaktifkan di bagian Gerak dan sentuhan muncul di sini.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Hapus input</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Tekan input apa pun…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>dibalik</value></data>
@@ -2852,7 +2894,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Detik sebelum kontroler virtual dimusnahkan saat semua perangkat yang dipetakan kepadanya offline. 0 menonaktifkan. Kontroler sejenis yang tersisa bergeser naik untuk mengisi celah dan terikat ulang ke slot yang lebih rendah.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>detik (0 = tidak pernah)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Lapisan shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tambah lapisan</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tambahkan lapisan shift. Tabel pemetaan kedua yang aktif selama sebuah tombol ditahan atau dialihkan.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Dasar</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lapisan shift</value></data>
@@ -2953,7 +2995,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Kemudi gerakan</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° sampai {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona mati condong, Orientasi kontroler</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Condong gerakan: miringkan kontroler seperti setir. Petakan "Condong gerakan" ke sumbu stik dari dropdown input di Pemetaan.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Condong gerakan: miringkan kontroler seperti setir. Petakan "Condong gerakan" ke sumbu stik di bagian Tombol.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Atur ulang kemudi gerakan</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (stik kanan)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stik kiri)</value></data>
@@ -2962,7 +3004,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Cincin stik kanan</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Penyetelan untuk input Flick stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Flick stick: arahkan stik dan kamera berputar mengikutinya, sapukan di tepi untuk putaran halus. Petakan "Flick stick (stik kanan)" ke Mouse X dari dropdown input di Pemetaan, pada lapisan mana pun.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Flick stick: arahkan stik dan kamera berputar mengikutinya, sapukan di tepi untuk putaran halus. Petakan "Flick stick (stik kanan)" ke Mouse X di bagian Keyboard dan mouse, pada lapisan mana pun.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Atur ulang flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Titik per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Jumlah hitungan mouse untuk satu putaran kamera penuh 360°. Bergantung pada sensitivitas mouse game: naikkan jika flick berputar kurang, turunkan jika berputar berlebih.</value></data>
@@ -3054,7 +3096,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Suara makro dan audio sistem yang dicerminkan diputar melalui speaker bawaan kontroler yang dipilih, lewat USB atau Bluetooth. Pilih perangkat di dropdown di atas. Setiap pengaturan di sini mengikutinya.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output suara</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sumber cerminan, haptik, Volume headphone, Crossfeed, EQ parametrik, limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sumber cerminan, Volume headphone, buffer, Jalur output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Suara dirutekan ke kontroler yang dipilih secara otomatis. Lewat USB, endpoint audio milik gamepad dicocokkan menurut kontainer perangkat keras. Lewat Bluetooth, audio dialirkan dalam frame HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sumber cerminan</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Perangkat pemutaran mana yang dicerminkan ke speaker kontroler. Game yang mengirim suara tertentu ke perangkat pemutaran terpisah dapat menyasar perangkat ini.</value></data>
@@ -3067,10 +3109,10 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Hentikan semua suara</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Hentikan setiap suara makro pada gamepad ini</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Makro suara</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Suara diputar oleh makro: sebuah pemicu (penekanan tombol, pelepasan, penahanan, atau rumus) ditambah tindakan Putar suara. Buat di sini atau di tab Makro. Jeda, pengulangan, dan pengalihan semuanya berfungsi.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Suara diputar oleh makro: sebuah pemicu (penekanan tombol, pelepasan, penahanan, atau rumus) ditambah tindakan Putar suara. Buat di sini atau di bagian Makro dan menu. Jeda, pengulangan, dan pengalihan semuanya berfungsi.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Makro suara baru</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Belum ada makro suara. Buat satu, lalu pilih file suara dan pemicu.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Buka makro ini di tab Makro</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Buka makro ini di bagian Makro dan menu</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makro suara {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Putar suara</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Putar file suara (.wav, .mp3, .m4a, .aac, .wma, .flac) pada perangkat output gamepad ini</value></data>
@@ -3347,6 +3389,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Berjalan</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Berjalan, driver tersambung</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Berjalan, kontroler aktif</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR terinstal</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR belum terinstal</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR berjalan</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR berjalan, driver tersambung</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR berjalan, kontroler aktif</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Driver OpenVR lain memakai nama driver HIDMaestro, sehingga SteamVR dapat memuatnya menggantikan driver PadForge dan kontroler VR virtual tidak akan muncul. Hapus driver tersebut untuk mengatasinya: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Kontroler serial (port COM)</value></data>
@@ -3516,7 +3563,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Konsumen {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gestur mouse</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tahan tombol gestur, sentakkan, dan satu tindakan terpicu saat Anda melepasnya: kiri, kanan, atas, bawah, atau klik biasa jika di bawah jarak sentakan. Petakan kelima gestur di tab Pemetaan atau gunakan sebagai pemicu makro.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tahan tombol gestur, sentakkan, dan satu tindakan terpicu saat Anda melepasnya: kiri, kanan, atas, bawah, atau klik biasa jika di bawah jarak sentakan. Petakan kelima gestur ke output mana pun atau gunakan sebagai pemicu makro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktifkan gestur mouse</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Menyiagakan pengenal gestur untuk mouse ini pada slot ini. Tombol gestur tetap menjalankan klik normalnya selama melakukan gestur, jadi pilih tombol samping yang tidak Anda petakan untuk hal lain.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Tombol gestur</value></data>
@@ -3550,7 +3597,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Ganti lapisan</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Atur warna Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Mewarnai perangkat Razer yang ditetapkan ke kontroler virtual ini, dan setiap perangkat Razer lain yang sejenis, dengan satu warna selama tindakan berjalan.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Selama durasi di atas, mewarnai perangkat Razer yang ditetapkan ke kontroler virtual ini dan setiap perangkat Razer lain yang sejenis dengan warna ini, atau setiap perangkat Razer jika baris Razer Chroma ditetapkan. Tindakan ini menimpa tab Pencahayaan kontroler virtual mana pun, lalu mengembalikan pencahayaan. Untuk menahan warna selama pemicu ditahan, gunakan Selama ditahan dengan Sampai dilepas. Jika dua makro mewarnai bersamaan, yang lebih bawah dalam daftar yang berlaku, jadi letakkan makro tekan penuh di bawah kembarannya yang tekan ringan. Jika makro pada dua kontroler virtual mewarnai jenis perangkat Razer yang sama, nomor pemain yang lebih kecil yang berlaku. Memerlukan Razer Synapse yang sedang berjalan.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Selama durasi di atas, mewarnai perangkat Razer yang ditetapkan ke kontroler virtual ini dan setiap perangkat Razer lain yang sejenis dengan warna ini, atau setiap perangkat Razer jika baris Razer Chroma ditetapkan. Tindakan ini menimpa pencahayaan yang diatur kontroler virtual mana pun di bagian Pencahayaan dan audio, lalu mengembalikan pencahayaan. Untuk menahan warna selama pemicu ditahan, gunakan Selama ditahan dengan Sampai dilepas. Jika dua makro mewarnai bersamaan, yang lebih bawah dalam daftar yang berlaku, jadi letakkan makro tekan penuh di bawah kembarannya yang tekan ringan. Jika makro pada dua kontroler virtual mewarnai jenis perangkat Razer yang sama, nomor pemain yang lebih kecil yang berlaku. Memerlukan Razer Synapse yang sedang berjalan.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Tampilkan layar Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Memutar gambar pada VMU setiap gamepad Dreamcast di port Bliss-Box yang memasok slot ini, lalu mengembalikan setiap port ke pengaturan layarnya sendiri.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Tampilkan gambar Dreamcast: {0} × {1} ms, jumlah pengulangan {2}</value></data>
@@ -3844,10 +3891,12 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Menolkan referensi bidik giroskop yang terakumulasi pada gamepad saat ditekan. Riwayat penghalusan dibersihkan, posisi netral Condong gerakan ditangkap ulang, estimasi gravitasi diisi ulang dari pose kontroler saat ini, dan putaran yang dibangun baris Pitch, Yaw, dan Roll gerakan diurungkan.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Perangkat mana pun)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu mengubah stik atau panel sentuh fisik menjadi cincin atau kisi di layar. Tambahkan menu, pilih apa yang membukanya, lalu beri label setiap sel dan berikan ikatan.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu mengubah stik atau panel sentuh fisik menjadi cincin atau kisi di layar. Tekan + di samping Menu untuk membuatnya, pilih apa yang membukanya, lalu beri setiap sel nama dan tindakan.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu baru</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nama menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Pembuka</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Gaya</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Cincin radial</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Kisi sentuh</value></data>
@@ -3867,12 +3916,16 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Sel</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Sel tengah</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Tampilkan label</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Posisi layar</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Ukuran</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Opasitas</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Zona mati aktivasi</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Ikatan sel</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Sel {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Tambah sel</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Hapus sel terakhir</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Edit sel</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nama</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Tindakan</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikon</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Tengah</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Tidak ada</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tombol keyboard</value></data>
@@ -3885,7 +3938,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Terpicu sekali saat klik dilepas: arahkan ke sel, klik stik atau trackpad, lalu lepaskan kliknya.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Terpicu sekali saat Anda melepas: angkat jari dari panel, atau biarkan stik kembali ke tengah selagi sebuah sel disorot.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Ikatan ditahan selama sel disorot. Tidak perlu klik.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Jumlah sel yang dimiliki menu. Untuk cincin radial, ini hanya menghitung cincinnya; sel tengah terpisah.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Menambahkan sel tengah, yang dipilih selama stik atau jari berada di dalam Zona mati aktivasi.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Untuk stik, seberapa jauh harus didorong sebelum menu terbuka dan sel cincin disorot. Pada menu radial, ini juga menjadi wilayah tengah untuk stik maupun panel sentuh: di dalamnya, sel tengah dipilih jika ada.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Gambar label setiap sel pada overlay di layar.</value></data>
@@ -3895,8 +3947,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Ukuran overlay, dalam persen dari ukuran normalnya.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opasitas overlay. 100% berarti sepenuhnya padat.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Teks yang ditampilkan pada sel ini di overlay.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Apa yang dilakukan sel ini saat terpicu: "Tombol keyboard" menekan tombol keyboard, "Tombol kontroler" menekan tombol pada kontroler virtual slot ini. Sel yang diatur ke "Tidak ada" tetap terpicu sebagai sumber item menu untuk baris Pemetaan dan pemicu makro.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini, bukan dari tata letak kontroler virtual. Ikatan sel di bawah adalah output menu.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Apa yang dilakukan sel ini saat terpicu: "Tombol keyboard" menekan tombol keyboard, "Tombol kontroler" menekan tombol pada kontroler virtual slot ini. Sel yang diatur ke "Tidak ada" tetap terpicu sebagai sumber item menu untuk pemetaan dan pemicu makro.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini, bukan dari tata letak kontroler virtual. Sel di bawah menentukan output menu.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Sumbu kustom</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Kendali X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Kendali Y</value></data>
@@ -3921,13 +3973,16 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tombol</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Keyboard dan mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Not dan kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Tangan</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stik dan pelatuk</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Getaran dan haptik</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Gerak dan sentuhan</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Pencahayaan dan audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro dan menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shaker</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Merutekan getaran game dan force feedback yang diterima kontroler virtual ini ke output audio sebagai nada frekuensi rendah untuk bass shaker dan subwoofer.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Memutar getaran game sebagai nada rendah melalui bass shaker atau subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Perangkat output, saluran, gain, nada untuk tiap motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Berfungsi dengan kontroler virtual Xbox, DualShock 3, DualShock 4 / DualSense, dan Nintendo Switch Pro, serta kontroler virtual Diperluas yang memiliki force feedback, seperti setir balap, dan Steam Deck Controller (Composite). Umpan balik game dan Uji getaran diputar melalui output audio. Getaran makro tetap di kontroler.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Atur ulang getaran ke audio</value></data>
@@ -3956,19 +4011,22 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Memutar saluran umpan balik ini sebagai nada. Gain dan frekuensi tetap tersimpan selama nonaktif.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekuensi nada untuk saluran ini, 20 sampai 120 Hz. Jalankan sapuan frekuensi untuk menemukan titik respons terkuat shaker Anda.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Kenyaringan saluran ini sebelum gain utama.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Gain</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Uji</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Memutar nada saluran ini selama 1.5 detik pada gain yang diatur.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Atur ulang motor rendah</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Atur ulang motor tinggi</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Atur ulang pelatuk kiri</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Atur ulang pelatuk kanan</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Periksa shaker</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Sapuan frekuensi</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Menyapukan nada dari 20 sampai 120 Hz selama delapan detik pada perutean motor rendah. Catat di mana shaker Anda merespons paling kuat dan atur frekuensi suara di titik itu.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Hentikan</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Menghentikan nada uji atau sapuan.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Tag NFC apa pun</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filter input (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filter output dan input</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Hanya menampilkan baris dan input yang cocok. Tekan Ctrl+F untuk mengetik di sini.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Pilih input perangkat mana saja yang ditawarkan pemilih</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Ditampilkan di pemilih</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Frasa ucapan apa pun</value></data>
@@ -4077,6 +4135,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Atur ulang feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>EQ parametrik</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filter per pita pada audio kontroler. Diterapkan sebelum audio dienkode, sehingga limiter di bawah mencegah pita yang dikuatkan mengalami clipping.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, pita, impor</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Level keseluruhan sebelum pita-pita. Profil AutoEq menyertakan preamp negatif agar penguatannya tidak mengalami clipping, dan mengimpor profil akan mengatur nilai ini untuk Anda.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aktif</value></data>
@@ -4307,7 +4366,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Atur ulang ke pembukaan saat disentuh atau didefleksikan.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Kendalikan dengan</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Input fisik yang mengendalikan sel tersorot selama lapisan menjaga menu ini tetap terbuka.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Lapisan membuka menu; input ini mengendalikannya. Ikatan sel menentukan outputnya.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Dibaca dari kontroler fisik yang ditetapkan ke slot ini. Lapisan membuka menu, dan input ini mengendalikannya. Sel menu menentukan outputnya.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ukuran ikon</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Ukuran ikon relatif terhadap ukuran ikon normal menu, dari 25% hingga 200%. Menghapus ikon mengatur ulang ukurannya ke 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Menahan ikatan sel tersorot selama Input klik ditahan. Tengah radial yang tersorot dapat terpicu selagi stik diam.</value></data>
@@ -4432,7 +4491,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referensi karya Antoine Aflalo untuk tata letak antarmuka IPolicyConfig Windows yang tidak terdokumentasi, yang dipakai PadForge untuk mengaktifkan kembali endpoint audio kontroler. MIT. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimpor tab Audio, karya Jaakko Pasanen. MIT. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimpor oleh EQ parametrik kontroler, karya Jaakko Pasanen. MIT. Hanya dokumentasi, tidak ada kode yang disertakan.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknik SendInput di balik makro Blok teks dan hook kombinasi keyboard: pengetikan Unicode, batas batch, tombol mask untuk tombol Win, dan input injeksi bertanda. GPL-2.0-or-later, dibaca hanya sebagai dokumentasi, tidak ada kode GPL yang disertakan.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Arah</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Langkah</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>sampai</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Gagang</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} sedang mengatur pelatuk kontroler ini.</value></data>
@@ -4716,7 +4776,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Gagang tidak bergerak cukup jauh, sehingga jangkauan tetap seperti semula. Gerakkan ke setiap tepi selama penyapuan berlangsung.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon tertutup sebelum penyapuan selesai.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Memainkan game dengan Novint Falcon melalui SDK Force Dimension, yang Anda instal dari Force Dimension. Gagang berfungsi sebagai stik, keempat tombol pada genggaman berfungsi sebagai tombol, dan PadForge meneruskan getaran serta efek dari game ke gagang sebagai gaya. Tab Force Feedback tiap slot mengatur bagaimana Falcon terasa.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Memainkan game dengan Novint Falcon melalui SDK Force Dimension, yang Anda instal dari Force Dimension. Gagang berfungsi sebagai stik, keempat tombol pada genggaman berfungsi sebagai tombol, dan PadForge meneruskan getaran serta efek dari game ke gagang sebagai gaya. Kartu Novint Falcon di bagian Getaran dan haptik pada setiap kontroler mengatur bagaimana Falcon terasa.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Kendalikan Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Membuka setiap Falcon melalui dhd64.dll milik Force Dimension. Falcon yang terbuka hanya menjadi milik PadForge, sehingga FalconJoyForce dan alat Force Dimension tidak dapat membukanya selama ini aktif. Jika nonaktif, PadForge menutup semua Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Pustaka Falcon diatur ke {0}. PadForge memuatnya dalam beberapa detik, dan Falcon yang terbuka pada salinan lain akan terbuka lagi pada salinan ini.</value></data>
@@ -4929,7 +4989,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Selama waktu tertentu</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Sampai dihentikan</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Waktu</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Diputar pada setiap DualSense dan DualSense Edge di slot ini. Efek pelatuk dari game itu sendiri dan dari mod game didahulukan, dan pengaturan tab Pelatuk adaptif kembali saat efek berakhir. Zona berkisar dari 0 saat diam sampai 9 saat ditarik penuh. Busur, Berlari kencang, dan Mesin bukan efek resmi DualSense, dan pembaruan firmware bisa menghapusnya. Kontroler Xbox dengan Terjemahkan getaran pelatuk adaptif aktif merasakan efek getar sebagai getaran pelatuk.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Diputar pada setiap DualSense dan DualSense Edge di slot ini. Efek pelatuk dari game itu sendiri dan dari mod game didahulukan, dan pengaturan kartu Pelatuk adaptif kembali saat efek berakhir. Zona berkisar dari 0 saat diam sampai 9 saat ditarik penuh. Busur, Berlari kencang, dan Mesin bukan efek resmi DualSense, dan pembaruan firmware bisa menghapusnya. Kontroler Xbox dengan Terjemahkan getaran pelatuk adaptif aktif merasakan efek getar sebagai getaran pelatuk.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} pada {1} selama {2} md</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} pada {1} selama ditahan</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} pada {1} sampai dihentikan</value></data>
@@ -4958,7 +5018,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Sampai dihapus</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Waktu</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Pertahankan warnanya</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Aksi ini menyalakan tombol yang sama pada setiap keyboard yang dikendalikan pencahayaannya oleh kontroler virtual ini, di atas warna yang diberikan tab Pencahayaan. Angka menunjukkan urutan pemilihan. Hitung mundur mematikan tombol satu per satu, dimulai dari yang terakhir dipilih, jadi pilih 1 sampai 0 untuk pendinginan pada baris angka. Keyboard atau mouse hanya menyala saat Kendalikan pencahayaan perangkat ini aktif.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Aksi ini menyalakan tombol yang sama pada setiap keyboard yang dikendalikan pencahayaannya oleh kontroler virtual ini, di atas warna yang diaturnya untuk tombol-tombol itu di bagian Pencahayaan dan audio. Angka menunjukkan urutan pemilihan. Hitung mundur mematikan tombol satu per satu, dimulai dari yang terakhir dipilih, jadi pilih 1 sampai 0 untuk pendinginan pada baris angka. Keyboard atau mouse hanya menyala saat Kendalikan pencahayaan perangkat ini aktif.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Lainnya</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, nomor {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Overlay layar</value></data>
@@ -5018,7 +5078,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Titik aktuasi tombol analog tidak terbawa.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD mengirim kontroler ini ke perangkat lain melalui adaptor. PadForge memainkannya di PC ini, dan Tautan Jarak Jauh mengirimkannya ke PC lain yang menjalankan PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge membaca dua stik, dan ini menyebut stik ketiga.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulasi setir tidak terbawa. Petakan setir di tab Pemetaan.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulasi setir tidak terbawa. Petakan setir di bagian Tombol.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profil ini menyebut aksi khusus yang tidak ada di Actions.xml di samping folder Profiles-nya: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Pengaturan ini tidak terbawa: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD mencegah input ini mencapai Windows. Aktifkan Serap input yang dipetakan untuk {0} di halaman Perangkat, yang mencegah input yang dipetakan profil ini.</value></data>
@@ -5026,8 +5086,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Dikonfirmasi saat stik kembali ke tengah atau lapisan berakhir. Tombol Terapkan milik reWASD tidak digunakan.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>File ini memisahkan dua kontroler. Di PadForge, kontroler mana pun pada slot memicu pemetaan ini.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kecepatan gerak atau flick tidak terbawa.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ini tidak terbawa. Atur di tab Panel sentuh.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Tidak ada apa pun di file ini yang membuka lapisan ini. Beri tombol di tab Pemetaan.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ini tidak terbawa. Atur di bagian Gerak dan sentuhan.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Tidak ada apa pun di file ini yang membuka lapisan ini. Di bagian Tombol, klik kanan lapisan itu dan pilih Konfigurasikan aktivator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Tombolnya menjalankan ini saat ditekan: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Pintasan profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Melakukan hal yang sama seperti pintasan profil: memuat profil bernama, profil berikutnya atau sebelumnya, menampilkan atau menyembunyikan jendela, atau mematikan dan menyalakan kontroler virtual.</value></data>
@@ -5197,7 +5257,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Sel yang dipilih terpicu sekali, sebagai ketukan singkat, saat Picu dilepas. Jika Sembunyikan setelah memicu aktif, sel terpicu segera setelah Picu menyembunyikan bar.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Sebuah sel terpicu sekali, sebagai ketukan singkat, saat Picu menyembunyikan bar dengan Sembunyikan setelah memicu aktif. Jika Pusatkan ulang setiap kali aktif, sel tengah yang terpicu.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Sel yang dipilih ditahan selama bar ditampilkan. Melangkah melepas satu sel dan menahan sel berikutnya.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Cincin radial, Kisi sentuh, dan Hotbar menjalankan pengikatan sel. Keyboard mengetik tombol dari tata letak Windows yang sedang dipakai.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Cincin radial, Kisi sentuh, dan Hotbar menjalankan tindakan sel-selnya. Keyboard mengetik tombol dari tata letak Windows yang sedang dipakai.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Tata letak</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cara keyboard menata tombolnya dan cara kontroler memilihnya.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Satu sorotan, digerakkan dengan stik atau empat input, tata letak yang dipakai Windows, Xbox, dan Steam.</value></data>
@@ -5304,11 +5364,11 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tombol Handheld PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Lampu Tombol PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Pemetaan di tab Pemetaan bisa.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Pemetaan di bagian Tombol bisa.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge menjalankan delapan Overlay layar, dan ini adalah crosshair kesembilan atau kesepuluh milik reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge membaca Condong kiri dan kanan dari roll serta Condong dari yaw, bawaan reWASD. Preferensi reWASD dapat menukar keduanya, dan file ini tidak menyebut apakah keduanya ditukar.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Pada mode Tilt, Lean milik reWASD adalah putaran mengelilingi sumbu vertikal, dan sensor gerak tidak memberi sudut untuk putaran itu.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge membaca diagonal panel sentuh sebagai dua arah sekaligus, yang hanya dilaporkan panel sentuh jika Mode D-pad di tab Panel sentuh adalah 8 arah.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge membaca diagonal panel sentuh sebagai dua arah sekaligus, yang hanya dilaporkan panel sentuh jika Mode D-pad di bagian Gerak dan sentuhan adalah 8 arah.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge membaca arah giroskop melewati satu ambang, dan reWASD tidak memberi satuan untuk tepi zona giroskop.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows menempatkan penunjuk di arah yang ditunjuk stik. Di PadForge, stik menggerakkan penunjuk.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} membaca stik sebelum rotasinya. DS4Windows membacanya sesudahnya.</value></data>

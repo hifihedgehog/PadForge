@@ -249,7 +249,7 @@
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Tukuange {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Tukuange kī {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tatali {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tatali {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Puke</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Lanu</value></data>
@@ -739,6 +739,15 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ngingila LED, Sīpinga ʻo e Tokotaha Vaʻinga, Mode LED Fakalongolongo</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ngaahi faile Zip ʻo e ngaahi ongo ki he ngaahi macro ongo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ngaahi faile Zip ʻo e ngaahi ʻīmisi ki he ngaahi puha ʻo e menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ʻo e motor taki taha, tetetete trigger, fetongi motor</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ʻo e trigger taki taha, fetongi motor, tetetete trigger adaptive</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ʻo e motor, tetetete trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ʻo e trigger, fetongi motor, tetetete trigger adaptive, Constant Trigger Force</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu foʻou</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Toʻo ʻa e puha fakaʻosi</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Hingoa</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Maʻuʻanga, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller kotoa</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakaiʻi ʻa e ngaahi shaker</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player pe Māmani</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Toʻohema</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Toʻomataʻu</value></data>
 </root>

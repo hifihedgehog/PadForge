@@ -557,6 +557,24 @@ namespace PadForge.ViewModels
         /// ring on it, are the picked control's own (#574).</summary>
         public string Control { get; init; }
 
+        /// <summary>The control a row is, in a gamepad's names
+        /// ("LeftThumbButton", "ButtonGuide"), where its target does not
+        /// say: a lettered preset's raw button rows are laid out by the
+        /// control each one is. Null for every other row, whose target
+        /// names it. The bar under the picture reads it for a control's
+        /// kind, and to put a stick's click with its stick (#574).</summary>
+        public string Role { get; init; }
+
+        /// <summary>The picture's name for the row's control, where that is
+        /// not the row's own: a MIDI note's pitch ("C4" for Note 60), which
+        /// is what its key on the picture says. Null for every other
+        /// row.</summary>
+        public string PictureName { get; init; }
+
+        /// <summary>The name the bar under the picture has for the row: the
+        /// picture's where it has one, else the row's own.</summary>
+        public string BarLabel => PictureName ?? TargetLabel;
+
         // ─────────────────────────────────────────────
         //  Source (physical input)
         // ─────────────────────────────────────────────
@@ -1139,6 +1157,20 @@ namespace PadForge.ViewModels
         {
             get => _currentValueText;
             set => SetProperty(ref _currentValueText, value ?? string.Empty);
+        }
+
+        private string _currentPercentText = string.Empty;
+
+        /// <summary>The row's live value as a share of its full scale, as
+        /// the bar under the picture reads it (#574): "0 %". A stick's axis
+        /// reads from -100 to 100, a button or a trigger from 0 to 100. Set
+        /// by InputService with <see cref="CurrentValueText"/>, from the
+        /// same value. The two motion rows that list three axes read them
+        /// as they are, since they are no one number.</summary>
+        public string CurrentPercentText
+        {
+            get => _currentPercentText;
+            set => SetProperty(ref _currentPercentText, value ?? string.Empty);
         }
 
         private bool _isInputActive;

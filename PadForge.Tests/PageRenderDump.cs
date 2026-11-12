@@ -24,8 +24,12 @@ namespace PadForge.Tests
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
     /// a real setup may not have: a trigger of every kind of input, a recording, an open step
     /// of every action type, and a menu of every style, each a second time in a tall picture with
-    /// its More row open, and a ring's cell open on its fields. Last come the first section of
-    /// each kind of slot. The page stands in no window, so nothing it does as it loads
+    /// its More row open, and a ring's cell open on its fields, and each editor with nothing
+    /// picked. Then come the first section of each kind of slot, and last the four stacked
+    /// sections, Sticks and Triggers, Rumble and Haptics, Motion and Touch, and Lights and
+    /// Sound, each drawn whole
+    /// and again with its More rows and the lines the string round made open. The page
+    /// stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -162,10 +166,13 @@ namespace PadForge.Tests
                     void Ring(string file)
                     {
                         var ring = (Border)page.FindName("PickRing");
+                        var hover = (Border)page.FindName("HoverRing");
                         var layer = (Canvas)page.FindName("PickRingLayer");
                         string at = ring.Visibility == Visibility.Visible
                             ? FormattableString.Invariant($"at {Canvas.GetLeft(ring):0.#},{Canvas.GetTop(ring):0.#} size {ring.Width:0.#}x{ring.Height:0.#} radius {ring.CornerRadius.TopLeft:0.#} in a layer {layer.ActualWidth:0.#}x{layer.ActualHeight:0.#}")
                             : "none";
+                        if (hover.Visibility == Visibility.Visible)
+                            at += FormattableString.Invariant($", hover at {Canvas.GetLeft(hover):0.#},{Canvas.GetTop(hover):0.#} size {hover.Width:0.#}x{hover.Height:0.#}");
                         File.AppendAllText(Path.Combine(dir, "rings.txt"), file + ": " + at + Environment.NewLine);
                     }
 
@@ -202,6 +209,9 @@ namespace PadForge.Tests
                         }
                         Lookups(file);
                     }
+                    // The macro editor with no macro picked: its hint.
+                    Picture("macros-none.png", () => vm.SelectedMacro = null);
+                    Lookups("macros-none.png");
 
                     // A menu of every style, in the menus' part of the section.
                     foreach (PadForge.Engine.Menus.MenuKind kind in Enum.GetValues(typeof(PadForge.Engine.Menus.MenuKind)))
@@ -238,6 +248,10 @@ namespace PadForge.Tests
                             menu.SelectedCell = null;
                         }
                     }
+
+                    // The menu editor with no menu picked: its hint.
+                    Picture("menus-none.png", () => vm.SelectedMenu = null);
+                    Lookups("menus-none.png");
 
                     // The first section of each kind of slot, last, since a
                     // slot's kind changes what the whole page holds.
@@ -294,8 +308,35 @@ namespace PadForge.Tests
                             Picture(also, () => vm.PickedTarget = target);
                             Ring(also);
                         }
+                        if (type is PadForge.Engine.VirtualControllerType.Xbox or PadForge.Engine.VirtualControllerType.KeyboardMouse)
+                        {
+                            // The list: a gamepad's with its groups, and a
+                            // Keyboard + Mouse slot's, the longest table a slot
+                            // has. steps.txt says how long each first open took.
+                            string list = file.Replace(".png", "-list.png");
+                            Picture(list, () => vm.SelectedConfigTab = PadViewModel.MappingsTabIndex);
+                            Lookups(list);
+                            vm.SelectedConfigTab = 0;
+                        }
                         if (type == PadForge.Engine.VirtualControllerType.Xbox)
                         {
+                            // A recording on the 3D model: the control flashes
+                            // and the line under the picture says what it
+                            // listens for. A stick's side flashes its quadrant.
+                            foreach (string target in new[] { "ButtonA", "LeftThumbAxisXNeg" })
+                            {
+                                string listening = file.Replace(".png", "-recording-" + target.ToLowerInvariant() + ".png");
+                                Picture(listening, () => vm.CurrentRecordingTarget = target);
+                                vm.CurrentRecordingTarget = null;
+                            }
+                            // A recording that could not start says why there.
+                            string refused = file.Replace(".png", "-refused.png");
+                            Picture(refused, () =>
+                            {
+                                vm.PickedTarget = "ButtonY";
+                                vm.ShowRecordRefusal(PadForge.Resources.Strings.Strings.Instance.Status_NoDeviceToRecord);
+                            });
+                            vm.PickedTarget = null;
                             // The 2D model. The page shows it by a setting of
                             // the window's, which a page in no window lacks,
                             // so it is shown by hand and put back after.
@@ -310,6 +351,22 @@ namespace PadForge.Tests
                                 Picture(flat, () => vm.PickedTarget = target);
                                 Ring(flat);
                             }
+                            // The pointer on a control beside the picked one:
+                            // its own fainter line, as the board's hover. On
+                            // the picked control it draws nothing more.
+                            var hoverAt = typeof(PadPage).GetMethod("OnHoverTargetChanged", BindingFlags.NonPublic | BindingFlags.Instance)!;
+                            vm.PickedTarget = "ButtonA";
+                            foreach (string under in new[] { "ButtonB", "ButtonA" })
+                            {
+                                string hovered = file.Replace(".png", "-2d-hover-" + under.ToLowerInvariant() + ".png");
+                                Picture(hovered, () => hoverAt.Invoke(page, new object[] { model2D, under }));
+                                Ring(hovered);
+                            }
+                            hoverAt.Invoke(page, new object[] { model2D, null });
+                            // A recording on the 2D model.
+                            string flatListening = file.Replace(".png", "-2d-recording-buttona.png");
+                            Picture(flatListening, () => vm.CurrentRecordingTarget = "ButtonA");
+                            vm.CurrentRecordingTarget = null;
                             model2D.Unbind();
                             model2D.Visibility = Visibility.Collapsed;
                             model3D.Visibility = Visibility.Visible;
@@ -405,6 +462,55 @@ namespace PadForge.Tests
                     vm.IsPickedOptionsOpen = false;
                     vm.PickedTarget = null;
                     toMotion.ScrollToHome();
+
+                    // The four stacked sections, each in a tall picture with
+                    // the groups and cards its board draws put up by hand: a
+                    // page in no window has no device, and the page shows a
+                    // group by the device's abilities. Then every group of the
+                    // section with its More rows and the lines the string round
+                    // made open, which close again after, since their state is
+                    // the app's and outlives the page.
+                    void Show(IEnumerable<string> names)
+                    {
+                        foreach (string name in names) ((UIElement)page.FindName(name)).Visibility = Visibility.Visible;
+                    }
+                    void Fold(bool open, IEnumerable<string> names)
+                    {
+                        foreach (string name in names) ((System.Windows.Controls.Expander)page.FindName(name)).IsExpanded = open;
+                    }
+                    // The audio chain's values as the Lights board draws them:
+                    // the Jan Meier preset, and the EQ on. The Rumble board's
+                    // right trigger plays Weapon, which shows its Range row.
+                    vm.DeviceConfig.AudioCrossfeedLevel = 7;
+                    vm.DeviceConfig.AudioEqEnabled = true;
+                    vm.DeviceConfig.RightTriggerMode = AdaptiveTriggerMode.Weapon;
+                    var sections = new (string Name, int Tab, string[] Board, string[] More, string[] Open)[]
+                    {
+                        ("sticks", 4, new[] { "TabSticks", "TabTriggers" }, new string[0], new string[0]),
+                        ("rumble", 5, new[] { "TabForceFeedback", "TabAdaptiveTriggers", "TabBassShakers" },
+                            new[] { "TabImpulseTriggers", "TabWheel", "WheelRangeRow", "WheelRpmRow", "FalconCard" },
+                            new[] { "ForceFeedbackMore", "ImpulseTriggersMore", "BassShakersMore" }),
+                        ("motion", 8, new[] { "TabGyro", "TabTouchpad", "GyroCalibrationCard", "GyroSensitivityCard", "GyroEngageCard",
+                                "GyroResponseCard", "GyroSpaceCard", "GyroPassthroughCard" },
+                            new[] { "GyroSimulationCard", "CompassYawCard" },
+                            new[] { "GyroCalibrationMore", "GyroSensitivityMore", "GyroGripCard", "GyroSpaceCard" }),
+                        ("lights", 7, new[] { "TabLighting", "LightbarModeCard", "IndicatorLedsCard", "PeripheralLightingCard", "TabAudio", "AudioChainList" },
+                            new string[0],
+                            new[] { "SoundOutputMore", "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard", "SoundMacrosFoldCard" }),
+                    };
+                    foreach (var (name, tab, board, more, open) in sections)
+                    {
+                        vm.SelectedConfigTab = tab;
+                        Lay(ground, TallHeight);
+                        Settle(dispatcher);
+                        string file = "section-" + name + ".png";
+                        Picture(file, () => Show(board), TallHeight);
+                        Lookups(file);
+                        string all = "section-" + name + "-open.png";
+                        Picture(all, () => { Show(more); Fold(true, open); }, TallHeight);
+                        Lookups(all);
+                        Fold(false, open);
+                    }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
                 finally

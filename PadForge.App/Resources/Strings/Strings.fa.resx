@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>کپی</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>جای‌گذاری</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>تکثیر</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>تغییر نام</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>فعال</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>غیرفعال</value></data>
   <data name="Common_On" xml:space="preserve"><value>روشن</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>دستگاه</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ورودی از</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>افزودن دستگاه</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>بلوتوث</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>تصویر</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>فهرست</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} خروجی</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>حرکت</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>روی یک کنترل کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>روی یک کلید یا دکمه ماوس کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>روی یک نت یا لغزنده کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«نگاشت همه» خروجی‌های لمسی A و B را نادیده می‌گیرد. برای نگاشت یکی از آن‌ها، روی حلقه دور A یا B کلیک کنید.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>در حال گوش دادن به {0}. ورودی را روی دستگاه خود فشار دهید.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}، ورودی از</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>گزینه‌های بیشتر</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>گزینه‌های کمتر</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>دکمه اصلی</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>دکمه شانه</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>دکمه سیستمی</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>دکمه</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>دکمه‌های جهتی</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>استیک</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ماشه</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>تاچ‌پد</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>حسگر حرکتی</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>کلید صفحه‌کلید</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>دکمه ماوس</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>حرکت ماوس</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>چرخ پیمایش</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>کنترل چنج</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>حسگر لمسی</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>کشش آنالوگ</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}، دست چپ</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}، دست راست</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>بازی‌ها هنگام نگه داشتن هر دو دکمه یک جفت کدام فشار را می‌بینند</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>بازی‌ها هنگام نگه داشتن هر دو کلید یک جفت کدام فشار را می‌بینند</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>انحراف کوچک چوب آنالوگ را نگه می‌دارد تا بازی‌ها راهنمای کنترلر را نشان دهند</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>در حال آهنگری</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>یک ماکرو را از فهرست انتخاب کنید یا برای ساختن ماکرو «افزودن» را فشار دهید.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>یک ماکرو را از فهرست انتخاب کنید یا برای ساختن ماکرو، + کنار «ماکروها» را فشار دهید.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>خروجی</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>سرد</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ماشه‌های ایمپالس</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ماشه‌های ایمپالس</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>بهره هر ماشه، جابه‌جایی موتورها، لرزش‌های ماشه تطبیقی</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>بهره هر ماشه، جابه‌جایی موتورها، لرزش‌های ماشه تطبیقی، نیروی ثابت ماشه</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>فرمان‌های موتور هر ماشه (Xbox Impulse Triggers) را از کنترلر مجازی به کنترلر فیزیکی اختصاص‌یافته Xbox One، Elite یا Series می‌فرستد. لرزش ماشه‌ای که بازی ایجاد می‌کند به‌طور خودکار عبور می‌کند. کنترل‌های زیر شدت را برای هر ماشه مقیاس‌بندی می‌کنند.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ماشه چپ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ماشه راست</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>استیک‌ها</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ناحیه مرده، ضد ناحیه مرده، منحنی حساسیت و کالیبراسیون آفست مرکز برای هر استیک. هر بخش زیر به یک استیک آنالوگ در خروجی فعال مربوط است. پروفایل‌های گسترش‌یافته می‌توانند تا چهار استیک داشته باشند. گیم‌پدهای استاندارد دو استیک دارند.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ماشه‌ها</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ناحیه مرده، ضد ناحیه مرده، مقیاس‌بندی بیشینه محدوده و منحنی حساسیت برای هر ماشه. هر بخش زیر به یک محور ماشه در خروجی فعال مربوط است. پروفایل‌های گسترش‌یافته می‌توانند تا هشت محور داشته باشند که با زبانه «استیک‌ها» مشترک است.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ناحیه مرده، ضد ناحیه مرده، مقیاس‌بندی بیشینه محدوده و منحنی حساسیت برای هر ماشه. هر کارت ماشه به یک محور ماشه در خروجی فعال مربوط است. پروفایل‌های گسترش‌یافته می‌توانند تا هشت محور داشته باشند که میان استیک‌ها و ماشه‌ها مشترک است.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>فورس فیدبک</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>تنظیم می‌کند PadForge رویدادهای فورس فیدبک بازی را چگونه مقیاس‌بندی و به موتورهای لرزش یا عملگرهای هپتیک کنترلر فیزیکی هدایت کند. «لرزش صوتی» لایه‌ای مبتنی بر صدای سیستم روی آن اضافه می‌کند.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>این دستگاه</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>کل کنترلر</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>لرزش روی {0} به‌صورت پالس‌های هپتیک پخش می‌شود که مستقیماً به دستگاه فرستاده می‌شوند. لرزش قوی‌تر پالس قوی‌تری انتخاب و آن را سریع‌تر تکرار می‌کند.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>بازخورد هپتیک برای {0} در Logi Options+ خاموش است، بنابراین تا وقتی آنجا دوباره روشنش نکنید چیزی پخش نمی‌شود.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>این دستگاه هنوز پاسخ نداده است. لرزش آن پس از بیدار شدنش پخش می‌شود.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>مادربردها و کارت‌های گرافیک</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>ماوس‌پدها، هدست‌ها و پایه‌های هدست</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>نوار نوری</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>هر وقت بازی‌ها نورپردازی را بنویسند کنترل را به دست می‌گیرند.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>یک رنگ هگز شش‌رقمی (RRGGBB یا #RRGGBB) وارد کنید و برای اعمال، Enter را فشار دهید یا بیرون از کادر کلیک کنید.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>برداشتن این رنگ از پالت</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>بازنشانی لرزش صوتی</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>بازنشانی {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>پاک کردن نگاشت‌ها</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>همه نگاشت‌های این زبانه پاک می‌شود. اختصاص منبع‌ها، منبع‌های اضافی و تنظیمات ترکیب به پیش‌فرض بازنشانی می‌شوند.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>همه نگاشت‌های این لایه پاک می‌شود. اختصاص منبع‌ها، منبع‌های اضافی و تنظیمات ترکیب به پیش‌فرض بازنشانی می‌شوند.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>الگوی بازیکن</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>حالت LED بی‌صدا</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>روشنایی LED</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVها</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>دکمه‌ها</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>پروفایل‌های واردشده…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>کنترلر گسترش‌یافته</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>مدیریت پروفایل‌های HIDMaestro واردشده توسط کاربر: پروفایل جدیدی از یک دستگاه متصل بگیرید، پروفایل موجودی را به JSON صادر کنید یا پروفایلی را که دیگر لازم ندارید حذف کنید.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>همانندسازی 1:1 دستگاه</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>هر محور، دکمه و هت دستگاه انتخاب‌شده را مستقیماً به خروجی مجازی هم‌شماره نگاشت می‌کند. چیدمان را به اندازه دستگاه تنظیم می‌کند و ردیف‌های این دستگاه در اسلات را با یک عبور مستقیم 1:1 جایگزین می‌کند.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>فورس فیدبک</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>کانال</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>خروجی MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>کانال MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>تعداد CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>تعداد خروجی‌های CC (بیشینه به «CC شروع» بستگی دارد)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>این جفت‌کلید را برمی‌دارد.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>کلید اول جفت متضاد.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>کلید دوم جفت متضاد.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>جهت‌های اصلی متضاد هم‌زمان (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>بیدار نگه داشتن کنترلر</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>برخی بازی‌ها به‌محض دیدن ورودی ماوس یا صفحه‌کلید، لرزش را متوقف می‌کنند و راهنمای دکمه‌هایشان را عوض می‌کنند. نگه داشتن یک انحراف کوچک استیک باعث می‌شود بازی همچنان این کنترلر را دستگاه فعال بداند. این نگه‌داشت فقط وقتی فعال می‌شود که هر دو محور آن استیک زیر سطح نگه‌داشته باشند، پس استیکی که دریفت دارد هم در حال سکون به شمار می‌آید. ورودی فراتر از این سطح در هر یک از محورها آن را رها می‌کند و بدون تغییر عبور می‌کند. انحراف را زیر ناحیه مرده خود بازی نگه دارید تا چیزی در بازی حرکت نکند.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>بیدار نگه داشتن</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>بازنشانی کلیک</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>بازنشانی نیمه پد</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>بازنشانی حالت فعال شدن</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>بازنشانی خانه‌ها</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>بازنشانی ناحیه مرده فعال‌سازی</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>بازنشانی هندسه منو</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>بازنشانی خانه</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>پاک کردن همه</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>منبع</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>گزینه‌ها</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>ناحیه مرده محور به دکمه</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>معکوس کردن</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>اگر تیک خورده باشد، محور با رها کردن به‌تدریج به مرکز برمی‌گردد. اگر تیک نخورده باشد، آخرین موقعیتش را نگه می‌دارد.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>دکمه‌ای که تا وقتی نگه داشته شده خروجی ردیف را معکوس می‌کند</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>تغییردهنده: تا وقتی نگه داشته شده، علامت خروجی ردیف وارونه می‌شود.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ افزودن منبع</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>افزودن منبع</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>افزودن یک ورودی فیزیکی دیگر به این ردیف</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>برداشتن این منبع</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>نقطه {0} از {1}، ورودی {2}%، خروجی {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>کالیبره کردن مرکز</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>نقطه مرکز</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>مرکز</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ناحیه مرده</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>جابه‌جایی مرکز، شکل ناحیه مرده و مقدار هر محور، منحنی هر محور، محدوده، هدایت</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>محدوده</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«کالیبره کردن مرز» روش پیشنهادی برای تنظیم دقیق استیک است. لبه‌ای را که استیک از نظر فیزیکی به آن می‌رسد می‌پیماید و سپس هر موقعیت را متناسب با همان لبه اندازه‌گیری‌شده دوباره مقیاس‌بندی می‌کند، تا کل حرکت طبیعی استیک، در هر زاویه و هر میزان انحراف، بدون هیچ بریدگی روی یک دایره آرمانی نگاشت شود. چهار لغزنده زیر فقط محورهای اصلی را محدود می‌کنند. از آن‌ها برای محدود کردن عمدی محدوده استفاده کنید، نه برای اصلاح آن.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«کالیبره کردن مرز» لبه‌ای را که استیک به آن می‌رسد اندازه می‌گیرد و آن را به شکل یک دایره کامل درمی‌آورد. چهار لغزنده فقط هر جهت را محدود می‌کنند.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>در حال نمونه‌برداری...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>آفست مرکز X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>آفست مرکز Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>نام</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>راه‌انداز</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>وقتی</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>اجرا</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>هنگام فشار دادن</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>هنگام رها کردن</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>این ماکرو به کدام لایه شیفت تعلق دارد. «هر لایه» صرف‌نظر از لایه فعال اجرا می‌شود. لایه پایه و لایه‌های نام‌دار فقط وقتی اجرا می‌شوند که همان لایه فعال باشد، درست مانند یک ردیف نگاشت.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>هر لایه</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>تا وقتی این کنترلر مجازی فعال است پیوسته اجرا می‌شود. به دکمه راه‌انداز نیازی نیست.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>دنباله کنش‌ها</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>آنگاه</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>لایه، منبع، آستانه، جهت، مصرف دکمه‌های راه‌انداز، تکرار</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>افزودن کنش</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>ویرایش کنش</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>نوع</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>دکمه‌های مجازی</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>محورهای مجازی و فرمان</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>دکمه {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>فشار دادن {0} به مدت {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>فشار دادن {0} به مدت {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>رها کردن {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>کلیدهای {0} به مدت {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>کلیدهای {0} به مدت {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>رها کردن کلیدهای {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>انتظار {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>انتظار {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>تنظیم {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>میزان صدای سیستم → {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>میزان صدای سیستم → {0} (حداکثر {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>رها کردن ماوس {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی تاچ‌پد</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>تنظیم رنگ نوار نوری</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>نوار نوری اسلات PlayStation اختصاص‌یافته را با یک رنگ RGB دلخواه بازنویسی می‌کند. «واکنشی» در بازه میرایی تنظیم‌شده از شدت کامل تا سیاهی محو می‌شود و سپس کنترل را به تنظیمات زبانه «نورپردازی» برمی‌گرداند. «ماندگار» رنگ را تا اجرای کنش «پاک کردن بازنویسی نوار نوری» نگه می‌دارد. نوشتن‌های بازی همچنان بر این بازنویسی اولویت دارند.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>چشمک نوار نوری {0} (میرایی {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>نوار نوری اسلات PlayStation اختصاص‌یافته را با یک رنگ RGB دلخواه بازنویسی می‌کند. «واکنشی» در بازه میرایی تنظیم‌شده از شدت کامل تا سیاهی محو می‌شود و سپس کنترل را به تنظیمات کارت «نوار نوری» برمی‌گرداند. «ماندگار» رنگ را تا اجرای کنش «پاک کردن بازنویسی نوار نوری» نگه می‌دارد. نوشتن‌های بازی همچنان بر این بازنویسی اولویت دارند.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>چشمک نوار نوری {0} (میرایی {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>نگه داشتن نوار نوری {0} تا پاک شدن</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>پاک کردن بازنویسی نوار نوری</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>پاک کردن بازنویسی نوار نوری</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>هر بازنویسی فعال نوار نوری را در اسلات اختصاص‌یافته آزاد می‌کند. آن را با یک کنش «تنظیم رنگ نوار نوری» از نوع ماندگار همراه کنید تا با ماکروی دیگری لغوش کنید.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>تنظیم حالت نوار نوری</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>تنظیم حالت نوار نوری روی {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات اختصاص‌یافته را روی مقدار مشخصی می‌گذارد. مانند ویرایش در زبانه «نورپردازی» باقی می‌ماند تا کنش دیگری یا کاربر آن را تغییر دهد.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات اختصاص‌یافته را روی مقدار مشخصی می‌گذارد. مانند ویرایشی در کارت «نوار نوری» باقی می‌ماند تا کنش دیگری یا کاربر آن را تغییر دهد.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>چرخش حالت‌های نوار نوری</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>چرخش میان {0} حالت نوار نوری</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات را میان حالت‌های انتخاب‌شده در زیر جلو می‌برد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود. موقعیت چرخه برای هر کنش جداست و با راه‌اندازی مجدد برنامه بازنشانی می‌شود.</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>میرایی</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>محو شدن</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>پالت</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>پالت خالی از پالت زبانه «نورپردازی» خود اسلات استفاده می‌کند.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>پالت خالی از پالت کارت «نوار نوری» خود اسلات استفاده می‌کند.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>حالت</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>انتخاب کنید ماکرو میان کدام حالت‌های نوار نوری بچرخد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>لرزش</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>لرزش دستگاه فیزیکی اسلات را از یک ماکرو به کار می‌اندازد. «واکنشی» در بازه نگه داشتن با شدت کامل اجرا می‌شود و سپس در بازه محو شدن به صفر می‌رسد. «ماندگار» تا اجرای کنش «توقف لرزش» با شدت کامل می‌ماند. با تابع max روی لرزش بازی قرار می‌گیرد تا بازخورد کاربر همیشه حس شود.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>تپش لرزش {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>تپش لرزش {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>نگه داشتن لرزش {0} تا پاک شدن</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>توقف لرزش</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>توقف لرزش</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>توقف لرزش ماشه</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>هر لرزش ماشه فعال ناشی از ماکرو را در اسلات آزاد می‌کند. آن را با یک «بازنویسی لرزش ماشه» از نوع ماندگار همراه کنید تا نگه داشتن را از یک ماکرو پایان دهید.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>تنظیم فعال بودن ژیروسکوپ</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>وضعیت فعال بودن ژیروسکوپ اسلات را از یک ماکرو تنظیم می‌کند. «تغییر وضعیت» وضعیت کنونی را وارونه می‌کند. «روشن» ژیروسکوپ را فعال و «خاموش» آن را غیرفعال می‌کند. مستقل از دکمه فعال‌سازی زبانه «ژیروسکوپ» است. این دو منبع با «یا» ترکیب می‌شوند، پس هیچ‌کدام نمی‌تواند چیزی را که دیگری فعال کرده غیرفعال کند.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>وضعیت فعال بودن ژیروسکوپ اسلات را از یک ماکرو تنظیم می‌کند. «تغییر وضعیت» وضعیت کنونی را وارونه می‌کند. «روشن» ژیروسکوپ را فعال و «خاموش» آن را غیرفعال می‌کند. مستقل از «دکمه فعال‌سازی نشانه‌گیری» در بخش «حرکت و لمس» است. این دو منبع با «یا» ترکیب می‌شوند، پس هیچ‌کدام نمی‌تواند چیزی را که دیگری فعال کرده غیرفعال کند.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>حالت</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>تغییر وضعیت</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>روشن</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>تاچ‌پد</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>تاچ‌پد</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ورودی به تفکیک هر تاچ‌پد. ژست‌ها (کشیدن، ضربه، نزدیک کردن انگشتان، شکل‌ها) و حالت‌های خروجی پیوسته (استیک مجازی / دکمه‌های جهتی، ماوس) به منبع‌های نگاشتی تبدیل می‌شوند که می‌توانید در زبانه «نگاشت‌ها» مقید کنید.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ورودی به تفکیک هر تاچ‌پد. ژست‌ها (کشیدن، ضربه، نزدیک کردن انگشتان، شکل‌ها) و حالت‌های خروجی پیوسته (استیک مجازی / دکمه‌های جهتی، ماوس) به منبع‌های نگاشتی تبدیل می‌شوند که می‌توانید آن‌ها را به هر خروجی‌ای مقید کنید.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>تاچ‌پد</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>شماره تاچ‌پد</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>تنظیمات زیر روی کدام تاچ‌پد این کنترلر اعمال شود. هر تاچ‌پد ژست‌ها، حس ماوس و ناحیه نشانگر خودش را نگه می‌دارد.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>تنظیم کنید حسگر حرکتی این گیم‌پد چگونه خروجی ماوس و استیک را هدایت کند. برای صفر کردن دریفت حالت سکون، روی سطحی صاف کالیبره کنید و سپس حساسیت، هموارسازی و قواعد فعال‌سازی را به دلخواه تنظیم کنید.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>کالیبراسیون</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>خوانش‌های زنده ژیروسکوپ و شتاب‌سنج</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>حساسیت</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>واحدها، فضا، معکوس کردن محورها، کالیبراسیون دنیای واقعی</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>واحدها، معکوس کردن محورها، کالیبراسیون دنیای واقعی</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° به ازای هر دور</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>شکل‌دهی پاسخ</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ناحیه مرده، هموارسازی، شتاب، منحنی خروجی</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>چارچوب مرجع</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>محلی، بازیکن یا جهان</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>فضا</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>حرکت ژیروسکوپ چگونه تفسیر شود. «محلی» محورهای خام کنترلر را به کار می‌برد. «بازیکن» حرکت افقی را بر راستای قائم دنیای واقعی (گرانش) تصویر می‌کند تا همان چرخش مچ، صرف‌نظر از شیوه گرفتن گیم‌پد، همیشه دوربین را بچرخاند. «جهان» افزون بر آن، حرکت عمودی را هم بر محورهای جهان تصویر می‌کند.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>شیوه گرفتن</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>ایستاده</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>شیوه گرفتن</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>کنترلر چگونه در دست گرفته می‌شود. ژیروسکوپ، شتاب‌سنج و گرانش را با هم می‌چرخاند، هم برای نگاشت‌ها و هم برای حرکتی که کنترلر مجازی گزارش می‌دهد. دکمه‌های جهتی نیز از همان چارچوب پیروی می‌کنند، پس «بالا» در همان شیوه گرفتن رو به بالاست.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>کنترلر چگونه در دست گرفته می‌شود</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>خطی</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>تهاجمی</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>آرام</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>بازنشانی جهت فعال‌سازی</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>عبور مستقیم حرکت</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>اعمال تنظیمات ژیروسکوپ بر عبور مستقیم حرکت</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>تنظیمات اختیاری ژیروسکوپ این زبانه (ناحیه مرده، حساسیت، هموارسازی، منحنی پاسخ، معکوس کردن) را روی حرکتی اجرا می‌کند که کنترلر مجازی به بازی یا شبیه‌ساز گزارش می‌دهد. برای فرستادن فقط خوانش کالیبره‌شده و سپردن حساسیت و هموارسازی به خود بازی، آن را خاموش کنید. اصلاح دریفت کالیبراسیون در هر دو حالت همیشه اعمال می‌شود.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>تنظیمات اختیاری کارت‌های «ژیروسکوپ» (ناحیه مرده، حساسیت، هموارسازی، منحنی پاسخ، معکوس کردن) را روی حرکتی اجرا می‌کند که کنترلر مجازی به بازی یا شبیه‌ساز گزارش می‌دهد. برای فرستادن فقط خوانش کالیبره‌شده و سپردن حساسیت و هموارسازی به خود بازی، آن را خاموش کنید. اصلاح دریفت کالیبراسیون در هر دو حالت همیشه اعمال می‌شود.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>بازنشانی تنظیمات عبور مستقیم</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ضریب حساسیت ژیروسکوپ برای هر منبع. 1.0 = پیش‌فرض موتور (500 درجه بر ثانیه ← انحراف کامل). مقادیر بالاتر از 1.0 حساس‌تر و مقادیر پایین‌تر از 1.0 کم‌حساس‌ترند.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>بازنشانی محدوده شیب کامل</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>بازنشانی ناحیه مرده شیب</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>بازنشانی شیب ژیروسکوپ</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>وقتی بیش از یک منبع فعال است، منبع‌های این ردیف چگونه ادغام شوند. برای تغییر آن در نوار جزئیات زیر، ردیف را انتخاب کنید.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>وقتی بیش از یک منبع فعال است، منبع‌های این ردیف چگونه ادغام شوند. برای تغییر آن در «ترکیب»، ردیف را باز کنید.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>اینرسی</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>حالت ترک‌بال: استیک را تند بزنید و رها کنید تا نشانگر به حرکت ادامه دهد و کم‌کم بایستد. حرکت دوباره استیک آن را می‌گیرد.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>نشانگر پس از یک ضربه تند تا کجا به حرکت ادامه می‌دهد. در بالاترین مقدار محدوده، تا وقتی دوباره استیک را حرکت ندهید پیش می‌رود.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور ماشه</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>بهره هر موتور، لرزش ماشه، جابه‌جایی موتورها</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>بهره هر موتور، لرزش ماشه، لرزش زاویه هدایت، نیروی ثابت</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>بهره کلی</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>موتور چپ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>موتور راست</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>این کنترلر موتور ماشه ندارد، پس بازی‌هایی که از ماشه‌های ایمپالس Xbox استفاده می‌کنند حس نمی‌شوند. در عوض هر کانال ماشه را در موتور اصلی همان سمت ادغام کنید.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>آزمایش لرزش</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>فعالیت موتور</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>چپ</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>راست</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تا وقتی خاموشش نکنید، نیرویی پیوسته به این دستگاه اعمال می‌کند. نیرویی که بازی از هر منبعی می‌فرستد، تا وقتی فعال است جای آن را می‌گیرد و با توقف بازی، این نیرو از سر گرفته می‌شود.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>برای ضبط، دکمه‌ها را فشار دهید یا یک محور/ماشه را حرکت دهید. محورها وقتی تشخیص داده می‌شوند که بیش از 50% منحرف شوند.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>افزودن از فهرست</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>به‌جای ضبط، ورودی راه‌انداز را از میان دستگاه‌های اسلات انتخاب کنید. ژست‌های تاچ‌پد که در زبانه «تاچ‌پد» فعال شده‌اند اینجا دیده می‌شوند.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>پاک کردن راه‌انداز</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>به‌جای ضبط، ورودی راه‌انداز را از میان دستگاه‌های اسلات انتخاب کنید. ژست‌های تاچ‌پد که در بخش «حرکت و لمس» فعال شده‌اند اینجا دیده می‌شوند.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>برداشتن ورودی</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>هر ورودی‌ای را فشار دهید…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>معکوس</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>تعداد ثانیه‌ها پیش از حذف یک کنترلر مجازی، وقتی همه دستگاه‌های نگاشت‌شده آن آفلاین باشند. مقدار 0 غیرفعال می‌کند. کنترلرهای باقی‌مانده از همان نوع برای پر کردن جای خالی بالا می‌آیند و به اسلات‌های پایین‌تر مقید می‌شوند.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ثانیه (0 = هرگز)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ لایه شیفت</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>افزودن لایه</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>یک لایه شیفت اضافه می‌کند: جدول نگاشت دومی که با نگه داشتن یا تغییر وضعیت یک دکمه فعال می‌شود.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>پایه</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>لایه شیفت</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>هدایت با حرکت</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° تا {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ناحیه مرده کج کردن، جهت‌گیری کنترلر</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>تنظیمات ورودی «کج کردن حرکتی»: کنترلر را مانند فرمان کج کنید. «کج کردن حرکتی» را از فهرست کشویی ورودی در «نگاشت‌ها» به یک محور استیک نگاشت کنید.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>تنظیمات ورودی «کج کردن حرکتی»: کنترلر را مانند فرمان کج کنید. «کج کردن حرکتی» را در بخش «دکمه‌ها» به یک محور استیک نگاشت کنید.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>بازنشانی هدایت با حرکت</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>فلیک استیک (استیک راست)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>فلیک استیک (استیک چپ)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>حلقه استیک راست</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>فلیک استیک</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>تنظیم ورودی‌های فلیک استیک</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>تنظیمات ورودی‌های فلیک استیک: استیک را به سمتی بگیرید تا دوربین به همان سمت بچرخد و برای چرخش دقیق، آن را روی لبه بچرخانید. «فلیک استیک (استیک راست)» را از فهرست کشویی ورودی در «نگاشت‌ها»، در هر لایه‌ای، به «ماوس X» نگاشت کنید.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>تنظیمات ورودی‌های فلیک استیک: استیک را به سمتی بگیرید تا دوربین به همان سمت بچرخد و برای چرخش دقیق، آن را روی لبه بچرخانید. «فلیک استیک (استیک راست)» را در بخش «کلیدها و ماوس»، در هر لایه‌ای، به «ماوس X» نگاشت کنید.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>بازنشانی فلیک استیک</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقطه در هر 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>تعداد شمارش ماوس برای یک دور کامل 360° دوربین. به حساسیت ماوس بازی بستگی دارد: اگر فلیک کمتر از حد می‌چرخد آن را بالا ببرید و اگر بیش از حد می‌چرخد پایین بیاورید.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>صدا</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>صداهای ماکرو و صدای آینه‌شده سیستم از بلندگوی داخلی کنترلر انتخاب‌شده، از طریق USB یا بلوتوث، پخش می‌شوند. دستگاه را از فهرست کشویی بالا انتخاب کنید. همه تنظیمات اینجا از آن پیروی می‌کنند.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>خروجی صدا</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>منبع آینه‌سازی، هپتیک، میزان صدای هدفون، کراس‌فید، Parametric EQ، محدودکننده</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>منبع آینه‌سازی، میزان صدای هدفون، بافر، مسیر خروجی</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>صداها به‌طور خودکار به کنترلر انتخاب‌شده هدایت می‌شوند. در اتصال USB، نقطه پایانی صوتی خود گیم‌پد بر اساس کانتینر سخت‌افزاری تطبیق داده می‌شود. در اتصال بلوتوث، صدا در فریم‌های HID شرکت Sony جریان می‌یابد.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>منبع آینه‌سازی</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>کدام دستگاه پخش روی بلندگوی کنترلر آینه شود. بازی‌هایی که صداهای خاصی را به دستگاه پخش جداگانه‌ای می‌فرستند می‌توانند همین را هدف بگیرند.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>توقف همه صداها</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>توقف همه صداهای ماکرو در این گیم‌پد</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ماکروهای صدا</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>صداها را ماکروها پخش می‌کنند: یک راه‌انداز (فشار دکمه، رها کردن، نگه داشتن یا فرمول) به‌همراه یک کنش «پخش صدا». آن‌ها را اینجا یا در زبانه «ماکروها» بسازید. تأخیر، تکرار و تغییر وضعیت همگی کار می‌کنند.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>صداها را ماکروها پخش می‌کنند: یک راه‌انداز (فشار دکمه، رها کردن، نگه داشتن یا فرمول) به‌همراه یک کنش «پخش صدا». آن‌ها را اینجا یا در بخش «ماکروها و منوها» بسازید. تأخیر، تکرار و تغییر وضعیت همگی کار می‌کنند.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>ماکروی صدای جدید</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>هنوز هیچ ماکروی صدایی نیست. یکی بسازید و یک فایل صدا و یک راه‌انداز انتخاب کنید.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>باز کردن این ماکرو در زبانه «ماکروها»</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>باز کردن این ماکرو در بخش «ماکروها و منوها»</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ماکروی صدا {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>پخش صدا</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>پخش یک فایل صدا (.wav, .mp3, .m4a, .aac, .wma, .flac) روی دستگاه خروجی این گیم‌پد</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>در حال اجرا</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>در حال اجرا، درایور متصل</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>در حال اجرا، کنترلرها فعال</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR نصب‌شده</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR نصب‌نشده</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR در حال اجرا</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR در حال اجرا، درایور متصل</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR در حال اجرا، کنترلرها فعال</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>درایور دیگری برای OpenVR از همان نام درایور HIDMaestro استفاده می‌کند، بنابراین SteamVR ممکن است آن را به‌جای درایور PadForge بارگذاری کند و کنترلرهای مجازی VR ظاهر نخواهند شد. برای رفع این مشکل، آن درایور را حذف کنید: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>کنترلر سریال (پورت COM)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>کنترل مصرفی {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>ماوس</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>ژست‌های ماوس</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>دکمه ژست را نگه دارید، ماوس را تند حرکت دهید و با رها کردن، یک کنش اجرا می‌شود: چپ، راست، بالا، پایین، یا اگر حرکت کمتر از فاصله حرکت تند بود، یک کلیک ساده. این پنج ژست را در زبانه «نگاشت‌ها» نگاشت کنید یا به‌عنوان راه‌انداز ماکرو به کار ببرید.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>دکمه ژست را نگه دارید، ماوس را تند حرکت دهید و با رها کردن، یک کنش اجرا می‌شود: چپ، راست، بالا، پایین، یا اگر حرکت کمتر از فاصله حرکت تند بود، یک کلیک ساده. این پنج ژست را به هر خروجی‌ای نگاشت کنید یا به‌عنوان راه‌انداز ماکرو به کار ببرید.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>فعال کردن ژست‌های ماوس</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>تشخیص‌دهنده ژست را برای این ماوس در این اسلات آماده می‌کند. دکمه ژست هنگام ژست، کلیک عادی خود را هم حفظ می‌کند، پس یک دکمه کناری را انتخاب کنید که جای دیگری نگاشت نکرده‌اید.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>دکمه‌های ژست</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>تعویض لایه</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>تنظیم رنگ Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>تا وقتی این کنش اجرا می‌شود، دستگاه‌های Razer اختصاص‌یافته به این کنترلر مجازی و هر دستگاه Razer دیگر از همان نوع‌ها را یک‌رنگ می‌کند.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>در مدت تعیین‌شده در بالا، این رنگ را روی دستگاه‌های Razer اختصاص‌یافته به این کنترلر مجازی و هر دستگاه Razer دیگر از همان نوع‌ها می‌زند، یا اگر ردیف Razer Chroma اختصاص یافته باشد روی همه دستگاه‌های Razer. زبانه «نورپردازی» هر کنترلر مجازی را کنار می‌زند و سپس نورپردازی را پس می‌دهد. برای نگه داشتن رنگ تا وقتی راه‌انداز نگه داشته شده، «هنگام نگه داشتن» را با «تا رها کردن» به کار ببرید. وقتی دو ماکرو هم‌زمان رنگ می‌زنند، ماکروی پایین‌تر در فهرست اولویت دارد، پس ماکروی فشار کامل را زیر جفت فشار نرم آن بگذارید. وقتی ماکروهای دو کنترلر مجازی یک نوع دستگاه Razer را رنگ می‌زنند، شماره بازیکن کوچک‌تر اولویت دارد. به اجرای Razer Synapse نیاز دارد.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>در مدت تعیین‌شده در بالا، این رنگ را روی دستگاه‌های Razer اختصاص‌یافته به این کنترلر مجازی و هر دستگاه Razer دیگر از همان نوع‌ها می‌زند، یا اگر ردیف Razer Chroma اختصاص یافته باشد روی همه دستگاه‌های Razer. نورپردازی‌ای را که هر کنترلر مجازی در بخش «نورپردازی و صدا» تنظیم می‌کند کنار می‌زند و سپس نورپردازی را پس می‌دهد. برای نگه داشتن رنگ تا وقتی راه‌انداز نگه داشته شده، «هنگام نگه داشتن» را با «تا رها کردن» به کار ببرید. وقتی دو ماکرو هم‌زمان رنگ می‌زنند، ماکروی پایین‌تر در فهرست اولویت دارد، پس ماکروی فشار کامل را زیر جفت فشار نرم آن بگذارید. وقتی ماکروهای دو کنترلر مجازی یک نوع دستگاه Razer را رنگ می‌زنند، شماره بازیکن کوچک‌تر اولویت دارد. به اجرای Razer Synapse نیاز دارد.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>نمایش روی صفحه‌نمایش Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>تصاویر را روی VMU هر گیم‌پد Dreamcast در پورت Bliss-Box که به این اسلات ورودی می‌دهد پخش می‌کند و سپس هر پورت را به تنظیم صفحه‌نمایش خودش برمی‌گرداند.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>نمایش تصاویر Dreamcast: {0} × {1} ms، تعداد تکرار {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>با فشار دادن، مرجع‌های انباشته نشانه‌گیری ژیروسکوپ گیم‌پد را صفر می‌کند. تاریخچه هموارسازی پاک می‌شود، حالت خنثی «کج کردن حرکتی» دوباره ثبت می‌شود، برآورد گرانش از وضعیت کنونی کنترلر از نو مقداردهی می‌شود و چرخشی که ردیف‌های «پیچ حرکتی»، «یاو حرکتی» و «رول حرکتی» ساخته بودند لغو می‌شود.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(هر دستگاه)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>منوها</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>منوها یک استیک یا تاچ‌پد فیزیکی را به یک حلقه یا شبکه روی صفحه تبدیل می‌کنند. یک منو اضافه کنید، انتخاب کنید با چه چیزی باز شود و سپس برای هر خانه برچسب و نگاشتی تعیین کنید.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>منوها یک استیک یا تاچ‌پد فیزیکی را به یک حلقه یا شبکه روی صفحه تبدیل می‌کنند. برای ساختن منو، + کنار «منوها» را فشار دهید، انتخاب کنید با چه چیزی باز شود و سپس به هر خانه یک نام و یک کنش بدهید.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>منوی جدید</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>منو {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>نام منو</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>فعال</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>باز شدن</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>سبک</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>حلقه شعاعی</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>شبکه لمسی</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>خانه‌ها</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>خانه مرکزی</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>نمایش برچسب‌ها</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>موقعیت روی صفحه</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>اندازه</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>ماتی</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>ناحیه مرده فعال‌سازی</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>نگاشت خانه‌ها</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>خانه {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>افزودن خانه</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>برداشتن آخرین خانه</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>ویرایش خانه</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>کنش</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>نماد</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>مرکز</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>هیچ‌کدام</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>کلید صفحه‌کلید</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>با رها شدن کلیک یک بار اجرا می‌شود: به خانه اشاره کنید، استیک یا ترک‌پد را فشار دهید و سپس کلیک را رها کنید.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>وقتی رها کنید یک بار اجرا می‌شود: انگشت خود را از پد بردارید، یا تا وقتی خانه‌ای برجسته است بگذارید استیک به مرکز برگردد.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>در تمام مدتی که خانه برجسته است، نگاشت نگه داشته می‌شود. به کلیک نیازی نیست.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>تعداد خانه‌های منو. در حلقه شعاعی فقط خانه‌های حلقه شمرده می‌شوند؛ خانه مرکزی جداست.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>یک خانه مرکزی اضافه می‌کند که تا وقتی استیک یا انگشت درون «ناحیه مرده فعال‌سازی» است انتخاب می‌شود.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>برای استیک‌ها، میزان فشاری که پیش از باز شدن منو و برجسته شدن خانه‌های حلقه لازم است. در منوهای شعاعی، این مقدار ناحیه مرکزی را هم برای استیک‌ها و هم برای تاچ‌پدها تعیین می‌کند: درون آن، اگر خانه مرکزی وجود داشته باشد انتخاب می‌شود.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>برچسب هر خانه را روی اورلی صفحه نمایش می‌دهد.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>اندازه اورلی، بر حسب درصدی از اندازه عادی آن.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ماتی اورلی. 100% کاملاً مات است.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>متنی که در اورلی روی این خانه نمایش داده می‌شود.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>این خانه هنگام اجرا چه می‌کند: «کلید صفحه‌کلید» یک کلید صفحه‌کلید را فشار می‌دهد، «دکمه کنترلر» دکمه‌ای را روی کنترلر مجازی این اسلات فشار می‌دهد. خانه‌ای که روی «هیچ‌کدام» تنظیم شده باشد همچنان به‌عنوان منبع مورد منو برای ردیف‌های «نگاشت‌ها» و راه‌اندازهای ماکرو اجرا می‌شود.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌یافته به این اسلات خوانده می‌شود، نه از چیدمان کنترلر مجازی. نگاشت خانه‌ها در زیر، خروجی منو را تعیین می‌کند.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>این خانه هنگام اجرا چه می‌کند: «کلید صفحه‌کلید» یک کلید صفحه‌کلید را فشار می‌دهد، «دکمه کنترلر» دکمه‌ای را روی کنترلر مجازی این اسلات فشار می‌دهد. خانه‌ای که روی «هیچ‌کدام» تنظیم شده باشد همچنان به‌عنوان منبع مورد منو برای نگاشت‌ها و راه‌اندازهای ماکرو اجرا می‌شود.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌یافته به این اسلات خوانده می‌شود، نه از چیدمان کنترلر مجازی. خانه‌های زیر خروجی منو را تعیین می‌کنند.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>محورهای سفارشی</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>هدایت X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>هدایت Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>خروجی</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>دکمه‌ها</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>کلیدها و ماوس</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>نت‌ها و کنترل‌ها</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>دست‌ها</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>استیک‌ها و ماشه‌ها</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>لرزش و بازخورد لمسی</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>حرکت و لمس</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>نورپردازی و صدا</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ماکروها و منوها</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>لرزاننده‌های بیس</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش و فورس فیدبکی را که این کنترلر مجازی از بازی دریافت می‌کند، به‌صورت تُن‌های فرکانس پایین برای لرزاننده‌های بیس و ساب‌ووفرها به یک خروجی صدا هدایت می‌کند.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>لرزش بازی را به‌صورت تُن‌های بم از طریق لرزاننده‌های بیس یا یک ساب‌ووفر پخش می‌کند.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>دستگاه خروجی، کانال‌ها، بهره، صدای هر موتور</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>با کنترلرهای مجازی Xbox، DualShock 3، DualShock 4 / DualSense و Nintendo Switch Pro کار می‌کند، و نیز با کنترلرهای مجازی گسترش‌یافته دارای فورس فیدبک مانند فرمان‌های مسابقه، و Steam Deck Controller (Composite). بازخورد بازی و «آزمایش لرزش» از خروجی صدا پخش می‌شوند. لرزش ماکرو روی کنترلر می‌ماند.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>بازنشانی لرزش به صدا</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>این کانال بازخورد را به‌صورت تُن پخش می‌کند. وقتی خاموش است، بهره و فرکانس تنظیم‌شده باقی می‌مانند.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>فرکانس تُن این کانال، از 20 تا 120 Hz. برای یافتن فرکانسی که لرزاننده شما در آن قوی‌ترین پاسخ را دارد، «جاروب فرکانس» را اجرا کنید.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>بلندی این کانال پیش از بهره اصلی.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>بهره</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>آزمایش</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>تُن این کانال را 1.5 ثانیه با بهره تنظیم‌شده‌اش پخش می‌کند.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>بازنشانی موتور بم</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>بازنشانی موتور زیر</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>بازنشانی ماشه چپ</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>بازنشانی ماشه راست</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>بررسی لرزاننده‌ها</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>جاروب فرکانس</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>در مدت هشت ثانیه، یک تُن را از 20 تا 120 Hz روی مسیر موتور بم جاروب می‌کند. ببینید لرزاننده شما در کجا قوی‌ترین پاسخ را دارد و فرکانس صداها را روی همان تنظیم کنید.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>توقف</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>تُن آزمایشی یا جاروب را متوقف می‌کند.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>هر تگ NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>تگ NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>فیلتر ورودی‌ها (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>فیلتر خروجی‌ها و ورودی‌ها</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>فقط ردیف‌ها و ورودی‌های منطبق را نشان می‌دهد. برای تایپ در اینجا، Ctrl+F را فشار دهید.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>انتخاب کنید انتخابگرها ورودی‌های کدام دستگاه‌ها را عرضه کنند</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>نمایش در انتخابگر</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>هر عبارت صوتی</value></data>
@@ -4077,6 +4135,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>بازنشانی سطح آمیزش</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>اکولایزر پارامتریک</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>فیلترهای هر باند روی صدای کنترلر. پیش از رمزگذاری صدا اعمال می‌شود، پس محدودکننده زیر جلوی بریدگی باند تقویت‌شده را می‌گیرد.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>پیش‌تقویت، باندها، وارد کردن</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>پیش‌تقویت</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>سطح کلی پیش از باندها. پروفایل‌های AutoEq پیش‌تقویت منفی دارند تا تقویت‌هایشان دچار بریدگی نشود و وارد کردن یکی از آن‌ها این مقدار را برایتان تنظیم می‌کند.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>روشن</value></data>
@@ -4307,7 +4366,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>بازنشانی به باز شدن با لمس یا انحراف.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>هدایت با</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ورودی فیزیکی‌ای که تا وقتی لایه این منو را باز نگه داشته، خانه برجسته را هدایت می‌کند.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌یافته به این اسلات خوانده می‌شود. لایه منو را باز می‌کند؛ این ورودی آن را هدایت می‌کند. نگاشت خانه‌ها خروجی آن را تعیین می‌کند.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>از کنترلرهای فیزیکی اختصاص‌یافته به این اسلات خوانده می‌شود. لایه منو را باز می‌کند و این ورودی آن را هدایت می‌کند. خانه‌های منو خروجی آن را تعیین می‌کنند.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>اندازه نماد</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>اندازه نماد نسبت به اندازه عادی نماد منو، از 25% تا 200%. پاک کردن نماد آن را به 100% بازنشانی می‌کند.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>تا وقتی «ورودی کلیک» نگه داشته شده، نگاشت خانه برجسته را نگه می‌دارد. مرکز شعاعی برجسته می‌تواند در حالی که استیک در حال سکون است اجرا شود.</value></data>
@@ -4432,7 +4491,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجعی اثر Antoine Aflalo برای چیدمان رابط مستندنشده IPolicyConfig در Windows که PadForge برای فعال کردن دوباره نقطه پایانی صوتی کنترلر از آن استفاده می‌کند. MIT. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>قالب پروفایل اکولایزر پارامتریک که زبانه «صدا» وارد می‌کند، اثر Jaakko Pasanen. MIT. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>قالب پروفایل اکولایزر پارامتریک که «اکولایزر پارامتریک» یک کنترلر وارد می‌کند، اثر Jaakko Pasanen. MIT. فقط مستندات، هیچ کدی عرضه نمی‌شود.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>روش‌های SendInput که مبنای ماکروهای «بلوک متن» و هوک ترکیب کلیدهای صفحه‌کلید هستند: تایپ Unicode، محدودیت‌های دسته‌ای، کلید پوشاننده کلید Win و ورودی تزریقی برچسب‌دار. GPL-2.0-or-later، فقط به‌عنوان مستندات خوانده شده و هیچ کد GPL عرضه نمی‌شود.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>جهت</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>گام</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>تا</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>دسته</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ماشه‌های این کنترلر را تنظیم می‌کند.</value></data>
@@ -4716,7 +4776,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>دسته به اندازه کافی حرکت نکرد، بنابراین برد مثل قبل می‌ماند. هنگام اجرای پیمایش، آن را به همه لبه‌ها ببرید.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon پیش از پایان پیمایش بسته شد.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>با Novint Falcon از طریق Force Dimension SDK بازی می‌کند. این SDK را از Force Dimension نصب می‌کنید. دسته یک استیک است، چهار دکمه دسته دکمه هستند و PadForge لرزش و جلوه‌های بازی را به‌صورت نیرو روی دسته اعمال می‌کند. زبانه فورس فیدبک هر اسلات حس Falcon را تنظیم می‌کند.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>با Novint Falcon از طریق Force Dimension SDK بازی می‌کند. این SDK را از Force Dimension نصب می‌کنید. دسته یک استیک است، چهار دکمه دسته دکمه هستند و PadForge لرزش و جلوه‌های بازی را به‌صورت نیرو روی دسته اعمال می‌کند. کارت Novint Falcon در بخش «لرزش و بازخورد لمسی» هر کنترلر، حس Falcon را تنظیم می‌کند.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>کنترل Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>هر Falcon را از طریق dhd64.dll مربوط به Force Dimension باز می‌کند. Falcon بازشده فقط به PadForge تعلق دارد، پس تا زمانی که این گزینه روشن است FalconJoyForce و ابزارهای Force Dimension نمی‌توانند آن را باز کنند. با خاموش کردن آن، PadForge همه دستگاه‌های Falcon را می‌بندد.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>کتابخانه Falcon روی {0} تنظیم شد. PadForge ظرف چند ثانیه آن را بارگذاری می‌کند و Falcon بازشده روی نسخه‌ای دیگر دوباره روی این نسخه باز می‌شود.</value></data>
@@ -4929,7 +4989,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>برای مدت مشخص</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>تا توقف</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>زمان</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>روی هر DualSense و DualSense Edge این اسلات پخش می‌شود. اثر ماشه خود بازی و اثر مودهای بازی اولویت دارند و وقتی اثر تمام شود، تنظیم زبانه ماشه‌های تطبیقی برمی‌گردد. منطقه‌ها از 0 در حالت آزاد تا 9 در فشار کامل هستند. کمان، چهارنعل و مکانیکی اثرهای رسمی DualSense نیستند و یک به‌روزرسانی فریم‌ور ممکن است آن‌ها را حذف کند. کنترلرهای Xbox با روشن بودن «تبدیل لرزش‌های ماشه تطبیقی»، اثرهای لرزشی را به‌صورت لرزش ماشه حس می‌کنند.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>روی هر DualSense و DualSense Edge این اسلات پخش می‌شود. اثر ماشه خود بازی و اثر مودهای بازی اولویت دارند و وقتی اثر تمام شود، تنظیم کارت «ماشه‌های تطبیقی» برمی‌گردد. منطقه‌ها از 0 در حالت آزاد تا 9 در فشار کامل هستند. کمان، چهارنعل و مکانیکی اثرهای رسمی DualSense نیستند و یک به‌روزرسانی فریم‌ور ممکن است آن‌ها را حذف کند. کنترلرهای Xbox با روشن بودن «تبدیل لرزش‌های ماشه تطبیقی»، اثرهای لرزشی را به‌صورت لرزش ماشه حس می‌کنند.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} روی {1} به مدت {2} میلی‌ثانیه</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} روی {1} تا وقتی نگه داشته شود</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} روی {1} تا توقف</value></data>
@@ -4958,7 +5018,7 @@
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>تا پاک شدن</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>زمان</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>حفظ رنگ‌هایشان</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>این اقدام همان کلیدها را روی هر صفحه‌کلیدی که این کنترلر مجازی روشن می‌کند، روی رنگ‌هایی که زبانه نورپردازی به آن‌ها می‌دهد، روشن می‌کند. شماره‌ها ترتیب انتخاب را نشان می‌دهند. شمارش معکوس کلیدها را یکی‌یکی خاموش می‌کند و آخرین کلید انتخاب‌شده را اول خاموش می‌کند، پس برای زمان‌سنج بازیابی روی ردیف اعداد، کلیدهای 1 تا 0 را انتخاب کنید. صفحه‌کلید یا ماوس فقط وقتی روشن می‌شود که کنترل نورپردازی این دستگاه برایش روشن باشد.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>این اقدام همان کلیدها را روی هر صفحه‌کلیدی که این کنترلر مجازی روشن می‌کند، روی رنگ‌هایی که این کنترلر در بخش «نورپردازی و صدا» برای آن‌ها تنظیم می‌کند، روشن می‌کند. شماره‌ها ترتیب انتخاب را نشان می‌دهند. شمارش معکوس کلیدها را یکی‌یکی خاموش می‌کند و آخرین کلید انتخاب‌شده را اول خاموش می‌کند، پس برای زمان‌سنج بازیابی روی ردیف اعداد، کلیدهای 1 تا 0 را انتخاب کنید. صفحه‌کلید یا ماوس فقط وقتی روشن می‌شود که کنترل نورپردازی این دستگاه برایش روشن باشد.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>سایر</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}، شماره {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>اورلی صفحه‌نمایش</value></data>
@@ -5018,7 +5078,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>نقاط فعال‌سازی آنالوگ کلیدها منتقل نشد.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD این کنترلر را از طریق یک آداپتور به دستگاه دیگری می‌فرستاد. PadForge آن را روی همین رایانه اجرا می‌کند و پیوند از راه دور آن را به رایانه دیگری که PadForge روی آن اجرا می‌شود می‌فرستد.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge دو استیک را می‌خواند و این مورد استیک سومی را نام می‌برد.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>شبیه‌سازی فرمان منتقل نشد. فرمان را در زبانه نگاشت‌ها نگاشت کنید.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>شبیه‌سازی فرمان منتقل نشد. فرمان را در بخش «دکمه‌ها» نگاشت کنید.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>این پروفایل یک کنش ویژه را نام می‌برد که در Actions.xml کنار پوشه Profiles آن وجود ندارد: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>این تنظیم منتقل نشد: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD جلوی رسیدن این ورودی‌ها به ویندوز را می‌گرفت. مصرف ورودی‌های نگاشت‌شده را برای {0} در صفحه دستگاه‌ها روشن کنید تا ورودی‌هایی که این پروفایل نگاشت می‌کند مسدود شوند.</value></data>
@@ -5026,8 +5086,8 @@
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>وقتی استیک به مرکز برمی‌گردد یا لایه تمام می‌شود، انتخاب را ثبت می‌کند. دکمه اعمال در reWASD استفاده نمی‌شود.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>این فایل دو کنترلر را از هم جدا نگه می‌دارد. در PadForge، هر کنترلری روی اسلات، این نگاشت‌ها را اجرا می‌کند.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>سرعت حرکت یا فلیک منتقل نشد.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>این موارد منتقل نشدند. آن‌ها را در زبانه تاچ‌پد تنظیم کنید.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>هیچ چیز در این فایل این لایه را باز نمی‌کند. در زبانه نگاشت‌ها یک دکمه به آن بدهید.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>این موارد منتقل نشدند. آن‌ها را در بخش «حرکت و لمس» تنظیم کنید.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>هیچ چیز در این فایل این لایه را باز نمی‌کند. در بخش «دکمه‌ها» روی لایه راست‌کلیک کنید و «پیکربندی فعال‌ساز» را انتخاب کنید.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>دکمه‌های آن هنگام فشردن این موارد را اجرا می‌کنند: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>میانبر پروفایل</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>همان کار میانبر پروفایل را انجام می‌دهد: پروفایلی با نام مشخص، بعدی یا قبلی را بارگذاری می‌کند، پنجره را نشان می‌دهد یا پنهان می‌کند، یا کنترلرهای مجازی را خاموش و روشن می‌کند.</value></data>
@@ -5197,7 +5257,7 @@
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>خانه انتخاب‌شده با رها شدن «اجرا» یک بار و به‌صورت یک ضربه کوتاه اجرا می‌شود. با روشن بودن «پنهان شدن پس از اجرا»، به‌محض اینکه «اجرا» نوار را پنهان کند اجرا می‌شود.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>وقتی «اجرا» با روشن بودن «پنهان شدن پس از اجرا» نوار را پنهان کند، یک خانه یک بار و به‌صورت یک ضربه کوتاه اجرا می‌شود. با روشن بودن «مرکزگیری مجدد هر بار»، خانه میانی همانی است که اجرا می‌شود.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>خانه انتخاب‌شده در تمام مدتی که نوار نمایش داده می‌شود نگه داشته می‌شود. با جابه‌جا شدن انتخاب، یک خانه رها و خانه بعدی نگه داشته می‌شود.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>حلقه شعاعی، شبکه لمسی و نوار میانبر، اتصال‌های خانه‌ها را اجرا می‌کنند. صفحه‌کلید، کلیدهای چیدمان فعلی Windows را تایپ می‌کند.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>حلقه شعاعی، شبکه لمسی و نوار میانبر، کنش‌های خانه‌هایشان را اجرا می‌کنند. صفحه‌کلید، کلیدهای چیدمان فعلی Windows را تایپ می‌کند.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>چیدمان</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>نحوه چیدمان کلیدهای صفحه‌کلید و نحوه انتخاب آن‌ها با کنترلر.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>یک برجسته‌سازی که با یک استیک یا چهار ورودی جابه‌جا می‌شود؛ چیدمانی که Windows، Xbox و Steam استفاده می‌کنند.</value></data>
@@ -5304,11 +5364,11 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>دکمه‌های کنسول دستی PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>پروفایل HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>نورهای کلید PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. نگاشتی در زبانه نگاشت‌ها می‌تواند.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. نگاشتی در بخش «دکمه‌ها» می‌تواند.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge هشت اورلی صفحه‌نمایش اجرا می‌کند و این ضربدر نشانه‌گیری نهم یا دهم reWASD است.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge چپ و راست ژیروسکوپ را از رول و کج کردن را از یاو می‌خواند، که پیش‌فرض reWASD است. تنظیمات reWASD می‌تواند این دو را عوض کند و این فایل نمی‌گوید عوض شده‌اند یا نه.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>در حالت Tilt، کج کردن reWASD چرخشی حول محور عمودی است و حسگر حرکت برای آن چرخش زاویه‌ای نمی‌دهد.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge قطری تاچ‌پد را دو جهت هم‌زمان می‌خواند، که تاچ‌پد فقط وقتی گزارش می‌کند که حالت دکمه‌های جهتی در زبانه تاچ‌پد آن هشت‌جهته (8-Way) باشد.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge قطری تاچ‌پد را دو جهت هم‌زمان می‌خواند، که تاچ‌پد فقط وقتی گزارش می‌کند که «حالت دکمه‌های جهتی» آن در بخش «حرکت و لمس» روی «هشت‌جهته» باشد.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge جهت ژیروسکوپ را از یک آستانه به بعد می‌خواند و reWASD برای لبه ناحیه ژیروسکوپ واحدی نمی‌دهد.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows اشاره‌گر را همان جایی می‌گذاشت که استیک به آن اشاره می‌کند. در PadForge به‌جای آن استیک اشاره‌گر را حرکت می‌دهد.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} استیک را پیش از چرخش آن می‌خواند. DS4Windows پس از آن می‌خواند.</value></data>

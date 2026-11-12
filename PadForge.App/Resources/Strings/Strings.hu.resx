@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Másolás</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Beillesztés</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Kettőzés</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Átnevezés</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Engedélyezve</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Letiltva</value></data>
   <data name="Common_On" xml:space="preserve"><value>Be</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Eszköz</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Bemenet innen</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Eszköz hozzáadása</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Kép</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} kimenet</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Mozgás</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kattintson egy vezérlőelemre, majd nyomja meg azt a bemenetet, amelynek vezérelnie kell.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Kattintson egy billentyűre vagy egérgombra, majd nyomja meg azt a bemenetet, amelynek vezérelnie kell.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kattintson egy hangjegyre vagy csúszkára, majd nyomja meg azt a bemenetet, amelynek vezérelnie kell.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Az Összes hozzárendelése kihagyja az A és a B érintési kimenetét. Az egyik hozzárendeléséhez kattintson az A vagy a B körüli gyűrűre.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} rögzítése folyamatban. Nyomja meg a kívánt bemenetet az eszközén.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, bemenet innen</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>További beállítások</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Kevesebb beállítás</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Főgomb</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Vállgomb</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Rendszergomb</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Gomb</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Iránykereszt</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Kar</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Ravasz</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Érintőpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Mozgásérzékelő</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Billentyű</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Egérgomb</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Egérmozgás</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Görgő</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Vezérlőváltozás</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Érintésérzékelő</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analóg húzás</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, bal kéz</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, jobb kéz</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Melyik lenyomást látja a játék, ha egy pár mindkét gombja le van nyomva</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Melyik lenyomást látja a játék, ha egy pár mindkét billentyűje le van nyomva</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Kis karkitérést tart, hogy a játékok kontrollerjelzéseket mutassanak</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kovácsolás</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Válasszon egy makrót a bal oldalon, vagy hozzon létre egyet a Hozzáadás gombbal.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Válasszon egy makrót a listában, vagy hozzon létre egyet a Makrók melletti + gombbal.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>NYERS</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>KIMENET</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hideg</value></data>
@@ -917,7 +946,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulzusravaszok</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzusravaszok</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ravaszonkénti erősítés, motorcsere, adaptív ravasz vibrációi</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ravaszonkénti erősítés, motorcsere, adaptív ravasz vibrációi, Állandó ravaszerő</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>A ravaszonkénti motorparancsokat (Xbox impulzusravaszok) továbbítja a virtuális kontrollerről a hozzárendelt fizikai Xbox One, Elite vagy Series kontrollerre. A játék által vezérelt ravaszrezgés automatikusan átjut. Az alábbi vezérlők ravaszonként skálázzák az erősséget.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Bal ravasz</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Jobb ravasz</value></data>
@@ -987,9 +1016,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Karok</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Karonkénti holtzónák, antiholtzónák, érzékenységi görbék és a középpont-eltolás kalibrálása. Az alábbi szakaszok mindegyike az aktív kimenet egy-egy analóg karjára vonatkozik. A Bővített profilokban legfeljebb négy kar lehet. A szabványos gamepadeken kettő van.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ravaszok</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Ravaszonkénti holtzónák, antiholtzónák, a maximális tartomány skálázása és érzékenységi görbék. Az alábbi szakaszok mindegyike az aktív kimenet egy-egy ravasztengelyére vonatkozik. A Bővített profilok legfeljebb nyolc tengelyt kínálhatnak, amelyeken a Karok lappal osztoznak.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Ravaszonkénti holtzónák, antiholtzónák, a maximális tartomány skálázása és érzékenységi görbék. Minden ravaszkártya az aktív kimenet egy ravasztengelyére vonatkozik. A Bővített profilok legfeljebb nyolc tengelyt kínálhatnak, amelyeken a karok és a ravaszok osztoznak.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Erő-visszacsatolás</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Azt hangolja, hogyan skálázza a PadForge a játéktól érkező erő-visszacsatolási eseményeket, és hogyan irányítja őket a fizikai kontroller rezgőmotorjaira vagy haptikus aktuátoraira. A Hangalapú rezgés erre még egy rendszerhang által hajtott réteget tesz.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ez az eszköz</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Egész kontroller</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>A rezgés haptikus impulzusokként szólal meg ezen: {0}, közvetlenül az eszközre küldve. Az erősebb rezgés erősebb impulzust választ, és gyorsabban ismétli.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>A haptikus visszajelzés ki van kapcsolva a Logi Options+ alkalmazásban ehhez: {0}, ezért semmit sem játszik le, amíg ott vissza nem kapcsolja.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Ez az eszköz még nem válaszolt. A rezgése megszólal, amint felébred.</value></data>
@@ -1077,6 +1108,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>alaplapok és videokártyák</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok, headsetek és headsetállványok</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Fénysáv</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>A játékok átveszik az irányítást, valahányszor világítást írnak.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Adjon meg egy hatjegyű hexadecimális színt (RRGGBB vagy #RRGGBB), majd az alkalmazáshoz nyomja meg az Enter billentyűt, vagy kattintson máshová.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>A szín eltávolítása a palettáról</value></data>
@@ -1094,7 +1126,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Hangalapú rezgés visszaállítása</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} visszaállítása</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Hozzárendelések törlése</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Ezen a lapon minden hozzárendelés törlődik. A forráshozzárendelések, a további források és az egyesítési beállítások visszaállnak az alapértelmezettre.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Ezen a rétegen minden hozzárendelés törlődik. A forráshozzárendelések, a további források és az egyesítési beállítások visszaállnak az alapértelmezettre.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Játékosminta</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Némítás-LED módja</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-fényerő</value></data>
@@ -1247,6 +1279,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-kapcsolók</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Gombok</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importált profilok…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Bővített kontroller</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>A felhasználó által importált HIDMaestro-profilok kezelése: új profil rögzítése egy csatlakoztatott eszközről, meglévő exportálása JSON formátumba, vagy a már nem szükséges törlése.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Eszköz 1:1 klónozása</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>A kiválasztott eszköz minden tengelyét, gombját és POV-kapcsolóját közvetlenül az azonos számú virtuális kimenetre rendeli. A kiosztást az eszközhöz méretezi, és az eszköz foglalaton lévő sorait 1:1 átengedésre cseréli.</value></data>
@@ -1294,6 +1327,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Erő-visszacsatolás</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Csatorna</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI-kimenet</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-csatorna (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-k száma</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>A CC-kimenetek száma (a maximum a Kezdő CC értékétől függ)</value></data>
@@ -1325,7 +1359,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Eltávolítja ezt a billentyűpárt.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Az ellentétes pár első billentyűje.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Az ellentétes pár második billentyűje.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Egyidejű ellentétes irányok (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Kontroller ébren tartása</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Egyes játékok leállítják a rezgést, és átváltják a gombjelzéseiket, amint egér- vagy billentyűzetbemenetet észlelnek. Egy kis mértékű, folyamatosan tartott karkitérés hatására a játék továbbra is ezt a kontrollert kezeli aktív eszközként. A tartás csak akkor lép életbe, amíg a kar mindkét tengelye a tartott szint alatt van, így a driftelő kar is nyugalomban lévőnek számít. Ha bármelyik tengelyen a bemenet meghaladja a szintet, a tartás megszűnik, és a bemenet változatlanul átjut. A kitérést tartsa a játék saját holtzónája alatt, hogy a játékban semmi se mozduljon el.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Ébren tartás</value></data>
@@ -1345,7 +1378,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Kattintás visszaállítása</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Érintőpad-fél visszaállítása</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Kiváltási mód visszaállítása</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Cellák visszaállítása</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Aktiválási holtzóna visszaállítása</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menügeometria visszaállítása</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Cella visszaállítása</value></data>
@@ -1401,6 +1433,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ClearAll" xml:space="preserve"><value>Összes törlése</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Forrás</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Érték</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opciók</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Tengely–gomb holtzóna</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Megfordítás</value></data>
@@ -1438,7 +1471,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Bejelölve a tengely felengedéskor fokozatosan visszatér középre. Jelölés nélkül megtartja az utolsó helyzetét.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Gomb, amely nyomva tartva megfordítja a sor kimenetét</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Módosító: amíg le van nyomva, a sor kimenete előjelet vált.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Forrás hozzáadása</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Forrás hozzáadása</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>További fizikai bemenet hozzáadása ehhez a sorhoz</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>A forrás eltávolítása</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>{0}. pont, összesen {1}, bemenet {2}%, kimenet {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Középpont kalibrálása</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Középpont</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Középpont</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Holtzóna</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Középpont eltolásai, holtzóna alakja és tengelyenkénti értékei, görbe minden tengelyhez, tartomány, kormányzás</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Tartomány</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>A kar pontosításának ajánlott módja a Határ kalibrálása. Végigméri azt a peremet, amelyet a kar fizikailag elérhet, majd minden pozíciót arányosan átskáláz ehhez a mért peremhez, így a teljes natív mozgás, minden szögben és minden kitérésnél, egy ideális körre képeződik le, levágás nélkül. Az alábbi négy csúszka csak a fő tengelyeket korlátozza. A tartomány szándékos szűkítésére használja őket, ne a javítására.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>A Határ kalibrálása megméri a kar által elérhető peremet, és teljes körré alakítja. A négy csúszka csak az egyes irányokat korlátozza.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Mintavétel...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Középpont-eltolás X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Középpont-eltolás Y</value></data>
@@ -1581,7 +1615,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Név</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Kiváltó</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Amikor</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Kiváltás</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Lenyomáskor</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Felengedéskor</value></data>
@@ -1613,9 +1647,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Melyik váltórétegbe tartozik ez a makró. A Bármely réteg az éppen aktív rétegtől függetlenül elindul. Az alapréteg és az elnevezett rétegek csak akkor indulnak el, amíg az adott réteg aktív, pontosan úgy, mint egy hozzárendelési sor.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bármely réteg</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Folyamatosan fut, amíg ez a virtuális kontroller aktív. Nincs szükség kiváltó gombra.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Műveletsor</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Teendő</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Réteg, Forrás, Küszöb, Irány, Kiváltó gombok elnyelése, Ismétlés</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Művelet hozzáadása</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Művelet szerkesztése</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Típus</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuális gombok</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuális tengelyek és kormány</value></data>
@@ -1700,7 +1734,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Egérgomb felengedése: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Érintőpad-átfedés be/ki</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Fénysáv színének beállítása</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>A hozzárendelt PlayStation-foglalat fénysávját a választott RGB-színnel bírálja felül. A Reaktív a beállított lecsengési idő alatt teljes intenzitásról feketére halványul, majd visszaadja a vezérlést a Világítás lap beállításainak. A Beragadó megtartja a színt, amíg le nem fut egy Fénysáv-felülbírálás törlése művelet. A játék által vezérelt írások továbbra is elsőbbséget élveznek a felülbírálással szemben.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>A hozzárendelt PlayStation-foglalat fénysávját a választott RGB-színnel bírálja felül. A Reaktív a beállított lecsengési idő alatt teljes intenzitásról feketére halványul, majd visszaadja a vezérlést a Fénysáv kártya beállításainak. A Beragadó megtartja a színt, amíg le nem fut egy Fénysáv-felülbírálás törlése művelet. A játék által vezérelt írások továbbra is elsőbbséget élveznek a felülbírálással szemben.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Fénysáv villantása: {0} (lecsengés: {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Fénysáv tartása: {0}, törlésig</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Fénysáv-felülbírálás törlése</value></data>
@@ -1708,7 +1742,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Megszünteti a hozzárendelt foglalaton aktív fénysáv-felülbírálást. Egy Beragadó módú Fénysáv színének beállítása művelettel párosítva egy másik makróból vonható vissza vele a szín.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Fénysáv módjának beállítása</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Fénysáv módja: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>A hozzárendelt foglalat fénysávmódját egy adott értékre állítja. Úgy marad meg, mint a Világítás lapon végzett módosítás, amíg egy másik művelet vagy a felhasználó meg nem változtatja.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>A hozzárendelt foglalat fénysávmódját egy adott értékre állítja. Úgy marad meg, mint a Fénysáv kártyán végzett módosítás, amíg egy másik művelet vagy a felhasználó meg nem változtatja.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Fénysávmódok léptetése</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Léptetés {0} fénysávmód között</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>A foglalat fénysávmódját az alább kiválasztott módokon lépteti végig. Minden indítás a következő bejelölt módra lép. A léptetés állása műveletenként külön tárolódik, és az alkalmazás újraindításakor visszaáll.</value></data>
@@ -1723,7 +1757,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Lecsengés</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Elhalványulás</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Üres paletta esetén a foglalat saját, Világítás lapon megadott palettája érvényes.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Üres paletta esetén a foglalat Fénysáv kártyáján megadott paletta érvényes.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mód</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Válassza ki, mely fénysávmódokon lépkedjen végig a makró. Minden indítás a következő bejelölt módra lép.</value></data>
 
@@ -1741,7 +1775,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Ravaszvibráció leállítása</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Megszünteti a foglalaton aktív, makróból indított ravaszvibrációt. Egy Beragadó módú Ravaszrezgés felülbírálása művelettel párosítva makróból fejezhető be vele a tartás.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Giroszkóp aktív állapotának beállítása</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Makróból állítja be a foglalat giroszkópjának aktív állapotát. A Kapcsoló megfordítja a jelenlegi állapotot. A Be aktívra kényszeríti a giroszkópot. A Ki inaktívra kényszeríti. Független a Giroszkóp lap aktiválógombjától. A két forrás VAGY kapcsolatban egyesül, így egyik sem tudja letiltani azt, amit a másik aktivált.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Makróból állítja be a foglalat giroszkópjának aktív állapotát. A Kapcsoló megfordítja a jelenlegi állapotot. A Be aktívra kényszeríti a giroszkópot. A Ki inaktívra kényszeríti. Független a Mozgás és érintés szakasz Célzásaktiváló gombjától. A két forrás VAGY kapcsolatban egyesül, így egyik sem tudja letiltani azt, amit a másik aktivált.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mód</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Kapcsoló</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Be</value></data>
@@ -1889,7 +1923,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Érintőpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Érintőpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Érintőpadonkénti bemenet. A kézmozdulatok (csúsztatások, koppintások, csippentések, alakzatok) és a folyamatos kimeneti módok (virtuális kar / D-pad, egér) hozzárendelési forrásokká válnak, amelyeket a Hozzárendelések lapon köthet be.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Érintőpadonkénti bemenet. A kézmozdulatok (csúsztatások, koppintások, csippentések, alakzatok) és a folyamatos kimeneti módok (virtuális kar / D-pad, egér) hozzárendelési forrásokká válnak, amelyeket bármely kimenethez köthet.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Érintőpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Érintőpad száma</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>A kontroller melyik érintőpadjára vonatkoznak az alábbi beállítások. Minden érintőpadnak saját kézmozdulatai, egérérzete és mutatóterülete van.</value></data>
@@ -2179,10 +2213,14 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroszkóp</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Azt hangolja, hogyan vezérli a kontroller mozgásérzékelője az egér- és a karkimenetet. Kalibráljon sík felületen a nyugalmi elmászás nullázásához, majd állítsa be ízlés szerint az érzékenységet, a simítást és az aktiválási szabályokat.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrálás</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>A giroszkóp és a gyorsulásmérő élő értékei</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Érzékenység</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mértékegység, Tér, tengelyek megfordítása, Valós kalibrálás</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mértékegység, tengelyfordítás, Valós kalibrálás</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° fordulatonként</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Válasz formálása</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Holtzóna, simítás, Gyorsítás, Kimeneti görbe</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Vonatkoztatási rendszer</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Helyi, Játékos vagy Világ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Tér</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Hogyan értelmezze a program a giroszkóp mozgását. A Helyi a kontroller nyers tengelyeit használja. A Játékos a vízszintes mozgást a valós függőlegesre (a gravitációra) vetíti, így ugyanaz a csuklómozdulat mindig elfordítja a kamerát, függetlenül attól, hogyan tartja a kontrollert. A Világ emellett a függőleges mozgást is a világ tengelyeire vetíti.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Tartásmód</value></data>
@@ -2254,6 +2292,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Függőleges</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Tartás</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Hogyan tartja a kontrollert. Együtt forgatja a giroszkópot, a gyorsulásmérőt és a gravitációt, a hozzárendelésekhez és a virtuális kontroller által jelentett mozgáshoz egyaránt. A D-pad ugyanezt a vonatkoztatási rendszert követi, így a Fel az adott tartásban is felfelé van.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Hogyan tartja a kontrollert</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineáris</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresszív</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Laza</value></data>
@@ -2286,7 +2325,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktiválási irány visszaállítása</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Mozgásátengedés</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Giroszkóphangolás alkalmazása a mozgásátengedésre</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>A lap tetszőleges giroszkóphangolását (holtzóna, érzékenység, simítás, válaszgörbe, megfordítás) alkalmazza arra a mozgásra, amelyet a virtuális kontroller a játéknak vagy az emulátornak jelent. Kapcsolja ki, ha csak a kalibrált értéket szeretné elküldeni, és a játékra bízná a saját érzékenységét és simítását. A kalibrálás elmászáskorrekciója mindkét esetben érvényes.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>A Giroszkóp kártyáin megadott tetszőleges hangolást (holtzóna, érzékenység, simítás, válaszgörbe, megfordítás) alkalmazza arra a mozgásra, amelyet a virtuális kontroller a játéknak vagy az emulátornak jelent. Kapcsolja ki, ha csak a kalibrált értéket szeretné elküldeni, és a játékra bízná a saját érzékenységét és simítását. A kalibrálás elmászáskorrekciója mindkét esetben érvényes.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Átengedés hangolásának visszaállítása</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti giroszkópérzékenység-szorzó. 1.0 = a bemeneti motor alapértelmezése (500°/s → teljes kitérés). Az 1.0 fölötti értékek érzékenyebbek, az 1.0 alattiak kevésbé érzékenyek.</value></data>
@@ -2303,7 +2342,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Teljes döntési tartomány visszaállítása</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Döntési holtzóna visszaállítása</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Giroszkóp döntés visszaállítása</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hogyan egyesülnek a sor forrásai, ha egynél több aktív. Jelölje ki a sort, és az alábbi részletsávban módosíthatja.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hogyan egyesülnek a sor forrásai, ha egynél több aktív. Nyissa meg a sort, és az Egyesítés beállításnál módosíthatja.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Lendület</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Hanyattegér mód: pöccintse meg és engedje el a kart, és az egérmutató tovább halad, majd fokozatosan megáll. A kar újbóli mozgatása megállítja.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Milyen messzire fut ki az egérmutató egy pöccintés után. A tartomány tetején addig halad tovább, amíg újra meg nem mozdítja a kart.</value></data>
@@ -2504,7 +2543,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ravasztengely</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motoronkénti erősítés, ravaszrezgés, motorcsere</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motorerősítés, ravaszrezgés, Kormányszögtől függő rezgés, Állandó erő</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Teljes erősítés</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Bal motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Jobb motor</value></data>
@@ -2513,6 +2552,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Ennek a kontrollernek nincsenek ravaszmotorjai, így az Xbox impulzusravaszokat használó játékok hatása nem lenne érezhető. Ehelyett minden ravaszcsatorna az azonos oldali fő motorba olvad be.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Rezgés tesztelése</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitás</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Bal</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Jobb</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Folyamatos erőt ad erre az eszközre, amíg ki nem kapcsolja. A játék által vezérelt, bármilyen forrásból érkező erő felülbírálja, amíg aktív, majd a játék leállásakor az állandó erő folytatódik.</value></data>
@@ -2591,7 +2632,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Rögzítéshez nyomjon meg gombokat, vagy mozdítson el egy tengelyt/ravaszt. A tengelyeket a program 50%-nál nagyobb kitérésnél észleli.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Hozzáadás listából</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Rögzítés helyett válasszon kiváltó bemenetet a foglalat eszközei közül. Az Érintőpad lapon engedélyezett érintőpad-kézmozdulatok itt jelennek meg.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Kiváltó törlése</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Rögzítés helyett válasszon kiváltó bemenetet a foglalat eszközei közül. A Mozgás és érintés szakaszban bekapcsolt érintőpad-kézmozdulatok itt jelennek meg.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Bemenet eltávolítása</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Nyomjon meg egy bemenetet…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>megfordítva</value></data>
@@ -2852,7 +2894,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Ennyi másodperc után szűnik meg egy virtuális kontroller, ha az összes hozzárendelt eszköze offline. 0 esetén ki van kapcsolva. Az azonos típusú megmaradó kontrollerek feljebb lépnek, hogy kitöltsék a rést, és alacsonyabb foglalatokhoz kötődnek újra.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>másodperc (0 = soha)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Váltóréteg</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Réteg hozzáadása</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Váltóréteg hozzáadása. Egy második hozzárendelési táblázat, amely egy gomb nyomva tartása vagy átkapcsolása idejére aktiválódik.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Alap</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Váltóréteg</value></data>
@@ -2953,7 +2995,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Mozgásos kormányzás</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° és {1}° között</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Dőlés holtzónái, Kontroller tájolása</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>A Mozgás: dőlés bemenet beállításai: döntse a kontrollert úgy, mint egy kormányt. A Hozzárendelések bemeneti legördülő listájában rendelje a „Mozgás: dőlés” bemenetet egy kartengelyhez.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>A Mozgás: dőlés bemenet beállításai: döntse a kontrollert úgy, mint egy kormányt. A Gombok szakaszban rendelje a „Mozgás: dőlés” bemenetet egy kartengelyhez.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Mozgásos kormányzás visszaállítása</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (jobb kar)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (bal kar)</value></data>
@@ -2962,7 +3004,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Jobb kar gyűrűje</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>A Flick stick bemenetek hangolása</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>A Flick stick bemenetek beállításai: mutasson a karral egy irányba, és a kamera arra fordul, a perem mentén körbeforgatva pedig finoman fordíthat. A Hozzárendelések bemeneti legördülő listájában rendelje a „Flick stick (jobb kar)” bemenetet az Egér X kimenethez, bármelyik rétegen.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>A Flick stick bemenetek beállításai: mutasson a karral egy irányba, és a kamera arra fordul, a perem mentén körbeforgatva pedig finoman fordíthat. A Billentyűk és egér szakaszban rendelje a „Flick stick (jobb kar)” bemenetet az Egér X kimenethez, bármelyik rétegen.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick stick visszaállítása</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pont 360°-onként</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Az egér számlálóértéke egy teljes, 360°-os kamerafordulathoz. A játék egérérzékenységétől függ: növelje, ha a flick a kelleténél kevesebbet fordul, és csökkentse, ha többet.</value></data>
@@ -3054,7 +3096,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Hang</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>A makróhangok és a tükrözött rendszerhang a kiválasztott kontroller beépített hangszóróján szólalnak meg, USB-n vagy Bluetooth-on keresztül. Válassza ki az eszközt a fenti legördülő listában. Az itteni beállítások mind arra vonatkoznak.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Hangkimenet</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Tükrözés forrása, haptika, Fejhallgató hangereje, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Tükrözés forrása, Fejhallgató hangereje, puffer, Kimeneti útvonal</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>A hangok automatikusan a kiválasztott kontrollerre irányulnak. USB-n a kontroller saját hangvégpontját a program a hardvertároló alapján párosítja. Bluetooth-on a hang Sony HID-keretekben közvetítődik.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Tükrözés forrása</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Melyik lejátszóeszközt tükrözze a program a kontroller hangszórójára. Azok a játékok, amelyek bizonyos hangokat külön lejátszóeszközre küldenek, ezt célozhatják meg.</value></data>
@@ -3067,10 +3109,10 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Minden hang leállítása</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>A kontroller minden makróhangjának leállítása</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Hangmakrók</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>A hangokat makrók játsszák le: egy kiváltó (gomb lenyomása, felengedése, nyomva tartása vagy képlet) és egy Hang lejátszása művelet. Itt vagy a Makrók lapon állíthatja össze őket. A késleltetések, az ismétlések és a kapcsolók mind működnek.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>A hangokat makrók játsszák le: egy kiváltó (gomb lenyomása, felengedése, nyomva tartása vagy képlet) és egy Hang lejátszása művelet. Itt vagy a Makrók és menük szakaszban állíthatja össze őket. A késleltetések, az ismétlések és a kapcsolók mind működnek.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Új hangmakró</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Még nincs hangmakró. Hozzon létre egyet, majd válasszon hangfájlt és kiváltót.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>A makró megnyitása a Makrók lapon</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>A makró megnyitása a Makrók és menük szakaszban</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>{0}. hangmakró</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Hang lejátszása</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Hangfájl (.wav, .mp3, .m4a, .aac, .wma, .flac) lejátszása a kontroller kimeneti eszközén</value></data>
@@ -3347,6 +3389,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Vr_Status_Running" xml:space="preserve"><value>Fut</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Fut, az illesztőprogram csatlakoztatva</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Fut, a kontrollerek élnek</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR telepítve</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR nincs telepítve</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR fut</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR fut, az illesztőprogram csatlakoztatva</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR fut, a kontrollerek élnek</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Egy másik OpenVR-illesztőprogram a HIDMaestro illesztőprogramnevét használja, ezért a SteamVR azt töltheti be a PadForge-é helyett, és a virtuális VR-kontrollerek nem jelennek meg. A megoldáshoz távolítsa el azt az illesztőprogramot: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Soros kontroller (COM-port)</value></data>
@@ -3516,7 +3563,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Fogyasztói {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Egér</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Egérmozdulatok</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tartsa nyomva a mozdulatgombot, pöccintsen az egérrel, és felengedéskor egy művelet aktiválódik: balra, jobbra, fel, le, vagy a pöccintési távolság alatt egy sima kattintás. Az öt mozdulatot a Hozzárendelések lapon rendelheti hozzá, vagy makrókiváltóként használhatja.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tartsa nyomva a mozdulatgombot, pöccintsen az egérrel, és felengedéskor egy művelet aktiválódik: balra, jobbra, fel, le, vagy a pöccintési távolság alatt egy sima kattintás. Az öt mozdulatot bármely kimenethez hozzárendelheti, vagy makrókiváltóként használhatja.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Egérmozdulatok engedélyezése</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Élesíti a mozdulatfelismerőt ehhez az egérhez ezen a foglalaton. A mozdulatgomb mozdulat közben is megtartja a normál kattintását, ezért olyan oldalsó gombot válasszon, amelyet máshoz nem rendel hozzá.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Mozdulatgombok</value></data>
@@ -3550,7 +3597,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Rétegváltás</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma-szín beállítása</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>A művelet futása alatt egy színre festi a virtuális kontrollerhez rendelt Razer eszközöket és minden más, azonos fajtájú Razer eszközt.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>A fenti időtartamra ezzel a színnel festi be a virtuális kontrollerhez rendelt Razer eszközöket és minden más, azonos fajtájú Razer eszközt, illetve minden Razer eszközt, ha a Razer Chroma sor hozzá van rendelve. Felülbírálja bármely virtuális kontroller Világítás lapját, majd visszaadja a világítás vezérlését. Ha a színt addig szeretné tartani, amíg a kiváltó le van nyomva, használja a Nyomva tartás közben beállítást a Felengedésig móddal. Ha két makró egyszerre fest, a listában lejjebb lévő nyer, ezért a teljes lenyomásra induló makrót tegye az enyhe lenyomásra induló párja alá. Ha két virtuális kontroller makrói ugyanolyan fajta Razer eszközt festenek, a kisebb játékosszám nyer. Ehhez futnia kell a Razer Synapse alkalmazásnak.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>A fenti időtartamra ezzel a színnel festi be a virtuális kontrollerhez rendelt Razer eszközöket és minden más, azonos fajtájú Razer eszközt, illetve minden Razer eszközt, ha a Razer Chroma sor hozzá van rendelve. Felülbírálja azt a világítást, amelyet bármely virtuális kontroller a Fény és hang szakaszban beállít, majd visszaadja a világítás vezérlését. Ha a színt addig szeretné tartani, amíg a kiváltó le van nyomva, használja a Nyomva tartás közben beállítást a Felengedésig móddal. Ha két makró egyszerre fest, a listában lejjebb lévő nyer, ezért a teljes lenyomásra induló makrót tegye az enyhe lenyomásra induló párja alá. Ha két virtuális kontroller makrói ugyanolyan fajta Razer eszközt festenek, a kisebb játékosszám nyer. Ehhez futnia kell a Razer Synapse alkalmazásnak.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast-képernyő megjelenítése</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Képeket játszik le minden olyan Dreamcast-kontroller VMU-ján, amely a foglalatot tápláló Bliss-Box portban van, majd minden portot visszaállít a saját képernyő-beállítására.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast-képek megjelenítése: {0} × {1} ms, ismétlések száma: {2}</value></data>
@@ -3844,10 +3891,12 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Lenyomásra nullázza a kontroller halmozott giroszkópos célzási referenciáit. Törlődik a simítási előzmény, újra rögzül a Mozgás: dőlés semleges helyzete, a gravitációbecslés a kontroller jelenlegi helyzetéből indul újra, és visszavonódik a Mozgás: bólintás, legyezés és orsózás sorok által felépített elfordulás.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Bármely eszköz)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menük</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>A menük egy fizikai kart vagy érintőpadot képernyőn megjelenő gyűrűvé vagy ráccsá alakítanak. Adjon hozzá egy menüt, válassza ki, mi nyissa meg, majd adjon minden cellának feliratot és hozzárendelést.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>A menük egy fizikai kart vagy érintőpadot képernyőn megjelenő gyűrűvé vagy ráccsá alakítanak. Hozzon létre egyet a Menük melletti + gombbal, válassza ki, mi nyissa meg, majd adjon minden cellának nevet és műveletet.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Új menü</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>{0}. menü</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Menü neve</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Engedélyezve</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Megnyitás</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stílus</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radiális gyűrű</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Érintőrács</value></data>
@@ -3867,12 +3916,16 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Cells" xml:space="preserve"><value>Cellák</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Középső cella</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Feliratok megjelenítése</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Képernyő-pozíció</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Méret</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Átlátszatlanság</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Aktiválási holtzóna</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Cellák hozzárendelései</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>{0}. cella</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Cella hozzáadása</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Utolsó cella eltávolítása</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Cella szerkesztése</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Név</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Művelet</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikon</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Közép</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Billentyűzet billentyűje</value></data>
@@ -3885,7 +3938,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Egyszer aktiválódik a kattintás felengedésekor: mutasson a cellára, nyomja be a kart vagy az érintőpadot, majd engedje fel a kattintást.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Egyszer aktiválódik, amikor elenged: emelje fel az ujját az érintőpadról, vagy hagyja, hogy a kar visszaugorjon középre, miközben egy cella ki van jelölve.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>A hozzárendelés végig nyomva marad, amíg a cella ki van jelölve. Nincs szükség kattintásra.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Hány cellája van a menünek. Radiális gyűrűnél ez csak a gyűrűt számolja; a középső cella külön van.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Középső cellát ad hozzá, amely akkor van kijelölve, amikor a kar vagy az ujj az Aktiválási holtzónán belül nyugszik.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Karoknál azt adja meg, mennyire kell kitolni a kart, mielőtt a menü megnyílik, és a gyűrű cellái kijelölődnek. Radiális menüknél egyben a karok és az érintőpadok középső területe is: ezen belül a középső cella van kijelölve, ha létezik.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Minden cella feliratának megjelenítése a képernyőn megjelenő átfedésen.</value></data>
@@ -3895,8 +3947,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Az átfedés mérete a normál méretének százalékában.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Az átfedés átlátszatlansága. 100% esetén teljesen fedő.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Az átfedésen ezen a cellán megjelenő szöveg.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Mit tesz a cella, amikor aktiválódik: a „Billentyűzet billentyűje” lenyom egy billentyűt, a „Kontroller gombja” lenyom egy gombot a foglalat virtuális kontrollerén. A „Nincs” értékre állított cella menüelem-forrásként továbbra is aktiválódik a Hozzárendelések sorai és a makrókiváltók számára.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>A foglalathoz rendelt fizikai kontrollerekről olvasva, nem a virtuális kontroller kiosztásából. A menü kimenetét az alábbi cellahozzárendelések adják.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Mit tesz a cella, amikor aktiválódik: a „Billentyűzet billentyűje” lenyom egy billentyűt, a „Kontroller gombja” lenyom egy gombot a foglalat virtuális kontrollerén. A „Nincs” értékre állított cella menüelem-forrásként továbbra is aktiválódik a hozzárendelések és a makrókiváltók számára.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>A foglalathoz rendelt fizikai kontrollerekről olvasva, nem a virtuális kontroller kiosztásából. A menü kimenetét az alábbi cellák adják meg.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Egyéni tengelyek</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Irányítás X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Irányítás Y</value></data>
@@ -3921,13 +3973,16 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakerek</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Kimenet</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Gombok</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Billentyűk és egér</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Hangjegyek és vezérlők</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Kezek</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Karok és ravaszok</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rezgés és haptika</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mozgás és érintés</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Fény és hang</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrók és menük</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakerek</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>A virtuális kontroller által fogadott játékrezgést és erő-visszacsatolást alacsony frekvenciás hangokként egy hangkimenetre irányítja bass shakerekhez és mélysugárzókhoz.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>A játék rezgését mély hangokként játssza le bass shakereken vagy mélysugárzón keresztül.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Kimeneti eszköz, csatornák, erősítés, hang minden motorhoz</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense és Nintendo Switch Pro virtuális kontrollerekkel működik, valamint erő-visszacsatolásos Bővített virtuális kontrollerekkel, például versenykormányokkal, és a Steam Deck Controller (Composite) kontrollerrel. A játék visszajelzése és a Rezgés tesztelése a hangkimeneten szólal meg. A makróból indított rezgés a kontrolleren marad.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>A Rezgés hangként visszaállítása</value></data>
@@ -3956,19 +4011,22 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Ezt a visszajelzési csatornát hangként játssza le. Kikapcsolt állapotban az erősítés és a frekvencia beállítva marad.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>A csatorna hangfrekvenciája, 20 és 120 Hz között. Futtassa a frekvenciasöprést, hogy megtalálja, hol reagál a legerősebben a bass shakere.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>A csatorna hangereje a fő erősítés előtt.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Erősítés</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Teszt</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>A csatorna hangját 1.5 másodpercig játssza le a beállított erősítéssel.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Mély motor visszaállítása</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Magas motor visszaállítása</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Bal ravasz visszaállítása</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Jobb ravasz visszaállítása</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Shakerek ellenőrzése</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frekvenciasöprés</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Nyolc másodperc alatt 20-tól 120 Hz-ig végigsöpör egy hangot a mély motor útvonalán. Jegyezze meg, hol reagál a legerősebben a bass shakere, és oda állítsa a szólamok frekvenciáit.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Leállítás</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Leállítja a teszthangot vagy a söprést.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Bármely NFC-címke</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-címke: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Bemenetek szűrése (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Kimenetek és bemenetek szűrése</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Csak az egyező sorokat és bemeneteket mutatja. A Ctrl+F lenyomásával ide gépelhet.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Válassza ki, mely eszközök bemeneteit kínálják a választók</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Megjelenik a választóban</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Bármely hangkifejezés</value></data>
@@ -4077,6 +4135,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Betáplálás visszaállítása</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrikus EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Sávonkénti szűrők a kontroller hangján. A hang kódolása előtt érvényesülnek, így az alábbi határoló megakadályozza, hogy egy kiemelt sáv túlvezéreljen.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Előerősítés, sávok, importálás</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Előerősítés</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>A teljes szint a sávok előtt. Az AutoEq-profilok negatív előerősítéssel érkeznek, hogy a kiemeléseik ne vezéreljenek túl, és importáláskor ez az érték automatikusan beállítódik.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Be</value></data>
@@ -4307,7 +4366,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Visszaállítás érintésre vagy kitérésre történő megnyitásra.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Irányítás ezzel</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Az a fizikai bemenet, amely a kijelölt cellát irányítja, amíg a réteg nyitva tartja a menüt.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>A foglalathoz rendelt fizikai kontrollerekről olvasva. A réteg megnyitja a menüt, ez a bemenet irányítja. A kimenetét a cellák hozzárendelései határozzák meg.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>A foglalathoz rendelt fizikai kontrollerekről olvasva. A réteg megnyitja a menüt, és ez a bemenet irányítja. A kimenetét a cellái határozzák meg.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ikonméret</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Az ikon mérete a menü normál ikonméretéhez képest, 25% és 200% között. Az ikon törlésekor visszaáll 100%-ra.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Nyomva tartja a kijelölt cella hozzárendelését, amíg a Kattintási bemenet le van nyomva. A kijelölt radiális közép akkor is aktiválódhat, amikor a kar nyugalomban van.</value></data>
@@ -4432,7 +4491,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo referenciája a Windows nem dokumentált IPolicyConfig interfészének felépítéséhez, amellyel a PadForge újra engedélyezi a kontroller hangvégpontját. MIT. Csak dokumentációként, a program nem tartalmaz belőle kódot.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>A Hang lap által importált parametrikus EQ-profilformátum, készítette: Jaakko Pasanen. MIT. Csak dokumentációként, a program nem tartalmaz belőle kódot.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>A kontrollerek Parametrikus EQ beállítása által importált parametrikus EQ-profilformátum, készítette: Jaakko Pasanen. MIT. Csak dokumentációként, a program nem tartalmaz belőle kódot.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>A Szövegblokk makrók és a billentyűkombináció-hook mögötti SendInput-technikák: Unicode-gépelés, kötegkorlátok, a Win billentyű maszkbillentyűje és a megjelölt injektált bemenet. GPL-2.0-or-later, kizárólag dokumentációként olvasva, a program nem tartalmaz GPL-kódot.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Irány</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Lépés</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>és</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Fogantyú</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} beállítja ennek a kontrollernek a ravaszait.</value></data>
@@ -4716,7 +4776,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>A fogantyú nem tett meg elég hosszú utat, ezért a mozgástartomány változatlan marad. Mozgassa minden szélig, amíg a mérés tart.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>A Falcon-eszköz bezárult a mérés befejezése előtt.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Játék Novint Falcon eszközzel a Force Dimension SDK-ján keresztül, amelyet a Force Dimension oldaláról kell telepíteni. A fogantyú egy kar, a markolat négy gombja gomb, a PadForge pedig a játék rezgését és effektjeit erőként juttatja a fogantyúra. Az egyes foglalatok Erő-visszacsatolás lapján állítható be, milyen érzetet ad a Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Játék Novint Falcon eszközzel a Force Dimension SDK-ján keresztül, amelyet a Force Dimension oldaláról kell telepíteni. A fogantyú egy kar, a markolat négy gombja gomb, a PadForge pedig a játék rezgését és effektjeit erőként juttatja a fogantyúra. Hogy milyen érzetet ad a Falcon, azt minden kontroller Rezgés és haptika szakaszában a Novint Falcon kártya határozza meg.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon vezérlése</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Minden Falcon-eszközt megnyit a Force Dimension dhd64.dll fájlján keresztül. A megnyitott Falcon kizárólag a PadForge-é, ezért amíg ez be van kapcsolva, a FalconJoyForce és a Force Dimension eszközei nem tudják megnyitni. Kikapcsolva a PadForge minden Falcon-eszközt bezár.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>A Falcon-könyvtár új helye: {0}. A PadForge néhány másodpercen belül betölti, és a másik másolaton megnyitott Falcon ezen nyílik meg újra.</value></data>
@@ -4929,7 +4989,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Megadott ideig</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Leállításig</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Idő</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Minden ezen a foglalaton lévő DualSense és DualSense Edge kontrolleren lejátszódik. A játék saját ravaszhatása és a játékmodé élvez elsőbbséget, az Adaptív ravaszok lap beállítása pedig a hatás végén tér vissza. A zónák 0-tól (nyugalmi helyzet) 9-ig (teljes lehúzás) futnak. Az Íj, a Vágta és a Gép nem hivatalos DualSense-hatások, és egy firmware-frissítés eltávolíthatja őket. Az Xbox kontrollereken, ha az Adaptív ravasz vibrációinak átfordítása be van kapcsolva, a vibráló hatások ravaszrezgésként érezhetők.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Minden ezen a foglalaton lévő DualSense és DualSense Edge kontrolleren lejátszódik. A játék saját ravaszhatása és a játékmodé élvez elsőbbséget, az Adaptív ravaszok kártya beállítása pedig a hatás végén tér vissza. A zónák 0-tól (nyugalmi helyzet) 9-ig (teljes lehúzás) futnak. Az Íj, a Vágta és a Gép nem hivatalos DualSense-hatások, és egy firmware-frissítés eltávolíthatja őket. Az Xbox kontrollereken, ha az Adaptív ravasz vibrációinak átfordítása be van kapcsolva, a vibráló hatások ravaszrezgésként érezhetők.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0}, ravasz: {1}, {2} ms-ig</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, ravasz: {1}, amíg nyomva van</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, ravasz: {1}, leállításig</value></data>
@@ -4958,7 +5018,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Törlésig</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Idő</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Színeik megtartása</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>A művelet ugyanazokat a billentyűket világítja meg minden olyan billentyűzeten, amelyet ez a virtuális vezérlő világít, a Világítás lap által megadott színek fölött. A számok a kiválasztás sorrendjét mutatják. A Visszaszámlálás egyesével kapcsolja ki a billentyűket, az utoljára kiválasztottal kezdve, ezért a számsoron 1-től 0-ig válaszd ki őket egy újratöltési számlálóhoz. A billentyűzet vagy az egér csak akkor világít, ha az Az eszköz világításának vezérlése be van kapcsolva.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>A művelet ugyanazokat a billentyűket világítja meg minden olyan billentyűzeten, amelyet ez a virtuális vezérlő világít, a Fény és hang szakaszban nekik beállított színek fölött. A számok a kiválasztás sorrendjét mutatják. A Visszaszámlálás egyesével kapcsolja ki a billentyűket, az utoljára kiválasztottal kezdve, ezért a számsoron 1-től 0-ig válassza ki őket egy újratöltési számlálóhoz. A billentyűzet vagy az egér csak akkor világít, ha az Az eszköz világításának vezérlése be van kapcsolva.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Egyéb</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, sorszám: {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés</value></data>
@@ -5018,7 +5078,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Az analóg billentyűk aktiválási pontjai nem kerültek át.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>A reWASD ezt a vezérlőt egy adapteren keresztül egy másik eszközre küldte. A PadForge ezen a számítógépen játssza le, a Távoli kapcsolat pedig egy másik, PadForge-ot futtató számítógépre küldi.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>A PadForge két kart olvas, ez pedig egy harmadikat nevez meg.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A kormány emulálása nem került át. Rendelje hozzá a kormányt a Hozzárendelések fülön.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A kormány emulálása nem került át. Rendelje hozzá a kormányt a Gombok szakaszban.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ez a profil olyan különleges műveletet nevez meg, amely hiányzik a Profiles mappa melletti Actions.xml fájlból: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ez a beállítás nem került át: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>A reWASD megakadályozta, hogy ezek a bemenetek eljussanak a Windowsig. Kapcsolja be a Hozzárendelt bemenetek elnyelése beállítást a(z) {0} eszközhöz az Eszközök oldalon, amely elnyeli a profil által hozzárendelteket.</value></data>
@@ -5026,8 +5086,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Akkor érvényesít, amikor a kar visszaáll középre, vagy a réteg véget ér. A reWASD Alkalmaz gombját nem használja.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ez a fájl két vezérlőt tart külön. A PadForge-ban a szlot bármely vezérlője kiváltja ezeket a hozzárendeléseket.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>A mozgás sebessége vagy a gyors elhúzás nem került át.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ezek nem kerültek át. Állítsa be őket az Érintőpad fülön.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>A fájlban semmi nem nyitja meg ezt a réteget. Adjon neki gombot a Hozzárendelések fülön.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ezek nem kerültek át. Állítsa be őket a Mozgás és érintés szakaszban.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>A fájlban semmi nem nyitja meg ezt a réteget. A Gombok szakaszban kattintson a jobb gombbal a rétegre, és válassza az Aktivátor beállítása lehetőséget.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>A gombjai megnyomáskor ezeket futtatják: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-gyorsparancs</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Azt teszi, amit egy profil-gyorsparancs: betölt egy megnevezett profilt, a következőt vagy az előzőt, megjeleníti vagy elrejti az ablakot, vagy ki- és bekapcsolja a virtuális vezérlőket.</value></data>
@@ -5197,7 +5257,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>A kijelölt cella egyszer, rövid érintésként aktiválódik, amikor a Kiváltást felengedik. Ha az „Elrejtés kiváltás után” be van kapcsolva, azonnal aktiválódik, amint a Kiváltás elrejti a sávot.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Egy cella egyszer, rövid érintésként aktiválódik, amikor a Kiváltás elrejti a sávot, ha az „Elrejtés kiváltás után” be van kapcsolva. Ha az „Újraközpontosítás minden alkalommal” be van kapcsolva, a középső cella aktiválódik.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>A kijelölt cella végig nyomva marad, amíg a sáv látható. Lépéskor az egyik cella felengedésre kerül, és a következő marad nyomva.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>A Radiális gyűrű, az Érintőrács és a Gyorssáv a cellákhoz rendelt műveleteket váltja ki. A Billentyűzet a használatban lévő Windows-kiosztás billentyűit írja be.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>A Radiális gyűrű, az Érintőrács és a Gyorssáv a cellák műveleteit váltja ki. A Billentyűzet a használatban lévő Windows-kiosztás billentyűit írja be.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Elrendezés</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Hogyan rendezi el a billentyűzet a billentyűit, és hogyan választ közülük a kontroller.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Egyetlen kijelölés, amelyet egy kar vagy négy bemenet mozgat, ahogy a Windows, az Xbox és a Steam teszi.</value></data>
@@ -5304,11 +5364,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-kézikonzolgombok (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-billentyűfények (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Hozzárendelések fülön egy hozzárendelés igen.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Gombok szakaszban egy hozzárendelés igen.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>A PadForge nyolc Képernyő-átfedést futtat, ez pedig a reWASD kilencedik vagy tizedik célkeresztje.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>A PadForge a Balra és Jobbra irányt az orsózásból, a Dőlést a legyezésből olvassa, a reWASD alapértelmezése szerint. A reWASD Beállításaiban a kettő felcserélhető, és ez a fájl nem mondja meg, felcserélték-e.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Billentés módban a reWASD Dőlése a függőleges tengely körüli fordulat, és a mozgásérzékelő nem ad szöget ehhez a fordulathoz.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>A PadForge az érintőpad átlóját két irányként olvassa egyszerre, amelyet az érintőpad csak akkor jelent, ha az Érintőpad fülön a D-pad mód 8 irányú.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>A PadForge az érintőpad átlóját két irányként olvassa egyszerre, amelyet az érintőpad csak akkor jelent, ha a Mozgás és érintés szakaszban a D-pad mód 8 irányú.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>A PadForge a giroszkóp irányát egyetlen küszöbön túl olvassa, és a reWASD nem ad mértékegységet a giroszkópzóna szélére.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>A DS4Windows oda tette a mutatót, ahová a kar mutat. A PadForge-ban ehelyett a kar mozgatja a mutatót.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>A(z) {0} a kart az elforgatása előtt olvassa. A DS4Windows utána olvasta.</value></data>

@@ -253,10 +253,13 @@ namespace PadForge.Tests
             Assert.False(padVm.MappingsViewLoaded);
             // Each section is back on its first tab too (#574), so the next
             // controller's Macros & Menus opens on Macros, not on the
-            // deleted one's Menus. Buttons is back on the picture, with no
-            // control picked.
+            // deleted one's Menus. Buttons is back on the picture, and the
+            // deleted one's pick is gone: the picture has the slot's first
+            // control picked, as it always has one (#574).
             Assert.Equal(0, padVm.ButtonsViewIndex);
-            Assert.Null(padVm.PickedTarget);
+            Assert.NotEqual("ButtonA", padVm.PickedTarget);
+            var kbm = padVm.OutputType == PadForge.Engine.VirtualControllerType.KeyboardMouse ? padVm.KbmConfig : null;
+            Assert.Equal(padVm.Mappings.First(m => PadViewModel.RowMatchesSurface(m, "All", kbm)).TargetSettingName, padVm.PickedTarget);
             Assert.Equal(0, padVm.MacrosPartIndex);
             Assert.Equal(1, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.MacrosSection));
             Assert.Equal(3, padVm.LastTabOfSection(PadForge.ViewModels.PadViewModel.SticksSection));

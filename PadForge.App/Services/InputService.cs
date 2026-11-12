@@ -6103,6 +6103,7 @@ namespace PadForge.Services
                     if (!snap.HasMotion)
                     {
                         mapping.CurrentValueText = string.Empty;
+                        mapping.CurrentPercentText = string.Empty;
                     }
                     else
                     {
@@ -6118,6 +6119,7 @@ namespace PadForge.Services
                                 snap.GyroPitch, snap.GyroYaw, snap.GyroRoll);
                         }
                         mapping.CurrentValueText = memo.GyroText;
+                        mapping.CurrentPercentText = memo.GyroText;
                     }
                     mapping.IsInputActive = false;
                     mapping.LiveLevel = 0;
@@ -6141,6 +6143,7 @@ namespace PadForge.Services
                     mapping.CurrentValueText = snap.HasMotion
                         ? amemo.AccelText
                         : string.Empty;
+                    mapping.CurrentPercentText = mapping.CurrentValueText;
                     mapping.IsInputActive = false;
                     mapping.LiveLevel = 0;
                     continue;
@@ -6155,6 +6158,7 @@ namespace PadForge.Services
                         : target == MappingSetMigrator.MotionYawTarget ? rowValues.Yaw : rowValues.Roll;
                     int axisValue = (int)Math.Round(Math.Clamp(rowValue, -1f, 1f) * 32767f);
                     mapping.CurrentValueText = LiveValueString(axisValue);
+                    mapping.CurrentPercentText = LivePercentString(LivePercentOf(axisValue, false, false, target, outputType));
                     mapping.IsInputActive = Math.Abs(axisValue) > 1500;
                     mapping.LiveLevel = Math.Abs(axisValue) / 32767.0;
                     continue;
@@ -6169,6 +6173,7 @@ namespace PadForge.Services
                     int pull = haveEngine
                         ? _inputManager.CombinedPressureStates[padIndex][pressureIndex] * 257 : 0;
                     mapping.CurrentValueText = LiveValueString(pull);
+                    mapping.CurrentPercentText = LivePercentString((int)Math.Round(pull * 100.0 / 65535));
                     mapping.IsInputActive = pull > 1500;
                     mapping.LiveLevel = pull / 65535.0;
                     continue;
@@ -6181,6 +6186,8 @@ namespace PadForge.Services
                 if (combined.HasValue)
                 {
                     mapping.CurrentValueText = LiveValueString(combined.Value);
+                    mapping.CurrentPercentText = LivePercentString(LivePercentOf(combined.Value, mapping.IsTargetDiscrete,
+                        mapping.IsTouchpadAxisTarget, target, outputType));
                     // Rowfire (#175): discrete targets fire on any nonzero,
                     // axes need a deadband so resting sticks stay dark.
                     // 1500 is on the plus or minus 32767 stick scale every
@@ -6205,6 +6212,7 @@ namespace PadForge.Services
                 if (string.IsNullOrEmpty(mapping.SourceDescriptor) || fallbackState == null)
                 {
                     mapping.CurrentValueText = string.Empty;
+                    mapping.CurrentPercentText = string.Empty;
                     mapping.IsInputActive = false;
                     mapping.LiveLevel = 0;
                     continue;
@@ -6217,8 +6225,9 @@ namespace PadForge.Services
                     : Math.Abs(fallbackValue) > 1500;
                 // The device's own number, on the device's own scale: the
                 // meter says on or off, never a share of a scale nobody
-                // knows here.
+                // knows here, and the bar's value says it as the meter does.
                 mapping.LiveLevel = mapping.IsInputActive ? 1 : 0;
+                mapping.CurrentPercentText = LivePercentString(mapping.IsInputActive ? 100 : 0);
             }
 
             // ── Pipeline heat chips (#175 item 10): recompute from this
@@ -6258,6 +6267,38 @@ namespace PadForge.Services
                      && (target == "LeftTrigger" || target == "RightTrigger"))
                 full = 65535;
             return Math.Clamp(Math.Abs((double)value) / full, 0, 1);
+        }
+
+        /// <summary>A row's live value as a whole percent of its full scale,
+        /// for the value the bar under the picture shows (#574): the meter's
+        /// own share (<see cref="LiveLevelOf"/>), signed as the value is, so
+        /// a stick's axis reads from -100 to 100. A button-class output is
+        /// 100 or 0.</summary>
+        internal static int LivePercentOf(int value, bool discrete, bool touchpadAxis, string target,
+            VirtualControllerType outputType)
+        {
+            int percent = (int)Math.Round(LiveLevelOf(value, discrete, touchpadAxis, target, outputType) * 100);
+            return discrete && !touchpadAxis ? percent : Math.Sign(value) * percent;
+        }
+
+        /// <summary>The bar's value for each whole percent from -100 to 100,
+        /// made once for the language in use, as the raw value's are. The
+        /// refresh runs 30 times a second.</summary>
+        private static string[] s_livePercentStrings;
+        private static string s_livePercentFormat;
+
+        private static string LivePercentString(int percent)
+        {
+            percent = Math.Clamp(percent, -100, 100);
+            string format = Strings.Instance.Pad_Value_Percent_Format;
+            var made = s_livePercentStrings;
+            if (made == null || !string.Equals(format, s_livePercentFormat, StringComparison.Ordinal))
+            {
+                made = new string[201];
+                s_livePercentFormat = format;
+                s_livePercentStrings = made;
+            }
+            return made[percent + 100] ??= string.Format(format, percent);
         }
 
         /// <summary>Reads a target's current post-combine output value

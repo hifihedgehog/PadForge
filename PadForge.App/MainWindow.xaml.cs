@@ -2024,6 +2024,17 @@ namespace PadForge
             // callbacks, which never run now (MainViewModel.ClearMenuRecordings).
             _recorderService.RecordingCanceled += (s, e) => _viewModel.ClearMenuRecordings();
 
+            // A recording that could not start says why on the line under
+            // the controller's picture, where the click was (#574). Before
+            // this the status line at the window's foot was the only word,
+            // and a click on a control with no device connected looked like
+            // a click that did nothing.
+            _recorderService.RecordingRefused += (padIndex, reason) =>
+            {
+                if (padIndex >= 0 && padIndex < _viewModel.Pads.Count)
+                    _viewModel.Pads[padIndex].ShowRecordRefusal(reason);
+            };
+
             // Recording timeout clears flash + advances Map All.
             _recorderService.RecordingTimedOut += (s, e) =>
             {

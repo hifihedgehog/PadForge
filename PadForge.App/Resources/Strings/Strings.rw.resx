@@ -150,10 +150,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Igikoresho</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeraho igikoresho</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ishusho</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Urutonde</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ibisohoka: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Imigendere</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kanda ku gice cy'umugenzuzi, hanyuma ukande icyinjizwa kigomba kugikoresha.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Kanda ku rufunguzo cyangwa kuri buto y'imbeba, hanyuma ukande icyinjizwa kigomba kuyikoresha.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kanda ku nota cyangwa kuri slider, hanyuma ukande icyinjizwa kigomba kuyikoresha.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Buto "Huza byose" isimbuka ibisohoka byo gukoraho bya A na B. Kanda ku ruziga ruzengurutse A cyangwa B kugira ngo uhuze kimwe muri byo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Dutegereje {0}. Kanda icyinjizwa ku gikoresho cyawe.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, iyoborwa na</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Amahitamo menshi</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Amahitamo make</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buto nyamukuru</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buto yo ku rutugu</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buto ya sisitemu</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Buto</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Agati</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensa y'imigendere</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Urufunguzo rwa mwandikisho</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Buto y'imbeba</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Imigendere y'imbeba</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Uruziga rw'imbeba</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensa yo gukoraho</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Gukurura kwa analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, ukuboko kw'ibumoso</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, ukuboko kw'iburyo</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod z'imikino</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Yemerera mod z'imikino zakorewe DSX gushyiraho adaptive trigger, lightbar, amatara y'abakinnyi n'itara rya mute bya kontorola zawe za PlayStation.</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Emera mod z'imikino za DSX</value></data>
@@ -425,6 +452,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Umuyoboro</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Isohoka rya MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Umuyoboro wa MIDI (1-16)</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Nta na kimwe</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Bifunze</value></data>
@@ -448,6 +476,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Siba byose</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Inkomoko</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Agaciro</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Amahitamo</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Hindura icyerekezo</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Kimwe cya kabiri</value></data>
@@ -457,7 +486,7 @@
   <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid trigger</value></data>
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Uburyo bw'ibanze</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ongeraho inkomoko</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ongeraho inkomoko</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Kuraho iyi nkomoko</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Teranya inkomoko zose</value></data>
@@ -493,7 +522,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Izina</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Iyo</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Iyo ukanze</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Iyo urekuye</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Igihe ufashe</value></data>
@@ -507,9 +536,7 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Urugero</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Urwego</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Urwego urwo ari rwo rwose</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Urutonde rw'ibikorwa</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ongeraho igikorwa</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Hindura igikorwa</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Ubwoko</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Buto z'ikoranabuhanga</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Mwandikisho n'inyandiko</value></data>
@@ -560,11 +587,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Buto {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Kanda {0} mu gihe cya {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Kanda {0} mu gihe cya {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Rekura {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Imfunguzo {0} mu gihe cya {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Imfunguzo {0} mu gihe cya {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Rekura imfunguzo {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tegereza {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tegereza {0} ms</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Ingano y'ijwi rya sisitemu ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Ingano y'ijwi rya sisitemu ← {0} (ntarengwa {1}%)</value></data>
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>Ingano y'ijwi rya porogaramu ← {0}</value></data>
@@ -793,7 +820,8 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ibipimo, umwanya, guhindura imirongo, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ibipimo, guhindura imirongo, Real-World Calibration</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ku kuzenguruka kumwe</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Hindura icyerekezo cya pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Hindura icyerekezo cya yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Hindura icyerekezo cya roll (X)</value></data>
@@ -957,6 +985,7 @@
 
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ongeraho uvanye ku rutonde</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Siba trigger</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Hindura icyerekezo cy'umurongo</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Icyerekezo</value></data>
 
@@ -1360,6 +1389,7 @@
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Izina rya menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Birakora</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Gufungura</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Imiterere</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Agati k'ibumoso</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Agati k'iburyo</value></data>
@@ -1367,13 +1397,15 @@
   <data name="Menu_Half_Whole" xml:space="preserve"><value>Touchpad yose</value></data>
   <data name="Menu_Half_Left" xml:space="preserve"><value>Igice cy'ibumoso</value></data>
   <data name="Menu_Half_Right" xml:space="preserve"><value>Igice cy'iburyo</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Aho iri kuri mugaragaza</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Ingano</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Hagati</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nta na kimwe</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(ntibyashyizweho)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ibisohoka</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buto</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Imfunguzo n'imbeba</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Amanota na CC</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Amaboko</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Uduti na Trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ukunyeganyega n'ibyiyumvo</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Imigendere n'ugukoraho</value></data>
@@ -1603,6 +1635,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Icyerekezo</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Intambwe</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>kugeza</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} irimo gushyiraho trigger z'iyi kontorola.</value></data>
   <data name="Devices_GameModLights_Format" xml:space="preserve"><value>{0} irimo gushyiraho amatara y'iyi kontorola.</value></data>
@@ -1708,7 +1741,27 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Urumuri rwa buto ya Guide cyangwa Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Dosiye za zip z'amajwi zikoreshwa na macro z'amajwi</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Dosiye za zip z'amashusho y'ibice bya menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Imbaraga za buri moteri, kunyeganyega kwa trigger, gusimburanya moteri</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Imbaraga za buri trigger, gusimburanya moteri, kunyeganyega kwa adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Imbaraga za buri moteri, kunyeganyega kwa trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Imbaraga za buri trigger, gusimburanya moteri, kunyeganyega kwa adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guhindura icyerekezo, Momentum, igisubizo, kwihutisha, fling</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontorola ya Extended</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Kora</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Urwego, Inkomoko, Urugero, Icyerekezo, Consume Trigger Buttons, Gusubiramo</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Hindura izina</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu nshya</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Ongeraho igice</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kuraho igice cya nyuma</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Hindura igice</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Izina</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Igikorwa</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Akashusho</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Iki gikoresho</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontorola yose</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Genzura shakers</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yashyizweho</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ntiyashyizweho</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR iri gukora</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR iri gukora, driver yahujwe</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ibumoso</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Iburyo</value></data>
 </root>

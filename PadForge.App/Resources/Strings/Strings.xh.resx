@@ -106,10 +106,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Isixhobo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongeza isixhobo</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>I-Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Umfanekiso</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uluhlu</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Iziphumo: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Intshukumo</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Cofa isilawuli, uze ucinezele igalelo elifanele ukusiqhuba.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Cofa iqhosha lekhibhodi okanye iqhosha lempuku, uze ucinezele igalelo elifanele ukuliqhuba.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Cofa inowuthi okanye i-slider, uze ucinezele igalelo elifanele ukuyiqhuba.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Iqhosha elithi "Map All" litsiba iziphumo zokuchukumisa ze-A ne-B. Cofa isangqa esijikeleze i-A okanye i-B ukuze umephe esinye.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Kulindelwe {0}. Cinezela igalelo kwisixhobo sakho.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, umthombo</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Iinketho ezingakumbi</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Iinketho ezimbalwa</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Iqhosha lobuso</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Iqhosha legxalaba</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Iqhosha lenkqubo</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Iqhosha</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>I-pad yamacala</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Intonga</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>I-trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>I-touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>I-sensor yentshukumo</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Iqhosha lekhibhodi</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Iqhosha lempuku</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Intshukumo yempuku</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Ivili lokuskrola</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>I-control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>I-sensor yokuchukumisa</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Ukutsala kwe-analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, isandla sasekhohlo</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, isandla sasekunene</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Izibuko</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ii-mod zemidlalo</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Yamkela ii-mod zemidlalo ze-DSX</value></data>
@@ -352,6 +379,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ngenisa</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>I-force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Itshaneli</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Isiphumo se-MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Itshaneli ye-MIDI (1-16)</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Akukho</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>I-deflection</value></data>
@@ -375,6 +403,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Susa konke</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Ixabiso</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Iinketho</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Guqula</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Isiqingatha</value></data>
@@ -417,7 +446,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Igama</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Isiqalisi</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Xa</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Xa kucinezelwa</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Xa kuyekwa</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Ngelixa kubanjiwe</value></data>
@@ -428,7 +457,6 @@
   <data name="Macro_Layer" xml:space="preserve"><value>Umaleko</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Nawuphi na umaleko</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Yongeza isenzo</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Hlela isenzo</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Uhlobo</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Amaqhosha abonakalayo</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Ikhibhodi nombhalo</value></data>
@@ -474,7 +502,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Yeka {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Linda {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Linda {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Seta {0} = {1}</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Seta umbala we-lightbar</value></data>
 
@@ -713,7 +741,8 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ukulinganisa</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Uvakalelo</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iiyunithi, Isithuba, guqula ii-axis, Ukulinganisa kwehlabathi lokwenyani</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iiyunithi, guqula ii-axis, Ukulinganisa kwehlabathi lokwenyani</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ngomjikelo</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Guqula i-pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Guqula i-yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Guqula i-roll (X)</value></data>
@@ -1316,6 +1345,7 @@
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Imenyu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Igama lemenyu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Kuvuliwe</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Ukuvula</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Isimbo</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Intonga yasekhohlo</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Intonga yasekunene</value></data>
@@ -1340,6 +1370,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Vavanya</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Seta kwakhona i-trigger yasekhohlo</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Seta kwakhona i-trigger yasekunene</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vavanya ii-shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Misa</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Nayiphi na ithegi ye-NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Ithegi ye-NFC: {0}</value></data>
@@ -1535,6 +1566,7 @@
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Isenzo</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Inyathelo</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>ukuya</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Isibambo</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} imisela ii-trigger zesi silawuli.</value></data>
@@ -1669,6 +1701,9 @@
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Iprofayile</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Sebenzisa</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Amaqhosha</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Amaqhosha &amp; Impuku</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Iinowuthi &amp; Izilawuli</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Izandla</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Iintonga &amp; Ii-trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ukungcangcazela &amp; I-haptics</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Intshukumo &amp; Ukuchukumisa</value></data>
@@ -1688,7 +1723,23 @@
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Rekhoda ezakho</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Ukuqaqamba kwe-LED, Ipatheni yomdlali, Imowudi ye-LED yokuthulisa</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Iifayile ze-zip zemifanekiso yeeseli zemenyu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto nganye, ukungcangcazela kwe-trigger, ukutshintshiselana kweemoto</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amandla e-trigger nganye, ukutshintshiselana kweemoto, ukungcangcazela kwe-adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto nganye, ukungcangcazela kwe-trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amandla e-trigger nganye, ukutshintshiselana kweemoto, ukungcangcazela kwe-adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Guqula, Isantya esiqhubekayo, Impendulo, Ukukhawuleza, ukuphosa</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Yenza</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Umaleko, Umthombo, Umda, Direction, Consume Trigger Buttons, Phinda</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Thiya kwakhona</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Imenyu entsha</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Yongeza iseli</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Susa iseli yokugqibela</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Hlela iseli</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Igama</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Isenzo</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Esi sixhobo</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Isilawuli sonke</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>I-SteamVR ifakiwe</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>I-SteamVR iyasebenza</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>I-SteamVR iyasebenza, idrayiva iqhagamshelwe</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ekhohlo</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ekunene</value></data>
 </root>

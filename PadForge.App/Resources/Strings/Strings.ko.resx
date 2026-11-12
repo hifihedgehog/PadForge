@@ -634,6 +634,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>버튼</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>가져온 프로필…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Extended 컨트롤러</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>사용자가 가져온 HIDMaestro 프로필을 관리합니다: 연결된 장치에서 새로 캡처하거나, 기존 프로필을 JSON으로 내보내거나, 더 이상 필요하지 않은 프로필을 삭제합니다.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>가져온 프로필</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>사용자가 가져온 HIDMaestro 프로필은 PadForge.xml 내부에 저장되며 모든 Extended 슬롯의 프로필 드롭다운에 표시됩니다. 아래에서 연결된 장치에서 새로 캡처하거나 기존 프로필을 내보내기 / 삭제할 수 있습니다.</value></data>
@@ -678,6 +679,7 @@
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>모든 진리와 구원의 근원이신 주 예수 그리스도께 영광과 존귀와 찬양이 영원무궁토록 있을지어다.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>ComeUntoChrist.org를 방문하여 그분과 예수 그리스도 후기 성도 교회에 대해 더 알아보시기를 진심으로 초대합니다.</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>채널</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI 출력</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 채널 (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 개수</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC 출력 수 (최대값은 시작 CC에 따라 다름)</value></data>
@@ -710,6 +712,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>전체 지우기</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>소스</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>값</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>옵션</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>축→버튼 데드존</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>반전</value></data>
@@ -747,7 +750,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>켜면 놓을 때 축이 중앙으로 돌아옵니다. 끄면 마지막 위치를 유지합니다.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>누르고 있는 동안 행의 출력을 반전시키는 버튼</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>수정자: 누르고 있는 동안 행의 출력 부호가 반전됩니다.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ 소스 추가</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>소스 추가</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>이 행에 다른 물리적 입력을 추가합니다</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>이 소스를 제거합니다</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -868,10 +871,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>{1}개 중 {0}번째 점, 입력 {2}%, 출력 {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중앙 보정</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>중심점</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>중심</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>데드존</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>중심 오프셋, 데드존 형태와 축별 값, 축별 곡선, 범위, 조향</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>범위</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 스틱을 바로잡는 권장 방법입니다. 스틱이 물리적으로 도달할 수 있는 가장자리를 스캔한 뒤 측정된 경계에 대해 모든 위치를 비례적으로 재조정하므로, 모든 각도와 모든 기울기에서 네이티브 동작 전체가 잘림 없이 이상적인 원에 매핑됩니다. 아래 슬라이더 4개는 주축 방향만 제한합니다. 보정이 아니라 의도적인 범위 제한에만 사용하세요.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 스틱이 도달할 수 있는 가장자리를 측정해 완전한 원으로 다시 맞춥니다. 슬라이더 4개는 각 방향의 최대 범위만 제한합니다.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>
@@ -890,7 +894,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>이름</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>트리거</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>조건</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>실행</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>누를 때</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>뗄 때</value></data>
@@ -922,9 +926,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>이 매크로가 속한 시프트 레이어입니다. ‘모든 레이어’는 활성 레이어와 무관하게 발동합니다. 베이스와 이름 있는 레이어는 매핑 행과 동일하게 해당 레이어가 활성인 동안에만 발동합니다.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>모든 레이어</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>이 가상 컨트롤러가 활성 상태인 동안 계속 실행됩니다. 트리거 버튼이 필요하지 않습니다.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>동작 시퀀스</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>동작</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>레이어, 소스, 임계값, 방향, 트리거 버튼 소비, 반복</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>동작 추가</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>동작 편집</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>유형</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>가상 버튼</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>가상 축·휠</value></data>
@@ -993,11 +997,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>버튼 {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0}을(를) {1}ms 동안 누르기</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0}을(를) {1} ms 동안 누르기</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} 놓기</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>키 {0}을(를) {1}ms 동안 누르기</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>키 {0}을(를) {1} ms 동안 누르기</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>키 {0} 놓기</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms 대기</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms 대기</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} 설정</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>시스템 볼륨 ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>시스템 볼륨 ← {0} (최대 {1}%)</value></data>
@@ -1009,15 +1013,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>마우스 {0} 놓기</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>터치패드 오버레이 전환</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>라이트바 색상 설정</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>할당된 PlayStation 슬롯의 라이트바를 선택한 RGB 색상으로 덮어씁니다. 반응형은 설정된 감쇠 시간 동안 최대 밝기에서 검정으로 페이드된 다음 조명 탭 설정으로 돌아갑니다. 고정형은 "라이트바 재정의 해제" 동작이 실행될 때까지 색을 유지합니다. 게임 쓰기는 계속 우선합니다.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>라이트바 {0} 점멸 (감쇠 {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>할당된 PlayStation 슬롯의 라이트바를 선택한 RGB 색상으로 덮어씁니다. 반응형은 설정된 감쇠 시간 동안 최대 밝기에서 검정으로 페이드된 다음 라이트바 카드의 설정으로 돌아갑니다. 고정형은 "라이트바 재정의 해제" 동작이 실행될 때까지 색을 유지합니다. 게임 쓰기는 계속 우선합니다.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>라이트바 {0} 점멸 (감쇠 {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>해제까지 라이트바 {0} 유지</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>라이트바 재정의 해제</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>라이트바 재정의 해제</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>할당된 슬롯의 활성화된 라이트바 재정의를 해제합니다. 고정형 "라이트바 색상 설정"과 함께 사용하여 다른 매크로로 되돌립니다.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>라이트바 모드 설정</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>라이트바 모드를 {0}로 설정</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>할당된 슬롯의 라이트바 모드를 특정 값으로 설정합니다. 다른 동작이나 사용자가 바꿀 때까지 조명 탭 편집과 동일하게 유지됩니다.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>할당된 슬롯의 라이트바 모드를 특정 값으로 설정합니다. 다른 동작이나 사용자가 바꿀 때까지 라이트바 카드 편집과 동일하게 유지됩니다.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>라이트바 모드 순환</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}개의 라이트바 모드 순환</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>아래에서 선택한 모드들로 슬롯의 라이트바 모드를 진행합니다. 발화할 때마다 다음 체크된 모드로 이동합니다. 위치는 동작별이며 앱 재시작 시 초기화됩니다.</value></data>
@@ -1032,14 +1036,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>감쇠</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>페이드</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>팔레트</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>빈 팔레트는 슬롯의 조명 탭 팔레트를 사용합니다.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>빈 팔레트는 슬롯의 라이트바 카드에 있는 팔레트를 사용합니다.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>진동</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 물리 기기 진동을 구동합니다. Reactive는 유지 시간 동안 최대 강도로 작동한 다음 페이드 구간 동안 선형으로 0까지 감소합니다. Sticky는 진동 정지 액션이 실행될 때까지 최대 강도를 유지합니다. 게임 구동 진동 위에 max()로 겹쳐지므로 사용자 피드백은 항상 느껴집니다.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>진동 {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>진동 {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>진동 {0} 해제까지 유지</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
@@ -1050,7 +1054,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>트리거 진동 정지</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>슬롯에서 활성화된 매크로 트리거 진동을 해제합니다. 고정형 트리거 진동 재정의와 함께 사용하여 매크로로 유지를 종료합니다.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>자이로 활성 설정</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 자이로 활성 상태를 설정합니다. 토글은 현재 상태를 뒤집습니다. 켜기는 강제로 활성화합니다. 끄기는 강제로 비활성화합니다. Gyro 탭의 활성화 버튼과 독립적이며, 두 소스는 OR로 결합되므로 어느 쪽도 다른 쪽이 활성화한 것을 비활성화할 수 없습니다.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 자이로 활성 상태를 설정합니다. 토글은 현재 상태를 뒤집습니다. 켜기는 강제로 활성화합니다. 끄기는 강제로 비활성화합니다. 모션 및 터치 섹션의 활성화 버튼과 독립적이며, 두 소스는 OR로 결합되므로 어느 쪽도 다른 쪽이 활성화한 것을 비활성화할 수 없습니다.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>토글</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>켜기</value></data>
@@ -1188,7 +1192,7 @@
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>안티 데드존</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>더블 클릭으로 점 추가. 우클릭으로 제거. 드래그로 조정.</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>트리거 축</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>모터별 게인, 트리거 진동, 모터 교체</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>모터별 게인, 트리거 진동, 조향 각도 진동, 상시 포스</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>오른쪽 모터</value></data>
@@ -1197,6 +1201,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>이 컨트롤러에는 트리거 모터가 없어 Xbox 임펄스 트리거를 사용하는 게임의 진동을 느낄 수 없습니다. 대신 각 트리거 채널을 같은 쪽 메인 모터로 합칩니다.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>진동 테스트</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>모터 활동</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>왼쪽</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>오른쪽</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>토글을 끌 때까지 이 기기에 지속적인 포스를 적용합니다. 게임이 보내는 포스는 활성 동안 우선되며, 게임이 멈추면 다시 재개됩니다.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>상시 포스 적용</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>그리드 안을 드래그하여 방향과 세기를 설정하세요.</value></data>
@@ -1235,7 +1241,8 @@
   <data name="Pad_ResetView" xml:space="preserve"><value>뷰 초기화</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>버튼을 누르거나 축/트리거를 움직여 기록하십시오. 축은 50% 이상 기울어졌을 때 감지됩니다.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>목록에서 추가</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>녹화하는 대신 슬롯의 장치에서 트리거 입력을 선택합니다. 터치패드 탭에서 활성화한 제스처가 여기에 표시됩니다.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>트리거 지우기</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>기록하는 대신 슬롯의 장치에서 트리거 입력을 선택합니다. 모션 및 터치 섹션에서 활성화한 터치패드 제스처가 여기에 표시됩니다.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>입력 제거</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>입력을 누르세요…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>반전됨</value></data>
@@ -1589,10 +1596,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>자이로</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>이 패드의 모션 센서가 마우스나 스틱 출력을 어떻게 움직일지 조정하세요. 먼저 평평한 표면에서 보정해 정지 시 드리프트를 0으로 만든 다음, 감도와 스무딩, 활성화 규칙을 취향대로 다듬으세요.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>보정</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>자이로스코프와 가속도계의 실시간 값</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>감도</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>단위, 좌표계, 축 반전, 실세계 보정</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>단위, 축 반전, 실세계 보정</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>1회전당 ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>응답 형성</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>데드존, 스무딩, 가속, 출력 커브</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>기준 좌표계</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>로컬, 플레이어 또는 월드</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>좌표계</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지. Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>잡는 방법</value></data>
@@ -1664,6 +1675,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>세로</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>그립</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>컨트롤러를 잡는 방법. 자이로, 가속도계, 중력을 함께 회전해 매핑과 가상 컨트롤러가 보고하는 모션 모두에 적용합니다. 십자 버튼도 같은 좌표계를 따르므로, 위는 잡은 상태에서의 위입니다.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>컨트롤러를 잡는 방법</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>선형</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>공격적</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>완만</value></data>
@@ -1696,7 +1708,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>활성화 방향 재설정</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>모션 패스스루</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>자이로 조정을 모션 패스스루에 적용</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>이 탭의 선택적 자이로 조정(데드존, 감도, 스무딩, 응답 커브, 반전)을 가상 컨트롤러가 게임이나 에뮬레이터에 보고하는 모션에 적용합니다. 끄면 보정된 값만 전송하고 감도와 스무딩은 게임에 맡깁니다. 보정 드리프트 교정은 어느 쪽이든 항상 적용됩니다.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>자이로 카드의 선택적 조정(데드존, 감도, 스무딩, 응답 커브, 반전)을 가상 컨트롤러가 게임이나 에뮬레이터에 보고하는 모션에 적용합니다. 끄면 보정된 값만 전송하고 감도와 스무딩은 게임에 맡깁니다. 보정 드리프트 교정은 어느 쪽이든 항상 적용됩니다.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>패스스루 조정 재설정</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
@@ -1713,7 +1725,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>최대 편향 각도 재설정</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>경사 데드존 재설정</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>자이로 기울기 초기화</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>이 행의 소스가 둘 이상 활성일 때 합성되는 방식입니다. 행을 선택하면 아래 세부 정보 패널에서 변경할 수 있습니다.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>이 행의 소스가 둘 이상 활성일 때 합성되는 방식입니다. 행을 열면 결합 항목에서 변경할 수 있습니다.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>모멘텀</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>트랙볼 모드: 스틱을 흙기고 놓으면 커서가 계속 이동하다가 서서히 멈춥니다. 스틱을 다시 움직이면 멈춥니다.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>틕긴 후 커서가 얼마나 미끄러지는지입니다. 최대치에서는 스틱을 다시 움직일 때까지 계속 이동합니다.</value></data>
@@ -1791,9 +1803,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>스틱</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>스틱별 데드존, 안티 데드존, 민감도 곡선 및 중심 오프셋 보정. 아래 각 섹션은 활성 출력의 한 아날로그 스틱을 대상으로 합니다. 확장 프로필은 최대 네 개의 스틱을, 표준 게임패드는 두 개를 가집니다.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>트리거</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>트리거별 데드존, 안티 데드존, 최대 범위 스케일링 및 민감도 곡선. 아래 각 섹션은 활성 출력의 한 트리거 축을 대상으로 합니다. 확장 프로필은 최대 8개 축을 공개할 수 있으며, 이는 스틱 탭과 공유됩니다.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>트리거별 데드존, 안티 데드존, 최대 범위 스케일링 및 민감도 곡선. 각 트리거 카드는 활성 출력의 한 트리거 축을 대상으로 합니다. 확장 프로필은 최대 8개 축을 공개할 수 있으며, 이 축은 스틱과 트리거가 공유합니다.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>포스 피드백</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge가 게임의 포스 피드백 이벤트를 어떻게 스케일링하고 물리 컨트롤러의 진동 모터 또는 햅틱 액추에이터로 라우팅하는지 조정합니다. 오디오 럼블은 시스템 오디오 기반 레이어를 위에 추가합니다.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>이 장치</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>컨트롤러 전체</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>진동은 {0}에 햅틱 펄스로 직접 전송됩니다. 진동이 강할수록 더 강한 펄스를 골라 더 빠르게 반복합니다.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+에서 {0}의 햅틱 피드백이 꺼져 있어, 그곳에서 다시 켤 때까지 아무것도 재생되지 않습니다.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>이 장치가 아직 응답하지 않았습니다. 깨어나면 진동이 재생됩니다.</value></data>
@@ -1879,6 +1893,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>메인보드와 그래픽 카드</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>마우스패드, 헤드셋, 헤드셋 스탠드</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>라이트바</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>게임이 조명을 쓰면 게임이 우선합니다.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>여섯 자리 16진수 색상(RRGGBB 또는 #RRGGBB)을 입력하고 Enter 키를 누르거나 다른 곳을 클릭하면 적용됩니다.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>이 색상을 팔레트에서 제거</value></data>
@@ -1896,7 +1911,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>오디오 진동 재설정</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} 재설정</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>매핑 지우기</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>이 탭의 모든 매핑이 지워집니다. 소스 할당, 추가 소스, 결합 설정은 기본값으로 재설정됩니다.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>이 레이어의 모든 매핑이 지워집니다. 소스 할당, 추가 소스, 결합 설정은 기본값으로 재설정됩니다.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>플레이어 패턴</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>음소거 LED 모드</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 밝기</value></data>
@@ -2071,7 +2086,7 @@
 
 
   <!-- Shift 모드 (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift 레이어</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>레이어 추가</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift 레이어를 추가합니다. 버튼을 누르거나 토글하는 동안 활성화되는 두 번째 매핑 테이블입니다.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>기본</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 레이어</value></data>
@@ -2130,7 +2145,7 @@
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다. 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>체크하면 이 레이어가 명시적으로 매핑하지 않은 대상이 기본 레이어로 폴스루됩니다. 체크 해제 시(기본값) 레이어가 기본을 완전히 대체하고 매핑되지 않은 대상은 꺼진 상태로 유지됩니다.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>임펄스 트리거</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>트리거별 게인, 모터 교체, 적응형 트리거 진동</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>트리거별 게인, 모터 교체, 적응형 트리거 진동, 지속 트리거 힘</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>가상 컨트롤러에서 할당된 물리적 Xbox One, Elite 또는 Series 컨트롤러로 트리거별 모터 명령(Xbox 임펄스 트리거)을 전달합니다. 게임이 보내는 트리거 진동은 자동으로 통과합니다. 아래 컨트롤로 트리거별 강도를 조절할 수 있습니다.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
@@ -2249,7 +2264,7 @@
   <data name="Mapping_TouchpadGesture_Checkmark" xml:space="preserve"><value>체크 표시</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>터치패드</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>터치패드</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>터치패드별 입력. 제스처(스와이프, 탭, 핀치, 모양)와 연속 출력 모드(가상 스틱 / 방향키, 마우스)가 매핑 소스가 되어 매핑 탭에서 바인딩할 수 있습니다.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>터치패드별 입력. 제스처(스와이프, 탭, 핀치, 모양)와 연속 출력 모드(가상 스틱 / 방향키, 마우스)가 매핑 소스가 되어 어떤 출력에도 바인딩할 수 있습니다.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>터치패드</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>터치패드 번호</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>아래 설정을 적용할 이 컨트롤러의 터치패드입니다. 터치패드마다 제스처, 마우스 반응, 포인터 영역을 각각 유지합니다.</value></data>
@@ -2438,7 +2453,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>모션 조향</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}°에서 {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>기울이기 데드존, 컨트롤러 방향</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 매핑의 입력 드롭다운에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 버튼 섹션에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>모션 조향 초기화</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>조향 모드 스틱이 끝점에 닿을 때의 신호</value></data>
@@ -2497,7 +2512,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>오디오</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>매크로 사운드와 미러링된 시스템 오디오는 선택한 컨트롤러의 내장 스피커로 USB 또는 Bluetooth를 통해 재생됩니다. 위 드롭다운에서 장치를 선택하세요.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>사운드 출력</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>미러 소스, 햅틱, 헤드폰 볼륨, 크로스피드, Parametric EQ, 리미터</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>미러 소스, 헤드폰 볼륨, 버퍼, 출력 경로</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>사운드는 선택한 컨트롤러로 자동 라우팅됩니다. USB에서는 하드웨어 컨테이너로 패드의 오디오 엔드포인트를 찾고, Bluetooth에서는 소니 HID 프레임으로 오디오를 전송합니다.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>미러 소스</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>컨트롤러 스피커로 미러링할 재생 장치를 선택합니다. 특정 사운드를 별도 재생 장치로 출력하는 게임이 이 장치를 대상으로 할 수 있습니다.</value></data>
@@ -2510,10 +2525,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>모든 사운드 중지</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>이 패드의 모든 매크로 사운드를 중지</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>사운드 매크로</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>사운드는 매크로가 재생합니다: 트리거(누름, 뎆, 유지, 수식) + "사운드 재생" 동작. 여기서나 매크로 탭에서 만드세요. 지연, 반복, 토글 모두 지원됩니다.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>사운드는 매크로가 재생합니다: 트리거(누름, 뗌, 유지, 수식) + "사운드 재생" 동작. 여기서나 매크로 및 메뉴 섹션에서 만드세요. 지연, 반복, 토글 모두 지원됩니다.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>새 사운드 매크로</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>아직 사운드 매크로가 없습니다. 하나 만들고 사운드 파일과 트리거를 선택하세요.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>이 매크로를 매크로 탭에서 열기</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>이 매크로를 매크로 및 메뉴 섹션에서 열기</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>사운드 매크로 {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>사운드 재생</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>사운드 파일(.wav, .mp3, .m4a, .aac, .wma, .flac)을 이 패드의 출력 장치로 재생</value></data>
@@ -2804,6 +2819,7 @@
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>기록 중 "{0}": 위 방향 입력을 누르십시오...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>기록 중 "{0}": 이제 아래 방향 입력을 누르십시오...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>복제</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>이름 바꾸기</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (복사본)</value></data>
   <data name="Status_MacroCopied" xml:space="preserve"><value>매크로를 클립보드에 복사했습니다.</value></data>
   <data name="Status_MacroPasted" xml:space="preserve"><value>매크로를 붙여넣었습니다.</value></data>
@@ -3176,15 +3192,43 @@
   <data name="FirstRun_Title" xml:space="preserve"><value>화로에 불 지피기</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>왼쪽에서 매크로를 선택하거나 추가를 눌러 새로 만드세요.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>목록에서 매크로를 선택하거나 ‘매크로’ 옆의 +를 눌러 새로 만드세요.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>장치</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>입력 장치</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>장치 추가</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>그림</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>목록</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>출력 {0}개</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>모션</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>컨트롤을 클릭한 후 할당할 입력을 누르십시오.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>키나 마우스 버튼을 클릭한 후 할당할 입력을 누르십시오.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>노트나 슬라이더를 클릭한 후 할당할 입력을 누르십시오.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>전체 매핑은 A와 B의 터치 출력을 건너뜁니다. 하나를 할당하려면 A나 B 주위의 링을 클릭하십시오.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} 입력을 기다리는 중입니다. 장치에서 입력을 누르십시오.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, 할당된 입력</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>옵션 더 보기</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>옵션 접기</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>페이스 버튼</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>어깨 버튼</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>시스템 버튼</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>방향 패드</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>스틱</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>트리거</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>모션 센서</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>키보드 키</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>마우스 버튼</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>마우스 이동</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>스크롤 휠</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>컨트롤 체인지</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>터치 센서</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>아날로그 당김</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, 왼손</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, 오른손</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>한 쌍의 버튼을 동시에 누를 때 게임에 보일 입력</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>한 쌍의 키를 동시에 누를 때 게임에 보일 입력</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>스틱을 약간 기울인 상태를 유지해 게임에 컨트롤러 표시를 유지</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>미리 보기</value></data>
@@ -3223,6 +3267,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>실행 중</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>실행 중, 드라이버 연결됨</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>실행 중, 컨트롤러 활성</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR 설치됨</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR 설치되지 않음</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR 실행 중</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR 실행 중, 드라이버 연결됨</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR 실행 중, 컨트롤러 활성</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>다른 OpenVR 드라이버가 HIDMaestro의 드라이버 이름을 사용하고 있어 SteamVR이 PadForge의 드라이버 대신 해당 드라이버를 불러올 수 있으며, 가상 VR 컨트롤러가 나타나지 않습니다. 이를 해결하려면 해당 드라이버를 제거하세요: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / 네비게이션</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>시리얼 컨트롤러(COM 포트)</value></data>
@@ -3271,7 +3320,7 @@
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>보조 모션 가속도계</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>마우스</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>마우스 제스처</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>제스처 버튼을 누른 채 마우스를 움직이면 놓는 순간 정확히 하나의 동작이 실행됩니다. 왼쪽, 오른쪽, 위, 아래, 또는 이동 임계값 미만이면 일반 클릭입니다. 다섯 가지 제스처는 매핑 탭에서 할당하거나 매크로 트리거로 사용할 수 있습니다.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>제스처 버튼을 누른 채 마우스를 움직이면 놓는 순간 정확히 하나의 동작이 실행됩니다. 왼쪽, 오른쪽, 위, 아래, 또는 이동 임계값 미만이면 일반 클릭입니다. 다섯 가지 제스처는 어떤 출력에도 할당하거나 매크로 트리거로 사용할 수 있습니다.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>마우스 제스처 사용</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>이 슬롯의 이 마우스에 대해 제스처 인식을 활성화합니다. 제스처 중에도 버튼의 일반 클릭은 유지되므로 다른 용도로 매핑하지 않은 사이드 버튼을 선택하세요.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>제스처 버튼</value></data>
@@ -3300,7 +3349,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>레이어 전환</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma 색상 설정</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>액션이 실행되는 동안 이 가상 컨트롤러에 할당된 Razer 장치와, 그와 같은 종류의 다른 모든 Razer 장치를 한 가지 색으로 켭니다.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 이 가상 컨트롤러에 할당된 Razer 장치와, 그와 같은 종류의 다른 모든 Razer 장치를 이 색으로 켭니다. Razer Chroma 행이 할당되어 있으면 모든 Razer 장치가 대상입니다. 어느 가상 컨트롤러의 조명 탭보다도 우선하며, 그 뒤 조명을 되돌려 줍니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. 두 가상 컨트롤러의 매크로가 같은 종류의 Razer 장치를 칠하면 플레이어 번호가 작은 쪽이 우선합니다. Razer Synapse가 실행 중이어야 합니다.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>위에서 정한 시간 동안 이 가상 컨트롤러에 할당된 Razer 장치와, 그와 같은 종류의 다른 모든 Razer 장치를 이 색으로 켭니다. Razer Chroma 행이 할당되어 있으면 모든 Razer 장치가 대상입니다. 어느 가상 컨트롤러가 조명 및 오디오 섹션에서 설정한 조명보다도 우선하며, 그 뒤 조명을 되돌려 줍니다. 트리거를 누르고 있는 동안 계속 색을 유지하려면 ‘누르고 있는 동안’과 ‘놓을 때까지’를 함께 사용하세요. 두 매크로가 동시에 색을 칠하면 목록에서 아래에 있는 매크로가 우선하므로, 깊게 누르기 매크로를 얕게 누르기 매크로 아래에 두세요. 두 가상 컨트롤러의 매크로가 같은 종류의 Razer 장치를 칠하면 플레이어 번호가 작은 쪽이 우선합니다. Razer Synapse가 실행 중이어야 합니다.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 화면 표시</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 Bliss-Box 포트의 각 Dreamcast 컨트롤러 VMU에서 그림을 재생한 뒤, 각 포트를 원래 화면 설정으로 되돌립니다.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 그림 {0}장을 각 {1}ms씩 {2}회 표시</value></data>
@@ -3338,7 +3387,6 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>두 키 모두 그대로 통과합니다.</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 키 쌍을 제거합니다.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>동시 반대 방향 입력 (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>컨트롤러 활성 유지</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>일부 게임은 마우스나 키보드 입력을 감지하면 진동을 멈추고 버튼 표시를 전환합니다. 스틱을 약간 기울인 상태를 유지하면 게임이 이 컨트롤러를 활성 장치로 계속 인식합니다. 유지는 스틱의 두 축이 모두 유지 수준 아래에 있는 동안에만 작동하므로 드리프트가 있는 스틱도 정지 상태로 인정됩니다. 두 축 중 어느 쪽이든 수준을 넘는 입력이 있으면 유지가 해제되고 입력은 그대로 전달됩니다. 게임에서 아무것도 움직이지 않도록 유지량을 게임의 데드존보다 낮게 설정하세요.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>깨어 있게 유지</value></data>
@@ -3358,7 +3406,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>클릭 초기화</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>패드 절반 초기화</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>실행 모드 초기화</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>셀 초기화</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>작동 데드존 초기화</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>메뉴 배치 초기화</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>셀 초기화</value></data>
@@ -3652,7 +3699,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>오른쪽 스틱 링</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick 입력 조정</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 입력의 설정입니다. 스틱을 기울이면 카메라가 그 방향으로 회전하고, 가장자리를 따라 돌리면 미세 조정됩니다. 매핑의 입력 드롭다운에서 "Flick Stick (오른쪽 스틱)"을 마우스 X에 매핑하세요. 어느 레이어에서도 됩니다.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 입력의 설정입니다. 스틱을 기울이면 카메라가 그 방향으로 회전하고, 가장자리를 따라 돌리면 미세 조정됩니다. 키 및 마우스 섹션에서 "Flick Stick (오른쪽 스틱)"을 마우스 X에 매핑하세요. 어느 레이어에서도 됩니다.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>플릭 스틱 초기화</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°당 카운트</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>카메라를 360° 한 바퀴 돌리는 데 필요한 마우스 카운트입니다. 게임의 마우스 감도에 따라 다릅니다. 플릭 회전이 부족하면 높이고, 과하면 낮추세요.</value></data>
@@ -3782,10 +3829,12 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화되고, 모션 피치, 요, 롤 행이 만든 회전이 취소됩니다.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>메뉴</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. 메뉴를 추가하고 여는 입력을 고른 뒤, 각 셀에 라벨과 할당을 지정하세요.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. ‘메뉴’ 옆의 +를 눌러 메뉴를 만들고 여는 입력을 고른 뒤, 각 셀에 이름과 동작을 지정하세요.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>새 메뉴</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>메뉴 {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>메뉴 이름</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>활성화됨</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>열기</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>스타일</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>방사형 링</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>터치 그리드</value></data>
@@ -3805,12 +3854,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>셀</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>중앙 셀</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>레이블 표시</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>화면 위치</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>크기</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>불투명도</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>활성화 데드존</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>셀 할당</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>셀 {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>셀 추가</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>마지막 셀 제거</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>셀 편집</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>이름</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>동작</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>아이콘</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>중앙</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>없음</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>키보드 키</value></data>
@@ -3823,7 +3876,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>클릭을 놓는 순간 한 번 실행됩니다. 셀을 가리키고 스틱이나 트랙패드를 눌렀다가 클릭을 놓으세요.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>손을 떼는 순간 한 번 실행됩니다. 셀이 강조된 상태에서 패드에서 손가락을 떼거나 스틱을 중앙으로 되돌리세요.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>셀이 강조되어 있는 동안 내내 할당이 유지됩니다. 클릭이 필요 없습니다.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>메뉴의 셀 개수입니다. 방사형 링에서는 링 부분만 세며, 중앙 셀은 별도입니다.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>중앙 셀을 추가합니다. 스틱이나 손가락이 작동 데드존 안에 있는 동안 중앙 셀이 선택됩니다.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>스틱의 경우 얼마나 기울여야 메뉴가 열리고 링 셀이 강조되는지를 정합니다. 방사형 메뉴에서는 스틱과 터치패드 모두의 중앙 영역이기도 합니다. 그 안에서는 중앙 셀이 있으면 선택됩니다.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>화면 오버레이에 각 셀의 라벨을 표시합니다.</value></data>
@@ -3833,8 +3885,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>오버레이 크기(기본 크기 대비 퍼센트)입니다.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>오버레이 불투명도입니다. 100%면 완전히 불투명합니다.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>오버레이에서 이 셀에 표시되는 텍스트입니다.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>셀이 실행될 때 하는 동작입니다. "키보드 키"은 키보드 키를 누르고, "컨트롤러 버튼"은 이 슬롯의 가상 컨트롤러 버튼을 누릅니다. "없음"으로 둔 셀도 매핑 행과 매크로 트리거용 메뉴 항목 소스로 실행됩니다.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>이 슬롯에 할당된 실제 컨트롤러에서 읽으며, 가상 컨트롤러의 레이아웃이 아닙니다. 아래의 셀 할당이 메뉴가 출력하는 내용입니다.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>셀이 실행될 때 하는 동작입니다. "키보드 키"는 키보드 키를 누르고, "컨트롤러 버튼"은 이 슬롯의 가상 컨트롤러 버튼을 누릅니다. "없음"으로 둔 셀도 매핑과 매크로 트리거용 메뉴 항목 소스로 실행됩니다.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>이 슬롯에 할당된 실제 컨트롤러에서 읽으며, 가상 컨트롤러의 레이아웃이 아닙니다. 메뉴가 출력하는 내용은 아래의 셀이 정합니다.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>사용자 지정 축</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>조작 축 X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>조작 축 Y</value></data>
@@ -3859,13 +3911,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>베이스 셰이커</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>출력</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>버튼</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>키 및 마우스</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>노트 및 컨트롤</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>손</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>스틱 및 트리거</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>진동 및 햅틱</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>모션 및 터치</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>조명 및 오디오</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>매크로 및 메뉴</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동과 포스 피드백을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>게임 진동을 저주파 톤으로 바꿔 베이스 셰이커나 서브우퍼로 재생합니다.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>출력 장치, 채널, 게인, 모터별 톤</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro, 레이싱 휠 같은 포스 피드백 지원 Extended 가상 컨트롤러, 그리고 Steam Deck Controller (Composite)에서 동작합니다. 게임 피드백과 테스트 진동이 오디오 출력으로 전달됩니다. 매크로 진동은 컨트롤러에 남습니다.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
@@ -3894,19 +3949,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>이 피드백 채널을 톤으로 재생합니다. 꺼 두어도 게인과 주파수는 유지됩니다.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>이 채널의 톤 주파수(20~120 Hz)입니다. 주파수 스윕으로 셰이커가 가장 강하게 반응하는 지점을 찾으세요.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>마스터 게인 이전의 이 채널 음량입니다.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>게인</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>테스트</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>이 채널의 톤을 설정된 게인으로 1.5초 재생합니다.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>저주파 모터 재설정</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>고주파 모터 재설정</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>셰이커 확인</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>주파수 스윕</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>저주파 모터 경로로 20~120 Hz 톤을 8초에 걸쳐 재생합니다. 셰이커가 가장 강하게 반응한 지점을 확인해 각 보이스의 주파수를 설정하세요.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>정지</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>테스트 톤이나 스윕을 멈춥니다.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>모든 NFC 태그</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC 태그: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>입력 필터 (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>출력 및 입력 필터</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>일치하는 행과 입력만 표시합니다. Ctrl+F를 누르면 여기에 검색어를 입력할 수 있습니다.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>선택 목록에 표시할 장치 입력을 선택합니다</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>선택 목록에 표시</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>모든 음성 문구</value></data>
@@ -4015,6 +4073,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>레벨 차이 재설정</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>파라메트릭 EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>컨트롤러 오디오에 적용되는 대역별 필터입니다. 인코딩 전에 적용되므로 아래 리미터가 부스트된 대역의 클리핑을 막습니다.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>프리앰프, 대역, 가져오기</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>프리앰프</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>대역 이전의 전체 레벨입니다. AutoEq 프로필은 부스트가 클리핑되지 않도록 음수 프리앰프를 포함하며, 가져오기 시 자동으로 설정됩니다.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>켜기</value></data>
@@ -4258,7 +4317,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>터치 또는 기울임으로 열기로 되돌립니다.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>조작 입력</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>레이어가 메뉴를 열어 두는 동안 강조된 셀을 조작하는 물리 입력입니다.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 레이어가 메뉴를 열고 이 입력이 조작합니다. 출력은 셀 바인딩이 결정합니다.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 레이어가 메뉴를 열고 이 입력이 조작합니다. 출력은 메뉴의 셀이 결정합니다.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>아이콘 크기</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>메뉴 기본 아이콘 크기에 대한 비율로, 25%에서 200%까지. 아이콘을 지우면 100%로 되돌아갑니다.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>클릭 입력을 누르고 있는 동안 강조된 셀의 바인딩을 유지합니다. 스틱이 중앙에 있을 때 강조된 원형 중심도 발동할 수 있습니다.</value></data>
@@ -4383,7 +4442,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows의 문서화되지 않은 IPolicyConfig 인터페이스 레이아웃에 대한 Antoine Aflalo의 참조 자료. PadForge는 이를 이용해 컨트롤러의 오디오 엔드포인트를 다시 활성화합니다. MIT. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>오디오 탭이 가져오는 파라메트릭 EQ 프로필 형식. Jaakko Pasanen 제작. MIT. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>컨트롤러의 파라메트릭 EQ가 가져오는 EQ 프로필 형식. Jaakko Pasanen 제작. MIT. 문서로만 참고했으며 코드는 포함하지 않습니다.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>텍스트 블록 매크로와 키보드 코드 후크를 뒷받침하는 SendInput 기법: 유니코드 입력, 일괄 처리 한도, Win 키 마스크 키, 태그가 붙은 주입 입력. GPL-2.0-or-later, 문서로만 참고했으며 GPL 코드는 포함하지 않습니다.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4623,6 +4682,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>방향</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>이동 거리</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>에서</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>핸들</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0}이(가) 이 컨트롤러의 트리거를 설정 중입니다.</value></data>
@@ -4667,7 +4727,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>핸들이 충분히 움직이지 않아 이동 범위가 그대로 유지됩니다. 측정 중에 모든 끝까지 움직이세요.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>측정이 끝나기 전에 Falcon이 닫혔습니다.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension에서 설치하는 Force Dimension SDK를 통해 Novint Falcon으로 게임을 합니다. 핸들은 스틱, 그립의 버튼 네 개는 버튼으로 쓰이며, PadForge가 게임의 진동과 효과를 힘으로 핸들에 전달합니다. Falcon의 느낌은 각 슬롯의 포스 피드백 탭에서 설정합니다.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension에서 설치하는 Force Dimension SDK를 통해 Novint Falcon으로 게임을 합니다. 핸들은 스틱, 그립의 버튼 네 개는 버튼으로 쓰이며, PadForge가 게임의 진동과 효과를 힘으로 핸들에 전달합니다. Falcon의 느낌은 각 컨트롤러의 진동 및 햅틱 섹션에 있는 Novint Falcon 카드에서 설정합니다.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon 구동</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Force Dimension의 dhd64.dll로 각 Falcon을 엽니다. 열린 Falcon은 PadForge만 사용하므로, 이 설정이 켜져 있는 동안 FalconJoyForce와 Force Dimension 도구는 Falcon을 열 수 없습니다. 끄면 PadForge가 모든 Falcon을 닫습니다.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon 라이브러리를 {0}(으)로 설정했습니다. PadForge가 몇 초 안에 불러오며, 다른 사본에서 열려 있던 Falcon은 이 사본에서 다시 열립니다.</value></data>
@@ -4880,7 +4940,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>정해진 시간 동안</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>정지할 때까지</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>시간</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>이 슬롯의 모든 DualSense와 DualSense Edge에서 재생됩니다. 게임 자체의 트리거 효과와 게임 모드의 효과가 우선하며, 효과가 끝나면 어댑티브 트리거 탭의 설정으로 돌아갑니다. 구간은 정지 시 0에서 끝까지 당겼을 때 9까지입니다. 활, 질주, 기계는 공식 DualSense 효과가 아니므로 펌웨어 업데이트로 사라질 수 있습니다. 적응형 트리거 진동 변환을 켠 Xbox 컨트롤러에서는 진동 효과가 트리거 진동으로 느껴집니다.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>이 슬롯의 모든 DualSense와 DualSense Edge에서 재생됩니다. 게임 자체의 트리거 효과와 게임 모드의 효과가 우선하며, 효과가 끝나면 어댑티브 트리거 카드의 설정으로 돌아갑니다. 구간은 정지 시 0에서 끝까지 당겼을 때 9까지입니다. 활, 질주, 기계는 공식 DualSense 효과가 아니므로 펌웨어 업데이트로 사라질 수 있습니다. 적응형 트리거 진동 변환을 켠 Xbox 컨트롤러에서는 진동 효과가 트리거 진동으로 느껴집니다.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1}에서 {0}, {2} ms 동안</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}에서 {0}, 누르는 동안</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}에서 {0}, 정지할 때까지</value></data>
@@ -4909,7 +4969,7 @@
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>해제할 때까지</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>시간</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>기존 색상 유지</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>이 동작은 이 가상 컨트롤러가 조명을 제어하는 모든 키보드에서 같은 키를 조명 탭에서 지정한 색상 위에 밝힙니다. 숫자는 선택한 순서를 나타냅니다. 카운트다운은 마지막에 선택한 키부터 하나씩 끄므로, 숫자 행에서 쿨다운을 만들려면 1부터 0까지 순서대로 선택하세요. 키보드나 마우스는 이 장치의 조명 제어가 켜져 있을 때만 밝혀집니다.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>이 동작은 이 가상 컨트롤러가 조명을 제어하는 모든 키보드에서 같은 키를, 조명 및 오디오 섹션에서 지정한 색상 위에 밝힙니다. 숫자는 선택한 순서를 나타냅니다. 카운트다운은 마지막에 선택한 키부터 하나씩 끄므로, 숫자 행에서 쿨다운을 만들려면 1부터 0까지 순서대로 선택하세요. 키보드나 마우스는 이 장치의 조명 제어가 켜져 있을 때만 밝혀집니다.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>기타</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, {1}번째</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>화면 오버레이</value></data>
@@ -4969,7 +5029,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>아날로그 키 작동 지점은 가져오지 못했습니다.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD는 어댑터를 통해 이 컨트롤러를 다른 장치로 보냈습니다. PadForge는 이 컨트롤러를 이 PC에서 실행하며, Remote Link를 사용하면 PadForge가 실행 중인 다른 PC로 보낼 수 있습니다.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge는 스틱을 두 개까지 읽는데, 여기에는 세 번째 스틱이 지정되어 있습니다.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>스티어링 휠 에뮬레이션은 가져오지 못했습니다. 매핑 탭에서 휠을 매핑하세요.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>스티어링 휠 에뮬레이션은 가져오지 못했습니다. 버튼 섹션에서 휠을 매핑하세요.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>이 프로필이 지정한 특수 동작이 Profiles 폴더 옆의 Actions.xml에 없습니다: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>이 설정은 가져오지 못했습니다: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD가 이 입력들이 Windows에 전달되지 않게 막았습니다. 장치 페이지에서 {0}의 매핑된 입력 소비를 켜면 이 프로필이 매핑한 입력이 차단됩니다.</value></data>
@@ -4977,8 +5037,8 @@
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>스틱이 중앙으로 돌아오거나 레이어가 끝나면 확정됩니다. reWASD의 적용 버튼은 사용하지 않습니다.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>이 파일은 컨트롤러 두 개를 따로 취급합니다. PadForge에서는 슬롯에 연결된 어떤 컨트롤러든 이 매핑을 실행합니다.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>이동 속도와 플릭은 가져오지 못했습니다.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>이 항목은 가져오지 못했습니다. 터치패드 탭에서 설정하세요.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>이 파일에는 이 레이어를 여는 항목이 없습니다. 매핑 탭에서 버튼을 지정하세요.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>이 항목은 가져오지 못했습니다. 모션 및 터치 섹션에서 설정하세요.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>이 파일에는 이 레이어를 여는 항목이 없습니다. 버튼 섹션에서 레이어를 우클릭하고 활성화 구성을 선택하세요.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>이 프로필의 버튼을 누르면 다음이 실행됩니다: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>프로필 바로 가기</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>프로필 바로 가기와 같은 동작을 합니다. 이름을 지정한 프로필, 다음 프로필 또는 이전 프로필을 불러오거나, 창을 표시하거나 숨기거나, 가상 컨트롤러를 끄고 켭니다.</value></data>
@@ -5148,7 +5208,7 @@
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>실행에서 손을 떼면 선택한 셀이 짧게 한 번 실행됩니다. 실행 후 숨기기가 켜져 있으면 실행이 바를 숨기는 즉시 실행됩니다.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>실행 후 숨기기가 켜져 있을 때 실행이 바를 숨기면 셀이 짧게 한 번 실행됩니다. 매번 중앙으로가 켜져 있으면 실행되는 셀은 가운데 셀입니다.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>바가 표시되어 있는 동안 선택한 셀이 계속 눌린 상태로 유지됩니다. 이동하면 한 셀을 놓고 다음 셀을 누릅니다.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>방사형 링, 터치 그리드, 핫바는 셀 바인딩을 실행합니다. 키보드는 사용 중인 Windows 레이아웃의 키를 입력합니다.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>방사형 링, 터치 그리드, 핫바는 각 셀의 동작을 실행합니다. 키보드는 사용 중인 Windows 레이아웃의 키를 입력합니다.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>레이아웃</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>키보드의 키 배열과 컨트롤러로 키를 고르는 방식입니다.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>스틱이나 입력 네 개로 움직이는 강조 표시 하나. Windows, Xbox, Steam 방식의 레이아웃입니다.</value></data>
@@ -5255,11 +5315,11 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge 휴대용 버튼 (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 프로필 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 키 조명 (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>매크로는 {0}을(를) 누를 수 없습니다. 매핑 탭의 매핑은 누를 수 있습니다.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>매크로는 {0}을(를) 누를 수 없습니다. 버튼 섹션의 매핑은 누를 수 있습니다.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge는 화면 오버레이를 여덟 개까지 실행하는데, 이것은 reWASD의 아홉 번째 또는 열 번째 조준선입니다.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge는 자이로 롤에서 좌우를, 자이로 요에서 기울기를 읽으며, 이는 reWASD의 기본값입니다. reWASD의 환경설정에서 둘을 바꿀 수 있는데, 이 파일에는 바꿨는지 여부가 없습니다.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Tilt 모드에서 reWASD의 기울기는 수직축을 중심으로 한 회전이며, 모션 센서는 그 회전의 각도를 제공하지 않습니다.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge는 터치패드 대각선을 두 방향의 동시 입력으로 읽으며, 터치패드는 터치패드 탭의 방향키 모드가 8방향일 때만 이를 보고합니다.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge는 터치패드 대각선을 두 방향의 동시 입력으로 읽으며, 터치패드는 모션 및 터치 섹션의 방향키 모드가 8방향일 때만 이를 보고합니다.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge는 자이로의 방향을 하나의 임계값을 넘는지로 읽으며, reWASD는 자이로 영역 가장자리의 단위를 제공하지 않습니다.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows는 스틱이 가리키는 위치에 포인터를 놓았습니다. PadForge에서는 스틱이 포인터를 움직입니다.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0}은(는) 스틱을 회전 적용 전에 읽습니다. DS4Windows는 적용 후에 읽었습니다.</value></data>

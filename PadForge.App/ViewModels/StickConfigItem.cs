@@ -104,16 +104,9 @@ namespace PadForge.ViewModels
             }
         }
 
-        public int DeadZoneBothDigit
-        {
-            get => PctToDigit(DeadZoneBoth);
-            set => DeadZoneBoth = DigitToPct(value);
-        }
-
         private void RaiseDeadZoneBoth()
         {
             OnPropertyChanged(nameof(DeadZoneBoth));
-            OnPropertyChanged(nameof(DeadZoneBothDigit));
         }
 
         /// <summary>The stick's sensitivity curve as one: the X curve, and

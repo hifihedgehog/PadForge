@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>కాపీ చేయి</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>అతికించు</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>డూప్లికేట్ చేయి</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>పేరు మార్చు</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ప్రారంభించబడింది</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>నిలిపివేయబడింది</value></data>
   <data name="Common_On" xml:space="preserve"><value>ఆన్</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>పరికరం</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ఇన్పుట్ మూలం</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>పరికరం జోడించు</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>బ్లూటూత్</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>చిత్రం</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>జాబితా</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>అవుట్పుట్లు: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>మోషన్</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ఒక కంట్రోల్‌పై క్లిక్ చేసి, దాన్ని నడిపించాల్సిన ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>ఒక కీ లేదా మౌస్ బటన్‌పై క్లిక్ చేసి, దాన్ని నడిపించాల్సిన ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ఒక నోట్ లేదా స్లైడర్‌పై క్లిక్ చేసి, దాన్ని నడిపించాల్సిన ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“అన్నీ మ్యాప్ చేయి” A మరియు B టచ్ అవుట్పుట్లను దాటవేస్తుంది. ఒకదాన్ని బైండ్ చేయడానికి A లేదా B చుట్టూ ఉన్న రింగ్పై క్లిక్ చేయండి.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} కోసం వింటోంది. మీ పరికరంలోని ఇన్‌పుట్‌ను నొక్కండి.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} ఇన్పుట్ మూలం</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>మరిన్ని ఎంపికలు</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>తక్కువ ఎంపికలు</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ఫేస్ బటన్</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>షోల్డర్ బటన్</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>సిస్టమ్ బటన్</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>బటన్</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>దిశల ప్యాడ్</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>స్టిక్</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ట్రిగ్గర్</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>మోషన్ సెన్సార్</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>కీబోర్డ్ కీ</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>మౌస్ బటన్</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>మౌస్ కదలిక</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>స్క్రోల్ వీల్</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>కంట్రోల్ చేంజ్</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>టచ్ సెన్సార్</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>అనలాగ్ లాగడం</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, ఎడమ చేయి</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, కుడి చేయి</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>జతలోని రెండు బటన్లు నొక్కి ఉన్నప్పుడు గేమ్‌లకు ఏ నొక్కు కనిపిస్తుంది</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>జతలోని రెండు కీలు నొక్కి ఉన్నప్పుడు గేమ్‌లకు ఏ నొక్కు కనిపిస్తుంది</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>చిన్న స్టిక్ విక్షేపాన్ని పట్టి ఉంచి, గేమ్‌లు కంట్రోలర్ సూచనలు చూపేలా చేస్తుంది</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ఫోర్జింగ్</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>ఎడమ వైపున మాక్రోను ఎంచుకోండి, లేదా కొత్తది సృష్టించడానికి జోడించు నొక్కండి.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>జాబితాలో ఒక మాక్రోను ఎంచుకోండి, లేదా కొత్తది సృష్టించడానికి “మాక్రోలు” పక్కన ఉన్న + నొక్కండి.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>కోల్డ్</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ఒక్కో ట్రిగ్గర్ గెయిన్, మోటార్ల మార్పిడి, అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లు</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ఒక్కో ట్రిగ్గర్ గెయిన్, మోటార్ల మార్పిడి, అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లు, స్థిర ట్రిగ్గర్ బలం</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ నుండి ప్రతి ట్రిగ్గర్ మోటార్ ఆదేశాలను (Xbox ఇంపల్స్ ట్రిగ్గర్లు) కేటాయించిన భౌతిక Xbox One, Elite లేదా Series కంట్రోలర్కు పంపుతుంది. గేమ్ నడిపే ట్రిగ్గర్ రంబుల్ ఆటోమేటిక్గా వెళ్తుంది. కింది నియంత్రణలు ప్రతి ట్రిగ్గర్ తీవ్రతను స్కేల్ చేస్తాయి.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>కుడి ట్రిగ్గర్</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>స్టిక్లు</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ప్రతి స్టిక్కు డెడ్ జోన్లు, యాంటీ-డెడ్ జోన్లు, సున్నితత్వ వక్రరేఖలు, మధ్య ఆఫ్సెట్ క్రమాంకనం. కింది ప్రతి విభాగం చురుకైన అవుట్పుట్పై ఒక అనలాగ్ స్టిక్ను లక్ష్యంగా చేసుకుంటుంది. ఎక్స్టెండెడ్ ప్రొఫైల్లకు నాలుగు స్టిక్ల వరకు ఉండవచ్చు. ప్రామాణిక గేమ్ప్యాడ్లకు రెండు ఉంటాయి.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ట్రిగ్గర్లు</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ప్రతి ట్రిగ్గర్కు డెడ్ జోన్లు, యాంటీ-డెడ్ జోన్లు, గరిష్ఠ పరిధి స్కేలింగ్, సున్నితత్వ వక్రరేఖలు. కింది ప్రతి విభాగం చురుకైన అవుట్పుట్పై ఒక ట్రిగ్గర్ అక్షాన్ని లక్ష్యంగా చేసుకుంటుంది. ఎక్స్టెండెడ్ ప్రొఫైల్లు స్టిక్స్ ట్యాబ్తో పంచుకునే ఎనిమిది అక్షాల వరకు చూపగలవు.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ప్రతి ట్రిగ్గర్కు డెడ్ జోన్లు, యాంటీ-డెడ్ జోన్లు, గరిష్ఠ పరిధి స్కేలింగ్, సున్నితత్వ వక్రరేఖలు. ప్రతి ట్రిగ్గర్ కార్డ్ చురుకైన అవుట్పుట్పై ఒక ట్రిగ్గర్ అక్షాన్ని లక్ష్యంగా చేసుకుంటుంది. ఎక్స్టెండెడ్ ప్రొఫైల్లు స్టిక్లు, ట్రిగ్గర్ల మధ్య పంచుకునే ఎనిమిది అక్షాల వరకు చూపగలవు.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ఫోర్స్ ఫీడ్బ్యాక్</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>గేమ్ నుండి వచ్చే ఫోర్స్ ఫీడ్బ్యాక్ ఈవెంట్లను PadForge ఎలా స్కేల్ చేస్తుందో, వాటిని భౌతిక కంట్రోలర్ రంబుల్ మోటార్లకు లేదా హాప్టిక్ యాక్చువేటర్లకు ఎలా పంపుతుందో సర్దుబాటు చేస్తుంది. ఆడియో రంబుల్ దానిపై సిస్టమ్ ఆడియోతో నడిచే పొరను జోడిస్తుంది.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>ఈ పరికరం</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>మొత్తం కంట్రోలర్</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>రంబుల్ {0}పై హాప్టిక్ పల్స్లుగా ప్లే అవుతుంది, నేరుగా పరికరానికి పంపబడుతుంది. బలమైన రంబుల్ బలమైన పల్స్ను ఎంచుకుని దాన్ని వేగంగా పునరావృతం చేస్తుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} కోసం Logi Options+లో హాప్టిక్ ఫీడ్బ్యాక్ ఆఫ్ చేయబడింది, కాబట్టి మీరు అక్కడ మళ్లీ ఆన్ చేసే వరకు ఇది ఏమీ ప్లే చేయదు.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంబుల్ ప్లే అవుతుంది.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>మదర్బోర్డులు మరియు గ్రాఫిక్స్ కార్డులు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>మౌస్ప్యాడ్లు, హెడ్సెట్లు మరియు హెడ్సెట్ స్టాండ్లు</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>గేమ్లు లైటింగ్ రాసినప్పుడల్లా అవి స్వాధీనం చేసుకుంటాయి.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ఈ రంగును పాలెట్ నుండి తీసివేయి</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>ఆడియో రంబుల్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} ను రీసెట్ చేయి</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>మ్యాపింగ్లను క్లియర్ చేయి</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ఈ ట్యాబ్లోని ప్రతి మ్యాపింగ్ క్లియర్ అవుతుంది. మూల కేటాయింపులు, అదనపు మూలాలు మరియు కలయిక సెట్టింగులు డిఫాల్ట్లకు రీసెట్ అవుతాయి.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ఈ లేయర్లోని ప్రతి మ్యాపింగ్ క్లియర్ అవుతుంది. మూల కేటాయింపులు, అదనపు మూలాలు మరియు కలయిక సెట్టింగులు డిఫాల్ట్లకు రీసెట్ అవుతాయి.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>ప్లేయర్ నమూనా</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>మ్యూట్ LED మోడ్</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED ప్రకాశం</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVలు</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>బటన్లు</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>దిగుమతి చేసిన ప్రొఫైల్లు…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>విస్తృత కంట్రోలర్</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>వినియోగదారు దిగుమతి చేసిన HIDMaestro ప్రొఫైల్లను నిర్వహించండి: కనెక్ట్ అయిన పరికరం నుండి కొత్తదాన్ని క్యాప్చర్ చేయండి, ఉన్నదాన్ని JSONకు ఎగుమతి చేయండి, లేదా అవసరం లేనిదాన్ని తొలగించండి.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>పరికరాన్ని 1:1 క్లోన్ చేయి</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ఎంచుకున్న పరికరంలోని ప్రతి అక్షం, బటన్ మరియు హ్యాట్ను అదే సంఖ్య గల వర్చువల్ అవుట్పుట్కు నేరుగా మ్యాప్ చేయండి. లేఅవుట్ను పరికరానికి తగిన పరిమాణంలో చేసి, స్లాట్పై ఈ పరికర వరుసలను 1:1 పాస్త్రూతో భర్తీ చేస్తుంది.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ఫోర్స్ ఫీడ్బ్యాక్</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>ఛానెల్</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI అవుట్‌పుట్</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI ఛానెల్ (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC సంఖ్య</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC అవుట్పుట్ల సంఖ్య (గరిష్ఠం Start CCపై ఆధారపడి ఉంటుంది)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>ఈ కీ జతను తీసివేస్తుంది.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>ఎదురెదురు జతలోని మొదటి కీ.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>ఎదురెదురు జతలోని రెండవ కీ.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>ఏకకాల వ్యతిరేక ప్రధాన దిశలు (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>కంట్రోలర్‌ను మేల్కొని ఉంచు</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>కొన్ని గేమ్‌లు మౌస్ లేదా కీబోర్డ్ ఇన్‌పుట్ కనిపించిన వెంటనే వైబ్రేషన్‌ను ఆపి, తమ బటన్ సూచనలను మార్చుకుంటాయి. చిన్న స్టిక్ విక్షేపాన్ని పట్టి ఉంచితే, ఈ కంట్రోలర్‌నే గేమ్ క్రియాశీల పరికరంగా పరిగణిస్తూ ఉంటుంది. ఆ స్టిక్ రెండు అక్షాలూ పట్టి ఉంచిన స్థాయి కంటే తక్కువగా ఉన్నప్పుడు మాత్రమే ఈ పట్టు పని చేస్తుంది, కాబట్టి జారుతున్న స్టిక్ కూడా విశ్రాంతిలో ఉన్నట్లే లెక్కవుతుంది. ఏ అక్షంలోనైనా స్థాయిని దాటిన ఇన్‌పుట్ దాన్ని విడుదల చేసి, మార్పు లేకుండా వెళ్తుంది. గేమ్‌లో ఏదీ కదలకుండా ఉండేందుకు, విక్షేపాన్ని గేమ్ సొంత డెడ్ జోన్ కంటే తక్కువగా ఉంచండి.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>మేల్కొని ఉంచు</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>క్లిక్‌ను రీసెట్ చేయి</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>ప్యాడ్ సగాన్ని రీసెట్ చేయి</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>ఫైర్ మోడ్‌ను రీసెట్ చేయి</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>సెల్స్‌ను రీసెట్ చేయి</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>ఎంగేజ్ డెడ్ జోన్‌ను రీసెట్ చేయి</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>మెను జ్యామితిని రీసెట్ చేయి</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>సెల్‌ను రీసెట్ చేయి</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>అన్నీ తీసివేయి</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>మూలం</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>విలువ</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ఎంపికలు</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>అక్షం-నుండి-బటన్ డెడ్ జోన్</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>విలోమం చేయి</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>టిక్ చేసినప్పుడు, విడుదల చేయగానే అక్షం మధ్యకు తిరిగి ర్యాంప్ అవుతుంది. టిక్ తీసివేస్తే, తన చివరి స్థానాన్ని నిలుపుకుంటుంది.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>నొక్కి ఉంచినప్పుడు వరుస అవుట్‌పుట్‌ను విలోమం చేసే బటన్</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>మాడిఫైయర్: నొక్కి ఉంచినప్పుడు, వరుస అవుట్‌పుట్ గుర్తు మారుతుంది.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ మూలాన్ని జోడించు</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>మూలాన్ని జోడించు</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>ఈ వరుసకు మరొక భౌతిక ఇన్‌పుట్‌ను జోడించండి</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>ఈ మూలాన్ని తీసివేయండి</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>పాయింట్ {0}/{1}, ఇన్పుట్ {2}%, అవుట్పుట్ {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>మధ్యను క్రమాంకనం చేయి</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>మధ్య బిందువు</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>మధ్య</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>డెడ్ జోన్</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>మధ్య ఆఫ్‌సెట్లు, డెడ్ జోన్ ఆకారం మరియు ఒక్కో అక్షం విలువలు, ఒక్కో అక్షానికి వక్రరేఖ, పరిధి, స్టీరింగ్</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>పరిధి</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>స్టిక్‌ను సరిచేయడానికి సరిహద్దు క్రమాంకనం సిఫార్సు చేయబడిన మార్గం. ఇది స్టిక్ భౌతికంగా చేరగల అంచును స్వీప్ చేసి, ప్రతి స్థానాన్ని ఆ కొలిచిన అంచుకు అనుపాతంగా తిరిగి స్కేల్ చేస్తుంది, కాబట్టి ప్రతి కోణంలో, ప్రతి విక్షేపం వద్ద పూర్తి సహజ కదలిక ఏదీ కత్తిరించబడకుండా ఆదర్శ వృత్తంపైకి మ్యాప్ అవుతుంది. కింద ఉన్న నాలుగు స్లైడర్లు ప్రధాన అక్షాలను మాత్రమే పరిమితం చేస్తాయి. పరిధిని సరిచేయడానికి కాదు, ఉద్దేశపూర్వకంగా పరిమితం చేయడానికి వాటిని వాడండి.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“సరిహద్దును క్రమాంకనం చేయి” స్టిక్ చేరగల అంచును కొలిచి, దాన్ని పూర్తి వృత్తంగా మలుస్తుంది. నాలుగు స్లైడర్లు ప్రతి దిశకు పరిమితిని మాత్రమే విధిస్తాయి.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>నమూనా తీస్తోంది...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>మధ్య ఆఫ్సెట్ X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>మధ్య ఆఫ్సెట్ Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>పేరు</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>ట్రిగ్గర్</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>ఎప్పుడు</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>ఫైర్</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>నొక్కినప్పుడు</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>వదిలినప్పుడు</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>ఈ మాక్రో ఏ షిఫ్ట్ లేయర్‌కు చెందుతుంది. ఏదైనా లేయర్ నిమగ్నమైన లేయర్‌తో సంబంధం లేకుండా ఫైర్ అవుతుంది. బేస్ మరియు పేరున్న లేయర్లు ఆ లేయర్ నిమగ్నమైనప్పుడు మాత్రమే ఫైర్ అవుతాయి, మ్యాపింగ్ వరుస లాగానే.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ఏదైనా లేయర్</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ క్రియాశీలంగా ఉన్నంతసేపు నిరంతరం నడుస్తుంది. ట్రిగ్గర్ బటన్ అవసరం లేదు.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>చర్యల క్రమం</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>చర్యలు</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>లేయర్, మూలం, థ్రెషోల్డ్, దిశ, ట్రిగ్గర్ బటన్లను వినియోగించు, పునరావృతం</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>చర్యను జోడించు</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>చర్యను సవరించు</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>రకం</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>వర్చువల్ బటన్లు</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>వర్చువల్ అక్షాలు &amp; వీల్</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>బటన్ {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} ను {1}ms పాటు నొక్కు</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} ను {1} ms పాటు నొక్కు</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} ను వదులు</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>కీలు {0} ను {1}ms పాటు</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>కీలు {0} ను {1} ms పాటు</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>కీలు {0} ను వదులు</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms వేచి ఉండు</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms వేచి ఉండు</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} గా సెట్ చేయి</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>సిస్టమ్ వాల్యూమ్ ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>సిస్టమ్ వాల్యూమ్ ← {0} (గరిష్ఠం {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>మౌస్ వదులు {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>టచ్ ప్యాడ్ ఓవర్లేను టోగుల్ చేయి</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>లైట్ బార్ రంగును సెట్ చేయి</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>కేటాయించిన PlayStation స్లాట్ లైట్ బార్‌ను ఎంచుకున్న RGB రంగుకు మారుస్తుంది. రియాక్టివ్ పూర్తి తీవ్రత నుండి సెట్ చేసిన క్షీణత విండోలో నలుపుకు మసకబారి, ఆపై లైటింగ్ ట్యాబ్ సెట్టింగులకు తిరిగి అప్పగిస్తుంది. స్టిక్కీ లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు చర్య నడిచే వరకు రంగును పట్టి ఉంచుతుంది. గేమ్ రాసే విలువలకు ఇప్పటికీ ఓవర్‌రైడ్ కంటే ప్రాధాన్యత ఉంటుంది.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>లైట్ బార్ {0} ఫ్లాష్ చేయి (క్షీణత {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>కేటాయించిన PlayStation స్లాట్ లైట్ బార్‌ను ఎంచుకున్న RGB రంగుకు మారుస్తుంది. రియాక్టివ్ పూర్తి తీవ్రత నుండి సెట్ చేసిన క్షీణత విండోలో నలుపుకు మసకబారి, ఆపై లైట్ బార్ కార్డ్ సెట్టింగులకు తిరిగి అప్పగిస్తుంది. స్టిక్కీ లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు చర్య నడిచే వరకు రంగును పట్టి ఉంచుతుంది. గేమ్ రాసే విలువలకు ఇప్పటికీ ఓవర్‌రైడ్ కంటే ప్రాధాన్యత ఉంటుంది.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>లైట్ బార్ {0} ఫ్లాష్ చేయి (క్షీణత {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>లైట్ బార్ {0} ను తొలగించే వరకు పట్టి ఉంచు</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్‌లోని ఏదైనా క్రియాశీల లైట్ బార్ ఓవర్‌రైడ్‌ను విడుదల చేస్తుంది. మరొక మాక్రో ద్వారా దాన్ని రద్దు చేయడానికి స్టిక్కీ లైట్ బార్ రంగును సెట్ చేయి చర్యతో జతచేయండి.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>లైట్ బార్ మోడ్‌ను సెట్ చేయి</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>లైట్ బార్ మోడ్‌ను {0} కు సెట్ చేయి</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్ లైట్ బార్ మోడ్‌ను ఒక నిర్దిష్ట విలువకు సెట్ చేస్తుంది. మరొక చర్య లేదా వినియోగదారు మార్చే వరకు, లైటింగ్ ట్యాబ్‌లో చేసిన మార్పు లాగా నిలిచి ఉంటుంది.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్ లైట్ బార్ మోడ్‌ను ఒక నిర్దిష్ట విలువకు సెట్ చేస్తుంది. మరొక చర్య లేదా వినియోగదారు మార్చే వరకు, లైట్ బార్ కార్డ్‌లో చేసిన మార్పు లాగా నిలిచి ఉంటుంది.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>లైట్ బార్ మోడ్‌లను మార్చుతూ తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} లైట్ బార్ మోడ్‌ల గుండా తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>కింద ఎంచుకున్న మోడ్‌ల గుండా స్లాట్ లైట్ బార్ మోడ్‌ను ముందుకు జరుపుతుంది. ప్రతి ఫైర్ తర్వాతి టిక్ చేసిన మోడ్‌కు వెళ్తుంది. తిప్పే స్థానం ప్రతి చర్యకు విడిగా ఉంటుంది మరియు యాప్ పునఃప్రారంభంలో రీసెట్ అవుతుంది.</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>క్షీణత</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ఫేడ్</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>పాలెట్</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ఖాళీ పాలెట్ స్లాట్ స్వంత లైటింగ్ ట్యాబ్ పాలెట్‌ను వాడుతుంది.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ఖాళీ పాలెట్ స్లాట్ లైట్ బార్ కార్డ్‌లోని పాలెట్‌ను వాడుతుంది.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>మోడ్</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>మాక్రో ఏ లైట్ బార్ మోడ్‌ల గుండా తిరగాలో ఎంచుకోండి. ప్రతి ఫైర్ తర్వాతి టిక్ చేసిన మోడ్‌కు వెళ్తుంది.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>రంబుల్</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>మాక్రో నుండి స్లాట్ భౌతిక పరికర రంబుల్‌ను నడిపిస్తుంది. రియాక్టివ్ హోల్డ్ విండో అంతా పూర్తి బలంతో నడిచి, ఫేడ్ విండోలో సున్నాకు తగ్గుతుంది. స్టిక్కీ రంబుల్ ఆపు చర్య నడిచే వరకు పూర్తి బలంతో ఉంటుంది. వినియోగదారు ఇచ్చే ఫీడ్‌బ్యాక్ ఎప్పుడూ తెలిసేలా, max() ద్వారా గేమ్ ఇచ్చే రంబుల్ పైన పొరగా కలుస్తుంది.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>రంబుల్ {0} పల్స్ చేయి ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>రంబుల్ {0} పల్స్ చేయి ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>రంబుల్ {0} ను తొలగించే వరకు పట్టి ఉంచు</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>రంబుల్ ఆపు</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>రంబుల్ ఆపు</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ట్రిగ్గర్ వైబ్రేషన్ ఆపు</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>స్లాట్‌లోని ఏదైనా క్రియాశీల మాక్రో ట్రిగ్గర్ వైబ్రేషన్‌ను విడుదల చేస్తుంది. మాక్రో నుండి హోల్డ్‌ను ముగించడానికి స్టిక్కీ ట్రిగ్గర్ రంబుల్ ఓవర్‌రైడ్‌తో జతచేయండి.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>గైరో ఎంగేజ్‌ను సెట్ చేయి</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>మాక్రో నుండి స్లాట్ గైరో ఎంగేజ్ స్థితిని సెట్ చేస్తుంది. టోగుల్ ప్రస్తుత స్థితిని తిప్పుతుంది. ఆన్ గైరోను ఎంగేజ్ చేస్తుంది. ఆఫ్ డిస్‌ఎంగేజ్ చేస్తుంది. గైరో ట్యాబ్‌లోని ఎంగేజ్ బటన్‌తో సంబంధం లేనిది. ఈ రెండు మూలాలు OR-కలుస్తాయి, కాబట్టి ఒకటి ఎంగేజ్ చేసినదాన్ని మరొకటి ఆపలేదు.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>మాక్రో నుండి స్లాట్ గైరో ఎంగేజ్ స్థితిని సెట్ చేస్తుంది. టోగుల్ ప్రస్తుత స్థితిని తిప్పుతుంది. ఆన్ గైరోను ఎంగేజ్ చేస్తుంది. ఆఫ్ డిస్‌ఎంగేజ్ చేస్తుంది. మోషన్ &amp; టచ్ విభాగంలోని ఎయిమ్ ఎంగేజ్ బటన్‌తో సంబంధం లేనిది. ఈ రెండు మూలాలు OR-కలుస్తాయి, కాబట్టి ఒకటి ఎంగేజ్ చేసినదాన్ని మరొకటి ఆపలేదు.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>మోడ్</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>టోగుల్</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>ఆన్</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ప్రతి టచ్ ప్యాడ్ ఇన్పుట్. సంజ్ఞలు (స్వైప్‌లు, ట్యాప్‌లు, పించ్‌లు, ఆకారాలు) మరియు నిరంతర అవుట్‌పుట్ మోడ్‌లు (వర్చువల్ స్టిక్ / D-ప్యాడ్, మౌస్) మ్యాపింగ్ మూలాలుగా మారి, మ్యాపింగ్ ట్యాబ్‌లో బైండ్ చేయడానికి అందుబాటులోకి వస్తాయి.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ప్రతి టచ్ ప్యాడ్ ఇన్పుట్. సంజ్ఞలు (స్వైప్‌లు, ట్యాప్‌లు, పించ్‌లు, ఆకారాలు) మరియు నిరంతర అవుట్‌పుట్ మోడ్‌లు (వర్చువల్ స్టిక్ / D-ప్యాడ్, మౌస్) మ్యాపింగ్ మూలాలుగా మారి, ఏ అవుట్‌పుట్‌కైనా బైండ్ చేయడానికి అందుబాటులోకి వస్తాయి.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>టచ్ ప్యాడ్ సంఖ్య</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ఈ కంట్రోలర్‌లోని ఏ టచ్ ప్యాడ్‌కు కింది సెట్టింగులు వర్తిస్తాయో ఎంచుకోండి. ప్రతి టచ్ ప్యాడ్‌కు దాని స్వంత సంజ్ఞలు, మౌస్ అనుభూతి, పాయింటర్ ప్రాంతం ఉంటాయి.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>గైరో</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ఈ ప్యాడ్ మోషన్ సెన్సార్ మౌస్ మరియు స్టిక్ అవుట్పుట్ను ఎలా నడిపిస్తుందో సర్దుబాటు చేయండి. విశ్రాంత డ్రిఫ్ట్ను సున్నా చేయడానికి చదునైన ఉపరితలంపై క్రమాంకనం చేయండి, తర్వాత సున్నితత్వం, స్మూతింగ్, ఎంగేజ్ నియమాలను మీ ఇష్టానుసారం సెట్ చేయండి.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>క్రమాంకనం</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>గైరోస్కోప్, యాక్సిలరోమీటర్ ప్రత్యక్ష రీడింగ్లు</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>సున్నితత్వం</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>యూనిట్లు, స్పేస్, అక్షాల విలోమం, వాస్తవ ప్రపంచ క్రమాంకనం</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>యూనిట్లు, అక్షాల విలోమం, వాస్తవ ప్రపంచ క్రమాంకనం</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>పూర్తి మలుపుకు ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ప్రతిస్పందన రూపకల్పన</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>డెడ్ జోన్, స్మూతింగ్, త్వరణం, అవుట్‌పుట్ వక్రరేఖ</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>రిఫరెన్స్ ఫ్రేమ్</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>లోకల్, ప్లేయర్ లేదా వరల్డ్</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>స్పేస్</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>గైరో కదలికను ఎలా అర్థం చేసుకోవాలి. Local ముడి కంట్రోలర్ అక్షాలను ఉపయోగిస్తుంది. Player క్షితిజ సమాంతర కదలికను వాస్తవ ప్రపంచపు నిలువు దిశ (గురుత్వాకర్షణ) పైకి ప్రొజెక్ట్ చేస్తుంది, కాబట్టి మీరు ప్యాడ్ను ఎలా పట్టుకున్నా అదే మణికట్టు తిప్పడం ఎల్లప్పుడూ కెమెరాను తిప్పుతుంది. World అదనంగా నిలువు కదలికను ప్రపంచ అక్షాలపైకి మళ్లీ ప్రొజెక్ట్ చేస్తుంది.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>పట్టుకునే విధానం</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>నిటారుగా</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>గ్రిప్</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>కంట్రోలర్ను ఎలా పట్టుకుంటారు. గైరో, యాక్సిలరోమీటర్, గురుత్వాకర్షణలను కలిపి తిప్పుతుంది, మ్యాపింగ్ల కోసం మరియు వర్చువల్ కంట్రోలర్ నివేదించే మోషన్ కోసం. D-ప్యాడ్ కూడా అదే ఫ్రేమ్ను అనుసరిస్తుంది, కాబట్టి ఆ పట్టులో పైకి అంటే పైకే.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>కంట్రోలర్ను ఎలా పట్టుకుంటారు</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>సరళం</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>తీవ్రం</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>సడలింపు</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ఎంగేజ్ దిశను రీసెట్ చేయి</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>మోషన్ పాస్త్రూ</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>మోషన్ పాస్త్రూకు గైరో ట్యూనింగ్ వర్తింపజేయి</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ఈ ట్యాబ్లోని ఐచ్ఛిక గైరో ట్యూనింగ్ను (డెడ్ జోన్, సున్నితత్వం, స్మూతింగ్, ప్రతిస్పందన వక్రరేఖ, విలోమం) వర్చువల్ కంట్రోలర్ గేమ్ లేదా ఎమ్యులేటర్కు నివేదించే మోషన్పై అమలు చేస్తుంది. క్రమాంకనం చేసిన రీడింగ్ను మాత్రమే పంపి, గేమ్ తన సొంత సున్నితత్వం, స్మూతింగ్ను వర్తింపజేయడానికి దీన్ని ఆఫ్ చేయండి. క్రమాంకన డ్రిఫ్ట్ సవరణ రెండు సందర్భాల్లోనూ ఎల్లప్పుడూ వర్తిస్తుంది.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>గైరో కార్డ్ల ఐచ్ఛిక ట్యూనింగ్ను (డెడ్ జోన్, సున్నితత్వం, స్మూతింగ్, ప్రతిస్పందన వక్రరేఖ, విలోమం) వర్చువల్ కంట్రోలర్ గేమ్ లేదా ఎమ్యులేటర్కు నివేదించే మోషన్పై అమలు చేస్తుంది. క్రమాంకనం చేసిన రీడింగ్ను మాత్రమే పంపి, గేమ్ తన సొంత సున్నితత్వం, స్మూతింగ్ను వర్తింపజేయడానికి దీన్ని ఆఫ్ చేయండి. క్రమాంకన డ్రిఫ్ట్ సవరణ రెండు సందర్భాల్లోనూ ఎల్లప్పుడూ వర్తిస్తుంది.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>పాస్త్రూ ట్యూనింగ్‌ను రీసెట్ చేయి</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>మూలం-వారీ గైరో సున్నితత్వ గుణకం. 1.0 = ఇంజిన్ డిఫాల్ట్ (500°/s → పూర్తి విక్షేపం). 1.0 కంటే ఎక్కువ విలువలు మరింత సున్నితంగా ఉంటాయి. 1.0 కంటే తక్కువ విలువలు తక్కువ సున్నితంగా ఉంటాయి.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>పూర్తి టిల్ట్ పరిధిని రీసెట్ చేయి</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>టిల్ట్ డెడ్ జోన్‌ను రీసెట్ చేయి</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>గైరో టిల్ట్‌ను రీసెట్ చేయి</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ఒకటి కంటే ఎక్కువ మూలాలు సక్రియంగా ఉన్నప్పుడు ఈ వరుసలోని మూలాలు ఎలా కలుస్తాయి. దీన్ని మార్చడానికి వరుసను ఎంచుకుని, కింద ఉన్న వివరాల పట్టీలో మార్చండి.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ఒకటి కంటే ఎక్కువ మూలాలు సక్రియంగా ఉన్నప్పుడు ఈ వరుసలోని మూలాలు ఎలా కలుస్తాయి. దీన్ని మార్చడానికి వరుసను తెరిచి, “కలుపు” వద్ద మార్చండి.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>మొమెంటం</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ట్రాక్బాల్ మోడ్: స్టిక్ను ఫ్లిక్ చేసి వదిలితే కర్సర్ కదులుతూ, జారుతూ ఆగుతుంది. స్టిక్ను మళ్లీ కదిలిస్తే అది కర్సర్ను పట్టుకుంటుంది.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>ఫ్లిక్ తర్వాత కర్సర్ ఎంత దూరం జారుతుంది. పరిధి పైభాగంలో మీరు స్టిక్ను మళ్లీ కదిలించే వరకు అది కదులుతూనే ఉంటుంది.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ట్రిగ్గర్ అక్షం</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ఒక్కో మోటార్ గెయిన్, ట్రిగ్గర్ రంబుల్, మోటార్ల మార్పిడి</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ఒక్కో మోటార్ గెయిన్, ట్రిగ్గర్ రంబుల్, స్టీరింగ్ యాంగిల్ రంబుల్, స్థిర బలం</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>మొత్తం గెయిన్</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ఎడమ మోటార్</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>కుడి మోటార్</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ఈ కంట్రోలర్‌కు ట్రిగ్గర్ మోటార్లు లేవు, కాబట్టి Xbox ఇంపల్స్ ట్రిగ్గర్లను వాడే గేమ్‌లలో అనుభూతి ఉండదు. బదులుగా ప్రతి ట్రిగ్గర్ ఛానెల్‌ను అదే వైపు ఉన్న ప్రధాన మోటార్‌లో కలపండి.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>రంబుల్ పరీక్ష</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>మోటార్ కార్యకలాపం</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ఎడమ</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>కుడి</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>మీరు ఆఫ్ చేసే వరకు ఈ పరికరానికి నిరంతర బలాన్ని వర్తింపజేస్తుంది. ఏ మూలం నుండైనా గేమ్ ఇచ్చే బలం, ఇది యాక్టివ్‌గా ఉన్నప్పుడు దీన్ని భర్తీ చేస్తుంది, గేమ్ ఆగాక ఇది తిరిగి కొనసాగుతుంది.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>రికార్డ్ చేయడానికి బటన్లు నొక్కండి లేదా అక్షం/ట్రిగ్గర్ కదిలించండి. అక్షాలు 50% దాటి విక్షేపం చెందినప్పుడు గుర్తించబడతాయి.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>జాబితా నుండి జోడించు</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>ట్రిగ్గర్ ఇన్‌పుట్‌ను రికార్డ్ చేయకుండా, స్లాట్ పరికరాల నుండి ఎంచుకోండి. టచ్ ప్యాడ్ ట్యాబ్‌లో ప్రారంభించిన టచ్ ప్యాడ్ సంజ్ఞలు ఇక్కడ కనిపిస్తాయి.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>ట్రిగ్గర్ను క్లియర్ చేయి</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>ట్రిగ్గర్ ఇన్‌పుట్‌ను రికార్డ్ చేయకుండా, స్లాట్ పరికరాల నుండి ఎంచుకోండి. మోషన్ &amp; టచ్ విభాగంలో ఆన్ చేసిన టచ్ ప్యాడ్ సంజ్ఞలు ఇక్కడ కనిపిస్తాయి.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>ఇన్‌పుట్ తొలగించు</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>ఏదైనా ఇన్‌పుట్ నొక్కండి…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>విలోమం</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ఒక వర్చువల్ కంట్రోలర్‌కు మ్యాప్ చేసిన పరికరాలన్నీ అందుబాటులో లేనప్పుడు, అది తొలగించబడటానికి ముందు ఉండే సెకన్లు. 0 అయితే నిలిపివేయబడుతుంది. అదే రకానికి చెందిన మిగిలిన కంట్రోలర్లు ఖాళీని భర్తీ చేయడానికి పైకి జరిగి తక్కువ స్లాట్లకు మళ్లీ బైండ్ అవుతాయి.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>సెకన్లు (0 = ఎప్పుడూ కాదు)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ షిఫ్ట్ లేయర్</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>లేయర్ జోడించు</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>షిఫ్ట్ లేయర్‌ను జోడించండి. ఒక బటన్ నొక్కి ఉంచినప్పుడు లేదా టోగుల్ చేసినప్పుడు యాక్టివ్ అయ్యే రెండవ మ్యాపింగ్ పట్టిక.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>బేస్</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>షిఫ్ట్ లేయర్</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>మోషన్ స్టీరింగ్</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° నుండి {1}° వరకు</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>లీన్ డెడ్ జోన్లు, కంట్రోలర్ ఓరియెంటేషన్</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>మోషన్ లీన్ ఇన్పుట్ కోసం సెట్టింగులు: కంట్రోలర్ను స్టీరింగ్ వీల్లా వంచండి. మ్యాపింగ్స్లోని ఇన్పుట్ డ్రాప్డౌన్ నుండి "మోషన్ లీన్" ను ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>మోషన్ వంపు ఇన్పుట్ కోసం సెట్టింగులు: కంట్రోలర్ను స్టీరింగ్ వీల్లా వంచండి. బటన్లు విభాగంలో "మోషన్ వంపు" ను ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>మోషన్ స్టీరింగ్ రీసెట్ చేయి</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ (కుడి స్టిక్)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ (ఎడమ స్టిక్)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>కుడి స్టిక్ రింగ్</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ఫ్లిక్ స్టిక్</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ ఇన్పుట్ల సర్దుబాటు</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ ఇన్పుట్ల సెట్టింగులు: స్టిక్ను ఒక దిశలో చూపిస్తే కెమెరా అటు తిరుగుతుంది, అంచున తిప్పితే సూక్ష్మంగా తిరుగుతుంది. మ్యాపింగ్స్లోని ఇన్పుట్ డ్రాప్డౌన్ నుండి ఏ లేయర్లోనైనా "ఫ్లిక్ స్టిక్ (కుడి స్టిక్)" ను మౌస్ X కు మ్యాప్ చేయండి.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ ఇన్పుట్ల సెట్టింగులు: స్టిక్ను ఒక దిశలో చూపిస్తే కెమెరా అటు తిరుగుతుంది, అంచున తిప్పితే సూక్ష్మంగా తిరుగుతుంది. కీలు &amp; మౌస్ విభాగంలో ఏ లేయర్లోనైనా "ఫ్లిక్ స్టిక్ (కుడి స్టిక్)" ను మౌస్ X కు మ్యాప్ చేయండి.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ రీసెట్ చేయి</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°కి డాట్లు</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ఒక పూర్తి 360° కెమెరా తిరుగుడుకు మౌస్ కౌంట్లు. ఆట మౌస్ సున్నితత్వంపై ఆధారపడుతుంది: ఫ్లిక్ తక్కువగా తిరిగితే పెంచండి, ఎక్కువగా తిరిగితే తగ్గించండి.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ఆడియో</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>మాక్రో శబ్దాలు, ప్రతిబింబించిన సిస్టమ్ ఆడియో USB లేదా బ్లూటూత్ ద్వారా ఎంచుకున్న కంట్రోలర్ అంతర్నిర్మిత స్పీకర్లో ప్లే అవుతాయి. పైన డ్రాప్డౌన్లో పరికరాన్ని ఎంచుకోండి. ఇక్కడి ప్రతి సెట్టింగ్ దానిని అనుసరిస్తుంది.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>సౌండ్ అవుట్పుట్</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>మిర్రర్ మూలం, హాప్టిక్స్, హెడ్ఫోన్ వాల్యూమ్, క్రాస్ఫీడ్, Parametric EQ, లిమిటర్</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>మిర్రర్ మూలం, హెడ్ఫోన్ వాల్యూమ్, బఫర్, అవుట్పుట్ మార్గం</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>శబ్దాలు ఎంచుకున్న కంట్రోలర్కు స్వయంచాలకంగా వెళ్తాయి. USB ద్వారా ప్యాడ్ సొంత ఆడియో ఎండ్పాయింట్ హార్డ్వేర్ కంటైనర్ ద్వారా సరిపోలుతుంది. బ్లూటూత్ ద్వారా ఆడియో Sony HID ఫ్రేమ్లలో స్ట్రీమ్ అవుతుంది.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>మిర్రర్ మూలం</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>కంట్రోలర్ స్పీకర్కు ఏ ప్లేబ్యాక్ పరికరాన్ని ప్రతిబింబించాలి. నిర్దిష్ట శబ్దాలను వేరే ప్లేబ్యాక్ పరికరానికి పంపే ఆటలు దీనిని లక్ష్యంగా చేసుకోవచ్చు.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>అన్ని శబ్దాలను ఆపు</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>ఈ ప్యాడ్లోని ప్రతి మాక్రో శబ్దాన్ని ఆపండి</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>సౌండ్ మాక్రోలు</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>శబ్దాలను మాక్రోలు ప్లే చేస్తాయి: ఒక ట్రిగ్గర్ (బటన్ నొక్కడం, వదలడం, నొక్కి ఉంచడం లేదా ఫార్ములా) ప్లస్ శబ్దం ప్లే చేసే చర్య. వీటిని ఇక్కడ లేదా మాక్రోల ట్యాబ్లో నిర్మించండి. ఆలస్యాలు, పునరావృతాలు, టోగుల్లు అన్నీ పనిచేస్తాయి.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>శబ్దాలను మాక్రోలు ప్లే చేస్తాయి: ఒక ట్రిగ్గర్ (బటన్ నొక్కడం, వదలడం, నొక్కి ఉంచడం లేదా ఫార్ములా) ప్లస్ శబ్దం ప్లే చేసే చర్య. వీటిని ఇక్కడ లేదా మాక్రోలు &amp; మెనూలు విభాగంలో నిర్మించండి. ఆలస్యాలు, పునరావృతాలు, టోగుల్లు అన్నీ పనిచేస్తాయి.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>కొత్త సౌండ్ మాక్రో</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>ఇంకా సౌండ్ మాక్రోలు లేవు. ఒకటి సృష్టించి, సౌండ్ ఫైల్ను, ట్రిగ్గర్ను ఎంచుకోండి.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ఈ మాక్రోను మాక్రోల ట్యాబ్లో తెరవండి</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ఈ మాక్రోను మాక్రోలు &amp; మెనూలు విభాగంలో తెరవండి</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>సౌండ్ మాక్రో {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>శబ్దాన్ని ప్లే చేయి</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>ఈ ప్యాడ్ అవుట్పుట్ పరికరంలో సౌండ్ ఫైల్ (.wav, .mp3, .m4a, .aac, .wma, .flac) ప్లే చేయండి</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>నడుస్తోంది</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>నడుస్తోంది, డ్రైవర్ కనెక్ట్ అయింది</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>నడుస్తోంది, కంట్రోలర్లు సక్రియం</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR ఇన్స్టాల్ చేయబడింది</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ఇన్స్టాల్ చేయబడలేదు</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR నడుస్తోంది</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR నడుస్తోంది, డ్రైవర్ కనెక్ట్ అయింది</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR నడుస్తోంది, కంట్రోలర్లు సక్రియం</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>మరొక OpenVR డ్రైవర్ HIDMaestro డ్రైవర్ పేరునే ఉపయోగిస్తోంది. అందువల్ల SteamVR PadForge డ్రైవర్ బదులు దానిని లోడ్ చేయవచ్చు, వర్చువల్ VR కంట్రోలర్లు కనిపించవు. దీన్ని సరిచేయడానికి ఆ డ్రైవర్ను తొలగించండి: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>సీరియల్ కంట్రోలర్ (COM పోర్ట్)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>కన్స్యూమర్ {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>మౌస్</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>మౌస్ సంజ్ఞలు</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>సంజ్ఞ బటన్ను నొక్కి ఉంచి ఫ్లిక్ చేయండి, విడిచినప్పుడు ఒక చర్య అమలవుతుంది: ఎడమ, కుడి, పైకి, కిందికి, లేదా ఫ్లిక్ దూరం కంటే తక్కువైతే సాధారణ క్లిక్. ఐదు సంజ్ఞలను మ్యాపింగ్స్ ట్యాబ్లో మ్యాప్ చేయండి లేదా మాక్రో ట్రిగ్గర్లుగా ఉపయోగించండి.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>సంజ్ఞ బటన్ను నొక్కి ఉంచి ఫ్లిక్ చేయండి, విడిచినప్పుడు ఒక చర్య అమలవుతుంది: ఎడమ, కుడి, పైకి, కిందికి, లేదా ఫ్లిక్ దూరం కంటే తక్కువైతే సాధారణ క్లిక్. ఐదు సంజ్ఞలను ఏ అవుట్పుట్కైనా మ్యాప్ చేయండి లేదా మాక్రో ట్రిగ్గర్లుగా ఉపయోగించండి.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>మౌస్ సంజ్ఞలను ఎనేబుల్ చేయి</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>ఈ స్లాట్లో ఈ మౌస్ కోసం సంజ్ఞ గుర్తింపును సిద్ధం చేస్తుంది. సంజ్ఞ చేస్తున్నప్పుడు సంజ్ఞ బటన్ తన సాధారణ క్లిక్ను కొనసాగిస్తుంది, కాబట్టి మీరు వేరే విధంగా మ్యాప్ చేయని సైడ్ బటన్ను ఎంచుకోండి.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>సంజ్ఞ బటన్లు</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>లేయర్ మార్చు</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>క్రోమా రంగు సెట్ చేయి</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్కు కేటాయించిన Razer పరికరాలను, వాటి రకాలకు చెందిన ఇతర అన్ని Razer పరికరాలను, చర్య నడిచేంత సేపు ఒకే రంగులో వెలిగిస్తుంది.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>పైన ఉన్న వ్యవధి కోసం, ఈ వర్చువల్ కంట్రోలర్కు కేటాయించిన Razer పరికరాలపై, వాటి రకాలకు చెందిన ఇతర అన్ని Razer పరికరాలపై, లేదా Razer Chroma వరుసను కేటాయిస్తే ప్రతి Razer పరికరంపై ఈ రంగును వెలిగిస్తుంది. ఇది ఏ వర్చువల్ కంట్రోలర్ లైటింగ్ ట్యాబ్నైనా మించిపోతుంది, ఆ తర్వాత లైటింగ్ను తిరిగి ఇస్తుంది. ట్రిగ్గర్ పట్టుకున్నంత సేపు రంగును ఉంచడానికి, నొక్కి ఉంచినంత సేపు, విడిచే వరకు ఎంపికతో కలిపి ఉపయోగించండి. రెండు మాక్రోలు ఒకేసారి రంగు వేస్తే, జాబితాలో కింద ఉన్నది నెగ్గుతుంది, కాబట్టి పూర్తి నొక్కు మాక్రోను దాని సాఫ్ట్ నొక్కు జోడీ కింద ఉంచండి. రెండు వర్చువల్ కంట్రోలర్లపై మాక్రోలు ఒకే రకం Razer పరికరానికి రంగు వేస్తే, చిన్న ప్లేయర్ సంఖ్య నెగ్గుతుంది. Razer Synapse నడుస్తూ ఉండాలి.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>పైన ఉన్న వ్యవధి కోసం, ఈ వర్చువల్ కంట్రోలర్కు కేటాయించిన Razer పరికరాలపై, వాటి రకాలకు చెందిన ఇతర అన్ని Razer పరికరాలపై, లేదా Razer Chroma వరుసను కేటాయిస్తే ప్రతి Razer పరికరంపై ఈ రంగును వెలిగిస్తుంది. ఏ వర్చువల్ కంట్రోలర్ అయినా లైటింగ్ &amp; ఆడియో విభాగంలో సెట్ చేసే లైటింగ్ను ఇది మించిపోతుంది, ఆ తర్వాత లైటింగ్ను తిరిగి ఇస్తుంది. ట్రిగ్గర్ పట్టుకున్నంత సేపు రంగును ఉంచడానికి, నొక్కి ఉంచినంత సేపు, విడిచే వరకు ఎంపికతో కలిపి ఉపయోగించండి. రెండు మాక్రోలు ఒకేసారి రంగు వేస్తే, జాబితాలో కింద ఉన్నది నెగ్గుతుంది, కాబట్టి పూర్తి నొక్కు మాక్రోను దాని సాఫ్ట్ నొక్కు జోడీ కింద ఉంచండి. రెండు వర్చువల్ కంట్రోలర్లపై మాక్రోలు ఒకే రకం Razer పరికరానికి రంగు వేస్తే, చిన్న ప్లేయర్ సంఖ్య నెగ్గుతుంది. Razer Synapse నడుస్తూ ఉండాలి.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast స్క్రీన్ చూపు</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ఈ స్లాట్కు ఇన్పుట్ ఇచ్చే Bliss-Box పోర్ట్లోని ప్రతి Dreamcast ప్యాడ్ VMU లో చిత్రాలను ప్లే చేస్తుంది, ఆ తర్వాత ప్రతి పోర్ట్ను దాని సొంత స్క్రీన్ సెట్టింగ్కు తిరిగి ఇస్తుంది.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast చిత్రాలు చూపు: {0} × {1} ms, పునరావృత సంఖ్య {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>నొక్కినప్పుడు ప్యాడ్ పోగైన గైరో లక్ష్య సూచనలను సున్నా చేస్తుంది. స్మూతింగ్ చరిత్ర క్లియర్ అవుతుంది, మోషన్ లీన్ న్యూట్రల్ మళ్లీ సంగ్రహించబడుతుంది, గురుత్వాకర్షణ అంచనా కంట్రోలర్ ప్రస్తుత భంగిమ నుండి మళ్లీ ప్రారంభమవుతుంది, మోషన్ పిచ్, యా, రోల్ వరుసలు నిర్మించిన తిరుగుడు రద్దవుతుంది.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ఏదైనా పరికరం)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>మెనూలు</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>మెనూలు భౌతిక స్టిక్ లేదా టచ్ ప్యాడ్ను స్క్రీన్పై రింగ్ లేదా గ్రిడ్గా మారుస్తాయి. మెనూను జోడించి, అది దేనితో తెరుచుకోవాలో ఎంచుకుని, ఆ తర్వాత ప్రతి సెల్కు లేబుల్, బైండింగ్ ఇవ్వండి.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>మెనూలు భౌతిక స్టిక్ లేదా టచ్ ప్యాడ్ను స్క్రీన్పై రింగ్ లేదా గ్రిడ్గా మారుస్తాయి. ఒకటి సృష్టించడానికి “మెనూలు” పక్కన ఉన్న + నొక్కి, అది దేనితో తెరుచుకోవాలో ఎంచుకుని, ఆ తర్వాత ప్రతి సెల్కు ఒక పేరు, ఒక చర్య ఇవ్వండి.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>కొత్త మెనూ</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>మెను {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>మెను పేరు</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>ఎనేబుల్ అయింది</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>తెరవడం</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>శైలి</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>రేడియల్ రింగ్</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>టచ్ గ్రిడ్</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>సెల్లు</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>మధ్య సెల్</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>లేబుల్స్ చూపు</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>స్క్రీన్ స్థానం</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>పరిమాణం</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>అపారదర్శకత</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>ఎంగేజ్ డెడ్ జోన్</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>సెల్ బైండింగ్లు</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>సెల్ {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>సెల్ను జోడించు</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>చివరి సెల్ను తీసివేయి</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>సెల్ను సవరించు</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>పేరు</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>చర్య</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>చిహ్నం</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>మధ్య</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>ఏదీ కాదు</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>కీబోర్డ్ కీ</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>క్లిక్ విడిచినప్పుడు ఒకసారి అమలవుతుంది: సెల్ వైపు చూపి, స్టిక్ లేదా ట్రాక్ప్యాడ్ను లోపలికి క్లిక్ చేసి, ఆ తర్వాత క్లిక్ను విడవండి.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>మీరు విడిచినప్పుడు ఒకసారి అమలవుతుంది: సెల్ హైలైట్ అయి ఉండగా ప్యాడ్ నుండి వేలు ఎత్తండి, లేదా స్టిక్ మధ్యకు తిరిగి వెళ్లనివ్వండి.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>సెల్ హైలైట్ అయి ఉన్నంత సేపు బైండింగ్ పట్టుకోబడుతుంది. క్లిక్ అవసరం లేదు.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>మెనూకు ఎన్ని సెల్లు ఉన్నాయి. రేడియల్ రింగ్కు ఇది రింగ్ను మాత్రమే లెక్కిస్తుంది, మధ్య సెల్ వేరుగా ఉంటుంది.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>స్టిక్ లేదా వేలు ఎంగేజ్ డెడ్ జోన్ లోపల ఉన్నప్పుడు ఎంచుకోబడే మధ్య సెల్ను జోడిస్తుంది.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>స్టిక్లకు, మెనూ తెరుచుకుని రింగ్ సెల్లు హైలైట్ అయ్యే ముందు ఎంత నెట్టాలో. రేడియల్ మెనూలలో ఇది స్టిక్లు, టచ్ ప్యాడ్లు రెండింటికీ మధ్య ప్రాంతం కూడా: దాని లోపల, ఉంటే మధ్య సెల్ ఎంచుకోబడుతుంది.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>ప్రతి సెల్ లేబుల్ను స్క్రీన్పై ఓవర్లేలో చూపుతుంది.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>ఓవర్లే పరిమాణం, దాని సాధారణ పరిమాణంలో శాతంగా.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ఓవర్లే అపారదర్శకత. 100% అంటే పూర్తిగా ఘనం.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ఓవర్లేలో ఈ సెల్పై చూపే పాఠ్యం.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ఈ సెల్ అమలైనప్పుడు ఏం చేస్తుంది: “కీబోర్డ్ కీ” కీబోర్డ్ కీని నొక్కుతుంది, “కంట్రోలర్ బటన్” ఈ స్లాట్ వర్చువల్ కంట్రోలర్లో బటన్ను నొక్కుతుంది. “ఏదీ కాదు” అని సెట్ చేసిన సెల్ ఇప్పటికీ మ్యాపింగ్స్ వరుసలకు, మాక్రో ట్రిగ్గర్లకు మెను ఐటెమ్ మూలంగా అమలవుతుంది.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ఈ స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది, వర్చువల్ కంట్రోలర్ లేఅవుట్ నుండి కాదు. కింద ఉన్న సెల్ బైండింగ్లే మెనూ అవుట్పుట్.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ఈ సెల్ అమలైనప్పుడు ఏం చేస్తుంది: “కీబోర్డ్ కీ” కీబోర్డ్ కీని నొక్కుతుంది, “కంట్రోలర్ బటన్” ఈ స్లాట్ వర్చువల్ కంట్రోలర్లో బటన్ను నొక్కుతుంది. “ఏదీ కాదు” అని సెట్ చేసిన సెల్ ఇప్పటికీ మ్యాపింగ్లకు, మాక్రో ట్రిగ్గర్లకు మెను ఐటెమ్ మూలంగా అమలవుతుంది.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ఈ స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది, వర్చువల్ కంట్రోలర్ లేఅవుట్ నుండి కాదు. మెనూ ఏమి అవుట్పుట్ చేస్తుందో కింద ఉన్న సెల్లు చెబుతాయి.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>అనుకూల అక్షాలు</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>X నడిపించు</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Y నడిపించు</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>అవుట్పుట్</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>బటన్లు</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>కీలు &amp; మౌస్</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>నోట్స్ &amp; కంట్రోల్స్</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>చేతులు</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>స్టిక్లు &amp; ట్రిగ్గర్లు</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>వైబ్రేషన్ &amp; హాప్టిక్స్</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>మోషన్ &amp; టచ్</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>లైటింగ్ &amp; ఆడియో</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>మాక్రోలు &amp; మెనూలు</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ అందుకునే గేమ్ రంబుల్, ఫోర్స్ ఫీడ్బ్యాక్ను బాస్ షేకర్లు, సబ్వూఫర్ల కోసం తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా ఆడియో అవుట్పుట్కు పంపుతుంది.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>గేమ్ రంబుల్ను బాస్ షేకర్లు లేదా సబ్వూఫర్ ద్వారా తక్కువ ఫ్రీక్వెన్సీ టోన్లుగా వినిపిస్తుంది.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>అవుట్పుట్ పరికరం, ఛానెల్‌లు, గెయిన్, ప్రతి మోటార్‌కు ఒక స్వరం</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro వర్చువల్ కంట్రోలర్లతో, అలాగే రేసింగ్ వీల్స్ వంటి ఫోర్స్ ఫీడ్బ్యాక్ ఉన్న ఎక్స్టెండెడ్ వర్చువల్ కంట్రోలర్లతో, Steam Deck Controller (Composite) తో పనిచేస్తుంది. గేమ్ ఫీడ్బ్యాక్, టెస్ట్ రంబుల్ ఆడియో అవుట్పుట్ ద్వారా వినిపిస్తాయి. మాక్రో రంబుల్ కంట్రోలర్లోనే ఉంటుంది.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ఆడియోకు రంబుల్ రీసెట్ చేయి</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>ఈ ఫీడ్బ్యాక్ ఛానెల్ను టోన్గా ప్లే చేస్తుంది. ఆఫ్లో ఉన్నప్పుడు గెయిన్, ఫ్రీక్వెన్సీ సెట్ చేసినట్లే ఉంటాయి.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ఈ ఛానెల్ టోన్ ఫ్రీక్వెన్సీ, 20 నుండి 120 Hz. మీ షేకర్ ఎక్కడ బలంగా స్పందిస్తుందో కనుగొనడానికి ఫ్రీక్వెన్సీ స్వీప్ నడపండి.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>మాస్టర్ గెయిన్ వర్తించే ముందు ఈ ఛానెల్ యొక్క ధ్వని స్థాయి.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>గెయిన్</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>పరీక్షించు</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>ఈ ఛానెల్ టోన్ను దాని సెట్ చేసిన గెయిన్ వద్ద 1.5 సెకన్ల పాటు ప్లే చేస్తుంది.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>తక్కువ మోటార్ రీసెట్</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>ఎక్కువ మోటార్ రీసెట్</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ రీసెట్</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>కుడి ట్రిగ్గర్ రీసెట్</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>షేకర్లను పరీక్షించు</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>ఫ్రీక్వెన్సీ స్వీప్</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>తక్కువ మోటార్ రూటింగ్పై ఎనిమిది సెకన్లలో 20 నుండి 120 Hz వరకు టోన్ను స్వీప్ చేస్తుంది. మీ షేకర్ ఎక్కడ ఎక్కువగా స్పందిస్తుందో గమనించి, అక్కడ వాయిస్ ఫ్రీక్వెన్సీలను సెట్ చేయండి.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>ఆపు</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>పరీక్ష టోన్ లేదా స్వీప్ను ఆపుతుంది.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>ఏదైనా NFC ట్యాగ్</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC ట్యాగ్: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ఇన్పుట్లను ఫిల్టర్ చేయి (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>అవుట్పుట్లు, ఇన్పుట్లను ఫిల్టర్ చేయి</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>సరిపోలే వరుసలను, ఇన్పుట్లను మాత్రమే చూపుతుంది. ఇక్కడ టైప్ చేయడానికి Ctrl+F నొక్కండి.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>పికర్లు ఏ పరికరాల ఇన్పుట్లను చూపాలో ఎంచుకోండి</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>పికర్లో చూపేవి</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>ఏదైనా వాయిస్ పదబంధం</value></data>
@@ -4077,6 +4135,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>ఫీడ్ రీసెట్</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>పారామెట్రిక్ EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>కంట్రోలర్ ఆడియోపై ప్రతి బ్యాండ్కు ఫిల్టర్లు. ఆడియో ఎన్కోడ్ చేయడానికి ముందు వర్తిస్తాయి, కాబట్టి కింది లిమిటర్ పెంచిన బ్యాండ్ క్లిప్ కాకుండా ఆపుతుంది.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>ప్రీయాంప్, బ్యాండ్లు, దిగుమతి</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>ప్రీయాంప్</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>బ్యాండ్లకు ముందు మొత్తం స్థాయి. AutoEq ప్రొఫైల్లు ప్రతికూల ప్రీయాంప్తో వస్తాయి, అందువల్ల వాటి బూస్ట్లు క్లిప్ కావు. ఒకదాన్ని దిగుమతి చేస్తే ఇది మీ కోసం సెట్ అవుతుంది.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>ఆన్</value></data>
@@ -4307,7 +4366,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>తాకినప్పుడు లేదా విక్షేపంపై తెరవడానికి రీసెట్ చేయి.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>దీనితో నడిపించు</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>లేయర్ ఈ మెనును తెరిచి ఉంచినప్పుడు హైలైట్ అయిన సెల్ను నడిపించే భౌతిక ఇన్పుట్.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ఈ స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. లేయర్ మెనును తెరుస్తుంది, ఈ ఇన్పుట్ దాన్ని నడిపిస్తుంది. సెల్ బైండింగ్లు దాని అవుట్పుట్ను నిర్ణయిస్తాయి.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ఈ స్లాట్కు కేటాయించిన భౌతిక కంట్రోలర్ల నుండి చదవబడుతుంది. లేయర్ మెనును తెరుస్తుంది, ఈ ఇన్పుట్ దాన్ని నడిపిస్తుంది. అది ఏమి అవుట్పుట్ చేస్తుందో దాని సెల్లు చెబుతాయి.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>ఐకాన్ పరిమాణం</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>మెను యొక్క సాధారణ ఐకాన్ పరిమాణానికి సంబంధించి ఐకాన్ పరిమాణం, 25% నుండి 200% వరకు. ఐకాన్ను క్లియర్ చేస్తే అది 100% కి రీసెట్ అవుతుంది.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>క్లిక్ ఇన్పుట్ను నొక్కి ఉంచినంతసేపు హైలైట్ అయిన సెల్ బైండింగ్ను నొక్కి ఉంచుతుంది. స్టిక్ విశ్రాంతిలో ఉన్నప్పుడు హైలైట్ అయిన రేడియల్ కేంద్రం పనిచేయవచ్చు.</value></data>
@@ -4432,7 +4491,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge కంట్రోలర్ ఆడియో ఎండ్పాయింట్ను మళ్లీ ప్రారంభించడానికి ఉపయోగించే Windows యొక్క డాక్యుమెంట్ చేయని IPolicyConfig ఇంటర్ఫేస్ లేఅవుట్ కోసం Antoine Aflalo రూపొందించిన సూచన. MIT. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ఆడియో ట్యాబ్ దిగుమతి చేసే పారామెట్రిక్ EQ ప్రొఫైల్ ఫార్మాట్, Jaakko Pasanen ద్వారా. MIT. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>కంట్రోలర్ పారామెట్రిక్ EQ దిగుమతి చేసే పారామెట్రిక్ EQ ప్రొఫైల్ ఫార్మాట్, Jaakko Pasanen ద్వారా. MIT. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>టెక్స్ట్ బ్లాక్ మాక్రోలు మరియు కీబోర్డ్ కీ కలయిక హుక్ వెనుక ఉన్న SendInput పద్ధతులు: Unicode టైపింగ్, బ్యాచ్ పరిమితులు, Win-కీ మాస్క్ కీ, మరియు ట్యాగ్ చేసిన ఇంజెక్ట్ ఇన్పుట్. GPL-2.0-or-later, డాక్యుమెంటేషన్గా మాత్రమే చదవబడింది, GPL కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>దిశ</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>అడుగు</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>నుండి</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>హ్యాండిల్</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ఈ కంట్రోలర్ ట్రిగ్గర్లను సెట్ చేస్తోంది.</value></data>
@@ -4716,7 +4776,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>హ్యాండిల్ తగినంత దూరం కదలలేదు, కాబట్టి పరిధి మునుపటిలాగే ఉంటుంది. స్వీప్ నడుస్తున్నప్పుడు దాన్ని ప్రతి అంచుకు కదిలించండి.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>స్వీప్ ముగియకముందే Falcon మూసివేయబడింది.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension నుండి మీరు ఇన్స్టాల్ చేసే Force Dimension SDK ద్వారా Novint Falcon తో గేమ్‌లు ఆడుతుంది. హ్యాండిల్ ఒక స్టిక్, గ్రిప్‌లోని నాలుగు బటన్లు బటన్లు, మరియు PadForge గేమ్ రంబుల్‌ను, ఎఫెక్ట్‌లను హ్యాండిల్‌పై ఫోర్స్‌గా ఉంచుతుంది. ప్రతి స్లాట్ యొక్క ఫోర్స్ ఫీడ్బ్యాక్ ట్యాబ్ Falcon ఎలా అనిపిస్తుందో సెట్ చేస్తుంది.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension నుండి మీరు ఇన్స్టాల్ చేసే Force Dimension SDK ద్వారా Novint Falcon తో గేమ్‌లు ఆడుతుంది. హ్యాండిల్ ఒక స్టిక్, గ్రిప్‌లోని నాలుగు బటన్లు బటన్లు, మరియు PadForge గేమ్ రంబుల్‌ను, ఎఫెక్ట్‌లను హ్యాండిల్‌పై ఫోర్స్‌గా ఉంచుతుంది. ప్రతి కంట్రోలర్ వైబ్రేషన్ &amp; హాప్టిక్స్ విభాగంలోని Novint Falcon కార్డ్ Falcon ఎలా అనిపిస్తుందో సెట్ చేస్తుంది.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon ను నడిపించు</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Force Dimension యొక్క dhd64.dll ద్వారా ప్రతి Falcon ను తెరుస్తుంది. తెరిచిన Falcon PadForge కు మాత్రమే చెందుతుంది, కాబట్టి ఇది ఆన్‌లో ఉన్నప్పుడు FalconJoyForce మరియు Force Dimension సాధనాలు దాన్ని తెరవలేవు. ఆఫ్ చేస్తే, PadForge ప్రతి Falcon ను మూసివేస్తుంది.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon లైబ్రరీ {0} కు సెట్ చేయబడింది. PadForge దాన్ని కొన్ని సెకన్లలో లోడ్ చేస్తుంది, మరొక కాపీపై తెరిచి ఉన్న Falcon దీనిపై మళ్లీ తెరుచుకుంటుంది.</value></data>
@@ -4929,7 +4989,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>నిర్ణీత సమయం వరకు</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>ఆపే వరకు</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>సమయం</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ఈ స్లాట్లోని ప్రతి DualSense మరియు DualSense Edge పై ప్లే అవుతుంది. గేమ్ స్వంత ట్రిగ్గర్ ఎఫెక్ట్ మరియు గేమ్ మోడ్ ఎఫెక్ట్ ముందుగా ప్రాధాన్యం పొందుతాయి, ఎఫెక్ట్ ముగిసినప్పుడు అడాప్టివ్ ట్రిగ్గర్లు ట్యాబ్ సెట్టింగ్ తిరిగి వర్తిస్తుంది. జోన్లు విశ్రాంతి స్థితిలో 0 నుండి పూర్తిగా లాగినప్పుడు 9 వరకు ఉంటాయి. విల్లు, దౌడు మరియు యంత్రం అధికారిక DualSense ఎఫెక్ట్లు కావు, ఫర్మ్వేర్ అప్డేట్ వాటిని తొలగించవచ్చు. "అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లను అనువదించు" ఆన్ చేసిన Xbox కంట్రోలర్లలో వైబ్రేటింగ్ ఎఫెక్ట్లు ట్రిగ్గర్ రంబుల్గా అనిపిస్తాయి.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ఈ స్లాట్లోని ప్రతి DualSense మరియు DualSense Edge పై ప్లే అవుతుంది. గేమ్ స్వంత ట్రిగ్గర్ ఎఫెక్ట్ మరియు గేమ్ మోడ్ ఎఫెక్ట్ ముందుగా ప్రాధాన్యం పొందుతాయి, ఎఫెక్ట్ ముగిసినప్పుడు అడాప్టివ్ ట్రిగ్గర్లు కార్డ్ సెట్టింగ్ తిరిగి వర్తిస్తుంది. జోన్లు విశ్రాంతి స్థితిలో 0 నుండి పూర్తిగా లాగినప్పుడు 9 వరకు ఉంటాయి. విల్లు, దౌడు మరియు యంత్రం అధికారిక DualSense ఎఫెక్ట్లు కావు, ఫర్మ్వేర్ అప్డేట్ వాటిని తొలగించవచ్చు. "అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లను అనువదించు" ఆన్ చేసిన Xbox కంట్రోలర్లలో వైబ్రేటింగ్ ఎఫెక్ట్లు ట్రిగ్గర్ రంబుల్గా అనిపిస్తాయి.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1} పై {0}, {2} ms పాటు</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1} పై {0}, నొక్కి ఉంచినంత సేపు</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} పై {0}, ఆపే వరకు</value></data>
@@ -4958,7 +5018,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>తొలగించే వరకు</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>సమయం</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>వాటి రంగులను ఉంచు</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>ఈ చర్య, ఈ వర్చువల్ కంట్రోలర్ లైటింగ్ నియంత్రించే ప్రతి కీబోర్డ్‌లో ఒకే కీలను, లైటింగ్ ట్యాబ్ ఇచ్చిన రంగుల పైన వెలిగిస్తుంది. సంఖ్యలు ఎంచుకున్న క్రమాన్ని చూపుతాయి. కౌంట్‌డౌన్ కీలను ఒక్కొక్కటిగా ఆపుతుంది, చివరగా ఎంచుకున్నది మొదట, కాబట్టి నంబర్ వరుసలో కూల్‌డౌన్ కోసం 1 నుండి 0 వరకు ఎంచుకో. కీబోర్డ్ లేదా మౌస్ ఈ పరికర లైటింగ్ను నియంత్రించు ఆన్‌లో ఉన్నప్పుడు మాత్రమే వెలుగుతుంది.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>ఈ చర్య, ఈ వర్చువల్ కంట్రోలర్ లైటింగ్ నియంత్రించే ప్రతి కీబోర్డ్‌లో ఒకే కీలను, అది లైటింగ్ &amp; ఆడియో విభాగంలో వాటికి సెట్ చేసిన రంగుల పైన వెలిగిస్తుంది. సంఖ్యలు ఎంచుకున్న క్రమాన్ని చూపుతాయి. కౌంట్‌డౌన్ కీలను ఒక్కొక్కటిగా ఆపుతుంది, చివరగా ఎంచుకున్నది మొదట, కాబట్టి నంబర్ వరుసలో కూల్‌డౌన్ కోసం 1 నుండి 0 వరకు ఎంచుకోండి. కీబోర్డ్ లేదా మౌస్ ఈ పరికర లైటింగ్ను నియంత్రించు ఆన్‌లో ఉన్నప్పుడు మాత్రమే వెలుగుతుంది.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>ఇతర</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, సంఖ్య {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే</value></data>
@@ -5018,7 +5078,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>అనలాగ్ కీ యాక్చుయేషన్ పాయింట్లు రాలేదు.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ఈ కంట్రోలర్‌ను అడాప్టర్ ద్వారా మరో పరికరానికి పంపింది. PadForge దాన్ని ఈ PCలో ప్లే చేస్తుంది, మరియు రిమోట్ లింక్ దాన్ని PadForge నడుస్తున్న మరో PCకి పంపుతుంది.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge రెండు స్టిక్‌లను చదువుతుంది, ఇది మూడోదాన్ని పేర్కొంటోంది.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>స్టీరింగ్ వీల్ ఎమ్యులేషన్ రాలేదు. వీల్‌ను మ్యాపింగ్లు ట్యాబ్‌లో మ్యాప్ చేయండి.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>స్టీరింగ్ వీల్ ఎమ్యులేషన్ రాలేదు. వీల్‌ను బటన్లు విభాగంలో మ్యాప్ చేయండి.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>ఈ ప్రొఫైల్ దాని Profiles ఫోల్డర్ పక్కన ఉన్న Actions.xml లో లేని ప్రత్యేక చర్యను పేర్కొంటోంది: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>ఈ సెట్టింగ్ రాలేదు: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ఈ ఇన్‌పుట్‌లు Windowsకు చేరకుండా ఆపింది. పరికరాలు పేజీలో {0} కోసం మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ను ఆన్ చేయండి, ఇది ఈ ప్రొఫైల్ మ్యాప్ చేసిన వాటిని ఆపుతుంది.</value></data>
@@ -5026,8 +5086,8 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>స్టిక్ మళ్లీ మధ్యకు వచ్చినప్పుడు లేదా లేయర్ ముగిసినప్పుడు ఖరారవుతుంది. reWASD యొక్క వర్తింపజేయి బటన్ ఉపయోగించబడదు.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ఈ ఫైల్ రెండు కంట్రోలర్‌లను వేరుగా ఉంచుతుంది. PadForgeలో, ఆ స్లాట్‌లోని ఏ కంట్రోలర్ అయినా ఈ మ్యాపింగ్‌లను అమలు చేస్తుంది.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>కదలిక వేగం లేదా ఫ్లిక్ రాలేదు.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>ఇవి రాలేదు. వాటిని టచ్ ప్యాడ్ ట్యాబ్‌లో సెట్ చేయండి.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ఈ ఫైల్‌లో ఏదీ ఈ లేయర్‌ను తెరవదు. మ్యాపింగ్లు ట్యాబ్‌లో దానికి ఒక బటన్ ఇవ్వండి.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>ఇవి రాలేదు. వాటిని మోషన్ &amp; టచ్ విభాగంలో సెట్ చేయండి.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ఈ ఫైల్‌లో ఏదీ ఈ లేయర్‌ను తెరవదు. బటన్లు విభాగంలో లేయర్‌పై రైట్ క్లిక్ చేసి, “యాక్టివేటర్ కాన్ఫిగర్ చేయండి” ఎంచుకోండి.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>దీని బటన్లు నొక్కినప్పుడు ఇవి నడుస్తాయి: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్ చేసే పనిని చేస్తుంది: పేరున్న ప్రొఫైల్‌ను, తదుపరి లేదా మునుపటి ప్రొఫైల్‌ను లోడ్ చేస్తుంది, విండోను చూపిస్తుంది లేదా దాచుతుంది, లేదా వర్చువల్ కంట్రోలర్లను ఆఫ్ చేసి ఆన్ చేస్తుంది.</value></data>
@@ -5197,7 +5257,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>ఫైర్ విడిచినప్పుడు ఎంచుకున్న సెల్ ఒక చిన్న ట్యాప్‌గా ఒకసారి అమలవుతుంది. ఫైర్ చేసిన తర్వాత దాచు ఆన్‌లో ఉంటే, ఫైర్ బార్ను దాచగానే అది అమలవుతుంది.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>ఫైర్ చేసిన తర్వాత దాచు ఆన్‌లో ఉండగా ఫైర్ బార్ను దాచినప్పుడు, ఒక సెల్ ఒక చిన్న ట్యాప్‌గా ఒకసారి అమలవుతుంది. ప్రతిసారి మధ్యకు తెచ్చు ఆన్‌లో ఉంటే, అమలయ్యేది మధ్య సెల్.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>బార్ చూపుతున్నంతసేపు ఎంచుకున్న సెల్ నొక్కి ఉంచబడుతుంది. ముందుకు కదిలితే ఒక సెల్ను వదిలి తర్వాతి సెల్ను నొక్కి ఉంచుతుంది.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>రేడియల్ రింగ్, టచ్ గ్రిడ్ మరియు హాట్ బార్ సెల్ బైండింగ్‌లను అమలు చేస్తాయి. కీబోర్డ్ వాడుకలో ఉన్న Windows లేఅవుట్ కీలను టైప్ చేస్తుంది.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>రేడియల్ రింగ్, టచ్ గ్రిడ్ మరియు హాట్ బార్ వాటి సెల్‌ల చర్యలను అమలు చేస్తాయి. కీబోర్డ్ వాడుకలో ఉన్న Windows లేఅవుట్ కీలను టైప్ చేస్తుంది.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>లేఅవుట్</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>కీబోర్డ్ తన కీలను ఎలా అమర్చుతుందో, కంట్రోలర్ వాటిని ఎలా ఎంచుకుంటుందో.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ఒక స్టిక్ లేదా నాలుగు ఇన్పుట్లతో కదిలే ఒకే హైలైట్, Windows, Xbox మరియు Steam వాడే లేఅవుట్.</value></data>
@@ -5304,11 +5364,11 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge హ్యాండ్‌హెల్డ్ బటన్లు (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro ప్రొఫైల్ (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge కీ లైట్లు (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. మ్యాపింగ్లు ట్యాబ్‌లోని మ్యాపింగ్ నొక్కగలదు.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. బటన్లు విభాగంలోని మ్యాపింగ్ నొక్కగలదు.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ఎనిమిది స్క్రీన్ ఓవర్లేలను నడుపుతుంది, ఇది reWASD తొమ్మిదో లేదా పదో క్రాస్‌హెయిర్.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge గైరో ఎడమ, కుడిని రోల్ నుండి, వంపును యా నుండి చదువుతుంది, ఇది reWASD డిఫాల్ట్. reWASD ప్రాధాన్యతలలో ఈ రెండింటినీ మార్చుకోవచ్చు, అవి మార్చబడ్డాయో లేదో ఈ ఫైల్ చెప్పదు.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>టిల్ట్ మోడ్‌లో, reWASD వంపు అంటే నిలువు అక్షం చుట్టూ తిరగడం, దానికి మోషన్ సెన్సార్ కోణాన్ని ఇవ్వదు.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge టచ్ ప్యాడ్ వికర్ణాన్ని ఒకేసారి రెండు దిశలుగా చదువుతుంది, టచ్ ప్యాడ్ ట్యాబ్‌లో D-ప్యాడ్ మోడ్ 8-దిశలు అయినప్పుడు మాత్రమే టచ్ ప్యాడ్ దాన్ని నివేదిస్తుంది.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge టచ్ ప్యాడ్ వికర్ణాన్ని ఒకేసారి రెండు దిశలుగా చదువుతుంది, మోషన్ &amp; టచ్ విభాగంలో దాని D-ప్యాడ్ మోడ్ 8-దిశలు అయినప్పుడు మాత్రమే టచ్ ప్యాడ్ దాన్ని నివేదిస్తుంది.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge గైరో దిశను ఒక పరిమితి దాటిన తర్వాత చదువుతుంది, గైరో జోన్ అంచుకు reWASD ఎలాంటి యూనిట్ ఇవ్వదు.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows స్టిక్ చూపిన చోట పాయింటర్‌ను ఉంచింది. PadForgeలో బదులుగా స్టిక్ పాయింటర్‌ను కదిలిస్తుంది.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} స్టిక్‌ను దాని భ్రమణానికి ముందు చదువుతుంది. DS4Windows తర్వాత చదివింది.</value></data>

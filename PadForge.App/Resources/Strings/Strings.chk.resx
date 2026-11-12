@@ -213,12 +213,12 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Iit</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Lupwen</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a chék</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a me b</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a are b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a nge esap b</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Apachaatá eú action</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Siwili ewe action</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Sókkun</value></data>
   <data name="Macro_Duration" xml:space="preserve"><value>Úkúkún fansoun</value></data>
   <data name="Macro_Repeat" xml:space="preserve"><value>Féri sefál</value></data>
@@ -226,7 +226,7 @@
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro minefé</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Witiwit {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Witiwit {0} ms</value></data>
 
 
   <!-- ═══ Macro action: Rumble ═══ -->
@@ -616,6 +616,7 @@
   <data name="Telemetry_Game_TruckSimulator" xml:space="preserve"><value>Euro Truck Simulator 2 me American Truck Simulator</value></data>
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Chechchech seni bass lon ngingiin ewe system</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Atoto chechchechen ekkewe motor mi lap ngeni ekkewe trigger</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ataraka ekkewe gesture won ei touchpad</value></data>
@@ -623,5 +624,19 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Saramen LED, Napanapen chón urumwot, Mute LED Mode</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip file mi kepich ngingiin ren sound macro</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip file mi kepich image ren menu cell</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ren eú me eú motor, trigger rumble, siwilin motor</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ren eú me eú motor, trigger rumble, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Féri</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Féri sefál</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Siwili itan</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu minefé</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Apachaatá eú cell</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Siwili ewe cell</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Iit</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ei device</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Sótuni ekkewe shaker</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR a wor lón ei PC</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR a angang</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Peliefefin</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Peliemwán</value></data>
 </root>

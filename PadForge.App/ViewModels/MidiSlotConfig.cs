@@ -137,6 +137,16 @@ namespace PadForge.ViewModels
             return arr;
         }
 
+        private static readonly string[] PitchLetters = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+
+        /// <summary>A note's pitch, as the picture's keys are labeled and
+        /// the bar under the picture heads a note: 60 is C4. Null for a
+        /// number that is no MIDI note.</summary>
+        public static string PitchName(int note)
+            => (uint)note < 128
+                ? PitchLetters[note % 12] + (note / 12 - 1).ToString(System.Globalization.CultureInfo.InvariantCulture)
+                : null;
+
         /// <summary>Returns note numbers array: sequential from StartNote for NoteCount entries.</summary>
         public int[] GetNoteNumbers()
         {

@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>ကူးယူ</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>ကူးထည့်</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>ပွားယူ</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>အမည်ပြောင်းရန်</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ဖွင့်ထားသည်</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ပိတ်ထားသည်</value></data>
   <data name="Common_On" xml:space="preserve"><value>ဖွင့်</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>စက်ပစ္စည်း</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>အဝင်ရင်းမြစ်</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>စက်ပစ္စည်း ထည့်ရန်</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ပုံ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>စာရင်း</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>အထွက် {0} ခု</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>လှုပ်ရှားမှု</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ထိန်းချုပ်ကွက်တစ်ခုကို နှိပ်ပြီး ၎င်းကို မောင်းနှင်မည့် ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>ကီးတစ်ခု သို့မဟုတ် မောက်စ်ခလုတ်တစ်ခုကို နှိပ်ပြီး ၎င်းကို မောင်းနှင်မည့် ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>နုတ်တစ်ခု သို့မဟုတ် ဆလိုက်ဒါတစ်ခုကို နှိပ်ပြီး ၎င်းကို မောင်းနှင်မည့် ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“အားလုံး မက်ပင်းလုပ်ရန်” သည် A နှင့် B ထိတွေ့ အထွက်များကို ကျော်သွားသည်။ တစ်ခုကို ချိတ်ဆက်ရန် A သို့မဟုတ် B ပတ်လည်ရှိ ကွင်းကို နှိပ်ပါ။</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} အတွက် မှတ်တမ်းတင်နေသည်။ သင့်စက်ပစ္စည်းပေါ်ရှိ ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} ၏ အဝင်ရင်းမြစ်</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>ရွေးချယ်စရာ ပိုပြရန်</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>ရွေးချယ်စရာ လျှော့ပြရန်</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>မျက်နှာစာခလုတ်</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ပခုံးခလုတ်</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>စနစ်ခလုတ်</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>ခလုတ်</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>ဦးတည်ချက် ပက်ဒ်</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>စတစ်</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ထရီဂါ</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>လှုပ်ရှားမှု အာရုံခံကိရိယာ</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>ကီးဘုတ် ကီး</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>မောက်စ်ခလုတ်</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>မောက်စ် ရွေ့လျားမှု</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>လှိမ့်ဘီး</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>ထိန်းချုပ်ကွက် ပြောင်းလဲမှု</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>ထိတွေ့ အာရုံခံကိရိယာ</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>အန်နာလော့ ဆွဲမှု</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}၊ ဘယ်လက်</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}၊ ညာလက်</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>အတွဲတစ်ခု၏ ခလုတ်နှစ်ခုလုံး ဖိထားချိန်တွင် ဂိမ်းမြင်ရမည့် နှိပ်ချက်</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>အတွဲတစ်ခု၏ ကီးနှစ်ခုလုံး ဖိထားချိန်တွင် ဂိမ်းမြင်ရမည့် နှိပ်ချက်</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ဂိမ်းများက ကွန်ထရိုလာ ညွှန်ပြချက်များ ဆက်ပြစေရန် စတစ်ကို အနည်းငယ် တွန်းထားသည်</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ပုံသွင်းနေသည်</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>ဘယ်ဘက်ရှိ မက်ခရိုတစ်ခုကို ရွေးပါ၊ သို့မဟုတ် အသစ်ဖန်တီးရန် ထည့် ကို နှိပ်ပါ။</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>စာရင်းထဲရှိ မက်ခရိုတစ်ခုကို ရွေးပါ၊ သို့မဟုတ် အသစ်ဖန်တီးရန် “မက်ခရိုများ” ဘေးရှိ + ကို နှိပ်ပါ။</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>မူရင်း</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>အထွက်</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>အေးနေ</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse ထရီဂါများ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse ထရီဂါများ</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ထရီဂါအလိုက် ပြင်းအား၊ မော်တာ လဲလှယ်ခြင်း၊ အလိုက်သင့်ထရီဂါ တုန်ခါမှုများ</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ထရီဂါအလိုက် ပြင်းအား၊ မော်တာ လဲလှယ်ခြင်း၊ အလိုက်သင့်ထရီဂါ တုန်ခါမှုများ၊ အမြဲတမ်း ထရီဂါ အား</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်းစီ၏ မော်တာအမိန့်များ (Xbox Impulse Triggers) ကို ဗာချွယ်ကွန်ထရိုလာမှ သတ်မှတ်ထားသော ရုပ်ပိုင်း Xbox One၊ Elite သို့မဟုတ် Series ကွန်ထရိုလာသို့ ပို့ပေးသည်။ ဂိမ်းမှ မောင်းနှင်သော ထရီဂါ တုန်ခါမှုသည် အလိုအလျောက် ဖြတ်သန်းသည်။ အောက်ပါ ထိန်းချုပ်မှုများက ထရီဂါတစ်ခုချင်းစီ၏ ပြင်းအားကို ချိန်ညှိသည်။</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ဘယ် ထရီဂါ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ညာ ထရီဂါ</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>စတစ်များ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>စတစ်တစ်ခုချင်း၏ ဒက်ဇုန်များ၊ အန်တီဒက်ဇုန်များ၊ အာရုံခံနိုင်စွမ်း မျဉ်းကွေးများနှင့် ဗဟိုအလွဲပြင်ဆင်ချက် ချိန်ညှိခြင်း။ အောက်ပါ အပိုင်းတစ်ခုစီသည် အသုံးပြုနေသော အထွက်ပေါ်ရှိ အန်နာလော့ စတစ်တစ်ခုကို ရည်ညွှန်းသည်။ Extended ပရိုဖိုင်များတွင် စတစ် လေးခုအထိ ရှိနိုင်သည်။ စံ ဂိမ်းပက်ဒ်များတွင် နှစ်ခု ရှိသည်။</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ထရီဂါများ</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်း၏ ဒက်ဇုန်များ၊ အန်တီဒက်ဇုန်များ၊ အမြင့်ဆုံးအပိုင်းအခြား ချိန်ညှိခြင်းနှင့် အာရုံခံနိုင်စွမ်း မျဉ်းကွေးများ။ အောက်ပါ အပိုင်းတစ်ခုစီသည် အသုံးပြုနေသော အထွက်ပေါ်ရှိ ထရီဂါ ဝင်ရိုးတစ်ခုကို ရည်ညွှန်းသည်။ Extended ပရိုဖိုင်များသည် စတစ်များ တက်ဘ်နှင့် မျှဝေသော ဝင်ရိုး ရှစ်ခုအထိ ပြနိုင်သည်။</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်း၏ ဒက်ဇုန်များ၊ အန်တီဒက်ဇုန်များ၊ အမြင့်ဆုံးအပိုင်းအခြား ချိန်ညှိခြင်းနှင့် အာရုံခံနိုင်စွမ်း မျဉ်းကွေးများ။ ထရီဂါ ကတ်တစ်ခုစီသည် အသုံးပြုနေသော အထွက်ပေါ်ရှိ ထရီဂါ ဝင်ရိုးတစ်ခုကို ရည်ညွှန်းသည်။ Extended ပရိုဖိုင်များသည် စတစ်များနှင့် ထရီဂါများ မျှဝေသုံးသော ဝင်ရိုး ရှစ်ခုအထိ ပြနိုင်သည်။</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ဂိမ်းမှ အားပြန်တုံ့ပြန်မှု ဖြစ်ရပ်များကို PadForge က မည်သို့ ချိန်ညှိပြီး ရုပ်ပိုင်းကွန်ထရိုလာ၏ တုန်ခါမှု မော်တာများ သို့မဟုတ် ဟက်ပတစ် လှုပ်ရှားကိရိယာများသို့ မည်သို့ လမ်းကြောင်းပေးသည်ကို ချိန်ညှိသည်။ အသံ တုန်ခါမှုသည် စနစ်အသံဖြင့် မောင်းနှင်သော အလွှာတစ်ခုကို အပေါ်မှ ထပ်ထည့်သည်။</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>ဤစက်ပစ္စည်း</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>ကွန်ထရိုလာ တစ်ခုလုံး</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>တုန်ခါမှုကို {0} ပေါ်တွင် ဟက်ပတစ် ပဲလ်စ်များအဖြစ် စက်ပစ္စည်းသို့ တိုက်ရိုက်ပို့၍ ဖွင့်သည်။ တုန်ခါမှု ပြင်းလေ ပဲလ်စ် ပိုပြင်းပြင်းကို ရွေးပြီး ပိုမြန်မြန် ထပ်လုပ်လေ ဖြစ်သည်။</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ တွင် {0} အတွက် ဟက်ပတစ် တုံ့ပြန်မှုကို ပိတ်ထားသဖြင့် ထိုနေရာတွင် ပြန်ဖွင့်သည်အထိ ဘာမျှ မဖွင့်ပါ။</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ဤစက်ပစ္စည်း မတုံ့ပြန်သေးပါ။ ၎င်း နိုးလာသည်နှင့် ၎င်း၏ တုန်ခါမှု ဖွင့်မည်။</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>နားကြပ်များ၊ မောက်စ်ပက်များနှင့် စပီကာများ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>နားကြပ်များ</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>အလင်းတန်း</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ဂိမ်းများက မီးအလင်း ရေးသည့်အခါတိုင်း ထိန်းချုပ်ယူသည်။</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ဂဏန်းခြောက်လုံး hex အရောင် (RRGGBB သို့မဟုတ် #RRGGBB) ကို ထည့်ပြီး အသုံးချရန် Enter နှိပ်ပါ သို့မဟုတ် အခြားနေရာကို နှိပ်ပါ။</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ဤအရောင်ကို အရောင်အစုမှ ဖယ်ရှားရန်</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>အသံ တုန်ခါမှုကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>မက်ပင်းများကို ရှင်းလင်းရန်</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ဤတက်ဘ်ပေါ်ရှိ မက်ပင်းအားလုံးကို ရှင်းလင်းမည်။ ရင်းမြစ် သတ်မှတ်ချက်များ၊ အပိုရင်းမြစ်များနှင့် ပေါင်းစပ်ဆက်တင်များကို မူလသို့ ပြန်ထားမည်။</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ဤအလွှာပေါ်ရှိ မက်ပင်းအားလုံးကို ရှင်းလင်းမည်။ ရင်းမြစ် သတ်မှတ်ချက်များ၊ အပိုရင်းမြစ်များနှင့် ပေါင်းစပ်ဆက်တင်များကို မူလသို့ ပြန်ထားမည်။</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>ကစားသူ ပုံစံ</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>အသံပိတ် LED မုဒ်</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED အလင်းအား</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV များ</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ခလုတ်များ</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>တင်သွင်းထားသော ပရိုဖိုင်များ…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>တိုးချဲ့ ကွန်ထရိုလာ</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>အသုံးပြုသူ တင်သွင်းထားသော HIDMaestro ပရိုဖိုင်များကို စီမံရန်: ချိတ်ဆက်ထားသော စက်ပစ္စည်းမှ အသစ်တစ်ခု ဖမ်းယူခြင်း၊ ရှိပြီးသားတစ်ခုကို JSON သို့ ထုတ်ယူခြင်း သို့မဟုတ် မလိုတော့သည့်တစ်ခုကို ဖျက်ခြင်း။</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>စက်ပစ္စည်းကို 1:1 ပုံတူကူးရန်</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ရွေးထားသော စက်ပစ္စည်းရှိ ဝင်ရိုး၊ ခလုတ်နှင့် hat တိုင်းကို နံပါတ်တူ ဗာချွယ်အထွက်သို့ တိုက်ရိုက် မက်ပင်းလုပ်သည်။ အပြင်အဆင်ကို စက်ပစ္စည်းနှင့် အရွယ်ညှိပြီး ဆလော့ပေါ်ရှိ ဤစက်ပစ္စည်း၏ အတန်းများကို 1:1 တိုက်ရိုက်ဖြတ်သန်းခြင်းဖြင့် အစားထိုးသည်။</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>ချန်နယ်</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI အထွက်</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI ချန်နယ် (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC အရေအတွက်</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC အထွက် အရေအတွက် (အများဆုံးမှာ စတင် CC ပေါ် မူတည်သည်)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>ဤကီးအတွဲကို ဖယ်ရှားသည်။</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>ဆန့်ကျင်ဘက်အတွဲ၏ ပထမကီး။</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>ဆန့်ကျင်ဘက်အတွဲ၏ ဒုတိယကီး။</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>ဆန့်ကျင်ဘက် အဓိကဦးတည်ချက်များ တစ်ပြိုင်နက် (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>ကွန်ထရိုလာကို နိုးထားရန်</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>အချို့ဂိမ်းများသည် မောက်စ် သို့မဟုတ် ကီးဘုတ် ထည့်သွင်းမှုကို မြင်သည်နှင့် တုန်ခါမှုကို ရပ်ပြီး ခလုတ်ညွှန်ပြချက်များကို ပြောင်းလိုက်သည်။ စတစ်ကို အနည်းငယ် တွန်းထားခြင်းဖြင့် ဂိမ်းက ဤကွန်ထရိုလာကို အသုံးပြုနေသော စက်ပစ္စည်းအဖြစ် ဆက်မှတ်ယူစေသည်။ ထိုစတစ်၏ ဝင်ရိုးနှစ်ခုလုံး သတ်မှတ်အဆင့်အောက်တွင် ရှိနေချိန်၌သာ ဖိထားမှု အလုပ်လုပ်သဖြင့် လွင့်နေသော စတစ်ကိုလည်း ငြိမ်နေသည်ဟု မှတ်ယူသည်။ ဝင်ရိုးတစ်ခုခုတွင် ထိုအဆင့်ကို ကျော်သော ထည့်သွင်းမှုက ဖိထားမှုကို လွှတ်ပြီး မပြောင်းလဲဘဲ ဖြတ်သန်းသွားသည်။ ဂိမ်းအတွင်း ဘာမျှ မရွေ့စေရန် တွန်းရွှေ့မှုပမာဏကို ဂိမ်း၏ကိုယ်ပိုင် ဒက်ဇုန်အောက်တွင် ထားပါ။</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>နိုးထားရန်</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>ကလစ်ကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>တာ့ချ်ပက် တစ်ခြမ်းကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>အလုပ်လုပ်မုဒ်ကို ပြန်လည်သတ်မှတ်</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>အကွက်များကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>ဖွင့်ရန် ဒက်ဇုန်ကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>မီနူး အရွယ်အစားနှင့် တည်နေရာကို ပြန်လည်သတ်မှတ်</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>အကွက်ကို ပြန်လည်သတ်မှတ်</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>အားလုံး ရှင်းလင်း</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ရင်းမြစ်</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>တန်ဖိုး</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ရွေးချယ်စရာများ</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>ဝင်ရိုးမှ ခလုတ်သို့ ဒက်ဇုန်</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>ပြောင်းပြန်လှန်</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>အမှန်ခြစ်ထားလျှင် လွှတ်သည့်အခါ ဝင်ရိုးသည် ဗဟိုသို့ တဖြည်းဖြည်း ပြန်သွားသည်။ မခြစ်ထားလျှင် နောက်ဆုံးတည်နေရာကို ထိန်းထားသည်။</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>ဖိထားစဉ် အတန်း၏ အထွက်ကို ပြောင်းပြန်လှန်ပေးသော ခလုတ်</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>မွမ်းမံခလုတ်: ဖိထားစဉ် အတန်း၏ အထွက် အပေါင်း/အနုတ် လက္ခဏာ ပြောင်းပြန်ဖြစ်သည်။</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ ရင်းမြစ် ထည့်ရန်</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>ရင်းမြစ် ထည့်ရန်</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>ဤအတန်းသို့ နောက်ထပ် ရုပ်ပိုင်း ထည့်သွင်းမှုတစ်ခု ထည့်ရန်</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>ဤရင်းမြစ်ကို ဖယ်ရှားရန်</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>စိတ်ကြိုက်</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ဗဟိုကို ချိန်ညှိရန်</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ဗဟိုမှတ်</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>ဗဟို</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ဒက်ဇုန်</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ဗဟို ရွေ့ပြောင်းမှု၊ ဒက်ဇုန် ပုံသဏ္ဌာန်နှင့် ဝင်ရိုးအလိုက် တန်ဖိုးများ၊ ဝင်ရိုးတစ်ခုစီအတွက် မျဉ်းကွေး၊ အပိုင်းအခြား၊ စတီယာရင်ထိန်းခြင်း</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>အပိုင်းအခြား</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>စတစ်ကို မှန်ကန်အောင် ပြင်ရန် နယ်နိမိတ် ချိန်ညှိခြင်းသည် အကြံပြုထားသော နည်းလမ်းဖြစ်သည်။ ၎င်းသည် စတစ် ရုပ်ပိုင်းအရ ရောက်နိုင်သော အစွန်းကို လှည့်ပတ်တိုင်းတာပြီး တည်နေရာတိုင်းကို ထိုတိုင်းတာထားသော အစွန်းနှင့် အချိုးကျ စကေးပြန်ညှိသဖြင့် ထောင့်တိုင်းနှင့် တွန်းရွှေ့မှုပမာဏတိုင်းတွင် မူလရွေ့လျားမှု အပြည့်ကို ဘာမျှ မဖြတ်တောက်ဘဲ စံပြ စက်ဝိုင်းပေါ်သို့ ပြောင်းပေးသည်။ အောက်ရှိ ဆလိုက်ဒါ လေးခုသည် အဓိကဝင်ရိုးများကိုသာ ကန့်သတ်သည်။ ၎င်းတို့ကို အပိုင်းအခြားကို ရည်ရွယ်ချက်ရှိရှိ ကန့်သတ်ရန် သုံးပါ၊ ပြင်ဆင်ရန် မသုံးပါနှင့်။</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“နယ်နိမိတ် ချိန်ညှိ” သည် စတစ် ရောက်နိုင်သော အစွန်းကို တိုင်းတာပြီး ၎င်းကို စက်ဝိုင်း အပြည့်အဖြစ် ပုံပြန်ညှိသည်။ ဆလိုက်ဒါ လေးခုသည် ဦးတည်ချက်တစ်ခုစီကိုသာ ကန့်သတ်သည်။</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>နမူနာယူနေသည်...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ဗဟိုအလွဲပြင်ဆင်ချက် X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ဗဟိုအလွဲပြင်ဆင်ချက် Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>အမည်</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>အသက်သွင်းခလုတ်</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>ဖြစ်သည့်အခါ</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>အလုပ်လုပ်ချိန်</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>နှိပ်ချိန်တွင်</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>လွှတ်ချိန်တွင်</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>ဤမက်ခရို ပါဝင်သည့် အလွှာ။ မည်သည့်အလွှာမဆို ကို ရွေးလျှင် ဖွင့်ထားသော အလွှာနှင့် မသက်ဆိုင်ဘဲ အလုပ်လုပ်သည်။ အခြေခံအလွှာနှင့် အမည်ပေးထားသော အလွှာများသည် မက်ပင်းအတန်းကဲ့သို့ပင် ထိုအလွှာ ဖွင့်ထားစဉ်သာ အလုပ်လုပ်သည်။</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>မည်သည့်အလွှာမဆို</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာ အသက်ဝင်နေစဉ် အဆက်မပြတ် အလုပ်လုပ်သည်။ အသက်သွင်းခလုတ် မလိုပါ။</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>လုပ်ဆောင်ချက် အစဉ်</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>လုပ်ဆောင်ရန်</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>အလွှာ၊ ရင်းမြစ်၊ စတင်တန်ဖိုး၊ ဦးတည်ချက်၊ အသက်သွင်းခလုတ်များကို သိမ်းယူရန်၊ ထပ်လုပ်</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>လုပ်ဆောင်ချက် ထည့်ရန်</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>လုပ်ဆောင်ချက် ပြင်ရန်</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>အမျိုးအစား</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ဗာချွယ် ခလုတ်များ</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>ဗာချွယ် ဝင်ရိုးများနှင့် စတီယာရင်ဘီး</value></data>
@@ -1521,11 +1555,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>ခလုတ် {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} ကို {1}ms နှိပ်ရန်</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} ကို {1} ms နှိပ်ရန်</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} ကို လွှတ်ရန်</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>ကီး {0} ကို {1}ms နှိပ်ရန်</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>ကီး {0} ကို {1} ms နှိပ်ရန်</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>ကီး {0} ကို လွှတ်ရန်</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms စောင့်ရန်</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms စောင့်ရန်</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} သတ်မှတ်ရန်</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>စနစ် အသံအတိုးအကျယ် ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>စနစ် အသံအတိုးအကျယ် ← {0} (အများဆုံး {1}%)</value></data>
@@ -1537,15 +1571,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>မောက်စ် လွှတ် {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>တာ့ချ်ပက် အုပ်ထပ်ပြကွက် အဖွင့်အပိတ်</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>အလင်းတန်း အရောင် သတ်မှတ်</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော PlayStation ဆလော့၏ အလင်းတန်းကို ရွေးထားသော RGB အရောင်ဖြင့် အစားထိုးသည်။ တုံ့ပြန် မုဒ်သည် သတ်မှတ်ထားသော ပျယ်ချိန်အတွင်း အပြည့်အားမှ အမည်းရောင်သို့ ပျယ်သွားပြီး မီးအလင်း တဘ်၏ ဆက်တင်များသို့ ပြန်လွှဲပေးသည်။ ကပ်ထား မုဒ်သည် အလင်းတန်း အစားထိုးမှု ရှင်းလင်း လုပ်ဆောင်ချက် လုပ်သည်အထိ အရောင်ကို ထိန်းထားသည်။ ဂိမ်းက ရေးသော အရောင်များသည် အစားထိုးမှုထက် ဦးစားပေးခံရဆဲ ဖြစ်သည်။</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>အလင်းတန်း {0} လက်ခနဲ ပြရန် (ပျယ်ချိန် {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော PlayStation ဆလော့၏ အလင်းတန်းကို ရွေးထားသော RGB အရောင်ဖြင့် အစားထိုးသည်။ တုံ့ပြန် မုဒ်သည် သတ်မှတ်ထားသော ပျယ်ချိန်အတွင်း အပြည့်အားမှ အမည်းရောင်သို့ ပျယ်သွားပြီး အလင်းတန်း ကတ်၏ ဆက်တင်များသို့ ပြန်လွှဲပေးသည်။ ကပ်ထား မုဒ်သည် အလင်းတန်း အစားထိုးမှု ရှင်းလင်း လုပ်ဆောင်ချက် လုပ်သည်အထိ အရောင်ကို ထိန်းထားသည်။ ဂိမ်းက ရေးသော အရောင်များသည် အစားထိုးမှုထက် ဦးစားပေးခံရဆဲ ဖြစ်သည်။</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>အလင်းတန်း {0} လက်ခနဲ ပြရန် (ပျယ်ချိန် {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ရှင်းလင်းသည်အထိ အလင်းတန်း {0} ထိန်းထားရန်</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>အလင်းတန်း အစားထိုးမှု ရှင်းလင်း</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>အလင်းတန်း အစားထိုးမှုကို ရှင်းလင်းရန်</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့ရှိ အသက်ဝင်နေသော အလင်းတန်း အစားထိုးမှုကို လွှတ်ပေးသည်။ အခြားမက်ခရိုမှတစ်ဆင့် ပြန်ဖျက်ရန် ကပ်ထား မုဒ်ရှိ အလင်းတန်း အရောင် သတ်မှတ် လုပ်ဆောင်ချက်နှင့် တွဲသုံးပါ။</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>အလင်းတန်း မုဒ် သတ်မှတ်</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ်ကို {0} သို့ သတ်မှတ်ရန်</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့၏ အလင်းတန်း မုဒ်ကို တန်ဖိုးတစ်ခုသို့ သတ်မှတ်သည်။ အခြားလုပ်ဆောင်ချက် သို့မဟုတ် အသုံးပြုသူက ပြောင်းသည်အထိ မီးအလင်း တဘ်တွင် ပြင်ဆင်သကဲ့သို့ ဆက်တည်နေသည်။</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့၏ အလင်းတန်း မုဒ်ကို တန်ဖိုးတစ်ခုသို့ သတ်မှတ်သည်။ အခြားလုပ်ဆောင်ချက် သို့မဟုတ် အသုံးပြုသူက ပြောင်းသည်အထိ အလင်းတန်း ကတ်တွင် ပြင်ဆင်သကဲ့သို့ ဆက်တည်နေသည်။</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>အလင်းတန်း မုဒ်များ လှည့်ပြောင်း</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ် {0} ခုကို လှည့်ပြောင်းရန်</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ဆလော့၏ အလင်းတန်း မုဒ်ကို အောက်တွင် ရွေးထားသော မုဒ်များအတိုင်း ရှေ့ဆက်ပြောင်းသည်။ အလုပ်လုပ်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရွှေ့သည်။ လှည့်ပတ်မှု တည်နေရာသည် လုပ်ဆောင်ချက်တစ်ခုစီအလိုက် ဖြစ်ပြီး အက်ပ် ပြန်စတင်သည့်အခါ အစမှ ပြန်စသည်။</value></data>
@@ -1560,14 +1594,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ပျယ်ချိန်</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>မှိန်ချိန်</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>အရောင်စု</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>အရောင်စု ဗလာဖြစ်လျှင် ဆလော့၏ကိုယ်ပိုင် မီးအလင်း တဘ် အရောင်စုကို သုံးသည်။</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>အရောင်စု ဗလာဖြစ်လျှင် ဆလော့၏ အလင်းတန်း ကတ်ပေါ်ရှိ အရောင်အစုကို သုံးသည်။</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>မုဒ်</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>မက်ခရိုက လှည့်ပြောင်းမည့် အလင်းတန်း မုဒ်များကို ရွေးပါ။ အလုပ်လုပ်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရှေ့ဆက်သည်။</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>တုန်ခါမှု</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>မက်ခရိုမှ ဆလော့၏ ရုပ်ပိုင်းစက်ပစ္စည်း တုန်ခါမှုကို မောင်းသည်။ တုံ့ပြန် မုဒ်သည် ထိန်းချိန်အတွင်း အပြည့်အားဖြင့် လည်ပတ်ပြီး မှိန်ချိန်အတွင်း သုညသို့ လျော့သွားသည်။ ကပ်ထား မုဒ်သည် တုန်ခါမှု ရပ် လုပ်ဆောင်ချက် လုပ်သည်အထိ အပြည့်အားဖြင့် ထိန်းထားသည်။ ဂိမ်းမှ တုန်ခါမှုအပေါ် max() ဖြင့် ထပ်ပေါင်းသဖြင့် အသုံးပြုသူ၏ တုံ့ပြန်မှုကို အမြဲ ခံစားရသည်။</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>တုန်ခါမှု {0} ခဏ ပေးရန် ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>တုန်ခါမှု {0} ခဏ ပေးရန် ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ရှင်းလင်းသည်အထိ တုန်ခါမှု {0} ထိန်းထားရန်</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>တုန်ခါမှု ရပ်</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>တုန်ခါမှုကို ရပ်ရန်</value></data>
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ထရီဂါ တုန်ခါမှုကို ရပ်ရန်</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>ဆလော့ရှိ အသက်ဝင်နေသော မက်ခရို ထရီဂါ တုန်ခါမှုကို လွှတ်ပေးသည်။ မက်ခရိုမှ ထိန်းထားမှုကို အဆုံးသတ်ရန် ကပ်ထား မုဒ်ရှိ ထရီဂါ တုန်ခါမှု အစားထိုးနှင့် တွဲသုံးပါ။</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ဂိုင်ရို ဖွင့်ထားမှု သတ်မှတ်</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>မက်ခရိုမှ ဆလော့၏ ဂိုင်ရို ဖွင့်/ပိတ် အခြေအနေကို သတ်မှတ်သည်။ အဖွင့်အပိတ် သည် လက်ရှိအခြေအနေကို ပြောင်းပြန်လှန်သည်။ ဖွင့် သည် ဂိုင်ရိုကို အတင်းဖွင့်သည်။ ပိတ် သည် အတင်းပိတ်သည်။ ဂိုင်ရို တဘ်ရှိ ဖွင့်ခလုတ်နှင့် သီးခြားဖြစ်သည်။ ရင်းမြစ်နှစ်ခုကို OR ဖြင့် ပေါင်းသဖြင့် တစ်ခုက ဖွင့်ထားသည်ကို အခြားတစ်ခုက ပိတ်၍ မရပါ။</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>မက်ခရိုမှ ဆလော့၏ ဂိုင်ရို ဖွင့်/ပိတ် အခြေအနေကို သတ်မှတ်သည်။ အဖွင့်အပိတ် သည် လက်ရှိအခြေအနေကို ပြောင်းပြန်လှန်သည်။ ဖွင့် သည် ဂိုင်ရိုကို အတင်းဖွင့်သည်။ ပိတ် သည် အတင်းပိတ်သည်။ “လှုပ်ရှားမှုနှင့် ထိတွေ့မှု” အပိုင်းရှိ “ချိန်ရွယ်ဖွင့် ခလုတ်” နှင့် သီးခြားဖြစ်သည်။ ရင်းမြစ်နှစ်ခုကို OR ဖြင့် ပေါင်းသဖြင့် တစ်ခုက ဖွင့်ထားသည်ကို အခြားတစ်ခုက ပိတ်၍ မရပါ။</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>မုဒ်</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>အဖွင့်အပိတ်</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>ဖွင့်</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>တာ့ချ်ပက်တစ်ခုချင်းအလိုက် အဝင်။ လက်ဟန်များ (ပွတ်ဆွဲခြင်း၊ တို့ခြင်း၊ ချုံ့ခြင်း၊ ပုံသဏ္ဌာန်များ) နှင့် အဆက်မပြတ် အထွက်မုဒ်များ (ဗာချွယ် စတစ် / D-pad၊ မောက်စ်) သည် မက်ပင်းများ တက်ဘ်တွင် ချိတ်ဆက်နိုင်သော မက်ပင်း ရင်းမြစ်များ ဖြစ်လာသည်။</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>တာ့ချ်ပက်တစ်ခုချင်းအလိုက် အဝင်။ လက်ဟန်များ (ပွတ်ဆွဲခြင်း၊ တို့ခြင်း၊ ချုံ့ခြင်း၊ ပုံသဏ္ဌာန်များ) နှင့် အဆက်မပြတ် အထွက်မုဒ်များ (ဗာချွယ် စတစ် / D-pad၊ မောက်စ်) သည် မည်သည့် အထွက်သို့မဆို ချိတ်ဆက်နိုင်သော မက်ပင်း ရင်းမြစ်များ ဖြစ်လာသည်။</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>တာ့ချ်ပက် နံပါတ်</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>အောက်ပါ ဆက်တင်များ သက်ရောက်မည့် ဤကွန်ထရိုလာပေါ်ရှိ တာ့ချ်ပက်။ တာ့ချ်ပက်တစ်ခုစီတွင် ကိုယ်ပိုင် လက်ဟန်များ၊ မောက်စ် ခံစားမှုနှင့် ညွှန်တံ ဧရိယာ ရှိသည်။</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ဂိုင်ရို</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ဤပက်၏ လှုပ်ရှားမှု အာရုံခံကိရိယာက မောက်စ်နှင့် စတစ် အထွက်ကို မောင်းနှင်ပုံကို ချိန်ညှိပါ။ ငြိမ်နေစဉ် လွင့်မှုကို သုညပြုရန် ညီညာသော မျက်နှာပြင်ပေါ်တွင် ချိန်ညှိပြီးနောက် အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်းနှင့် ဖွင့်ခြင်း စည်းမျဉ်းများကို စိတ်ကြိုက် ညှိပါ။</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ချိန်ညှိခြင်း</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>တိုက်ရိုက် ဂိုင်ရိုစကုပ်နှင့် အရှိန်တိုင်းကိရိယာ ဖတ်ချက်များ</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ယူနစ်၊ ဝင်ရိုးစနစ်၊ ဝင်ရိုး ပြောင်းပြန်လှန်ခြင်း၊ လက်တွေ့ကမ္ဘာ ချိန်ညှိခြင်း</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ယူနစ်၊ ဝင်ရိုး ပြောင်းပြန်လှန်ခြင်း၊ လက်တွေ့ကမ္ဘာ ချိန်ညှိခြင်း</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>တစ်ပတ်လျှင် ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>တုံ့ပြန်မှု ပုံဖော်ခြင်း</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ဒက်ဇုန်၊ ချောမွေ့စေခြင်း၊ အရှိန်မြှင့်ခြင်း၊ အထွက် မျဉ်းကွေး</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>ရည်ညွှန်းဘောင်</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>ဒေသတွင်း၊ ကစားသမား သို့မဟုတ် ကမ္ဘာ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>ဝင်ရိုးစနစ်</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>ဂိုင်ရို လှုပ်ရှားမှုကို အဓိပ္ပာယ်ဖွင့်ပုံ။ ဒေသတွင်း သည် ကွန်ထရိုလာ၏ မူရင်း ဝင်ရိုးများကို သုံးသည်။ ကစားသမား သည် အလျားလိုက် လှုပ်ရှားမှုကို လက်တွေ့ကမ္ဘာ၏ ဒေါင်လိုက် (ဆွဲငင်အား) ပေါ်သို့ ပြောင်းသဖြင့် ပက်ကို မည်သို့ ကိုင်ထားစေကာမူ တူညီသော လက်ကောက်ဝတ် လှည့်မှုက ကင်မရာကို အမြဲ လှည့်စေသည်။ ကမ္ဘာ သည် ဒေါင်လိုက် လှုပ်ရှားမှုကိုပါ ကမ္ဘာ့ ဝင်ရိုးများပေါ်သို့ ပြောင်းသည်။</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>ကိုင်ပုံ</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>ထောင်လျက်</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>လက်ကိုင်</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>ကွန်ထရိုလာကို ကိုင်ပုံ။ ဂိုင်ရို၊ အရှိန်တိုင်းကိရိယာနှင့် ဆွဲငင်အားကို မက်ပင်းများအတွက်နှင့် ဗာချွယ်ကွန်ထရိုလာ အစီရင်ခံသော လှုပ်ရှားမှုအတွက် အတူတကွ လှည့်သည်။ D-pad သည်လည်း တူညီသော ဘောင်ကို လိုက်သဖြင့် ကိုင်ပုံတွင် အပေါ်သည် အပေါ် ဖြစ်သည်။</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>ကွန်ထရိုလာကို ကိုင်ပုံ</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>မျဉ်းဖြောင့်</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>ပြင်းထန်</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>ပြေလျော့</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ဖွင့်ရန် ဦးတည်ချက် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်း</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ဂိုင်ရို ချိန်ညှိမှုကို လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်းတွင် သက်ရောက်စေရန်</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာက ဂိမ်း သို့မဟုတ် အီမြူလေတာသို့ အစီရင်ခံသော လှုပ်ရှားမှုပေါ်တွင် ဤတက်ဘ်၏ ရွေးချယ်နိုင်သော ဂိုင်ရို ချိန်ညှိမှုများ (ဒက်ဇုန်၊ အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်း၊ တုံ့ပြန်မှု မျဉ်းကွေး၊ ပြောင်းပြန်လှန်) ကို လုပ်ဆောင်သည်။ ချိန်ညှိထားသော ဖတ်ချက်ကိုသာ ပို့ပြီး ဂိမ်းက ကိုယ်ပိုင် အာရုံခံနိုင်စွမ်းနှင့် ချောမွေ့စေခြင်းကို သုံးစေရန် ပိတ်ပါ။ ချိန်ညှိခြင်း၏ လွင့်မှု ပြင်ဆင်ချက်သည် မည်သို့ပင်ဖြစ်စေ အမြဲ သက်ရောက်သည်။</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာက ဂိမ်း သို့မဟုတ် အီမြူလေတာသို့ အစီရင်ခံသော လှုပ်ရှားမှုပေါ်တွင် ဂိုင်ရို ကတ်များ၏ ရွေးချယ်နိုင်သော ချိန်ညှိမှုများ (ဒက်ဇုန်၊ အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်း၊ တုံ့ပြန်မှု မျဉ်းကွေး၊ ပြောင်းပြန်လှန်) ကို လုပ်ဆောင်သည်။ ချိန်ညှိထားသော ဖတ်ချက်ကိုသာ ပို့ပြီး ဂိမ်းက ကိုယ်ပိုင် အာရုံခံနိုင်စွမ်းနှင့် ချောမွေ့စေခြင်းကို သုံးစေရန် ပိတ်ပါ။ ချိန်ညှိခြင်း၏ လွင့်မှု ပြင်ဆင်ချက်သည် မည်သို့ပင်ဖြစ်စေ အမြဲ သက်ရောက်သည်။</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>တိုက်ရိုက်ဖြတ်သန်းခြင်း ချိန်ညှိမှု ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်အလိုက် ဂိုင်ရို အာရုံခံနိုင်စွမ်း မြှောက်ကိန်း။ 1.0 = အင်ဂျင်၏ မူလ (500°/s → တွန်းရွှေ့မှုပမာဏ အပြည့်)။ 1.0 အထက် တန်ဖိုးများသည် ပိုအာရုံခံသည်။ 1.0 အောက် တန်ဖိုးများသည် လျော့အာရုံခံသည်။</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>စောင်းမှု အပိုင်းအခြား အပြည့် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>စောင်းမှု ဒက်ဇုန် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ဂိုင်ရို စောင်းမှု ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ဤအတန်းတွင် ရင်းမြစ်တစ်ခုထက်ပို၍ အသက်ဝင်နေသည့်အခါ ၎င်းတို့ ပေါင်းစပ်ပုံ။ ပြောင်းရန် အတန်းကို ရွေးပြီး အောက်ပါ အသေးစိတ် အကန့်တွင် ပြောင်းပါ။</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ဤအတန်းတွင် ရင်းမြစ်တစ်ခုထက်ပို၍ အသက်ဝင်နေသည့်အခါ ၎င်းတို့ ပေါင်းစပ်ပုံ။ ပြောင်းရန် အတန်းကို ဖွင့်ပြီး “ပေါင်းစပ်” တွင် ပြောင်းပါ။</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>အရှိန်ဆက်</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ထရက်ဘော မုဒ်- စတစ်ကို ခပ်မြန်မြန် တွန်းပြီး လွှတ်လိုက်လျှင် ကာဆာသည် ဆက်ရွေ့ပြီး ဖြည်းဖြည်း ရပ်သွားသည်။ စတစ်ကို ထပ်ရွှေ့လျှင် ၎င်းကို ဖမ်းသည်။</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>စတစ်ကို ခပ်မြန်မြန် တွန်းပြီးနောက် ကာဆာ ဆက်လျှောသွားမည့် အကွာအဝေး။ အပိုင်းအခြား၏ အမြင့်ဆုံးတွင် စတစ်ကို ထပ်မရွှေ့မချင်း ဆက်သွားသည်။</value></data>
@@ -2338,7 +2377,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ထရီဂါ ဝင်ရိုး</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>မော်တာအလိုက် ပြင်းအား၊ ထရီဂါ တုန်ခါမှု၊ မော်တာ လဲလှယ်ခြင်း</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>မော်တာအလိုက် ပြင်းအား၊ ထရီဂါ တုန်ခါမှု၊ စတီယာရင်ထောင့် တုန်ခါမှု၊ စဉ်ဆက်မပြတ်အား</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>စုစုပေါင်း အားမြှင့်မှု</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ဘယ်မော်တာ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>ညာမော်တာ</value></data>
@@ -2347,6 +2386,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ဤကွန်ထရိုလာတွင် ထရီဂါမော်တာများ မရှိသဖြင့် Xbox impulse trigger များကို အသုံးပြုသော ဂိမ်းများ၏ တုန်ခါမှုကို ခံစားရမည် မဟုတ်ပါ။ ထို့ကြောင့် ထရီဂါချန်နယ်တစ်ခုစီကို တစ်ဖက်တည်းရှိ ပင်မမော်တာထဲသို့ ပေါင်းထည့်ပါ။</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>တုန်ခါမှု စမ်းသပ်</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>မော်တာ လှုပ်ရှားမှု</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ဘယ်</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ညာ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>သင်ပိတ်သည်အထိ ဤစက်ပစ္စည်းသို့ စဉ်ဆက်မပြတ်အား သက်ရောက်စေပါ။ မည်သည့်ရင်းမြစ်မှမဆို ဂိမ်းက ထုတ်ပေးသောအားသည် အသက်ဝင်နေစဉ် ဤအားကို အစားထိုးပြီး ဂိမ်းရပ်သွားသောအခါ ဤအား ပြန်စသည်။</value></data>
@@ -2424,7 +2465,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>မှတ်တမ်းတင်ရန် ခလုတ်များကို နှိပ်ပါ သို့မဟုတ် ဝင်ရိုး/ထရီဂါကို ရွှေ့ပါ။ ဝင်ရိုးများကို 50% ကျော် တွန်းရွှေ့သောအခါ သိရှိသည်။</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>စာရင်းမှ ထည့်</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>မှတ်တမ်းတင်မည့်အစား ဆလော့၏ စက်ပစ္စည်းများမှ စတင်စေမည့် အဝင်တစ်ခုကို ရွေးပါ။ တာ့ချ်ပက် တက်ဘ်တွင် ဖွင့်ထားသော တာ့ချ်ပက် လက်ဟန်များ ဤနေရာတွင် ပေါ်လာသည်။</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>အသက်သွင်းခလုတ် ရှင်းလင်း</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>မှတ်တမ်းတင်မည့်အစား ဆလော့၏ စက်ပစ္စည်းများမှ စတင်စေမည့် အဝင်တစ်ခုကို ရွေးပါ။ “လှုပ်ရှားမှုနှင့် ထိတွေ့မှု” အပိုင်းတွင် ဖွင့်ထားသော တာ့ချ်ပက် လက်ဟန်များ ဤနေရာတွင် ပေါ်လာသည်။</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>အဝင် ဖယ်ရှား</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>မည်သည့်အဝင်ကိုမဆို နှိပ်ပါ…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ပြောင်းပြန်</value></data>
@@ -2682,7 +2724,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>မက်ပင်းလုပ်ထားသော စက်ပစ္စည်းအားလုံး အော့ဖ်လိုင်းဖြစ်နေသောအခါ ဗာချွယ်ကွန်ထရိုလာကို မဖျက်မီ စောင့်မည့် စက္ကန့်အရေအတွက်။ 0 သည် ပိတ်သည်။ အမျိုးအစားတူ ကျန်ရှိသော ကွန်ထရိုလာများသည် ကွက်လပ်ကို ဖြည့်ရန် အပေါ်သို့ ရွှေ့ပြီး နံပါတ်နိမ့်သော ဆလော့များသို့ ပြန်ချိတ်သည်။</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>စက္ကန့် (0 = ဘယ်တော့မှ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift အလွှာ</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>အလွှာ ထည့်ရန်</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shift အလွှာတစ်ခု ထည့်ပါ။ ခလုတ်တစ်ခုကို ဖိထားစဉ် သို့မဟုတ် အဖွင့်အပိတ်ဖြင့် ဖွင့်ထားစဉ် အသက်ဝင်သော ဒုတိယ မက်ပင်းဇယား။</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>အခြေခံ</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift အလွှာ</value></data>
@@ -2783,7 +2825,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>လှုပ်ရှားမှု စတီယာရင်ထိန်းခြင်း</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° မှ {1}° အထိ</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ယိမ်းစောင်းမှု ဒက်ဇုန်များ၊ ကွန်ထရိုလာ ဦးတည်ပုံ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>လှုပ်ရှားမှု ယိမ်းစောင်း အဝင်အတွက် ဆက်တင်များ: ကွန်ထရိုလာကို စတီယာရင်ဘီးကဲ့သို့ စောင်းပါ။ မက်ပင်းများရှိ အဝင် ဆွဲချစာရင်းမှ “လှုပ်ရှားမှု ယိမ်းစောင်း” ကို စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပင်းလုပ်ပါ။</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း အဝင်အတွက် ဆက်တင်များ: ကွန်ထရိုလာကို စတီယာရင်ဘီးကဲ့သို့ စောင်းပါ။ “ခလုတ်များ” အပိုင်းတွင် “လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း” ကို စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပင်းလုပ်ပါ။</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>လှုပ်ရှားမှု စတီယာရင်ထိန်းခြင်း ပြန်လည်သတ်မှတ်</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ဖလစ်စတစ် (ညာစတစ်)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ဖလစ်စတစ် (ဘယ်စတစ်)</value></data>
@@ -2792,7 +2834,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>ညာစတစ် ကွင်း</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ဖလစ်စတစ်</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ဖလစ်စတစ် အဝင်များအတွက် ချိန်ညှိမှု</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ဖလစ်စတစ် အဝင်များအတွက် ဆက်တင်များ: စတစ်ကို ညွှန်လိုက်လျှင် ကင်မရာက လိုက်လှည့်ပြီး အနားသတ်တစ်လျှောက် ဝှေ့ယမ်းလျှင် အသေးစိတ် လှည့်သည်။ မက်ပင်းများရှိ အဝင် ဆွဲချစာရင်းမှ “ဖလစ်စတစ် (ညာစတစ်)” ကို မောက်စ် X သို့ မည်သည့်အလွှာတွင်မဆို မက်ပင်းလုပ်ပါ။</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ဖလစ်စတစ် အဝင်များအတွက် ဆက်တင်များ: စတစ်ကို ညွှန်လိုက်လျှင် ကင်မရာက လိုက်လှည့်ပြီး အနားသတ်တစ်လျှောက် ဝှေ့ယမ်းလျှင် အသေးစိတ် လှည့်သည်။ “ကီးများနှင့် မောက်စ်” အပိုင်းတွင် “ဖလစ်စတစ် (ညာစတစ်)” ကို မောက်စ် X သို့ မည်သည့်အလွှာတွင်မဆို မက်ပင်းလုပ်ပါ။</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ဖလစ်စတစ် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° လျှင် အစက်အရေအတွက်</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ကင်မရာ 360° အပြည့်လှည့်ရန် မောက်စ် အရေအတွက်။ ဂိမ်း၏ မောက်စ် အာရုံခံနိုင်စွမ်းပေါ် မူတည်သည်: ဖလစ်တစ်ခု လှည့်မလောက်လျှင် မြှင့်ပါ၊ လှည့်လွန်လျှင် လျှော့ပါ။</value></data>
@@ -2884,7 +2926,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>အသံ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>မက်ခရို အသံများနှင့် ထပ်တူကူးထားသော စနစ်အသံသည် ရွေးထားသော ကွန်ထရိုလာ၏ တပ်ဆင်ပါရှိသော စပီကာမှ USB သို့မဟုတ် Bluetooth ဖြင့် ထွက်သည်။ အပေါ်ရှိ ဆွဲချစာရင်းတွင် စက်ပစ္စည်းကို ရွေးပါ။ ဤနေရာရှိ ဆက်တင်တိုင်းသည် ၎င်းအတိုင်း လိုက်သည်။</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>အသံ အထွက်</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ထပ်တူ ရင်းမြစ်၊ ဟက်ပတစ်၊ နားကြပ် အသံအတိုးအကျယ်၊ ကရော့စ်ဖိဒ်၊ Parametric EQ၊ Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ထပ်တူ ရင်းမြစ်၊ နားကြပ် အသံအတိုးအကျယ်၊ ဘဖာ၊ အထွက်လမ်းကြောင်း</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>အသံများကို ရွေးထားသော ကွန်ထရိုလာသို့ အလိုအလျောက် ပို့သည်။ USB တွင် ကွန်ထရိုလာ၏ ကိုယ်ပိုင် အသံ အဆုံးမှတ်ကို ဟာ့ဒ်ဝဲ ကွန်တိန်နာဖြင့် ကိုက်ညှိသည်။ Bluetooth တွင် အသံကို Sony HID ဖရိန်များဖြင့် ထုတ်လွှင့်သည်။</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ထပ်တူ ရင်းမြစ်</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>ကွန်ထရိုလာ စပီကာသို့ ထပ်တူကူးရမည့် အသံဖွင့် စက်ပစ္စည်း။ အသံအချို့ကို သီးခြား အသံဖွင့် စက်ပစ္စည်းသို့ ပို့သော ဂိမ်းများအတွက် ဤစက်ကို ရွေးနိုင်သည်။</value></data>
@@ -2897,10 +2939,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>အသံအားလုံး ရပ်</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>ဤကွန်ထရိုလာပေါ်ရှိ မက်ခရို အသံအားလုံးကို ရပ်ပါ</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>အသံ မက်ခရိုများ</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>အသံများကို မက်ခရိုများဖြင့် ဖွင့်သည်: စတင်စေမှု (ခလုတ်နှိပ်ခြင်း၊ လွှတ်ခြင်း၊ ဖိထားခြင်း သို့မဟုတ် ဖော်မြူလာ) နှင့် အသံဖွင့် လုပ်ဆောင်ချက်။ ၎င်းတို့ကို ဤနေရာ သို့မဟုတ် မက်ခရိုများ တက်ဘ်တွင် တည်ဆောက်ပါ။ နှောင့်နှေးချိန်များ၊ ထပ်ခါလုပ်ခြင်းများ နှင့် အဖွင့်အပိတ်များ အားလုံး အလုပ်လုပ်သည်။</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>အသံများကို မက်ခရိုများဖြင့် ဖွင့်သည်: စတင်စေမှု (ခလုတ်နှိပ်ခြင်း၊ လွှတ်ခြင်း၊ ဖိထားခြင်း သို့မဟုတ် ဖော်မြူလာ) နှင့် အသံဖွင့် လုပ်ဆောင်ချက်။ ၎င်းတို့ကို ဤနေရာ သို့မဟုတ် “မက်ခရိုနှင့် မီနူးများ” အပိုင်းတွင် တည်ဆောက်ပါ။ နှောင့်နှေးချိန်များ၊ ထပ်ခါလုပ်ခြင်းများ နှင့် အဖွင့်အပိတ်များ အားလုံး အလုပ်လုပ်သည်။</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>အသံ မက်ခရို အသစ်</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>အသံ မက်ခရို မရှိသေးပါ။ တစ်ခု ဖန်တီးပြီး အသံဖိုင်နှင့် စတင်စေမှုကို ရွေးပါ။</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ဤမက်ခရိုကို မက်ခရိုများ တက်ဘ်တွင် ဖွင့်ပါ</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ဤမက်ခရိုကို “မက်ခရိုနှင့် မီနူးများ” အပိုင်းတွင် ဖွင့်ပါ</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>အသံ မက်ခရို {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>အသံဖွင့်</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>ဤကွန်ထရိုလာ၏ အထွက် စက်ပစ္စည်းတွင် အသံဖိုင် (.wav, .mp3, .m4a, .aac, .wma, .flac) ဖွင့်ပါ</value></data>
@@ -3176,6 +3218,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>အလုပ်လုပ်နေသည်</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>အလုပ်လုပ်နေသည်၊ ဒရိုက်ဗာ ချိတ်ဆက်ထား</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>အလုပ်လုပ်နေသည်၊ ကွန်ထရိုလာများ အသက်ဝင်နေ</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR ထည့်သွင်းပြီး</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ထည့်သွင်းမထားပါ</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR အလုပ်လုပ်နေသည်</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR အလုပ်လုပ်နေသည်၊ ဒရိုက်ဗာ ချိတ်ဆက်ထား</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR အလုပ်လုပ်နေသည်၊ ကွန်ထရိုလာများ အသက်ဝင်နေ</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>အခြား OpenVR ဒရိုက်ဗာတစ်ခုက HIDMaestro ၏ ဒရိုက်ဗာအမည်ကို အသုံးပြုနေသောကြောင့် SteamVR သည် PadForge ၏ ဒရိုက်ဗာအစား ၎င်းကို တင်နိုင်ပြီး ဗာချွယ် VR ကွန်ထရိုလာများ ပေါ်လာမည် မဟုတ်ပါ။ ဤပြဿနာကို ဖြေရှင်းရန် ထိုဒရိုက်ဗာကို ဖယ်ရှားပါ- {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>စီးရီးယဲလ် ကွန်ထရိုလာ (COM ပေါ့တ်)</value></data>
@@ -3318,7 +3365,7 @@
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>စက်ပစ္စည်းများ စာမျက်နှာသို့ “ဝှက်ထားသော ခလုတ်များ” စက်ပစ္စည်းနှင့် “စနစ် လှုပ်ရှားမှု” စက်ပစ္စည်းကို ထည့်ပေးသည်။ ပိတ်ထားလျှင် ဘာမှ အလုပ်မလုပ်ပါ။</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>မောက်စ်</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>မောက်စ် လက်ဟန်များ</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>လက်ဟန်ခလုတ်ကို ဖိထားပြီး ဆွဲလိုက်ပါ၊ လွှတ်လိုက်သည့်အခါ လုပ်ဆောင်ချက်တစ်ခု အလုပ်လုပ်သည်- ဘယ်၊ ညာ၊ အပေါ်၊ အောက် သို့မဟုတ် ဆွဲသည့် အကွာအဝေးထက် နည်းလျှင် ရိုးရိုးကလစ်။ လက်ဟန်ငါးမျိုးကို “မက်ပင်းများ” တက်ဘ်တွင် မက်ပင်းလုပ်ပါ သို့မဟုတ် မက်ခရို အစပျိုးခလုတ်များအဖြစ် အသုံးပြုပါ။</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>လက်ဟန်ခလုတ်ကို ဖိထားပြီး ဆွဲလိုက်ပါ၊ လွှတ်လိုက်သည့်အခါ လုပ်ဆောင်ချက်တစ်ခု အလုပ်လုပ်သည်: ဘယ်၊ ညာ၊ အပေါ်၊ အောက် သို့မဟုတ် ဆွဲသည့် အကွာအဝေးထက် နည်းလျှင် ရိုးရိုးကလစ်။ လက်ဟန်ငါးမျိုးကို မည်သည့် အထွက်သို့မဆို မက်ပင်းလုပ်ပါ သို့မဟုတ် မက်ခရို အစပျိုးခလုတ်များအဖြစ် အသုံးပြုပါ။</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>မောက်စ် လက်ဟန်များကို ဖွင့်ရန်</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>ဤဆလော့ပေါ်ရှိ ဤမောက်စ်အတွက် လက်ဟန်မှတ်သားကိရိယာကို အသင့်ပြင်သည်။ လက်ဟန်လုပ်နေစဉ် လက်ဟန်ခလုတ်သည် ပုံမှန်ကလစ်ကို ဆက်လုပ်နေသောကြောင့် အခြားနေရာတွင် မက်ပင်းမလုပ်ထားသော ဘေးခလုတ်ကို ရွေးပါ။</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>လက်ဟန်ခလုတ်များ</value></data>
@@ -3352,7 +3399,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>အလွှာ ပြောင်းရန်</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma အရောင် သတ်မှတ်ရန်</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာသို့ သတ်မှတ်ထားသော Razer စက်ပစ္စည်းများနှင့် ၎င်းတို့နှင့် အမျိုးအစားတူ အခြား Razer စက်ပစ္စည်းတိုင်းကို လုပ်ဆောင်ချက် အလုပ်လုပ်နေစဉ် အရောင်တစ်ရောင်တည်း ဆိုးသည်။</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>အထက်ပါ ကြာချိန်အတွင်း ဤအရောင်ကို ဤဗာချွယ်ကွန်ထရိုလာသို့ သတ်မှတ်ထားသော Razer စက်ပစ္စည်းများနှင့် ၎င်းတို့နှင့် အမျိုးအစားတူ အခြား Razer စက်ပစ္စည်းတိုင်းပေါ်တွင်၊ သို့မဟုတ် Razer Chroma အတန်းကို သတ်မှတ်ထားလျှင် Razer စက်ပစ္စည်းတိုင်းပေါ်တွင် ဆိုးသည်။ ၎င်းသည် မည်သည့် ဗာချွယ်ကွန်ထရိုလာ၏ မီးအလင်း တက်ဘ်ကိုမဆို ကျော်လွန်ပြီး ပြီးနောက် မီးအလင်းကို ပြန်ပေးသည်။ အစပျိုးခလုတ်ကို ဖိထားသရွေ့ အရောင်ကို ထိန်းထားလိုလျှင် “ဖိထားစဉ်” နှင့် “လွှတ်သည်အထိ” ကို အသုံးပြုပါ။ မက်ခရိုနှစ်ခု တပြိုင်နက် ဆိုးသည့်အခါ စာရင်းတွင် အောက်ဘက်ရှိသည့်တစ်ခုက အနိုင်ရသောကြောင့် အပြည့်နှိပ် မက်ခရိုကို ၎င်း၏ ဖွဖွနှိပ် အမွှာ၏ အောက်တွင် ထားပါ။ ဗာချွယ်ကွန်ထရိုလာ နှစ်ခုပေါ်ရှိ မက်ခရိုများက တူညီသော Razer စက်ပစ္စည်းအမျိုးအစားကို ဆိုးသည့်အခါ ကစားသမား နံပါတ် ငယ်သည့်ဘက်က အနိုင်ရသည်။ Razer Synapse အလုပ်လုပ်နေရန် လိုအပ်သည်။</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>အထက်ပါ ကြာချိန်အတွင်း ဤအရောင်ကို ဤဗာချွယ်ကွန်ထရိုလာသို့ သတ်မှတ်ထားသော Razer စက်ပစ္စည်းများနှင့် ၎င်းတို့နှင့် အမျိုးအစားတူ အခြား Razer စက်ပစ္စည်းတိုင်းပေါ်တွင်၊ သို့မဟုတ် Razer Chroma အတန်းကို သတ်မှတ်ထားလျှင် Razer စက်ပစ္စည်းတိုင်းပေါ်တွင် ဆိုးသည်။ ၎င်းသည် မည်သည့် ဗာချွယ်ကွန်ထရိုလာက “မီးအလင်းနှင့် အသံ” အပိုင်းတွင် သတ်မှတ်သော မီးအလင်းကိုမဆို ကျော်လွန်ပြီး ပြီးနောက် မီးအလင်းကို ပြန်ပေးသည်။ အစပျိုးခလုတ်ကို ဖိထားသရွေ့ အရောင်ကို ထိန်းထားလိုလျှင် “ဖိထားစဉ်” နှင့် “လွှတ်သည်အထိ” ကို အသုံးပြုပါ။ မက်ခရိုနှစ်ခု တပြိုင်နက် ဆိုးသည့်အခါ စာရင်းတွင် အောက်ဘက်ရှိသည့်တစ်ခုက အနိုင်ရသောကြောင့် အပြည့်နှိပ် မက်ခရိုကို ၎င်း၏ ဖွဖွနှိပ် အမွှာ၏ အောက်တွင် ထားပါ။ ဗာချွယ်ကွန်ထရိုလာ နှစ်ခုပေါ်ရှိ မက်ခရိုများက တူညီသော Razer စက်ပစ္စည်းအမျိုးအစားကို ဆိုးသည့်အခါ ကစားသမား နံပါတ် ငယ်သည့်ဘက်က အနိုင်ရသည်။ Razer Synapse အလုပ်လုပ်နေရန် လိုအပ်သည်။</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast မျက်နှာပြင် ပြရန်</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ဤဆလော့ကို ထောက်ပံ့သည့် Bliss-Box ပေါ့တ်တစ်ခုရှိ Dreamcast ပက်တစ်ခုစီ၏ VMU ပေါ်တွင် ပုံများကို ပြသပြီးနောက် ပေါ့တ်တစ်ခုစီကို ၎င်း၏ ကိုယ်ပိုင် မျက်နှာပြင်ဆက်တင်သို့ ပြန်ထားသည်။</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast ပုံများ ပြရန်- {0} × {1} ms၊ ထပ်ခါအကြိမ်ရေ {2}</value></data>
@@ -3646,10 +3693,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>နှိပ်သည့်အခါ ပက်၏ စုဆောင်းထားသော ဂိုင်ရို ချိန်ရွယ်ကိုးကားချက်များကို သုညပြန်ထားသည်။ ချောမွေ့စေမှု မှတ်တမ်း ရှင်းလင်းသွားပြီး လှုပ်ရှားမှု စောင်းခြင်း၏ ကြားနေအနေအထားကို ပြန်ဖမ်းယူကာ ဆွဲငင်အား ခန့်မှန်းချက်ကို ကွန်ထရိုလာ၏ လက်ရှိ အနေအထားမှ ပြန်စတင်ပြီး လှုပ်ရှားမှု ရှေ့နောက်စောင်းခြင်း၊ ဘယ်ညာလှည့်ခြင်းနှင့် ဘေးစောင်းခြင်း အတန်းများ တည်ဆောက်ခဲ့သော လှည့်မှုကို ပြန်ဖျက်သည်။</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(မည်သည့် စက်ပစ္စည်းမဆို)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>မီနူးများ</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>မီနူးများသည် ရုပ်ပိုင်းဆိုင်ရာ စတစ် သို့မဟုတ် တာ့ချ်ပက်ကို ဖန်သားပြင်ပေါ်ရှိ ကွင်း သို့မဟုတ် ဇယားကွက်အဖြစ် ပြောင်းပေးသည်။ မီနူးတစ်ခု ထည့်ပါ၊ ၎င်းကို ဖွင့်မည့်အရာကို ရွေးပါ၊ ထို့နောက် အကွက်တစ်ခုစီကို တံဆိပ်တပ်ပြီး ဘိုင်းဒင်း ပေးပါ။</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>မီနူးများသည် ရုပ်ပိုင်းဆိုင်ရာ စတစ် သို့မဟုတ် တာ့ချ်ပက်ကို ဖန်သားပြင်ပေါ်ရှိ ကွင်း သို့မဟုတ် ဇယားကွက်အဖြစ် ပြောင်းပေးသည်။ မီနူးတစ်ခု ဖန်တီးရန် “မီနူးများ” ဘေးရှိ + ကို နှိပ်ပါ၊ ၎င်းကို ဖွင့်မည့်အရာကို ရွေးပါ၊ ထို့နောက် အကွက်တစ်ခုစီကို အမည်နှင့် လုပ်ဆောင်ချက် ပေးပါ။</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>မီနူး အသစ်</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>မီနူး {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>မီနူး အမည်</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>ဖွင့်ထားသည်</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>ဖွင့်ခြင်း</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>ပုံစံ</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>စက်ဝိုင်း ကွင်း</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>ထိ ဇယားကွက်</value></data>
@@ -3669,12 +3718,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>အကွက်များ</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>ဗဟို အကွက်</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>တံဆိပ်များ ပြရန်</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>ဖန်သားပြင် တည်နေရာ</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>အရွယ်အစား</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>အလင်းမဖောက်မှု</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>အသက်ဝင် ဒက်ဇုန်</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>အကွက် ဘိုင်းဒင်းများ</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>အကွက် {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>အကွက် ထည့်ရန်</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>နောက်ဆုံး အကွက် ဖယ်ရှားရန်</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>အကွက် တည်းဖြတ်ရန်</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>အမည်</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>လုပ်ဆောင်ချက်</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>အိုင်ကွန်</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>ဗဟို</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>မရှိ</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>ကီးဘုတ် ကီး</value></data>
@@ -3687,7 +3740,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ကလစ် လွှတ်သည့်အခါ တစ်ကြိမ် အလုပ်လုပ်သည်- အကွက်ကို ညွှန်ပါ၊ စတစ် သို့မဟုတ် ထရက်ပက်ကို ကလစ်နှိပ်ပြီး ကလစ်ကို လွှတ်ပါ။</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>သင် လွှတ်လိုက်သည့်အခါ တစ်ကြိမ် အလုပ်လုပ်သည်- လက်ချောင်းကို ပက်ပေါ်မှ ကြွပါ သို့မဟုတ် အကွက်တစ်ခု မီးမောင်းထိုးထားစဉ် စတစ်ကို ဗဟိုသို့ ပြန်ခုန်ပါစေ။</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>အကွက် မီးမောင်းထိုးထားသရွေ့ ဘိုင်းဒင်းကို ဖိထားသည်။ ကလစ် မလိုပါ။</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>မီနူးတွင် ပါရှိသော အကွက် အရေအတွက်။ စက်ဝိုင်း ကွင်းအတွက် ကွင်းကိုသာ ရေတွက်သည်။ ဗဟို အကွက်သည် သီးခြား ဖြစ်သည်။</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>စတစ် သို့မဟုတ် လက်ချောင်းသည် “အသက်ဝင် ဒက်ဇုန်” အတွင်း ရှိနေစဉ် ရွေးချယ်ခံရသော ဗဟို အကွက်ကို ထည့်ပေးသည်။</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>စတစ်များအတွက် မီနူး ဖွင့်ပြီး ကွင်းအကွက်များ မီးမောင်းထိုးရန် တွန်းရမည့် ပမာဏ။ စက်ဝိုင်း မီနူးများတွင် စတစ်နှင့် တာ့ချ်ပက် နှစ်မျိုးလုံးအတွက် ဗဟိုဧရိယာလည်း ဖြစ်သည်- ၎င်းအတွင်းတွင် ဗဟိုအကွက် ရှိလျှင် ၎င်းကို ရွေးသည်။</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>အကွက်တစ်ခုစီ၏ တံဆိပ်ကို ဖန်သားပြင်ပေါ်ရှိ အုပ်ထပ်ပြကွက်တွင် ရေးဆွဲပါ။</value></data>
@@ -3697,8 +3749,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>အုပ်ထပ်ပြကွက် အရွယ်အစား၊ ပုံမှန်အရွယ်အစား၏ ရာခိုင်နှုန်းဖြင့်။</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>အုပ်ထပ်ပြကွက်၏ အလင်းမဖောက်မှု။ 100% သည် လုံးဝ အလင်းမဖောက်ပါ။</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>အုပ်ထပ်ပြကွက်တွင် ဤအကွက်ပေါ်၌ ပြသော စာသား။</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>အကွက် အလုပ်လုပ်သည့်အခါ လုပ်ဆောင်သည့်အရာ- “ကီးဘုတ် ကီး” သည် ကီးဘုတ်ကီးကို နှိပ်ပြီး “ကွန်ထရိုလာ ခလုတ်” သည် ဤဆလော့၏ ဗာချွယ်ကွန်ထရိုလာပေါ်ရှိ ခလုတ်ကို နှိပ်သည်။ “မရှိ” ဟု သတ်မှတ်ထားသော အကွက်သည် မက်ပင်း အတန်းများနှင့် မက်ခရို အစပျိုးခလုတ်များအတွက် မီနူးအကွက် ရင်းမြစ်အဖြစ် အလုပ်လုပ်ဆဲ ဖြစ်သည်။</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ၏ အပြင်အဆင်မှ မဟုတ်ဘဲ ဤဆလော့သို့ သတ်မှတ်ထားသော ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများမှ ဖတ်သည်။ အောက်ပါ အကွက် ဘိုင်းဒင်းများသည် မီနူး၏ အထွက် ဖြစ်သည်။</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>အကွက် အလုပ်လုပ်သည့်အခါ လုပ်ဆောင်သည့်အရာ: “ကီးဘုတ် ကီး” သည် ကီးဘုတ်ကီးကို နှိပ်ပြီး “ကွန်ထရိုလာ ခလုတ်” သည် ဤဆလော့၏ ဗာချွယ်ကွန်ထရိုလာပေါ်ရှိ ခလုတ်ကို နှိပ်သည်။ “မရှိ” ဟု သတ်မှတ်ထားသော အကွက်သည် မက်ပင်းများနှင့် မက်ခရို အစပျိုးခလုတ်များအတွက် မီနူးအကွက် ရင်းမြစ်အဖြစ် အလုပ်လုပ်ဆဲ ဖြစ်သည်။</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ၏ အပြင်အဆင်မှ မဟုတ်ဘဲ ဤဆလော့သို့ သတ်မှတ်ထားသော ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများမှ ဖတ်သည်။ အောက်ပါ အကွက်များက မီနူး၏ အထွက်ကို ဖော်ပြသည်။</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>စိတ်ကြိုက် ဝင်ရိုးများ</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>ထိန်း X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>ထိန်း Y</value></data>
@@ -3723,13 +3775,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>အထွက်</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ခလုတ်များ</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ကီးများနှင့် မောက်စ်</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>နုတ်နှင့် ထိန်းချုပ်ကွက်များ</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>လက်များ</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>စတစ်နှင့် ထရီဂါများ</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>တုန်ခါမှုနှင့် ထိတွေ့တုံ့ပြန်မှု</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>လှုပ်ရှားမှုနှင့် ထိတွေ့မှု</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>မီးအလင်းနှင့် အသံ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>မက်ခရိုနှင့် မီနူးများ</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာ လက်ခံသော ဂိမ်း၏ တုန်ခါမှုနှင့် အားပြန်တုံ့ပြန်မှုကို ဘေ့စ် ရှိတ်ကာများနှင့် ဆပ်ဝူးဖာများအတွက် ကြိမ်နှုန်းနိမ့် အသံများအဖြစ် အသံအထွက်တစ်ခုသို့ လမ်းကြောင်းပေးသည်။</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ဂိမ်း၏ တုန်ခါမှုကို ဘေ့စ် ရှိတ်ကာများ သို့မဟုတ် ဆပ်ဝူးဖာမှတစ်ဆင့် ကြိမ်နှုန်းနိမ့် အသံများအဖြစ် ဖွင့်သည်။</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>အထွက် စက်ပစ္စည်း၊ ချန်နယ်များ၊ အချဲ့နှုန်း၊ မော်တာတစ်ခုစီအတွက် အသံ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox၊ DualShock 3၊ DualShock 4 / DualSense နှင့် Nintendo Switch Pro ဗာချွယ်ကွန်ထရိုလာများ၊ ထို့အပြင် ပြိုင်ကား စတီယာရင်ဘီးများကဲ့သို့ အားပြန်တုံ့ပြန်မှု ပါသော တိုးချဲ့ ဗာချွယ်ကွန်ထရိုလာများနှင့် Steam Deck Controller (Composite) တို့နှင့် အလုပ်လုပ်သည်။ ဂိမ်း တုံ့ပြန်မှုနှင့် “တုန်ခါမှု စမ်းသပ်ရန်” သည် အသံအထွက်မှတစ်ဆင့် ဖွင့်သည်။ မက်ခရို တုန်ခါမှုသည် ကွန်ထရိုလာပေါ်တွင် ဆက်ရှိသည်။</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“တုန်ခါမှုမှ အသံသို့” ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
@@ -3758,19 +3813,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>ဤတုံ့ပြန်မှု ချန်နယ်ကို အသံအဖြစ် ဖွင့်သည်။ ပိတ်ထားစဉ် အချဲ့နှုန်းနှင့် ကြိမ်နှုန်းကို ဆက်ထားသည်။</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ဤချန်နယ်အတွက် အသံကြိမ်နှုန်း၊ 20 မှ 120 Hz။ သင့် ရှိတ်ကာ အကောင်းဆုံး တုံ့ပြန်သည့်နေရာကို ရှာရန် ကြိမ်နှုန်း ဖြတ်ကျော်စစ်ဆေးမှုကို လုပ်ဆောင်ပါ။</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ပင်မအသံချဲ့အားမတိုင်မီ ဤချန်နယ်၏ အသံကျယ်မှု။</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>အချဲ့နှုန်း</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>စမ်းသပ်ရန်</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>ဤချန်နယ်၏ အသံကို သတ်မှတ်ထားသော အသံချဲ့အားဖြင့် 1.5 စက္ကန့်ကြာ ဖွင့်ပြသည်။</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>အနိမ့်မော်တာ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>အမြင့်မော်တာ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>ဘယ်ထရီဂါ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>ညာထရီဂါ ပြန်လည်သတ်မှတ်</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>ရှိတ်ကာများကို စစ်ဆေးရန်</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>ကြိမ်နှုန်း အစဉ်လိုက်စမ်းသပ်ခြင်း</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>အနိမ့်မော်တာလမ်းကြောင်းပေါ်တွင် 20 မှ 120 Hz အထိ အသံတစ်ခုကို ရှစ်စက္ကန့်အတွင်း အစဉ်လိုက်ဖွင့်သည်။ သင့်တုန်ခါစက် အပြင်းဆုံးတုံ့ပြန်သည့် ကြိမ်နှုန်းကို မှတ်ထားပြီး အသံကြိမ်နှုန်းများကို ထိုနေရာတွင် သတ်မှတ်ပါ။</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>ရပ်ရန်</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>စမ်းသပ်အသံ သို့မဟုတ် ကြိမ်နှုန်းစမ်းသပ်ခြင်းကို ရပ်သည်။</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>မည်သည့် NFC တက်ဂ်မဆို</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC တက်ဂ်: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>အဝင်များကို စစ်ထုတ်ရန် (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>အထွက်နှင့် အဝင်များကို စစ်ထုတ်ရန်</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>ကိုက်ညီသော အတန်းနှင့် အဝင်များကိုသာ ပြသည်။ ဤနေရာတွင် စာရိုက်ရန် Ctrl+F ကို နှိပ်ပါ။</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>ရွေးချယ်စာရင်းများတွင် မည်သည့်စက်ပစ္စည်းများ၏ အဝင်ကို ပြမည်ကို ရွေးပါ</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>ရွေးချယ်စာရင်းတွင် ပြထားသည်</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>မည်သည့် အသံစကားစုမဆို</value></data>
@@ -3877,6 +3935,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>ရောစပ်အဆင့် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>ပါရာမက်ထရစ် EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>ကွန်ထရိုလာအသံပေါ်ရှိ ဘန်းအလိုက် စစ်ထုတ်ကိရိယာများ။ အသံကို ကုဒ်မပြောင်းမီ အသုံးချသောကြောင့် အောက်ရှိ ကန့်သတ်ကိရိယာက မြှင့်ထားသော ဘန်းကို အသံမကွဲစေရန် ထိန်းပေးသည်။</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>ကြိုတင်ချဲ့အား၊ ဘန်းများ၊ တင်သွင်းခြင်း</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>ကြိုတင်ချဲ့အား</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>ဘန်းများမတိုင်မီ စုစုပေါင်းအဆင့်။ AutoEq ပရိုဖိုင်များတွင် ၎င်းတို့၏ မြှင့်တင်မှုများ အသံမကွဲစေရန် အနုတ် ကြိုတင်ချဲ့အား ပါလာပြီး တစ်ခုကို တင်သွင်းလျှင် ဤတန်ဖိုးကို သင့်အတွက် သတ်မှတ်ပေးသည်။</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>ဖွင့်</value></data>
@@ -4099,7 +4158,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ထိခြင်း သို့မဟုတ် တွန်းရွှေ့ခြင်းဖြင့် ဖွင့်ခြင်းသို့ ပြန်လည်သတ်မှတ်ပါ။</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>ရွှေ့ရန် အဝင်</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>အလွှာက ဤမီနူးကို ဖွင့်ထားစဉ် မီးမောင်းထိုးထားသော ကွက်ကို ရွှေ့သည့် ရုပ်ပိုင်းဆိုင်ရာ အဝင်။</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ဤဆလော့သို့ သတ်မှတ်ထားသော ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများမှ ဖတ်သည်။ အလွှာက မီနူးကို ဖွင့်ပြီး ဤအဝင်က ၎င်းကို ရွှေ့သည်။ ကွက်ချိတ်ဆက်ချက်များက ၎င်း၏ အထွက်ကို ဆုံးဖြတ်သည်။</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ဤဆလော့သို့ သတ်မှတ်ထားသော ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများမှ ဖတ်သည်။ အလွှာက မီနူးကို ဖွင့်ပြီး ဤအဝင်က ၎င်းကို ရွှေ့သည်။ ၎င်း၏ အကွက်များက မီနူး၏ အထွက်ကို ဖော်ပြသည်။</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>အိုင်ကွန် အရွယ်အစား</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>မီနူး၏ ပုံမှန်အိုင်ကွန်အရွယ်အစားနှင့် နှိုင်းယှဉ်ထားသော အိုင်ကွန်အရွယ်အစား၊ 25% မှ 200% အထိ။ အိုင်ကွန်ကို ရှင်းလင်းလျှင် 100% သို့ ပြန်သတ်မှတ်သည်။</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>“ကလစ်အဝင်” ကို ဖိထားစဉ် မီးမောင်းထိုးထားသော ကွက်၏ ချိတ်ဆက်ချက်ကို ဖိထားသည်။ မီးမောင်းထိုးထားသော အဝိုင်းမီနူး ဗဟိုသည် စတစ် ငြိမ်နေစဉ် အလုပ်လုပ်နိုင်သည်။</value></data>
@@ -4222,7 +4281,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ၏ စာရွက်စာတမ်းမရှိသော IPolicyConfig interface ၏ အပြင်အဆင်အတွက် Antoine Aflalo ၏ ကိုးကားချက်၊ PadForge သည် ၎င်းကို ကွန်ထရိုလာ၏ အသံ endpoint ကို ပြန်ဖွင့်ရန် အသုံးပြုသည်။ MIT။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>အသံ တက်ဘ်က တင်သွင်းသော ပါရာမက်ထရစ် EQ ပရိုဖိုင်ပုံစံ၊ ရေးသားသူ Jaakko Pasanen။ MIT။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>ကွန်ထရိုလာ၏ “ပါရာမက်ထရစ် EQ” က တင်သွင်းသော ပါရာမက်ထရစ် EQ ပရိုဖိုင်ပုံစံ၊ ရေးသားသူ Jaakko Pasanen။ MIT။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>စာသားအပိုင်း မက်ခရိုများနှင့် ကီးဘုတ် chord hook နောက်ကွယ်ရှိ SendInput နည်းစနစ်များ: Unicode စာရိုက်ခြင်း၊ batch ကန့်သတ်ချက်များ၊ Win-key mask key နှင့် tag တပ်ထားသော injected input။ GPL-2.0-or-later၊ စာရွက်စာတမ်းအဖြစ်သာ ဖတ်ရှုထားပြီး GPL ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4426,6 +4485,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ဦးတည်ရာ</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>အဆင့်</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>မှ</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>လက်ကိုင်</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} သည် ဤကွန်ထရိုလာ၏ ထရီဂါများကို သတ်မှတ်နေသည်။</value></data>
@@ -4470,7 +4530,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>လက်ကိုင် လုံလောက်စွာ မရွေ့သဖြင့် ရွေ့လျားအကွာအဝေးကို ယခင်အတိုင်း ထားသည်။ တိုင်းတာနေစဉ် ၎င်းကို အစွန်းတိုင်းသို့ ရွှေ့ပါ။</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>တိုင်းတာမှု မပြီးမီ Falcon ပိတ်သွားသည်။</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension ထံမှ သင်ထည့်သွင်းသော Force Dimension ၏ SDK မှတစ်ဆင့် Novint Falcon ဖြင့် ဂိမ်းကစားသည်။ လက်ကိုင်သည် စတစ်ဖြစ်ပြီး လက်ကိုင်ပေါ်ရှိ ခလုတ်လေးခုသည် ခလုတ်များဖြစ်သည်။ PadForge သည် ဂိမ်း၏ တုန်ခါမှုနှင့် အကျိုးသက်ရောက်မှုများကို လက်ကိုင်ပေါ်တွင် အားအဖြစ် ပေးသည်။ ဆလော့တစ်ခုစီ၏ အားပြန်တုံ့ပြန်မှု တဘ်တွင် Falcon ၏ ခံစားရပုံကို သတ်မှတ်သည်။</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension ထံမှ သင်ထည့်သွင်းသော Force Dimension ၏ SDK မှတစ်ဆင့် Novint Falcon ဖြင့် ဂိမ်းကစားသည်။ လက်ကိုင်သည် စတစ်ဖြစ်ပြီး လက်ကိုင်ပေါ်ရှိ ခလုတ်လေးခုသည် ခလုတ်များဖြစ်သည်။ PadForge သည် ဂိမ်း၏ တုန်ခါမှုနှင့် အကျိုးသက်ရောက်မှုများကို လက်ကိုင်ပေါ်တွင် အားအဖြစ် ပေးသည်။ ကွန်ထရိုလာတစ်ခုစီ၏ “တုန်ခါမှုနှင့် ထိတွေ့တုံ့ပြန်မှု” အပိုင်းရှိ Novint Falcon ကတ်တွင် Falcon ၏ ခံစားရပုံကို သတ်မှတ်သည်။</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon ကို ထိန်းချုပ်ရန်</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Falcon တစ်ခုစီကို Force Dimension ၏ dhd64.dll မှတစ်ဆင့် ဖွင့်သည်။ ဖွင့်ထားသော Falcon သည် PadForge တစ်ခုတည်းအတွက်သာ ဖြစ်သောကြောင့် ဤဆက်တင် ဖွင့်ထားစဉ် FalconJoyForce နှင့် Force Dimension ၏ ကိရိယာများက ၎င်းကို ဖွင့်၍ မရပါ။ ပိတ်ထားလျှင် PadForge သည် Falcon အားလုံးကို ပိတ်သည်။</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon လိုက်ဘရရီကို {0} အဖြစ် သတ်မှတ်ပြီးပါပြီ။ PadForge သည် ၎င်းကို စက္ကန့်အနည်းငယ်အတွင်း ဖွင့်မည်ဖြစ်ပြီး အခြားမိတ္တူဖြင့် ဖွင့်ထားသော Falcon ကို ဤမိတ္တူဖြင့် ပြန်ဖွင့်မည်။</value></data>
@@ -4636,7 +4696,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>သတ်မှတ်ချိန်အတွင်း</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>ရပ်သည်အထိ</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>အချိန်</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ဤဆလော့ရှိ DualSense နှင့် DualSense Edge တိုင်းတွင် ဖွင့်သည်။ ဂိမ်း၏ ကိုယ်ပိုင် ထရီဂါ အက်ဖက်နှင့် ဂိမ်းမော့ဒ်၏ အက်ဖက်တို့က ဦးစားပေးခံရပြီး အက်ဖက် ပြီးဆုံးသောအခါ အလိုက်သင့် ထရီဂါများ တက်ဘ်၏ ဆက်တင် ပြန်လည်သက်ရောက်သည်။ ဇုန်များသည် ငြိမ်နေချိန် 0 မှ အပြည့်ဆွဲချိန် 9 အထိ ဖြစ်သည်။ လေးမြား၊ မြင်းပြေး နှင့် စက် တို့သည် တရားဝင် DualSense အက်ဖက်များ မဟုတ်သဖြင့် ဖမ်းဝဲ အပ်ဒိတ်တစ်ခုက ၎င်းတို့ကို ဖယ်ရှားနိုင်သည်။ “အလိုက်သင့်ထရီဂါ တုန်ခါမှုများကို ပြောင်းလဲအသုံးချရန်” ဖွင့်ထားသော Xbox ကွန်ထရိုလာများသည် တုန်ခါသည့် အက်ဖက်များကို ထရီဂါ တုန်ခါမှုအဖြစ် ခံစားရသည်။</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ဤဆလော့ရှိ DualSense နှင့် DualSense Edge တိုင်းတွင် ဖွင့်သည်။ ဂိမ်း၏ ကိုယ်ပိုင် ထရီဂါ အက်ဖက်နှင့် ဂိမ်းမော့ဒ်၏ အက်ဖက်တို့က ဦးစားပေးခံရပြီး အက်ဖက် ပြီးဆုံးသောအခါ အလိုက်သင့် ထရီဂါများ ကတ်၏ ဆက်တင် ပြန်လည်သက်ရောက်သည်။ ဇုန်များသည် ငြိမ်နေချိန် 0 မှ အပြည့်ဆွဲချိန် 9 အထိ ဖြစ်သည်။ လေးမြား၊ မြင်းပြေး နှင့် စက် တို့သည် တရားဝင် DualSense အက်ဖက်များ မဟုတ်သဖြင့် ဖမ်းဝဲ အပ်ဒိတ်တစ်ခုက ၎င်းတို့ကို ဖယ်ရှားနိုင်သည်။ “အလိုက်သင့်ထရီဂါ တုန်ခါမှုများကို ပြောင်းလဲအသုံးချရန်” ဖွင့်ထားသော Xbox ကွန်ထရိုလာများသည် တုန်ခါသည့် အက်ဖက်များကို ထရီဂါ တုန်ခါမှုအဖြစ် ခံစားရသည်။</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{2} ms ကြာ {1} ပေါ်တွင် {0}</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>ဖိထားစဉ် {1} ပေါ်တွင် {0}</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>ရပ်သည်အထိ {1} ပေါ်တွင် {0}</value></data>

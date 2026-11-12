@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>نسخ</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>لصق</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>تكرار</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>إعادة تسمية</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>مفعل</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>معطل</value></data>
   <data name="Common_On" xml:space="preserve"><value>تشغيل</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>الجهاز</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>يتحكم به</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>إضافة جهاز</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>صورة</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>قائمة</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>المخرجات: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>الحركة</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>انقر على عنصر تحكم ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>انقر على مفتاح أو زر ماوس ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>انقر على نغمة أو شريط تمرير ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>يتخطى «تعيين الكل» مخرجات اللمس للزرين A وB. انقر على الحلقة حول A أو B لربط أحدها.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>جارٍ التسجيل لـ {0}. اضغط الإدخال على جهازك.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}، يتحكم به</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>خيارات أكثر</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>خيارات أقل</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>زر أمامي</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>زر الكتف</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>زر النظام</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>زر</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>لوحة الاتجاهات</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>عصا</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>زناد</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>لوحة اللمس</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>مستشعر الحركة</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>مفتاح لوحة المفاتيح</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>زر الماوس</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>حركة الماوس</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>عجلة التمرير</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>تغيير التحكم</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>مستشعر اللمس</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>ضغط تناظري</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}، اليد اليسرى</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}، اليد اليمنى</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>أي ضغطة تراها الألعاب عند الضغط على زري زوج معا</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>أي ضغطة تراها الألعاب عند الضغط على مفتاحي زوج معا</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>يثبّت انحرافا صغيرا للعصا لتواصل الألعاب عرض رموز وحدة التحكم</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>قيد السبك</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>اختر ماكرو من القائمة الجانبية، أو اضغط «إضافة» لإنشاء واحد.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>اختر ماكرو من القائمة، أو اضغط + بجانب «وحدات الماكرو» لإنشاء واحد.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>إخراج</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>بارد</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>الأزندة النبضية</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>الأزندة النبضية</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>كسب كل زناد، تبديل المحركين، اهتزازات الأزندة التكيفية</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>كسب كل زناد، تبديل المحركين، اهتزازات الأزندة التكيفية، القوة الثابتة على الزناد</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>يمرر أوامر محرك كل زناد (Xbox Impulse Triggers) من وحدة التحكم الظاهرية إلى وحدة التحكم الفعلية المعينة من نوع Xbox One أو Elite أو Series. اهتزاز الأزندة الذي تشغّله اللعبة يمر تلقائيا. عناصر التحكم أدناه تضبط الشدة لكل زناد.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>الزناد الأيسر</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>الزناد الأيمن</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>العصي</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>المناطق الميتة ومضادات المناطق الميتة ومنحنيات الحساسية ومعايرة إزاحة المركز لكل عصا. كل قسم أدناه يخص عصا تناظرية واحدة في الإخراج النشط. ملفات التعريف الموسعة يمكن أن تحتوي على ما يصل إلى أربع عصي. أذرع التحكم القياسية لها عصوان.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>الأزندة</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>المناطق الميتة ومضادات المناطق الميتة وتحجيم النطاق الأقصى ومنحنيات الحساسية لكل زناد. كل قسم أدناه يخص محور زناد واحدا في الإخراج النشط. ملفات التعريف الموسعة يمكن أن تتيح ما يصل إلى ثمانية محاور مشتركة مع تبويب العصي.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>المناطق الميتة ومضادات المناطق الميتة وتحجيم النطاق الأقصى ومنحنيات الحساسية لكل زناد. كل بطاقة زناد تخص محور زناد واحدا في الإخراج النشط. ملفات التعريف الموسعة يمكن أن تتيح ما يصل إلى ثمانية محاور مشتركة بين العصي والأزندة.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ردود فعل القوة</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>يضبط كيفية تحجيم PadForge لأحداث ردود فعل القوة الواردة من اللعبة وكيفية توجيهها إلى محركات الاهتزاز أو المشغلات اللمسية في وحدة التحكم الفعلية. «الاهتزاز بالصوت» يضيف فوقها طبقة يشغّلها صوت النظام.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>هذا الجهاز</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>وحدة التحكم كلها</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>يعمل الاهتزاز على {0} كنبضات لمسية ترسل مباشرة إلى الجهاز. الاهتزاز الأقوى يختار نبضة أقوى ويكررها أسرع.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>ردود الفعل اللمسية متوقفة للجهاز {0} في Logi Options+، لذا لن يشغّل شيئا إلى أن تعيد تشغيلها هناك.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>لم يستجب هذا الجهاز بعد. يعمل اهتزازه فور استيقاظه.</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>سماعات الرأس ولوحات الماوس ومكبرات الصوت</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>سماعات الرأس</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>شريط الإضاءة</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>تتولى الألعاب التحكم كلما كتبت إضاءة.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>أدخل لونا سداسيا عشريا من ستة أرقام (RRGGBB أو #RRGGBB) ثم اضغط Enter أو انقر في مكان آخر للتطبيق.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>إزالة هذا اللون من لوحة الألوان</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>إعادة ضبط الاهتزاز بالصوت</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>إعادة ضبط {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>مسح التعيينات</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>سيتم مسح كل التعيينات في هذا التبويب. تعيينات المصادر والمصادر الإضافية وإعدادات الدمج ستعود إلى قيمها الافتراضية.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>سيتم مسح كل التعيينات في هذه الطبقة. تعيينات المصادر والمصادر الإضافية وإعدادات الدمج ستعود إلى قيمها الافتراضية.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>نمط اللاعب</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>وضع مصباح LED لكتم الصوت</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>سطوع LED</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>مفاتيح POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>الأزرار</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ملفات التعريف المستوردة…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>وحدة التحكم الموسعة</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>إدارة ملفات تعريف HIDMaestro التي استوردها المستخدم: التقاط ملف جديد من جهاز متصل، أو تصدير ملف موجود إلى JSON، أو حذف ملف لم تعد تحتاجه.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>استنساخ الجهاز 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>تعيين كل محور وزر وقبعة في الجهاز المحدد مباشرة إلى المخرج الظاهري الذي يحمل الرقم نفسه. يضبط حجم التخطيط على مقاس الجهاز ويستبدل صفوف هذا الجهاز في الخانة بتمرير مباشر 1:1.</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ردود فعل القوة</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>القناة</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>إخراج MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>قناة MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>عدد CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>عدد مخرجات CC (الحد الأقصى يعتمد على «CC البداية»)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>يزيل زوج المفاتيح هذا.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>المفتاح الأول في الزوج المتعاكس.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>المفتاح الثاني في الزوج المتعاكس.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>الاتجاهات الأساسية المتعاكسة المتزامنة (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>إبقاء وحدة التحكم نشطة</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>بعض الألعاب توقف الاهتزاز وتبدّل رموز الأزرار لحظة رصدها إدخالا من الماوس أو لوحة المفاتيح. تثبيت انحراف صغير للعصا يجعل اللعبة تواصل اعتبار وحدة التحكم هذه هي الجهاز النشط. لا يعمل التثبيت إلا ما دام محورا تلك العصا تحت المستوى المثبت، فالعصا المنجرفة تعتبر مستقرة أيضا. أي إدخال يتجاوز المستوى على أحد المحورين يلغي التثبيت ويمر دون تغيير. أبق الانحراف أقل من المنطقة الميتة في اللعبة نفسها حتى لا يتحرك شيء داخل اللعبة.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>إبقاء نشطة</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>إعادة ضبط الضغطة</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>إعادة ضبط نصف لوحة اللمس</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>إعادة ضبط وضع الإطلاق</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>إعادة ضبط الخلايا</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة للتفعيل</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>إعادة ضبط هندسة القائمة</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>إعادة ضبط الخلية</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>مسح الكل</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>المصدر</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>القيمة</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>الخيارات</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>المنطقة الميتة لتحويل المحور إلى زر</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>عكس</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>عند التحديد، يعود المحور تدريجيا إلى المركز عند التحرير. عند إلغاء التحديد، يبقى في موضعه الأخير.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>زر يعكس مخرج الصف ما دام مضغوطا</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>زر التعديل: ما دام مضغوطا، تنعكس إشارة مخرج الصف.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ إضافة مصدر</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>إضافة مصدر</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>إضافة مدخل فعلي آخر إلى هذا الصف</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>إزالة هذا المصدر</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>مخصص</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>معايرة المركز</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>نقطة المركز</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>المركز</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>المنطقة الميتة</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>إزاحات المركز، شكل المنطقة الميتة وقيمها لكل محور، منحنى لكل محور، النطاق، التوجيه</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>النطاق</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«معايرة الحدود» هي الطريقة الموصى بها لضبط العصا. تمسح الحافة التي تستطيع العصا بلوغها فعليا، ثم تعيد تحجيم كل موضع بالتناسب مع تلك الحافة المقيسة، فتتطابق الحركة الأصلية الكاملة، عند كل زاوية وكل انحراف، مع دائرة مثالية دون اقتطاع شيء. أشرطة التمرير الأربعة أدناه تحد المحاور الأساسية فقط. استخدمها لتقييد النطاق عمدا، لا لتصحيحه.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«معايرة الحدود» تقيس الحافة التي تستطيع العصا بلوغها وتعيد تشكيلها إلى دائرة كاملة. أشرطة التمرير الأربعة تحد كل اتجاه فقط.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>جارٍ أخذ العينات...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>إزاحة المركز X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>إزاحة المركز Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>الاسم</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>مدخل التشغيل</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>عندما</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>الإطلاق</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>عند الضغط</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>عند التحرير</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>طبقة Shift التي ينتمي إليها هذا الماكرو. «أي طبقة» ينطلق مهما كانت الطبقة المفعلة. الطبقة الأساسية والطبقات المسماة ينطلق فيها الماكرو فقط ما دامت تلك الطبقة مفعلة، تماما مثل صف التعيين.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>أي طبقة</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>يعمل باستمرار ما دامت وحدة التحكم الظاهرية هذه نشطة. لا يتطلب زر تشغيل.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>تسلسل الإجراءات</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>نفّذ</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>الطبقة، المصدر، العتبة، الاتجاه، استهلاك أزرار التشغيل، التكرار</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>إضافة إجراء</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>تعديل الإجراء</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>النوع</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>الأزرار الظاهرية</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>المحاور الظاهرية والعجلة</value></data>
@@ -1521,11 +1555,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>الزر {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ضغط {0} لمدة {1} مللي ثانية</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ضغط {0} لمدة {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>تحرير {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>المفاتيح {0} لمدة {1} مللي ثانية</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>المفاتيح {0} لمدة {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>تحرير المفاتيح {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>انتظار {0} مللي ثانية</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>انتظار {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>ضبط {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>مستوى صوت النظام → {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>مستوى صوت النظام → {0} (الحد الأقصى {1}%)</value></data>
@@ -1537,15 +1571,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>تحرير زر الماوس {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>تبديل تراكب لوحة اللمس</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ضبط لون شريط الإضاءة</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>يتجاوز شريط إضاءة خانة PlayStation المعينة بلون RGB تختاره. «تفاعلي» يتلاشى من الشدة الكاملة إلى الأسود خلال مدة الاضمحلال المحددة، ثم يعيد التحكم إلى إعدادات تبويب الإضاءة. «مستمر» يبقي اللون إلى أن يعمل إجراء «مسح تجاوز شريط الإضاءة». ما تكتبه اللعبة يبقى له الأولوية على التجاوز.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>وميض شريط الإضاءة {0} (اضمحلال {1} مللي ثانية)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>يتجاوز شريط إضاءة خانة PlayStation المعينة بلون RGB تختاره. «تفاعلي» يتلاشى من الشدة الكاملة إلى الأسود خلال مدة الاضمحلال المحددة، ثم يعيد التحكم إلى إعدادات بطاقة «شريط الإضاءة». «مستمر» يبقي اللون إلى أن يعمل إجراء «مسح تجاوز شريط الإضاءة». ما تكتبه اللعبة يبقى له الأولوية على التجاوز.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>وميض شريط الإضاءة {0} (اضمحلال {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>إبقاء شريط الإضاءة {0} حتى المسح</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>مسح تجاوز شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>مسح تجاوز شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>يلغي أي تجاوز نشط لشريط الإضاءة في الخانة المعينة. استخدمه مع إجراء «ضبط لون شريط الإضاءة» من نوع «مستمر» للتراجع عنه عبر ماكرو آخر.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ضبط وضع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ضبط وضع شريط الإضاءة على {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>يضبط وضع شريط الإضاءة في الخانة المعينة على قيمة محددة. يبقى كأي تعديل في تبويب الإضاءة إلى أن يغيّره إجراء آخر أو المستخدم.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>يضبط وضع شريط الإضاءة في الخانة المعينة على قيمة محددة. يبقى كأي تعديل في بطاقة «شريط الإضاءة» إلى أن يغيّره إجراء آخر أو المستخدم.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>التنقل بين أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ينقل وضع شريط الإضاءة في الخانة بين الأوضاع المحددة أدناه. كل إطلاق ينتقل إلى الوضع المحدد التالي. موضع الدورة خاص بكل إجراء ويعاد ضبطه عند إعادة تشغيل التطبيق.</value></data>
@@ -1560,14 +1594,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>الاضمحلال</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>التلاشي</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>لوحة الألوان</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>لوحة الألوان الفارغة تستخدم لوحة الألوان في تبويب الإضاءة الخاص بالخانة.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>لوحة الألوان الفارغة تستخدم لوحة الألوان في بطاقة «شريط الإضاءة» الخاصة بالخانة.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>الوضع</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>اختر أوضاع شريط الإضاءة التي يتنقل الماكرو بينها. كل إطلاق ينتقل إلى الوضع المحدد التالي.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>اهتزاز</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>يشغّل اهتزاز الجهاز الفعلي في الخانة من ماكرو. «تفاعلي» يعمل بالشدة الكاملة طوال مدة الإبقاء ثم يتلاشى إلى الصفر خلال مدة التلاشي. «مستمر» يبقى بالشدة الكاملة إلى أن يعمل إجراء «إيقاف الاهتزاز». يضاف فوق الاهتزاز الذي تشغّله اللعبة عبر max() حتى يكون الاهتزاز الذي يشغّله المستخدم محسوسا دائما.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>نبضة اهتزاز {0} ({1} مللي ثانية)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>نبضة اهتزاز {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>إبقاء الاهتزاز {0} حتى المسح</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>إيقاف الاهتزاز</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>إيقاف الاهتزاز</value></data>
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>إيقاف اهتزاز الزناد</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>يلغي أي اهتزاز زناد نشط من ماكرو في الخانة. استخدمه مع «تجاوز اهتزاز الزناد» من نوع «مستمر» لإنهاء الإبقاء من ماكرو.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ضبط تفعيل الجيروسكوب</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>يضبط حالة تفعيل الجيروسكوب في الخانة من ماكرو. «تبديل» يقلب الحالة الحالية. «تشغيل» يفرض تفعيل الجيروسكوب. «إيقاف» يفرض إلغاء تفعيله. مستقل عن زر التفعيل في تبويب الجيروسكوب. يتم دمج المصدرين بعملية OR، فلا يستطيع أحدهما تعطيل ما فعّله الآخر.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>يضبط حالة تفعيل الجيروسكوب في الخانة من ماكرو. «تبديل» يقلب الحالة الحالية. «تشغيل» يفرض تفعيل الجيروسكوب. «إيقاف» يفرض إلغاء تفعيله. مستقل عن «زر تفعيل التصويب» في قسم «الحركة واللمس». يتم دمج المصدرين بعملية OR، فلا يستطيع أحدهما تعطيل ما فعّله الآخر.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>الوضع</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>تبديل</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>تشغيل</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>لوحة اللمس</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>لوحة اللمس</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>إدخال لكل لوحة لمس. الإيماءات (السحب والنقر والضم والأشكال) وأوضاع الإخراج المستمر (عصا ظاهرية / لوحة اتجاهات، ماوس) تصبح مصادر تعيين يمكنك ربطها في تبويب التعيينات.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>إدخال لكل لوحة لمس. الإيماءات (السحب والنقر والضم والأشكال) وأوضاع الإخراج المستمر (عصا ظاهرية / لوحة اتجاهات، ماوس) تصبح مصادر تعيين يمكنك ربطها بأي مخرج.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>لوحة اللمس</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>رقم لوحة اللمس</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>لوحة اللمس في وحدة التحكم هذه التي تسري عليها الإعدادات أدناه. تحتفظ كل لوحة لمس بإيماءاتها وإحساس الماوس ومنطقة المؤشر الخاصة بها.</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>الجيروسكوب</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>اضبط كيفية تحكم مستشعر الحركة في ذراع التحكم هذا في إخراج الماوس والعصا. عاير على سطح مستو لتصفير الانجراف في وضع السكون، ثم اضبط الحساسية والتنعيم وقواعد التفعيل كما يناسبك.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>المعايرة</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>قراءات حية للجيروسكوب ومقياس التسارع</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>الحساسية</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>الوحدات، الفضاء، عكس المحاور، معايرة العالم الحقيقي</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>الوحدات، عكس المحاور، معايرة العالم الحقيقي</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° لكل دورة</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>تشكيل الاستجابة</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>المنطقة الميتة، التنعيم، التسارع، منحنى الإخراج</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>الإطار المرجعي</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>محلي أو اللاعب أو العالم</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>الفضاء</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>كيفية تفسير حركة الجيروسكوب. «محلي» يستخدم محاور وحدة التحكم الخام. «اللاعب» يسقط الحركة الأفقية على المحور الرأسي في العالم الحقيقي (الجاذبية) فتدير لفة المعصم نفسها الكاميرا دائما، مهما كانت طريقة إمساكك بذراع التحكم. «العالم» يعيد كذلك إسقاط الحركة العمودية على محاور العالم.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>طريقة الإمساك</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>عمودي</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>الإمساك</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>طريقة الإمساك بوحدة التحكم. يدير الجيروسكوب ومقياس التسارع والجاذبية معا، للتعيينات وللحركة التي تبلغ عنها وحدة التحكم الظاهرية. لوحة الاتجاهات تتبع الإطار نفسه، فيكون «أعلى» هو الأعلى في وضعية الإمساك.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>طريقة الإمساك بوحدة التحكم</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>خطي</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>حاد</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>هادئ</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>إعادة ضبط اتجاه التفعيل</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>التمرير المباشر للحركة</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>تطبيق توليف الجيروسكوب على التمرير المباشر للحركة</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>يطبق توليف الجيروسكوب الاختياري في هذا التبويب (المنطقة الميتة، الحساسية، التنعيم، منحنى الاستجابة، العكس) على الحركة التي تبلغ بها وحدة التحكم الظاهرية اللعبة أو المحاكي. أوقفه لإرسال القراءة المعايرة فقط وترك اللعبة تطبق حساسيتها وتنعيمها. تصحيح الانجراف الناتج عن المعايرة يسري دائما في الحالتين.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>يطبق التوليف الاختياري في بطاقات «الجيروسكوب» (المنطقة الميتة، الحساسية، التنعيم، منحنى الاستجابة، العكس) على الحركة التي تبلغ بها وحدة التحكم الظاهرية اللعبة أو المحاكي. أوقفه لإرسال القراءة المعايرة فقط وترك اللعبة تطبق حساسيتها وتنعيمها. تصحيح الانجراف الناتج عن المعايرة يسري دائما في الحالتين.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>إعادة ضبط توليف التمرير المباشر</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>الحساسية</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>معامل حساسية الجيروسكوب لكل مصدر. 1.0 = القيمة الافتراضية للمحرك (500°/ث ← انحراف كامل). القيم فوق 1.0 أكثر حساسية. القيم دون 1.0 أقل حساسية.</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>إعادة ضبط نطاق الإمالة الكاملة</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة للإمالة</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>إعادة ضبط إمالة الجيروسكوب</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>كيفية دمج مصادر هذا الصف عندما يكون أكثر من مصدر نشطا. حدد الصف لتغييرها في شريط التفاصيل أدناه.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>كيفية دمج مصادر هذا الصف عندما يكون أكثر من مصدر نشطا. افتح الصف لتغييرها ضمن «الدمج».</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>الزخم</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>وضع كرة التتبع: ادفع العصا دفعة خاطفة واتركها، فيواصل المؤشر الحركة ويتباطأ حتى يتوقف. تحريك العصا من جديد يوقفه.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>المسافة التي ينزلقها المؤشر بعد دفعة خاطفة. عند أعلى النطاق يواصل الحركة إلى أن تحرّك العصا من جديد.</value></data>
@@ -2340,7 +2379,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور الزناد</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>كسب كل محرك، اهتزاز الأزندة، تبديل المحركين</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>كسب كل محرك، اهتزاز الأزندة، اهتزاز زاوية التوجيه، القوة الثابتة</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>الكسب الإجمالي</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>المحرك الأيسر</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>المحرك الأيمن</value></data>
@@ -2349,6 +2388,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>وحدة التحكم هذه بلا محركات أزندة، فلن تشعر بالألعاب التي تستخدم الأزندة النبضية في Xbox. ادمج قناة كل زناد في المحرك الرئيسي على الجانب نفسه بدلا من ذلك.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>اختبار الاهتزاز</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>نشاط المحركات</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>الأيسر</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>الأيمن</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تطبيق قوة مستمرة على هذا الجهاز إلى أن توقفها. القوة التي تشغّلها اللعبة من أي مصدر تتجاوزها ما دامت نشطة، وتعود القوة الثابتة عندما تتوقف اللعبة.</value></data>
@@ -2427,7 +2468,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>اضغط أزرارا أو حرّك محورا/زنادا للتسجيل. يتم اكتشاف المحاور عند انحرافها أكثر من 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>إضافة من القائمة</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>اختر مدخل تشغيل من أجهزة الخانة بدلا من تسجيله. إيماءات لوحة اللمس المفعلة في تبويب لوحة اللمس تظهر هنا.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>مسح مدخل التشغيل</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>اختر مدخل تشغيل من أجهزة الخانة بدلا من تسجيله. إيماءات لوحة اللمس المفعلة في قسم «الحركة واللمس» تظهر هنا.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>إزالة المدخل</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>اضغط أي مدخل…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>معكوس</value></data>
@@ -2688,7 +2730,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>عدد الثواني قبل إزالة وحدة تحكم ظاهرية عندما تكون كل أجهزتها المعينة غير متصلة. 0 للتعطيل. وحدات التحكم الباقية من النوع نفسه تتقدم لسد الفراغ وترتبط من جديد بخانات أدنى.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ثوان (0 = أبدا)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ طبقة Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>إضافة طبقة</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>إضافة طبقة Shift. جدول تعيين ثان يتفعل ما دام زر مضغوطا أو مبدلا.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>الأساسية</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>طبقة Shift</value></data>
@@ -2789,7 +2831,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>التوجيه بالحركة</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° إلى {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>المنطقة الميتة للميل، اتجاه وحدة التحكم</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>إعدادات مدخل «ميل الحركة»: أمل وحدة التحكم كعجلة القيادة. عيّن «ميل الحركة» إلى محور عصا من القائمة المنسدلة للمدخلات في «التعيينات».</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>إعدادات مدخل «ميل الحركة»: أمل وحدة التحكم كعجلة القيادة. عيّن «ميل الحركة» إلى محور عصا في قسم «الأزرار».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>إعادة ضبط التوجيه بالحركة</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>عصا الالتفات السريع (العصا اليمنى)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>عصا الالتفات السريع (العصا اليسرى)</value></data>
@@ -2798,7 +2840,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>حلقة العصا اليمنى</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>عصا الالتفات السريع</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ضبط مدخلات عصا الالتفات السريع</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>إعدادات مدخلات عصا الالتفات السريع (Flick Stick): وجّه العصا فتلتفت الكاميرا إلى الاتجاه نفسه، وحرّكها على الحافة للالتفات الدقيق. عيّن «عصا الالتفات السريع (العصا اليمنى)» إلى «الماوس X» من القائمة المنسدلة للمدخلات في «التعيينات»، في أي طبقة.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>إعدادات مدخلات عصا الالتفات السريع (Flick Stick): وجّه العصا فتلتفت الكاميرا إلى الاتجاه نفسه، وحرّكها على الحافة للالتفات الدقيق. عيّن «عصا الالتفات السريع (العصا اليمنى)» إلى «الماوس X» في قسم «المفاتيح والماوس»، في أي طبقة.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>إعادة ضبط عصا الالتفات السريع</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>نقاط لكل 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>عدد نقاط الماوس لدورة كاملة للكاميرا 360°. يعتمد على حساسية الماوس في اللعبة: ارفعه إذا كان الالتفات أقل من المطلوب، واخفضه إذا كان أكثر.</value></data>
@@ -2890,7 +2932,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>الصوت</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>أصوات الماكرو وصوت النظام المنسوخ تعمل عبر مكبر الصوت المدمج في وحدة التحكم المحددة، عبر USB أو Bluetooth. اختر الجهاز من القائمة المنسدلة أعلاه. كل إعداد هنا يتبعه.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>إخراج الصوت</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>مصدر النسخ، ردود الفعل اللمسية، مستوى صوت سماعات الرأس، التغذية المتقاطعة، المعادل البارامتري، المحدد</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>مصدر النسخ، صوت سماعات الرأس، مخزن مؤقت، مسار الإخراج</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>يتم توجيه الأصوات إلى وحدة التحكم المحددة تلقائيا. عبر USB تتم مطابقة نقطة نهاية الصوت الخاصة بذراع التحكم بحسب حاوية العتاد. عبر Bluetooth يتم بث الصوت في إطارات Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>مصدر النسخ</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>جهاز التشغيل الذي يتم نسخ صوته إلى مكبر صوت وحدة التحكم. الألعاب التي ترسل أصواتا محددة إلى جهاز تشغيل مستقل يمكنها استهداف هذا الجهاز.</value></data>
@@ -2903,10 +2945,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>إيقاف كل الأصوات</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>إيقاف كل أصوات الماكرو على ذراع التحكم هذا</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>وحدات ماكرو الصوت</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>تشغّل وحدات الماكرو الأصوات: مدخل تشغيل (ضغط زر أو تحريره أو ضغطه المستمر أو صيغة) مع إجراء «تشغيل صوت». أنشئها هنا أو في تبويب وحدات الماكرو. التأخيرات والتكرارات والتبديلات كلها تعمل.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>تشغّل وحدات الماكرو الأصوات: مدخل تشغيل (ضغط زر أو تحريره أو ضغطه المستمر أو صيغة) مع إجراء «تشغيل صوت». أنشئها هنا أو في قسم «وحدات الماكرو والقوائم». التأخيرات والتكرارات والتبديلات كلها تعمل.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>ماكرو صوت جديد</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>لا توجد وحدات ماكرو صوت بعد. أنشئ واحدا واختر ملف صوت ومدخل تشغيل.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>فتح هذا الماكرو في تبويب وحدات الماكرو</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>فتح هذا الماكرو في قسم «وحدات الماكرو والقوائم»</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ماكرو الصوت {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>تشغيل صوت</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>تشغيل ملف صوت (.wav, .mp3, .m4a, .aac, .wma, .flac) على جهاز الإخراج الخاص بذراع التحكم هذا</value></data>
@@ -3182,6 +3224,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>قيد التشغيل</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>قيد التشغيل، برنامج التشغيل متصل</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>قيد التشغيل، وحدات التحكم نشطة</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR مثبت</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR غير مثبت</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR قيد التشغيل</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR قيد التشغيل، برنامج التشغيل متصل</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR قيد التشغيل، وحدات التحكم نشطة</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>يستخدم برنامج تشغيل OpenVR آخر اسم برنامج التشغيل لدى HIDMaestro، لذا قد يحمّله SteamVR بدلاً من برنامج تشغيل PadForge ولن تظهر وحدات التحكم الظاهرية للواقع الافتراضي. أزل برنامج التشغيل هذا لحل المشكلة: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>وحدة تحكم تسلسلية (منفذ COM)</value></data>
@@ -3325,7 +3372,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>تحكم المستهلك {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>الماوس</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>إيماءات الماوس</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>اضغط زر الإيماءة باستمرار وحرّك الماوس حركة خاطفة، فينطلق إجراء واحد عند التحرير: يسار أو يمين أو أعلى أو أسفل، أو نقرة عادية إذا كانت الحركة دون مسافة الحركة الخاطفة. عيّن الإيماءات الخمس في تبويب التعيينات أو استخدمها كمدخلات تشغيل للماكرو.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>اضغط زر الإيماءة باستمرار وحرّك الماوس حركة خاطفة، فينطلق إجراء واحد عند التحرير: يسار أو يمين أو أعلى أو أسفل، أو نقرة عادية إذا كانت الحركة دون مسافة الحركة الخاطفة. عيّن الإيماءات الخمس إلى أي مخرج أو استخدمها كمدخلات تشغيل للماكرو.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>تفعيل إيماءات الماوس</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>يجهّز أداة التعرف على الإيماءات لهذا الماوس في هذه الخانة. يحتفظ زر الإيماءة بنقرته العادية أثناء الإيماء، لذا اختر زرا جانبيا لا تعيّنه لشيء آخر.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>أزرار الإيماءات</value></data>
@@ -3359,7 +3406,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>تبديل الطبقة</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>ضبط لون Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>يلون أجهزة Razer المعينة لوحدة التحكم الظاهرية هذه، وكل أجهزة Razer الأخرى من أنواعها، بلون واحد ما دام الإجراء يعمل.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>طوال المدة أعلاه، يلون بهذا اللون أجهزة Razer المعينة لوحدة التحكم الظاهرية هذه وكل أجهزة Razer الأخرى من أنواعها، أو كل أجهزة Razer عندما يكون صف Razer Chroma معينا. يتجاوز تبويب الإضاءة في أي وحدة تحكم ظاهرية، ثم يعيد الإضاءة. لإبقاء اللون ما دام مدخل التشغيل مضغوطا، استخدم «أثناء الضغط المستمر» مع «حتى التحرير». عندما يلون ماكروان في الوقت نفسه، تكون الأولوية للأدنى في القائمة، لذا ضع ماكرو الضغط الكامل تحت نظيره للضغط الخفيف. عندما تلون وحدات ماكرو في وحدتي تحكم ظاهريتين النوع نفسه من أجهزة Razer، تكون الأولوية لرقم اللاعب الأصغر. يتطلب تشغيل Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>طوال المدة أعلاه، يلون بهذا اللون أجهزة Razer المعينة لوحدة التحكم الظاهرية هذه وكل أجهزة Razer الأخرى من أنواعها، أو كل أجهزة Razer عندما يكون صف Razer Chroma معينا. يتجاوز الإضاءة التي تضبطها أي وحدة تحكم ظاهرية في قسم «الإضاءة والصوت»، ثم يعيد الإضاءة. لإبقاء اللون ما دام مدخل التشغيل مضغوطا، استخدم «أثناء الضغط المستمر» مع «حتى التحرير». عندما يلون ماكروان في الوقت نفسه، تكون الأولوية للأدنى في القائمة، لذا ضع ماكرو الضغط الكامل تحت نظيره للضغط الخفيف. عندما تلون وحدات ماكرو في وحدتي تحكم ظاهريتين النوع نفسه من أجهزة Razer، تكون الأولوية لرقم اللاعب الأصغر. يتطلب تشغيل Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>عرض شاشة Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>يعرض صورا على وحدة VMU لكل ذراع تحكم Dreamcast في منفذ Bliss-Box يغذي هذه الخانة، ثم يعيد كل منفذ إلى إعداد شاشته الخاص.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>عرض صور Dreamcast: {0} × {1} مللي ثانية، عدد التكرار {2}</value></data>
@@ -3653,10 +3700,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>يصفّر مراجع التصويب بالجيروسكوب المتراكمة في ذراع التحكم عند الضغط. يمسح سجل التنعيم، ويعاد التقاط الوضع المحايد لمدخل «ميل الحركة»، ويعاد تأسيس تقدير الجاذبية من الوضعية الحالية لوحدة التحكم، ويلغى الدوران الذي بنته صفوف انحدار الحركة وانعراجها ودحرجتها.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(أي جهاز)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>القوائم</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>القوائم تحوّل عصا فعلية أو لوحة لمس إلى حلقة أو شبكة على الشاشة. أضف قائمة، واختر ما يفتحها، ثم أعط كل خلية تسمية وارتباطا.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>القوائم تحوّل عصا فعلية أو لوحة لمس إلى حلقة أو شبكة على الشاشة. اضغط + بجانب «القوائم» لإنشاء واحدة، واختر ما يفتحها، ثم أعط كل خلية اسما وإجراء.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>قائمة جديدة</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>القائمة {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>اسم القائمة</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>مفعلة</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>الفتح</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>النمط</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>حلقة شعاعية</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>شبكة لمس</value></data>
@@ -3676,12 +3725,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>الخلايا</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>خلية المركز</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>إظهار التسميات</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>الموضع على الشاشة</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>الحجم</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>العتامة</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>المنطقة الميتة للتفعيل</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>ارتباطات الخلايا</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>الخلية {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>إضافة خلية</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>إزالة الخلية الأخيرة</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>تعديل الخلية</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>الاسم</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>الإجراء</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>الأيقونة</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>المركز</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>لا شيء</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>مفتاح لوحة المفاتيح</value></data>
@@ -3694,7 +3747,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ينطلق مرة واحدة عند تحرير الضغطة: أشر إلى الخلية، واضغط العصا أو لوحة التتبع، ثم حرّر الضغطة.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>ينطلق مرة واحدة عند الترك: ارفع إصبعك عن اللوحة، أو اترك العصا ترتد إلى المركز وهناك خلية مميزة.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>يبقى الارتباط مضغوطا طوال تمييز الخلية. لا حاجة إلى ضغطة.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>عدد خلايا القائمة. في الحلقة الشعاعية يشمل هذا العدد الحلقة فقط؛ خلية المركز مستقلة.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>يضيف خلية مركز، يتم تحديدها ما دامت العصا أو الإصبع داخل «المنطقة الميتة للتفعيل».</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>للعصي، مقدار الدفع قبل أن تفتح القائمة وتتميز خلايا الحلقة. في القوائم الشعاعية هي كذلك منطقة المركز للعصي ولوحات اللمس معا: داخلها يتم تحديد خلية المركز إن وجدت.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>رسم تسمية كل خلية على التراكب المعروض على الشاشة.</value></data>
@@ -3704,8 +3756,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>حجم التراكب، كنسبة مئوية من حجمه العادي.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>عتامة التراكب. 100% معتم تماما.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>النص المعروض على هذه الخلية في التراكب.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ما تفعله هذه الخلية عند انطلاقها: «مفتاح لوحة المفاتيح» يضغط مفتاحا في لوحة المفاتيح، و«زر وحدة التحكم» يضغط زرا في وحدة التحكم الظاهرية لهذه الخانة. الخلية المضبوطة على «لا شيء» تظل تنطلق كمصدر عنصر قائمة لصفوف التعيينات ومدخلات تشغيل الماكرو.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>يقرأ من وحدات التحكم الفعلية المعينة لهذه الخانة، لا من تخطيط وحدة التحكم الظاهرية. ارتباطات الخلايا أدناه هي ما تخرجه القائمة.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ما تفعله هذه الخلية عند انطلاقها: «مفتاح لوحة المفاتيح» يضغط مفتاحا في لوحة المفاتيح، و«زر وحدة التحكم» يضغط زرا في وحدة التحكم الظاهرية لهذه الخانة. الخلية المضبوطة على «لا شيء» تظل تنطلق كمصدر عنصر قائمة للتعيينات ومدخلات تشغيل الماكرو.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>يقرأ من وحدات التحكم الفعلية المعينة لهذه الخانة، لا من تخطيط وحدة التحكم الظاهرية. الخلايا أدناه تحدد ما تخرجه القائمة.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>محاور مخصصة</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>التوجيه X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>التوجيه Y</value></data>
@@ -3730,13 +3782,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>هزازات الجهير</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>الإخراج</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>الأزرار</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>المفاتيح والماوس</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>النغمات وعناصر التحكم</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>اليدان</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>العصي والأزندة</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>الاهتزاز واللمس</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>الحركة واللمس</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>الإضاءة والصوت</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>وحدات الماكرو والقوائم</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>هزازات الجهير</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>يوجه اهتزاز اللعبة وردود فعل القوة التي تستقبلها وحدة التحكم الظاهرية هذه إلى مخرج صوت في صورة نغمات منخفضة التردد لهزازات الجهير ومضخمات الصوت الفرعية.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>يشغّل اهتزاز اللعبة في صورة نغمات منخفضة عبر هزازات الجهير أو مضخم صوت فرعي.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>جهاز الإخراج، القنوات، الكسب، نغمة لكل محرك</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>يعمل مع وحدات التحكم الظاهرية Xbox وDualShock 3 وDualShock 4 / DualSense وNintendo Switch Pro، ومع وحدات التحكم الظاهرية الموسعة ذات ردود فعل القوة، مثل عجلات السباق، ووحدة Steam Deck Controller (Composite). ردود فعل اللعبة و«اختبار الاهتزاز» تعمل عبر مخرج الصوت. اهتزاز الماكرو يبقى على وحدة التحكم.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>إعادة ضبط الاهتزاز إلى صوت</value></data>
@@ -3765,19 +3820,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>يشغّل قناة ردود الفعل هذه كنغمة. يبقى الكسب والتردد مضبوطين وهي متوقفة.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>تردد النغمة لهذه القناة، من 20 إلى 120 هرتز. شغّل مسح التردد لتعرف أين تكون استجابة الهزاز لديك أقوى.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>جهارة هذه القناة قبل الكسب الرئيسي.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>الكسب</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>اختبار</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>يشغّل نغمة هذه القناة لمدة 1.5 ثانية بكسبها المضبوط.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>إعادة ضبط محرك التردد المنخفض</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>إعادة ضبط محرك التردد المرتفع</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>اختبار الهزازات</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>مسح التردد</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>يمسح نغمة من 20 إلى 120 هرتز خلال ثماني ثوان على توجيه محرك التردد المنخفض. لاحظ أين تكون استجابة الهزاز لديك أقوى واضبط ترددات الأصوات هناك.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>إيقاف</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>يوقف نغمة الاختبار أو المسح.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>أي علامة NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>علامة NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>تصفية المدخلات (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>تصفية المخرجات والمدخلات</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>يعرض الصفوف والمدخلات المطابقة فقط. اضغط Ctrl+F للكتابة هنا.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>اختر الأجهزة التي تعرض المنتقيات مدخلاتها</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>المعروض في المنتقي</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>أي عبارة صوتية</value></data>
@@ -3884,6 +3942,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>إعادة ضبط التغذية</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>المعادل البارامتري</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>مرشحات لكل نطاق على صوت وحدة التحكم. تطبق قبل ترميز الصوت، فيمنع محدد الذروة أدناه النطاق المعزز من التشوه.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>تضخيم أولي، نطاقات، استيراد</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>التضخيم الأولي</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>المستوى الإجمالي قبل النطاقات. ملفات تعريف AutoEq تأتي بتضخيم أولي سالب حتى لا تتشوه تعزيزاتها، واستيراد أحدها يضبط هذا لك.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>تشغيل</value></data>
@@ -4110,7 +4169,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>إعادة الضبط إلى الفتح عند اللمس أو الانحراف.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>التوجيه بواسطة</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>المدخل الفعلي الذي يوجه الخلية المميزة ما دامت الطبقة تبقي هذه القائمة مفتوحة.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>يقرأ من وحدات التحكم الفعلية المعينة لهذه الخانة. الطبقة تفتح القائمة؛ وهذا المدخل يوجهها. ارتباطات الخلايا تحدد إخراجها.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>يقرأ من وحدات التحكم الفعلية المعينة لهذه الخانة. الطبقة تفتح القائمة، وهذا المدخل يوجهها. خلاياها تحدد ما تخرجه.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>حجم الأيقونة</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>حجم الأيقونة نسبة إلى حجم الأيقونة العادي في القائمة، من 25% إلى 200%. مسح الأيقونة يعيده إلى 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>يبقي ارتباط الخلية المميزة مضغوطا ما دام «مدخل الضغطة» مضغوطا. مركز شعاعي مميز يمكن أن ينطلق والعصا ساكنة.</value></data>
@@ -4233,7 +4292,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجع من إعداد Antoine Aflalo لتخطيط واجهة IPolicyConfig غير الموثقة في Windows، التي يستخدمها PadForge لإعادة تفعيل نقطة نهاية الصوت لوحدة تحكم. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>تنسيق ملف تعريف المعادل البارامتري الذي يستورده تبويب الصوت، من إعداد Jaakko Pasanen. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>تنسيق ملف تعريف المعادل البارامتري الذي يستورده «المعادل البارامتري» في وحدة التحكم، من إعداد Jaakko Pasanen. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>تقنيات SendInput التي تقف وراء وحدات ماكرو «كتلة نصية» وخطاف تركيبات لوحة المفاتيح: كتابة Unicode، وحدود الدفعات، ومفتاح قناع مفتاح Win، والإدخال المحقون الموسوم. GPL-2.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4444,6 +4503,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>الاتجاه</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>الخطوة</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>بكسل</value></data>
+  <data name="Common_To" xml:space="preserve"><value>إلى</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>المقبض</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} يضبط أزندة وحدة التحكم هذه.</value></data>
@@ -4488,7 +4548,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>لم يقطع المقبض مسافة كافية، لذا يبقى المدى كما كان. حرّكه إلى كل حافة أثناء المسح.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>أُغلق Falcon قبل انتهاء المسح.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>يتيح لعب الألعاب بجهاز Novint Falcon عبر Force Dimension SDK الذي تثبّته من Force Dimension. المقبض عصا، وأزرار القبضة الأربعة أزرار، ويطبّق PadForge اهتزاز اللعبة ومؤثراتها على المقبض على هيئة قوة. تحدد علامة تبويب ردود فعل القوة في كل خانة إحساس Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>يتيح لعب الألعاب بجهاز Novint Falcon عبر Force Dimension SDK الذي تثبّته من Force Dimension. المقبض عصا، وأزرار القبضة الأربعة أزرار، ويطبّق PadForge اهتزاز اللعبة ومؤثراتها على المقبض على هيئة قوة. تحدد بطاقة Novint Falcon في قسم «الاهتزاز واللمس» لكل وحدة تحكم إحساس Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>تشغيل Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>يفتح كل جهاز Falcon عبر dhd64.dll من Force Dimension. يصبح الجهاز المفتوح ملكًا لـ PadForge وحده، فلا يستطيع FalconJoyForce ولا أدوات Force Dimension فتحه ما دام هذا الخيار مفعّلًا. عند إيقافه يغلق PadForge كل أجهزة Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>تم تعيين مكتبة Falcon إلى {0}. يحمّلها PadForge خلال بضع ثوانٍ، ويُفتح جهاز Falcon المفتوح على نسخة أخرى من جديد على هذه النسخة.</value></data>
@@ -4656,7 +4716,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>لمدة محددة</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>حتى الإيقاف</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>المدة</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>يعمل على كل DualSense وDualSense Edge في هذه الخانة. تأثير الزناد الخاص باللعبة وتأثير تعديل اللعبة لهما الأولوية، ويعود إعداد تبويب الأزندة التكيفية عند انتهاء التأثير. تمتد المناطق من 0 عند السكون إلى 9 عند الضغط الكامل. قوس وعدو الخيل وآلة ليست تأثيرات رسمية في DualSense، وقد يزيلها تحديث للبرنامج الثابت. تشعر وحدات تحكم Xbox عند تفعيل تحويل اهتزازات الأزندة التكيفية بالتأثيرات الاهتزازية على هيئة اهتزاز في الزناد.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>يعمل على كل DualSense وDualSense Edge في هذه الخانة. تأثير الزناد الخاص باللعبة وتأثير تعديل اللعبة لهما الأولوية، ويعود إعداد بطاقة «الأزندة التكيفية» عند انتهاء التأثير. تمتد المناطق من 0 عند السكون إلى 9 عند الضغط الكامل. قوس وعدو الخيل وآلة ليست تأثيرات رسمية في DualSense، وقد يزيلها تحديث للبرنامج الثابت. تشعر وحدات تحكم Xbox عند تفعيل تحويل اهتزازات الأزندة التكيفية بالتأثيرات الاهتزازية على هيئة اهتزاز في الزناد.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} على {1} لمدة {2} مللي ثانية</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} على {1} أثناء الضغط</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} على {1} حتى الإيقاف</value></data>

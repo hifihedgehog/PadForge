@@ -120,6 +120,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Chipangizo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kuchokera ku</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Onjezani chipangizo</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi kontrola ya PlayStation yomwe ili ndi nambala imeneyo.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lumikizani</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kanani</value></data>
@@ -312,7 +313,7 @@
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Mtunda</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Liwiro</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Onjezani gwero</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Onjezani gwero</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Chotsani gwero ili</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_Label" xml:space="preserve"><value>Phatikizani</value></data>
@@ -331,6 +332,7 @@
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Gwero lachinayi</value></data>
   <data name="Curve_Delay" xml:space="preserve"><value>Kuchedwa</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Malo apakati</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Pakati</value></data>
   <data name="Pad_MouseMovement" xml:space="preserve"><value>Kuyenda kwa mbewa</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Mmwamba</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Pansi</value></data>
@@ -376,8 +378,8 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Batani {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Dinani {0} kwa {1}ms</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Dikirani {0}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Dinani {0} kwa {1} ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Dikirani {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Gwirani</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Mtundu</value></data>
@@ -827,7 +829,7 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Pansi pa sikirini</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Mawu</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Kutulutsa mawu</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Gwero la mawu, haptics, Voliyumu ya mahedifoni, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Gwero la mawu, Voliyumu ya mahedifoni, buffer, Njira yotulutsira</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Voliyumu yaikulu</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Bwezeretsani voliyumu yaikulu</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Yesani</value></data>
@@ -1033,7 +1035,6 @@
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Stick yakumanja</value></data>
   <data name="Menu_Half_Left" xml:space="preserve"><value>Theka lakumanzere</value></data>
   <data name="Menu_Half_Right" xml:space="preserve"><value>Theka lakumanja</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Malo pa sikirini</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Kukula</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Pakati</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Palibe</value></data>
@@ -1042,6 +1043,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Yesani</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Bwezeretsani trigger yakumanzere</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Bwezeretsani trigger yakumanja</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Yesani ma shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Imitsani</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Sizinatheke kuchita calibration. Ikani kontrola pansi ndipo yesaninso.</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Tulukani</value></data>
@@ -1313,9 +1315,28 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Kuwala kwa LED, Chitsanzo cha wosewera, Njira ya LED yosalankhula</value></data>
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kuwala kwa batani la Guide kapena Home</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mafayilo a zip a zithunzi za maselo a menyu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mphamvu ya mota iliyonse, kunjenjemera kwa trigger, kusinthanitsa mota</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Mphamvu ya trigger iliyonse, kusinthanitsa mota, kunjenjemera kwa adaptive trigger</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayunitsi, Malo, tembenuza ma axis, Real-World Calibration</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mphamvu ya mota iliyonse, kunjenjemera kwa trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Mphamvu ya trigger iliyonse, kusinthanitsa mota, kunjenjemera kwa adaptive trigger, Constant Trigger Force</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayunitsi, tembenuza ma axis, Real-World Calibration</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa kuzungulira kumodzi</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tembenuza, Momentum, Kuyankha, Kuthamanga, fling</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Kusuntha kwa pakati, mawonekedwe a deadzone ndi mitengo ya axis iliyonse, curve ya axis iliyonse, mtunda, kuyendetsa</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Makiyi ndi mbewa</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ma note ndi ma CC</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Manja</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Kutulutsa MIDI</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Sinthani dzina</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menyu yatsopano</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Chotsani selo lomaliza</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Sinthani selo</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Dzina</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Chithunzi</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Gwero, Threshold, Direction, Consume Trigger Buttons, Bwerezani</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Chipangizo ichi</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola yonse</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yaikidwa</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ikuyenda</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kumanzere</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kumanja</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Chotsani trigger</value></data>
 </root>

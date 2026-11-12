@@ -234,7 +234,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Gyae {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Twɛn {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Twɛn {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Kura</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Ahosu</value></data>
@@ -549,6 +549,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Sɔ hwɛ</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Reset benkum trigger</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Reset nifa trigger</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Sɔ shakers no hwɛ</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Gyae</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Fi mu</value></data>
   <data name="About_Libinput" xml:space="preserve">
@@ -717,6 +718,13 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide anaa Home button no hann</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Nnyegyeɛ zip files ma nnyegyeɛ macros</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mfonini zip files ma menu cells</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor biara ahoɔden, trigger rumble, motor nsesaeɛ</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Trigger biara ahoɔden, motor nsesaeɛ, adaptive trigger wosowosow</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor biara ahoɔden, trigger rumble, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Trigger biara ahoɔden, motor nsesaeɛ, adaptive trigger wosowosow, Constant Trigger Force</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Yi cell a ɛtwa toɔ no</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Din</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Adeyɛ</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, San yɛ</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player anaa Wiase</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Benkum</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Nifa</value></data>
 </root>

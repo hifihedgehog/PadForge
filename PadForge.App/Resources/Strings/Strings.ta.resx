@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>நகலெடு</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>ஒட்டு</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>நகலாக்கு</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>மறுபெயரிடு</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>இயக்கப்பட்டது</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>முடக்கப்பட்டது</value></data>
   <data name="Common_On" xml:space="preserve"><value>ஆன்</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>சாதனம்</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>உள்ளீட்டு மூலம்</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>சாதனத்தைச் சேர்</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>படம்</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>பட்டியல்</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>வெளியீடுகள்: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>அசைவு</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>ஒரு விசையை அல்லது சுட்டிப் பொத்தானைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ஒரு நோட்டை அல்லது ஸ்லைடரைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>அனைத்தையும் மேப் செய் என்பது A மற்றும் B தொடு வெளியீடுகளைத் தவிர்க்கும். ஒன்றைப் பிணைக்க, A அல்லது B-ஐச் சுற்றியுள்ள வளையத்தைக் கிளிக் செய்யவும்.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-க்காகக் கேட்கிறது. உங்கள் சாதனத்தில் உள்ளீட்டை அழுத்தவும்.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, உள்ளீட்டு மூலம்</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>மேலும் விருப்பங்கள்</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>குறைவான விருப்பங்கள்</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>முகப்புப் பொத்தான்</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ஷோல்டர் பொத்தான்</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>சிஸ்டம் பொத்தான்</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>பொத்தான்</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>திசைப் பேட்</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>ஸ்டிக்</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>டிரிகர்</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>டச்பேட்</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>அசைவு சென்சார்</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>விசைப்பலகை விசை</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>சுட்டிப் பொத்தான்</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>சுட்டி நகர்வு</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>உருள் சக்கரம்</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>கன்ட்ரோல் சேஞ்ச்</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>தொடு சென்சார்</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>அனலாக் இழுப்பு</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, இடது கை</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, வலது கை</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ஒரு ஜோடியின் இரு பொத்தான்களும் பிடிக்கப்படும்போது கேம் எந்த அழுத்தத்தைப் பார்க்கும்</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ஒரு ஜோடியின் இரு விசைகளும் பிடிக்கப்படும்போது கேம் எந்த அழுத்தத்தைப் பார்க்கும்</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>சிறிய ஸ்டிக் விலகலைப் பிடித்து, கேம்கள் கட்டுப்படுத்தி குறிப்புகளையே காட்டச் செய்யும்</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>செயலில்</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>இடதுபுறத்தில் ஒரு மேக்ரோவைத் தேர்ந்தெடுக்கவும், அல்லது புதிதாக உருவாக்க சேர் என்பதை அழுத்தவும்.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>பட்டியலில் ஒரு மேக்ரோவைத் தேர்ந்தெடுக்கவும், அல்லது புதிதாக உருவாக்க மேக்ரோக்கள் என்பதன் அருகிலுள்ள + பொத்தானை அழுத்தவும்.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>மூலம்</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>வெளியீடு</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>அணைந்துள்ளது</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>இம்பல்ஸ் டிரிகர்கள்</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>இம்பல்ஸ் டிரிகர்கள்</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்கும் வலிமை, மோட்டார் இடமாற்றம், அடாப்டிவ் டிரிகர் அதிர்வுகள்</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்கும் வலிமை, மோட்டார் இடமாற்றம், அடாப்டிவ் டிரிகர் அதிர்வுகள், நிலையான டிரிகர் ஃபோர்ஸ்</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான மோட்டார் கட்டளைகளை (Xbox இம்பல்ஸ் டிரிகர்கள்) மெய்நிகர் கட்டுப்படுத்தியிலிருந்து ஒதுக்கப்பட்ட இயற்பியல் Xbox One, Elite அல்லது Series கட்டுப்படுத்திக்கு அனுப்பும். கேம் இயக்கும் டிரிகர் அதிர்வு தானாகவே கடந்து செல்லும். கீழே உள்ள கட்டுப்பாடுகள் ஒவ்வொரு டிரிகருக்கும் அதன் வலிமையைக் கூட்டிக் குறைக்கும்.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>இடது டிரிகர்</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>வலது டிரிகர்</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ஒவ்வொரு ஸ்டிக்குக்குமான டெட்ஜோன்கள், ஆன்டி-டெட்ஜோன்கள், உணர்திறன் வளைவுகள், மைய ஆஃப்செட் அளவுத்திருத்தம். கீழே உள்ள ஒவ்வொரு பிரிவும் செயலிலுள்ள வெளியீட்டின் ஓர் அனலாக் ஸ்டிக்கைக் குறிக்கும். விரிவாக்கப்பட்ட சுயவிவரங்களில் நான்கு ஸ்டிக்குகள் வரை இருக்கலாம். வழக்கமான கேம்பேடுகளில் இரண்டு இருக்கும்.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>டிரிகர்கள்</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான டெட்ஜோன்கள், ஆன்டி-டெட்ஜோன்கள், அதிகபட்ச வீச்சு அளவுமாற்றம், உணர்திறன் வளைவுகள். கீழே உள்ள ஒவ்வொரு பிரிவும் செயலிலுள்ள வெளியீட்டின் ஒரு டிரிகர் அச்சைக் குறிக்கும். விரிவாக்கப்பட்ட சுயவிவரங்கள், ஸ்டிக்குகள் தாவலுடன் பகிரப்படும் எட்டு அச்சுகள் வரை கொண்டிருக்கலாம்.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான டெட்ஜோன்கள், ஆன்டி-டெட்ஜோன்கள், அதிகபட்ச வீச்சு அளவுமாற்றம், உணர்திறன் வளைவுகள். ஒவ்வொரு டிரிகர் கார்டும் செயலிலுள்ள வெளியீட்டின் ஒரு டிரிகர் அச்சைக் குறிக்கும். விரிவாக்கப்பட்ட சுயவிவரங்கள், ஸ்டிக்குகளுக்கும் டிரிகர்களுக்கும் இடையே பகிரப்படும் எட்டு அச்சுகள் வரை கொண்டிருக்கலாம்.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக்</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>கேமிலிருந்து வரும் ஃபோர்ஸ் ஃபீட்பேக் நிகழ்வுகளை PadForge எவ்வாறு அளவுமாற்றுகிறது என்பதையும், அவற்றை இயற்பியல் கட்டுப்படுத்தியின் அதிர்வு மோட்டார்கள் அல்லது ஹாப்டிக் ஆக்சுவேட்டர்களுக்கு எவ்வாறு அனுப்புகிறது என்பதையும் சரிசெய்யும். ஆடியோ அதிர்வு, கணினி ஆடியோவால் இயங்கும் ஓர் அடுக்கை அதன் மேல் சேர்க்கும்.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>இந்தச் சாதனம்</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>முழுக் கட்டுப்படுத்தி</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>அதிர்வு {0}-இல் ஹாப்டிக் துடிப்புகளாக இயங்கும், அவை நேரடியாகச் சாதனத்திற்கு அனுப்பப்படும். வலுவான அதிர்வு, வலுவான துடிப்பைத் தேர்ந்தெடுத்து அதை வேகமாக மீண்டும் மீண்டும் இயக்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ பயன்பாட்டில் {0}-க்கான ஹாப்டிக் ஃபீட்பேக் ஆஃப் செய்யப்பட்டுள்ளது, எனவே அங்கே அதை மீண்டும் ஆன் செய்யும் வரை அது எதையும் இயக்காது.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>இந்தச் சாதனம் இன்னும் பதிலளிக்கவில்லை. அது விழித்ததும் அதன் அதிர்வு இயங்கும்.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>மதர்போர்டுகள், கிராபிக்ஸ் கார்டுகள்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>மவுஸ்பேடுகள், ஹெட்செட்டுகள், ஹெட்செட் ஸ்டாண்டுகள்</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>லைட்பார்</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>கேம்கள் ஒளியமைப்பை எழுதும்போதெல்லாம் அவை பொறுப்பேற்கும்.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ஆறு இலக்க ஹெக்ஸ் நிறத்தை (RRGGBB அல்லது #RRGGBB) உள்ளிட்டு, பயன்படுத்த Enter-ஐ அழுத்தவும் அல்லது வெளியே கிளிக் செய்யவும்.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>இந்த நிறத்தை வண்ணத்தட்டிலிருந்து அகற்று</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>ஆடியோ அதிர்வை மீட்டமை</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} மீட்டமை</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>மேப்பிங்குகளை அழி</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>இந்தத் தாவலில் உள்ள ஒவ்வொரு மேப்பிங்கும் அழிக்கப்படும். மூல ஒதுக்கீடுகள், கூடுதல் மூலங்கள், ஒருங்கிணைப்பு அமைப்புகள் ஆகியவை இயல்புநிலைக்கு மீட்டமைக்கப்படும்.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>இந்த அடுக்கில் உள்ள ஒவ்வொரு மேப்பிங்கும் அழிக்கப்படும். மூல ஒதுக்கீடுகள், கூடுதல் மூலங்கள், ஒருங்கிணைப்பு அமைப்புகள் ஆகியவை இயல்புநிலைக்கு மீட்டமைக்கப்படும்.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>பிளேயர் வடிவம்</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ஒலியடக்க LED பயன்முறை</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED ஒளிர்வு</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-கள்</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>பொத்தான்கள்</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>இறக்குமதி செய்த சுயவிவரங்கள்…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>விரிவாக்கப்பட்ட கட்டுப்படுத்தி</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>பயனர் இறக்குமதி செய்த HIDMaestro சுயவிவரங்களை நிர்வகிக்கவும்: இணைக்கப்பட்ட சாதனத்திலிருந்து புதிய ஒன்றை எடுக்கவும், இருக்கும் ஒன்றை JSON-க்கு ஏற்றுமதி செய்யவும், அல்லது இனி தேவையில்லாததை நீக்கவும்.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>சாதனத்தை 1:1 குளோன் செய்</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தின் ஒவ்வொரு அச்சு, பொத்தான், ஹேட்டையும் அதே எண்ணுள்ள மெய்நிகர் வெளியீட்டுக்கு நேரடியாக மேப் செய்யும். தளவமைப்பைச் சாதனத்துக்கேற்ப அளவிட்டு, ஸ்லாட்டில் உள்ள இந்தச் சாதனத்தின் வரிசைகளை 1:1 பாஸ்த்ரூவால் மாற்றும்.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக்</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>சேனல்</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI வெளியீடு</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI சேனல் (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC எண்ணிக்கை</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC வெளியீடுகளின் எண்ணிக்கை (அதிகபட்சம் தொடக்க CC-ஐப் பொறுத்தது)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>இந்த விசை ஜோடியை அகற்றும்.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>எதிரெதிர் ஜோடியின் முதல் விசை.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>எதிரெதிர் ஜோடியின் இரண்டாவது விசை.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>ஒரே நேரத்தில் எதிரெதிர் முதன்மைத் திசைகள் (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>கட்டுப்படுத்தியை விழிப்பில் வை</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>சில கேம்கள் சுட்டி அல்லது விசைப்பலகை உள்ளீட்டைக் கண்டவுடனேயே அதிர்வை நிறுத்தி, தங்கள் பொத்தான் குறிப்புகளை மாற்றிவிடும். ஒரு சிறிய ஸ்டிக் விலகலைப் பிடித்து வைப்பதால், கேம் இந்தக் கட்டுப்படுத்தியையே செயலிலுள்ள சாதனமாகத் தொடர்ந்து கருதும். அந்த ஸ்டிக்கின் இரு அச்சுகளும் பிடித்து வைக்கப்படும் அளவுக்குக் கீழே இருக்கும்போது மட்டுமே இந்தப் பிடிப்பு செயல்படும், எனவே டிரிஃப்ட் ஆகும் ஸ்டிக்கும் ஓய்வில் இருப்பதாகவே கருதப்படும். ஏதேனும் ஓர் அச்சில் அந்த அளவைத் தாண்டும் உள்ளீடு பிடிப்பை விடுவித்து, மாற்றமின்றிக் கடந்து செல்லும். கேமில் எதுவும் நகராமல் இருக்க, விலகலைக் கேமின் சொந்த டெட்ஜோனுக்குக் கீழே வைத்திருக்கவும்.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>விழிப்பில் வை</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>கிளிக்கை மீட்டமை</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>பேட் பாதியை மீட்டமை</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>தூண்டல் பயன்முறையை மீட்டமை</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>கலங்களை மீட்டமை</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>செயல்பாட்டு டெட்ஜோனை மீட்டமை</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>மெனு வடிவியலை மீட்டமை</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>கலத்தை மீட்டமை</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>அனைத்தையும் அழி</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>மூலம்</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>மதிப்பு</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>விருப்பங்கள்</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>அச்சு-பொத்தான் டெட்ஜோன்</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>தலைகீழாக்கு</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>தேர்வுசெய்தால், விடுவித்ததும் அச்சு படிப்படியாக மையத்துக்குத் திரும்பும். தேர்வுநீக்கினால், அது தன் கடைசி நிலையிலேயே இருக்கும்.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>பிடித்திருக்கும்போது வரிசையின் வெளியீட்டைத் தலைகீழாக்கும் பொத்தான்</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>மாற்றி: பிடித்திருக்கும்போது, வரிசையின் வெளியீட்டின் குறி மாறும்.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ மூலத்தைச் சேர்</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>மூலத்தைச் சேர்</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>இந்த வரிசைக்கு மற்றொரு இயற்பியல் உள்ளீட்டைச் சேர்</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>இந்த மூலத்தை அகற்று</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>புள்ளி {0} / {1}, உள்ளீடு {2}%, வெளியீடு {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>மையத்தை அளவுத்திருத்து</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>மையப் புள்ளி</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>மையம்</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>டெட்ஜோன்</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>மையச் சமன்செய்தல், டெட்ஜோன் வடிவம் மற்றும் அச்சு மதிப்புகள், ஒவ்வொரு அச்சுக்கும் வளைவு, வீச்சு, ஸ்டீயரிங்</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>வீச்சு</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>ஒரு ஸ்டிக்கைச் சீர்செய்ய, எல்லையை அளவுத்திருத்து என்பதே பரிந்துரைக்கப்படும் வழி. ஸ்டிக் இயற்பியல் ரீதியாக எட்டக்கூடிய விளிம்பை அது சுற்றி அளந்து, பிறகு ஒவ்வொரு நிலையையும் அந்த அளவிட்ட விளிம்புக்கு ஏற்ப விகிதாசாரமாக மறுஅளவிடும். இதனால் ஒவ்வொரு கோணத்திலும் ஒவ்வொரு விலகலிலும் ஸ்டிக்கின் முழு இயல்பான நகர்வும், எதுவும் வெட்டப்படாமல் ஒரு சீரான வட்டத்தில் பொருந்தும். கீழே உள்ள நான்கு ஸ்லைடர்கள் முதன்மை அச்சுகளுக்கு மட்டுமே வரம்பிடும். வீச்சை வேண்டுமென்றே வரம்பிட அவற்றைப் பயன்படுத்தவும், அதைத் திருத்துவதற்கு அல்ல.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>எல்லையை அளவுத்திருத்து என்பது, ஸ்டிக் எட்டக்கூடிய விளிம்பை அளந்து, அதை ஒரு முழு வட்டமாக மறுவடிவமைக்கும். நான்கு ஸ்லைடர்கள் ஒவ்வொரு திசைக்கும் உச்ச வரம்பை மட்டுமே அமைக்கும்.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>மாதிரி எடுக்கிறது...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>மைய ஆஃப்செட் X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>மைய ஆஃப்செட் Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>பெயர்</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>தூண்டி</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>எப்போது</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>தூண்டல்</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>அழுத்தும்போது</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>விடும்போது</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>இந்த மேக்ரோ எந்த ஷிஃப்ட் அடுக்கைச் சேர்ந்தது என்பது. எந்த அடுக்கும் என்பது, செயலிலுள்ள அடுக்கு எதுவாக இருந்தாலும் தூண்டப்படும். அடிப்படை மற்றும் பெயரிடப்பட்ட அடுக்குகள், மேப்பிங் வரிசையைப் போலவே, அந்த அடுக்கு செயலில் இருக்கும்போது மட்டுமே தூண்டப்படும்.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>எந்த அடுக்கும்</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி செயலில் இருக்கும்போது தொடர்ந்து இயங்கும். தூண்டிப் பொத்தான் தேவையில்லை.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>செயல் தொடர்</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>செய்</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>அடுக்கு, மூலம், வரம்பு, திசை, தூண்டிப் பொத்தான்களைத் தடு, மீண்டும் செய்</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>செயலைச் சேர்</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>செயலைத் திருத்து</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>வகை</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>மெய்நிகர் பொத்தான்கள்</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>மெய்நிகர் அச்சுகள் &amp; வீல்</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>பொத்தான் {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1}ms அழுத்து</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1} ms அழுத்து</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} விடு</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>விசைகள் {0}, {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>விசைகள் {0}, {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>விசைகள் {0} விடு</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms காத்திரு</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms காத்திரு</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} என அமை</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>கணினி ஒலியளவு ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>கணினி ஒலியளவு ← {0} (அதிகபட்சம் {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>சுட்டி விடுவிப்பு {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>டச்பேட் மேலடுக்கை நிலைமாற்று</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>லைட்பார் நிறத்தை அமை</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட PlayStation ஸ்லாட்டின் லைட்பாரை, தேர்ந்தெடுத்த RGB நிறத்துக்கு மேலெழுதும். எதிர்வினை என்பது, உள்ளமைத்த தேய்வுக் காலத்தில் முழுத் தீவிரத்திலிருந்து கருப்புக்கு மங்கி, பிறகு ஒளியமைப்புத் தாவலின் அமைப்புகளுக்குத் திரும்பும். நிலைத்திருக்கும் என்பது, லைட்பார் மேலெழுதலை அழி செயல் இயங்கும் வரை நிறத்தை வைத்திருக்கும். கேம் எழுதுபவை மேலெழுதலை விடவும் முன்னுரிமை பெறும்.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>லைட்பார் ஃபிளாஷ் {0} (தேய்வு {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட PlayStation ஸ்லாட்டின் லைட்பாரை, தேர்ந்தெடுத்த RGB நிறத்துக்கு மேலெழுதும். எதிர்வினை என்பது, உள்ளமைத்த தேய்வுக் காலத்தில் முழுத் தீவிரத்திலிருந்து கருப்புக்கு மங்கி, பிறகு லைட்பார் கார்டின் அமைப்புகளுக்குத் திரும்பும். நிலைத்திருக்கும் என்பது, லைட்பார் மேலெழுதலை அழி செயல் இயங்கும் வரை நிறத்தை வைத்திருக்கும். கேம் எழுதுபவை மேலெழுதலை விடவும் முன்னுரிமை பெறும்.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>லைட்பார் ஃபிளாஷ் {0} (தேய்வு {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>அழிக்கும் வரை லைட்பார் {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>லைட்பார் மேலெழுதலை அழி</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>லைட்பார் மேலெழுதலை அழி</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டில் செயலிலுள்ள லைட்பார் மேலெழுதலை விடுவிக்கும். நிலைத்திருக்கும் லைட்பார் நிறத்தை அமை செயலை வேறொரு மேக்ரோ மூலம் நீக்க, அதனுடன் சேர்த்துப் பயன்படுத்தவும்.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>லைட்பார் பயன்முறையை அமை</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>லைட்பார் பயன்முறையை {0} என அமை</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டின் லைட்பார் பயன்முறையைக் குறிப்பிட்ட மதிப்புக்கு அமைக்கும். வேறொரு செயலோ பயனரோ மாற்றும் வரை, ஒளியமைப்புத் தாவலில் செய்த திருத்தம் போலவே நிலைத்திருக்கும்.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டின் லைட்பார் பயன்முறையைக் குறிப்பிட்ட மதிப்புக்கு அமைக்கும். வேறொரு செயலோ பயனரோ மாற்றும் வரை, லைட்பார் கார்டில் செய்த திருத்தம் போலவே நிலைத்திருக்கும்.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>லைட்பார் பயன்முறைகளைச் சுழற்று</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} லைட்பார் பயன்முறைகளில் சுழற்று</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ஸ்லாட்டின் லைட்பார் பயன்முறையைக் கீழே தேர்ந்தெடுத்த பயன்முறைகள் வழியாக முன்னேற்றும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு நகரும். சுழற்சி நிலை ஒவ்வொரு செயலுக்கும் தனியானது, பயன்பாட்டை மறுதொடக்கம் செய்யும்போது மீட்டமைக்கப்படும்.</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>தேய்வு</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>மங்கல்</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>வண்ணத்தட்டு</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>வண்ணத்தட்டு காலியாக இருந்தால், ஸ்லாட்டின் சொந்த ஒளியமைப்புத் தாவல் வண்ணத்தட்டு பயன்படுத்தப்படும்.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>வண்ணத்தட்டு காலியாக இருந்தால், ஸ்லாட்டின் லைட்பார் கார்டில் உள்ள வண்ணத்தட்டு பயன்படுத்தப்படும்.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>பயன்முறை</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>மேக்ரோ எந்த லைட்பார் பயன்முறைகளில் சுழல வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு முன்னேறும்.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>அதிர்வு</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>ஸ்லாட்டின் இயற்பியல் சாதன அதிர்வை ஒரு மேக்ரோவிலிருந்து இயக்கும். எதிர்வினை என்பது, பிடிப்புக் காலத்தில் முழு வலிமையில் இயங்கி, பிறகு மங்கல் காலத்தில் பூஜ்ஜியத்துக்கு மங்கும். நிலைத்திருக்கும் என்பது, அதிர்வை நிறுத்து செயல் இயங்கும் வரை முழு வலிமையில் நீடிக்கும். கேம் இயக்கும் அதிர்வின் மேல் max() மூலம் அடுக்கப்படுவதால், பயனர் இயக்கும் ஃபீட்பேக் எப்போதும் உணரப்படும்.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>அதிர்வுத் துடிப்பு {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>அதிர்வுத் துடிப்பு {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>அழிக்கும் வரை அதிர்வு {0}</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>அதிர்வை நிறுத்து</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>அதிர்வை நிறுத்து</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>டிரிகர் அதிர்வை நிறுத்து</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>ஸ்லாட்டில் செயலிலுள்ள மேக்ரோ டிரிகர் அதிர்வை விடுவிக்கும். நிலைத்திருக்கும் டிரிகர் அதிர்வு மேலெழுதலின் பிடிப்பை ஒரு மேக்ரோவிலிருந்து முடிக்க, அதனுடன் சேர்த்துப் பயன்படுத்தவும்.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>கைரோ செயல்நிலையை அமை</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ஸ்லாட்டின் கைரோ செயல்நிலையை ஒரு மேக்ரோவிலிருந்து அமைக்கும். நிலைமாற்று என்பது தற்போதைய நிலையை மாற்றும். ஆன் என்பது கைரோவைக் கட்டாயமாகச் செயல்படுத்தும். ஆஃப் என்பது அதைக் கட்டாயமாகச் செயல்நீக்கும். கைரோ தாவலின் செயல்படுத்தும் பொத்தானைச் சாராதது. இரு மூலங்களும் OR முறையில் ஒருங்கிணைகின்றன, எனவே ஒன்று செயல்படுத்தியதை மற்றொன்றால் முடக்க முடியாது.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ஸ்லாட்டின் கைரோ செயல்நிலையை ஒரு மேக்ரோவிலிருந்து அமைக்கும். நிலைமாற்று என்பது தற்போதைய நிலையை மாற்றும். ஆன் என்பது கைரோவைக் கட்டாயமாகச் செயல்படுத்தும். ஆஃப் என்பது அதைக் கட்டாயமாகச் செயல்நீக்கும். இயக்கம் &amp; தொடுதல் பிரிவில் உள்ள குறிவைப்புச் செயல்படுத்தும் பொத்தானைச் சாராதது. இரு மூலங்களும் OR முறையில் ஒருங்கிணைகின்றன, எனவே ஒன்று செயல்படுத்தியதை மற்றொன்றால் முடக்க முடியாது.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>பயன்முறை</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>நிலைமாற்று</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>ஆன்</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>டச்பேட்</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>டச்பேட்</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டச்பேடுக்குமான உள்ளீடு. சைகைகளும் (ஸ்வைப்கள், தட்டல்கள், பிஞ்ச்கள், வடிவங்கள்) தொடர் வெளியீட்டுப் பயன்முறைகளும் (மெய்நிகர் ஸ்டிக் / டி-பேட், சுட்டி), மேப்பிங்குகள் தாவலில் நீங்கள் பிணைக்கக்கூடிய மேப்பிங் மூலங்களாகின்றன.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டச்பேடுக்குமான உள்ளீடு. சைகைகளும் (ஸ்வைப்கள், தட்டல்கள், பிஞ்ச்கள், வடிவங்கள்) தொடர் வெளியீட்டுப் பயன்முறைகளும் (மெய்நிகர் ஸ்டிக் / டி-பேட், சுட்டி), எந்த வெளியீட்டுக்கும் நீங்கள் பிணைக்கக்கூடிய மேப்பிங் மூலங்களாகின்றன.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>டச்பேட்</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>டச்பேட் எண்</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>கீழே உள்ள அமைப்புகள் இந்தக் கட்டுப்படுத்தியின் எந்த டச்பேடுக்குப் பொருந்தும் என்பது. ஒவ்வொரு டச்பேடும் தனக்கெனச் சைகைகள், சுட்டி உணர்வு, சுட்டிக்குறிப் பகுதி ஆகியவற்றை வைத்திருக்கும்.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>கைரோ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>இந்தப் பேடின் அசைவு சென்சார் சுட்டி மற்றும் ஸ்டிக் வெளியீட்டை எவ்வாறு இயக்குகிறது என்பதைச் சரிசெய்யவும். ஓய்வுநிலை டிரிஃப்டைப் பூஜ்ஜியமாக்க சமதளப் பரப்பில் அளவுத்திருத்தவும், பிறகு உணர்திறன், மென்மையாக்கம், செயல்படுத்தல் விதிகளை உங்கள் விருப்பப்படி அமைக்கவும்.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>அளவுத்திருத்தம்</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>நேரலைக் கைரோஸ்கோப் மற்றும் முடுக்கமானி அளவீடுகள்</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>உணர்திறன்</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>அலகுகள், ஆய வெளி, அச்சுத் தலைகீழாக்கம், நிஜ உலக அளவுத்திருத்தம்</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>அலகுகள், அச்சுத் தலைகீழாக்கம், நிஜ உலக அளவுத்திருத்தம்</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>ஒரு திருப்பத்துக்கு ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>துலங்கல் வடிவமைப்பு</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>டெட்ஜோன், மென்மையாக்கம், முடுக்கம், வெளியீட்டு வளைவு</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>குறிப்புச் சட்டகம்</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>லோக்கல், பிளேயர் அல்லது வேர்ல்டு</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>ஆய வெளி</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>கைரோ அசைவு எவ்வாறு புரிந்துகொள்ளப்படுகிறது என்பது. லோக்கல் என்பது கட்டுப்படுத்தியின் மூல அச்சுகளைப் பயன்படுத்தும். பிளேயர் என்பது கிடைமட்ட அசைவை நிஜ உலகச் செங்குத்தின் (ஈர்ப்பு) மீது வீழ்த்தும், அதனால் நீங்கள் பேடை எப்படிப் பிடித்தாலும் அதே மணிக்கட்டுத் திருப்பம் எப்போதும் கேமராவைத் திருப்பும். வேர்ல்டு என்பது கூடுதலாகச் செங்குத்து அசைவையும் உலக அச்சுகளின் மீது மறுவீழ்த்தும்.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>பிடிக்கும் விதம்</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>நிமிர்ந்த நிலை</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>பிடிப்பு முறை</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>கட்டுப்படுத்தி எவ்வாறு பிடிக்கப்படுகிறது என்பது. மேப்பிங்குகளுக்காகவும் மெய்நிகர் கட்டுப்படுத்தி தெரிவிக்கும் அசைவுக்காகவும் கைரோ, முடுக்கமானி, ஈர்ப்பு ஆகியவற்றை ஒன்றாகச் சுழற்றும். டி-பேடும் அதே சட்டகத்தைப் பின்பற்றும், எனவே அந்தப் பிடிப்பில் மேல் என்பது மேலாகவே இருக்கும்.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>கட்டுப்படுத்தி எவ்வாறு பிடிக்கப்படுகிறது என்பது</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>நேரியல்</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>தீவிரமானது</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>தளர்வானது</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>செயல்படுத்தும் திசையை மீட்டமை</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>அசைவு பாஸ்த்ரூ</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>கைரோ சரிசெய்தலை அசைவு பாஸ்த்ரூவுக்குப் பயன்படுத்து</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>இந்தத் தாவலின் விருப்பத்தேர்வான கைரோ சரிசெய்தலை (டெட்ஜோன், உணர்திறன், மென்மையாக்கம், துலங்கல் வளைவு, தலைகீழாக்கல்), மெய்நிகர் கட்டுப்படுத்தி கேமுக்கு அல்லது எமுலேட்டருக்குத் தெரிவிக்கும் அசைவின் மீது இயக்கும். அளவுத்திருத்திய அளவீட்டை மட்டும் அனுப்பி, கேம் தன் சொந்த உணர்திறனையும் மென்மையாக்கத்தையும் பயன்படுத்த வேண்டுமென்றால் இதை ஆஃப் செய்யவும். எதுவாயினும், அளவுத்திருத்த டிரிஃப்ட் திருத்தம் எப்போதும் பொருந்தும்.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>கைரோ கார்டுகளின் விருப்பத்தேர்வான சரிசெய்தலை (டெட்ஜோன், உணர்திறன், மென்மையாக்கம், துலங்கல் வளைவு, தலைகீழாக்கல்), மெய்நிகர் கட்டுப்படுத்தி கேமுக்கு அல்லது எமுலேட்டருக்குத் தெரிவிக்கும் அசைவின் மீது இயக்கும். அளவுத்திருத்திய அளவீட்டை மட்டும் அனுப்பி, கேம் தன் சொந்த உணர்திறனையும் மென்மையாக்கத்தையும் பயன்படுத்த வேண்டுமென்றால் இதை ஆஃப் செய்யவும். எதுவாயினும், அளவுத்திருத்த டிரிஃப்ட் திருத்தம் எப்போதும் பொருந்தும்.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>பாஸ்த்ரூ சரிசெய்தலை மீட்டமை</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான கைரோ உணர்திறன் பெருக்கி. 1.0 = இன்ஜினின் இயல்புநிலை (500°/s → முழு விலகல்). 1.0-க்கு மேலான மதிப்புகள் அதிக உணர்திறன் கொண்டவை. 1.0-க்குக் கீழான மதிப்புகள் குறைந்த உணர்திறன் கொண்டவை.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>முழுச் சாய்ப்பு வீச்சை மீட்டமை</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>சாய்ப்பு டெட்ஜோனை மீட்டமை</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>கைரோ சாய்ப்பை மீட்டமை</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ஒன்றுக்கு மேற்பட்ட மூலங்கள் செயலில் இருக்கும்போது இந்த வரிசையின் மூலங்கள் எவ்வாறு ஒன்றிணையும் என்பது. கீழே உள்ள விவரப் பட்டையில் இதை மாற்ற, வரிசையைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ஒன்றுக்கு மேற்பட்ட மூலங்கள் செயலில் இருக்கும்போது இந்த வரிசையின் மூலங்கள் எவ்வாறு ஒன்றிணையும் என்பது. ஒருங்கிணை என்பதில் இதை மாற்ற, வரிசையைத் திறக்கவும்.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>உந்தம்</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>டிராக்பால் பயன்முறை: ஸ்டிக்கைச் சுண்டி விட்டால், சுட்டிக்குறி தொடர்ந்து நகர்ந்து மெதுவாக நிற்கும். ஸ்டிக்கை மீண்டும் நகர்த்தினால் அது பிடிபடும்.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>சுண்டிய பிறகு சுட்டிக்குறி எவ்வளவு தூரம் சறுக்கிச் செல்லும் என்பது. வீச்சின் உச்சத்தில், நீங்கள் ஸ்டிக்கை மீண்டும் நகர்த்தும் வரை அது தொடர்ந்து செல்லும்.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>டிரிகர் அச்சு</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ஒவ்வொரு மோட்டாருக்கும் வலிமை, டிரிகர் அதிர்வு, மோட்டார் இடமாற்றம்</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ஒவ்வொரு மோட்டாருக்கும் வலிமை, டிரிகர் அதிர்வு, ஸ்டீயரிங் கோண அதிர்வு, நிலையான ஃபோர்ஸ்</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ஒட்டுமொத்த கெயின்</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>இடது மோட்டார்</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>வலது மோட்டார்</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் டிரிகர் மோட்டார்கள் இல்லை, எனவே Xbox இம்பல்ஸ் டிரிகர்களைப் பயன்படுத்தும் கேம்களின் அதிர்வு உணரப்படாது. அதற்குப் பதிலாக ஒவ்வொரு டிரிகர் சேனலையும் அதே பக்கத்திலுள்ள முதன்மை மோட்டாருடன் சேர்க்கும்.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>அதிர்வைச் சோதி</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>மோட்டார் செயல்பாடு</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>இடது</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>வலது</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>நீங்கள் ஆஃப் செய்யும் வரை இந்தச் சாதனத்துக்குத் தொடர்ச்சியான ஃபோர்ஸைச் செலுத்தும். எந்த மூலத்திலிருந்தும் வரும் கேம் இயக்கும் ஃபோர்ஸ், அது செயலில் இருக்கும்போது இதை மேலெழுதும், கேம் நிறுத்தியதும் இது மீண்டும் தொடரும்.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>பதிவுசெய்ய பொத்தான்களை அழுத்தவும் அல்லது ஓர் அச்சை/டிரிகரை நகர்த்தவும். அச்சுகள் 50%-க்கு மேல் விலகும்போது கண்டறியப்படும்.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>பட்டியலிலிருந்து சேர்</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>தூண்டி உள்ளீட்டைப் பதிவுசெய்வதற்குப் பதிலாக, ஸ்லாட்டின் சாதனங்களிலிருந்து அதைத் தேர்ந்தெடுக்கவும். டச்பேட் தாவலில் இயக்கப்பட்ட டச்பேட் சைகைகள் இங்கே தோன்றும்.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>தூண்டியை அழி</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>தூண்டி உள்ளீட்டைப் பதிவுசெய்வதற்குப் பதிலாக, ஸ்லாட்டின் சாதனங்களிலிருந்து அதைத் தேர்ந்தெடுக்கவும். இயக்கம் &amp; தொடுதல் பிரிவில் இயக்கப்பட்ட டச்பேட் சைகைகள் இங்கே தோன்றும்.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>உள்ளீட்டை அகற்று</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>ஏதேனும் உள்ளீட்டை அழுத்தவும்…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>தலைகீழ்</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ஒரு மெய்நிகர் கட்டுப்படுத்தியின் மேப் செய்யப்பட்ட சாதனங்கள் அனைத்தும் ஆஃப்லைனில் இருக்கும்போது, அது அழிக்கப்படுவதற்கு முன் உள்ள வினாடிகள். 0 எனில் முடக்கப்படும். அதே வகையில் மீதமுள்ள கட்டுப்படுத்திகள் இடைவெளியை நிரப்ப மேலே நகர்ந்து, குறைந்த எண் ஸ்லாட்டுகளுடன் மீண்டும் பிணையும்.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>வினாடிகள் (0 = ஒருபோதும் இல்லை)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ ஷிஃப்ட் அடுக்கு</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>அடுக்கைச் சேர்</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ஒரு ஷிஃப்ட் அடுக்கைச் சேர்க்கும். ஒரு பொத்தான் பிடிக்கப்பட்டிருக்கும்போது அல்லது நிலைமாற்றப்படும்போது செயல்படும் இரண்டாவது மேப்பிங் அட்டவணை.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>அடிப்படை</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>அசைவு ஸ்டீயரிங்</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° முதல் {1}° வரை</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>சாய்வு உள் டெட்ஜோன், சாய்வு வெளி டெட்ஜோன், கட்டுப்படுத்தித் திசையமைவு</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>அசைவுச் சாய்வு உள்ளீட்டுக்கான அமைப்புகள்: கட்டுப்படுத்தியை ஒரு வீல் போலச் சாய்க்கவும். மேப்பிங்குகளில் உள்ள உள்ளீட்டுக் கீழ்த்தோன்றல் பட்டியலிலிருந்து "அசைவுச் சாய்வு" என்பதை ஒரு ஸ்டிக் அச்சுக்கு மேப் செய்யவும்.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>அசைவுச் சாய்வு உள்ளீட்டுக்கான அமைப்புகள்: கட்டுப்படுத்தியை ஒரு வீல் போலச் சாய்க்கவும். பட்டன்கள் பிரிவில் "அசைவுச் சாய்வு" என்பதை ஒரு ஸ்டிக் அச்சுக்கு மேப் செய்யவும்.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>அசைவு ஸ்டீயரிங்கை மீட்டமை</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் (வலது ஸ்டிக்)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் (இடது ஸ்டிக்)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>வலது ஸ்டிக் வளையம்</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக்</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் உள்ளீடுகளுக்கான சரிசெய்தல்</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் உள்ளீடுகளுக்கான அமைப்புகள்: ஸ்டிக்கை ஒரு திசையில் காட்டினால் கேமரா அதற்கேற்பத் திரும்பும், நுணுக்கமாகத் திருப்ப விளிம்பைச் சுற்றி நகர்த்தவும். மேப்பிங்குகளில் உள்ள உள்ளீட்டுக் கீழ்த்தோன்றல் பட்டியலிலிருந்து, எந்த அடுக்கிலும், "ஃபிளிக் ஸ்டிக் (வலது ஸ்டிக்)" என்பதைச் சுட்டி X-க்கு மேப் செய்யவும்.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக் உள்ளீடுகளுக்கான அமைப்புகள்: ஸ்டிக்கை ஒரு திசையில் காட்டினால் கேமரா அதற்கேற்பத் திரும்பும், நுணுக்கமாகத் திருப்ப விளிம்பைச் சுற்றி நகர்த்தவும். விசைகள் &amp; சுட்டி பிரிவில், எந்த அடுக்கிலும், "ஃபிளிக் ஸ்டிக் (வலது ஸ்டிக்)" என்பதைச் சுட்டி X-க்கு மேப் செய்யவும்.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ஃபிளிக் ஸ்டிக்கை மீட்டமை</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360°-க்கான புள்ளிகள்</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ஒரு முழு 360° கேமரா திருப்பத்துக்கான சுட்டி எண்ணிக்கைகள். கேமின் சுட்டி உணர்திறனைப் பொறுத்தது: ஃபிளிக் குறைவாகச் சுழன்றால் இதை உயர்த்தவும், அதிகமாகச் சுழன்றால் குறைக்கவும்.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ஆடியோ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>மேக்ரோ ஒலிகளும் பிரதிபலிக்கப்படும் கணினி ஆடியோவும், தேர்ந்தெடுத்த கட்டுப்படுத்தியின் உள்ளமைந்த ஸ்பீக்கர் வழியாக, USB அல்லது Bluetooth மூலம் ஒலிக்கும். மேலே உள்ள கீழ்த்தோன்றல் பட்டியலில் சாதனத்தைத் தேர்ந்தெடுக்கவும். இங்குள்ள ஒவ்வொரு அமைப்பும் அதைப் பின்பற்றும்.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ஒலி வெளியீடு</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>பிரதிபலிப்பு மூலம், ஹாப்டிக்ஸ், ஹெட்ஃபோன் ஒலியளவு, கிராஸ்ஃபீட், Parametric EQ, லிமிட்டர்</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>பிரதிபலிப்பு மூலம், ஹெட்ஃபோன் ஒலியளவு, பஃபர், வெளியீட்டுப் பாதை</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ஒலிகள் தானாகவே தேர்ந்தெடுத்த கட்டுப்படுத்திக்குச் செல்லும். USB வழியாக, பேடின் சொந்த ஆடியோ எண்ட்பாயிண்ட் வன்பொருள் கன்டெய்னர் மூலம் பொருத்தப்படும். Bluetooth வழியாக, ஆடியோ Sony HID ஃப்ரேம்களில் ஸ்ட்ரீம் செய்யப்படும்.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>பிரதிபலிப்பு மூலம்</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>எந்தப் பிளேபேக் சாதனத்தைக் கட்டுப்படுத்தி ஸ்பீக்கருக்குப் பிரதிபலிக்க வேண்டும் என்பது. குறிப்பிட்ட ஒலிகளைத் தனிப் பிளேபேக் சாதனத்துக்கு அனுப்பும் கேம்கள் இதை இலக்காகக் கொள்ளலாம்.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>அனைத்து ஒலிகளையும் நிறுத்து</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>இந்தப் பேடில் உள்ள ஒவ்வொரு மேக்ரோ ஒலியையும் நிறுத்து</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ஒலி மேக்ரோக்கள்</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ஒலிகள் மேக்ரோக்களால் இயக்கப்படுகின்றன: ஒரு தூண்டி (பொத்தான் அழுத்தம், விடுவிப்பு, பிடிப்பு அல்லது சூத்திரம்) மற்றும் ஓர் ஒலியை இயக்கு செயல். அவற்றை இங்கே அல்லது மேக்ரோக்கள் தாவலில் உருவாக்கவும். தாமதங்கள், மீள்செயல்கள், நிலைமாற்றங்கள் அனைத்தும் வேலை செய்யும்.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ஒலிகள் மேக்ரோக்களால் இயக்கப்படுகின்றன: ஒரு தூண்டி (பொத்தான் அழுத்தம், விடுவிப்பு, பிடிப்பு அல்லது சூத்திரம்) மற்றும் ஓர் ஒலியை இயக்கு செயல். அவற்றை இங்கே அல்லது மேக்ரோக்கள் &amp; மெனுக்கள் பிரிவில் உருவாக்கவும். தாமதங்கள், மீள்செயல்கள், நிலைமாற்றங்கள் அனைத்தும் வேலை செய்யும்.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>புதிய ஒலி மேக்ரோ</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>இன்னும் ஒலி மேக்ரோக்கள் இல்லை. ஒன்றை உருவாக்கி, ஓர் ஒலிக் கோப்பையும் தூண்டியையும் தேர்ந்தெடுக்கவும்.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>இந்த மேக்ரோவை மேக்ரோக்கள் தாவலில் திற</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>இந்த மேக்ரோவை மேக்ரோக்கள் &amp; மெனுக்கள் பிரிவில் திற</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ஒலி மேக்ரோ {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>ஒலியை இயக்கு</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>இந்தப் பேடின் வெளியீட்டுச் சாதனத்தில் ஓர் ஒலிக் கோப்பை (.wav, .mp3, .m4a, .aac, .wma, .flac) இயக்கும்</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>இயங்குகிறது</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>இயங்குகிறது, இயக்கி இணைக்கப்பட்டது</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>இயங்குகிறது, கட்டுப்படுத்திகள் செயலில்</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR நிறுவப்பட்டது</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR நிறுவப்படவில்லை</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR இயங்குகிறது</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR இயங்குகிறது, இயக்கி இணைக்கப்பட்டது</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR இயங்குகிறது, கட்டுப்படுத்திகள் செயலில்</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>மற்றொரு OpenVR இயக்கி HIDMaestro-வின் இயக்கிப் பெயரைப் பயன்படுத்துகிறது, எனவே SteamVR அதை PadForge-இன் இயக்கிக்குப் பதிலாக ஏற்றலாம், மெய்நிகர் VR கட்டுப்படுத்திகள் தோன்றாது. இதைச் சரிசெய்ய அந்த இயக்கியை அகற்றவும்: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>சீரியல் கட்டுப்படுத்தி (COM போர்ட்)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>நுகர்வோர் {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>சுட்டி</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>சுட்டிச் சைகைகள்</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>சைகைப் பொத்தானைப் பிடித்து, சுண்டி, விடும்போது ஒரு செயல் தூண்டப்படும்: இடது, வலது, மேல், கீழ், அல்லது சுண்டுதல் தூரத்துக்குக் கீழே எனில் சாதாரண கிளிக். ஐந்து சைகைகளையும் மேப்பிங்குகள் தாவலில் மேப் செய்யவும் அல்லது மேக்ரோ தூண்டிகளாகப் பயன்படுத்தவும்.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>சைகைப் பொத்தானைப் பிடித்து, சுண்டி, விடும்போது ஒரு செயல் தூண்டப்படும்: இடது, வலது, மேல், கீழ், அல்லது சுண்டுதல் தூரத்துக்குக் கீழே எனில் சாதாரண கிளிக். ஐந்து சைகைகளையும் எந்த வெளியீட்டுக்கும் மேப் செய்யவும் அல்லது மேக்ரோ தூண்டிகளாகப் பயன்படுத்தவும்.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>சுட்டிச் சைகைகளை இயக்கு</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டில் இந்தச் சுட்டிக்கான சைகை அறிதலைத் தயார்நிலையில் வைக்கும். சைகை செய்யும்போதும் சைகைப் பொத்தான் தன் வழக்கமான கிளிக்கைத் தக்கவைக்கும், எனவே நீங்கள் வேறு எதற்கும் மேப் செய்யாத ஒரு பக்கப் பொத்தானைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>சைகைப் பொத்தான்கள்</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>அடுக்கை மாற்று</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma நிறத்தை அமை</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>செயல் இயங்கும்போது, இந்த மெய்நிகர் கட்டுப்படுத்திக்கு ஒதுக்கப்பட்ட Razer சாதனங்களுக்கும், அதே வகையான மற்ற எல்லா Razer சாதனங்களுக்கும் ஒரே நிறத்தைத் தீட்டும்.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>மேலே உள்ள கால அளவுக்கு, இந்த மெய்நிகர் கட்டுப்படுத்திக்கு ஒதுக்கப்பட்ட Razer சாதனங்களிலும் அதே வகையான மற்ற எல்லா Razer சாதனங்களிலும், அல்லது Razer Chroma வரிசை ஒதுக்கப்பட்டிருந்தால் எல்லா Razer சாதனங்களிலும், இந்த நிறத்தைத் தீட்டும். இது எந்த மெய்நிகர் கட்டுப்படுத்தியின் ஒளியமைப்புத் தாவலையும் மேலெழுதி, பிறகு ஒளியமைப்பைத் திருப்பி ஒப்படைக்கும். தூண்டி பிடிக்கப்பட்டிருக்கும் வரை நிறத்தை வைத்திருக்க, பிடித்திருக்கும்போது என்பதை விடும் வரை என்பதுடன் பயன்படுத்தவும். இரண்டு மேக்ரோக்கள் ஒரே நேரத்தில் தீட்டும்போது, பட்டியலில் கீழே உள்ளதே முன்னுரிமை பெறும், எனவே முழு அழுத்த மேக்ரோவை அதன் மென் அழுத்த இணைக்குக் கீழே வைக்கவும். இரண்டு மெய்நிகர் கட்டுப்படுத்திகளில் உள்ள மேக்ரோக்கள் ஒரே வகையான Razer சாதனத்தைத் தீட்டும்போது, சிறிய பிளேயர் எண்ணே முன்னுரிமை பெறும். Razer Synapse இயங்கிக்கொண்டிருக்க வேண்டும்.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>மேலே உள்ள கால அளவுக்கு, இந்த மெய்நிகர் கட்டுப்படுத்திக்கு ஒதுக்கப்பட்ட Razer சாதனங்களிலும் அதே வகையான மற்ற எல்லா Razer சாதனங்களிலும், அல்லது Razer Chroma வரிசை ஒதுக்கப்பட்டிருந்தால் எல்லா Razer சாதனங்களிலும், இந்த நிறத்தைத் தீட்டும். எந்த மெய்நிகர் கட்டுப்படுத்தியும் ஒளி &amp; ஒலி பிரிவில் அமைக்கும் ஒளியமைப்பை இது மேலெழுதி, பிறகு ஒளியமைப்பைத் திருப்பி ஒப்படைக்கும். தூண்டி பிடிக்கப்பட்டிருக்கும் வரை நிறத்தை வைத்திருக்க, பிடித்திருக்கும்போது என்பதை விடும் வரை என்பதுடன் பயன்படுத்தவும். இரண்டு மேக்ரோக்கள் ஒரே நேரத்தில் தீட்டும்போது, பட்டியலில் கீழே உள்ளதே முன்னுரிமை பெறும், எனவே முழு அழுத்த மேக்ரோவை அதன் மென் அழுத்த இணைக்குக் கீழே வைக்கவும். இரண்டு மெய்நிகர் கட்டுப்படுத்திகளில் உள்ள மேக்ரோக்கள் ஒரே வகையான Razer சாதனத்தைத் தீட்டும்போது, சிறிய பிளேயர் எண்ணே முன்னுரிமை பெறும். Razer Synapse இயங்கிக்கொண்டிருக்க வேண்டும்.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast திரையைக் காட்டு</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு உள்ளீடு தரும் Bliss-Box போர்ட்டில் உள்ள ஒவ்வொரு Dreamcast பேடின் VMU-விலும் படங்களைக் காட்டி, பிறகு ஒவ்வொரு போர்ட்டையும் அதன் சொந்தத் திரை அமைப்புக்குத் திருப்பும்.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast படங்களைக் காட்டு: {0} × {1} ms, மீள்செயல் எண்ணிக்கை {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>அழுத்தும்போது பேடின் திரண்ட கைரோ குறிவைப்புக் குறிப்புகளைப் பூஜ்ஜியமாக்கும். மென்மையாக்க வரலாறு அழிக்கப்படும், அசைவுச் சாய்வின் நடுநிலை மீண்டும் பதிவுசெய்யப்படும், ஈர்ப்பு மதிப்பீடு கட்டுப்படுத்தியின் தற்போதைய நிலையிலிருந்து மீண்டும் தொடங்கும், அசைவு பிட்ச், யா, ரோல் வரிசைகள் உருவாக்கிய திருப்பம் நீக்கப்படும்.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(எந்தச் சாதனமும்)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>மெனுக்கள்</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>மெனுக்கள் ஓர் இயற்பியல் ஸ்டிக்கை அல்லது டச்பேடைத் திரையில் தோன்றும் வளையமாக அல்லது கட்டமாக மாற்றும். ஒரு மெனுவைச் சேர்த்து, அதை எது திறக்கும் என்பதைத் தேர்ந்தெடுத்து, பிறகு ஒவ்வொரு கலத்துக்கும் லேபிள் இட்டு ஒரு பிணைப்பைக் கொடுக்கவும்.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>மெனுக்கள் ஓர் இயற்பியல் ஸ்டிக்கை அல்லது டச்பேடைத் திரையில் தோன்றும் வளையமாக அல்லது கட்டமாக மாற்றும். ஒன்றை உருவாக்க மெனுக்கள் என்பதன் அருகிலுள்ள + பொத்தானை அழுத்தி, அதை எது திறக்கும் என்பதைத் தேர்ந்தெடுத்து, பிறகு ஒவ்வொரு கலத்துக்கும் ஒரு பெயரையும் ஒரு செயலையும் கொடுக்கவும்.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>புதிய மெனு</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>மெனு {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>மெனு பெயர்</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>இயக்கப்பட்டது</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>திறத்தல்</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>பாணி</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>ஆரவழி வளையம்</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>தொடு கட்டம்</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>கலங்கள்</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>மையக் கலம்</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>லேபிள்களைக் காட்டு</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>திரை இருப்பிடம்</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>அளவு</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>ஒளிபுகாமை</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>செயல்பாட்டு டெட்ஜோன்</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>கலப் பிணைப்புகள்</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>கலம் {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>கலத்தைச் சேர்</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>கடைசிக் கலத்தை அகற்று</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>கலத்தைத் திருத்து</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>பெயர்</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>செயல்</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>ஐகான்</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>மையம்</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>ஏதுமில்லை</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>விசைப்பலகை விசை</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>கிளிக் விடப்படும்போது ஒருமுறை தூண்டப்படும்: கலத்தைச் சுட்டி, ஸ்டிக்கை அல்லது டிராக்பேடைக் கிளிக் செய்து, பிறகு கிளிக்கை விடவும்.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>நீங்கள் விடும்போது ஒருமுறை தூண்டப்படும்: பேடிலிருந்து விரலை எடுக்கவும், அல்லது ஒரு கலம் தனிப்படுத்தப்பட்டிருக்கும்போது ஸ்டிக்கை மையத்துக்குத் திரும்ப விடவும்.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>கலம் தனிப்படுத்தப்பட்டிருக்கும் முழு நேரமும் பிணைப்பு பிடித்து வைக்கப்படும். கிளிக் தேவையில்லை.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>மெனுவில் எத்தனை கலங்கள் உள்ளன என்பது. ஆரவழி வளையத்துக்கு இது வளையத்தை மட்டுமே கணக்கிடும்; மையக் கலம் தனியானது.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>ஒரு மையக் கலத்தைச் சேர்க்கும், ஸ்டிக் அல்லது விரல் செயல்பாட்டு டெட்ஜோனுக்குள் ஓய்வில் இருக்கும்போது அது தேர்ந்தெடுக்கப்படும்.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>ஸ்டிக்குகளுக்கு, மெனு திறந்து வளையக் கலங்கள் தனிப்படுத்தப்படுவதற்கு முன் எவ்வளவு தூரம் தள்ள வேண்டும் என்பது. ஆரவழி மெனுக்களில் இது ஸ்டிக்குகள், டச்பேடுகள் இரண்டுக்குமான மையப் பகுதியும் ஆகும்: அதற்குள், மையக் கலம் இருந்தால் அது தேர்ந்தெடுக்கப்படும்.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>திரை மேலடுக்கில் ஒவ்வொரு கலத்தின் லேபிளையும் வரையும்.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>மேலடுக்கின் அளவு, அதன் இயல்பான அளவின் சதவீதத்தில்.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>மேலடுக்கின் ஒளிபுகாமை. 100% என்பது முழுமையாகத் திடமானது.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>மேலடுக்கில் இந்தக் கலத்தில் காட்டப்படும் உரை.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>இந்தக் கலம் தூண்டப்படும்போது என்ன செய்யும் என்பது: "விசைப்பலகை விசை" ஒரு விசைப்பலகை விசையை அழுத்தும், "கட்டுப்படுத்திப் பொத்தான்" இந்த ஸ்லாட்டின் மெய்நிகர் கட்டுப்படுத்தியில் ஒரு பொத்தானை அழுத்தும். "ஏதுமில்லை" என அமைக்கப்பட்ட கலமும், மேப்பிங்குகள் வரிசைகளுக்கும் மேக்ரோ தூண்டிகளுக்கும் மெனு-உருப்படி மூலமாகத் தூண்டப்படும்.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தியின் தளவமைப்பிலிருந்து அல்லாமல், இந்த ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். கீழே உள்ள கலப் பிணைப்புகளே மெனுவின் வெளியீடு.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>இந்தக் கலம் தூண்டப்படும்போது என்ன செய்யும் என்பது: "விசைப்பலகை விசை" ஒரு விசைப்பலகை விசையை அழுத்தும், "கட்டுப்படுத்திப் பொத்தான்" இந்த ஸ்லாட்டின் மெய்நிகர் கட்டுப்படுத்தியில் ஒரு பொத்தானை அழுத்தும். "ஏதுமில்லை" என அமைக்கப்பட்ட கலமும், மேப்பிங்குகளுக்கும் மேக்ரோ தூண்டிகளுக்கும் மெனு-உருப்படி மூலமாகத் தூண்டப்படும்.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தியின் தளவமைப்பிலிருந்து அல்லாமல், இந்த ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். மெனு எதை வெளியீடாகத் தரும் என்பதைக் கீழே உள்ள கலங்கள் சொல்லும்.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>தனிப்பயன் அச்சுகள்</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>செலுத்தும் X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>செலுத்தும் Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>வெளியீடு</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>பட்டன்கள்</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>விசைகள் &amp; சுட்டி</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>நோட்டுகள் &amp; கட்டுப்பாடுகள்</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>கைகள்</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>ஸ்டிக்குகள் &amp; டிரிகர்கள்</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>அதிர்வு &amp; ஹாப்டிக்ஸ்</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>இயக்கம் &amp; தொடுதல்</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ஒளி &amp; ஒலி</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>மேக்ரோக்கள் &amp; மெனுக்கள்</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி பெறும் கேம் அதிர்வையும் ஃபோர்ஸ் ஃபீட்பேக்கையும், பாஸ் ஷேக்கர்களுக்கும் சப்வூஃபர்களுக்குமான குறைந்த அதிர்வெண் தொனிகளாக ஓர் ஆடியோ வெளியீட்டுக்கு அனுப்பும்.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>கேம் அதிர்வைப் பாஸ் ஷேக்கர்கள் அல்லது சப்வூஃபர் வழியாகக் குறைந்த தொனிகளாக இயக்கும்.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>வெளியீட்டுச் சாதனம், சேனல்கள், கெயின், ஒவ்வொரு மோட்டாருக்கும் ஒரு ஒலி</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense, Nintendo Switch Pro மெய்நிகர் கட்டுப்படுத்திகளுடனும், ரேசிங் வீல்கள் போன்ற ஃபோர்ஸ் ஃபீட்பேக் கொண்ட விரிவாக்கப்பட்ட மெய்நிகர் கட்டுப்படுத்திகளுடனும், Steam Deck Controller (Composite) உடனும் வேலை செய்யும். கேம் ஃபீட்பேக்கும் அதிர்வைச் சோதி என்பதும் ஆடியோ வெளியீடு வழியாக ஒலிக்கும். மேக்ரோ அதிர்வு கட்டுப்படுத்தியிலேயே இருக்கும்.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>அதிர்விலிருந்து ஆடியோவை மீட்டமை</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>இந்த ஃபீட்பேக் சேனலை ஒரு தொனியாக இயக்கும். இது ஆஃப் ஆக இருக்கும்போதும் கெயினும் அதிர்வெண்ணும் அமைத்தபடியே இருக்கும்.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>இந்தச் சேனலுக்கான தொனி அதிர்வெண், 20 முதல் 120 Hz வரை. உங்கள் ஷேக்கர் எங்கே அதிக வலுவாகத் துலங்குகிறது என்பதைக் கண்டறிய அதிர்வெண் ஸ்வீப்பை இயக்கவும்.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>முதன்மை கெயினுக்கு முன் இந்தச் சேனலின் ஒலியளவு.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>கெயின்</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>சோதி</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>இந்தச் சேனலின் தொனியை அதன் அமைத்த கெயினில் 1.5 வினாடிகள் இயக்கும்.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>குறைந்த மோட்டாரை மீட்டமை</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>உயர் மோட்டாரை மீட்டமை</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>இடது டிரிகரை மீட்டமை</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>வலது டிரிகரை மீட்டமை</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>ஷேக்கர்களைச் சரிபார்</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>அதிர்வெண் ஸ்வீப்</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>குறைந்த மோட்டார் வழியமைப்பில் எட்டு வினாடிகளில் 20 முதல் 120 Hz வரை ஒரு தொனியை நகர்த்தும். உங்கள் ஷேக்கர் எங்கே அதிக வலுவாகத் துலங்குகிறது என்பதைக் குறித்துக்கொண்டு, குரல் அதிர்வெண்களை அங்கே அமைக்கவும்.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>நிறுத்து</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>சோதனைத் தொனியை அல்லது ஸ்வீப்பை நிறுத்தும்.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>ஏதேனும் NFC டேக்</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC டேக்: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>உள்ளீடுகளை வடிகட்டு (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>வெளியீடுகளையும் உள்ளீடுகளையும் வடிகட்டு</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>பொருந்தும் வரிசைகளையும் உள்ளீடுகளையும் மட்டுமே காட்டும். இங்கே தட்டச்சு செய்ய Ctrl+F அழுத்தவும்.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>தேர்விகள் எந்தச் சாதனங்களின் உள்ளீடுகளை வழங்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>தேர்வியில் காட்டப்படுபவை</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>ஏதேனும் குரல் சொற்றொடர்</value></data>
@@ -4077,6 +4135,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>ஃபீடை மீட்டமை</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>பாராமெட்ரிக் EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>கட்டுப்படுத்தி ஆடியோவின் மீது ஒவ்வொரு பட்டைக்குமான ஃபில்டர்கள். ஆடியோ என்கோட் செய்யப்படுவதற்கு முன் பொருந்தும், எனவே கீழே உள்ள லிமிட்டர் அதிகரிக்கப்பட்ட பட்டை கிளிப் ஆகாமல் தடுக்கும்.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>ப்ரீஆம்ப், பட்டைகள், இறக்குமதி</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>ப்ரீஆம்ப்</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>பட்டைகளுக்கு முன்னான ஒட்டுமொத்த நிலை. AutoEq ப்ரொஃபைல்கள் தங்கள் அதிகரிப்புகள் கிளிப் ஆகாமல் இருக்க எதிர்மறை ப்ரீஆம்புடன் வருகின்றன, ஒன்றை இறக்குமதி செய்தால் இது உங்களுக்காக அமைக்கப்படும்.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>ஆன்</value></data>
@@ -4307,7 +4366,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>தொடுதல் அல்லது விலகல் மூலம் திறக்கும் நிலைக்கு மீட்டமைக்கும்.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>இதைக் கொண்டு செலுத்து</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>அடுக்கு இந்த மெனுவைத் திறந்து வைத்திருக்கும்போது, தனிப்படுத்தப்பட்ட கலத்தைச் செலுத்தும் இயற்பியல் உள்ளீடு.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். அடுக்கு மெனுவைத் திறக்கும்; இந்த உள்ளீடு அதைச் செலுத்தும். கலப் பிணைப்புகள் அதன் வெளியீட்டைத் தீர்மானிக்கும்.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>இந்த ஸ்லாட்டுக்கு ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்திகளிலிருந்து படிக்கப்படும். அடுக்கு மெனுவைத் திறக்கும், இந்த உள்ளீடு அதைச் செலுத்தும். அது எதை வெளியீடாகத் தரும் என்பதை அதன் கலங்கள் சொல்லும்.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>ஐகான் அளவு</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>மெனுவின் இயல்பான ஐகான் அளவைப் பொறுத்த ஐகான் அளவு, 25% முதல் 200% வரை. ஐகானை அழித்தால் இது 100%-க்கு மீட்டமைக்கப்படும்.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>கிளிக் உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது தனிப்படுத்தப்பட்ட கலத்தின் பிணைப்பைப் பிடித்து வைக்கும். ஸ்டிக் ஓய்வில் இருக்கும்போது தனிப்படுத்தப்பட்ட ஆரவழி மையம் தூண்டப்படலாம்.</value></data>
@@ -4432,7 +4491,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-இன் ஆவணப்படுத்தப்படாத IPolicyConfig இடைமுகத்தின் அமைப்புக்கான மேற்கோள், Antoine Aflalo உருவாக்கியது, கட்டுப்படுத்தியின் ஆடியோ எண்ட்பாயிண்ட்டை மீண்டும் இயக்க PadForge இதைப் பயன்படுத்துகிறது. MIT. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ஆடியோ தாவல் இறக்குமதி செய்யும் பாராமெட்ரிக் EQ ப்ரொஃபைல் வடிவம், Jaakko Pasanen உருவாக்கியது. MIT. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் பாராமெட்ரிக் EQ இறக்குமதி செய்யும் பாராமெட்ரிக் EQ ப்ரொஃபைல் வடிவம், Jaakko Pasanen உருவாக்கியது. MIT. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>உரைத் தொகுதி மேக்ரோக்களுக்கும் விசைப்பலகை சேர்க்கை ஹூக்குக்கும் பின்னால் உள்ள SendInput நுட்பங்கள்: Unicode தட்டச்சு, தொகுதி வரம்புகள், Win-விசை மறைப்பு விசை, குறியிடப்பட்ட செலுத்தப்பட்ட உள்ளீடு. GPL-2.0-or-later, ஆவணமாக மட்டுமே படிக்கப்பட்டது, GPL குறியீடு எதுவும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>திசை</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>படி</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>முதல்</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>கைப்பிடி</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} இந்தக் கட்டுப்படுத்தியின் டிரிகர்களை அமைக்கிறது.</value></data>
@@ -4716,7 +4776,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>கைப்பிடி போதுமான தூரம் நகரவில்லை, எனவே எட்டும் தொலைவு முன்பு இருந்தபடியே இருக்கும். அளவீடு நடக்கும்போது ஒவ்வொரு விளிம்புக்கும் நகர்த்துங்கள்.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>அளவீடு முடிவதற்குள் Falcon மூடப்பட்டது.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension SDK வழியாக Novint Falcon கொண்டு விளையாட்டுகளை விளையாடுகிறது. இந்த SDK-ஐ Force Dimension-இடமிருந்து நீங்கள் நிறுவுகிறீர்கள். கைப்பிடி ஒரு ஸ்டிக், பிடியின் நான்கு பொத்தான்கள் பொத்தான்களாகும், PadForge விளையாட்டின் அதிர்வையும் விளைவுகளையும் கைப்பிடியில் விசையாகச் செலுத்துகிறது. ஒவ்வொரு ஸ்லாட்டின் ஃபோர்ஸ் ஃபீட்பேக் தாவல் Falcon-இன் உணர்வை அமைக்கிறது.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension SDK வழியாக Novint Falcon கொண்டு விளையாட்டுகளை விளையாடுகிறது. இந்த SDK-ஐ Force Dimension-இடமிருந்து நீங்கள் நிறுவுகிறீர்கள். கைப்பிடி ஒரு ஸ்டிக், பிடியின் நான்கு பொத்தான்கள் பொத்தான்களாகும், PadForge விளையாட்டின் அதிர்வையும் விளைவுகளையும் கைப்பிடியில் விசையாகச் செலுத்துகிறது. ஒவ்வொரு கட்டுப்படுத்தியின் அதிர்வு &amp; ஹாப்டிக்ஸ் பிரிவில் உள்ள Novint Falcon கார்டு Falcon-இன் உணர்வை அமைக்கிறது.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon-ஐ இயக்கு</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>ஒவ்வொரு Falcon-ஐயும் Force Dimension-இன் dhd64.dll வழியாகத் திறக்கிறது. திறந்த Falcon PadForge-க்கு மட்டுமே சொந்தம், எனவே இது இயக்கத்தில் இருக்கும்போது FalconJoyForce-ஆலும் Force Dimension கருவிகளாலும் அதைத் திறக்க முடியாது. அணைத்தால், PadForge ஒவ்வொரு Falcon-ஐயும் மூடும்.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon நூலகம் {0} என அமைக்கப்பட்டது. PadForge அதைச் சில விநாடிகளுக்குள் ஏற்றும். வேறொரு நகலில் திறந்துள்ள Falcon இந்த நகலில் மீண்டும் திறக்கும்.</value></data>
@@ -4929,7 +4989,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>குறிப்பிட்ட நேரத்திற்கு</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>நிறுத்தும் வரை</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>நேரம்</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>இந்த ஸ்லாட்டில் உள்ள ஒவ்வொரு DualSense மற்றும் DualSense Edge-லும் இயங்கும். கேமின் சொந்த டிரிகர் விளைவும் கேம் மோடின் விளைவும் முன்னுரிமை பெறும், விளைவு முடிந்ததும் அடாப்டிவ் டிரிகர்கள் தாவலின் அமைப்பு திரும்பும். மண்டலங்கள் ஓய்வில் 0 முதல் முழு இழுப்பில் 9 வரை செல்லும். வில், குதிரை ஓட்டம், இயந்திரம் ஆகியவை அதிகாரப்பூர்வ DualSense விளைவுகள் அல்ல, நிலைபொருள் புதுப்பிப்பு அவற்றை நீக்கக்கூடும். அடாப்டிவ் டிரிகர் அதிர்வுகளை மாற்று இயக்கப்பட்ட Xbox கட்டுப்படுத்திகள் அதிர்வு விளைவுகளை டிரிகர் அதிர்வாக உணரும்.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>இந்த ஸ்லாட்டில் உள்ள ஒவ்வொரு DualSense மற்றும் DualSense Edge-லும் இயங்கும். கேமின் சொந்த டிரிகர் விளைவும் கேம் மோடின் விளைவும் முன்னுரிமை பெறும், விளைவு முடிந்ததும் அடாப்டிவ் டிரிகர்கள் கார்டின் அமைப்பு திரும்பும். மண்டலங்கள் ஓய்வில் 0 முதல் முழு இழுப்பில் 9 வரை செல்லும். வில், குதிரை ஓட்டம், இயந்திரம் ஆகியவை அதிகாரப்பூர்வ DualSense விளைவுகள் அல்ல, நிலைபொருள் புதுப்பிப்பு அவற்றை நீக்கக்கூடும். அடாப்டிவ் டிரிகர் அதிர்வுகளை மாற்று இயக்கப்பட்ட Xbox கட்டுப்படுத்திகள் அதிர்வு விளைவுகளை டிரிகர் அதிர்வாக உணரும்.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1}: {0}, {2} ms-க்கு</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}: {0}, பிடித்திருக்கும் வரை</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}: {0}, நிறுத்தும் வரை</value></data>
@@ -4958,7 +5018,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>அழிக்கும் வரை</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>நேரம்</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>அவற்றின் நிறங்களை வைத்திரு</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>இந்த மெய்நிகர் கன்ட்ரோலர் ஒளியூட்டும் ஒவ்வொரு விசைப்பலகையிலும் செயல் அதே விசைகளை ஒளிரச் செய்யும், ஒளியமைப்பு தாவல் தரும் நிறங்களின் மேல். எண்கள் தேர்ந்தெடுத்த வரிசையைக் காட்டும். எண்ணிக்கை குறைதல் விசைகளை ஒவ்வொன்றாக அணைக்கும், கடைசியாகத் தேர்ந்ததை முதலில். எனவே எண் வரிசையில் கூல்டவுனுக்கு 1 முதல் 0 வரை தேர்ந்தெடுக்கவும். விசைப்பலகை அல்லது மவுஸ், இந்தச் சாதனத்தின் ஒளியமைப்பைக் கட்டுப்படுத்து இயக்கத்தில் இருக்கும்போது மட்டுமே ஒளிரும்.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>இந்த மெய்நிகர் கன்ட்ரோலர் ஒளியூட்டும் ஒவ்வொரு விசைப்பலகையிலும் செயல் அதே விசைகளை ஒளிரச் செய்யும், ஒளி &amp; ஒலி பிரிவில் அது அவற்றுக்கு அமைக்கும் நிறங்களின் மேல். எண்கள் தேர்ந்தெடுத்த வரிசையைக் காட்டும். எண்ணிக்கை குறைதல் விசைகளை ஒவ்வொன்றாக அணைக்கும், கடைசியாகத் தேர்ந்ததை முதலில். எனவே எண் வரிசையில் கூல்டவுனுக்கு 1 முதல் 0 வரை தேர்ந்தெடுக்கவும். விசைப்பலகை அல்லது மவுஸ், இந்தச் சாதனத்தின் ஒளியமைப்பைக் கட்டுப்படுத்து இயக்கத்தில் இருக்கும்போது மட்டுமே ஒளிரும்.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>மற்றவை</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, எண் {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கு</value></data>
@@ -5018,7 +5078,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>அனலாக் விசை இயக்கப் புள்ளிகள் இறக்குமதியாகவில்லை.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD இந்தக் கண்ட்ரோலரை அடாப்டர் வழியாக மற்றொரு சாதனத்துக்கு அனுப்பியது. PadForge அதை இந்தக் கணினியில் இயக்குகிறது, தொலை இணைப்பு அதை PadForge இயங்கும் மற்றொரு கணினிக்கு அனுப்புகிறது.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge இரண்டு ஸ்டிக்குகளைப் படிக்கும், இது மூன்றாவதைக் குறிப்பிடுகிறது.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ஸ்டீயரிங் வீல் எமுலேஷன் இறக்குமதியாகவில்லை. வீலை மேப்பிங்குகள் தாவலில் மேப் செய்யுங்கள்.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ஸ்டீயரிங் வீல் எமுலேஷன் இறக்குமதியாகவில்லை. வீலைப் பட்டன்கள் பிரிவில் மேப் செய்யுங்கள்.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>இந்தச் சுயவிவரம் குறிப்பிடும் சிறப்புச் செயல், அதன் Profiles கோப்புறைக்கு அருகிலுள்ள Actions.xml இல் இல்லை: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>இந்த அமைப்பு இறக்குமதியாகவில்லை: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD இந்த உள்ளீடுகள் Windows-ஐ அடைவதைத் தடுத்தது. சாதனங்கள் பக்கத்தில் {0} க்கு மேப் செய்யப்பட்ட உள்ளீடுகளைத் தடு என்பதை இயக்குங்கள். இது இந்தச் சுயவிவரம் மேப் செய்தவற்றைத் தடுக்கும்.</value></data>
@@ -5026,8 +5086,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>ஸ்டிக் மீண்டும் மையத்துக்கு வரும்போது அல்லது அடுக்கு முடியும்போது உறுதிசெய்யும். reWASD-இன் பயன்படுத்து பொத்தான் பயன்படுத்தப்படுவதில்லை.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>இந்தக் கோப்பு இரண்டு கண்ட்ரோலர்களைத் தனித்தனியாக வைத்திருக்கிறது. PadForge-இல், அந்த ஸ்லாட்டில் உள்ள எந்தக் கண்ட்ரோலரும் இந்த மேப்பிங்குகளைச் செயல்படுத்தும்.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>நகர்வு வேகம் அல்லது ஃபிளிக் இறக்குமதியாகவில்லை.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>இவை இறக்குமதியாகவில்லை. டச்பேட் தாவலில் அமைக்கவும்.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>இந்தக் கோப்பில் எதுவும் இந்த அடுக்கைத் திறப்பதில்லை. மேப்பிங்குகள் தாவலில் இதற்கு ஒரு பொத்தானை ஒதுக்குங்கள்.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>இவை இறக்குமதியாகவில்லை. இயக்கம் &amp; தொடுதல் பிரிவில் அமைக்கவும்.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>இந்தக் கோப்பில் எதுவும் இந்த அடுக்கைத் திறப்பதில்லை. பட்டன்கள் பிரிவில், அடுக்கை வலது கிளிக் செய்து செயல்படுத்தியை உள்ளமை என்பதைத் தேர்ந்தெடுங்கள்.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>இதன் பொத்தான்களை அழுத்தும்போது இவை இயங்கும்: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>சுயவிவரக் குறுக்குவழி</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>சுயவிவரக் குறுக்குவழி செய்வதைச் செய்யும்: பெயரிட்ட சுயவிவரத்தை, அடுத்ததை அல்லது முந்தையதை ஏற்றும், சாளரத்தைக் காட்டும் அல்லது மறைக்கும், அல்லது மெய்நிகர் கண்ட்ரோலர்களை அணைத்து இயக்கும்.</value></data>
@@ -5197,7 +5257,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>"தூண்டு" விடப்படும்போது தேர்ந்தெடுத்த கலம் ஒருமுறை, ஒரு குறுகிய தட்டாகத் தூண்டப்படும். "தூண்டிய பின் மறை" ஆன் இருந்தால், "தூண்டு" பட்டியை மறைத்தவுடனே தூண்டப்படும்.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>"தூண்டிய பின் மறை" ஆன் இருக்கும்போது "தூண்டு" பட்டியை மறைக்கும் கணத்தில், ஒரு கலம் ஒருமுறை, ஒரு குறுகிய தட்டாகத் தூண்டப்படும். "ஒவ்வொரு முறையும் மையப்படுத்து" ஆன் இருந்தால், தூண்டப்படுவது நடுக் கலம்.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>பட்டி காட்டப்பட்டிருக்கும் முழு நேரமும் தேர்ந்தெடுத்த கலம் பிடித்து வைக்கப்படும். நகரும்போது ஒரு கலம் விடுபட்டு அடுத்தது பிடிக்கப்படும்.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>"ஆரவழி வளையம்", "தொடு கட்டம்", "ஹாட்பார்" ஆகியவை கலப் பிணைப்புகளைத் தூண்டும். "விசைப்பலகை" பயன்பாட்டிலுள்ள Windows அமைப்பின் விசைகளைத் தட்டச்சு செய்யும்.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>"ஆரவழி வளையம்", "தொடு கட்டம்", "ஹாட்பார்" ஆகியவை தங்கள் கலங்களின் செயல்களைத் தூண்டும். "விசைப்பலகை" பயன்பாட்டிலுள்ள Windows அமைப்பின் விசைகளைத் தட்டச்சு செய்யும்.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>அமைப்பு</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>விசைப்பலகை தன் விசைகளை எப்படி அமைக்கிறது, கட்டுப்படுத்தி அவற்றை எப்படித் தேர்ந்தெடுக்கிறது என்பது.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>ஒரு ஸ்டிக் அல்லது நான்கு உள்ளீடுகளால் நகர்த்தப்படும் ஒரு தனிப்படுத்தல். Windows, Xbox, Steam பயன்படுத்தும் அமைப்பு.</value></data>
@@ -5304,11 +5364,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge கையடக்கப் பொத்தான்கள் (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro சுயவிவரம் (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge விசை விளக்குகள் (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>மேக்ரோவால் {0}-ஐ அழுத்த முடியாது. மேப்பிங்குகள் தாவலில் உள்ள மேப்பிங்கால் முடியும்.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>மேக்ரோவால் {0}-ஐ அழுத்த முடியாது. பட்டன்கள் பிரிவில் உள்ள மேப்பிங்கால் முடியும்.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge எட்டு திரை மேலடுக்குகளை இயக்கும், இது reWASD-இன் ஒன்பதாவது அல்லது பத்தாவது குறுக்குக்கோடு.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge இடது, வலது கைரோவை ரோலிலிருந்தும், சாய்வை யா-விலிருந்தும் படிக்கும். இது reWASD-இன் இயல்புநிலை. reWASD-இன் விருப்பத்தேர்வுகளில் இவ்விரண்டையும் மாற்றலாம், மாற்றப்பட்டனவா என்பதை இந்தக் கோப்பு சொல்லவில்லை.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>சாய்வுப் பயன்முறையில், reWASD-இன் சாய்வு என்பது செங்குத்து அச்சைச் சுற்றிய திருப்பம். அந்தத் திருப்பத்துக்கு இயக்க உணரி எந்தக் கோணத்தையும் தருவதில்லை.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge டச்பேட் மூலைவிட்டத்தை ஒரே நேரத்தில் இரு திசைகளாகப் படிக்கும். டச்பேட் தாவலில் டி-பேட் பயன்முறை 8-திசை என இருக்கும்போது மட்டுமே டச்பேட் இதைத் தெரிவிக்கும்.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge டச்பேட் மூலைவிட்டத்தை ஒரே நேரத்தில் இரு திசைகளாகப் படிக்கும். இயக்கம் &amp; தொடுதல் பிரிவில் டச்பேடின் டி-பேட் பயன்முறை 8-திசை என இருக்கும்போது மட்டுமே அது இதைத் தெரிவிக்கும்.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge கைரோவின் திசையை ஒரு வரம்புக்கு அப்பால் படிக்கும், கைரோ மண்டலத்தின் விளிம்புக்கு reWASD எந்த அலகும் தருவதில்லை.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows ஸ்டிக் காட்டும் இடத்தில் சுட்டியை வைத்தது. PadForge-இல் அதற்கு மாறாக ஸ்டிக் சுட்டியை நகர்த்தும்.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} ஸ்டிக்கை அதன் சுழற்சிக்கு முன் படிக்கும். DS4Windows அதற்குப் பின் படித்தது.</value></data>

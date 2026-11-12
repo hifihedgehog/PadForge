@@ -22,6 +22,11 @@ namespace PadForge.Views
         /// or one of them came or went (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
+        /// <summary>Raised with the control under the pointer, by the name a
+        /// click on it records, and with null when the pointer leaves it
+        /// (#574).</summary>
+        public event EventHandler<string> HoverTargetChanged;
+
         private PadViewModel _vm;
         private bool _dirty;
 
@@ -446,8 +451,16 @@ namespace PadForge.Views
             KeyboardCanvas.Children.Add(border);
             if (!live) return;
 
-            border.MouseEnter += (s, e) => { if (_flashTarget == null) { border.BorderBrush = HoverBrush; border.BorderThickness = new Thickness(1.5); } };
-            border.MouseLeave += (s, e) => { if (_flashTarget == null) { border.BorderBrush = null; border.BorderThickness = new Thickness(0); } };
+            border.MouseEnter += (s, e) =>
+            {
+                HoverTargetChanged?.Invoke(this, targetName);
+                if (_flashTarget == null) { border.BorderBrush = HoverBrush; border.BorderThickness = new Thickness(1.5); }
+            };
+            border.MouseLeave += (s, e) =>
+            {
+                HoverTargetChanged?.Invoke(this, null);
+                if (_flashTarget == null) { border.BorderBrush = null; border.BorderThickness = new Thickness(0); }
+            };
             border.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, targetName); e.Handled = true; };
             _keyWidgets.Add(new KbmKeyWidget { VKeyIndex = vk, Border = border, TargetName = targetName });
         }
@@ -502,11 +515,16 @@ namespace PadForge.Views
                 Canvas.SetTop(hit, 1);
                 hit.MouseEnter += (s2, e) =>
                 {
+                    HoverTargetChanged?.Invoke(this, target);
                     if (_flashTarget != null) return;
                     dot.Stroke = HoverBrush;
                     dot.StrokeThickness = 1.5;
                 };
-                hit.MouseLeave += (s2, e) => dot.Stroke = null;
+                hit.MouseLeave += (s2, e) =>
+                {
+                    HoverTargetChanged?.Invoke(this, null);
+                    dot.Stroke = null;
+                };
                 hit.MouseLeftButtonDown += (s2, e) =>
                 {
                     ControllerElementRecordRequested?.Invoke(this, target);
@@ -617,17 +635,19 @@ namespace PadForge.Views
             AddMouseControlHandlers(_parts.X2Hit,    _parts.X2Hover,    "KbmMBtn4");
 
             _scrollUpArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollUp;
-            _scrollUpArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
-            _scrollUpArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
+            _scrollUpArrow.MouseEnter += (s, e) => { HoverTargetChanged?.Invoke(this, "KbmScroll"); if (_flashTarget == null) _scrollUpArrow.Fill = HoverBrush; };
+            _scrollUpArrow.MouseLeave += (s, e) => { HoverTargetChanged?.Invoke(this, null); if (_flashTarget == null) _scrollUpArrow.Fill = DimBrush; };
             _scrollUpArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScroll"); e.Handled = true; };
 
             _scrollDownArrow.ToolTip = MappingLabel("KbmScroll") + " " + Strings.Instance.Pad_ScrollDown;
-            _scrollDownArrow.MouseEnter += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
-            _scrollDownArrow.MouseLeave += (s, e) => { if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
+            _scrollDownArrow.MouseEnter += (s, e) => { HoverTargetChanged?.Invoke(this, "KbmScrollNeg"); if (_flashTarget == null) _scrollDownArrow.Fill = HoverBrush; };
+            _scrollDownArrow.MouseLeave += (s, e) => { HoverTargetChanged?.Invoke(this, null); if (_flashTarget == null) _scrollDownArrow.Fill = DimBrush; };
             _scrollDownArrow.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, "KbmScrollNeg"); e.Handled = true; };
 
             _moveCircle.MouseMove += (s, e) =>
             {
+                // The page rings the control a click here records (#574).
+                HoverTargetChanged?.Invoke(this, MoveTargetAt(e.GetPosition(_moveCircle)));
                 if (_flashTarget != null) return;
                 var pos = e.GetPosition(_moveCircle);
                 double hx = pos.X - MoveSize / 2, hy = pos.Y - MoveSize / 2;
@@ -639,18 +659,14 @@ namespace PadForge.Views
             };
             _moveCircle.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 _moveArrow.Visibility = Visibility.Collapsed;
                 _moveCircle.Stroke = DimBrush; _moveCircle.StrokeThickness = 1.5;
             };
             _moveCircle.MouseLeftButtonDown += (s, e) =>
             {
-                var pos = e.GetPosition(_moveCircle);
-                double cx = pos.X - MoveSize / 2, cy = pos.Y - MoveSize / 2;
-                string target = Math.Abs(cx) >= Math.Abs(cy)
-                    ? (cx >= 0 ? "KbmMouseX" : "KbmMouseXNeg")
-                    : (cy >= 0 ? "KbmMouseYNeg" : "KbmMouseY");
-                ControllerElementRecordRequested?.Invoke(this, target);
+                ControllerElementRecordRequested?.Invoke(this, MoveTargetAt(e.GetPosition(_moveCircle)));
                 e.Handled = true;
             };
 
@@ -715,8 +731,8 @@ namespace PadForge.Views
             foreach (var (arrow, target) in new[] { (_scrollLeftArrow, "KbmScrollHNeg"), (_scrollRightArrow, "KbmScrollH") })
             {
                 var a = arrow;
-                a.MouseEnter += (s, e) => { if (_flashTarget == null) a.Fill = HoverBrush; };
-                a.MouseLeave += (s, e) => { if (_flashTarget == null) a.Fill = DimBrush; };
+                a.MouseEnter += (s, e) => { HoverTargetChanged?.Invoke(this, target); if (_flashTarget == null) a.Fill = HoverBrush; };
+                a.MouseLeave += (s, e) => { HoverTargetChanged?.Invoke(this, null); if (_flashTarget == null) a.Fill = DimBrush; };
                 a.MouseLeftButtonDown += (s, e) => { ControllerElementRecordRequested?.Invoke(this, target); e.Handled = true; };
                 MouseCanvas.Children.Add(a);
             }
@@ -725,6 +741,17 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
         //  Helpers
         // ─────────────────────────────────────────────
+
+        /// <summary>The direction a click at a point of the movement circle
+        /// records: its quadrant's. Up and down are the mouse's Y and its
+        /// negative, as the screen's Y runs down.</summary>
+        private static string MoveTargetAt(Point pos)
+        {
+            double cx = pos.X - MoveSize / 2, cy = pos.Y - MoveSize / 2;
+            return Math.Abs(cx) >= Math.Abs(cy)
+                ? (cx >= 0 ? "KbmMouseX" : "KbmMouseXNeg")
+                : (cy >= 0 ? "KbmMouseYNeg" : "KbmMouseY");
+        }
 
         /// <summary>Wires one mouse control for recording.
         ///
@@ -742,10 +769,12 @@ namespace PadForge.Views
             hit.ToolTip = MappingLabel(target);
             hit.MouseEnter += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, target);
                 if (_flashTarget == null && hover != null) hover.Visibility = Visibility.Visible;
             };
             hit.MouseLeave += (s, e) =>
             {
+                HoverTargetChanged?.Invoke(this, null);
                 if (hover != null) hover.Visibility = Visibility.Collapsed;
             };
             hit.MouseLeftButtonDown += (s, e) =>

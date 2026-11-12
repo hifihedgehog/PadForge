@@ -106,11 +106,16 @@
              (Submit Mapping, Manage NFC Tags) chain into the Button
              implicit via their BasedOn {x:Type Button}. -->
         <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
-                 grid), which this page-local implicit replaces. -->
-            <Setter Property="MinHeight" Value="32"/>
+            <!-- MinHeight and Padding mirror the App.xaml implicit Button
+                 style (36 tall, 14 at the sides), which this page-local
+                 implicit replaces. -->
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="14,0"/>
         </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <!-- Mirrors the App.xaml implicit CheckBox style, which this
+                 page-local implicit replaces: the box keeps corners of 4. -->
+            <Setter Property="Border.CornerRadius" Value="4"/>
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <!-- Selection setters mirror the App.xaml implicit TextBox

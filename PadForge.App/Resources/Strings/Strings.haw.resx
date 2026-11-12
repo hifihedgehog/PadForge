@@ -150,10 +150,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Hāmeʻa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Hoʻokele ʻia e</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hoʻohui i hāmeʻa</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Kiʻi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Papa inoa</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} huapuka</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Neʻe</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kaomi i kekahi mea hoʻokele ma ke kiʻi, a laila kaomi i ka hoʻokomo ma kāu hāmeʻa nāna e hoʻokele iā ia.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Kaomi i kekahi pihi papa pihi a i ʻole kekahi pihi ʻiole ma ke kiʻi, a laila kaomi i ka hoʻokomo ma kāu hāmeʻa nāna e hoʻokele iā ia.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kaomi i kekahi hua mele a i ʻole kekahi slider ma ke kiʻi, a laila kaomi i ka hoʻokomo ma kāu hāmeʻa nāna e hoʻokele iā ia.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>ʻAʻole hoʻopaʻa ʻo Map All i nā huapuka hoʻopā o A a me B. Kaomi i ke apo a puni ka pihi A a i ʻole B e hoʻopaʻa i kona huapuka hoʻopā.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ke hoʻolohe nei no {0}. Kaomi i ka hoʻokomo ma kāu hāmeʻa.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, hoʻokele ʻia e</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Nā koho hou aku</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Nā koho emi iho</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Pihi alo</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Pihi poʻohiwi</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Pihi ʻōnaehana</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Pihi</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Kīʻike neʻe</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Pihi papa pihi</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Pihi ʻiole</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Neʻe ʻiole</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Huila ʻiole</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Kīʻike hoʻopā</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Huki analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lima hema</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, lima ʻākau</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ke hoʻohana ʻia nei ka port {0} e kekahi polokalamu ʻē aʻe, e like me DSX. E pani iā ia a i ʻole e koho i kekahi port ʻē aʻe.</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Hōʻole</value></data>
 
@@ -335,6 +362,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Inoa</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Inā</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>I nā manawa a pau</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ʻAno</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Papa pihi a me ke kikokikona</value></data>
@@ -365,7 +393,7 @@
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Hoʻokuʻu {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Hoʻokuʻu i nā pihi {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Kali {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Kali {0} ms</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Kaomi ʻiole {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Hoʻokuʻu ʻiole {0}</value></data>
 
@@ -946,6 +974,9 @@
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Manawa</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nā mea keu</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nā pihi</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Nā pihi a me ka ʻiole</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nā hua mele a me nā mea hoʻokele</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Nā lima</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Nā stick a me nā trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Haʻalulu a me force feedback</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Kukui a me ka leo</value></data>
@@ -962,6 +993,23 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ka ʻālohilohi o ke pihi Guide a i ʻole Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Nā faila Zip o nā kani no nā macro kani</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Nā faila Zip o nā kiʻi no nā keʻena papa kuhikuhi</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ikaika o kēlā me kēia mīkini, haʻalulu trigger, hoʻololi mīkini</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ikaika o kēlā me kēia trigger, hoʻololi mīkini, haʻalulu trigger adaptive</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ikaika o nā mīkini, haʻalulu trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ikaika o nā trigger, hoʻololi mīkini, haʻalulu trigger adaptive, Constant Trigger Force</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Hana</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Ka wehe ʻana</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Papa kuhikuhi hou</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Wehe i ke keʻena hope loa</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Hoʻoponopono i ke keʻena</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Inoa</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Hana</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Kēia hāmeʻa</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller holoʻokoʻa</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Hoʻāʻo i nā shaker</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player a i ʻole Honua</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Ua hoʻokomo ʻia ʻo SteamVR</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>ʻAʻole i hoʻokomo ʻia ʻo SteamVR</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Ke holo nei ʻo SteamVR</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Hema</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ʻĀkau</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Holoi i ka trigger</value></data>
 </root>

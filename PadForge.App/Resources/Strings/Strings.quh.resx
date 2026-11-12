@@ -67,6 +67,7 @@
   <data name="Common_Refresh" xml:space="preserve"><value>Musuqchay</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>K'askachiy</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Iskaychay</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Sutinta t'ikray</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instalasqa</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Mana instalasqachu</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Wakichisqa</value></data>
@@ -128,10 +129,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kamachiq</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dispositivota yapay</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Rikch'ay</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} lluqsiy</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Kuyuy</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Huk controlta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Huk teclata utaq huk mouse botónta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Huk notata utaq huk sliderta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All nisqaqa A, B botonkunapa llamiy lluqsiyninkunata mana asignanchu. Hukninta asignanaykipaq, A utaq B botónpa muyunta ñit'iy.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}paq suyachkan. Dispositivoykipi entradata ñit'iy.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kamachiqnin</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Astawan opcionkuna</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Aswan pisi opcionkuna</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Uya botón</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Rikra botón</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistema botón</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Botón</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad direccional</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Palanca</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gatillo</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Kuyuy sensor</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Teclado tecla</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Mouse botón</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mouseq kuyuynin</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rueda</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Llamiy sensor</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analógico aysay</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lluq'i maki</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, paña maki</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} puertota huk programa llamk'achishan, DSX hina. Chay programata wisq'ay, utaq huk puertota akllay.</value></data>
@@ -321,7 +349,6 @@
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Mana imapas</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Kuyuy</value></data>
   <data name="Menu_Reset_Style" xml:space="preserve"><value>Estilota ñawpaqman kutichiy</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Celdakunata ñawpaqman kutichiy</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menúq geometríanta ñawpaqman kutichiy</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Celdata ñawpaqman kutichiy</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Sensibilidadta ñawpaqman kutichiy</value></data>
@@ -360,7 +387,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Suti</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Activador</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Hayk'aq</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Ñit'iqtin</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Kachariqtin</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Hap'ishaqtin</value></data>
@@ -413,7 +440,7 @@
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Kachariy: {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Teclakunata kachariy: {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Suyay {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Suyay {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Hap'iy</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Llimp'i</value></data>
@@ -567,7 +594,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidadkuna, espacio, ejekunata t'ikray, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidadkuna, eje t'ikray, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch t'ikray (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw t'ikray (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Roll t'ikray (X)</value></data>
@@ -681,7 +708,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gatillo eje</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Sapa motorpa kallpan, gatillo vibración, motorkunata tikray</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Sapa motor kallpa, gatillo vibración, Steering Angle Rumble, Constant Force</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lluq'i motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Paña motor</value></data>
 
@@ -911,7 +938,7 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Paña motor</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundokuna (0 = mana hayk'aq)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift capa</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Capata yapay</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift capa</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Capap sutin</value></data>
@@ -1108,6 +1135,10 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Celdakuna</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Chawpi celda</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Celda {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Celdata yapay</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Qhipa celdata urquy</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Celdata allinchay</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Suti</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Chawpi</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Mana imapas</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menú {0} celda {1}</value></data>
@@ -1117,6 +1148,7 @@
   <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Paña gatillo</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Lluq'i gatillota ñawpaqman kutichiy</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Paña gatillota ñawpaqman kutichiy</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Shakerkunata qhaway</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Sayachiy</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC etiqueta: {0}</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Kunka frase: {0}</value></data>
@@ -1319,6 +1351,7 @@
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Cronómetrota ñawpaqman kutichiy</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Pantalla</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>manta</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Hap'ina</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} kay controlpa gatillonkunata churashan.</value></data>
@@ -1436,6 +1469,9 @@
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Llank'achiy</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botonkuna</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclakuna &amp; Mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notakuna &amp; Controlkuna</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Makikuna</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palancakuna &amp; Gatillokuna</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibración &amp; Háptica</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Kuyuy &amp; Llamiy</value></data>
@@ -1453,6 +1489,17 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>LED k'anchay, pukllaqpa patronnin, ch'inyachiy LED modo</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Sonido macrokunapaq sonidokunayuq zip archivokuna</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Menú celdakunapaq imagenkunayuq zip archivokuna</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Sapa gatillopa kallpan, motorkunata tikray, adaptive gatillo vibracionkuna</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Sapa gatillo kallpa, motor tikray, adaptive gatillo vibración, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>T'ikray, impulso, kutichiy, Aceleración, fling</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Ruway</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Capa, Pukyu, Umbral, Dirección, Activador botonkunata hark'ay, Kutipay</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Kichakuy</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Musuq menú</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Kay dispositivo</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tukuy control</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instalasqa</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR mana instalasqachu</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lluq'i</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Paña</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Activadorta pichay</value></data>
 </root>

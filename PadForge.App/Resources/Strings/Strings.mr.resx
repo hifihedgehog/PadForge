@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>कॉपी करा</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>पेस्ट करा</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>डुप्लिकेट करा</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>नाव बदला</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>सक्षम</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>अक्षम</value></data>
   <data name="Common_On" xml:space="preserve"><value>चालू</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>डिव्हाइस</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>इनपुट स्रोत</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>डिव्हाइस जोडा</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>ब्लूटूथ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>चित्र</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>यादी</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} आउटपुट</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>मोशन</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>एखाद्या नियंत्रकावर क्लिक करा आणि नंतर त्याला चालवणारे इनपुट दाबा.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>एखाद्या कीवर किंवा माउस बटणावर क्लिक करा आणि नंतर त्याला चालवणारे इनपुट दाबा.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>एखाद्या नोटवर किंवा स्लायडरवर क्लिक करा आणि नंतर त्याला चालवणारे इनपुट दाबा.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“सर्व मॅप करा” A आणि B चे स्पर्श आउटपुट वगळते. त्यापैकी एक मॅप करण्यासाठी A किंवा B भोवतीच्या रिंगवर क्लिक करा.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} साठी ऐकत आहे. तुमच्या डिव्हाइसवरील इनपुट दाबा.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} चा इनपुट स्रोत</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>अधिक पर्याय</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>कमी पर्याय</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>फेस बटण</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>शोल्डर बटण</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>सिस्टम बटण</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>बटण</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>दिशा पॅड</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>स्टिक</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ट्रिगर</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>टचपॅड</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>मोशन सेन्सर</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>कीबोर्ड की</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>माउस बटण</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>माउस हालचाल</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>स्क्रोल व्हील</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>कंट्रोल चेंज</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>स्पर्श सेन्सर</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>ॲनालॉग खेच</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, डावा हात</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, उजवा हात</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>जोडीची दोन्ही बटणे दाबलेली असताना गेमला कोणता दाब दिसतो</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>जोडीच्या दोन्ही की दाबलेल्या असताना गेमला कोणता दाब दिसतो</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>गेम कंट्रोलर प्रॉम्प्ट दाखवत राहावेत म्हणून स्टिक थोडी वळलेली ठेवते</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>घडवत आहे</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>डावीकडील एक मॅक्रो निवडा, किंवा नवीन तयार करण्यासाठी जोडा दाबा.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>यादीतील एक मॅक्रो निवडा, किंवा नवीन तयार करण्यासाठी “मॅक्रो” शेजारील + दाबा.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>थंड</value></data>
@@ -860,7 +889,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>प्रति ट्रिगर गेन, मोटर अदलाबदल, अडॅप्टिव्ह ट्रिगर कंपन</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>प्रति ट्रिगर गेन, मोटर अदलाबदल, अडॅप्टिव्ह ट्रिगर कंपन, सतत ट्रिगर फोर्स</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>व्हर्च्युअल कंट्रोलरवरून नेमलेल्या भौतिक Xbox One, Elite किंवा Series कंट्रोलरकडे प्रत्येक ट्रिगरचे मोटर कमांड (Xbox इम्पल्स ट्रिगर) पाठवतो. गेमने चालवलेले ट्रिगर कंपन आपोआप पुढे जाते. खालील नियंत्रणे प्रत्येक ट्रिगरचे परिमाण बदलतात.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>डावा ट्रिगर</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>उजवा ट्रिगर</value></data>
@@ -930,9 +959,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>स्टिक</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>प्रत्येक स्टिकसाठी डेडझोन, अँटी-डेडझोन, संवेदनशीलता वक्र आणि केंद्र ऑफसेट कॅलिब्रेशन. खालील प्रत्येक विभाग सक्रिय आउटपुटवरील एका ॲनालॉग स्टिकसाठी आहे. एक्स्टेंडेड प्रोफाइलमध्ये चार स्टिक असू शकतात. मानक गेमपॅडमध्ये दोन असतात.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ट्रिगर</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>प्रत्येक ट्रिगरसाठी डेडझोन, अँटी-डेडझोन, कमाल श्रेणी स्केलिंग आणि संवेदनशीलता वक्र. खालील प्रत्येक विभाग सक्रिय आउटपुटवरील एका ट्रिगर अक्षासाठी आहे. एक्स्टेंडेड प्रोफाइल स्टिक टॅबसोबत शेअर होणारे आठ अक्षांपर्यंत दाखवू शकतात.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>प्रत्येक ट्रिगरसाठी डेडझोन, अँटी-डेडझोन, कमाल श्रेणी स्केलिंग आणि संवेदनशीलता वक्र. प्रत्येक ट्रिगर कार्ड सक्रिय आउटपुटवरील एका ट्रिगर अक्षासाठी आहे. विस्तारित प्रोफाइल आठ अक्षांपर्यंत दाखवू शकतात, जे स्टिक आणि ट्रिगरमध्ये शेअर होतात.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>फोर्स फीडबॅक</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>गेमकडून येणाऱ्या फोर्स फीडबॅक इव्हेंटचे PadForge कसे स्केलिंग करतो आणि ते भौतिक कंट्रोलरच्या कंपन मोटर किंवा हॅप्टिक ॲक्च्युएटरकडे कसे वळवतो ते ठरवतो. ऑडिओ कंपन त्यावर सिस्टीम ऑडिओवर चालणारा एक स्तर जोडते.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>हे डिव्हाइस</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>संपूर्ण कंट्रोलर</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>{0} वर कंपन हॅप्टिक पल्स म्हणून वाजते, थेट डिव्हाइसला पाठवले जाते. जास्त कंपन अधिक तीव्र पल्स निवडते आणि तो जास्त वेगाने पुन्हा पुन्हा वाजवते.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} साठी Logi Options+ मध्ये हॅप्टिक फीडबॅक बंद आहे, म्हणून तो तेथे पुन्हा चालू करेपर्यंत काहीही वाजत नाही.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>या डिव्हाइसने अजून उत्तर दिले नाही. ते जागे झाल्यावर त्याचे कंपन वाजते.</value></data>
@@ -999,6 +1030,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>हेडसेट, माउसपॅड आणि स्पीकर</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>हेडसेट</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>गेम लायटिंग लिहितो तेव्हा तो ताबा घेतो.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>सहा अंकी हेक्स रंग (RRGGBB किंवा #RRGGBB) लिहा आणि लागू करण्यासाठी Enter दाबा किंवा बाहेर क्लिक करा.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>हा रंग पॅलेटमधून काढा</value></data>
@@ -1016,7 +1048,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>ऑडिओ कंपन रीसेट करा</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} रीसेट करा</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>मॅपिंग साफ करा</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>या टॅबवरील प्रत्येक मॅपिंग साफ केले जाईल. स्रोत नेमणुका, अतिरिक्त स्रोत आणि एकत्रीकरण सेटिंग्ज डिफॉल्टवर रीसेट होतात.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>या लेयरवरील प्रत्येक मॅपिंग साफ केले जाईल. स्रोत नेमणुका, अतिरिक्त स्रोत आणि एकत्रीकरण सेटिंग्ज डिफॉल्टवर रीसेट होतात.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>खेळाडू नमुना</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>म्यूट LED मोड</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED चमक</value></data>
@@ -1082,6 +1114,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>बटणे</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>आयात केलेली प्रोफाइल…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>विस्तारित कंट्रोलर</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>वापरकर्त्याने आयात केलेली HIDMaestro प्रोफाइल व्यवस्थापित करा: जोडलेल्या डिव्हाइसमधून नवीन कॅप्चर करा, विद्यमान एक JSON मध्ये एक्सपोर्ट करा किंवा नको असलेले हटवा.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>डिव्हाइस 1:1 क्लोन करा</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>निवडलेल्या डिव्हाइसचा प्रत्येक अक्ष, बटण आणि हॅट त्याच क्रमांकाच्या व्हर्च्युअल आउटपुटला थेट मॅप करा. मांडणी डिव्हाइसच्या आकाराची करतो आणि स्लॉटवरील या डिव्हाइसच्या रांगा 1:1 पासथ्रूने बदलतो.</value></data>
@@ -1129,6 +1162,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>फोर्स फीडबॅक</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>चॅनेल</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI आउटपुट</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI चॅनेल (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC संख्या</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC आउटपुटची संख्या (कमाल Start CC वर अवलंबून)</value></data>
@@ -1160,7 +1194,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>ही की जोडी काढते.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>विरुद्ध जोडीची पहिली की.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>विरुद्ध जोडीची दुसरी की.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>एकाच वेळी विरुद्ध मुख्य दिशा (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>कंट्रोलर जागृत ठेवा</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>काही गेम माउस किंवा कीबोर्ड इनपुट दिसताच कंपन थांबवतात आणि त्यांचे बटण संकेत बदलतात. थोडे स्टिक विचलन धरून ठेवल्याने गेम हा कंट्रोलर सक्रिय डिव्हाइस मानत राहतो. त्या स्टिकचे दोन्ही अक्ष धरलेल्या पातळीखाली असतील तेव्हाच हे धरणे सुरू होते, त्यामुळे सरकणारी स्टिक अजूनही स्थिर मानली जाते. कोणत्याही अक्षावर पातळीपेक्षा जास्त इनपुट आल्यास ते सुटते आणि बदल न होता पुढे जाते. गेममध्ये काहीही हलू नये म्हणून विचलन गेमच्या स्वतःच्या डेडझोनखाली ठेवा.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>जागृत ठेवा</value></data>
@@ -1180,7 +1213,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>क्लिक रीसेट करा</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>पॅड अर्धा रीसेट करा</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>फायर मोड रीसेट करा</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>सेल रीसेट करा</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>एंगेज डेडझोन रीसेट करा</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>मेनू भूमिती रीसेट करा</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>सेल रीसेट करा</value></data>
@@ -1236,6 +1268,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>सर्व साफ करा</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>स्रोत</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>मूल्य</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>पर्याय</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>अक्ष-ते-बटण डेडझोन</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>उलट करा</value></data>
@@ -1273,7 +1306,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>चेक केल्यावर अक्ष सोडल्यावर केंद्रावर परत येतो. चेक नसल्यास तो शेवटची स्थिती धरून ठेवतो.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>दाबून ठेवल्यावर रांगेचे आउटपुट उलट करणारे बटण</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>मॉडिफायर: दाबून ठेवल्यावर रांगेच्या आउटपुटचे चिन्ह उलटते.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ स्रोत जोडा</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>स्रोत जोडा</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>या रांगेत आणखी एक भौतिक इनपुट जोडा</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>हा स्रोत काढा</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1393,10 +1426,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>कस्टम</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>केंद्र कॅलिब्रेट करा</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>केंद्र बिंदू</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>केंद्र</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>डेडझोन</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>केंद्र ऑफसेट, डेडझोन आकार आणि प्रति अक्ष मूल्ये, प्रत्येक अक्षासाठी वक्र, श्रेणी, स्टीअरिंग</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>श्रेणी</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>सीमा कॅलिब्रेट करा हा स्टिक अचूक करण्याचा शिफारस केलेला मार्ग आहे. स्टिक प्रत्यक्षात गाठू शकणारी कडा तो स्वीप करतो, मग प्रत्येक स्थिती त्या मोजलेल्या कडेच्या प्रमाणात पुन्हा मोजतो, त्यामुळे प्रत्येक कोनातील आणि प्रत्येक विचलनातील संपूर्ण मूळ हालचाल काहीही न कापता आदर्श वर्तुळावर मॅप होते. खालील चार स्लायडर फक्त मुख्य अक्षांवर मर्यादा घालतात. श्रेणी सुधारण्यासाठी नव्हे, तर जाणीवपूर्वक मर्यादित करण्यासाठी त्यांचा वापर करा.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“सीमा कॅलिब्रेट करा” स्टिक गाठू शकणारी कडा मोजतो आणि तिला पूर्ण वर्तुळाचा आकार देतो. चार स्लायडर फक्त प्रत्येक दिशेवर मर्यादा घालतात.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>नमुने घेत आहे...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>केंद्र ऑफसेट X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>केंद्र ऑफसेट Y</value></data>
@@ -1415,7 +1449,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>नाव</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>ट्रिगर</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>केव्हा</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>चालवा</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>दाबल्यावर</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>सोडल्यावर</value></data>
@@ -1447,9 +1481,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>हा मॅक्रो कोणत्या शिफ्ट लेयरचा आहे. कोणताही लेयर सक्रिय लेयर कोणताही असो चालतो. बेस आणि नामांकित लेयर फक्त तो लेयर सक्रिय असतानाच चालतात, अगदी मॅपिंग रांगेप्रमाणे.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>कोणताही लेयर</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>हा व्हर्च्युअल कंट्रोलर सक्रिय असताना सतत चालतो. ट्रिगर बटणाची गरज नाही.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>क्रिया क्रम</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>काय करावे</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>लेयर, स्रोत, थ्रेशोल्ड, दिशा, ट्रिगर बटणे रोखा, पुन्हा करा</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>क्रिया जोडा</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>क्रिया संपादित करा</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>प्रकार</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>व्हर्च्युअल बटणे</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>व्हर्च्युअल अक्ष आणि व्हील</value></data>
@@ -1518,11 +1552,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>बटण {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1}ms साठी दाबा</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{0} {1} ms साठी दाबा</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} सोडा</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>की {0} {1}ms साठी</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>की {0} {1} ms साठी</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>की {0} सोडा</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms थांबा</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms थांबा</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} सेट करा</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>सिस्टीम आवाज ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>सिस्टीम आवाज ← {0} (कमाल {1}%)</value></data>
@@ -1534,15 +1568,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>माउस सोडा {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>टचपॅड ओव्हरले टॉगल करा</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>लाइटबारचा रंग सेट करा</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>नियुक्त PlayStation स्लॉटचा लाइटबार निवडलेल्या RGB रंगावर ओव्हरराइड करा. रिॲक्टिव्ह पूर्ण तीव्रतेपासून ठरवलेल्या क्षय विंडोमध्ये काळ्यापर्यंत फिके होते, मग लायटिंग टॅबच्या सेटिंग्जकडे परत देते. स्टिकी लाइटबार ओव्हरराइड साफ करा क्रिया चालेपर्यंत रंग धरून ठेवते. गेमकडून येणारे लेखन तरीही ओव्हरराइडपेक्षा प्राधान्य घेते.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>लाइटबार {0} चमकवा (क्षय {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>नियुक्त PlayStation स्लॉटचा लाइटबार निवडलेल्या RGB रंगावर ओव्हरराइड करा. रिॲक्टिव्ह पूर्ण तीव्रतेपासून ठरवलेल्या क्षय विंडोमध्ये काळ्यापर्यंत फिके होते, मग लाइटबार कार्डच्या सेटिंग्जकडे परत देते. स्टिकी “लाइटबार ओव्हरराइड साफ करा” क्रिया चालेपर्यंत रंग धरून ठेवते. गेमकडून येणारे लेखन तरीही ओव्हरराइडपेक्षा प्राधान्य घेते.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>लाइटबार {0} चमकवा (क्षय {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>लाइटबार {0} साफ होईपर्यंत धरून ठेवा</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>लाइटबार ओव्हरराइड साफ करा</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>लाइटबार ओव्हरराइड साफ करा</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>नियुक्त स्लॉटवरील कोणताही सक्रिय लाइटबार ओव्हरराइड सोडतो. दुसऱ्या मॅक्रोद्वारे तो पूर्ववत करण्यासाठी स्टिकी लाइटबारचा रंग सेट करा क्रियेसोबत जोडा.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>लाइटबार मोड सेट करा</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>लाइटबार मोड {0} वर सेट करा</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>नियुक्त स्लॉटचा लाइटबार मोड विशिष्ट मूल्यावर सेट करतो. दुसरी क्रिया किंवा वापरकर्ता बदलेपर्यंत लायटिंग टॅब संपादनाप्रमाणे टिकतो.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>नियुक्त स्लॉटचा लाइटबार मोड विशिष्ट मूल्यावर सेट करतो. दुसरी क्रिया किंवा वापरकर्ता बदलेपर्यंत लाइटबार कार्डवरील संपादनाप्रमाणे टिकतो.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>लाइटबार मोड फिरवा</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} लाइटबार मोडमधून फिरवा</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>स्लॉटचा लाइटबार मोड खाली निवडलेल्या मोडमधून पुढे नेतो. प्रत्येक वेळी चालल्यावर पुढच्या चेक केलेल्या मोडवर जातो. फिरण्याची स्थिती प्रत्येक क्रियेची स्वतंत्र असते आणि ॲप रीस्टार्ट केल्यावर रीसेट होते.</value></data>
@@ -1557,14 +1591,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>क्षय</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>फेड</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>पॅलेट</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>रिकामे पॅलेट स्लॉटचेच लायटिंग टॅब पॅलेट वापरते.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>रिकामे पॅलेट स्लॉटच्या लाइटबार कार्डवरील पॅलेट वापरते.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>मोड</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>मॅक्रोने कोणत्या लाइटबार मोडमधून फिरावे ते निवडा. प्रत्येक वेळी चालल्यावर पुढच्या चेक केलेल्या मोडवर जातो.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>कंपन</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>मॅक्रोमधून स्लॉटच्या भौतिक डिव्हाइसचे कंपन चालवते. रिॲक्टिव्ह होल्ड विंडोसाठी पूर्ण ताकदीने चालते, मग फेड विंडोमध्ये शून्यापर्यंत कमी होते. स्टिकी कंपन थांबवा क्रिया चालेपर्यंत पूर्ण ताकदीने धरते. max() द्वारे गेमकडून येणाऱ्या कंपनाच्या वर लावले जाते, म्हणून वापरकर्त्याने ठरवलेला फीडबॅक नेहमी जाणवतो.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>कंपन {0} स्पंद ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>कंपन {0} स्पंद ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>कंपन {0} साफ होईपर्यंत धरून ठेवा</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>कंपन थांबवा</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>कंपन थांबवा</value></data>
@@ -1575,7 +1609,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ट्रिगर कंपन थांबवा</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>स्लॉटवरील कोणतेही सक्रिय मॅक्रो ट्रिगर कंपन सोडतो. मॅक्रोमधून होल्ड संपवण्यासाठी स्टिकी ट्रिगर कंपन ओव्हरराइडसोबत जोडा.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>जायरो एंगेज सेट करा</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>मॅक्रोमधून स्लॉटची जायरो एंगेज स्थिती सेट करतो. टॉगल सध्याची स्थिती उलटतो. चालू जायरो सक्तीने एंगेज करतो. बंद तो सक्तीने डिसएंगेज करतो. जायरो टॅबच्या एंगेज बटणापासून स्वतंत्र. दोन्ही स्रोत OR पद्धतीने एकत्र होतात, म्हणून एकाने एंगेज केलेले दुसरे बंद करू शकत नाही.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>मॅक्रोमधून स्लॉटची जायरो एंगेज स्थिती सेट करतो. टॉगल सध्याची स्थिती उलटतो. चालू जायरो सक्तीने एंगेज करतो. बंद तो सक्तीने डिसएंगेज करतो. “गती आणि स्पर्श” मधील लक्ष्य एंगेज बटणापासून स्वतंत्र. दोन्ही स्रोत OR पद्धतीने एकत्र होतात, म्हणून एकाने एंगेज केलेले दुसरे बंद करू शकत नाही.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>मोड</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>टॉगल</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>चालू</value></data>
@@ -1723,7 +1757,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>टचपॅड</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>टचपॅड</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>प्रत्येक टचपॅडसाठी इनपुट. जेश्चर (स्वाइप, टॅप, पिंच, आकार) आणि सतत आउटपुट मोड (व्हर्च्युअल स्टिक / डी-पॅड, माउस) हे मॅपिंग स्रोत बनतात, जे तुम्ही मॅपिंग टॅबवर जोडू शकता.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>प्रत्येक टचपॅडसाठी इनपुट. जेश्चर (स्वाइप, टॅप, पिंच, आकार) आणि सतत आउटपुट मोड (व्हर्च्युअल स्टिक / डी-पॅड, माउस) हे मॅपिंग स्रोत बनतात, जे तुम्ही कोणत्याही आउटपुटला जोडू शकता.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>टचपॅड</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>टचपॅड क्रमांक</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>खालील सेटिंग्ज या कंट्रोलरच्या कोणत्या टचपॅडला लागू होतात ते निवडा. प्रत्येक टचपॅडचे स्वतःचे जेश्चर, माउसची अनुभूती आणि पॉइंटर क्षेत्र असते.</value></data>
@@ -2013,10 +2047,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>जायरो</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>या पॅडचा मोशन सेन्सर माउस आणि स्टिक आउटपुट कसे चालवतो ते समायोजित करा. स्थिर अवस्थेतील ड्रिफ्ट शून्य करण्यासाठी सपाट पृष्ठभागावर कॅलिब्रेट करा, मग संवेदनशीलता, स्मूदिंग आणि एंगेज नियम आवडीनुसार ठरवा.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>कॅलिब्रेशन</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>जायरोस्कोप आणि ॲक्सेलेरोमीटरची थेट वाचने</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>संवेदनशीलता</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>एकके, स्पेस, अक्ष उलट करा, वास्तविक जगातील कॅलिब्रेशन</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>एकके, अक्ष उलट करा, वास्तविक जगातील कॅलिब्रेशन</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° प्रति वळण</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>प्रतिसादाला आकार</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>डेडझोन, स्मूदिंग, प्रवेग, आउटपुट वक्र</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>संदर्भ चौकट</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>स्थानिक, खेळाडू किंवा जग</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>स्पेस</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>जायरो हालचालीचा अर्थ कसा लावला जातो. Local मूळ कंट्रोलर अक्ष वापरतो. Player आडवी हालचाल वास्तव जगातील उभ्या दिशेवर (गुरुत्वाकर्षण) प्रक्षेपित करतो, त्यामुळे तुम्ही पॅड कसेही धरले तरी तोच मनगटाचा पीळ नेहमी कॅमेरा फिरवतो. World याशिवाय उभी हालचाल जागतिक अक्षांवर पुन्हा प्रक्षेपित करतो.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>धरण्याची पद्धत</value></data>
@@ -2088,6 +2126,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>उभे</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>पकड</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>कंट्रोलर कसा धरला आहे. जायरो, ॲक्सेलेरोमीटर आणि गुरुत्वाकर्षण एकत्र फिरवते, मॅपिंगसाठी आणि व्हर्च्युअल कंट्रोलर कळवत असलेल्या मोशनसाठी. डी-पॅड तीच चौकट पाळतो, त्यामुळे पकडीत वर म्हणजे वरच.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>कंट्रोलर कसा धरला आहे</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>रेषीय</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>आक्रमक</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>सौम्य</value></data>
@@ -2120,7 +2159,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>एंगेज दिशा रीसेट करा</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>मोशन पासथ्रू</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>जायरो ट्यूनिंग मोशन पासथ्रूला लागू करा</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>या टॅबचे ऐच्छिक जायरो ट्यूनिंग (डेडझोन, संवेदनशीलता, स्मूदिंग, प्रतिसाद वक्र, उलट) व्हर्च्युअल कंट्रोलर गेम किंवा एमुलेटरला कळवत असलेल्या मोशनवर चालवते. फक्त कॅलिब्रेट केलेले वाचन पाठवण्यासाठी आणि गेमला स्वतःची संवेदनशीलता व स्मूदिंग लावू देण्यासाठी ते बंद करा. कॅलिब्रेशन ड्रिफ्ट सुधारणा दोन्ही बाबतीत नेहमी लागू होते.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>जायरो कार्डांचे ऐच्छिक ट्यूनिंग (डेडझोन, संवेदनशीलता, स्मूदिंग, प्रतिसाद वक्र, उलट) व्हर्च्युअल कंट्रोलर गेम किंवा एमुलेटरला कळवत असलेल्या मोशनवर चालवते. फक्त कॅलिब्रेट केलेले वाचन पाठवण्यासाठी आणि गेमला स्वतःची संवेदनशीलता व स्मूदिंग लावू देण्यासाठी ते बंद करा. कॅलिब्रेशन ड्रिफ्ट सुधारणा दोन्ही बाबतीत नेहमी लागू होते.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>पासथ्रू ट्यूनिंग रीसेट करा</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>प्रति-स्रोत जायरो संवेदनशीलता गुणक. 1.0 = इंजिनचे डिफॉल्ट (500°/s → पूर्ण विचलन). 1.0 पेक्षा जास्त मूल्ये अधिक संवेदनशील असतात. 1.0 पेक्षा कमी मूल्ये कमी संवेदनशील असतात.</value></data>
@@ -2137,7 +2176,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>पूर्ण टिल्ट श्रेणी रीसेट करा</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>टिल्ट डेडझोन रीसेट करा</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>जायरो टिल्ट रीसेट करा</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>एकापेक्षा जास्त स्रोत सक्रिय असताना या पंक्तीचे स्रोत कसे एकत्र होतात. ते बदलण्यासाठी पंक्ती निवडा आणि खालील तपशील पट्टीत बदला.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>एकापेक्षा जास्त स्रोत सक्रिय असताना या पंक्तीचे स्रोत कसे एकत्र होतात. पंक्ती उघडा आणि “एकत्र करा” मध्ये ते बदला.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>संवेग</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ट्रॅकबॉल मोड: स्टिक फटकारून सोडा, आणि कर्सर पुढे जात राहतो, हळूहळू थांबतो. स्टिक पुन्हा हलवल्यास तो थांबतो.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>फटक्यानंतर कर्सर किती दूर सरकतो. श्रेणीच्या कमाल टोकाला तो तुम्ही स्टिक पुन्हा हलवेपर्यंत चालू राहतो.</value></data>
@@ -2338,7 +2377,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रति मोटर गेन, ट्रिगर कंपन, मोटर अदलाबदल</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रति मोटर गेन, ट्रिगर कंपन, स्टीअरिंग कोन कंपन, स्थिर फोर्स</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>एकूण गेन</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>डावी मोटर</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>उजवी मोटर</value></data>
@@ -2347,6 +2386,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>या कंट्रोलरमध्ये ट्रिगर मोटर नाहीत, त्यामुळे Xbox इम्पल्स ट्रिगर वापरणारे गेम जाणवणार नाहीत. त्याऐवजी प्रत्येक ट्रिगर चॅनेल त्याच बाजूच्या मुख्य मोटरमध्ये मिसळा.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>कंपन चाचणी</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>मोटर क्रिया</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>डावी</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>उजवी</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>तुम्ही बंद करेपर्यंत या डिव्हाइसवर सतत फोर्स लावा. कोणत्याही स्रोतातील गेम-चालित फोर्स तो सक्रिय असताना त्यावर वरचढ ठरतो आणि गेम थांबल्यावर पुन्हा सुरू होतो.</value></data>
@@ -2425,7 +2466,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>रेकॉर्ड करण्यासाठी बटणे दाबा किंवा अक्ष/ट्रिगर हलवा. अक्ष 50% पेक्षा जास्त विचलित झाल्यावर ओळखले जातात.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>यादीतून जोडा</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>रेकॉर्ड करण्याऐवजी स्लॉटच्या डिव्हाइसमधून ट्रिगर इनपुट निवडा. टचपॅड टॅबवर सक्षम केलेले टचपॅड जेश्चर येथे दिसतात.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>ट्रिगर साफ करा</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>रेकॉर्ड करण्याऐवजी स्लॉटच्या डिव्हाइसमधून ट्रिगर इनपुट निवडा. “गती आणि स्पर्श” मध्ये चालू केलेले टचपॅड जेश्चर येथे दिसतात.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>इनपुट काढा</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>कोणतेही इनपुट दाबा…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>उलट</value></data>
@@ -2677,7 +2719,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>एखाद्या व्हर्च्युअल कंट्रोलरची सर्व मॅप केलेली डिव्हाइस ऑफलाइन असताना तो नष्ट होण्यापूर्वीचे सेकंद. 0 म्हणजे बंद. त्याच प्रकारचे उरलेले कंट्रोलर रिकामी जागा भरण्यासाठी वर सरकतात आणि खालच्या स्लॉटशी पुन्हा जोडले जातात.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>सेकंद (0 = कधीच नाही)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ शिफ्ट लेयर</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>लेयर जोडा</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>शिफ्ट लेयर जोडा. बटण दाबून ठेवल्यावर किंवा टॉगल केल्यावर सक्रिय होणारी दुसरी मॅपिंग तालिका.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>बेस</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>शिफ्ट लेयर</value></data>
@@ -2778,7 +2820,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>मोशन स्टीअरिंग</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ते {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>झुकावाचा आतील डेडझोन, झुकावाचा बाहेरील डेडझोन, कंट्रोलरची दिशा</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोशन लीन इनपुटसाठी सेटिंग्ज: कंट्रोलर व्हीलसारखा तिरपा करा. मॅपिंगमधील इनपुट ड्रॉपडाउनमधून “मोशन लीन” स्टिक अक्षाला मॅप करा.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोशन लीन इनपुटसाठी सेटिंग्ज: कंट्रोलर व्हीलसारखा तिरपा करा. “बटणे” मध्ये “मोशन लीन” स्टिक अक्षाला मॅप करा.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>मोशन स्टीअरिंग रीसेट करा</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>फ्लिक स्टिक (उजवी स्टिक)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>फ्लिक स्टिक (डावी स्टिक)</value></data>
@@ -2787,7 +2829,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>उजव्या स्टिकची रिंग</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>फ्लिक स्टिक</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>फ्लिक स्टिक इनपुटसाठी सेटिंग्ज</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>फ्लिक स्टिक इनपुटसाठी सेटिंग्ज: स्टिक एका दिशेला दाखवा आणि कॅमेरा त्या दिशेला वळतो, बारीक वळण्यासाठी कडेवर फिरवा. मॅपिंगमधील इनपुट ड्रॉपडाउनमधून “फ्लिक स्टिक (उजवी स्टिक)” कोणत्याही लेयरवर Mouse X ला मॅप करा.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>फ्लिक स्टिक इनपुटसाठी सेटिंग्ज: स्टिक एका दिशेला दाखवा आणि कॅमेरा त्या दिशेला वळतो, बारीक वळण्यासाठी कडेवर फिरवा. “की आणि माउस” मध्ये “फ्लिक स्टिक (उजवी स्टिक)” कोणत्याही लेयरवर माउस X ला मॅप करा.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>फ्लिक स्टिक रीसेट करा</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>प्रति 360° डॉट्स</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>संपूर्ण 360° कॅमेरा वळणासाठी माउस काउंट. गेमच्या माउस संवेदनशीलतेवर अवलंबून असते: फ्लिकमध्ये वळण कमी पडल्यास वाढवा, जास्त झाल्यास कमी करा.</value></data>
@@ -2879,7 +2921,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ऑडिओ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>मॅक्रो ध्वनी आणि मिरर केलेला सिस्टम ऑडिओ, USB किंवा ब्लूटूथवरून, निवडलेल्या कंट्रोलरच्या अंगभूत स्पीकरमधून वाजतात. वरील ड्रॉपडाउनमध्ये डिव्हाइस निवडा. येथील प्रत्येक सेटिंग त्याला अनुसरते.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ध्वनी आउटपुट</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>मिरर स्रोत, हॅप्टिक्स, हेडफोन आवाज, क्रॉसफीड, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>मिरर स्रोत, हेडफोन आवाज, बफर, आउटपुट मार्ग</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ध्वनी निवडलेल्या कंट्रोलरकडे आपोआप जातात. USB वर कंट्रोलरचा स्वतःचा ऑडिओ एंडपॉइंट हार्डवेअर कंटेनरनुसार जुळवला जातो. ब्लूटूथवर ऑडिओ Sony HID फ्रेममध्ये स्ट्रीम केला जातो.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>मिरर स्रोत</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>कंट्रोलर स्पीकरवर मिरर करण्यासाठी कोणते प्लेबॅक डिव्हाइस. विशिष्ट ध्वनी वेगळ्या प्लेबॅक डिव्हाइसकडे पाठवणारे गेम याला लक्ष्य करू शकतात.</value></data>
@@ -2892,10 +2934,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>सर्व ध्वनी थांबवा</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>या कंट्रोलरवरील प्रत्येक मॅक्रो ध्वनी थांबवा</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ध्वनी मॅक्रो</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ध्वनी मॅक्रोद्वारे वाजवले जातात: एक ट्रिगर (बटण दाबणे, सोडणे, दाबून ठेवणे किंवा सूत्र) आणि ध्वनी वाजवा कृती. ते येथे किंवा मॅक्रो टॅबवर बनवा. विलंब, पुनरावृत्ती आणि टॉगल सर्व चालतात.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ध्वनी मॅक्रोद्वारे वाजवले जातात: एक ट्रिगर (बटण दाबणे, सोडणे, दाबून ठेवणे किंवा सूत्र) आणि “ध्वनी वाजवा” कृती. ते येथे किंवा “मॅक्रो आणि मेनू” मध्ये बनवा. विलंब, पुनरावृत्ती आणि टॉगल सर्व चालतात.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>नवीन ध्वनी मॅक्रो</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>अजून ध्वनी मॅक्रो नाहीत. एक बनवा आणि ध्वनी फाइल व ट्रिगर निवडा.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>हा मॅक्रो मॅक्रो टॅबवर उघडा</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>हा मॅक्रो “मॅक्रो आणि मेनू” मध्ये उघडा</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ध्वनी मॅक्रो {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>ध्वनी वाजवा</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>या कंट्रोलरच्या आउटपुट डिव्हाइसवर ध्वनी फाइल (.wav, .mp3, .m4a, .aac, .wma, .flac) वाजवा</value></data>
@@ -3171,6 +3213,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>चालू आहे</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>चालू आहे, ड्रायव्हर कनेक्ट आहे</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>चालू आहे, कंट्रोलर सक्रिय आहेत</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR इन्स्टॉल केलेले आहे</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR इन्स्टॉल केलेले नाही</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR चालू आहे</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR चालू आहे, ड्रायव्हर कनेक्ट आहे</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR चालू आहे, कंट्रोलर सक्रिय आहेत</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>दुसरा OpenVR ड्रायव्हर HIDMaestro च्या ड्रायव्हर नावाचाच वापर करतो, त्यामुळे SteamVR PadForge च्या ड्रायव्हरऐवजी तोच लोड करू शकते आणि व्हर्च्युअल VR कंट्रोलर दिसणार नाहीत. हे दूर करण्यासाठी तो ड्रायव्हर काढून टाका: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>सिरीयल कंट्रोलर (COM पोर्ट)</value></data>
@@ -3314,7 +3361,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>कंझ्युमर {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>माउस</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>माउस जेश्चर</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>जेश्चर बटण दाबून ठेवा, फ्लिक करा आणि सोडल्यावर एक क्रिया घडते: डावीकडे, उजवीकडे, वर, खाली, किंवा फ्लिक अंतराच्या आत साधा क्लिक. पाच जेश्चर मॅपिंग टॅबवर मॅप करा किंवा मॅक्रो ट्रिगर म्हणून वापरा.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>जेश्चर बटण दाबून ठेवा, फ्लिक करा आणि सोडल्यावर एक क्रिया घडते: डावीकडे, उजवीकडे, वर, खाली, किंवा फ्लिक अंतराच्या आत साधा क्लिक. पाच जेश्चर कोणत्याही आउटपुटला मॅप करा किंवा मॅक्रो ट्रिगर म्हणून वापरा.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>माउस जेश्चर सक्षम करा</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>या स्लॉटवर या माउससाठी जेश्चर ओळखकर्ता सक्रिय करते. जेश्चर करताना जेश्चर बटण त्याचा सामान्य क्लिक कायम ठेवते, म्हणून तुम्ही इतर कशासाठी मॅप न केलेले बाजूचे बटण निवडा.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>जेश्चर बटणे</value></data>
@@ -3348,7 +3395,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>लेयर बदला</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>क्रोमा रंग सेट करा</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>क्रिया चालू असेपर्यंत या व्हर्च्युअल कंट्रोलरला नेमलेली Razer डिव्हाइसेस आणि त्यांच्या प्रकारातील इतर प्रत्येक Razer डिव्हाइस एका रंगात रंगवते.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>वरील कालावधीसाठी, हा रंग या व्हर्च्युअल कंट्रोलरला नेमलेल्या Razer डिव्हाइसेसवर आणि त्यांच्या प्रकारातील इतर प्रत्येक Razer डिव्हाइसवर लावतो, किंवा Razer Chroma ओळ नेमलेली असल्यास प्रत्येक Razer डिव्हाइसवर. तो कोणत्याही व्हर्च्युअल कंट्रोलरच्या लायटिंग टॅबला ओव्हरराइड करतो, मग लायटिंग परत देतो. ट्रिगर दाबून ठेवेपर्यंत रंग टिकवण्यासाठी Until Release सह While Held वापरा. दोन मॅक्रो एकाच वेळी रंग लावतात तेव्हा यादीत खालचा मॅक्रो चालतो, म्हणून पूर्ण-दाब मॅक्रो त्याच्या सॉफ्ट-दाब जोडीच्या खाली ठेवा. दोन व्हर्च्युअल कंट्रोलरवरील मॅक्रो एकाच प्रकारच्या Razer डिव्हाइसला रंग लावतात तेव्हा लहान प्लेयर क्रमांक चालतो. Razer Synapse चालू असणे आवश्यक आहे.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>वरील कालावधीसाठी, हा रंग या व्हर्च्युअल कंट्रोलरला नेमलेल्या Razer डिव्हाइसेसवर आणि त्यांच्या प्रकारातील इतर प्रत्येक Razer डिव्हाइसवर लावतो, किंवा Razer Chroma ओळ नेमलेली असल्यास प्रत्येक Razer डिव्हाइसवर. तो कोणत्याही व्हर्च्युअल कंट्रोलरने “लायटिंग आणि ऑडिओ” मध्ये सेट केलेल्या लायटिंगला ओव्हरराइड करतो, मग लायटिंग परत देतो. ट्रिगर दाबून ठेवेपर्यंत रंग टिकवण्यासाठी “सोडेपर्यंत” सह “दाबून ठेवताना” वापरा. दोन मॅक्रो एकाच वेळी रंग लावतात तेव्हा यादीत खालचा मॅक्रो चालतो, म्हणून पूर्ण-दाब मॅक्रो त्याच्या सॉफ्ट-दाब जोडीच्या खाली ठेवा. दोन व्हर्च्युअल कंट्रोलरवरील मॅक्रो एकाच प्रकारच्या Razer डिव्हाइसला रंग लावतात तेव्हा लहान प्लेयर क्रमांक चालतो. Razer Synapse चालू असणे आवश्यक आहे.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast स्क्रीन दाखवा</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>या स्लॉटला जोडणाऱ्या Bliss-Box पोर्टमधील प्रत्येक Dreamcast पॅडच्या VMU वर चित्रे दाखवते, मग प्रत्येक पोर्ट त्याच्या स्वतःच्या स्क्रीन सेटिंगवर परत आणते.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast चित्रे दाखवा: {0} × {1} ms, पुनरावृत्ती संख्या {2}</value></data>
@@ -3642,10 +3689,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>दाबल्यावर पॅडचे जमा झालेले जायरो लक्ष्य संदर्भ शून्य करते. स्मूदिंग इतिहास साफ होतो, मोशन लीन न्यूट्रल पुन्हा कॅप्चर होते, गुरुत्व अंदाज कंट्रोलरच्या सध्याच्या स्थितीवरून पुन्हा भरला जातो, आणि मोशन पिच, यॉ आणि रोल ओळींनी बनवलेले फिरणे पूर्ववत होते.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(कोणतेही डिव्हाइस)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>मेनू</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>मेनू भौतिक स्टिक किंवा टचपॅडला स्क्रीनवरील रिंग किंवा ग्रिडमध्ये बदलतात. मेनू जोडा, तो कशाने उघडेल ते निवडा, मग प्रत्येक सेलला लेबल द्या आणि बाइंडिंग द्या.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>मेनू भौतिक स्टिक किंवा टचपॅडला स्क्रीनवरील रिंग किंवा ग्रिडमध्ये बदलतात. नवीन मेनू तयार करण्यासाठी “मेनू” शेजारील + दाबा, तो कशाने उघडेल ते निवडा, मग प्रत्येक सेलला नाव आणि क्रिया द्या.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>नवीन मेनू</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>मेनू {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>मेनूचे नाव</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>सक्षम</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>उघडणे</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>शैली</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>रेडियल रिंग</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>टच ग्रिड</value></data>
@@ -3665,12 +3714,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>सेल</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>मध्य सेल</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>लेबल दाखवा</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>स्क्रीन स्थान</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>आकार</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>अपारदर्शकता</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>सक्रिय होण्याचा डेडझोन</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>सेल बाइंडिंग</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>सेल {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>सेल जोडा</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>शेवटचा सेल काढा</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>सेल संपादित करा</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>नाव</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>क्रिया</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>आयकॉन</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>मध्य</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>काहीही नाही</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>कीबोर्ड की</value></data>
@@ -3683,7 +3736,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>क्लिक सोडल्यावर एकदा चालते: सेलकडे निर्देश करा, स्टिक किंवा ट्रॅकपॅड क्लिक करा, मग क्लिक सोडा.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>तुम्ही सोडल्यावर एकदा चालते: सेल हायलाइट केलेला असताना पॅडवरून बोट उचला, किंवा स्टिकला मध्यावर परत येऊ द्या.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>सेल हायलाइट असेपर्यंत बाइंडिंग धरलेले राहते. क्लिकची गरज नाही.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>मेनूमध्ये किती सेल आहेत. रेडियल रिंगसाठी ही संख्या फक्त रिंगची आहे, मध्य सेल वेगळा आहे.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>मध्य सेल जोडते, स्टिक किंवा बोट सक्रिय होण्याच्या डेडझोनमध्ये असताना निवडला जातो.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>स्टिकसाठी, मेनू उघडण्यापूर्वी आणि रिंग सेल हायलाइट होण्यापूर्वी किती ढकलायचे. रेडियल मेनूवर तो स्टिक आणि टचपॅड दोन्हींसाठी मध्य क्षेत्रही आहे: त्यात असताना, मध्य सेल असल्यास तो निवडला जातो.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>ऑन-स्क्रीन ओव्हरलेवर प्रत्येक सेलचे लेबल काढा.</value></data>
@@ -3693,8 +3745,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>ओव्हरलेचा आकार, त्याच्या सामान्य आकाराच्या टक्केवारीत.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ओव्हरलेची अपारदर्शकता. 100% म्हणजे पूर्ण ठोस.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ओव्हरलेमध्ये या सेलवर दिसणारा मजकूर.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>हा सेल चालल्यावर काय करतो: “कीबोर्ड की” कीबोर्ड की दाबते, “कंट्रोलर बटण” या स्लॉटच्या व्हर्च्युअल कंट्रोलरवर बटण दाबते. “काहीही नाही” वर सेट केलेला सेल मॅपिंग ओळी आणि मॅक्रो ट्रिगरसाठी मेनू-आयटम स्रोत म्हणून तरीही चालतो.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>या स्लॉटला नेमलेल्या भौतिक कंट्रोलरवरून वाचले जाते, व्हर्च्युअल कंट्रोलरच्या लेआउटवरून नाही. खालील सेल बाइंडिंग म्हणजे मेनू जे आउटपुट देतो.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>हा सेल चालल्यावर काय करतो: “कीबोर्ड की” कीबोर्ड की दाबते, “कंट्रोलर बटण” या स्लॉटच्या व्हर्च्युअल कंट्रोलरवर बटण दाबते. “काहीही नाही” वर सेट केलेला सेल मॅपिंग आणि मॅक्रो ट्रिगरसाठी मेनू-आयटम स्रोत म्हणून तरीही चालतो.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>या स्लॉटला नेमलेल्या भौतिक कंट्रोलरवरून वाचले जाते, व्हर्च्युअल कंट्रोलरच्या लेआउटवरून नाही. मेनू काय आउटपुट देतो ते खालील सेल सांगतात.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>कस्टम अक्ष</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>X स्टीअर करा</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Y स्टीअर करा</value></data>
@@ -3719,13 +3771,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>बास शेकर</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>आउटपुट</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>बटणे</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>की आणि माउस</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>नोट आणि कंट्रोल</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>हात</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>स्टिक आणि ट्रिगर</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>रंबल आणि हॅप्टिक्स</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>गती आणि स्पर्श</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>लायटिंग आणि ऑडिओ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>मॅक्रो आणि मेनू</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>बास शेकर</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>या व्हर्च्युअल कंट्रोलरला मिळणारे गेम कंपन आणि फोर्स फीडबॅक बास शेकर आणि सबवूफरसाठी कमी-वारंवारतेच्या टोन म्हणून ऑडिओ आउटपुटकडे पाठवते.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>गेम कंपन बास शेकर किंवा सबवूफरमधून खालच्या स्वरांत वाजवते.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>आउटपुट डिव्हाइस, चॅनेल, गेन, प्रत्येक मोटरसाठी एक स्वर</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense आणि Nintendo Switch Pro व्हर्च्युअल कंट्रोलरसोबत चालते, तसेच रेसिंग व्हीलसारखे फोर्स फीडबॅक असलेले एक्स्टेंडेड व्हर्च्युअल कंट्रोलर आणि Steam Deck Controller (Composite) सोबतही. गेम फीडबॅक आणि टेस्ट रंबल ऑडिओ आउटपुटवरून वाजतात. मॅक्रो कंपन कंट्रोलरवरच राहते.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>कंपन ते ऑडिओ रीसेट करा</value></data>
@@ -3754,19 +3809,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>हे फीडबॅक चॅनेल टोन म्हणून वाजवते. बंद असताना गेन आणि फ्रिक्वेन्सी सेट राहतात.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>या चॅनेलची टोन फ्रिक्वेन्सी, 20 ते 120 Hz. तुमचा शेकर कुठे सर्वात जोरात प्रतिसाद देतो हे शोधण्यासाठी फ्रिक्वेन्सी स्वीप चालवा.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>मास्टर गेनपूर्वी या चॅनेलचा लाऊडनेस.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>गेन</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>चाचणी</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>या चॅनेलचा टोन त्याच्या सेट गेनवर 1.5 सेकंद वाजवते.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>लो मोटर रीसेट करा</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>हाय मोटर रीसेट करा</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>डावा ट्रिगर रीसेट करा</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>उजवा ट्रिगर रीसेट करा</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>शेकर तपासा</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>फ्रिक्वेन्सी स्वीप</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>कमी मोटर रूटिंगवर आठ सेकंदांत 20 ते 120 Hz पर्यंत एक स्वर स्वीप करते. तुमचा शेकर कुठे सर्वात जोरात प्रतिसाद देतो ते पाहा आणि व्हॉइस फ्रिक्वेन्सी तिथे सेट करा.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>थांबवा</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>चाचणी स्वर किंवा स्वीप थांबवते.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>कोणताही NFC टॅग</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC टॅग: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>इनपुट फिल्टर करा (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>आउटपुट आणि इनपुट फिल्टर करा</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>फक्त जुळणाऱ्या रांगा आणि इनपुट दाखवते. येथे टाइप करण्यासाठी Ctrl+F दाबा.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>पिकर कोणत्या डिव्हाइसचे इनपुट दाखवतात ते निवडा</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>पिकरमध्ये दाखवलेले</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>कोणतेही व्हॉइस वाक्य</value></data>
@@ -3873,6 +3931,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>फीड रीसेट करा</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>पॅरामेट्रिक EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>कंट्रोलर ऑडिओवर प्रति-बँड फिल्टर. ऑडिओ एन्कोड होण्यापूर्वी लागू होतात, म्हणून खालील लिमिटर वाढवलेल्या बँडला क्लिप होण्यापासून रोखतो.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>प्रीॲम्प, बँड, इम्पोर्ट</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>प्रीॲम्प</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>बँडआधीची एकूण पातळी. AutoEq प्रोफाइल ऋण प्रीॲम्पसह येतात, म्हणजे त्यांचे बूस्ट क्लिप होत नाहीत, आणि प्रोफाइल इम्पोर्ट केल्यावर हे आपोआप सेट होते.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>चालू</value></data>
@@ -4096,7 +4155,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>स्पर्श किंवा विचलनावर उघडण्यावर रीसेट करा.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>यावरून चालवा</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>लेयर हा मेनू उघडा ठेवत असताना हायलाइट केलेला सेल चालवणारे भौतिक इनपुट.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>या स्लॉटला नेमलेल्या भौतिक कंट्रोलरवरून वाचले जाते. लेयर मेनू उघडतो, हे इनपुट तो चालवते. सेल बाइंडिंग त्याचे आउटपुट ठरवतात.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>या स्लॉटला नेमलेल्या भौतिक कंट्रोलरवरून वाचले जाते. लेयर मेनू उघडतो आणि हे इनपुट तो चालवते. तो काय आउटपुट देतो ते त्याचे सेल सांगतात.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>आयकॉन आकार</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>मेनूच्या सामान्य आयकॉन आकाराच्या तुलनेत आयकॉन आकार, 25% ते 200%. आयकॉन साफ केल्यास तो 100% वर रीसेट होतो.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>क्लिक इनपुट दाबून ठेवेपर्यंत हायलाइट केलेल्या सेलचे बाइंडिंग दाबून ठेवते. स्टिक स्थिर असतानाही हायलाइट केलेला रेडियल केंद्र चालू शकतो.</value></data>
@@ -4219,7 +4278,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows च्या अदस्तऐवजीकृत IPolicyConfig इंटरफेसच्या मांडणीचा Antoine Aflalo यांचा संदर्भ, जो PadForge कंट्रोलरचा ऑडिओ एंडपॉइंट पुन्हा सक्षम करण्यासाठी वापरते. MIT. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ऑडिओ टॅब इम्पोर्ट करतो ते पॅरामेट्रिक EQ प्रोफाइल स्वरूप, Jaakko Pasanen यांचे. MIT. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>कंट्रोलरचा “पॅरामेट्रिक EQ” इम्पोर्ट करतो ते पॅरामेट्रिक EQ प्रोफाइल स्वरूप, Jaakko Pasanen यांचे. MIT. फक्त दस्तऐवजीकरण, कोणताही कोड समाविष्ट नाही.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>टेक्स्ट ब्लॉक मॅक्रो आणि कीबोर्ड कॉर्ड हुकमागील SendInput तंत्रे: Unicode टायपिंग, बॅच मर्यादा, Win-की मास्क की आणि टॅग केलेले इंजेक्ट इनपुट. GPL-2.0-or-later, फक्त दस्तऐवजीकरण म्हणून वाचले, कोणताही GPL कोड समाविष्ट नाही.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4416,6 +4475,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>दिशा</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>पायरी</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>ते</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>हँडल</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} या कंट्रोलरचे ट्रिगर सेट करत आहे.</value></data>
@@ -4460,7 +4520,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>हँडल पुरेसे दूर गेले नाही, म्हणून पोहोच आधीसारखीच राहते. स्वीप चालू असताना ते प्रत्येक कडेपर्यंत हलवा.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>स्वीप पूर्ण होण्यापूर्वी Falcon बंद झाला.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension कडून इन्स्टॉल करता येणाऱ्या Force Dimension च्या SDK द्वारे Novint Falcon वर गेम खेळते. हँडल म्हणजे स्टिक, ग्रिपची चार बटणे म्हणजे बटणे, आणि PadForge गेमचे कंपन व इफेक्ट्स हँडलवर बल म्हणून लावते. प्रत्येक स्लॉटच्या फोर्स फीडबॅक टॅबमध्ये Falcon कसा जाणवेल ते ठरवता येते.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension कडून इन्स्टॉल करता येणाऱ्या Force Dimension च्या SDK द्वारे Novint Falcon वर गेम खेळते. हँडल म्हणजे स्टिक, ग्रिपची चार बटणे म्हणजे बटणे, आणि PadForge गेमचे कंपन व इफेक्ट्स हँडलवर बल म्हणून लावते. प्रत्येक कंट्रोलरच्या “रंबल आणि हॅप्टिक्स” मधील Novint Falcon कार्ड Falcon कसा जाणवेल ते ठरवते.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon चालवा</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Force Dimension च्या dhd64.dll द्वारे प्रत्येक Falcon उघडते. उघडलेला Falcon फक्त PadForge चा असतो, म्हणून हे चालू असताना FalconJoyForce आणि Force Dimension ची साधने तो उघडू शकत नाहीत. बंद केल्यावर PadForge प्रत्येक Falcon बंद करते.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon लायब्ररी {0} वर सेट केली. PadForge ती काही सेकंदांत लोड करते आणि दुसऱ्या प्रतीवर उघडा असलेला Falcon या प्रतीवर पुन्हा उघडतो.</value></data>
@@ -4628,7 +4688,7 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>ठरावीक वेळेसाठी</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>थांबवेपर्यंत</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>वेळ</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>या स्लॉटवरील प्रत्येक DualSense आणि DualSense Edge वर प्ले होते. गेमचा स्वतःचा ट्रिगर इफेक्ट आणि गेम मॉडचा आधी लागू होतो, आणि इफेक्ट संपल्यावर अडॅप्टिव्ह ट्रिगर टॅबमधील सेटिंग परत येते. झोन विश्रांतीवेळी 0 पासून पूर्ण दाबाला 9 पर्यंत असतात. धनुष्य, सरपट आणि यंत्र हे अधिकृत DualSense इफेक्ट नाहीत, आणि फर्मवेअर अपडेटने ते काढले जाऊ शकतात. अडॅप्टिव्ह ट्रिगर कंपनांचे भाषांतर करा चालू असलेल्या Xbox कंट्रोलरवर कंपन करणारे इफेक्ट ट्रिगर कंपन म्हणून जाणवतात.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>या स्लॉटवरील प्रत्येक DualSense आणि DualSense Edge वर प्ले होते. गेमचा स्वतःचा ट्रिगर इफेक्ट आणि गेम मॉडचा आधी लागू होतो, आणि इफेक्ट संपल्यावर अडॅप्टिव्ह ट्रिगर कार्डवरील सेटिंग परत येते. झोन विश्रांतीवेळी 0 पासून पूर्ण दाबाला 9 पर्यंत असतात. धनुष्य, सरपट आणि यंत्र हे अधिकृत DualSense इफेक्ट नाहीत, आणि फर्मवेअर अपडेटने ते काढले जाऊ शकतात. “अडॅप्टिव्ह ट्रिगर कंपनांचे भाषांतर करा” चालू असलेल्या Xbox कंट्रोलरवर कंपन करणारे इफेक्ट ट्रिगर कंपन म्हणून जाणवतात.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1} वर {0}, {2} ms साठी</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1} वर {0}, दाबून ठेवेपर्यंत</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} वर {0}, थांबवेपर्यंत</value></data>

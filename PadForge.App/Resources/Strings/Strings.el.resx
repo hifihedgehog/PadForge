@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Αντιγραφή</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Επικόλληση</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Δημιουργία αντιγράφου</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Μετονομασία</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Ενεργοποιημένο</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Απενεργοποιημένο</value></data>
   <data name="Common_On" xml:space="preserve"><value>Ενεργό</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Συσκευή</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Είσοδος από</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Προσθήκη συσκευής</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Εικόνα</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Λίστα</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Έξοδοι: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Κίνηση</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Κάντε κλικ σε ένα στοιχείο ελέγχου και πατήστε την είσοδο που θα το ελέγχει.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Κάντε κλικ σε ένα πλήκτρο ή σε ένα κουμπί ποντικιού και πατήστε την είσοδο που θα το ελέγχει.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Κάντε κλικ σε μια νότα ή σε ένα ρυθμιστικό και πατήστε την είσοδο που θα το ελέγχει.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Η «Αντιστοίχιση όλων» παραλείπει τις εξόδους επαφής των A και B. Κάντε κλικ στον δακτύλιο γύρω από το A ή το B για να αντιστοιχίσετε μία.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Αναμονή για {0}. Πατήστε την είσοδο στη συσκευή σας.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, είσοδος από</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Περισσότερες επιλογές</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Λιγότερες επιλογές</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Κουμπί πρόσοψης</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Κουμπί ώμου</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Κουμπί συστήματος</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Κουμπί</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Κατευθυντικό πλήκτρο</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Μοχλός</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Σκανδάλη</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Αισθητήρας κίνησης</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Πλήκτρο πληκτρολογίου</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Κουμπί ποντικιού</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Κίνηση ποντικιού</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Ροδέλα κύλισης</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Αλλαγή ελέγχου (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Αισθητήρας αφής</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Αναλογικό τράβηγμα</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, αριστερό χέρι</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, δεξί χέρι</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ποιο πάτημα βλέπουν τα παιχνίδια όταν κρατιούνται και τα δύο κουμπιά ενός ζεύγους</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ποιο πάτημα βλέπουν τα παιχνίδια όταν κρατιούνται και τα δύο πλήκτρα ενός ζεύγους</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Κρατά μια μικρή απόκλιση του μοχλού ώστε τα παιχνίδια να εμφανίζουν οδηγίες χειριστηρίου</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Σφυρηλάτηση</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Επιλέξτε μια μακροεντολή στα αριστερά ή πατήστε «Προσθήκη» για να δημιουργήσετε μία.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Επιλέξτε μια μακροεντολή στη λίστα ή πατήστε το + δίπλα στην επικεφαλίδα «Μακροεντολές» για να δημιουργήσετε μία.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ΕΙΣΟΔΟΣ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ΕΞΟΔΟΣ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Κρύο</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Σκανδάλες ώθησης</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Σκανδάλες ώθησης</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ενίσχυση ανά σκανδάλη, αντιμετάθεση κινητήρων, δονήσεις προσαρμοζόμενων σκανδαλών</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ενίσχυση ανά σκανδάλη, αντιμετάθεση κινητήρων, δονήσεις προσαρμοζόμενων σκανδαλών, Σταθερή δύναμη σκανδάλης</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Προωθεί τις εντολές κινητήρα ανά σκανδάλη (σκανδάλες ώθησης Xbox) από το εικονικό χειριστήριο στο φυσικό χειριστήριο Xbox One, Elite ή Series που έχει ανατεθεί. Η δόνηση σκανδάλης που προκαλεί το παιχνίδι περνά αυτόματα. Τα παρακάτω στοιχεία ελέγχου κλιμακώνουν την ένταση ανά σκανδάλη.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Αριστερή σκανδάλη</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Δεξιά σκανδάλη</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Μοχλοί</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Νεκρές ζώνες, αντι-νεκρές ζώνες, καμπύλες ευαισθησίας και βαθμονόμηση μετατόπισης κέντρου ανά μοχλό. Κάθε ενότητα παρακάτω αφορά έναν αναλογικό μοχλό της ενεργής εξόδου. Τα Εκτεταμένα προφίλ μπορούν να έχουν έως τέσσερις μοχλούς. Τα τυπικά χειριστήρια έχουν δύο.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Σκανδάλες</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Νεκρές ζώνες, αντι-νεκρές ζώνες, κλιμάκωση μέγιστου εύρους και καμπύλες ευαισθησίας ανά σκανδάλη. Κάθε ενότητα παρακάτω αφορά έναν άξονα σκανδάλης της ενεργής εξόδου. Τα Εκτεταμένα προφίλ μπορούν να διαθέτουν έως οκτώ άξονες, κοινούς με την καρτέλα «Μοχλοί».</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Νεκρές ζώνες, αντι-νεκρές ζώνες, κλιμάκωση μέγιστου εύρους και καμπύλες ευαισθησίας ανά σκανδάλη. Κάθε κάρτα σκανδάλης αφορά έναν άξονα σκανδάλης της ενεργής εξόδου. Τα Εκτεταμένα προφίλ μπορούν να διαθέτουν έως οκτώ άξονες, κοινούς για μοχλούς και σκανδάλες.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Ανάδραση δύναμης</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ρυθμίζει πώς το PadForge κλιμακώνει τα συμβάντα ανάδρασης δύναμης του παιχνιδιού και πώς τα δρομολογεί στους κινητήρες δόνησης ή στους απτικούς επενεργητές του φυσικού χειριστηρίου. Η «Δόνηση από ήχο» προσθέτει από πάνω ένα επίπεδο που οδηγείται από τον ήχο του συστήματος.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Αυτή η συσκευή</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Όλο το χειριστήριο</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Η δόνηση αναπαράγεται στη συσκευή {0} ως απτικοί παλμοί, που στέλνονται απευθείας στη συσκευή. Η ισχυρότερη δόνηση επιλέγει ισχυρότερο παλμό και τον επαναλαμβάνει πιο γρήγορα.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Η απτική ανάδραση είναι απενεργοποιημένη για τη συσκευή {0} στο Logi Options+, επομένως δεν αναπαράγεται τίποτα μέχρι να την ενεργοποιήσετε ξανά εκεί.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Αυτή η συσκευή δεν έχει απαντήσει ακόμη. Η δόνησή της θα αναπαραχθεί μόλις ξυπνήσει.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>μητρικές και κάρτες γραφικών</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, σετ κεφαλής και βάσεις για σετ κεφαλής</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Φωτεινή μπάρα</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Τα παιχνίδια αναλαμβάνουν κάθε φορά που γράφουν φωτισμό.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Εισαγάγετε ένα εξαψήφιο δεκαεξαδικό χρώμα (RRGGBB ή #RRGGBB) και πατήστε Enter ή κάντε κλικ αλλού για εφαρμογή.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Αφαίρεση αυτού του χρώματος από την παλέτα</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Επαναφορά δόνησης από ήχο</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Επαναφορά: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Εκκαθάριση αντιστοιχίσεων</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Όλες οι αντιστοιχίσεις αυτής της καρτέλας θα διαγραφούν. Οι αναθέσεις πηγών, οι επιπλέον πηγές και οι ρυθμίσεις συνδυασμού επανέρχονται στις προεπιλογές.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Όλες οι αντιστοιχίσεις αυτού του επιπέδου θα διαγραφούν. Οι αναθέσεις πηγών, οι επιπλέον πηγές και οι ρυθμίσεις συνδυασμού επανέρχονται στις προεπιλογές.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Μοτίβο παίκτη</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Λειτουργία LED σίγασης</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Φωτεινότητα LED</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Κουμπιά</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Εισηγμένα προφίλ…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Εκτεταμένο χειριστήριο</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Διαχείριση των προφίλ HIDMaestro που έχει εισαγάγει ο χρήστης: καταγράψτε ένα νέο από μια συνδεδεμένη συσκευή, εξαγάγετε ένα υπάρχον σε JSON ή διαγράψτε ένα που δεν χρειάζεστε πια.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Κλωνοποίηση συσκευής 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Αντιστοιχίζει κάθε άξονα, κουμπί και POV της επιλεγμένης συσκευής απευθείας στην εικονική έξοδο με τον ίδιο αριθμό. Προσαρμόζει τη διάταξη στο μέγεθος της συσκευής και αντικαθιστά τις γραμμές αυτής της συσκευής στην υποδοχή με διέλευση 1:1.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Ανάδραση δύναμης</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Κανάλι</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Έξοδος MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Κανάλι MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Πλήθος CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Αριθμός εξόδων CC (το μέγιστο εξαρτάται από το Αρχικό CC)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Αφαιρεί αυτό το ζεύγος πλήκτρων.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Πρώτο πλήκτρο του αντίθετου ζεύγους.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Δεύτερο πλήκτρο του αντίθετου ζεύγους.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Ταυτόχρονες αντίθετες βασικές κατευθύνσεις (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Διατήρηση χειριστηρίου ενεργού</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Ορισμένα παιχνίδια σταματούν τη δόνηση και αλλάζουν τις ενδείξεις κουμπιών τους τη στιγμή που βλέπουν είσοδο ποντικιού ή πληκτρολογίου. Η διατήρηση μιας μικρής απόκλισης μοχλού κάνει το παιχνίδι να συνεχίζει να θεωρεί αυτό το χειριστήριο ως την ενεργή συσκευή. Η διατήρηση ενεργοποιείται μόνο όσο και οι δύο άξονες αυτού του μοχλού βρίσκονται κάτω από το διατηρούμενο επίπεδο, επομένως ένας μοχλός με ολίσθηση (drift) εξακολουθεί να θεωρείται σε ηρεμία. Είσοδος πάνω από αυτό το επίπεδο σε οποιονδήποτε άξονα την αποδεσμεύει και περνά αμετάβλητη. Κρατήστε την απόκλιση κάτω από τη νεκρή ζώνη του ίδιου του παιχνιδιού, ώστε να μην κινείται τίποτα μέσα στο παιχνίδι.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Διατήρηση ενεργού</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Επαναφορά κλικ</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Επαναφορά μισού επιφάνειας</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Επαναφορά λειτουργίας ενεργοποίησης</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Επαναφορά κελιών</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης ενεργοποίησης</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Επαναφορά γεωμετρίας μενού</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Επαναφορά κελιού</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Εκκαθάριση όλων</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Πηγή</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Τιμή</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Επιλογές</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Νεκρή ζώνη άξονα σε κουμπί</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Αντιστροφή</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Όταν είναι επιλεγμένο, ο άξονας επιστρέφει σταδιακά στο κέντρο κατά την απελευθέρωση. Όταν δεν είναι επιλεγμένο, διατηρεί την τελευταία του θέση.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Κουμπί που αντιστρέφει την έξοδο της γραμμής όσο κρατιέται</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Τροποποιητής: όσο κρατιέται, η έξοδος της γραμμής αλλάζει πρόσημο.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Προσθήκη πηγής</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Προσθήκη πηγής</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Προσθήκη άλλης φυσικής εισόδου σε αυτή τη γραμμή</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Αφαίρεση αυτής της πηγής</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Σημείο {0} από {1}, είσοδος {2}%, έξοδος {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Βαθμονόμηση κέντρου</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Κεντρικό σημείο</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Κέντρο</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Νεκρή ζώνη</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Μετατοπίσεις κέντρου, σχήμα νεκρής ζώνης και τιμές ανά άξονα, καμπύλη για κάθε άξονα, εύρος, τιμόνι</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Εύρος</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Η «Βαθμονόμηση ορίου» είναι ο προτεινόμενος τρόπος για να διορθώσετε έναν μοχλό. Καταγράφει το άκρο που μπορεί να φτάσει φυσικά ο μοχλός και έπειτα ανακλιμακώνει αναλογικά κάθε θέση ως προς αυτό το μετρημένο άκρο, ώστε ολόκληρη η φυσική κίνηση, σε κάθε γωνία και κάθε απόκλιση, να αντιστοιχίζεται σε έναν ιδανικό κύκλο χωρίς καμία περικοπή. Τα τέσσερα ρυθμιστικά παρακάτω περιορίζουν μόνο τους βασικούς άξονες. Χρησιμοποιήστε τα για να περιορίσετε σκόπιμα το εύρος, όχι για να το διορθώσετε.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Η «Βαθμονόμηση ορίου» μετρά το άκρο που μπορεί να φτάσει ο μοχλός και το αναδιαμορφώνει σε πλήρη κύκλο. Τα τέσσερα ρυθμιστικά απλώς περιορίζουν κάθε κατεύθυνση.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Δειγματοληψία...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Μετατόπιση κέντρου X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Μετατόπιση κέντρου Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Όνομα</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Έναυσμα</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Όταν</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Εκτέλεση</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Στο πάτημα</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Στην απελευθέρωση</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Σε ποιο επίπεδο shift ανήκει αυτή η μακροεντολή. Με το «Οποιοδήποτε επίπεδο» εκτελείται ανεξάρτητα από το ενεργό επίπεδο. Με το Βασικό και τα ονομασμένα επίπεδα εκτελείται μόνο όσο το συγκεκριμένο επίπεδο είναι ενεργό, ακριβώς όπως μια γραμμή αντιστοίχισης.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Οποιοδήποτε επίπεδο</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Εκτελείται συνεχώς όσο αυτό το εικονικό χειριστήριο είναι ενεργό. Δεν απαιτείται κουμπί εναύσματος.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Ακολουθία ενεργειών</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Ενέργειες</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Επίπεδο, Πηγή, Κατώφλι, Κατεύθυνση, Κατακράτηση κουμπιών εναύσματος, Επανάληψη</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Προσθήκη ενέργειας</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Επεξεργασία ενέργειας</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Τύπος</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Εικονικά κουμπιά</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Εικονικοί άξονες και τιμόνι</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Κουμπί {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Πάτημα {0} για {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Πάτημα {0} για {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Απελευθέρωση {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Πλήκτρα {0} για {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Πλήκτρα {0} για {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Απελευθέρωση πλήκτρων {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Αναμονή {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Αναμονή {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Ορισμός {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Ένταση συστήματος ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Ένταση συστήματος ← {0} (μέγ. {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Απελευθέρωση ποντικιού {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης επιφάνειας αφής</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Ορισμός χρώματος φωτεινής μπάρας</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Παρακάμπτει τη φωτεινή μπάρα της ανατεθειμένης υποδοχής PlayStation με ένα επιλεγμένο χρώμα RGB. Η «Παροδική» σβήνει σταδιακά από την πλήρη ένταση στο μαύρο μέσα στο ρυθμισμένο διάστημα εξασθένησης και έπειτα επιστρέφει στις ρυθμίσεις της καρτέλας «Φωτισμός». Η «Μόνιμη» κρατά το χρώμα μέχρι να εκτελεστεί μια ενέργεια «Εκκαθάριση παράκαμψης φωτεινής μπάρας». Οι εγγραφές του παιχνιδιού εξακολουθούν να έχουν προτεραιότητα έναντι της παράκαμψης.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Αναλαμπή φωτεινής μπάρας {0} (εξασθένηση {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Παρακάμπτει τη φωτεινή μπάρα της ανατεθειμένης υποδοχής PlayStation με ένα επιλεγμένο χρώμα RGB. Η «Παροδική» σβήνει σταδιακά από την πλήρη ένταση στο μαύρο μέσα στο ρυθμισμένο διάστημα εξασθένησης και έπειτα επιστρέφει στις ρυθμίσεις της κάρτας «Φωτεινή μπάρα». Η «Μόνιμη» κρατά το χρώμα μέχρι να εκτελεστεί μια ενέργεια «Εκκαθάριση παράκαμψης φωτεινής μπάρας». Οι εγγραφές του παιχνιδιού εξακολουθούν να έχουν προτεραιότητα έναντι της παράκαμψης.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Αναλαμπή φωτεινής μπάρας {0} (εξασθένηση {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Κράτημα φωτεινής μπάρας {0} μέχρι την εκκαθάριση</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Εκκαθάριση παράκαμψης φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Εκκαθάριση παράκαμψης φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Αποδεσμεύει κάθε ενεργή παράκαμψη φωτεινής μπάρας στην ανατεθειμένη υποδοχή. Συνδυάστε τη με μια «Μόνιμη» ενέργεια «Ορισμός χρώματος φωτεινής μπάρας» για να την αναιρείτε μέσω άλλης μακροεντολής.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Ορισμός λειτουργίας φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Ορισμός λειτουργίας φωτεινής μπάρας σε: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ορίζει τη λειτουργία φωτεινής μπάρας της ανατεθειμένης υποδοχής σε μια συγκεκριμένη τιμή. Παραμένει, όπως μια αλλαγή στην καρτέλα «Φωτισμός», μέχρι να την αλλάξει άλλη ενέργεια ή ο χρήστης.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ορίζει τη λειτουργία φωτεινής μπάρας της ανατεθειμένης υποδοχής σε μια συγκεκριμένη τιμή. Παραμένει, όπως μια αλλαγή στην κάρτα «Φωτεινή μπάρα», μέχρι να την αλλάξει άλλη ενέργεια ή ο χρήστης.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Κυκλική εναλλαγή λειτουργιών φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργίες φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Προχωρά τη λειτουργία φωτεινής μπάρας της υποδοχής στις λειτουργίες που επιλέγονται παρακάτω. Κάθε εκτέλεση μεταβαίνει στην επόμενη επιλεγμένη λειτουργία. Η θέση στον κύκλο είναι ξεχωριστή για κάθε ενέργεια και μηδενίζεται όταν επανεκκινείται η εφαρμογή.</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Εξασθένηση</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Σβήσιμο</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Παλέτα</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Η κενή παλέτα χρησιμοποιεί την παλέτα της καρτέλας «Φωτισμός» της ίδιας της υποδοχής.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Μια κενή παλέτα χρησιμοποιεί την παλέτα της κάρτας «Φωτεινή μπάρα» της υποδοχής.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Λειτουργία</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Επιλέξτε ανάμεσα σε ποιες λειτουργίες φωτεινής μπάρας θα εναλλάσσεται κυκλικά η μακροεντολή. Κάθε εκτέλεση προχωρά στην επόμενη επιλεγμένη λειτουργία.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Δόνηση</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Οδηγεί τη δόνηση της φυσικής συσκευής της υποδοχής από μια μακροεντολή. Η «Παροδική» λειτουργεί σε πλήρη ισχύ για το διάστημα κρατήματος και έπειτα σβήνει ως το μηδέν μέσα στο διάστημα σβησίματος. Η «Μόνιμη» παραμένει σε πλήρη ισχύ μέχρι να εκτελεστεί μια ενέργεια «Διακοπή δόνησης». Προστίθεται πάνω από τη δόνηση του παιχνιδιού μέσω max(), ώστε η ανάδραση που προκαλεί ο χρήστης να γίνεται πάντα αισθητή.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Παλμός δόνησης {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Παλμός δόνησης {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Κράτημα δόνησης {0} μέχρι την εκκαθάριση</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Διακοπή δόνησης</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Διακοπή δόνησης</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Διακοπή δόνησης σκανδαλών</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Αποδεσμεύει κάθε ενεργή δόνηση σκανδαλών από μακροεντολή στην υποδοχή. Συνδυάστε τη με μια «Μόνιμη» «Παράκαμψη δόνησης σκανδαλών» για να τερματίζετε το κράτημα από μακροεντολή.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Ορισμός ενεργοποίησης γυροσκοπίου</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ορίζει την κατάσταση ενεργοποίησης του γυροσκοπίου της υποδοχής από μια μακροεντολή. Η «Εναλλαγή» αντιστρέφει την τρέχουσα κατάσταση. Το «Ενεργό» επιβάλλει ενεργοποιημένο γυροσκόπιο. Το «Ανενεργό» επιβάλλει απενεργοποιημένο. Είναι ανεξάρτητο από το κουμπί ενεργοποίησης της καρτέλας «Γυροσκόπιο». Οι δύο πηγές συνδυάζονται με OR, επομένως καμία δεν μπορεί να απενεργοποιήσει ό,τι ενεργοποίησε η άλλη.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ορίζει την κατάσταση ενεργοποίησης του γυροσκοπίου της υποδοχής από μια μακροεντολή. Η «Εναλλαγή» αντιστρέφει την τρέχουσα κατάσταση. Το «Ενεργό» επιβάλλει ενεργοποιημένο γυροσκόπιο. Το «Ανενεργό» επιβάλλει απενεργοποιημένο. Είναι ανεξάρτητο από το «Κουμπί ενεργοποίησης στόχευσης» στην ενότητα «Κίνηση και αφή». Οι δύο πηγές συνδυάζονται με OR, επομένως καμία δεν μπορεί να απενεργοποιήσει ό,τι ενεργοποίησε η άλλη.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Λειτουργία</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Εναλλαγή</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Ενεργό</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Είσοδος ανά επιφάνεια αφής. Οι χειρονομίες (σαρώσεις, αγγίγματα, τσιμπήματα, σχήματα) και οι λειτουργίες συνεχούς εξόδου (εικονικός μοχλός / D-pad, ποντίκι) γίνονται πηγές αντιστοίχισης που μπορείτε να συνδέσετε στην καρτέλα «Αντιστοιχίσεις».</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Είσοδος ανά επιφάνεια αφής. Οι χειρονομίες (σαρώσεις, αγγίγματα, τσιμπήματα, σχήματα) και οι λειτουργίες συνεχούς εξόδου (εικονικός μοχλός / D-pad, ποντίκι) γίνονται πηγές αντιστοίχισης που μπορείτε να συνδέσετε σε οποιαδήποτε έξοδο.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Αριθμός επιφάνειας αφής</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Σε ποια επιφάνεια αφής αυτού του χειριστηρίου ισχύουν οι παρακάτω ρυθμίσεις. Κάθε επιφάνεια αφής διατηρεί τις δικές της χειρονομίες, την αίσθηση ποντικιού και την περιοχή δείκτη.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Γυροσκόπιο</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ρυθμίστε πώς ο αισθητήρας κίνησης αυτού του χειριστηρίου οδηγεί την έξοδο ποντικιού και μοχλού. Βαθμονομήστε σε επίπεδη επιφάνεια για να μηδενίσετε την ολίσθηση ηρεμίας και έπειτα ρυθμίστε την ευαισθησία, την εξομάλυνση και τους κανόνες ενεργοποίησης όπως σας ταιριάζει.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Βαθμονόμηση</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Γυροσκόπιο και επιταχυνσιόμετρο σε πραγματικό χρόνο</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ευαισθησία</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Μονάδες, Χώρος, αντιστροφή αξόνων, Βαθμονόμηση πραγματικού κόσμου</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Μονάδες, αντιστροφή αξόνων, Βαθμονόμηση πραγματικού κόσμου</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ανά στροφή</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Διαμόρφωση απόκρισης</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Νεκρή ζώνη, εξομάλυνση, Επιτάχυνση, Καμπύλη εξόδου</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Πλαίσιο αναφοράς</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Τοπικός, Παίκτης ή Κόσμος</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Χώρος</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Πώς ερμηνεύεται η κίνηση του γυροσκοπίου. Το «Τοπικός» χρησιμοποιεί τους ακατέργαστους άξονες του χειριστηρίου. Το «Παίκτης» προβάλλει την οριζόντια κίνηση στην πραγματική κατακόρυφο (βαρύτητα), ώστε η ίδια στροφή του καρπού να στρέφει πάντα την κάμερα, όπως κι αν κρατάτε το χειριστήριο. Το «Κόσμος» προβάλλει επιπλέον την κατακόρυφη κίνηση στους άξονες του κόσμου.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Τρόπος κρατήματος</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Όρθια</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Λαβή</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Πώς κρατιέται το χειριστήριο. Περιστρέφει μαζί το γυροσκόπιο, το επιταχυνσιόμετρο και τη βαρύτητα, τόσο για τις αντιστοιχίσεις όσο και για την κίνηση που αναφέρει το εικονικό χειριστήριο. Το D-pad ακολουθεί το ίδιο πλαίσιο, επομένως το Πάνω είναι πάνω στο εκάστοτε κράτημα.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Πώς κρατιέται το χειριστήριο</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Γραμμική</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Επιθετική</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Χαλαρή</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Επαναφορά κατεύθυνσης ενεργοποίησης</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Διέλευση κίνησης</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Εφαρμογή ρυθμίσεων γυροσκοπίου στη διέλευση κίνησης</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Εφαρμόζει τις προαιρετικές ρυθμίσεις γυροσκοπίου αυτής της καρτέλας (νεκρή ζώνη, ευαισθησία, εξομάλυνση, καμπύλη απόκρισης, αντιστροφή) στην κίνηση που αναφέρει το εικονικό χειριστήριο στο παιχνίδι ή στον εξομοιωτή. Απενεργοποιήστε το για να στέλνεται μόνο η βαθμονομημένη ένδειξη και να εφαρμόζει το παιχνίδι τη δική του ευαισθησία και εξομάλυνση. Η διόρθωση ολίσθησης της βαθμονόμησης εφαρμόζεται πάντα, σε κάθε περίπτωση.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Εφαρμόζει τις προαιρετικές ρυθμίσεις των καρτών «Γυροσκόπιο» (νεκρή ζώνη, ευαισθησία, εξομάλυνση, καμπύλη απόκρισης, αντιστροφή) στην κίνηση που αναφέρει το εικονικό χειριστήριο στο παιχνίδι ή στον εξομοιωτή. Απενεργοποιήστε το για να στέλνεται μόνο η βαθμονομημένη ένδειξη και να εφαρμόζει το παιχνίδι τη δική του ευαισθησία και εξομάλυνση. Η διόρθωση ολίσθησης της βαθμονόμησης εφαρμόζεται πάντα, σε κάθε περίπτωση.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Επαναφορά ρυθμίσεων διέλευσης</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Πολλαπλασιαστής ευαισθησίας γυροσκοπίου ανά πηγή. 1.0 = η προεπιλογή της μηχανής (500°/s → πλήρης απόκλιση). Οι τιμές πάνω από 1.0 είναι πιο ευαίσθητες. Οι τιμές κάτω από 1.0 είναι λιγότερο ευαίσθητες.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Επαναφορά εύρους πλήρους κλίσης</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Επαναφορά νεκρής ζώνης κλίσης</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Επαναφορά κλίσης γυροσκοπίου</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Πώς συγχωνεύονται οι πηγές αυτής της γραμμής όταν είναι ενεργές περισσότερες από μία. Επιλέξτε τη γραμμή για να το αλλάξετε στη λωρίδα λεπτομερειών παρακάτω.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Πώς συγχωνεύονται οι πηγές αυτής της γραμμής όταν είναι ενεργές περισσότερες από μία. Ανοίξτε τη γραμμή για να το αλλάξετε στη ρύθμιση «Συνδυασμός».</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Ορμή</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Λειτουργία trackball: τινάξτε τον μοχλό και αφήστε τον, και ο δείκτης συνεχίζει να κινείται μέχρι να σταματήσει σταδιακά. Αν μετακινήσετε ξανά τον μοχλό, τον πιάνετε.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Πόσο μακριά συνεχίζει ο δείκτης μετά από ένα τίναγμα. Στο πάνω άκρο του εύρους, συνεχίζει μέχρι να μετακινήσετε ξανά τον μοχλό.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Άξονας σκανδάλης</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ενίσχυση ανά κινητήρα, δόνηση σκανδαλών, αντιμετάθεση κινητήρων</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ενίσχυση ανά κινητήρα, δόνηση σκανδαλών, Δόνηση γωνίας τιμονιού, Σταθερή δύναμη</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Συνολική ενίσχυση</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Αριστερός κινητήρας</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Δεξιός κινητήρας</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Αυτό το χειριστήριο δεν έχει κινητήρες σκανδαλών, επομένως τα παιχνίδια που χρησιμοποιούν τις σκανδάλες ώθησης του Xbox δεν θα γίνονταν αισθητά. Αντί γι' αυτό, κάθε κανάλι σκανδάλης ενσωματώνεται στον κύριο κινητήρα της ίδιας πλευράς.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Δοκιμή δόνησης</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Δραστηριότητα κινητήρων</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Αριστερός</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Δεξιός</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Εφαρμόζει συνεχή δύναμη σε αυτή τη συσκευή μέχρι να την απενεργοποιήσετε. Η δύναμη που προκαλεί το παιχνίδι, από οποιαδήποτε πηγή, υπερισχύει όσο είναι ενεργή, και η σταθερή δύναμη συνεχίζεται όταν το παιχνίδι σταματήσει.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Πατήστε κουμπιά ή μετακινήστε έναν άξονα/μια σκανδάλη για καταγραφή. Οι άξονες ανιχνεύονται όταν η απόκλισή τους ξεπεράσει το 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Προσθήκη από λίστα</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Επιλέξτε μια είσοδο εναύσματος από τις συσκευές της υποδοχής αντί να την καταγράψετε. Οι χειρονομίες επιφάνειας αφής που έχουν ενεργοποιηθεί στην καρτέλα «Επιφάνεια αφής» εμφανίζονται εδώ.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Εκκαθάριση εναύσματος</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Επιλέξτε μια είσοδο εναύσματος από τις συσκευές της υποδοχής αντί να την καταγράψετε. Οι χειρονομίες επιφάνειας αφής που έχουν ενεργοποιηθεί στην ενότητα «Κίνηση και αφή» εμφανίζονται εδώ.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Αφαίρεση εισόδου</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Πατήστε οποιαδήποτε είσοδο…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>αντεστραμμένος</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Δευτερόλεπτα μέχρι να καταστραφεί ένα εικονικό χειριστήριο όταν όλες οι αντιστοιχισμένες συσκευές του είναι εκτός σύνδεσης. Το 0 το απενεργοποιεί. Τα υπόλοιπα χειριστήρια του ίδιου τύπου μετακινούνται προς τα πάνω για να καλύψουν το κενό και συνδέονται ξανά σε χαμηλότερες υποδοχές.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>δευτερόλεπτα (0 = ποτέ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Επίπεδο shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Προσθήκη επιπέδου</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Προσθέτει ένα επίπεδο shift: έναν δεύτερο πίνακα αντιστοιχίσεων που ενεργοποιείται όσο κρατιέται ένα κουμπί ή όταν γίνεται εναλλαγή.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Βασικό</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Επίπεδο shift</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Τιμόνι με κίνηση</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° έως {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Νεκρές ζώνες γερσίματος, Προσανατολισμός χειριστηρίου</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για την είσοδο «Κίνηση: γέρσιμο»: γείρετε το χειριστήριο σαν τιμόνι. Αντιστοιχίστε το «Κίνηση: γέρσιμο» σε έναν άξονα μοχλού από την αναπτυσσόμενη λίστα εισόδων στις Αντιστοιχίσεις.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για την είσοδο «Κίνηση: γέρσιμο»: γείρετε το χειριστήριο σαν τιμόνι. Αντιστοιχίστε το «Κίνηση: γέρσιμο» σε έναν άξονα μοχλού στην ενότητα Κουμπιά.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Επαναφορά τιμονιού με κίνηση</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (δεξιός μοχλός)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (αριστερός μοχλός)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Δακτύλιος δεξιού μοχλού</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ρυθμίσεις για τις εισόδους flick stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για τις εισόδους flick stick: στρέψτε τον μοχλό και η κάμερα γυρίζει προς την ίδια κατεύθυνση, ενώ περιστρέφοντάς τον στο άκρο κάνετε λεπτές στροφές. Αντιστοιχίστε το «Flick stick (δεξιός μοχλός)» στο «Ποντίκι X» από την αναπτυσσόμενη λίστα εισόδων στις Αντιστοιχίσεις, σε οποιοδήποτε επίπεδο.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για τις εισόδους flick stick: στρέψτε τον μοχλό και η κάμερα γυρίζει προς την ίδια κατεύθυνση, ενώ περιστρέφοντάς τον στο άκρο κάνετε λεπτές στροφές. Αντιστοιχίστε το «Flick stick (δεξιός μοχλός)» στο «Ποντίκι X» στην ενότητα Πλήκτρα και ποντίκι, σε οποιοδήποτε επίπεδο.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Επαναφορά flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Κουκκίδες ανά 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Μονάδες κίνησης ποντικιού (counts) για μια πλήρη στροφή της κάμερας κατά 360°. Εξαρτάται από την ευαισθησία ποντικιού του παιχνιδιού: αυξήστε την τιμή αν ένα flick στρίβει λιγότερο από όσο πρέπει και μειώστε την αν στρίβει περισσότερο.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ήχος</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Οι ήχοι των μακροεντολών και ο κατοπτρισμένος ήχος του συστήματος αναπαράγονται από το ενσωματωμένο ηχείο του επιλεγμένου χειριστηρίου, μέσω USB ή Bluetooth. Επιλέξτε τη συσκευή στην αναπτυσσόμενη λίστα παραπάνω. Κάθε ρύθμιση εδώ αφορά αυτήν.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Έξοδος ήχου</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Πηγή κατοπτρισμού, απτική ανάδραση, Ένταση ακουστικών, Διασταυρούμενη τροφοδοσία, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Πηγή κατοπτρισμού, Ένταση ακουστικών, ενδιάμεση μνήμη, Διαδρομή εξόδου</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Οι ήχοι δρομολογούνται αυτόματα στο επιλεγμένο χειριστήριο. Μέσω USB, το τελικό σημείο ήχου του ίδιου του χειριστηρίου εντοπίζεται βάσει του κοντέινερ υλικού. Μέσω Bluetooth, ο ήχος μεταδίδεται σε πλαίσια HID της Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Πηγή κατοπτρισμού</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Ποια συσκευή αναπαραγωγής θα κατοπτρίζεται στο ηχείο του χειριστηρίου. Τα παιχνίδια που στέλνουν συγκεκριμένους ήχους σε ξεχωριστή συσκευή αναπαραγωγής μπορούν να στοχεύουν αυτήν.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Διακοπή όλων των ήχων</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Διακοπή κάθε ήχου μακροεντολής σε αυτό το χειριστήριο</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Μακροεντολές ήχου</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Οι ήχοι αναπαράγονται από μακροεντολές: ένα έναυσμα (πάτημα, απελευθέρωση, κράτημα κουμπιού ή φόρμουλα) και μια ενέργεια «Αναπαραγωγή ήχου». Δημιουργήστε τες εδώ ή στην καρτέλα «Μακροεντολές». Οι καθυστερήσεις, οι επαναλήψεις και οι εναλλαγές λειτουργούν όλες.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Οι ήχοι αναπαράγονται από μακροεντολές: ένα έναυσμα (πάτημα, απελευθέρωση, κράτημα κουμπιού ή φόρμουλα) και μια ενέργεια «Αναπαραγωγή ήχου». Δημιουργήστε τες εδώ ή στην ενότητα «Μακροεντολές και μενού». Οι καθυστερήσεις, οι επαναλήψεις και οι εναλλαγές λειτουργούν όλες.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Νέα μακροεντολή ήχου</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Δεν υπάρχουν ακόμη μακροεντολές ήχου. Δημιουργήστε μία και επιλέξτε ένα αρχείο ήχου και ένα έναυσμα.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Άνοιγμα αυτής της μακροεντολής στην καρτέλα «Μακροεντολές»</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Άνοιγμα αυτής της μακροεντολής στην ενότητα «Μακροεντολές και μενού»</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Μακροεντολή ήχου {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Αναπαραγωγή ήχου</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Αναπαραγωγή αρχείου ήχου (.wav, .mp3, .m4a, .aac, .wma, .flac) στη συσκευή εξόδου αυτού του χειριστηρίου</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Εκτελείται</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Εκτελείται, το πρόγραμμα οδήγησης συνδέθηκε</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Εκτελείται, τα χειριστήρια είναι ενεργά</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Το SteamVR είναι εγκατεστημένο</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Το SteamVR δεν είναι εγκατεστημένο</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Το SteamVR εκτελείται</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>Το SteamVR εκτελείται, το πρόγραμμα οδήγησης συνδέθηκε</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>Το SteamVR εκτελείται, τα χειριστήρια είναι ενεργά</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Ένα άλλο πρόγραμμα οδήγησης OpenVR χρησιμοποιεί το όνομα προγράμματος οδήγησης του HIDMaestro, οπότε το SteamVR μπορεί να το φορτώσει στη θέση αυτού του PadForge και τα εικονικά χειριστήρια VR δεν θα εμφανιστούν. Αφαιρέστε αυτό το πρόγραμμα οδήγησης για να το διορθώσετε: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Σειριακό χειριστήριο (θύρα COM)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Έλεγχος καταναλωτή {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Ποντίκι</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Χειρονομίες ποντικιού</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Κρατήστε πατημένο το κουμπί χειρονομίας, τινάξτε το ποντίκι και, όταν το αφήσετε, εκτελείται μία ενέργεια: αριστερά, δεξιά, πάνω, κάτω ή απλό κλικ κάτω από την απόσταση τινάγματος. Αντιστοιχίστε τις πέντε χειρονομίες στην καρτέλα «Αντιστοιχίσεις» ή χρησιμοποιήστε τες ως εναύσματα μακροεντολών.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Κρατήστε πατημένο το κουμπί χειρονομίας, τινάξτε το ποντίκι και, όταν το αφήσετε, εκτελείται μία ενέργεια: αριστερά, δεξιά, πάνω, κάτω ή απλό κλικ κάτω από την απόσταση τινάγματος. Αντιστοιχίστε τις πέντε χειρονομίες σε οποιαδήποτε έξοδο ή χρησιμοποιήστε τες ως εναύσματα μακροεντολών.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Ενεργοποίηση χειρονομιών ποντικιού</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Οπλίζει την αναγνώριση χειρονομιών για αυτό το ποντίκι σε αυτή την υποδοχή. Το κουμπί χειρονομίας διατηρεί το κανονικό του κλικ στη διάρκεια της χειρονομίας, γι' αυτό επιλέξτε ένα πλαϊνό κουμπί που δεν αντιστοιχίζετε αλλού.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Κουμπιά χειρονομίας</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Αλλαγή επιπέδου</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Ορισμός χρώματος Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Χρωματίζει με ένα χρώμα τις συσκευές Razer που έχουν ανατεθεί σε αυτό το εικονικό χειριστήριο, καθώς και κάθε άλλη συσκευή Razer του ίδιου είδους, όσο εκτελείται η ενέργεια.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Για την παραπάνω διάρκεια, χρωματίζει με αυτό το χρώμα τις συσκευές Razer που έχουν ανατεθεί σε αυτό το εικονικό χειριστήριο και κάθε άλλη συσκευή Razer του ίδιου είδους, ή όλες τις συσκευές Razer όταν έχει ανατεθεί η γραμμή Razer Chroma. Παρακάμπτει την καρτέλα «Φωτισμός» οποιουδήποτε εικονικού χειριστηρίου και έπειτα επιστρέφει τον έλεγχο του φωτισμού. Για να κρατηθεί το χρώμα όσο κρατιέται το έναυσμα, χρησιμοποιήστε το «Όσο κρατιέται» με το «Μέχρι την απελευθέρωση». Όταν δύο μακροεντολές χρωματίζουν ταυτόχρονα, υπερισχύει αυτή που βρίσκεται χαμηλότερα στη λίστα, γι' αυτό τοποθετήστε μια μακροεντολή πλήρους πατήματος κάτω από την αντίστοιχη του ελαφρού πατήματος. Όταν μακροεντολές σε δύο εικονικά χειριστήρια χρωματίζουν το ίδιο είδος συσκευής Razer, υπερισχύει ο μικρότερος αριθμός παίκτη. Απαιτεί να εκτελείται το Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Για την παραπάνω διάρκεια, χρωματίζει με αυτό το χρώμα τις συσκευές Razer που έχουν ανατεθεί σε αυτό το εικονικό χειριστήριο και κάθε άλλη συσκευή Razer του ίδιου είδους, ή όλες τις συσκευές Razer όταν έχει ανατεθεί η γραμμή Razer Chroma. Παρακάμπτει τον φωτισμό που ορίζει οποιοδήποτε εικονικό χειριστήριο στην ενότητα «Φωτισμός και ήχος» και έπειτα επιστρέφει τον έλεγχο του φωτισμού. Για να κρατηθεί το χρώμα όσο κρατιέται το έναυσμα, χρησιμοποιήστε το «Όσο κρατιέται» με το «Μέχρι την απελευθέρωση». Όταν δύο μακροεντολές χρωματίζουν ταυτόχρονα, υπερισχύει αυτή που βρίσκεται χαμηλότερα στη λίστα, γι' αυτό τοποθετήστε μια μακροεντολή πλήρους πατήματος κάτω από την αντίστοιχη του ελαφρού πατήματος. Όταν μακροεντολές σε δύο εικονικά χειριστήρια χρωματίζουν το ίδιο είδος συσκευής Razer, υπερισχύει ο μικρότερος αριθμός παίκτη. Απαιτεί να εκτελείται το Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Εμφάνιση οθόνης Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Αναπαράγει εικόνες στη VMU κάθε χειριστηρίου Dreamcast σε θύρα Bliss-Box που τροφοδοτεί αυτή την υποδοχή και έπειτα επαναφέρει κάθε θύρα στη δική της ρύθμιση οθόνης.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Εμφάνιση εικόνων Dreamcast: {0} × {1} ms, πλήθος επαναλήψεων {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Μηδενίζει με το πάτημα τις συσσωρευμένες αναφορές στόχευσης γυροσκοπίου του χειριστηρίου. Το ιστορικό εξομάλυνσης διαγράφεται, η ουδέτερη θέση του «Κίνηση: γέρσιμο» καταγράφεται ξανά, η εκτίμηση της βαρύτητας αρχικοποιείται ξανά από την τρέχουσα στάση του χειριστηρίου και η στροφή που έχτισαν οι γραμμές «Κίνηση: πρόνευση», «Κίνηση: εκτροπή» και «Κίνηση: διατοιχισμός» αναιρείται.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Οποιαδήποτε συσκευή)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Μενού</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Τα μενού μετατρέπουν έναν φυσικό μοχλό ή μια επιφάνεια αφής σε δακτύλιο ή πλέγμα στην οθόνη. Προσθέστε ένα μενού, επιλέξτε τι το ανοίγει και έπειτα δώστε σε κάθε κελί μια ετικέτα και μια αντιστοίχιση.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Τα μενού μετατρέπουν έναν φυσικό μοχλό ή μια επιφάνεια αφής σε δακτύλιο ή πλέγμα στην οθόνη. Πατήστε το + δίπλα στην επικεφαλίδα «Μενού» για να δημιουργήσετε ένα, επιλέξτε τι το ανοίγει και έπειτα δώστε σε κάθε κελί ένα όνομα και μια ενέργεια.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Νέο μενού</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Μενού {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Όνομα μενού</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Ενεργοποιημένο</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Άνοιγμα</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Στιλ</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Ακτινικός δακτύλιος</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Πλέγμα αφής</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Κελιά</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Κεντρικό κελί</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Εμφάνιση ετικετών</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Θέση στην οθόνη</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Μέγεθος</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Αδιαφάνεια</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Νεκρή ζώνη ενεργοποίησης</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Αντιστοιχίσεις κελιών</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Κελί {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Προσθήκη κελιού</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Αφαίρεση τελευταίου κελιού</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Επεξεργασία κελιού</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Όνομα</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Ενέργεια</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Εικονίδιο</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Κέντρο</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Καμία</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Πλήκτρο πληκτρολογίου</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Εκτελείται μία φορά όταν απελευθερωθεί το κλικ: δείξτε το κελί, πατήστε τον μοχλό ή το trackpad και έπειτα αφήστε το κλικ.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Εκτελείται μία φορά όταν αφήσετε: σηκώστε το δάχτυλό σας από την επιφάνεια ή αφήστε τον μοχλό να επιστρέψει στο κέντρο ενώ είναι επισημασμένο ένα κελί.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Η αντιστοίχιση κρατιέται για όσο είναι επισημασμένο το κελί. Δεν χρειάζεται κλικ.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Πόσα κελιά έχει το μενού. Για έναν ακτινικό δακτύλιο μετρά μόνο τον δακτύλιο. Το κεντρικό κελί είναι ξεχωριστό.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Προσθέτει ένα κεντρικό κελί, που επιλέγεται όσο ο μοχλός ή το δάχτυλο βρίσκεται μέσα στη «Νεκρή ζώνη ενεργοποίησης».</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Για τους μοχλούς, πόσο πρέπει να σπρωχτούν πριν ανοίξει το μενού και επισημανθούν τα κελιά του δακτυλίου. Στα ακτινικά μενού είναι επίσης η κεντρική περιοχή τόσο για μοχλούς όσο και για επιφάνειες αφής: μέσα σε αυτήν επιλέγεται το κεντρικό κελί, όταν υπάρχει.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Σχεδιάζει την ετικέτα κάθε κελιού στην επικάλυψη της οθόνης.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Μέγεθος της επικάλυψης, ως ποσοστό του κανονικού της μεγέθους.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Αδιαφάνεια της επικάλυψης. Το 100% είναι πλήρως αδιαφανές.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Το κείμενο που εμφανίζεται σε αυτό το κελί στην επικάλυψη.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Τι κάνει αυτό το κελί όταν εκτελείται: το «Πλήκτρο πληκτρολογίου» πατά ένα πλήκτρο του πληκτρολογίου και το «Κουμπί χειριστηρίου» πατά ένα κουμπί στο εικονικό χειριστήριο αυτής της υποδοχής. Ένα κελί ορισμένο σε «Καμία» εξακολουθεί να ενεργοποιείται ως πηγή στοιχείου μενού για γραμμές των Αντιστοιχίσεων και για εναύσματα μακροεντολών.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτή την υποδοχή, όχι από τη διάταξη του εικονικού χειριστηρίου. Οι παρακάτω αντιστοιχίσεις κελιών είναι αυτό που δίνει το μενού ως έξοδο.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Τι κάνει αυτό το κελί όταν εκτελείται: το «Πλήκτρο πληκτρολογίου» πατά ένα πλήκτρο του πληκτρολογίου και το «Κουμπί χειριστηρίου» πατά ένα κουμπί στο εικονικό χειριστήριο αυτής της υποδοχής. Ένα κελί ορισμένο σε «Καμία» εξακολουθεί να ενεργοποιείται ως πηγή στοιχείου μενού για αντιστοιχίσεις και εναύσματα μακροεντολών.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτή την υποδοχή, όχι από τη διάταξη του εικονικού χειριστηρίου. Τα παρακάτω κελιά ορίζουν τι δίνει το μενού ως έξοδο.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Προσαρμοσμένοι άξονες</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Κατεύθυνση X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Κατεύθυνση Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Έξοδος</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Πλήκτρα και ποντίκι</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Νότες και στοιχεία ελέγχου</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Χέρια</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Μοχλοί και σκανδάλες</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Δόνηση και ανάδραση</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Κίνηση και αφή</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Φωτισμός και ήχος</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Μακροεντολές και μενού</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Δονητές μπάσων</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Δρομολογεί τη δόνηση και την ανάδραση δύναμης του παιχνιδιού που λαμβάνει αυτό το εικονικό χειριστήριο σε μια έξοδο ήχου, ως τόνους χαμηλής συχνότητας για δονητές μπάσων (bass shakers) και subwoofer.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Αναπαράγει τη δόνηση του παιχνιδιού ως χαμηλούς τόνους μέσω δονητών μπάσων ή ενός subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Συσκευή εξόδου, κανάλια, ενίσχυση, τόνος για κάθε κινητήρα</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Λειτουργεί με εικονικά χειριστήρια Xbox, DualShock 3, DualShock 4 / DualSense και Nintendo Switch Pro, καθώς και με Εκτεταμένα εικονικά χειριστήρια με ανάδραση δύναμης, όπως τιμονιέρες αγώνων, και με το Steam Deck Controller (Composite). Η ανάδραση του παιχνιδιού και η «Δοκιμή δόνησης» αναπαράγονται μέσω της εξόδου ήχου. Η δόνηση από μακροεντολές παραμένει στο χειριστήριο.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Επαναφορά δόνησης σε ήχο</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Αναπαράγει αυτό το κανάλι ανάδρασης ως τόνο. Η ενίσχυση και η συχνότητα διατηρούνται όσο είναι απενεργοποιημένο.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Συχνότητα τόνου για αυτό το κανάλι, από 20 έως 120 Hz. Εκτελέστε τη σάρωση συχνοτήτων για να βρείτε πού αποκρίνεται εντονότερα ο δονητής σας.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Ένταση αυτού του καναλιού πριν από την κύρια ενίσχυση.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Ενίσχυση</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Δοκιμή</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Αναπαράγει τον τόνο αυτού του καναλιού για 1.5 δευτερόλεπτο με τη ρυθμισμένη ενίσχυσή του.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Επαναφορά κινητήρα χαμηλών</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Επαναφορά κινητήρα υψηλών</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Επαναφορά αριστερής σκανδάλης</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Επαναφορά δεξιάς σκανδάλης</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Έλεγχος δονητών</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Σάρωση συχνοτήτων</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Σαρώνει έναν τόνο από 20 έως 120 Hz σε οκτώ δευτερόλεπτα στη δρομολόγηση του κινητήρα χαμηλών. Σημειώστε πού αποκρίνεται εντονότερα ο δονητής σας και ορίστε εκεί τις συχνότητες των φωνών.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Διακοπή</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Διακόπτει τον δοκιμαστικό τόνο ή τη σάρωση.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Οποιαδήποτε ετικέτα NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Ετικέτα NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Φιλτράρισμα εισόδων (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Φιλτράρισμα εξόδων και εισόδων</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Εμφανίζει μόνο τις γραμμές και τις εισόδους που ταιριάζουν. Πατήστε Ctrl+F για να πληκτρολογήσετε εδώ.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Επιλέξτε τις εισόδους ποιων συσκευών προσφέρουν οι επιλογείς</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Εμφανίζονται στον επιλογέα</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Οποιαδήποτε φωνητική φράση</value></data>
@@ -4077,6 +4135,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Επαναφορά τροφοδοσίας</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Παραμετρικός ισοσταθμιστής</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Φίλτρα ανά ζώνη στον ήχο του χειριστηρίου. Εφαρμόζονται πριν από την κωδικοποίηση του ήχου, ώστε ο παρακάτω περιοριστής να εμποδίζει μια ενισχυμένη ζώνη να προκαλεί παραμόρφωση (clipping).</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Προενίσχυση, ζώνες, εισαγωγή</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Προενίσχυση</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Η συνολική στάθμη πριν από τις ζώνες. Τα προφίλ AutoEq έχουν αρνητική προενίσχυση, ώστε οι ενισχύσεις τους να μην προκαλούν παραμόρφωση, και η εισαγωγή ενός προφίλ τη ρυθμίζει αυτόματα.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Ενεργό</value></data>
@@ -4307,7 +4366,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Επαναφορά στο άνοιγμα με επαφή ή απόκλιση.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Κατεύθυνση με</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Η φυσική είσοδος που κατευθύνει το επισημασμένο κελί όσο το επίπεδο κρατά αυτό το μενού ανοιχτό.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτή την υποδοχή. Το επίπεδο ανοίγει το μενού και αυτή η είσοδος το κατευθύνει. Οι αντιστοιχίσεις των κελιών καθορίζουν την έξοδό του.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Διαβάζεται από τα φυσικά χειριστήρια που έχουν ανατεθεί σε αυτή την υποδοχή. Το επίπεδο ανοίγει το μενού και αυτή η είσοδος το κατευθύνει. Τα κελιά του ορίζουν τι δίνει ως έξοδο.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Μέγεθος εικονιδίου</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Μέγεθος εικονιδίου σε σχέση με το κανονικό μέγεθος εικονιδίου του μενού, από 25% έως 200%. Η εκκαθάριση του εικονιδίου το επαναφέρει στο 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Κρατά την αντιστοίχιση του επισημασμένου κελιού όσο κρατιέται η «Είσοδος κλικ». Ένα επισημασμένο ακτινικό κέντρο μπορεί να εκτελεστεί ενώ ο μοχλός είναι σε ηρεμία.</value></data>
@@ -4432,7 +4491,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Αναφορά του Antoine Aflalo για τη διάταξη της μη τεκμηριωμένης διεπαφής IPolicyConfig των Windows, την οποία χρησιμοποιεί το PadForge για να ενεργοποιεί ξανά το τελικό σημείο ήχου ενός χειριστηρίου. MIT. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Η μορφή προφίλ παραμετρικού ισοσταθμιστή που εισάγει η καρτέλα «Ήχος», του Jaakko Pasanen. MIT. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Η μορφή προφίλ παραμετρικού ισοσταθμιστή που εισάγει ο «Παραμετρικός ισοσταθμιστής» ενός χειριστηρίου, του Jaakko Pasanen. MIT. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Τεχνικές SendInput πίσω από τις μακροεντολές «Μπλοκ κειμένου» και το hook συνδυασμών πληκτρολογίου: πληκτρολόγηση Unicode, όρια παρτίδων, το πλήκτρο μάσκας για το πλήκτρο Win και η επισημασμένη εισαγόμενη είσοδος. GPL-2.0-or-later, μελετήθηκε μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Κατεύθυνση</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Βήμα</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>έως</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Λαβή</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ορίζει τις σκανδάλες αυτού του χειριστηρίου.</value></data>
@@ -4716,7 +4776,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Η λαβή δεν διένυσε αρκετή απόσταση, γι' αυτό το εύρος κίνησης μένει όπως ήταν. Μετακινήστε την σε κάθε άκρο όσο διαρκεί η σάρωση.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Το Falcon έκλεισε πριν τελειώσει η σάρωση.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Παίζει παιχνίδια με ένα Novint Falcon μέσω του SDK της Force Dimension, το οποίο εγκαθιστάτε από τη Force Dimension. Η λαβή είναι μοχλός, τα τέσσερα κουμπιά της λαβής είναι κουμπιά και το PadForge εφαρμόζει στη λαβή ως δύναμη τη δόνηση και τα εφέ του παιχνιδιού. Η καρτέλα Ανάδραση δύναμης κάθε υποδοχής ορίζει πώς αισθάνεται το Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Παίζει παιχνίδια με ένα Novint Falcon μέσω του SDK της Force Dimension, το οποίο εγκαθιστάτε από τη Force Dimension. Η λαβή είναι μοχλός, τα τέσσερα κουμπιά της λαβής είναι κουμπιά και το PadForge εφαρμόζει στη λαβή ως δύναμη τη δόνηση και τα εφέ του παιχνιδιού. Η κάρτα Novint Falcon στην ενότητα «Δόνηση και ανάδραση» κάθε χειριστηρίου ορίζει πώς αισθάνεται το Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Οδήγηση Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Ανοίγει κάθε Falcon μέσω του dhd64.dll της Force Dimension. Ένα ανοιχτό Falcon ανήκει αποκλειστικά στο PadForge, επομένως το FalconJoyForce και τα εργαλεία της Force Dimension δεν μπορούν να το ανοίξουν όσο η επιλογή είναι ενεργή. Όταν είναι ανενεργή, το PadForge κλείνει κάθε Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Η βιβλιοθήκη του Falcon ορίστηκε σε {0}. Το PadForge τη φορτώνει μέσα σε λίγα δευτερόλεπτα και ένα Falcon που είναι ανοιχτό σε άλλο αντίγραφο ανοίγει ξανά σε αυτό.</value></data>
@@ -4929,7 +4989,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Για καθορισμένο χρόνο</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Μέχρι τη διακοπή</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Χρόνος</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Παίζει σε κάθε DualSense και DualSense Edge αυτής της υποδοχής. Το εφέ σκανδάλης ενός παιχνιδιού και ενός mod παιχνιδιού προηγούνται, και η ρύθμιση της καρτέλας Προσαρμοζόμενες σκανδάλες επιστρέφει όταν τελειώσει το εφέ. Οι ζώνες κυμαίνονται από 0 σε ηρεμία έως 9 στο τέρμα. Τα Τόξο, Καλπασμός και Μηχανή δεν είναι επίσημα εφέ του DualSense και μια ενημέρωση υλικολογισμικού θα μπορούσε να τα αφαιρέσει. Τα χειριστήρια Xbox με ενεργή τη ρύθμιση Μετατροπή δονήσεων προσαρμοζόμενων σκανδαλών αισθάνονται τα εφέ δόνησης ως δόνηση σκανδάλης.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Παίζει σε κάθε DualSense και DualSense Edge αυτής της υποδοχής. Το εφέ σκανδάλης ενός παιχνιδιού και ενός mod παιχνιδιού προηγούνται, και η ρύθμιση της κάρτας Προσαρμοζόμενες σκανδάλες επιστρέφει όταν τελειώσει το εφέ. Οι ζώνες κυμαίνονται από 0 σε ηρεμία έως 9 στο τέρμα. Τα Τόξο, Καλπασμός και Μηχανή δεν είναι επίσημα εφέ του DualSense και μια ενημέρωση υλικολογισμικού θα μπορούσε να τα αφαιρέσει. Τα χειριστήρια Xbox με ενεργή τη ρύθμιση Μετατροπή δονήσεων προσαρμοζόμενων σκανδαλών αισθάνονται τα εφέ δόνησης ως δόνηση σκανδάλης.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} ({1}) για {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ({1}) όσο κρατιέται</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ({1}) μέχρι τη διακοπή</value></data>
@@ -4958,7 +5018,7 @@
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Μέχρι την εκκαθάριση</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Χρόνος</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Διατήρηση των χρωμάτων τους</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Η ενέργεια ανάβει τα ίδια πλήκτρα σε κάθε πληκτρολόγιο που φωτίζει αυτός ο εικονικός ελεγκτής, πάνω από τα χρώματα που τους δίνει η καρτέλα Φωτισμός. Οι αριθμοί δείχνουν τη σειρά επιλογής. Η αντίστροφη μέτρηση σβήνει τα πλήκτρα ένα προς ένα, ξεκινώντας από το τελευταίο που επιλέχθηκε, οπότε επιλέξτε 1 έως 0 για χρονόμετρο αναμονής στη σειρά αριθμών. Ένα πληκτρολόγιο ή ποντίκι ανάβει μόνο όσο είναι ενεργό το Έλεγχος του φωτισμού αυτής της συσκευής.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Η ενέργεια ανάβει τα ίδια πλήκτρα σε κάθε πληκτρολόγιο που φωτίζει αυτός ο εικονικός ελεγκτής, πάνω από τα χρώματα που τους ορίζει στην ενότητα Φωτισμός και ήχος. Οι αριθμοί δείχνουν τη σειρά επιλογής. Η αντίστροφη μέτρηση σβήνει τα πλήκτρα ένα προς ένα, ξεκινώντας από το τελευταίο που επιλέχθηκε, οπότε επιλέξτε 1 έως 0 για χρονόμετρο αναμονής στη σειρά αριθμών. Ένα πληκτρολόγιο ή ποντίκι ανάβει μόνο όσο είναι ενεργό το Έλεγχος του φωτισμού αυτής της συσκευής.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Άλλα</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, αριθμός {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Επικάλυψη οθόνης</value></data>
@@ -5018,7 +5078,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Τα αναλογικά σημεία ενεργοποίησης πλήκτρων δεν μεταφέρθηκαν.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Το reWASD έστελνε αυτό το χειριστήριο σε άλλη συσκευή μέσω προσαρμογέα. Το PadForge το αναπαράγει σε αυτόν τον υπολογιστή και η Απομακρυσμένη σύνδεση το στέλνει σε άλλον υπολογιστή που εκτελεί το PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>Το PadForge διαβάζει δύο μοχλούς, και εδώ αναφέρεται τρίτος.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Η εξομοίωση τιμονιού δεν μεταφέρθηκε. Αντιστοιχίστε το τιμόνι στην καρτέλα Αντιστοιχίσεις.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Η εξομοίωση τιμονιού δεν μεταφέρθηκε. Αντιστοιχίστε το τιμόνι στην ενότητα Κουμπιά.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Αυτό το προφίλ αναφέρει μια ειδική ενέργεια που λείπει από το Actions.xml δίπλα στον φάκελο Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Αυτή η ρύθμιση δεν μεταφέρθηκε: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>Το reWASD εμπόδιζε αυτές τις εισόδους να φτάνουν στα Windows. Ενεργοποιήστε την Κατακράτηση αντιστοιχισμένων εισόδων για τη συσκευή {0} στη σελίδα Συσκευές, ώστε να σταματούν αυτές που αντιστοιχίζει το προφίλ.</value></data>
@@ -5026,8 +5086,8 @@
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Επιβεβαιώνεται όταν ο μοχλός επανέρχεται στο κέντρο ή τελειώνει το επίπεδο. Το κουμπί Εφαρμογή του reWASD δεν χρησιμοποιείται.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Αυτό το αρχείο κρατά δύο χειριστήρια χωριστά. Στο PadForge, οποιοδήποτε χειριστήριο στη θέση ενεργοποιεί αυτές τις αντιστοιχίσεις.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Η ταχύτητα κίνησης ή το απότομο τίναγμα δεν μεταφέρθηκε.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Αυτά δεν μεταφέρθηκαν. Ορίστε τα στην καρτέλα Επιφάνεια αφής.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Τίποτα σε αυτό το αρχείο δεν ανοίγει αυτό το επίπεδο. Δώστε του ένα κουμπί στην καρτέλα Αντιστοιχίσεις.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Αυτά δεν μεταφέρθηκαν. Ορίστε τα στην ενότητα Κίνηση και αφή.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Τίποτα σε αυτό το αρχείο δεν ανοίγει αυτό το επίπεδο. Στην ενότητα Κουμπιά, κάντε δεξί κλικ στο επίπεδο και επιλέξτε Ρύθμιση ενεργοποιητή.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Τα κουμπιά του εκτελούν τα εξής όταν πατηθούν: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Συντόμευση προφίλ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Κάνει ό,τι κάνει μια συντόμευση προφίλ: φορτώνει ένα προφίλ με όνομα, το επόμενο ή το προηγούμενο, εμφανίζει ή αποκρύπτει το παράθυρο, ή απενεργοποιεί και ενεργοποιεί τα εικονικά χειριστήρια.</value></data>
@@ -5197,7 +5257,7 @@
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Το επιλεγμένο κελί ενεργοποιείται μία φορά, ως σύντομο άγγιγμα, όταν αφεθεί η «Ενεργοποίηση». Με ενεργή την «Απόκρυψη μετά την ενεργοποίηση», ενεργοποιείται μόλις η «Ενεργοποίηση» αποκρύψει τη γραμμή.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ένα κελί ενεργοποιείται μία φορά, ως σύντομο άγγιγμα, όταν η «Ενεργοποίηση» αποκρύψει τη γραμμή με ενεργή την «Απόκρυψη μετά την ενεργοποίηση». Με ενεργή την «Επανακέντρωση κάθε φορά», ενεργοποιείται το μεσαίο κελί.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Το επιλεγμένο κελί κρατιέται σε όλη τη διάρκεια που εμφανίζεται η γραμμή. Η μετακίνηση αφήνει ένα κελί και κρατά το επόμενο.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος», το «Πλέγμα αφής» και η «Γραμμή ενεργειών» ενεργοποιούν τις αντιστοιχίσεις των κελιών. Το «Πληκτρολόγιο» πληκτρολογεί τα πλήκτρα της διάταξης των Windows που χρησιμοποιείται.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Ο «Ακτινικός δακτύλιος», το «Πλέγμα αφής» και η «Γραμμή ενεργειών» εκτελούν τις ενέργειες των κελιών τους. Το «Πληκτρολόγιο» πληκτρολογεί τα πλήκτρα της διάταξης των Windows που χρησιμοποιείται.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Διάταξη</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Πώς το πληκτρολόγιο τακτοποιεί τα πλήκτρα του και πώς τα επιλέγει ένα χειριστήριο.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Μία επισήμανση, που μετακινείται με έναν μοχλό ή τέσσερις εισόδους, η διάταξη που χρησιμοποιούν τα Windows, το Xbox και το Steam.</value></data>
@@ -5304,11 +5364,11 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Κουμπιά φορητής κονσόλας PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Προφίλ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Φωτισμός πλήκτρων PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια αντιστοίχιση στην καρτέλα Αντιστοιχίσεις μπορεί.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια αντιστοίχιση στην ενότητα Κουμπιά μπορεί.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>Το PadForge εκτελεί οκτώ Επικαλύψεις οθόνης, και αυτό είναι το ένατο ή δέκατο σταυρόνημα του reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>Το PadForge διαβάζει το Αριστερά και Δεξιά του γυροσκοπίου από τον διατοιχισμό και το Γέρσιμο από την εκτροπή, την προεπιλογή του reWASD. Οι Προτιμήσεις του reWASD μπορούν να εναλλάξουν τα δύο, και αυτό το αρχείο δεν λέει αν εναλλάχθηκαν.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Στη λειτουργία Κλίσης, το Γέρσιμο του reWASD είναι στροφή γύρω από τον κατακόρυφο άξονα, και ένας αισθητήρας κίνησης δεν δίνει γωνία για αυτή τη στροφή.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>Το PadForge διαβάζει μια διαγώνιο της επιφάνειας αφής ως δύο κατευθύνσεις ταυτόχρονα, κάτι που η επιφάνεια αφής αναφέρει μόνο όταν η Λειτουργία D-pad στην καρτέλα Επιφάνεια αφής είναι 8 κατευθύνσεις.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>Το PadForge διαβάζει μια διαγώνιο της επιφάνειας αφής ως δύο κατευθύνσεις ταυτόχρονα, κάτι που η επιφάνεια αφής αναφέρει μόνο όταν η Λειτουργία D-pad της, στην ενότητα Κίνηση και αφή, είναι 8 κατευθύνσεις.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>Το PadForge διαβάζει την κατεύθυνση του γυροσκοπίου πέρα από ένα όριο, και το reWASD δεν δίνει μονάδα για το άκρο μιας ζώνης γυροσκοπίου.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>Το DS4Windows τοποθετούσε τον δείκτη εκεί που δείχνει ο μοχλός. Στο PadForge ο μοχλός μετακινεί τον δείκτη.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>Το {0} διαβάζει τον μοχλό πριν από την περιστροφή του. Το DS4Windows τον διάβαζε μετά.</value></data>

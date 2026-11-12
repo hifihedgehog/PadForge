@@ -115,6 +115,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Sedirisiwa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Oketsa sedirisiwa</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Golaganya</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E golagantswe</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Gana</value></data>
@@ -304,6 +305,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Phimola tsotlhe</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Motswedi</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Boleng</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Dikgetho</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Halofo</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -349,14 +351,14 @@
   <data name="Macro_Once" xml:space="preserve"><value>Gangwe</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Palo</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Tiego</value></data>
-  <data name="Macro_NewMacro" xml:space="preserve"><value>Macro e ntšha</value></data>
+  <data name="Macro_NewMacro" xml:space="preserve"><value>Macro e ntšhwa</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Konopo {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(sepe)</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Konopo {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Golola {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Leta {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Leta {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tshwara</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Mmala</value></data>
@@ -793,6 +795,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Leka</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Busetsa trigger ya molema</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Busetsa trigger ya moja</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Tlhola di shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Emisa</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Go ne go sa kgonege go dira calibration. Baya controller fa fatshe mme o leke gape.</value></data>
   <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Boloka</value></data>
@@ -1026,6 +1029,21 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Lesedi la konopo ya Guide kgotsa Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Difaele tsa Zip tsa medumo ya dimacro tsa modumo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Difaele tsa Zip tsa ditshwantsho tsa disele tsa menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Thata ya motoro mongwe le mongwe, thothomelo ya trigger, go fapanya dimotoro</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Thata ya trigger nngwe le nngwe, go fapanya dimotoro, dithothomelo tsa adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Thata ya motoro, thothomelo ya trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Thata ya trigger, go fapanya dimotoro, dithothomelo tsa adaptive trigger, Constant Trigger Force</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Dikonopo le mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dinoto le ditaolo</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Diatla</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Fetola leina</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu e ntšhwa</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tlosa sele ya bofelo</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Leina</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Motswedi, Threshold, Direction, Consume Trigger Buttons, Boeletsa</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Sedirisiwa se</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yotlhe</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Motshameki kgotsa Lefatshe</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR e tsentswe</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Molema</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Moja</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Phepafatsa trigger</value></data>
 </root>

@@ -116,6 +116,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Sedirišwa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Oketša Sedirišwa</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} e šomišwa ke lenaneo le lengwe, bjalo ka DSX. E tswalele goba o kgethe port ye nngwe.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Kopanya</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E kopantšwe</value></data>
@@ -284,6 +285,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Phumola tšohle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Mothopo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Boleng</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Dikgetho</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Seripagare</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -345,11 +347,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Konope {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tobetša {0} lebaka la {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tobetša {0} lebaka la {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lokolla {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Dikhii {0} lebaka la {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Dikhii {0} lebaka la {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lokolla dikhii {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Leta {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Leta {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Beakanya {0} = {1}</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Tobetša mause {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lokolla mause {0}</value></data>
@@ -448,7 +450,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Diyuniti, Sekgoba, go fetoša di-axis, Tekanyetšo ya lefase la nnete</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Diyuniti, go fetoša di-axis, Tekanyetšo ya lefase la nnete</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Swara</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick ya lagoja</value></data>
@@ -1148,5 +1150,23 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Seetša sa konopo ya Guide goba Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Difaele tša zip tša medumo bakeng sa di-macro tša modumo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Difaele tša zip tša diswantšho bakeng sa disele tša menyu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Maatla a motoro o mongwe le o mongwe, rumble ya trigger, go fapanya dimotoro</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Maatla a motoro, rumble ya trigger, Rumble ya go otlela, Maatla a sa fetogego</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Dikhii le Mause</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dinoto le Ditaolo</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Diatla</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Thea leina leswa</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Lelokelelo le leswa</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tloša sele ya mafelelo</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Lokiša sele</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Leina</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Aekhone</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Mothopo, Mollwane, Lehlakore, Metša dikonope tša trigger, Boeletša</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Sedirišwa se</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Khontroulara yohle</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Lekola dišikinyi</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR e tsentšwe</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ga e a tsenywa</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lanngele</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Lagoja</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
 </root>

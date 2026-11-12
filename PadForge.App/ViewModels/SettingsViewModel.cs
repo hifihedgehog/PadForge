@@ -95,6 +95,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MidiServicesDetailText));
             OnPropertyChanged(nameof(MidiInstallTooltip));
             OnPropertyChanged(nameof(SteamVrStatusText));
+            OnPropertyChanged(nameof(SteamVrSentence));
             // Both build their text from Strings.Instance, so they are exactly
             // as culture-dependent as the two above and were the pair this
             // handler missed. The Remote Link protection picker and its hint
@@ -794,6 +795,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isSteamVrInstalled, value))
                 {
                     OnPropertyChanged(nameof(SteamVrStatusText));
+                    OnPropertyChanged(nameof(SteamVrSentence));
                     OnPropertyChanged(nameof(ShowSteamVrUninstall));
                     _installSteamVrCommand?.NotifyCanExecuteChanged();
                     _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
@@ -807,17 +809,40 @@ namespace PadForge.ViewModels
         /// status row now that the Dashboard's driver strip is gone. Reads
         /// the live statics. MainWindow's periodic refresh raises the change
         /// notification.</summary>
-        public string SteamVrStatusText
+        public string SteamVrStatusText => SteamVrStateNow() switch
         {
-            get
-            {
-                if (!_isSteamVrInstalled) return Strings.Instance.Common_NotInstalled;
-                var (drv, live) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
-                if (live) return Strings.Instance.Vr_Status_ControllersLive;
-                if (drv) return Strings.Instance.Vr_Status_DriverConnected;
-                if (PadForge.Common.Input.OpenVrConsumerService.ServerConnected) return Strings.Instance.Vr_Status_Running;
-                return Strings.Instance.Common_Installed;
-            }
+            SteamVrState.NotInstalled => Strings.Instance.Common_NotInstalled,
+            SteamVrState.ControllersLive => Strings.Instance.Vr_Status_ControllersLive,
+            SteamVrState.DriverConnected => Strings.Instance.Vr_Status_DriverConnected,
+            SteamVrState.Running => Strings.Instance.Vr_Status_Running,
+            _ => Strings.Instance.Common_Installed,
+        };
+
+        /// <summary>The same state as one line in sentence case, as a VR
+        /// slot's header says it after the slot's name (#574): "SteamVR
+        /// installed", "SteamVR running, controllers live".</summary>
+        public string SteamVrSentence => SteamVrStateNow() switch
+        {
+            SteamVrState.NotInstalled => Strings.Instance.Pad_SteamVr_NotInstalled,
+            SteamVrState.ControllersLive => Strings.Instance.Pad_SteamVr_ControllersLive,
+            SteamVrState.DriverConnected => Strings.Instance.Pad_SteamVr_DriverConnected,
+            SteamVrState.Running => Strings.Instance.Pad_SteamVr_Running,
+            _ => Strings.Instance.Pad_SteamVr_Installed,
+        };
+
+        /// <summary>SteamVR's states, from the least to the deepest.</summary>
+        private enum SteamVrState { NotInstalled, Installed, Running, DriverConnected, ControllersLive }
+
+        /// <summary>The deepest of SteamVR's states that is true now. Reads
+        /// the live statics.</summary>
+        private SteamVrState SteamVrStateNow()
+        {
+            if (!_isSteamVrInstalled) return SteamVrState.NotInstalled;
+            var (drv, live) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
+            if (live) return SteamVrState.ControllersLive;
+            if (drv) return SteamVrState.DriverConnected;
+            if (PadForge.Common.Input.OpenVrConsumerService.ServerConnected) return SteamVrState.Running;
+            return SteamVrState.Installed;
         }
 
         /// <summary>Raises the SteamVR row's change notification. MainWindow's
@@ -825,6 +850,7 @@ namespace PadForge.ViewModels
         public void RefreshSteamVrStatus()
         {
             OnPropertyChanged(nameof(SteamVrStatusText));
+            OnPropertyChanged(nameof(SteamVrSentence));
             RefreshSteamVrDriverConflict();
         }
 

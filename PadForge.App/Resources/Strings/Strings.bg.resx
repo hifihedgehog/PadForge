@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Копирай</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Постави</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Дублирай</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Преименувай</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Включено</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Изключено</value></data>
   <data name="Common_On" xml:space="preserve"><value>Включено</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Устройство</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Управлява се от</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Добави устройство</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Картина</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Списък</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Изходи: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Движение</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Щракнете върху елемент, после натиснете входа, който трябва да го управлява.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Щракнете върху клавиш или бутон на мишката, после натиснете входа, който трябва да го управлява.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Щракнете върху нота или плъзгач, после натиснете входа, който трябва да го управлява.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Съпостави всички“ пропуска изходите за докосване на A и B. Щракнете върху пръстена около A или B, за да съпоставите един от тях.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Изчаква се вход за {0}. Натиснете входа на вашето устройство.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, управлява се от</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Още опции</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>По-малко опции</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Лицев бутон</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Раменен бутон</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Системен бутон</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Бутон</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Кръстачка</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Стик</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Спусък</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Тъчпад</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Сензор за движение</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Клавиш на клавиатурата</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Бутон на мишката</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Движение на мишката</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Колелце за превъртане</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Промяна на контролер</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Сензор за докосване</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Аналогово натискане</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, лява ръка</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, дясна ръка</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Кое натискане вижда играта, когато и двата бутона от двойката са задържани</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Кое натискане вижда играта, когато и двата клавиша от двойката са задържани</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Задържа малко отклонение на стика, за да показват игрите подсказки за контролера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Коване</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макрос вляво или натиснете „Добави“, за да създадете нов.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макрос от списъка или натиснете + до „Макроси“, за да създадете нов.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СУРОВО</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ИЗХОД</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Студен</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импулсни спусъци</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импулсни спусъци</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Усилване по спусък, размяна на мотори, вибрации на адаптивните спусъци</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Усилване по спусък, размяна на мотори, вибрации на адаптивните спусъци, Постоянна сила на спусъците</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Препраща командите за моторите на отделните спусъци (Xbox Impulse Triggers) от виртуалния контролер към назначения физически контролер Xbox One, Elite или Series. Вибрацията на спусъците, управлявана от играта, преминава автоматично. Контролите по-долу мащабират силата за всеки спусък.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ляв спусък</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Десен спусък</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стикове</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Мъртви зони, анти-мъртви зони, криви на чувствителност и калибриране на отместването на центъра за всеки стик. Всеки раздел по-долу се отнася за един аналогов стик на активния изход. Разширените профили могат да имат до четири стика. Стандартните геймпади имат два.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Спусъци</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Мъртви зони, анти-мъртви зони, мащабиране на максималния обхват и криви на чувствителност за всеки спусък. Всеки раздел по-долу се отнася за една ос на спусък на активния изход. Разширените профили могат да предоставят до осем оси, споделени с раздела „Стикове“.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Мъртви зони, анти-мъртви зони, мащабиране на максималния обхват и криви на чувствителност за всеки спусък. Всяка карта на спусък се отнася за една ос на спусък на активния изход. Разширените профили могат да предоставят до осем оси, споделени между стиковете и спусъците.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Силова обратна връзка</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Настройва как PadForge мащабира събитията на силовата обратна връзка от играта и как ги насочва към моторите за вибрация или хаптичните актуатори на физическия контролер. „Вибрация от звука“ добавя отгоре слой, управляван от системния звук.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Това устройство</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Целият контролер</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрацията се възпроизвежда на {0} като хаптични импулси, изпращани директно към устройството. При по-силна вибрация се избира по-силен импулс, който се повтаря по-бързо.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Хаптичната обратна връзка за {0} е изключена в Logi Options+, затова нищо не се възпроизвежда, докато не я включите отново там.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Това устройство все още не е отговорило. Вибрацията му ще се възпроизведе, след като се събуди.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>дънни платки и видеокарти</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подложки за мишка, слушалки и стойки за слушалки</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлинна лента</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игрите поемат управлението, когато зададат осветление.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Въведете шестнадесетичен цвят от шест цифри (RRGGBB или #RRGGBB) и натиснете Enter или щракнете другаде, за да го приложите.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Премахни този цвят от палитрата</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Нулиране на вибрацията от звука</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Нулиране: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Изчисти съпоставянията</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Всички съпоставяния в този раздел ще бъдат изчистени. Назначенията на източници, допълнителните източници и настройките за комбиниране се връщат към стойностите по подразбиране.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Всички съпоставяния в този слой ще бъдат изчистени. Назначенията на източници, допълнителните източници и настройките за комбиниране се връщат към стойностите по подразбиране.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Шаблон за играча</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Режим на LED индикатора за заглушаване</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Яркост на LED</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Бутони</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Импортирани профили…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Разширен контролер</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Управление на импортираните от потребителя профили на HIDMaestro: заснемете нов от свързано устройство, експортирайте съществуващ в JSON или изтрийте профил, който вече не ви трябва.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Клониране на устройство 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Съпоставя всяка ос, бутон и POV на избраното устройство директно към виртуалния изход със същия номер. Оразмерява подредбата според устройството и заменя редовете на това устройство в слота с директно предаване 1:1.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Силова обратна връзка</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Канал</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI изход</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI канал (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Брой CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Брой CC изходи (максимумът зависи от „Начален CC“)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Премахва тази двойка клавиши.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Първи клавиш от противоположната двойка.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Втори клавиш от противоположната двойка.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Едновременни противоположни посоки (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Поддържане на контролера активен</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Някои игри спират вибрацията и сменят подсказките за бутоните в момента, в който засекат вход от мишка или клавиатура. Задържането на малко отклонение на стика кара играта да продължи да смята този контролер за активното устройство. Задържането се включва само докато и двете оси на този стик са под зададеното ниво, така че стик с дрифт все още се смята за неподвижен. Вход над нивото по която и да е ос го прекратява и преминава непроменен. Дръжте отклонението под собствената мъртва зона на играта, за да не се движи нищо в нея.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Поддържай активен</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Нулиране на щракването</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Нулиране на половината на тъчпада</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Нулиране на режима на задействане</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Нулиране на клетките</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Нулиране на мъртвата зона за активиране</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Нулиране на геометрията на менюто</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Нулиране на клетката</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Изчисти всичко</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Източник</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Стойност</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опции</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Мъртва зона ос към бутон</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Обръщане</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Когато е отметнато, оста плавно се връща в центъра при отпускане. Когато не е отметнато, тя запазва последната си позиция.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Бутон, който обръща изхода на реда, докато е задържан</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Модификатор: докато е задържан, изходът на реда сменя знака си.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Добави източник</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Добави източник</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Добави още един физически вход към този ред</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Премахни този източник</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Точка {0} от {1}, вход {2}%, изход {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Калибриране на центъра</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Централна точка</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Център</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мъртва зона</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Отмествания на центъра, форма и стойности по оси на мъртвата зона, крива за всяка ос, обхват, управление</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Обхват</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Калибриране на границата“ е препоръчителният начин за коригиране на стик. То обхожда ръба, до който стикът може физически да достигне, и след това пропорционално премащабира всяка позиция спрямо измерения ръб, така че цялото естествено движение, при всеки ъгъл и всяко отклонение, се съпоставя върху идеален кръг, без нищо да бъде отрязано. Четирите плъзгача по-долу само ограничават основните оси. Използвайте ги, за да ограничите обхвата умишлено, а не за да го коригирате.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Калибриране на границата“ измерва ръба, до който стикът може да достигне, и го преоформя в пълен кръг. Четирите плъзгача само ограничават всяка посока.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Отчитане...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Отместване на центъра X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Отместване на центъра Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Име</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Задействане</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Когато</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Изпълнение</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>При натискане</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>При отпускане</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Към кой слой принадлежи този макрос. „Всеки слой“ се задейства независимо от активния слой. Основният и именуваните слоеве се задействат само докато съответният слой е активен, точно както ред за съпоставяне.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Всеки слой</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Изпълнява се непрекъснато, докато този виртуален контролер е активен. Не е нужен задействащ бутон.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Последователност от действия</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Изпълни</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Слой, Източник, Праг, Посока, Поглъщане на задействащите бутони, Повторение</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Добави действие</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Редактиране на действие</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Тип</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуални бутони</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Виртуални оси и волан</value></data>
@@ -1700,7 +1734,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Отпускане на мишката {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Превключване на наслагването с тъчпад</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Задаване на цвят на светлинната лента</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Задава избран RGB цвят на светлинната лента на назначения PlayStation слот. „Реактивно“ затихва от пълна интензивност до черно за зададеното време на затихване и след това връща управлението на настройките от раздела „Осветление“. „Залепващо“ задържа цвета, докато не се изпълни действие „Изчистване на замяната на светлинната лента“. Цветовете, зададени от играта, все още имат предимство пред замяната.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Задава избран RGB цвят на светлинната лента на назначения PlayStation слот. „Реактивно“ затихва от пълна интензивност до черно за зададеното време на затихване и след това връща управлението на настройките от картата „Светлинна лента“. „Залепващо“ задържа цвета, докато не се изпълни действие „Изчистване на замяната на светлинната лента“. Цветовете, зададени от играта, все още имат предимство пред замяната.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Проблясване на светлинната лента {0} (затихване {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Задържане на светлинната лента {0} до изчистване</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Изчистване на замяната на светлинната лента</value></data>
@@ -1708,7 +1742,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Освобождава всяка активна замяна на светлинната лента на назначения слот. Използвайте заедно със залепващо действие „Задаване на цвят на светлинната лента“, за да я отмените чрез друг макрос.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Задаване на режим на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Задаване на режима на светлинната лента на {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задава конкретен режим на светлинната лента на назначения слот. Запазва се като промяна в раздела „Осветление“, докато друго действие или потребителят не го промени.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задава конкретен режим на светлинната лента на назначения слот. Запазва се като промяна в картата „Светлинна лента“, докато друго действие или потребителят не го промени.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Цикъл на режимите на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Цикъл през {0} режима на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Превключва режима на светлинната лента на слота през избраните по-долу режими. Всяко задействане преминава към следващия отметнат режим. Позицията в цикъла е отделна за всяко действие и се нулира при рестартиране на приложението.</value></data>
@@ -1723,7 +1757,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Затихване</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Избледняване</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитра</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празната палитра използва палитрата от раздела „Осветление“ на слота.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празната палитра използва палитрата от картата „Светлинна лента“ на слота.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Изберете през кои режими на светлинната лента да преминава макросът. Всяко задействане преминава към следващия отметнат режим.</value></data>
 
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Спиране на вибрацията на спусъците</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Освобождава всяка активна вибрация на спусъците от макрос на слота. Използвайте заедно със залепваща „Замяна на вибрацията на спусъците“, за да прекратите задържането от макрос.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Задаване на активиране на жироскопа</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Задава състоянието на активиране на жироскопа на слота от макрос. „Превключване“ обръща текущото състояние. „Включено“ принудително активира жироскопа. „Изключено“ принудително го деактивира. Не зависи от бутона за активиране в раздела „Жироскоп“. Двата източника се комбинират с ИЛИ, така че никой от тях не може да деактивира това, което другият е активирал.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Задава състоянието на активиране на жироскопа на слота от макрос. „Превключване“ обръща текущото състояние. „Включено“ принудително активира жироскопа. „Изключено“ принудително го деактивира. Не зависи от „Бутон за активиране на прицелването“ в „Движение и докосване“. Двата източника се комбинират с ИЛИ, така че никой от тях не може да деактивира това, което другият е активирал.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Превключване</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Включено</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Тъчпад</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Тъчпад</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Вход за всеки тъчпад поотделно. Жестовете (плъзгания, докосвания, събирания, фигури) и режимите с непрекъснат изход (виртуален стик / кръстачка, мишка) стават източници за съпоставяне, които можете да зададете в раздела „Съпоставяния“.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Вход за всеки тъчпад поотделно. Жестовете (плъзгания, докосвания, събирания, фигури) и режимите с непрекъснат изход (виртуален стик / кръстачка, мишка) стават източници за съпоставяне, които можете да зададете на всеки изход.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Тъчпад</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Номер на тъчпада</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>За кой тъчпад на този контролер се отнасят настройките по-долу. Всеки тъчпад има свои жестове, поведение на мишката и област на показалеца.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Настройте как сензорът за движение на този контролер управлява изхода на мишката и стика. Калибрирайте на равна повърхност, за да нулирате дрифта в покой, след това настройте чувствителността, изглаждането и правилата за активиране по свой вкус.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибриране</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Текущи показания на жироскопа и акселерометъра</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Чувствителност</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, Пространство, обръщане на осите, Калибриране спрямо реалния свят</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, обръщане на осите, Калибриране спрямо реалния свят</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° на оборот</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Оформяне на реакцията</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Мъртва зона, изглаждане, Ускорение, Изходна крива</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Отправна система</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Локално, Играч или Свят</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Пространство</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Как се тълкува движението на жироскопа. „Локално“ използва суровите оси на контролера. „Играч“ проектира хоризонталното движение спрямо реалната вертикала (гравитацията), така че едно и също завъртане на китката винаги върти камерата, независимо как държите контролера. „Свят“ освен това проектира вертикалното движение спрямо осите на света.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Начин на държане</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Изправено</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Хват</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Как се държи контролерът. Завърта заедно жироскопа, акселерометъра и гравитацията за съпоставянията и за движението, което отчита виртуалният контролер. Кръстачката следва същата координатна система, така че „нагоре“ е нагоре при съответния хват.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Как се държи контролерът</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Линейна</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Агресивна</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Мека</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Нулиране на посоката за активиране</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Директно предаване на движението</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Прилагане на настройките на жироскопа към директното предаване на движението</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Прилага незадължителните настройки на жироскопа от този раздел (мъртва зона, чувствителност, изглаждане, крива на реакция, обръщане) към движението, което виртуалният контролер отчита на играта или емулатора. Изключете го, за да се изпраща само калибрираното показание и играта да приложи собствената си чувствителност и изглаждане. Корекцията на дрифта от калибрирането се прилага и в двата случая.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Прилага незадължителните настройки от картите в групата „Жироскоп“ (мъртва зона, чувствителност, изглаждане, крива на реакция, обръщане) към движението, което виртуалният контролер отчита на играта или емулатора. Изключете го, за да се изпраща само калибрираното показание и играта да приложи собствената си чувствителност и изглаждане. Корекцията на дрифта от калибрирането се прилага и в двата случая.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Нулиране на настройките за директно предаване</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множител на чувствителността на жироскопа за всеки източник. 1.0 = стойността по подразбиране на двигателя (500°/с → пълно отклонение). Стойностите над 1.0 са по-чувствителни. Стойностите под 1.0 са по-малко чувствителни.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Нулиране на обхвата на пълното накланяне</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Нулиране на мъртвата зона на накланянето</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Нулиране на накланянето с жироскопа</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Как се обединяват източниците на този ред, когато е активен повече от един. Изберете реда, за да го промените в лентата с подробности по-долу.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Как се обединяват източниците на този ред, когато е активен повече от един. Отворете реда, за да го промените в „Комбиниране“.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Инерция</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Режим на тракбол: отклонете рязко стика и го пуснете, и курсорът продължава да се движи, като постепенно спира. Ново движение на стика го спира.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Колко далеч се плъзга курсорът след рязко движение. При максималната стойност той продължава, докато не преместите стика отново.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ос на спусъка</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усилване по мотори, вибрация на спусъците, размяна на мотори</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усилване по мотори, вибрация на спусъците, Вибрация според ъгъла на завиване, Постоянна сила</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Общо усилване</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ляв мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Десен мотор</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Този контролер няма мотори в спусъците, затова ефектите на игрите, които използват импулсните спусъци на Xbox, няма да се усещат. Вместо това пренасочете канала на всеки спусък към основния мотор от същата страна.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Тест на вибрацията</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ляв</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Десен</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Прилага постоянна сила към това устройство, докато не я изключите. Силата, управлявана от играта, от какъвто и да е източник, има предимство, докато е активна, а постоянната сила се възобновява, когато играта спре.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Натиснете бутони или преместете ос/спусък, за да запишете. Осите се засичат при отклонение над 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Добави от списък</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Изберете задействащ вход от устройствата на слота, вместо да го записвате. Тук се показват жестовете на тъчпада, включени в раздела „Тъчпад“.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Изчисти задействането</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Изберете задействащ вход от устройствата на слота, вместо да го записвате. Тук се показват жестовете на тъчпада, включени в „Движение и докосване“.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Премахни входа</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Натиснете който и да е вход…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>обърната</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Секунди, след които виртуален контролер се унищожава, когато всички съпоставени към него устройства са офлайн. 0 изключва функцията. Останалите контролери от същия тип се преместват нагоре, за да запълнят празнината, и се обвързват отново с по-ниските слотове.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунди (0 = никога)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Слой</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Добави слой</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Добавя слой. Втора таблица за съпоставяне, която се активира, докато бутон е задържан или превключен.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Основен</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Слой</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управление с движение</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Мъртви зони на навеждането, Ориентация на контролера</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки за входа „Движение: навеждане“: накланяйте контролера като волан. Съпоставете „Движение: навеждане“ към ос на стик от падащия списък за вход в „Съпоставяния“.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки за входа „Движение: навеждане“: накланяйте контролера като волан. Съпоставете „Движение: навеждане“ към ос на стик в „Бутони“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Нулиране на управлението с движение</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик стик (десен стик)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флик стик (ляв стик)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Пръстен на десния стик</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Флик стик</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Настройки за входовете „Флик стик“</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Настройки за входовете „Флик стик“: насочете стика и камерата се обръща в същата посока, а движението по ръба я завърта плавно. Съпоставете „Флик стик (десен стик)“ към „Мишка X“ от падащия списък за вход в „Съпоставяния“, на който и да е слой.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Настройки за входовете „Флик стик“: насочете стика и камерата се обръща в същата посока, а движението по ръба я завърта плавно. Съпоставете „Флик стик (десен стик)“ към „Мишка X“ в „Клавиши и мишка“, на който и да е слой.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Нулиране на флик стик</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точки за 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Брой единици на мишката за едно пълно завъртане на камерата на 360°. Зависи от чувствителността на мишката в играта: увеличете стойността, ако флик завърта недостатъчно, или я намалете, ако завърта прекалено много.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците от макроси и дублираният системен звук се възпроизвеждат през вградения високоговорител на избрания контролер, чрез USB или Bluetooth. Изберете устройството от падащия списък по-горе. Всички настройки тук се отнасят за него.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Изход на звука</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Източник за дублиране, хаптика, Сила на звука на слушалките, Смесване на каналите, Параметричен еквалайзер, Лимитер</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Източник за дублиране, Сила на звука на слушалките, буфер, Изходен път</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуците се насочват автоматично към избрания контролер. При USB собствената аудио крайна точка на контролера се открива по хардуерния контейнер. При Bluetooth звукът се предава в HID кадри на Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Източник за дублиране</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Кое устройство за възпроизвеждане да се дублира към високоговорителя на контролера. Игрите, които изпращат определени звуци към отделно устройство за възпроизвеждане, могат да използват това.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Спри всички звуци</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Спира всички звуци от макроси на този контролер</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Звукови макроси</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Звуците се възпроизвеждат от макроси: задействане (натискане, отпускане или задържане на бутон, или формула) плюс действие „Възпроизвеждане на звук“. Създайте ги тук или в раздела „Макроси“. Забавянията, повторенията и превключванията работят.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Звуците се възпроизвеждат от макроси: задействане (натискане, отпускане или задържане на бутон, или формула) плюс действие „Възпроизвеждане на звук“. Създайте ги тук или в „Макроси и менюта“. Забавянията, повторенията и превключванията работят.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Нов звуков макрос</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Все още няма звукови макроси. Създайте един и изберете звуков файл и задействане.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Отвори този макрос в раздела „Макроси“</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Отвори този макрос в „Макроси и менюта“</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Звуков макрос {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Възпроизвеждане на звук</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Възпроизвежда звуков файл (.wav, .mp3, .m4a, .aac, .wma, .flac) на изходното устройство на този контролер</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Работи</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Работи, драйверът е свързан</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Работи, контролерите са активни</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR е инсталиран</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR не е инсталиран</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR работи</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR работи, драйверът е свързан</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR работи, контролерите са активни</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Друг OpenVR драйвер използва името на драйвера на HIDMaestro, затова SteamVR може да го зареди вместо драйвера на PadForge и виртуалните VR контролери няма да се появят. Премахнете този драйвер, за да отстраните проблема: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Сериен контролер (COM порт)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Мултимедия {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Мишка</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Жестове с мишката</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Задръжте бутона за жестове, направете рязко движение и при отпускане се изпълнява едно действие: наляво, надясно, нагоре, надолу или обикновено щракване под разстоянието за рязко движение. Съпоставете петте жеста в раздела „Съпоставяния“ или ги използвайте като задействания на макроси.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Задръжте бутона за жестове, направете рязко движение и при отпускане се изпълнява едно действие: наляво, надясно, нагоре, надолу или обикновено щракване под разстоянието за рязко движение. Съпоставете петте жеста към всеки изход или ги използвайте като задействания на макроси.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Включване на жестовете с мишката</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Активира разпознаването на жестове за тази мишка в този слот. Бутонът за жестове запазва нормалното си щракване по време на жеста, затова изберете страничен бутон, който не съпоставяте другаде.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Бутони за жестове</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Смяна на слой</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Задаване на цвят на Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Оцветява в един цвят устройствата Razer, назначени към този виртуален контролер, и всички други устройства Razer от същите видове, докато действието се изпълнява.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>За продължителността по-горе оцветява в този цвят устройствата Razer, назначени към този виртуален контролер, и всички други устройства Razer от същите видове, или всички устройства Razer, когато е назначен редът Razer Chroma. Това има предимство пред раздела „Осветление“ на всеки виртуален контролер, след което управлението на осветлението се връща. За да задържите цвета, докато задействащият вход е задържан, използвайте „Докато е задържан“ с „До отпускане“. Когато два макроса оцветяват едновременно, печели този, който е по-долу в списъка, затова поставете макроса за пълно натискане под двойника му за леко натискане. Когато макроси на два виртуални контролера оцветяват един и същ вид устройство Razer, печели по-малкият номер на играча. Изисква да работи Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>За продължителността по-горе оцветява в този цвят устройствата Razer, назначени към този виртуален контролер, и всички други устройства Razer от същите видове, или всички устройства Razer, когато е назначен редът Razer Chroma. Това има предимство пред осветлението, което всеки виртуален контролер задава в „Осветление и звук“, след което управлението на осветлението се връща. За да задържите цвета, докато задействащият вход е задържан, използвайте „Докато е задържан“ с „До отпускане“. Когато два макроса оцветяват едновременно, печели този, който е по-долу в списъка, затова поставете макроса за пълно натискане под двойника му за леко натискане. Когато макроси на два виртуални контролера оцветяват един и същ вид устройство Razer, печели по-малкият номер на играча. Изисква да работи Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Показване на екран на Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Показва картинки на VMU на всеки геймпад за Dreamcast в порт на Bliss-Box, който подава към този слот, след което връща всеки порт към собствената му настройка на екрана.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Показване на картинки на Dreamcast: {0} × {1} мс, брой повторения {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>При натискане нулира натрупаните опорни точки за прицелване на жироскопа на контролера. Историята на изглаждането се изчиства, неутралната позиция на „Движение: навеждане“ се записва отново, оценката на гравитацията се изчислява наново от текущото положение на контролера, а завъртането, натрупано от редовете „Движение: наклон“, „Движение: завъртане“ и „Движение: крен“, се отменя.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Всяко устройство)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Менюта</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Менютата превръщат физически стик или тъчпад в екранен пръстен или мрежа. Добавете меню, изберете с какво се отваря, след което дайте етикет на всяка клетка и ѝ задайте присвояване.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Менютата превръщат физически стик или тъчпад в екранен пръстен или мрежа. Натиснете + до „Менюта“, за да създадете меню, изберете с какво се отваря, след което дайте на всяка клетка име и действие.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Ново меню</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Меню {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Име на менюто</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Включено</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Отваряне</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Стил</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Радиален пръстен</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Сензорна мрежа</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Клетки</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Централна клетка</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Показване на етикетите</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Позиция на екрана</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Размер</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Непрозрачност</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Мъртва зона за активиране</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Присвоявания на клетките</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Клетка {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Добави клетка</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Премахни последната клетка</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Редактирай клетката</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Име</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Действие</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Икона</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Център</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Клавиш на клавиатурата</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Изпълнява се веднъж при отпускане на щракването: посочете клетката, натиснете стика или тъчпада и след това отпуснете.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Изпълнява се веднъж, когато пуснете: вдигнете пръста си от тъчпада или оставете стика да се върне в центъра, докато е маркирана клетка.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Присвояването се задържа през цялото време, докато клетката е маркирана. Не е нужно щракване.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Колко клетки има менюто. При радиален пръстен се броят само клетките на пръстена; централната клетка е отделна.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Добавя централна клетка, която е избрана, докато стикът или пръстът е в „Мъртва зона за активиране“.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>За стиковете – колко трябва да се отклонят, преди менюто да се отвори и клетките на пръстена да се маркират. При радиалните менюта това е и централната област както за стиковете, така и за тъчпадовете: в нея се избира централната клетка, ако има такава.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Показва етикета на всяка клетка в екранното наслагване.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Размер на наслагването в проценти от нормалния му размер.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Непрозрачност на наслагването. 100% е напълно плътно.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Текст, показван в тази клетка в наслагването.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Какво прави тази клетка, когато се задейства: „Клавиш на клавиатурата“ натиска клавиш, „Бутон на контролера“ натиска бутон на виртуалния контролер на този слот. Клетка със зададено „Няма“ все пак се задейства като източник от меню за редовете в „Съпоставяния“ и задействанията на макроси.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Чете се от физическите контролери, назначени към този слот, а не от подредбата на виртуалния контролер. Присвояванията на клетките по-долу са това, което менюто изпраща.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Какво прави тази клетка, когато се задейства: „Клавиш на клавиатурата“ натиска клавиш, „Бутон на контролера“ натиска бутон на виртуалния контролер на този слот. Клетка със зададено „Няма“ все пак се задейства като източник от меню за съпоставяния и задействания на макроси.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Чете се от физическите контролери, назначени към този слот, а не от подредбата на виртуалния контролер. Клетките по-долу определят какво изпраща менюто.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Персонализирани оси</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Управление X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Управление Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Басови шейкъри</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Изход</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Бутони</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Клавиши и мишка</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноти и контроли</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Ръце</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Стикове и спусъци</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Вибрация и хаптика</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Движение и докосване</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Осветление и звук</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроси и менюта</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Басови шейкъри</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Насочва вибрацията и силовата обратна връзка от играта, които получава този виртуален контролер, към аудиоизход като нискочестотни тонове за басови шейкъри и субуфери.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Възпроизвежда вибрацията от играта като ниски тонове през басови шейкъри или субуфер.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Изходно устройство, режим на каналите, усилване, тон за всеки мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работи с виртуалните контролери Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, както и с разширени виртуални контролери със силова обратна връзка, като например състезателни волани, и Steam Deck Controller (Composite). Обратната връзка от играта и „Тест на вибрацията“ се възпроизвеждат през аудиоизхода. Вибрацията от макроси остава на контролера.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Нулиране на „Вибрация към аудио“</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Възпроизвежда този канал на обратната връзка като тон. Усилването и честотата се запазват, докато е изключен.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Честота на тона за този канал, от 20 до 120 Hz. Пуснете честотния преход, за да намерите къде шейкърът ви реагира най-силно.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Сила на звука на този канал преди общото усилване.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Усилване</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Тест</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Възпроизвежда тона на този канал за 1.5 секунди със зададеното усилване.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Нулиране на нискочестотния мотор</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Нулиране на високочестотния мотор</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Нулиране на левия спусък</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Нулиране на десния спусък</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Проверка на шейкърите</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Честотен преход</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Плавно променя тон от 20 до 120 Hz за осем секунди по канала на нискочестотния мотор. Отбележете къде шейкърът ви реагира най-силно и задайте честотите на гласовете там.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Спри</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Спира тестовия тон или прехода.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Всеки NFC етикет</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC етикет: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Филтриране на входовете (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Филтър за изходи и входове</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Показва само съвпадащите редове и входове. Натиснете Ctrl+F, за да пишете тук.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Изберете входовете на кои устройства да предлагат списъците</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Показвани в списъка</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Всяка гласова фраза</value></data>
@@ -4077,6 +4135,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Нулиране на нивото на смесване</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Параметричен еквалайзер</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Филтри по ленти за звука на контролера. Прилагат се преди кодирането на звука, така че лимитерът по-долу пази усилената лента от изкривяване.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Предусилвател, ленти, импорт</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Предусилвател</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Общо ниво преди лентите. Профилите на AutoEq идват с отрицателен предусилвател, за да не се изкривяват усилванията им, а импортирането на такъв го задава вместо вас.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Вкл.</value></data>
@@ -4307,7 +4366,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Нулиране до отваряне при докосване или отклонение.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Управление с</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Физическият вход, който управлява маркираната клетка, докато слоят държи това меню отворено.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Чете се от физическите контролери, назначени към този слот. Слоят отваря менюто; този вход го управлява. Присвояванията на клетките определят изхода му.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Чете се от физическите контролери, назначени към този слот. Слоят отваря менюто, а този вход го управлява. Клетките на менюто определят изхода му.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Размер на иконата</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Размер на иконата спрямо нормалния размер на иконите в менюто, от 25% до 200%. Изчистването на иконата го връща на 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Задържа присвояването на маркираната клетка, докато „Вход за щракване“ е задържан. Маркиран радиален център може да се задейства, докато стикът е в покой.</value></data>
@@ -4432,7 +4491,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Референция от Antoine Aflalo за структурата на недокументирания интерфейс IPolicyConfig на Windows, който PadForge използва, за да включи отново аудио крайната точка на контролер. MIT. Само документация, не е включен код.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Форматът на профилите за параметричен еквалайзер, който импортира разделът „Аудио“, от Jaakko Pasanen. MIT. Само документация, не е включен код.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Форматът на профилите за параметричен еквалайзер, който се импортира в „Параметричен еквалайзер“ на контролера, от Jaakko Pasanen. MIT. Само документация, не е включен код.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Техниките със SendInput, на които се основават макросите „Текстов блок“ и прихващането на клавишни акорди: въвеждане на Unicode, ограничения на пакетите, маскиращият клавиш за Win и маркираният инжектиран вход. GPL-2.0-or-later, използван само като документация, не е включен GPL код.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Посока</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Стъпка</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>до</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Ръкохватка</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} задава спусъците на този контролер.</value></data>
@@ -4716,7 +4776,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Ръкохватката не измина достатъчно голямо разстояние, затова обхватът остава какъвто беше. Преместете я до всеки край, докато трае обхождането.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon се затвори, преди обхождането да завърши.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Играйте с Novint Falcon чрез SDK на Force Dimension, който инсталирате от Force Dimension. Ръкохватката е стик, четирите бутона на захвата са бутони, а PadForge прилага вибрацията и ефектите от играта върху ръкохватката като сила. Разделът за силова обратна връзка на всеки слот определя усещането от Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Играйте с Novint Falcon чрез SDK на Force Dimension, който инсталирате от Force Dimension. Ръкохватката е стик, четирите бутона на захвата са бутони, а PadForge прилага вибрацията и ефектите от играта върху ръкохватката като сила. Картата „Novint Falcon“ в „Вибрация и хаптика“ на всеки контролер определя усещането от Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Управление на Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Отваря всеки Falcon чрез dhd64.dll на Force Dimension. Отвореният Falcon принадлежи само на PadForge, затова FalconJoyForce и инструментите на Force Dimension не могат да го отворят, докато това е включено. Когато е изключено, PadForge затваря всеки Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Библиотеката за Falcon е зададена на {0}. PadForge я зарежда до няколко секунди, а Falcon, отворен с друго копие, се отваря отново с това.</value></data>
@@ -4929,7 +4989,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>За определено време</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>До спиране</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Време</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Пуска се на всеки DualSense и DualSense Edge на този слот. Собственият ефект на спусъка на играта и този на игровия мод имат предимство, а настройката от раздела „Адаптивни спусъци“ се връща, когато ефектът свърши. Зоните вървят от 0 в покой до 9 при пълно натискане. Лък, Галоп и Машина не са официални ефекти на DualSense и актуализация на фърмуера може да ги премахне. Контролерите на Xbox с включено Преобразуване на вибрациите на адаптивните спусъци усещат вибриращите ефекти като вибрация на спусъка.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Пуска се на всеки DualSense и DualSense Edge на този слот. Собственият ефект на спусъка на играта и този на игровия мод имат предимство, а настройката от картата „Адаптивни спусъци“ се връща, когато ефектът свърши. Зоните вървят от 0 в покой до 9 при пълно натискане. Лък, Галоп и Машина не са официални ефекти на DualSense и актуализация на фърмуера може да ги премахне. Контролерите на Xbox с включено Преобразуване на вибрациите на адаптивните спусъци усещат вибриращите ефекти като вибрация на спусъка.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} на {1} за {2} мс</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} на {1} докато е задържан</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} на {1} до спиране</value></data>
@@ -4958,7 +5018,7 @@
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>До изчистване</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Време</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Запазване на цветовете им</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действието осветява едни и същи клавиши на всяка клавиатура, която този виртуален контролер осветява, върху цветовете от раздела му „Осветление“. Числата показват реда на избиране. Обратното броене изключва клавишите един по един, като започва от последния избран, затова избери от 1 до 0 за таймер на цифровия ред. Клавиатура или мишка светва само докато е включено „Управление на осветлението на това устройство“.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Действието осветява едни и същи клавиши на всяка клавиатура, която този виртуален контролер осветява, върху цветовете, които той им задава в „Осветление и звук“. Числата показват реда на избиране. Обратното броене изключва клавишите един по един, като започва от последния избран, затова изберете от 1 до 0 за таймер на цифровия ред. Клавиатура или мишка светва само докато е включено „Управление на осветлението на това устройство“.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Други</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, номер {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Наслагване на екрана</value></data>
@@ -5018,7 +5078,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на задействане на аналоговите клавиши не бяха пренесени.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD изпращаше този контролер към друго устройство чрез адаптер. PadForge го пуска на този компютър, а Отдалечена връзка го изпраща към друг компютър с PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чете два стика, а тук е посочен трети.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацията на волан не беше пренесена. Съпоставете волана в раздела Съпоставяния.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацията на волан не беше пренесена. Съпоставете волана в „Бутони“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Този профил посочва специално действие, което липсва в Actions.xml до папката му Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Тази настройка не беше пренесена: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD пречеше на тези входове да стигнат до Windows. Включете Поглъщане на съпоставените входове за {0} на страницата Устройства, което спира входовете, съпоставени от този профил.</value></data>
@@ -5026,8 +5086,8 @@
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потвърждава се, когато стикът се върне в центъра или слоят приключи. Бутонът Приложи на reWASD не се използва.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Този файл държи два контролера разделени. В PadForge всеки контролер на слота задейства тези съпоставяния.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Скоростта на движение или рязкото движение не бяха пренесени.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Те не бяха пренесени. Задайте ги в раздела Тъчпад.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нищо в този файл не отваря този слой. Дайте му бутон в раздела Съпоставяния.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Те не бяха пренесени. Задайте ги в „Движение и докосване“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нищо в този файл не отваря този слой. В „Бутони“ щракнете с десния бутон върху слоя и изберете „Настройка на активатора“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Бутоните му изпълняват това при натискане: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пряк път към профил</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Прави това, което прави пряк път към профил: зарежда именуван профил, следващия или предишния, показва или скрива прозореца или изключва и включва виртуалните контролери.</value></data>
@@ -5197,7 +5257,7 @@
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Избраната клетка се задейства веднъж, като кратко докосване, когато „Задействане“ бъде отпуснато. При включено „Скриване след задействане“ се задейства веднага щом „Задействане“ скрие лентата.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Клетка се задейства веднъж, като кратко докосване, когато „Задействане“ скрие лентата при включено „Скриване след задействане“. При включено „Центриране всеки път“ се задейства средната клетка.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Избраната клетка се задържа през цялото време, докато лентата е показана. Стъпването пуска една клетка и задържа следващата.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радиален пръстен“, „Сензорна мрежа“ и „Лента с умения“ задействат връзките на клетките. „Клавиатура“ въвежда клавишите на използваната подредба на Windows.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радиален пръстен“, „Сензорна мрежа“ и „Лента с умения“ изпълняват действията на клетките си. „Клавиатура“ въвежда клавишите на използваната подредба на Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Подредба</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Как клавиатурата подрежда клавишите си и как контролерът ги избира.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Едно маркиране, премествано със стик или с четири входа, подредбата на Windows, Xbox и Steam.</value></data>
@@ -5304,11 +5364,11 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Бутони на портативно устройство за PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Осветление на клавишите за PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Съпоставяне в раздела Съпоставяния може.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Съпоставяне в „Бутони“ може.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge поддържа осем Наслагвания на екрана, а това е деветият или десетият мерник на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чете Жироскоп наляво и надясно от крена, а навеждането от завъртането, както е по подразбиране в reWASD. Предпочитанията на reWASD могат да ги разменят, а този файл не показва дали са били разменени.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режим Наклон навеждането на reWASD е завъртане около вертикалната ос, а сензорът за движение не дава ъгъл за такова завъртане.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чете диагонал на тъчпада като две посоки едновременно, което тъчпадът отчита само когато Режим на кръстачката в раздела му Тъчпад е 8 посоки.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чете диагонал на тъчпада като две посоки едновременно, което тъчпадът отчита само когато неговият „Режим на кръстачката“ в „Движение и докосване“ е „8 посоки“.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge чете посоката на жироскопа отвъд един праг, а reWASD не дава мерна единица за края на зона на жироскопа.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows поставяше показалеца там, накъдето сочи стикът. В PadForge стикът вместо това движи показалеца.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} чете стика преди неговото завъртане. DS4Windows го четеше след него.</value></data>

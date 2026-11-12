@@ -1594,9 +1594,23 @@ namespace PadForge.ViewModels
         /// <summary>Whether the cell has a label of its own.</summary>
         public bool HasLabel => Label.Length > 0;
 
-        /// <summary>The cell's name in the editor's list: its label, or with
-        /// none its place ("Cell 3", a ring's "Center").</summary>
-        public string RowName => HasLabel ? Label : Header;
+        /// <summary>The cell's name in the editor's list, as the Macros board
+        /// names a cell (#574): its label, else what it runs ("Quick Combo",
+        /// "R"), else its place ("Cell 3", a ring's "Center").</summary>
+        public string RowName
+        {
+            get
+            {
+                if (HasLabel) return Label;
+                string target = TargetName;
+                return target.Length > 0 ? target : Header;
+            }
+        }
+
+        /// <summary>The list names the cell by its place: it has no label
+        /// and runs nothing with a name. The list draws a place in the quiet
+        /// color.</summary>
+        public bool IsPlaceName => !HasLabel && TargetName.Length == 0;
 
         /// <summary>What the cell does, in the editor's list: the kind of
         /// its binding and, where the kind has one, what it presses or runs
@@ -1613,6 +1627,19 @@ namespace PadForge.ViewModels
                     kindText = option.Label;
                     break;
                 }
+                string target = TargetName;
+                return target.Length == 0 ? kindText : kindText + ", " + target;
+            }
+        }
+
+        /// <summary>What the cell presses or runs, by the name its picker
+        /// shows: a key, a controller button or a macro. Empty for a cell
+        /// with none of those.</summary>
+        private string TargetName
+        {
+            get
+            {
+                int kind = BindingKind;
                 string target = "";
                 if (kind == 1)
                 {
@@ -1644,7 +1671,7 @@ namespace PadForge.ViewModels
                         break;
                     }
                 }
-                return target.Length == 0 ? kindText : kindText + ", " + target;
+                return target;
             }
         }
 
@@ -1717,6 +1744,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasLabel));
                 OnPropertyChanged(nameof(RowName));
+                OnPropertyChanged(nameof(IsPlaceName));
                 _owner.RaiseChanged();
             }
         }
@@ -1789,6 +1817,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(Header));
             OnPropertyChanged(nameof(RowName));
+            OnPropertyChanged(nameof(IsPlaceName));
             OnPropertyChanged(nameof(Summary));
             OnPropertyChanged(nameof(BindingKindOptions));
             OnPropertyChanged(nameof(KeyOptions));
@@ -1897,6 +1926,8 @@ namespace PadForge.ViewModels
                 // direct binding exists, so the list follows the kind.
                 OnPropertyChanged(nameof(BindingKindOptions));
                 OnPropertyChanged(nameof(Summary));
+                OnPropertyChanged(nameof(RowName));
+                OnPropertyChanged(nameof(IsPlaceName));
                 _owner.RaiseChanged();
             }
         }
@@ -1953,6 +1984,8 @@ namespace PadForge.ViewModels
                 _item.ExtendedButton = 0;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Summary));
+                OnPropertyChanged(nameof(RowName));
+                OnPropertyChanged(nameof(IsPlaceName));
                 _owner.RaiseChanged();
             }
         }
@@ -2039,6 +2072,8 @@ namespace PadForge.ViewModels
                 _item.ExtendedButton = 0;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Summary));
+                OnPropertyChanged(nameof(RowName));
+                OnPropertyChanged(nameof(IsPlaceName));
                 _owner.RaiseChanged();
             }
         }
@@ -2111,6 +2146,8 @@ namespace PadForge.ViewModels
                 _item.VirtualKey = 0;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Summary));
+                OnPropertyChanged(nameof(RowName));
+                OnPropertyChanged(nameof(IsPlaceName));
                 _owner.RaiseChanged();
             }
         }
@@ -2126,6 +2163,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowKeyPicker));
             OnPropertyChanged(nameof(ShowButtonPicker));
             OnPropertyChanged(nameof(Summary));
+            OnPropertyChanged(nameof(RowName));
+            OnPropertyChanged(nameof(IsPlaceName));
         }
 
         public RelayCommand ResetCellCommand => _resetCell ??= new RelayCommand(() =>

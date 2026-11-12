@@ -37,19 +37,21 @@ namespace PadForge.Tests
         /// its open state is stored under, its title and its hint.</summary>
         public static readonly (string Name, string StateKey, string Header, string Hint)[] FoldCards =
         {
-            ("SocdFoldCard", "Pad.Output.Socd", "Pad_Socd_Card_Header", "Pad_Socd_FoldHint"),
-            ("KbmSocdFoldCard", "Pad.Output.KbmSocd", "Pad_Socd_Card_Header", "Pad_Kbm_Socd_FoldHint"),
+            // SOCD's title is the board's short one.
+            ("SocdFoldCard", "Pad.Output.Socd", "Pad_Socd_FoldTitle", "Pad_Socd_FoldHint"),
+            ("KbmSocdFoldCard", "Pad.Output.KbmSocd", "Pad_Socd_FoldTitle", "Pad_Kbm_Socd_FoldHint"),
             ("KeepAwakeFoldCard", "Pad.Output.KeepAwake", "Pad_KeepAwake_Card_Header", "Pad_KeepAwake_FoldHint"),
             ("LockFeedbackCard", "Pad.Sticks.LockFeedback", "Pad_Steering_LockFeedback", "Pad_LockFeedback_FoldHint"),
             ("FlickStickCard", "Pad.Sticks.FlickStick", "Pad_FlickStick_Header", "Pad_FlickStick_FoldHint"),
             ("AudioRumbleFoldCard", "Pad.Rumble.Audio", "Settings_AudioRumble", "Pad_AudioRumble_FoldHint"),
             ("TriggerRoutingFoldCard", "Pad.Rumble.TriggerRouting", "Pad_TriggerRouting_Header", "Pad_TriggerRouting_FoldHint"),
             ("AudioTriggerRumbleFoldCard", "Pad.Rumble.AudioTriggers", "Pad_AudioTriggerRumble_Header", "Pad_AudioTriggerRumble_FoldHint"),
-            // Grip's hint is its paragraph, which the line trims: its first
-            // sentence is what the board writes there.
-            ("GyroGripCard", "Pad.Motion.Grip", "Pad_Gyro_Grip_Header", "Pad_Gyro_Grip_Subtitle"),
+            // Grip's hint is the board's words, the first sentence of its
+            // paragraph, which is the line's tooltip.
+            ("GyroGripCard", "Pad.Motion.Grip", "Pad_Gyro_Grip_Header", "Pad_Grip_FoldHint"),
             ("GyroEngageCard", "Pad.Motion.Engage", "Pad_Gyro_Engage_Header", "Pad_GyroEngage_FoldHint"),
             ("GyroResponseCard", "Pad.Motion.Response", "Pad_Gyro_Response_Header", "Pad_GyroResponse_FoldHint"),
+            ("GyroSpaceCard", "Pad.Motion.Space", "Pad_Gyro_Space_Header", "Pad_GyroSpace_FoldHint"),
             ("MotionSteeringFoldCard", "Pad.Motion.Steering", "Pad_MotionSteer_Header", "Pad_MotionSteering_FoldHint"),
             ("GyroTiltFoldCard", "Pad.Motion.Tilt", "Pad_GyroTilt_Header", "Pad_GyroTilt_FoldHint"),
             ("GyroPassthroughCard", "Pad.Motion.Passthrough", "Pad_Gyro_Passthrough_Header", "Pad_Gyro_ApplyToPassthrough"),
@@ -65,6 +67,14 @@ namespace PadForge.Tests
             ("PeripheralLightingCard", "Pad.Lights.Control", "Pad_Lighting_ControlCard", "Pad_LightingControl_FoldHint"),
             ("IndicatorLedsCard", "Pad.Lights.Indicators", "Pad_Lighting_IndicatorLeds", "Pad_IndicatorLeds_FoldHint"),
             ("GuideLedCard", "Pad.Lights.Guide", "Pad_Lighting_GuideLed", "Pad_GuideLed_FoldHint"),
+            // The audio chain's stages under Sound Output. The board draws
+            // Crossfeed with no hint, and the Limiter has none either.
+            ("CrossfeedFoldCard", "Pad.Sound.Crossfeed", "Pad_Audio_Crossfeed", ""),
+            ("ParametricEqFoldCard", "Pad.Sound.Eq", "Pad_Audio_Eq", "Pad_AudioEq_FoldHint"),
+            ("LimiterFoldCard", "Pad.Sound.Limiter", "Pad_Audio_Limiter", ""),
+            // Sound Macros folds, as the Audio column's rarely used parts do
+            // (#574). Its value is how many macros play a sound.
+            ("SoundMacrosFoldCard", "Pad.Sound.Macros", "Pad_Audio_Macros_Header", ""),
             ("SoundPackagesFoldCard", "Pad.Sound.Packages", "Pad_Audio_Packages_Header", "Pad_SoundPackages_FoldHint"),
             ("IconPackagesFoldCard", "Pad.Menus.IconPackages", "Pad_Menus_IconPackages_Header", "Pad_IconPackages_FoldHint"),
         };
@@ -95,12 +105,12 @@ namespace PadForge.Tests
                 new[] { "RumbleAudioEndpointId", "RumbleAudioChannelMode", "RumbleAudioMasterGain" }),
             // Calibration opens on its two buttons and when it was last
             // done. The live readings are under More.
-            ("Pad_More_GyroCalibration", "Pad.Motion.Calibration.More", "Settings_GyroLiveRate_Label",
+            ("Pad_More_GyroCalibration", "Pad.Motion.Calibration.More", "Pad_More_GyroCalibration",
                 new[] { "GyroCalibrateCommand", "GyroResetCalibrationCommand", "GyroCalibrationLabel" },
                 new[] { "GyroLiveRatePitch", "GyroLiveRateYaw", "GyroLiveRateRoll", "AccelLiveX", "AccelLiveY", "AccelLiveZ" }),
             ("Pad_More_GyroSensitivity", "Pad.Motion.Sensitivity.More", "Pad_More_GyroSensitivity",
                 new[] { "{Binding GyroSensitivityH, Mode=TwoWay", "{Binding GyroSensitivityV, Mode=TwoWay" },
-                new[] { "GyroSensitivityUnits", "GyroSpace", "GyroInvertPitch", "GyroInvertYaw", "GyroInvertRoll", "GyroRealWorldCalibration" }),
+                new[] { "GyroSensitivityUnits", "GyroInvertPitch", "GyroInvertYaw", "GyroInvertRoll", "GyroRealWorldCalibration" }),
             ("Pad_More_TouchpadMouse", "Pad.Touch.Mouse.More", "Pad_More_TouchpadMouse",
                 new[] { "{Binding TouchpadMouseSensitivityX, Mode=TwoWay", "{Binding TouchpadMouseSensitivityY, Mode=TwoWay", "TouchpadMouseJitterReduction" },
                 new[] { "TouchpadMouseInvertX", "TouchpadMouseInvertY", "{Binding TouchpadMouseMomentum, Mode=TwoWay", "TouchpadPointerResponse",
@@ -110,12 +120,10 @@ namespace PadForge.Tests
             ("Pad_More_SoundOutput", "Pad.Sound.Output.More", "Pad_More_SoundOutput",
                 new[] { "{Binding SoundMasterVolume", "DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay" },
                 new[] { "SelectedMirrorSourceId", "DeviceConfig.AudioMirrorEngageMode", "DeviceConfig.AudioToneFilterMode", "DeviceConfig.HeadphoneVolume",
-                        "DeviceConfig.Ds5AudioBufferLength", "DeviceConfig.AudioOutputPath", "DeviceConfig.AudioCrossfeedLevel", "SoundTestCommand" }),
+                        "DeviceConfig.Ds5AudioBufferLength", "DeviceConfig.AudioOutputPath", "SoundTestCommand" }),
             // A macro opens on what fires it and what it does, as its board
-            // draws it. Its hint is put together from the names of what is
-            // under More, until the page's string round gives it a string of
-            // its own.
-            ("Pad_More_Macro", "Pad.Macros.More", "Macro_Layer+Macro_Source+Macro_Threshold+Macro_AxisDirection+Macro_ConsumeTrigger+Macro_Repeat",
+            // draws it. Its hint is a string of its own, the board's words.
+            ("Pad_More_Macro", "Pad.Macros.More", "Pad_More_Macro",
                 new[] { "{Binding TriggerMode, Mode=TwoWay}", "RecordTriggerCommand", "TriggerInputItems", "SlotMacroTriggerChoicesView", "ActionsList", "AddActionCommand" },
                 new[] { "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "TriggerAxisThreshold", "TriggerAxisDirectionIndex",
                         "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}", "{Binding RepeatCount, Mode=TwoWay}" }),
@@ -126,10 +134,10 @@ namespace PadForge.Tests
                 new[] { "MidiCcCountBox", "MidiStartCcBox", "MidiNoteCountBox", "MidiStartNoteBox", "MidiVelocityBox" }),
             // A menu opens on its style, what opens it, and its cells or its
             // keyboard, as its board draws it. Its hint is put together too.
+            // Icon Packages is a line of its own under the editor's card.
             ("Pad_More_Menu", "Pad.Menus.More", "Menu_Layer+Menu_ClickInput+Menu_FireMode+Menu_HasCenter+Menu_Deadzone+Dashboard_MenuOverlay",
                 new[] { "{Binding KindIndex, Mode=TwoWay}", "KeyboardLayoutIndex", "{Binding Cells}", "Menu_Hotbar_Show", "Menu_HostHalf", "Menu_Keyboard_Controls" },
-                new[] { "Menu_Layer", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "Menu_HasCenter", "Menu_Deadzone_Tip", "Dashboard_MenuOverlay",
-                        "Pad_Menus_IconPackages" }),
+                new[] { "Menu_Layer", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "Menu_HasCenter", "Menu_Deadzone_Tip", "Dashboard_MenuOverlay" }),
         };
 
         /// <summary>A More row's hint: the key of its string, or the keys of
@@ -175,12 +183,16 @@ namespace PadForge.Tests
             // A list holds fold cards and nothing else.
             foreach (var list in Page().Descendants().Where(e => e.Name.LocalName == "FoldList"))
                 Assert.All(list.Elements(), e => Assert.Equal("FoldCard", e.Name.LocalName));
-            // The 22 parts that have a Reset All and the 22 that have a
-            // description keep them. Grip has a description and no Reset
-            // All: its one row has its own reset.
+            // The 22 parts that have a Reset All and the 27 that have a
+            // description keep them. Grip, Reference Frame, the audio
+            // chain's three and Sound Macros have a description and no
+            // Reset All: each of their rows has its own reset, Sound
+            // Output's Reset All resets the chain too, and Sound Macros
+            // holds macros, not settings.
             Assert.Equal(22, cards.Count(c => c.Elements().Any(e => e.Name.LocalName == "FoldCard.HeaderAction")));
-            Assert.Equal(22, cards.Count(c => c.Attribute("Description") != null));
-            Assert.Null(cards.Single(c => Name(c) == "GyroGripCard").Elements().SingleOrDefault(e => e.Name.LocalName == "FoldCard.HeaderAction"));
+            Assert.Equal(27, cards.Count(c => c.Attribute("Description") != null));
+            foreach (string name in new[] { "GyroGripCard", "GyroSpaceCard", "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard", "SoundMacrosFoldCard" })
+                Assert.Null(cards.Single(c => Name(c) == name).Elements().SingleOrDefault(e => e.Name.LocalName == "FoldCard.HeaderAction"));
         }
 
         /// <summary>A feature that is off until switched on, and that the
@@ -297,12 +309,115 @@ namespace PadForge.Tests
             var reactive = Row("DeviceConfig.InputReactiveMode");
             Assert.Contains(mode, reactive.ElementsBeforeSelf());
             // What Input Reactive opens follows its row and shows by its
-            // own state.
+            // own state, and the card ends on the line its board writes at
+            // its foot.
             var after = reactive.ElementsAfterSelf().ToList();
-            Assert.Equal(3, after.Count);
+            Assert.Equal(4, after.Count);
             Assert.Contains("DeviceConfig.IsInputReactiveActive", (string)after[0].Attribute("Visibility"));
             Assert.Contains("DeviceConfig.ShowPaletteForOverlay", (string)after[1].Attribute("Visibility"));
             Assert.Contains("DeviceConfig.IsInputReactiveFixed", (string)after[2].Attribute("Visibility"));
+            Assert.Equal("LightbarGamesLine", Name(after[3]));
+        }
+
+        /// <summary>The line at the Lightbar card's foot, as its board writes
+        /// it: games take over whenever they write lighting. That holds while
+        /// the mode is Player Number and Input Reactive is off, where a game's
+        /// color stays: any other mode, or the reactive overlay, comes back
+        /// after a write's grace, and Off keeps the light dark. It took the
+        /// place of a token under the preview that only English read.</summary>
+        [Fact]
+        public void TheLightbarCardsFootLine_ShowsWhereAGamesColorStays()
+        {
+            var page = Page();
+            var line = page.Descendants().Single(e => Name(e) == "LightbarGamesLine");
+            Assert.Equal("TextBlock", line.Name.LocalName);
+            Assert.Equal("Pad_Lighting_GamesWin_Hint", Key(line, "Text"));
+            Assert.Equal("13", (string)line.Attribute("FontSize"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)line.Attribute("Foreground"));
+            Assert.Equal("Wrap", (string)line.Attribute("TextWrapping"));
+            var style = Assert.Single(Assert.Single(line.Elements(), e => e.Name.LocalName == "TextBlock.Style").Elements());
+            Assert.Equal("Collapsed", (string)style.Elements().Single(e => e.Name.LocalName == "Setter").Attribute("Value"));
+            var shown = Assert.Single(style.Descendants(), e => e.Name.LocalName == "MultiDataTrigger");
+            Assert.Equal(new[] { "{Binding DeviceConfig.LightbarMode}={x:Static vm:LightbarMode.PlayerNumber}", "{Binding DeviceConfig.IsInputReactiveActive}=False" },
+                shown.Descendants().Where(e => e.Name.LocalName == "Condition").Select(c => (string)c.Attribute("Binding") + "=" + (string)c.Attribute("Value")));
+            Assert.Equal("Visible", (string)Assert.Single(shown.Elements(), e => e.Name.LocalName == "Setter").Attribute("Value"));
+            Assert.DoesNotContain("GAME WRITES WIN", ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml"));
+        }
+
+        /// <summary>Reference Frame, as the Motion board draws it: a line of the
+        /// gyro's list after Response Shaping, holding the Space row that was
+        /// under Sensitivity's More, with the three choices for a hint and no
+        /// value at its end. It reads the gyroscope's rate, so it hides on an
+        /// accelerometer-only device as the card it came from does.</summary>
+        [Fact]
+        public void SpaceIsALineOfItsOwn_ReferenceFrame()
+        {
+            var page = Page();
+            var fold = page.Descendants().Single(e => Name(e) == "GyroSpaceCard");
+            Assert.Same(page.Descendants().Single(e => Name(e) == "GyroResponseCard"), fold.ElementsBeforeSelf().Last());
+            Assert.Null(fold.Elements().SingleOrDefault(e => e.Name.LocalName == "FoldCard.Summary"));
+            Assert.Equal("Settings_GyroSpace_Tooltip", Key(fold, "Description"));
+            var row = Assert.Single(Assert.Single(fold.Elements(), e => e.Name.LocalName == "StackPanel").Elements());
+            Assert.Equal("SettingRow", row.Name.LocalName);
+            Assert.Contains("{Binding GyroSpace, Mode=TwoWay}", row.ToString());
+            Assert.Contains("{Binding ResetGyroSpaceCommand}", row.ToString());
+            Assert.Equal("Settings_GyroSpace", Key(row.Elements().First(), "Text"));
+            Assert.DoesNotContain("GyroSpace", page.Descendants().Single(e => Id(e) == "Pad_More_GyroSensitivity").ToString());
+            Assert.Contains("if (GyroSpaceCard != null) GyroSpaceCard.Visibility = rateVis;",
+                ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml.cs"));
+        }
+
+        /// <summary>The audio chain under Sound Output, as the Lights board
+        /// draws it: each stage a line of its own in one list right under the
+        /// card, Crossfeed ending with its preset and Parametric EQ with On or
+        /// Off. The Limiter, the stage the board has no place for, is the
+        /// list's third line, also with On or Off. The list shows where the
+        /// chain runs, and Sound Output's More keeps none of it.</summary>
+        [Fact]
+        public void TheAudioChainIsThreeLinesUnderSoundOutput()
+        {
+            var page = Page();
+            var list = page.Descendants().Single(e => Name(e) == "AudioChainList");
+            Assert.Equal("FoldList", list.Name.LocalName);
+            Assert.Equal(new[] { "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard" }, list.Elements().Select(Name));
+            Assert.Equal("{Binding SelectedDeviceHasDspChain, Converter={StaticResource BoolToVisibilityConverter}}", (string)list.Attribute("Visibility"));
+            Assert.Equal("12", (string)list.Attribute("Gap"));
+
+            // Right under the Sound Output card, whose More holds none of it.
+            var output = list.ElementsBeforeSelf().Last();
+            var more = Assert.Single(output.Descendants(), e => Id(e) == "Pad_More_SoundOutput");
+            foreach (string gone in new[] { "AudioCrossfeedLevel", "AudioEqEnabled", "AudioLimiterEnabled", "EqCurveControl", "SelectedDeviceHasDspChain" })
+                Assert.DoesNotContain(gone, more.ToString());
+
+            XElement Line(string name) => list.Elements().Single(e => Name(e) == name);
+            Assert.Contains("{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}", Line("CrossfeedFoldCard").ToString());
+            Assert.Contains("EqCurveControl", Line("ParametricEqFoldCard").ToString());
+            Assert.Contains("{Binding DeviceConfig.AudioLimiterEnabled, Mode=TwoWay}", Line("LimiterFoldCard").ToString());
+            // A row that belongs to a line's first row has its label set in.
+            foreach (string label in new[] { "Pad_Audio_CrossfeedCut", "Pad_Audio_CrossfeedFeed", "Pad_Audio_EqPreamp", "Pad_Audio_LimiterCeiling" })
+                Assert.Equal("{StaticResource DzSubLabel}", (string)list.Descendants().Single(e => e.Name.LocalName == "TextBlock" && Key(e, "Text") == label).Attribute("Style"));
+
+            // The EQ and the Limiter end with On or Off.
+            XElement Summary(string name) => Assert.Single(Assert.Single(Line(name).Elements(), e => e.Name.LocalName == "FoldCard.Summary").Elements());
+            foreach (var (name, flag) in new[] { ("ParametricEqFoldCard", "DeviceConfig.AudioEqEnabled"), ("LimiterFoldCard", "DeviceConfig.AudioLimiterEnabled") })
+            {
+                Assert.Equal("{StaticResource OnOffTextConverter}", (string)Summary(name).Attribute("Converter"));
+                Assert.Equal(new[] { flag, "Common_On", "Common_Off" }, Summary(name).Elements().Select(b => (string)b.Attribute("Path")));
+            }
+            // Crossfeed ends with its preset by the name its picker shows, in
+            // the picker's order: a string of the table, or one of the two
+            // names the picker does not translate.
+            var crossfeed = Summary("CrossfeedFoldCard");
+            Assert.Equal("{StaticResource IndexTextConverter}", (string)crossfeed.Attribute("Converter"));
+            var names = crossfeed.Elements().ToList();
+            Assert.Equal("DeviceConfig.AudioCrossfeedLevel", (string)names[0].Attribute("Path"));
+            var picker = Line("CrossfeedFoldCard").Descendants().Single(e => e.Name.LocalName == "ComboBox"
+                && (string)e.Attribute("SelectedIndex") == "{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}");
+            string Shown(XElement item) => item.Attribute("Content") != null ? Key(item, "Content")
+                : Key(item.Descendants().First(d => d.Name.LocalName == "TextBlock"), "Text");
+            Assert.Equal(picker.Elements().Where(e => e.Name.LocalName == "ComboBoxItem").Select(Shown),
+                names.Skip(1).Select(b => (string)b.Attribute("Path") ?? (string)b.Attribute("Source")));
+            Assert.Equal(10, names.Count - 1);
         }
 
         /// <summary>Open cards come first in the two groups that mix them
@@ -319,9 +434,10 @@ namespace PadForge.Tests
                 .Select(e => Name(e) ?? e.Descendants().Where(d => ((string)d.Attribute("Style") ?? "").Contains("CardTitle")).Select(d => Key(d, "Text")).First())
                 .ToArray();
 
-            // Grip is the first line of the gyro's list, as its board has it.
+            // Grip is the first line of the gyro's list, and Reference Frame
+            // follows Response Shaping, as its board has them.
             Assert.Equal(new[] { "GyroCalibrationCard", "GyroSensitivityCard", "GyroGripCard", "GyroEngageCard", "GyroResponseCard",
-                "MotionSteeringFoldCard", "GyroTiltFoldCard", "GyroPassthroughCard", "GyroSimulationCard", "CompassYawCard" }, CardsOf("TabGyro"));
+                "GyroSpaceCard", "MotionSteeringFoldCard", "GyroTiltFoldCard", "GyroPassthroughCard", "GyroSimulationCard", "CompassYawCard" }, CardsOf("TabGyro"));
             Assert.Equal(new[] { "Pad_Touchpad_Mouse_Header", "TouchpadStickFoldCard", "TouchpadPointerFoldCard", "SyntheticPressureFoldCard",
                 "SwipeHapticsFoldCard", "GestureDetectionFoldCard", "InBoxGesturesFoldCard", "CustomGesturesFoldCard" }, CardsOf("TabTouchpad"));
         }
@@ -339,7 +455,6 @@ namespace PadForge.Tests
             Assert.Equal(12, stick.DeadZoneX);
             Assert.Equal(12, stick.DeadZoneY);
             Assert.Contains(nameof(StickConfigItem.DeadZoneBoth), raised);
-            Assert.Contains(nameof(StickConfigItem.DeadZoneBothDigit), raised);
 
             // An axis set on its own under More shows in the one slider.
             stick.DeadZoneY = 30;
@@ -351,6 +466,26 @@ namespace PadForge.Tests
             stick.ResetDeadZoneBothCommand.Execute(null);
             Assert.Equal(0, stick.DeadZoneX);
             Assert.Equal(0, stick.DeadZoneY);
+        }
+
+        /// <summary>The stick card's first rows, as the Sticks board draws
+        /// them (#574): the deadzone with one box and its unit, the raw
+        /// value staying under More for each axis, and Center before
+        /// Calibrate Center. A stick's Range text under More is the board's
+        /// two sentences.</summary>
+        [Fact]
+        public void TheStickCardsFirstRowsAreTheBoards()
+        {
+            var page = Page();
+            var deadzone = Assert.Single(page.Descendants(), e => (string)e.Attribute("AutomationProperties.AutomationId") == "StickDeadZoneBothSlider").Parent;
+            Assert.Equal(new[] { "TextBlock", "Slider", "TextBox", "TextBlock", "Button" }, deadzone.Elements().Select(e => e.Name.LocalName));
+            Assert.DoesNotContain("DeadZoneBothDigit", ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml"));
+            var center = Assert.Single(page.Descendants(), e => (string)e.Attribute("Click") == "CalibrateCenter_Click").Parent;
+            Assert.Equal("{Binding Pad_Stick_Center, Source={x:Static strings:Strings.Instance}}", (string)center.Elements().First().Attribute("Text"));
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            Assert.Equal("Center", s.Pad_Stick_Center);
+            Assert.Equal("Calibrate Boundary measures the edge the stick can reach and reshapes it to a full circle. The four sliders only cap each direction.",
+                s.Pad_Sticks_Section_Range_Hint);
         }
 
         [Fact]

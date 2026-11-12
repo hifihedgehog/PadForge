@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>কপি করুন</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>পেস্ট করুন</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>ডুপ্লিকেট করুন</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>নাম বদলান</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>সক্ষম</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>অক্ষম</value></data>
   <data name="Common_On" xml:space="preserve"><value>চালু</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ডিভাইস</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ইনপুটের উৎস</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ডিভাইস যোগ করুন</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ছবি</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>তালিকা</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0}টি আউটপুট</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>মোশন</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>একটি কন্ট্রোল-এ ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>একটি কী বা মাউস বোতামে ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>একটি নোট বা স্লাইডারে ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“সব ম্যাপ করুন” A ও B-এর স্পর্শ আউটপুট বাদ দেয়। একটি ম্যাপ করতে A বা B-এর চারপাশের রিংয়ে ক্লিক করুন।</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-এর জন্য অপেক্ষা করা হচ্ছে। আপনার ডিভাইসে ইনপুটটি চাপুন।</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}-এর ইনপুটের উৎস</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>আরও বিকল্প</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>কম বিকল্প</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ফেস বোতাম</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>শোল্ডার বোতাম</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>সিস্টেম বোতাম</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>বোতাম</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>দিকনির্দেশক প্যাড</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>স্টিক</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ট্রিগার</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>টাচপ্যাড</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>মোশন সেন্সর</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>কীবোর্ডের কী</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>মাউস বোতাম</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>মাউসের নড়াচড়া</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>স্ক্রোল হুইল</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>কন্ট্রোল চেঞ্জ</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>স্পর্শ সেন্সর</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>অ্যানালগ টান</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, বাম হাত</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, ডান হাত</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>জোড়ার দুটি বোতাম একসঙ্গে ধরে রাখলে গেম কোন চাপটি দেখবে</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>জোড়ার দুটি কী একসঙ্গে ধরে রাখলে গেম কোন চাপটি দেখবে</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>স্টিকের সামান্য বিক্ষেপ ধরে রাখে, যাতে গেম কন্ট্রোলারের নির্দেশনা দেখায়</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>গড়া চলছে</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>বাম দিকে একটি ম্যাক্রো নির্বাচন করুন, অথবা নতুন একটি তৈরি করতে “যোগ করুন” চাপুন।</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>তালিকা থেকে একটি ম্যাক্রো নির্বাচন করুন, অথবা নতুন একটি তৈরি করতে “ম্যাক্রো”-এর পাশের + চাপুন।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>কাঁচা</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>আউটপুট</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ঠান্ডা</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ইমপালস ট্রিগার</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ইমপালস ট্রিগার</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ট্রিগার অনুযায়ী গেইন, মোটর অদলবদল, অ্যাডাপ্টিভ ট্রিগারের কম্পন</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ট্রিগার অনুযায়ী গেইন, মোটর অদলবদল, অ্যাডাপ্টিভ ট্রিগারের কম্পন, স্থির ট্রিগার ফোর্স</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার থেকে প্রতিটি ট্রিগারের আলাদা মোটর কমান্ড (Xbox Impulse Triggers) বরাদ্দ করা ফিজিক্যাল Xbox One, Elite বা Series কন্ট্রোলারে পাঠায়। গেমের চালানো ট্রিগার রাম্বল স্বয়ংক্রিয়ভাবে পৌঁছে যায়। নিচের কন্ট্রোলগুলো প্রতিটি ট্রিগারের মাত্রা ঠিক করে।</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>বাম ট্রিগার</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ডান ট্রিগার</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>স্টিক</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>প্রতিটি স্টিকের আলাদা ডেডজোন, অ্যান্টি-ডেডজোন, সংবেদনশীলতার কার্ভ ও কেন্দ্র অফসেট ক্যালিব্রেশন। নিচের প্রতিটি অংশ সক্রিয় আউটপুটের একটি অ্যানালগ স্টিকের জন্য। বর্ধিত প্রোফাইলে সর্বোচ্চ চারটি স্টিক থাকতে পারে। সাধারণ গেমপ্যাডে থাকে দুটি।</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ট্রিগার</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>প্রতিটি ট্রিগারের আলাদা ডেডজোন, অ্যান্টি-ডেডজোন, সর্বোচ্চ পরিসরের স্কেলিং ও সংবেদনশীলতার কার্ভ। নিচের প্রতিটি অংশ সক্রিয় আউটপুটের একটি ট্রিগার অক্ষের জন্য। বর্ধিত প্রোফাইলে সর্বোচ্চ আটটি অক্ষ থাকতে পারে, যা স্টিক ট্যাবের সঙ্গে ভাগাভাগি হয়।</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>প্রতিটি ট্রিগারের আলাদা ডেডজোন, অ্যান্টি-ডেডজোন, সর্বোচ্চ পরিসরের স্কেলিং ও সংবেদনশীলতার কার্ভ। প্রতিটি ট্রিগার কার্ড সক্রিয় আউটপুটের একটি ট্রিগার অক্ষের জন্য। বর্ধিত প্রোফাইলে সর্বোচ্চ আটটি অক্ষ থাকতে পারে, যা স্টিক ও ট্রিগারের মধ্যে ভাগাভাগি হয়।</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ফোর্স ফিডব্যাক</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge গেমের ফোর্স ফিডব্যাক ইভেন্টগুলো কীভাবে স্কেল করবে এবং সেগুলো ফিজিক্যাল কন্ট্রোলারের রাম্বল মোটর বা হ্যাপটিক অ্যাকচুয়েটরে কীভাবে পাঠাবে তা ঠিক করে। অডিও রাম্বল এর উপর সিস্টেম অডিও-চালিত একটি স্তর যোগ করে।</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>এই ডিভাইস</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>পুরো কন্ট্রোলার</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>রাম্বল {0}-এ হ্যাপটিক পালস হিসেবে চলে, যা সরাসরি ডিভাইসে পাঠানো হয়। রাম্বল যত জোরালো, পালস তত জোরালো হয় এবং তত দ্রুত পুনরাবৃত্ত হয়।</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+-এ {0}-এর হ্যাপটিক ফিডব্যাক বন্ধ করা আছে, তাই সেখানে আবার চালু না করা পর্যন্ত এতে কিছুই চলবে না।</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>এই ডিভাইসটি এখনো সাড়া দেয়নি। এটি জেগে উঠলে এর রাম্বল চলবে।</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>মাদারবোর্ড ও গ্রাফিক্স কার্ড</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>মাউসপ্যাড, হেডসেট ও হেডসেট স্ট্যান্ড</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>লাইটবার</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>গেম লাইটিং লিখলেই নিয়ন্ত্রণ নেয়।</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ছয় অঙ্কের হেক্স রং লিখুন (RRGGBB বা #RRGGBB), তারপর প্রয়োগ করতে Enter চাপুন বা অন্য কোথাও ক্লিক করুন।</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>প্যালেট থেকে এই রং সরান</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>অডিও রাম্বল রিসেট করুন</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} রিসেট করুন</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>ম্যাপিং সাফ করুন</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>এই ট্যাবের সব ম্যাপিং সাফ হয়ে যাবে। উৎসের বরাদ্দ, অতিরিক্ত উৎস ও একত্র করার সেটিংস ডিফল্টে রিসেট হবে।</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>এই লেয়ারের সব ম্যাপিং সাফ হয়ে যাবে। উৎসের বরাদ্দ, অতিরিক্ত উৎস ও একত্র করার সেটিংস ডিফল্টে রিসেট হবে।</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>প্লেয়ার প্যাটার্ন</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>মিউট LED মোড</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED উজ্জ্বলতা</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>বোতাম</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ইমপোর্ট করা প্রোফাইল…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>বর্ধিত কন্ট্রোলার</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ব্যবহারকারীর ইমপোর্ট করা HIDMaestro প্রোফাইল পরিচালনা করুন: সংযুক্ত ডিভাইস থেকে নতুন একটি ক্যাপচার করুন, বিদ্যমান একটি JSON-এ এক্সপোর্ট করুন, অথবা যেটির আর দরকার নেই সেটি মুছুন।</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>ডিভাইস 1:1 ক্লোন করুন</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>নির্বাচিত ডিভাইসের প্রতিটি অক্ষ, বোতাম ও হ্যাটকে একই নম্বরের ভার্চুয়াল আউটপুটে সরাসরি ম্যাপ করে। লেআউটকে ডিভাইসের মাপে আনে এবং স্লটে এই ডিভাইসের সারিগুলোর জায়গায় 1:1 পাসথ্রু বসায়।</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ফোর্স ফিডব্যাক</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>চ্যানেল</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI আউটপুট</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI চ্যানেল (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC সংখ্যা</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC আউটপুটের সংখ্যা (সর্বোচ্চ মান শুরুর CC-র উপর নির্ভর করে)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>এই কী জোড়াটি সরায়।</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>বিপরীত জোড়ার প্রথম কী।</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>বিপরীত জোড়ার দ্বিতীয় কী।</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>একসঙ্গে বিপরীত মূল দিক (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>কন্ট্রোলার জাগিয়ে রাখুন</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>কিছু গেম মাউস বা কীবোর্ডের ইনপুট দেখামাত্র কম্পন বন্ধ করে দেয় এবং বোতামের নির্দেশনা বদলে ফেলে। স্টিকের সামান্য বিক্ষেপ ধরে রাখলে গেম এই কন্ট্রোলারকেই সক্রিয় ডিভাইস বলে ধরে। ওই স্টিকের দুটি অক্ষই ধরে রাখা মাত্রার নিচে থাকলেই কেবল এটি কার্যকর হয়, তাই ড্রিফট করা স্টিকও স্থির বলে গণ্য হয়। যেকোনো অক্ষে ইনপুট ওই মাত্রা ছাড়ালে এটি ছেড়ে দেয় এবং ইনপুট অপরিবর্তিত পৌঁছায়। বিক্ষেপ গেমের নিজস্ব ডেডজোনের নিচে রাখুন, যাতে গেমে কিছু না নড়ে।</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>জাগিয়ে রাখুন</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>ক্লিক রিসেট করুন</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>প্যাডের অর্ধেক রিসেট করুন</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>ফায়ার মোড রিসেট করুন</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>সেলগুলো রিসেট করুন</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>সক্রিয় হওয়ার ডেডজোন রিসেট করুন</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>মেনুর জ্যামিতি রিসেট করুন</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>সেল রিসেট করুন</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>সব সাফ করুন</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>উৎস</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>মান</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>বিকল্প</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>অক্ষ-থেকে-বোতাম ডেডজোন</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>উল্টান</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>টিক দেওয়া থাকলে ছেড়ে দিলে অক্ষ ধীরে ধীরে কেন্দ্রে ফিরে আসে। টিক না থাকলে এটি শেষ অবস্থানেই থাকে।</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>যে বোতাম ধরে রাখলে সারির আউটপুট উল্টে যায়</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>মডিফায়ার: ধরে রাখা অবস্থায় সারির আউটপুটের চিহ্ন উল্টে যায়।</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ উৎস যোগ করুন</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>উৎস যোগ করুন</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>এই সারিতে আরেকটি ফিজিক্যাল ইনপুট যোগ করুন</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>এই উৎস সরান</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>পয়েন্ট {0}/{1}, ইনপুট {2}%, আউটপুট {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>কেন্দ্র ক্যালিব্রেট করুন</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>কেন্দ্রবিন্দু</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>কেন্দ্র</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ডেডজোন</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>কেন্দ্রের অফসেট, ডেডজোনের আকৃতি ও অক্ষ অনুযায়ী মান, প্রতি অক্ষের কার্ভ, পরিসর, স্টিয়ারিং</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>পরিসর</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>স্টিক ঠিকঠাক করার সুপারিশকৃত উপায় হলো “সীমানা ক্যালিব্রেট করুন”। এটি স্টিক বাস্তবে যত দূর পৌঁছাতে পারে সেই প্রান্ত ঘুরে মাপে, তারপর মাপা সেই প্রান্তের অনুপাতে প্রতিটি অবস্থান নতুন করে স্কেল করে, ফলে প্রতিটি কোণে ও প্রতিটি বিক্ষেপে স্টিকের পুরো নিজস্ব চলন কিছুই কাটা না পড়ে একটি আদর্শ বৃত্তে ম্যাপ হয়। নিচের চারটি স্লাইডার কেবল মূল অক্ষগুলোর সীমা বেঁধে দেয়। পরিসর ইচ্ছা করে সীমিত করতে এগুলো ব্যবহার করুন, সংশোধনের জন্য নয়।</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“সীমানা ক্যালিব্রেট করুন” স্টিক যত দূর পৌঁছাতে পারে সেই প্রান্ত মাপে এবং সেটিকে পূর্ণ বৃত্তের আকার দেয়। চারটি স্লাইডার কেবল প্রতিটি দিকের সীমা বেঁধে দেয়।</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>নমুনা নেওয়া হচ্ছে...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>কেন্দ্র অফসেট X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>কেন্দ্র অফসেট Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>নাম</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>ট্রিগার</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>যখন</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>চালু হবে</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>চাপলে</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>ছাড়লে</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>এই ম্যাক্রো কোন শিফট লেয়ারের অন্তর্গত। “যেকোনো লেয়ার” দিলে সক্রিয় লেয়ার যা-ই হোক, ম্যাক্রো চালু হয়। বেস ও নাম দেওয়া লেয়ারে কেবল সেই লেয়ার সক্রিয় থাকলেই চালু হয়, ঠিক একটি ম্যাপিং সারির মতো।</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>যেকোনো লেয়ার</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার সক্রিয় থাকা অবস্থায় অবিরাম চলে। কোনো ট্রিগার বোতাম লাগে না।</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>অ্যাকশন ক্রম</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>করণীয়</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>লেয়ার, উৎস, থ্রেশহোল্ড, দিক, ট্রিগার বোতাম আটকে দিন, পুনরাবৃত্তি</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>অ্যাকশন যোগ করুন</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>অ্যাকশন সম্পাদনা করুন</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ধরন</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ভার্চুয়াল বোতাম</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>ভার্চুয়াল অক্ষ ও হুইল</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>বোতাম {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{1}ms ধরে {0} চাপুন</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>{1} ms ধরে {0} চাপুন</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>{0} ছেড়ে দিন</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>{1}ms ধরে কী {0}</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>{1} ms ধরে কী {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>কী {0} ছেড়ে দিন</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0}ms অপেক্ষা করুন</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>{0} ms অপেক্ষা করুন</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>{0} = {1} সেট করুন</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>সিস্টেম ভলিউম ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>সিস্টেম ভলিউম ← {0} (সর্বোচ্চ {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>মাউসের {0} বোতাম ছেড়ে দিন</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>টাচপ্যাড ওভারলে টগল করুন</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>লাইটবারের রং সেট করুন</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>বরাদ্দ করা PlayStation স্লটের লাইটবারকে বেছে নেওয়া একটি RGB রঙে ওভাররাইড করে। “রিঅ্যাক্টিভ” নির্ধারিত মিলিয়ে যাওয়ার সময়ের মধ্যে পূর্ণ তীব্রতা থেকে কালোতে মিলিয়ে যায়, তারপর লাইটিং ট্যাবের সেটিংসে ফিরে যায়। “স্টিকি” একটি “লাইটবার ওভাররাইড সাফ করুন” অ্যাকশন না চলা পর্যন্ত রংটি ধরে রাখে। গেমের লেখা তবুও ওভাররাইডের চেয়ে অগ্রাধিকার পায়।</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>লাইটবার ফ্ল্যাশ {0} (মিলিয়ে যাওয়া {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>বরাদ্দ করা PlayStation স্লটের লাইটবারকে বেছে নেওয়া একটি RGB রঙে ওভাররাইড করে। “রিঅ্যাক্টিভ” নির্ধারিত মিলিয়ে যাওয়ার সময়ের মধ্যে পূর্ণ তীব্রতা থেকে কালোতে মিলিয়ে যায়, তারপর লাইটবার কার্ডের সেটিংসে ফিরে যায়। “স্টিকি” একটি “লাইটবার ওভাররাইড সাফ করুন” অ্যাকশন না চলা পর্যন্ত রংটি ধরে রাখে। গেমের লেখা তবুও ওভাররাইডের চেয়ে অগ্রাধিকার পায়।</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>লাইটবার ফ্ল্যাশ {0} (মিলিয়ে যাওয়া {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>সাফ না করা পর্যন্ত লাইটবার {0} ধরে রাখুন</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>লাইটবার ওভাররাইড সাফ করুন</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>লাইটবার ওভাররাইড সাফ করুন</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>বরাদ্দ করা স্লটের যেকোনো সক্রিয় লাইটবার ওভাররাইড ছেড়ে দেয়। স্টিকি “লাইটবারের রং সেট করুন” অ্যাকশনের সঙ্গে একসঙ্গে ব্যবহার করুন, যাতে অন্য একটি ম্যাক্রো দিয়ে তা ফিরিয়ে নেওয়া যায়।</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>লাইটবারের মোড সেট করুন</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>লাইটবারের মোড সেট করুন: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>বরাদ্দ করা স্লটের লাইটবারের মোড একটি নির্দিষ্ট মানে সেট করে। অন্য কোনো অ্যাকশন বা ব্যবহারকারী না বদলানো পর্যন্ত লাইটিং ট্যাবে করা পরিবর্তনের মতোই থেকে যায়।</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>বরাদ্দ করা স্লটের লাইটবারের মোড একটি নির্দিষ্ট মানে সেট করে। অন্য কোনো অ্যাকশন বা ব্যবহারকারী না বদলানো পর্যন্ত লাইটবার কার্ডে করা পরিবর্তনের মতোই থেকে যায়।</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>লাইটবারের মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}টি লাইটবার মোড পালাক্রমে বদলান</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>স্লটের লাইটবারের মোডকে নিচে নির্বাচিত মোডগুলোর মধ্যে এগিয়ে নেয়। প্রতিবার চালু হলে পরের টিক দেওয়া মোডে যায়। চক্রের অবস্থান প্রতিটি অ্যাকশনের জন্য আলাদা এবং অ্যাপ রিস্টার্ট হলে রিসেট হয়।</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>মিলিয়ে যাওয়া</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ফেড</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>প্যালেট</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>প্যালেট খালি থাকলে স্লটের নিজস্ব লাইটিং ট্যাবের প্যালেট ব্যবহার হয়।</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>প্যালেট খালি থাকলে স্লটের লাইটবার কার্ডের প্যালেট ব্যবহার হয়।</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>মোড</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>ম্যাক্রো কোন কোন লাইটবার মোডের মধ্যে পালাক্রমে ঘুরবে তা বেছে নিন। প্রতিবার চালু হলে পরের টিক দেওয়া মোডে যায়।</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>রাম্বল</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>ম্যাক্রো থেকে স্লটের ফিজিক্যাল ডিভাইসের রাম্বল চালায়। “রিঅ্যাক্টিভ” ধরে রাখার সময়জুড়ে পূর্ণ শক্তিতে চলে, তারপর ফেডের সময়ের মধ্যে শূন্যে নেমে আসে। “স্টিকি” একটি “রাম্বল থামান” অ্যাকশন না চলা পর্যন্ত পূর্ণ শক্তিতে ধরে রাখে। max() দিয়ে গেমের রাম্বলের উপর যুক্ত হয়, তাই ব্যবহারকারীর চালানো ফিডব্যাক সব সময় টের পাওয়া যায়।</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>রাম্বল পালস {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>রাম্বল পালস {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>সাফ না করা পর্যন্ত রাম্বল {0} ধরে রাখুন</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>রাম্বল থামান</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>রাম্বল থামান</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ট্রিগার কম্পন থামান</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>স্লটে ম্যাক্রোর চালানো যেকোনো সক্রিয় ট্রিগার কম্পন ছেড়ে দেয়। স্টিকি “রাম্বল ট্রিগার ওভাররাইড”-এর সঙ্গে একসঙ্গে ব্যবহার করুন, যাতে ম্যাক্রো থেকে ধরে রাখা শেষ করা যায়।</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>জাইরো সক্রিয় অবস্থা সেট করুন</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ম্যাক্রো থেকে স্লটের জাইরো সক্রিয় আছে কি না তা সেট করে। “টগল” বর্তমান অবস্থা উল্টে দেয়। “চালু” জাইরোকে জোর করে সক্রিয় করে। “বন্ধ” জোর করে নিষ্ক্রিয় করে। জাইরো ট্যাবের সক্রিয় করার বোতাম থেকে স্বাধীন। দুটি উৎস OR দিয়ে মিলিত হয়, তাই একটি যা সক্রিয় করেছে অন্যটি তা নিষ্ক্রিয় করতে পারে না।</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ম্যাক্রো থেকে স্লটের জাইরো সক্রিয় আছে কি না তা সেট করে। “টগল” বর্তমান অবস্থা উল্টে দেয়। “চালু” জাইরোকে জোর করে সক্রিয় করে। “বন্ধ” জোর করে নিষ্ক্রিয় করে। “মোশন ও টাচ” অংশের “নিশানা সক্রিয় করার বোতাম” থেকে স্বাধীন। দুটি উৎস OR দিয়ে মিলিত হয়, তাই একটি যা সক্রিয় করেছে অন্যটি তা নিষ্ক্রিয় করতে পারে না।</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>মোড</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>টগল</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>চালু</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>টাচপ্যাড</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>টাচপ্যাড</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>প্রতিটি টাচপ্যাডের আলাদা ইনপুট। জেসচার (সোয়াইপ, ট্যাপ, পিঞ্চ, আকৃতি) এবং একটানা আউটপুট মোড (ভার্চুয়াল স্টিক / ডি-প্যাড, মাউস) ম্যাপিংয়ের উৎস হয়ে যায়, যা আপনি ম্যাপিং ট্যাবে যুক্ত করতে পারেন।</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>প্রতিটি টাচপ্যাডের আলাদা ইনপুট। জেসচার (সোয়াইপ, ট্যাপ, পিঞ্চ, আকৃতি) এবং একটানা আউটপুট মোড (ভার্চুয়াল স্টিক / ডি-প্যাড, মাউস) ম্যাপিংয়ের উৎস হয়ে যায়, যা আপনি যেকোনো আউটপুটে যুক্ত করতে পারেন।</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>টাচপ্যাড</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>টাচপ্যাড নম্বর</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>নিচের সেটিংস এই কন্ট্রোলারের কোন টাচপ্যাডে প্রযোজ্য। প্রতিটি টাচপ্যাডের নিজস্ব জেসচার, মাউসের অনুভূতি ও পয়েন্টার এলাকা থাকে।</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>জাইরো</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>এই প্যাডের মোশন সেন্সর মাউস ও স্টিক আউটপুট কীভাবে চালাবে তা ঠিক করুন। স্থির অবস্থার ড্রিফট শূন্য করতে সমতল জায়গায় ক্যালিব্রেট করুন, তারপর সংবেদনশীলতা, মসৃণকরণ ও সক্রিয় হওয়ার নিয়ম নিজের পছন্দমতো ঠিক করুন।</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ক্যালিব্রেশন</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>জাইরোস্কোপ ও অ্যাক্সিলেরোমিটারের লাইভ মান</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>সংবেদনশীলতা</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>একক, স্পেস, অক্ষ উল্টানো, বাস্তব-জগতের ক্যালিব্রেশন</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>একক, অক্ষ উল্টানো, বাস্তব-জগতের ক্যালিব্রেশন</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>প্রতি পাকে ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>রেসপন্সের আকার</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ডেডজোন, মসৃণকরণ, ত্বরণ, আউটপুট কার্ভ</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>রেফারেন্স ফ্রেম</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>লোকাল, প্লেয়ার বা ওয়ার্ল্ড</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>স্পেস</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>জাইরোর নড়াচড়া কীভাবে ব্যাখ্যা করা হবে। “লোকাল” কন্ট্রোলারের কাঁচা অক্ষ ব্যবহার করে। “প্লেয়ার” অনুভূমিক নড়াচড়াকে বাস্তব জগতের উল্লম্ব দিকের (মাধ্যাকর্ষণ) উপর প্রক্ষেপ করে, ফলে প্যাড যেভাবেই ধরুন, কবজির একই মোচড়ে ক্যামেরা সব সময় ঘোরে। “ওয়ার্ল্ড” এর সঙ্গে উল্লম্ব নড়াচড়াকেও ওয়ার্ল্ড অক্ষে নতুন করে প্রক্ষেপ করে।</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>যেভাবে ধরা</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>খাড়া</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>ধরার ভঙ্গি</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>কন্ট্রোলারটি যেভাবে ধরা হয়। জাইরো, অ্যাক্সিলেরোমিটার ও মাধ্যাকর্ষণকে একসঙ্গে ঘোরায়, ম্যাপিংয়ের জন্য এবং ভার্চুয়াল কন্ট্রোলার যে মোশন জানায় তার জন্য। ডি-প্যাডও একই ফ্রেম অনুসরণ করে, তাই যেভাবেই ধরুন, “উপরে” উপরের দিকেই থাকে।</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>কন্ট্রোলারটি যেভাবে ধরা হয়</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>রৈখিক</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>তীব্র</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>শিথিল</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>সক্রিয় করার দিক রিসেট করুন</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>মোশন পাসথ্রু</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>মোশন পাসথ্রুতে জাইরো টিউনিং প্রয়োগ করুন</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার গেম বা ইমুলেটরকে যে মোশন জানায় তার উপর এই ট্যাবের ঐচ্ছিক জাইরো টিউনিং (ডেডজোন, সংবেদনশীলতা, মসৃণকরণ, রেসপন্স কার্ভ, উল্টানো) চালায়। কেবল ক্যালিব্রেট করা মান পাঠাতে এবং গেমকে নিজের সংবেদনশীলতা ও মসৃণকরণ প্রয়োগ করতে দিতে এটি বন্ধ করুন। ক্যালিব্রেশনের ড্রিফট সংশোধন দুই ক্ষেত্রেই সব সময় প্রযোজ্য।</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার গেম বা ইমুলেটরকে যে মোশন জানায় তার উপর জাইরো কার্ডগুলোর ঐচ্ছিক টিউনিং (ডেডজোন, সংবেদনশীলতা, মসৃণকরণ, রেসপন্স কার্ভ, উল্টানো) চালায়। কেবল ক্যালিব্রেট করা মান পাঠাতে এবং গেমকে নিজের সংবেদনশীলতা ও মসৃণকরণ প্রয়োগ করতে দিতে এটি বন্ধ করুন। ক্যালিব্রেশনের ড্রিফট সংশোধন দুই ক্ষেত্রেই সব সময় প্রযোজ্য।</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>পাসথ্রু টিউনিং রিসেট করুন</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>সংবেদনশীলতা</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>প্রতিটি উৎসের আলাদা জাইরো সংবেদনশীলতার গুণক। 1.0 = ইঞ্জিনের ডিফল্ট (500°/s → পূর্ণ বিক্ষেপ)। 1.0-এর বেশি মান বেশি সংবেদনশীল। 1.0-এর কম মান কম সংবেদনশীল।</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>পূর্ণ কাতের পরিসর রিসেট করুন</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>কাতের ডেডজোন রিসেট করুন</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>জাইরো কাত রিসেট করুন</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>একাধিক উৎস সক্রিয় থাকলে এই সারির উৎসগুলো কীভাবে মেলে। নিচের বিস্তারিত অংশে এটি বদলাতে সারিটি নির্বাচন করুন।</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>একাধিক উৎস সক্রিয় থাকলে এই সারির উৎসগুলো কীভাবে মেলে। সারিটি খুলে “একত্র করা” সেটিংয়ে এটি বদলান।</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>মোমেন্টাম</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ট্র্যাকবল মোড: স্টিকে ঝটকা দিয়ে ছেড়ে দিন, কার্সার চলতে থাকবে এবং ধীরে ধীরে থেমে যাবে। স্টিক আবার নাড়ালে কার্সার আবার নিয়ন্ত্রণে আসে।</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>ঝটকার পর কার্সার কত দূর গড়িয়ে চলে। পরিসরের সর্বোচ্চ মানে আপনি আবার স্টিক না নাড়ানো পর্যন্ত এটি চলতেই থাকে।</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ট্রিগার অক্ষ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>মোটর অনুযায়ী গেইন, ট্রিগার রাম্বল, মোটর অদলবদল</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>মোটর অনুযায়ী গেইন, ট্রিগার রাম্বল, স্টিয়ারিং কোণের রাম্বল, স্থির ফোর্স</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>সামগ্রিক গেইন</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>বাম মোটর</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>ডান মোটর</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>এই কন্ট্রোলারে ট্রিগার মোটর নেই, তাই যেসব গেম Xbox ইমপালস ট্রিগার ব্যবহার করে সেগুলোর কম্পন টের পাওয়া যেত না। এর বদলে প্রতিটি ট্রিগার চ্যানেল একই পাশের মূল মোটরে মিশিয়ে দিন।</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>রাম্বল পরীক্ষা করুন</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>মোটরের সক্রিয়তা</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>বাম</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ডান</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>আপনি বন্ধ না করা পর্যন্ত এই ডিভাইসে একটানা ফোর্স প্রয়োগ করুন। যেকোনো উৎস থেকে আসা গেমের ফোর্স সক্রিয় থাকা অবস্থায় এটিকে ওভাররাইড করে, আর গেম থামলে এটি আবার চালু হয়।</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>রেকর্ড করতে বোতাম চাপুন বা একটি অক্ষ/ট্রিগার নাড়ান। অক্ষ 50%-এর বেশি সরলে শনাক্ত হয়।</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>তালিকা থেকে যোগ করুন</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>রেকর্ড না করে স্লটের ডিভাইসগুলো থেকে একটি ট্রিগার ইনপুট বেছে নিন। টাচপ্যাড ট্যাবে সক্ষম করা টাচপ্যাড জেসচারগুলো এখানে দেখা যায়।</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>ট্রিগার সাফ করুন</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>রেকর্ড না করে স্লটের ডিভাইসগুলো থেকে একটি ট্রিগার ইনপুট বেছে নিন। “মোশন ও টাচ” অংশে চালু করা টাচপ্যাড জেসচারগুলো এখানে দেখা যায়।</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>ইনপুট সরান</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>যেকোনো ইনপুট চাপুন…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>উল্টানো</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের ম্যাপ করা সব ডিভাইস অফলাইন থাকলে যত সেকেন্ড পর সেটি সরিয়ে ফেলা হয়। 0 দিলে এটি নিষ্ক্রিয় থাকে। একই ধরনের টিকে থাকা কন্ট্রোলারগুলো ফাঁকা জায়গা পূরণ করতে উপরে সরে আসে এবং নিচের নম্বরের স্লটে আবার যুক্ত হয়।</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>সেকেন্ড (0 = কখনো নয়)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ শিফট লেয়ার</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>লেয়ার যোগ করুন</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>একটি শিফট লেয়ার যোগ করুন। এটি দ্বিতীয় একটি ম্যাপিং টেবিল, যা একটি বোতাম ধরে রাখা বা টগল করা অবস্থায় সক্রিয় হয়।</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>বেস</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>শিফট লেয়ার</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>মোশন স্টিয়ারিং</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° থেকে {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>হেলানোর ডেডজোন, কন্ট্রোলারের অভিমুখ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>মোশন হেলানো ইনপুটের সেটিংস: কন্ট্রোলারটি হুইলের মতো কাত করুন। ম্যাপিংয়ের ইনপুট ড্রপডাউন থেকে "মোশন হেলানো" একটি স্টিক অক্ষে ম্যাপ করুন।</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>মোশন হেলানো ইনপুটের সেটিংস: কন্ট্রোলারটি হুইলের মতো কাত করুন। "বোতাম" অংশে "মোশন হেলানো" একটি স্টিক অক্ষে ম্যাপ করুন।</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>মোশন স্টিয়ারিং রিসেট করুন</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ফ্লিক স্টিক (ডান স্টিক)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ফ্লিক স্টিক (বাম স্টিক)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>ডান স্টিক রিং</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ফ্লিক স্টিক</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ফ্লিক স্টিক ইনপুটের টিউনিং</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ফ্লিক স্টিক ইনপুটের সেটিংস: স্টিক যেদিকে তাক করবেন ক্যামেরা সেদিকে ঘোরে, আর সূক্ষ্মভাবে ঘোরাতে কিনারা বরাবর ঘোরান। ম্যাপিংয়ের ইনপুট ড্রপডাউন থেকে যেকোনো লেয়ারে "ফ্লিক স্টিক (ডান স্টিক)" মাউস X-এ ম্যাপ করুন।</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ফ্লিক স্টিক ইনপুটের সেটিংস: স্টিক যেদিকে তাক করবেন ক্যামেরা সেদিকে ঘোরে, আর সূক্ষ্মভাবে ঘোরাতে কিনারা বরাবর ঘোরান। "কী ও মাউস" অংশে যেকোনো লেয়ারে "ফ্লিক স্টিক (ডান স্টিক)" মাউস X-এ ম্যাপ করুন।</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ফ্লিক স্টিক রিসেট করুন</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>প্রতি 360°-তে ডট</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ক্যামেরার এক পূর্ণ 360° ঘূর্ণনের জন্য মাউস কাউন্ট। গেমের মাউস সংবেদনশীলতার উপর নির্ভর করে: ফ্লিকে কম ঘুরলে বাড়ান, বেশি ঘুরলে কমান।</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>অডিও</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>ম্যাক্রোর শব্দ ও মিরর করা সিস্টেম অডিও নির্বাচিত কন্ট্রোলারের অন্তর্নির্মিত স্পিকারে বাজে, USB বা Bluetooth-এর মাধ্যমে। উপরের ড্রপডাউনে ডিভাইসটি বেছে নিন। এখানকার প্রতিটি সেটিং সেটির জন্যই।</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>শব্দের আউটপুট</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>মিররের উৎস, হ্যাপটিক্স, হেডফোনের ভলিউম, ক্রসফিড, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>মিররের উৎস, হেডফোনের ভলিউম, বাফার, আউটপুটের পথ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>শব্দ স্বয়ংক্রিয়ভাবে নির্বাচিত কন্ট্রোলারে যায়। USB-তে প্যাডের নিজস্ব অডিও এন্ডপয়েন্ট হার্ডওয়্যার কন্টেইনার দিয়ে মেলানো হয়। Bluetooth-এ অডিও Sony HID ফ্রেমে স্ট্রিম হয়।</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>মিররের উৎস</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>কোন প্লেব্যাক ডিভাইস কন্ট্রোলারের স্পিকারে মিরর করা হবে। যেসব গেম নির্দিষ্ট শব্দ আলাদা প্লেব্যাক ডিভাইসে পাঠায় সেগুলো এটিকে লক্ষ্য করতে পারে।</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>সব শব্দ থামান</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>এই প্যাডে ম্যাক্রোর সব শব্দ থামান</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>শব্দের ম্যাক্রো</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>শব্দ বাজে ম্যাক্রো দিয়ে: একটি ট্রিগার (বোতাম চাপা, ছাড়া, ধরে রাখা বা সূত্র) আর একটি “শব্দ বাজান” অ্যাকশন। এগুলো এখানে বা ম্যাক্রো ট্যাবে তৈরি করুন। বিলম্ব, পুনরাবৃত্তি ও টগল, সবই কাজ করে।</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>শব্দ বাজে ম্যাক্রো দিয়ে: একটি ট্রিগার (বোতাম চাপা, ছাড়া, ধরে রাখা বা সূত্র) আর একটি “শব্দ বাজান” অ্যাকশন। এগুলো এখানে বা “ম্যাক্রো ও মেনু” অংশে তৈরি করুন। বিলম্ব, পুনরাবৃত্তি ও টগল, সবই কাজ করে।</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>নতুন শব্দের ম্যাক্রো</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>এখনো কোনো শব্দের ম্যাক্রো নেই। একটি তৈরি করুন, তারপর একটি শব্দের ফাইল ও একটি ট্রিগার বেছে নিন।</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ম্যাক্রো ট্যাবে এই ম্যাক্রোটি খুলুন</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>“ম্যাক্রো ও মেনু” অংশে এই ম্যাক্রোটি খুলুন</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>শব্দের ম্যাক্রো {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>শব্দ বাজান</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>এই প্যাডের আউটপুট ডিভাইসে একটি শব্দের ফাইল বাজান (.wav, .mp3, .m4a, .aac, .wma, .flac)</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>চলছে</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>চলছে, ড্রাইভার সংযুক্ত</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>চলছে, কন্ট্রোলার সক্রিয়</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR ইনস্টল করা আছে</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ইনস্টল করা নেই</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR চলছে</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR চলছে, ড্রাইভার সংযুক্ত</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR চলছে, কন্ট্রোলার সক্রিয়</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>অন্য একটি OpenVR ড্রাইভার HIDMaestro-এর ড্রাইভারের নাম ব্যবহার করছে, তাই SteamVR সেটি PadForge-এর ড্রাইভারের বদলে লোড করতে পারে এবং ভার্চুয়াল VR কন্ট্রোলার দেখা যাবে না। এটি ঠিক করতে ওই ড্রাইভারটি সরিয়ে দিন: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>সিরিয়াল কন্ট্রোলার (COM পোর্ট)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>কনজিউমার {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>মাউস</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>মাউস জেসচার</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>জেসচার বোতামটি ধরে রেখে ঝটকা দিন, ছেড়ে দিলে একটি অ্যাকশন চালু হয়: বামে, ডানে, উপরে, নিচে, অথবা ঝটকার দূরত্বের কম হলে সাধারণ ক্লিক। পাঁচটি জেসচার ম্যাপিং ট্যাবে ম্যাপ করুন অথবা ম্যাক্রোর ট্রিগার হিসেবে ব্যবহার করুন।</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>জেসচার বোতামটি ধরে রেখে ঝটকা দিন, ছেড়ে দিলে একটি অ্যাকশন চালু হয়: বামে, ডানে, উপরে, নিচে, অথবা ঝটকার দূরত্বের কম হলে সাধারণ ক্লিক। পাঁচটি জেসচার যেকোনো আউটপুটে ম্যাপ করুন অথবা ম্যাক্রোর ট্রিগার হিসেবে ব্যবহার করুন।</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>মাউস জেসচার সক্ষম করুন</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>এই স্লটে এই মাউসের জন্য জেসচার শনাক্তকারী চালু করে। জেসচারের সময়ও জেসচার বোতামের স্বাভাবিক ক্লিক বজায় থাকে, তাই এমন একটি পাশের বোতাম বেছে নিন, যা আপনি অন্য কাজে ম্যাপ করেন না।</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>জেসচার বোতাম</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>লেয়ার বদলান</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma রং সেট করুন</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>অ্যাকশনটি চলার সময় এই ভার্চুয়াল কন্ট্রোলারে বরাদ্দ করা Razer ডিভাইসগুলো এবং একই ধরনের অন্য সব Razer ডিভাইসকে একটি রঙে রাঙায়।</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>উপরের সময়কালজুড়ে এই রংটি এই ভার্চুয়াল কন্ট্রোলারে বরাদ্দ করা Razer ডিভাইসগুলোতে এবং একই ধরনের অন্য সব Razer ডিভাইসে দেয়, অথবা Razer Chroma সারি বরাদ্দ থাকলে সব Razer ডিভাইসে। এটি যেকোনো ভার্চুয়াল কন্ট্রোলারের লাইটিং ট্যাবকে ওভাররাইড করে, তারপর লাইটিং ফিরিয়ে দেয়। ট্রিগার যতক্ষণ ধরে রাখা হয় ততক্ষণ রং ধরে রাখতে “ধরে রাখা অবস্থায়”-এর সঙ্গে “ছেড়ে দেওয়া পর্যন্ত” ব্যবহার করুন। দুটি ম্যাক্রো একসঙ্গে রং দিলে তালিকার নিচেরটি প্রাধান্য পায়, তাই পুরো চাপের ম্যাক্রোটি তার আলতো চাপের জোড়ার নিচে রাখুন। দুটি ভার্চুয়াল কন্ট্রোলারের ম্যাক্রো একই ধরনের Razer ডিভাইসে রং দিলে ছোট প্লেয়ার নম্বরটি প্রাধান্য পায়। Razer Synapse চালু থাকা দরকার।</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>উপরের সময়কালজুড়ে এই রংটি এই ভার্চুয়াল কন্ট্রোলারে বরাদ্দ করা Razer ডিভাইসগুলোতে এবং একই ধরনের অন্য সব Razer ডিভাইসে দেয়, অথবা Razer Chroma সারি বরাদ্দ থাকলে সব Razer ডিভাইসে। যেকোনো ভার্চুয়াল কন্ট্রোলার “লাইটিং ও অডিও” অংশে যে লাইটিং সেট করে, এটি তা ওভাররাইড করে, তারপর লাইটিং ফিরিয়ে দেয়। ট্রিগার যতক্ষণ ধরে রাখা হয় ততক্ষণ রং ধরে রাখতে “ধরে রাখা অবস্থায়”-এর সঙ্গে “ছেড়ে দেওয়া পর্যন্ত” ব্যবহার করুন। দুটি ম্যাক্রো একসঙ্গে রং দিলে তালিকার নিচেরটি প্রাধান্য পায়, তাই পুরো চাপের ম্যাক্রোটি তার আলতো চাপের জোড়ার নিচে রাখুন। দুটি ভার্চুয়াল কন্ট্রোলারের ম্যাক্রো একই ধরনের Razer ডিভাইসে রং দিলে ছোট প্লেয়ার নম্বরটি প্রাধান্য পায়। Razer Synapse চালু থাকা দরকার।</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast স্ক্রিন দেখান</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>এই স্লটে ইনপুট দেয় এমন Bliss-Box পোর্টের প্রতিটি Dreamcast প্যাডের VMU-তে ছবি দেখায়, তারপর প্রতিটি পোর্টকে তার নিজের স্ক্রিন সেটিংয়ে ফিরিয়ে দেয়।</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast ছবি দেখান: {0} × {1} ms, পুনরাবৃত্তির সংখ্যা {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>চাপলে প্যাডের জমা হওয়া জাইরো নিশানার রেফারেন্স শূন্য করে। মসৃণকরণের ইতিহাস মুছে যায়, মোশন হেলানোর নিরপেক্ষ অবস্থান নতুন করে নেওয়া হয়, মাধ্যাকর্ষণের অনুমান কন্ট্রোলারের বর্তমান ভঙ্গি থেকে নতুন করে শুরু হয়, আর মোশন পিচ, ইয়ো ও রোল সারিতে জমা ঘূর্ণন বাতিল হয়।</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(যেকোনো ডিভাইস)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>মেনু</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>মেনু একটি ফিজিক্যাল স্টিক বা টাচপ্যাডকে অন-স্ক্রিন রিং বা গ্রিডে পরিণত করে। একটি মেনু যোগ করুন, কী দিয়ে খুলবে তা বেছে নিন, তারপর প্রতিটি সেলের লেবেল দিন এবং একটি বাইন্ডিং দিন।</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>মেনু একটি ফিজিক্যাল স্টিক বা টাচপ্যাডকে অন-স্ক্রিন রিং বা গ্রিডে পরিণত করে। নতুন একটি তৈরি করতে “মেনু”-এর পাশের + চাপুন, কী দিয়ে খুলবে তা বেছে নিন, তারপর প্রতিটি সেলকে একটি নাম ও একটি অ্যাকশন দিন।</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>নতুন মেনু</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>মেনু {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>মেনুর নাম</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>সক্ষম</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>খোলার উপায়</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>স্টাইল</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>রেডিয়াল রিং</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>টাচ গ্রিড</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>সেল</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>কেন্দ্রের সেল</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>লেবেল দেখান</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>স্ক্রিনে অবস্থান</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>আকার</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>অস্বচ্ছতা</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>সক্রিয় হওয়ার ডেডজোন</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>সেলের বাইন্ডিং</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>সেল {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>সেল যোগ করুন</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>শেষ সেলটি সরান</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>সেল সম্পাদনা করুন</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>নাম</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>অ্যাকশন</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>আইকন</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>কেন্দ্র</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>কীবোর্ডের কী</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ক্লিক ছেড়ে দিলে একবার চালু হয়: সেলের দিকে তাক করুন, স্টিক বা ট্র্যাকপ্যাডে ক্লিক করুন, তারপর ক্লিক ছেড়ে দিন।</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>ছেড়ে দিলে একবার চালু হয়: একটি সেল হাইলাইট থাকা অবস্থায় প্যাড থেকে আঙুল তুলুন, অথবা স্টিককে কেন্দ্রে ফিরে যেতে দিন।</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>সেল যতক্ষণ হাইলাইট থাকে ততক্ষণ বাইন্ডিং ধরে রাখা থাকে। ক্লিক লাগে না।</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>মেনুতে কয়টি সেল আছে। রেডিয়াল রিংয়ের ক্ষেত্রে এতে কেবল রিংয়ের সেল গোনা হয়; কেন্দ্রের সেল আলাদা।</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>একটি কেন্দ্রের সেল যোগ করে, যা স্টিক বা আঙুল “সক্রিয় হওয়ার ডেডজোন”-এর ভেতরে থাকলে নির্বাচিত হয়।</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>স্টিকের ক্ষেত্রে, মেনু খোলা ও রিংয়ের সেল হাইলাইট হওয়ার আগে কতটা ঠেলতে হবে। রেডিয়াল মেনুতে এটি স্টিক ও টাচপ্যাড, দুটির জন্যই কেন্দ্রের এলাকা: এর ভেতরে থাকলে কেন্দ্রের সেল থাকলে সেটি নির্বাচিত হয়।</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>অন-স্ক্রিন ওভারলেতে প্রতিটি সেলের লেবেল দেখায়।</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>ওভারলের আকার, তার স্বাভাবিক আকারের শতাংশ হিসেবে।</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ওভারলের অস্বচ্ছতা। 100% মানে পুরোপুরি অস্বচ্ছ।</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ওভারলেতে এই সেলে দেখানো লেখা।</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>চালু হলে এই সেল কী করে: "কীবোর্ডের কী" কীবোর্ডের একটি কী চাপে, "কন্ট্রোলারের বোতাম" এই স্লটের ভার্চুয়াল কন্ট্রোলারের একটি বোতাম চাপে। "কোনোটিই নয়" সেট করা সেলও ম্যাপিং সারি ও ম্যাক্রো ট্রিগারের জন্য মেনু-আইটেম উৎস হিসেবে চালু হয়।</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>এই স্লটে বরাদ্দ করা ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়, ভার্চুয়াল কন্ট্রোলারের লেআউট থেকে নয়। নিচের সেলের বাইন্ডিংগুলোই মেনুর আউটপুট।</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>চালু হলে এই সেল কী করে: "কীবোর্ডের কী" কীবোর্ডের একটি কী চাপে, "কন্ট্রোলারের বোতাম" এই স্লটের ভার্চুয়াল কন্ট্রোলারের একটি বোতাম চাপে। "কোনোটিই নয়" সেট করা সেলও ম্যাপিং ও ম্যাক্রো ট্রিগারের জন্য মেনু-আইটেম উৎস হিসেবে চালু হয়।</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>এই স্লটে বরাদ্দ করা ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়, ভার্চুয়াল কন্ট্রোলারের লেআউট থেকে নয়। মেনু কী আউটপুট দেবে, তা নিচের সেলগুলো ঠিক করে।</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>কাস্টম অক্ষ</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>চালনা X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>চালনা Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>বেস শেকার</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>আউটপুট</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>বোতাম</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>কী ও মাউস</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>নোট ও কন্ট্রোল</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>হাত</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>স্টিক ও ট্রিগার</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>কম্পন ও হ্যাপটিক</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>মোশন ও টাচ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>লাইটিং ও অডিও</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ম্যাক্রো ও মেনু</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>বেস শেকার</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>এই ভার্চুয়াল কন্ট্রোলার গেম থেকে যে রাম্বল ও ফোর্স ফিডব্যাক পায় তা বেস শেকার ও সাবউফারের জন্য নিম্ন-ফ্রিকোয়েন্সির টোন হিসেবে একটি অডিও আউটপুটে পাঠায়।</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>গেমের রাম্বল বেস শেকার বা সাবউফারে নিম্ন-ফ্রিকোয়েন্সির টোন হিসেবে বাজায়।</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>আউটপুট ডিভাইস, চ্যানেল, গেইন, প্রতিটি মোটরের সুর</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox, DualShock 3, DualShock 4 / DualSense ও Nintendo Switch Pro ভার্চুয়াল কন্ট্রোলারের সঙ্গে কাজ করে, এ ছাড়া ফোর্স ফিডব্যাকসহ বর্ধিত ভার্চুয়াল কন্ট্রোলার, যেমন রেসিং হুইল, আর Steam Deck Controller (Composite)-এর সঙ্গেও। গেমের ফিডব্যাক ও “রাম্বল পরীক্ষা করুন” অডিও আউটপুটে বাজে। ম্যাক্রোর রাম্বল কন্ট্রোলারেই থাকে।</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>“রাম্বল থেকে অডিও” রিসেট করুন</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>এই ফিডব্যাক চ্যানেলটি টোন হিসেবে বাজায়। বন্ধ থাকলেও গেইন ও ফ্রিকোয়েন্সি সেট থাকে।</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>এই চ্যানেলের টোনের ফ্রিকোয়েন্সি, 20 থেকে 120 Hz। আপনার শেকার কোথায় সবচেয়ে জোরালো সাড়া দেয় তা খুঁজতে ফ্রিকোয়েন্সি সুইপ চালান।</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>মাস্টার গেইনের আগে এই চ্যানেলের জোর।</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>গেইন</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>পরীক্ষা করুন</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>এই চ্যানেলের টোন তার সেট করা গেইনে 1.5 সেকেন্ড বাজায়।</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>নিম্ন মোটর রিসেট করুন</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>উচ্চ মোটর রিসেট করুন</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>বাম ট্রিগার রিসেট করুন</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>ডান ট্রিগার রিসেট করুন</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>শেকার পরীক্ষা করুন</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>ফ্রিকোয়েন্সি সুইপ</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>নিম্ন মোটরের রাউটিংয়ে আট সেকেন্ড ধরে 20 থেকে 120 Hz পর্যন্ত একটি টোন সুইপ করে। আপনার শেকার কোথায় সবচেয়ে জোরালো সাড়া দেয় তা লক্ষ করুন এবং ভয়েসের ফ্রিকোয়েন্সি সেখানে সেট করুন।</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>থামান</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>পরীক্ষার টোন বা সুইপ থামায়।</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>যেকোনো NFC ট্যাগ</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC ট্যাগ: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ইনপুট ফিল্টার করুন (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>আউটপুট ও ইনপুট ফিল্টার করুন</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>শুধু মিলে যাওয়া সারি ও ইনপুট দেখায়। এখানে টাইপ করতে Ctrl+F চাপুন।</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>পিকারে কোন কোন ডিভাইসের ইনপুট দেখানো হবে তা বেছে নিন</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>পিকারে দেখানো</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>যেকোনো ভয়েস বাক্যাংশ</value></data>
@@ -4077,6 +4135,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>ফিড রিসেট করুন</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>প্যারামেট্রিক EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>কন্ট্রোলারের অডিওর উপর প্রতিটি ব্যান্ডের আলাদা ফিল্টার। অডিও এনকোড হওয়ার আগে প্রয়োগ হয়, তাই নিচের লিমিটার বাড়ানো ব্যান্ডকে ক্লিপ করা থেকে ঠেকায়।</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>প্রিঅ্যাম্প, ব্যান্ড, ইমপোর্ট</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>প্রিঅ্যাম্প</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>ব্যান্ডগুলোর আগের সামগ্রিক মাত্রা। AutoEq প্রোফাইলে ঋণাত্মক প্রিঅ্যাম্প থাকে, যাতে তাদের বাড়ানো অংশ ক্লিপ না করে, আর একটি ইমপোর্ট করলে এটি আপনার জন্য সেট হয়ে যায়।</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>চালু</value></data>
@@ -4307,7 +4366,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>স্পর্শ বা বিক্ষেপে খোলার অবস্থায় রিসেট করুন।</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>যা দিয়ে চালানো হয়</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>লেয়ার এই মেনু খোলা রাখা অবস্থায় যে ফিজিক্যাল ইনপুট হাইলাইট করা সেল চালায়।</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>এই স্লটে বরাদ্দ করা ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়। লেয়ার মেনু খোলে; এই ইনপুট সেটি চালায়। সেলের বাইন্ডিং এর আউটপুট ঠিক করে।</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>এই স্লটে বরাদ্দ করা ফিজিক্যাল কন্ট্রোলার থেকে পড়া হয়। লেয়ার মেনু খোলে, আর এই ইনপুট সেটি চালায়। মেনু কী আউটপুট দেবে, তা এর সেলগুলো ঠিক করে।</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>আইকনের আকার</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>মেনুর স্বাভাবিক আইকনের আকারের তুলনায় আইকনের আকার, 25% থেকে 200%। আইকন সাফ করলে এটি 100%-এ রিসেট হয়।</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>ক্লিক ইনপুট ধরে রাখা অবস্থায় হাইলাইট করা সেলের বাইন্ডিং ধরে রাখে। স্টিক স্থির থাকা অবস্থায়ও হাইলাইট করা রেডিয়াল কেন্দ্র চালু হতে পারে।</value></data>
@@ -4432,7 +4491,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-এর অপ্রকাশিত IPolicyConfig ইন্টারফেসের লেআউটের রেফারেন্স, নির্মাতা Antoine Aflalo, যা PadForge কন্ট্রোলারের অডিও এন্ডপয়েন্ট আবার সক্ষম করতে ব্যবহার করে। MIT। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>অডিও ট্যাব যে প্যারামেট্রিক EQ প্রোফাইল ফরম্যাট ইমপোর্ট করে, নির্মাতা Jaakko Pasanen। MIT। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>কন্ট্রোলারের “প্যারামেট্রিক EQ” যে প্যারামেট্রিক EQ প্রোফাইল ফরম্যাট ইমপোর্ট করে, নির্মাতা Jaakko Pasanen। MIT। কেবল ডকুমেন্টেশন, কোনো কোড সঙ্গে আসে না।</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>টেক্সট ব্লক ম্যাক্রো ও কীবোর্ড কর্ড হুকের পেছনের SendInput কৌশল: Unicode টাইপিং, ব্যাচের সীমা, Win-কী মাস্ক কী এবং ট্যাগ করা ইনজেক্টেড ইনপুট। GPL-2.0-or-later, কেবল ডকুমেন্টেশন হিসেবে পড়া হয়েছে, কোনো GPL কোড সঙ্গে আসে না।</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>দিক</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>ধাপ</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>থেকে</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>হ্যান্ডেল</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} এই কন্ট্রোলারের ট্রিগার সেট করছে।</value></data>
@@ -4716,7 +4776,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>হ্যান্ডেল যথেষ্ট দূর যায়নি, তাই পরিসর আগের মতোই থাকছে। সুইপ চলার সময় এটি প্রতিটি প্রান্তে সরান।</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>সুইপ শেষ হওয়ার আগেই Falcon বন্ধ হয়ে গেছে।</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension-এর SDK দিয়ে Novint Falcon-এ গেম চালায়। SDK আপনি Force Dimension থেকে ইনস্টল করেন। হ্যান্ডেল একটি স্টিক, গ্রিপের চারটি বোতাম বোতাম হিসেবে কাজ করে, আর PadForge গেমের রাম্বল ও ইফেক্ট হ্যান্ডেলে ফোর্স হিসেবে দেয়। Falcon কেমন অনুভূত হবে তা প্রতিটি স্লটের ফোর্স ফিডব্যাক ট্যাবে ঠিক করা যায়।</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Force Dimension-এর SDK দিয়ে Novint Falcon-এ গেম চালায়। SDK আপনি Force Dimension থেকে ইনস্টল করেন। হ্যান্ডেল একটি স্টিক, গ্রিপের চারটি বোতাম বোতাম হিসেবে কাজ করে, আর PadForge গেমের রাম্বল ও ইফেক্ট হ্যান্ডেলে ফোর্স হিসেবে দেয়। Falcon কেমন অনুভূত হবে তা প্রতিটি কন্ট্রোলারের “কম্পন ও হ্যাপটিক” অংশের Novint Falcon কার্ডে ঠিক করা যায়।</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon চালান</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Force Dimension-এর dhd64.dll দিয়ে প্রতিটি Falcon খোলে। খোলা Falcon শুধু PadForge-এর দখলে থাকে, তাই এটি চালু থাকলে FalconJoyForce ও Force Dimension-এর টুল সেটি খুলতে পারে না। বন্ধ থাকলে PadForge প্রতিটি Falcon বন্ধ করে দেয়।</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon লাইব্রেরি {0}-এ সেট করা হয়েছে। PadForge কয়েক সেকেন্ডের মধ্যে এটি লোড করে, এবং অন্য কপিতে খোলা একটি Falcon এই কপিতে আবার খোলে।</value></data>
@@ -4929,7 +4989,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>নির্দিষ্ট সময়ের জন্য</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>থামানো পর্যন্ত</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>সময়</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>এই স্লটের প্রতিটি DualSense ও DualSense Edge-এ চলে। গেমের নিজস্ব ট্রিগার ইফেক্ট এবং গেম মডের ইফেক্ট আগে আসে, আর ইফেক্ট শেষ হলে অ্যাডাপ্টিভ ট্রিগার ট্যাবের সেটিং ফিরে আসে। জোন বিশ্রামে 0 থেকে পুরো চাপে 9 পর্যন্ত চলে। ধনুক, ঘোড়ার দৌড় ও মেশিন DualSense-এর অফিসিয়াল ইফেক্ট নয়, এবং ফার্মওয়্যার আপডেটে এগুলো সরে যেতে পারে। অ্যাডাপ্টিভ ট্রিগারের কম্পন রূপান্তর করুন চালু থাকলে Xbox কন্ট্রোলার কম্পনের ইফেক্টগুলো ট্রিগার রাম্বল হিসেবে অনুভব করে।</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>এই স্লটের প্রতিটি DualSense ও DualSense Edge-এ চলে। গেমের নিজস্ব ট্রিগার ইফেক্ট এবং গেম মডের ইফেক্ট আগে আসে, আর ইফেক্ট শেষ হলে অ্যাডাপ্টিভ ট্রিগার কার্ডের সেটিং ফিরে আসে। জোন বিশ্রামে 0 থেকে পুরো চাপে 9 পর্যন্ত চলে। ধনুক, ঘোড়ার দৌড় ও মেশিন DualSense-এর অফিসিয়াল ইফেক্ট নয়, এবং ফার্মওয়্যার আপডেটে এগুলো সরে যেতে পারে। অ্যাডাপ্টিভ ট্রিগারের কম্পন রূপান্তর করুন চালু থাকলে Xbox কন্ট্রোলার কম্পনের ইফেক্টগুলো ট্রিগার রাম্বল হিসেবে অনুভব করে।</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1}-এ {0}, {2} ms ধরে</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}-এ {0}, ধরে রাখা পর্যন্ত</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}-এ {0}, থামানো পর্যন্ত</value></data>
@@ -4958,7 +5018,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>সাফ করা পর্যন্ত</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>সময়</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>তাদের রং রাখুন</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>অ্যাকশনটি এই ভার্চুয়াল কন্ট্রোলার যত কিবোর্ডের লাইট নিয়ন্ত্রণ করে, সবগুলোতে একই কী জ্বালায়, লাইটিং ট্যাবের দেওয়া রঙের উপরে। সংখ্যাগুলো বাছাইয়ের ক্রম দেখায়। কাউন্টডাউন একবারে একটি কী নেভায়, শেষে বাছাই করা কী আগে, তাই নম্বর সারিতে কুলডাউন দেখাতে 1 থেকে 0 বাছাই করুন। কিবোর্ড বা মাউসের লাইট কেবল তখনই জ্বলে যখন এই ডিভাইসের লাইটিং নিয়ন্ত্রণ করুন চালু থাকে।</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>অ্যাকশনটি এই ভার্চুয়াল কন্ট্রোলার যত কিবোর্ডের লাইট নিয়ন্ত্রণ করে, সবগুলোতে একই কী জ্বালায়, “লাইটিং ও অডিও” অংশে কন্ট্রোলারটি সেগুলোর জন্য যে রং সেট করে তার উপরে। সংখ্যাগুলো বাছাইয়ের ক্রম দেখায়। কাউন্টডাউন একবারে একটি কী নেভায়, শেষে বাছাই করা কী আগে, তাই নম্বর সারিতে কুলডাউন দেখাতে 1 থেকে 0 বাছাই করুন। কিবোর্ড বা মাউসের লাইট কেবল তখনই জ্বলে যখন এই ডিভাইসের লাইটিং নিয়ন্ত্রণ করুন চালু থাকে।</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>অন্যান্য</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, নম্বর {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে</value></data>
@@ -5018,7 +5078,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>অ্যানালগ কী অ্যাকচুয়েশন পয়েন্ট আনা যায়নি।</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD এই কন্ট্রোলারটিকে একটি অ্যাডাপ্টারের মাধ্যমে অন্য ডিভাইসে পাঠাত। PadForge এটি এই পিসিতে চালায়, আর রিমোট লিংক এটিকে PadForge চালানো অন্য পিসিতে পাঠায়।</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge দুটি স্টিক পড়ে, কিন্তু এখানে তৃতীয় একটির নাম আছে।</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>স্টিয়ারিং হুইল ইমুলেশন আনা যায়নি। হুইলটি ম্যাপিং ট্যাবে ম্যাপ করুন।</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>স্টিয়ারিং হুইল ইমুলেশন আনা যায়নি। হুইলটি “বোতাম” অংশে ম্যাপ করুন।</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>এই প্রোফাইলে এমন একটি বিশেষ অ্যাকশনের নাম আছে যা এর Profiles ফোল্ডারের পাশের Actions.xml-এ নেই: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>এই সেটিংটি আনা যায়নি: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD এই ইনপুটগুলিকে Windows-এ পৌঁছাতে দিত না। ডিভাইস পেজে {0}-এর জন্য ম্যাপ করা ইনপুট আটকে দিন চালু করুন, এটি এই প্রোফাইলে ম্যাপ করা ইনপুটগুলিকে আটকায়।</value></data>
@@ -5026,8 +5086,8 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>স্টিক আবার মাঝখানে এলে বা লেয়ার শেষ হলে নির্বাচন চূড়ান্ত হয়। reWASD-এর প্রয়োগ বোতাম ব্যবহার করা হয় না।</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>এই ফাইলে দুটি কন্ট্রোলার আলাদা রাখা হয়েছে। PadForge-এ স্লটের যেকোনো কন্ট্রোলার এই ম্যাপিংগুলি চালু করে।</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>নড়াচড়ার গতি বা ফ্লিক আনা যায়নি।</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>এগুলি আনা যায়নি। টাচপ্যাড ট্যাবে সেট করুন।</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>এই ফাইলের কোনো কিছুই এই লেয়ার খোলে না। ম্যাপিং ট্যাবে এটিকে একটি বোতাম দিন।</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>এগুলি আনা যায়নি। “মোশন ও টাচ” অংশে সেট করুন।</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>এই ফাইলের কোনো কিছুই এই লেয়ার খোলে না। “বোতাম” অংশে লেয়ারটিতে রাইট-ক্লিক করে “অ্যাক্টিভেটর কনফিগার করুন” বেছে নিন।</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>এর বোতামগুলি চাপলে এগুলি চালায়: {0}।</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>প্রোফাইল শর্টকাট</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>প্রোফাইল শর্টকাট যা করে তা-ই করে: নাম দেওয়া একটি প্রোফাইল, পরেরটি বা আগেরটি লোড করে, উইন্ডো দেখায় বা লুকায়, অথবা ভার্চুয়াল কন্ট্রোলার বন্ধ ও চালু করে।</value></data>
@@ -5197,7 +5257,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>“ফায়ার” ছাড়লে নির্বাচিত সেল একবার চালু হয়, একটি ছোট ট্যাপ হিসেবে। “ফায়ারের পর লুকান” চালু থাকলে “ফায়ার” বার লুকানোমাত্র সেটি চালু হয়।</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>“ফায়ারের পর লুকান” চালু থাকা অবস্থায় “ফায়ার” বার লুকালে একটি সেল একবার চালু হয়, একটি ছোট ট্যাপ হিসেবে। “প্রতিবার মাঝে ফেরা” চালু থাকলে মাঝের সেলটিই চালু হয়।</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>বার দেখানো থাকার পুরো সময় নির্বাচিত সেল ধরে রাখা থাকে। এক ধাপ এগোলে একটি সেল ছেড়ে দেওয়া হয় এবং পরেরটি ধরা হয়।</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>“রেডিয়াল রিং”, “টাচ গ্রিড” ও “হটবার” সেলের বাইন্ডিং চালায়। “কীবোর্ড” ব্যবহৃত Windows লেআউটের কী টাইপ করে।</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>“রেডিয়াল রিং”, “টাচ গ্রিড” ও “হটবার” তাদের সেলের অ্যাকশন চালায়। “কীবোর্ড” ব্যবহৃত Windows লেআউটের কী টাইপ করে।</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>লেআউট</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>কীবোর্ডে কী কীভাবে সাজানো থাকে এবং কন্ট্রোলার দিয়ে কীভাবে বাছা হয়।</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>একটিমাত্র হাইলাইট, একটি স্টিক বা চারটি ইনপুটে সরে। Windows, Xbox ও Steam এই লেআউট ব্যবহার করে।</value></data>
@@ -5304,11 +5364,11 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge হ্যান্ডহেল্ড বোতাম (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro প্রোফাইল (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge কী লাইট (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ম্যাক্রো {0} চাপতে পারে না। ম্যাপিং ট্যাবের একটি ম্যাপিং পারে।</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ম্যাক্রো {0} চাপতে পারে না। “বোতাম” অংশের একটি ম্যাপিং পারে।</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge আটটি স্ক্রিন ওভারলে চালায়, আর এটি reWASD-এর নবম বা দশম ক্রসহেয়ার।</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge জাইরোর বাম ও ডান রোল থেকে এবং হেলানো ইয়ো থেকে পড়ে, যা reWASD-এর ডিফল্ট। reWASD-এর পছন্দ থেকে এ দুটি অদলবদল করা যায়, আর এই ফাইল বলে না অদলবদল হয়েছিল কি না।</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>টিল্ট মোডে reWASD-এর হেলানো হলো উল্লম্ব অক্ষ ঘিরে ঘোরা, আর মোশন সেন্সর সেই ঘোরার কোনো কোণ দেয় না।</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge টাচপ্যাডের কোণাকুণি দিককে একসঙ্গে দুটি দিক হিসেবে পড়ে, যা টাচপ্যাড শুধু তখনই জানায় যখন এর টাচপ্যাড ট্যাবে ডি-প্যাড মোড 8-দিক থাকে।</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge টাচপ্যাডের কোণাকুণি দিককে একসঙ্গে দুটি দিক হিসেবে পড়ে, যা টাচপ্যাড শুধু তখনই জানায় যখন “মোশন ও টাচ” অংশে এর ডি-প্যাড মোড 8-দিক থাকে।</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge জাইরোর দিক একটি সীমা পেরোলে তা পড়ে, আর reWASD জাইরো জোনের কিনারার কোনো একক দেয় না।</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows স্টিক যেদিকে নির্দেশ করত পয়েন্টারকে সেখানে বসাত। PadForge-এ বদলে স্টিক পয়েন্টারকে সরায়।</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} স্টিকের ঘূর্ণনের আগে সেটি পড়ে। DS4Windows পড়ত পরে।</value></data>

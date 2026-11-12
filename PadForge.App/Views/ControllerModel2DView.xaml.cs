@@ -26,6 +26,11 @@ namespace PadForge.Views
         /// control may be drawn elsewhere (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
+        /// <summary>Raised with the control under the pointer, by the name a
+        /// click on it records, and with null when the pointer leaves it
+        /// (#574).</summary>
+        public event EventHandler<string> HoverTargetChanged;
+
         // Control -> where the art draws it, in the canvas's pixels: the
         // outline the layout traced for it where it has one, its box
         // otherwise. The page rings the picked control there (#574).
@@ -883,32 +888,30 @@ namespace PadForge.Views
         {
             if (sender is Rectangle rect && rect.Tag is string target)
             {
-                _elementTypes.TryGetValue(target, out var elemType);
-
-                if (elemType == OverlayElementType.StickRing)
-                {
-                    var pos = e.GetPosition(rect);
-                    string axis = DetermineAxisFromQuadrant(pos, rect.Width, rect.Height, target);
-                    ControllerElementRecordRequested?.Invoke(this, axis);
-                }
-                else if (elemType == OverlayElementType.Touchpad)
-                {
-                    // Touchpad surface routes to the click button — this is the
-                    // affordance for binding the touchpad-press button via the
-                    // big visible region rather than the narrow strip above.
-                    // On a two-pad layout that is the click of THIS pad; a
-                    // fixed "TouchpadClick" named a control no Valve layout
-                    // has, so clicking either pad bound nothing.
-                    ControllerElementRecordRequested?.Invoke(this,
-                        _padClickTarget.TryGetValue(target, out var side)
-                            ? side : "TouchpadClick");
-                }
-                else
-                {
-                    ControllerElementRecordRequested?.Invoke(this, target);
-                }
+                ControllerElementRecordRequested?.Invoke(this, ClickTargetAt(rect, target, e.GetPosition(rect)));
                 e.Handled = true;
             }
+        }
+
+        /// <summary>What a click at <paramref name="pos"/> on a hit area
+        /// records: a stick ring's direction or click by where it lands, a
+        /// touchpad's click, or the area's own target.</summary>
+        private string ClickTargetAt(Rectangle rect, string target, Point pos)
+        {
+            _elementTypes.TryGetValue(target, out var elemType);
+            if (elemType == OverlayElementType.StickRing)
+                return DetermineAxisFromQuadrant(pos, rect.Width, rect.Height, target);
+            if (elemType == OverlayElementType.Touchpad)
+            {
+                // Touchpad surface routes to the click button. This is the
+                // affordance for binding the touchpad-press button via the
+                // big visible region rather than the narrow strip above.
+                // On a two-pad layout that is the click of THIS pad. A
+                // fixed "TouchpadClick" named a control no Valve layout
+                // has, so clicking either pad bound nothing.
+                return _padClickTarget.TryGetValue(target, out var side) ? side : "TouchpadClick";
+            }
+            return target;
         }
 
         private static string DetermineAxisFromQuadrant(Point pos, double w, double h, string stickTarget)
@@ -941,6 +944,8 @@ namespace PadForge.Views
         {
             if (sender is Rectangle rect && rect.Tag is string target)
             {
+                // The page rings the control a click here records (#574).
+                HoverTargetChanged?.Invoke(this, ClickTargetAt(rect, target, e.GetPosition(rect)));
                 _elementTypes.TryGetValue(target, out var elemType);
 
                 // Sticks are always visible — skip hover ghost
@@ -1007,6 +1012,7 @@ namespace PadForge.Views
             }
             _hoverTarget = null;
             _dirty = true; // Next render frame restores proper state
+            HoverTargetChanged?.Invoke(this, null);
         }
 
         private void StickHitArea_MouseMove(object sender, MouseEventArgs e)

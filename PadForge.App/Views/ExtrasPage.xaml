@@ -24,9 +24,11 @@
              moment their hover fill shifts. BasedOn the WPF-UI defaults so
              theme brushes survive. -->
         <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
-                 grid), which this page-local implicit replaces. -->
-            <Setter Property="MinHeight" Value="32"/>
+            <!-- MinHeight and Padding mirror the App.xaml implicit Button
+                 style (36 tall, 14 at the sides), which this page-local
+                 implicit replaces. -->
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="14,0"/>
         </Style>
         <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
             <!-- PadUiButtonTemplate: the App.xaml pressed-foreground fix.
@@ -35,14 +37,18 @@
             <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
         </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <!-- Mirrors the App.xaml implicit CheckBox style, which this
+                 page-local implicit replaces: the box keeps corners of 4. -->
+            <Setter Property="Border.CornerRadius" Value="4"/>
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
-            <!-- First four setters mirror the App.xaml implicit ComboBox
+            <!-- These five setters mirror the App.xaml implicit ComboBox
                  style, which this page-local implicit replaces. -->
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
             <Setter Property="MaxDropDownHeight" Value="200"/>
-            <Setter Property="MinHeight" Value="30"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="ui:NumberBox" BasedOn="{StaticResource DefaultUiNumberBoxStyle}">
         </Style>

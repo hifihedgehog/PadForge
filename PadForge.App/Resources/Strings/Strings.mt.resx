@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Ikkopja</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Waħħal</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplika</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Semmi mill-ġdid</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Attivat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Diżattivat</value></data>
   <data name="Common_On" xml:space="preserve"><value>Mixgħul</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparat</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input minn</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Żid apparat</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Stampa</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Outputs: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Moviment</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Ikklikkja kontroll, imbagħad agħfas l-input li għandu jmexxih.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Ikklikkja tast jew buttuna tal-maws, imbagħad agħfas l-input li għandu jmexxih.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Ikklikkja nota jew slider, imbagħad agħfas l-input li għandu jmexxih.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“Immappja kollox” jaqbeż l-outputs tal-mess ta' A u B. Ikklikkja ċ-ċirku madwar A jew B biex tassenja wieħed minnhom.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Qed nisimgħu għal {0}. Agħfas l-input fuq l-apparat tiegħek.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input minn</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Aktar għażliet</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Inqas għażliet</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buttuna tal-wiċċ</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buttuna tal-ispalla</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buttuna tas-sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Buttuna</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad direzzjonali</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensur tal-moviment</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tast tat-tastiera</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Buttuna tal-maws</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Moviment tal-maws</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rota tal-iscroll</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensur tal-mess</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Ġbid analogu</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, id tax-xellug</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, id tal-lemin</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Liema għafsa tara l-logħba meta ż-żewġ buttuni ta' par jinżammu</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Liema għafsa tara l-logħba meta ż-żewġ tasti ta' par jinżammu</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Iżżomm devjazzjoni żgħira tal-istick biex il-logħob ikompli juri prompts tal-kontrollur</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Mixgħul</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Agħżel makro fuq ix-xellug, jew agħfas Żid biex toħloq waħda.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Agħżel makro fil-lista, jew agħfas + ħdejn Makros biex toħloq waħda.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kiesaħ</value></data>
@@ -862,7 +891,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain għal kull trigger, tibdil tal-muturi, vibrazzjonijiet tat-triggers adattivi</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain għal kull trigger, tibdil tal-muturi, vibrazzjonijiet tat-triggers adattivi, Forza kostanti fit-triggers</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Jgħaddi l-kmandi tal-mutur għal kull trigger (Xbox Impulse Triggers) mill-kontrollur virtwali għall-kontrollur fiżiku Xbox One, Elite jew Series assenjat. Ir-rumble tat-triggers li tibgħat il-logħba jgħaddi awtomatikament. Il-kontrolli hawn taħt jiskalaw l-intensità għal kull trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger tax-xellug</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger tal-lemin</value></data>
@@ -932,9 +961,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Żoni mejta, anti-żoni mejta, kurvi tas-sensittività u kalibrazzjoni tal-offset taċ-ċentru għal kull stick. Kull taqsima hawn taħt hija għal stick analogu wieħed fuq l-output attiv. Il-profili Extended jista' jkollhom sa erba' sticks. Il-gamepads standard għandhom tnejn.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Żoni mejta, anti-żoni mejta, skalar tal-firxa massima u kurvi tas-sensittività għal kull trigger. Kull taqsima hawn taħt hija għal assi wieħed ta' trigger fuq l-output attiv. Il-profili Extended jistgħu juru sa tmien assijiet maqsuma mat-tab Sticks.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Żoni mejta, anti-żoni mejta, skalar tal-firxa massima u kurvi tas-sensittività għal kull trigger. Kull karta ta' trigger hija għal assi wieħed ta' trigger fuq l-output attiv. Il-profili Extended jistgħu juru sa tmien assijiet, maqsuma bejn l-isticks u t-triggers.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Jirregola kif PadForge jiskala l-avvenimenti tal-force feedback mil-logħba u kif jibgħathom lill-muturi tar-rumble jew lill-attwaturi tal-haptics tal-kontrollur fiżiku. Ir-rumble tal-awdjo jżid saff immexxi mill-awdjo tas-sistema fuqhom.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Dan l-apparat</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Il-kontrollur kollu</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Ir-rumble jindaqq fuq {0} bħala impulsi tal-haptics, mibgħuta dritt lill-apparat. Rumble aktar qawwi jagħżel impuls aktar qawwi u jirrepetih aktar malajr.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Il-haptics huma mitfija għal {0} f'Logi Options+, għalhekk ma jindaqq xejn sakemm terġa' tixgħelhom hemmhekk.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Dan l-apparat għadu ma weġibx. Ir-rumble tiegħu jindaqq ladarba jqum.</value></data>
@@ -1001,6 +1032,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, mousepads u speakers</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Il-logħob jieħdu l-kontroll kull meta jiktbu d-dawl.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Daħħal kulur hex ta' sitt ċifri (RRGGBB jew #RRGGBB) u agħfas Enter jew ikklikkja barra biex tapplikah.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Neħħi dan il-kulur mill-paletta</value></data>
@@ -1018,7 +1050,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Irrisettja r-rumble tal-awdjo</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Irrisettja {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Neħħi l-mappjar</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Kull mappjar f'din it-tab se jitneħħa. L-assenjazzjonijiet tas-sorsi, is-sorsi addizzjonali u s-settings tal-kombinazzjoni jerġgħu lura għad-default.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Kull mappjar f'dan is-saff se jitneħħa. L-assenjazzjonijiet tas-sorsi, is-sorsi addizzjonali u s-settings tal-kombinazzjoni jerġgħu lura għad-default.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Disinn tal-plejer</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modalità tal-LED tal-mute</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminożità tal-LED</value></data>
@@ -1084,6 +1116,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buttuni</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profili importati…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontrollur Estiż</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Immaniġġja l-profili HIDMaestro importati mill-utent: aqbad wieħed ġdid minn apparat konness, esporta wieħed eżistenti f'JSON, jew ħassar wieħed li m'għadekx teħtieġ.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Ikklona l-apparat 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Immappja kull assi, buttuna u hat fuq l-apparat magħżul dritt għall-output virtwali bl-istess numru. Jaġġusta t-tqassim skont l-apparat u jissostitwixxi r-ringieli ta' dan l-apparat fuq is-slot b'passthrough 1:1.</value></data>
@@ -1131,6 +1164,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Output MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kanal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Għadd ta' CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Numru ta' outputs CC (il-massimu jiddependi mis-CC tal-bidu)</value></data>
@@ -1162,7 +1196,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Tneħħi dan il-par ta' tasti.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>L-ewwel tast tal-par oppost.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>It-tieni tast tal-par oppost.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direzzjonijiet kardinali opposti simultanji (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Żomm il-kontrollur imqajjem</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Xi logħob iwaqqfu l-vibrazzjoni u jbiddlu l-prompts tal-buttuni hekk kif jaraw input mill-maws jew mit-tastiera. Devjazzjoni żgħira miżmuma fuq stick iżżomm lill-logħba tittratta dan il-kontrollur bħala l-apparat attiv. Iż-żamma tidħol biss waqt li ż-żewġ assi ta' dak l-istick ikunu taħt il-livell miżmum, għalhekk stick li jiżloq xorta jgħodd bħala mistrieħ. Input lil hinn mil-livell fuq kwalunkwe assi jneħħi ż-żamma u jgħaddi mingħajr bidla. Żomm id-devjazzjoni taħt iż-żona mejta tal-logħba stess biex xejn ma jiċċaqlaq fil-logħba.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Żomm imqajjem</value></data>
@@ -1182,7 +1215,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Irrisettja l-klikk</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Irrisettja n-nofs tal-pad</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Irrisettja l-modalità tal-isparar</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Irrisettja ċ-ċelloli</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Irrisettja ż-żona mejta tal-attivazzjoni</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Irrisettja l-ġeometrija tal-menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Irrisettja ċ-ċellola</value></data>
@@ -1238,6 +1270,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ħassar kollox</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sors</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valur</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Għażliet</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Żona mejta assi-għal-buttuna</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Ibdel id-direzzjoni</value></data>
@@ -1275,7 +1308,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Meta jkun immarkat, l-assi jerġa' lura gradwalment għaċ-ċentru meta tħalli. Meta ma jkunx immarkat, iżomm l-aħħar pożizzjoni tiegħu.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Buttuna li taqleb l-output tar-ringiela waqt li tinżamm</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikatur: waqt li jinżamm, l-output tar-ringiela jaqleb is-sinjal.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Żid sors</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Żid sors</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Żid input fiżiku ieħor ma' din ir-ringiela</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Neħħi dan is-sors</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1395,10 +1428,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Personalizzat</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Ikkalibra ċ-ċentru</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punt taċ-ċentru</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Ċentru</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Żona mejta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Offsets taċ-ċentru, forma taż-żona mejta u valuri għal kull assi, kurva għal kull assi, firxa, sewqan</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Firxa</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Ikkalibra l-konfini huwa l-mod rakkomandat biex tallinja stick. Jiskennja t-tarf li l-istick jista' jilħaq fiżikament, imbagħad jerġa' jiskala kull pożizzjoni b'mod proporzjonali skont dak it-tarf imkejjel, biex il-moviment nattiv kollu, f'kull angolu u f'kull devjazzjoni, jiġi mmappjat fuq ċirku ideali mingħajr xejn maqtugħ. L-erba' sliders hawn taħt jillimitaw biss l-assi kardinali. Użahom biex tillimita l-firxa apposta, mhux biex tikkoreġiha.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Ikkalibra l-konfini jkejjel it-tarf li l-istick jista' jilħaq u jsawwru mill-ġdid f'ċirku sħiħ. L-erba' sliders jillimitaw biss kull direzzjoni.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Qed jieħu kampjuni...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset taċ-ċentru X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset taċ-ċentru Y</value></data>
@@ -1417,7 +1451,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Isem</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Attivatur</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Meta</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Skattar</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Meta tagħfas</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Meta tħalli</value></data>
@@ -1449,9 +1483,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Għal liema saff jappartjeni dan il-makro. Kwalunkwe saff jiskatta irrispettivament mis-saff attiv. Il-bażi u s-saffi bl-isem jiskattaw biss waqt li dak is-saff ikun attiv, eżattament bħal ringiela tal-mappjar.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Kwalunkwe saff</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Jaħdem kontinwament waqt li dan il-kontrollur virtwali jkun attiv. Mhux meħtieġa buttuna tal-attivatur.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Sekwenza ta' azzjonijiet</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Agħmel</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Saff, Sors, Limitu, Direzzjoni, Ikkonsma l-buttuni tal-attivatur, Irrepeti</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Żid azzjoni</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Editja l-azzjoni</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tip</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Buttuni virtwali</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Assi virtwali u rota</value></data>
@@ -1520,11 +1554,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Buttuna {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Agħfas {0} għal {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Agħfas {0} għal {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Ħalli {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tasti {0} għal {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tasti {0} għal {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Ħalli t-tasti {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Stenna {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Stenna {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Issettja {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volum tas-sistema ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Volum tas-sistema ← {0} (massimu {1}%)</value></data>
@@ -1536,15 +1570,15 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Rilaxx tal-maws {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Ibdel l-overlay tat-touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Issettja l-kulur tal-lightbar</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Jissostitwixxi l-lightbar tas-slot PlayStation assenjat b'kulur RGB magħżul. Reattiv jgħib mill-intensità sħiħa għall-iswed matul it-tieqa tat-tnaqqis ikkonfigurata, imbagħad jerġa' jgħaddi l-kontroll lis-settings tat-tab Dawl. Persistenti jżomm il-kulur sakemm taħdem azzjoni “Neħħi s-sostituzzjoni tal-lightbar”. Il-kitbiet mil-logħba xorta għandhom prijorità fuq is-sostituzzjoni.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Teptip tal-lightbar {0} (tnaqqis {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Jissostitwixxi l-lightbar tas-slot PlayStation assenjat b'kulur RGB magħżul. Reattiv jgħib mill-intensità sħiħa għall-iswed matul it-tieqa tat-tnaqqis ikkonfigurata, imbagħad jerġa' jgħaddi l-kontroll lis-settings tal-karta Lightbar. Persistenti jżomm il-kulur sakemm taħdem azzjoni “Neħħi s-sostituzzjoni tal-lightbar”. Il-kitbiet mil-logħba xorta għandhom prijorità fuq is-sostituzzjoni.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Teptip tal-lightbar {0} (tnaqqis {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Żomm il-lightbar {0} sakemm titneħħa</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Neħħi s-sostituzzjoni tal-lightbar</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Neħħi s-sostituzzjoni tal-lightbar</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Tneħħi kwalunkwe sostituzzjoni attiva tal-lightbar fuq is-slot assenjat. Użaha ma' azzjoni “Issettja l-kulur tal-lightbar” Persistenti biex tneħħiha permezz ta' makro ieħor.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Issettja l-modalità tal-lightbar</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Issettja l-modalità tal-lightbar għal {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Tissettja l-modalità tal-lightbar tas-slot assenjat għal valur speċifiku. Tibqa' bħal bidla fit-tab Dawl sakemm azzjoni oħra jew l-utent ibiddilha.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Tissettja l-modalità tal-lightbar tas-slot assenjat għal valur speċifiku. Tibqa' bħal bidla fil-karta Lightbar sakemm azzjoni oħra jew l-utent ibiddilha.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Dawwar il-modalitajiet tal-lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Dawwar bejn {0} modalitajiet tal-lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Tmexxi l-modalità tal-lightbar tas-slot minn waħda għall-oħra fost il-modalitajiet magħżula hawn taħt. Kull skattar jgħaddi għall-modalità immarkata li jmiss. Il-pożizzjoni fiċ-ċiklu hija għal kull azzjoni u terġa' tibda mill-bidu meta l-app terġa' tinfetaħ.</value></data>
@@ -1559,14 +1593,14 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Tnaqqis</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Tbaħħit</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paletta vojta tuża l-paletta tat-tab Dawl tas-slot stess.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paletta vojta tuża l-paletta fil-karta Lightbar tas-slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Agħżel liema modalitajiet tal-lightbar għandu jdawwar il-makro. Kull skattar jgħaddi għall-modalità immarkata li jmiss.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Rumble</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Iħaddem ir-rumble tal-apparat fiżiku tas-slot minn makro. Reattiv jaħdem b'saħħa sħiħa għat-tieqa taż-żamma u mbagħad jonqos għal żero matul it-tieqa tat-tbaħħit. Persistenti jżomm b'saħħa sħiħa sakemm taħdem azzjoni “Waqqaf ir-rumble”. Jiżdied fuq ir-rumble tal-logħba permezz ta' max() biex il-feedback tal-utent dejjem jinħass.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Polz ta' rumble {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Polz ta' rumble {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Żomm ir-rumble {0} sakemm jitneħħa</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Waqqaf ir-rumble</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Waqqaf ir-rumble</value></data>
@@ -1577,7 +1611,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Waqqaf il-vibrazzjoni tat-trigger</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Tneħħi kwalunkwe vibrazzjoni attiva tat-trigger minn makro fuq is-slot. Użaha ma' “Sostituzzjoni tar-rumble tat-trigger” Persistenti biex ittemm iż-żamma minn makro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Issettja l-attivazzjoni tal-ġiroskopju</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Jissettja l-istat ta' attivazzjoni tal-ġiroskopju tas-slot minn makro. Ibdel jaqleb l-istat attwali. Mixgħul iġiegħel il-ġiroskopju attiv. Mitfi jġiegħlu inattiv. Indipendenti mill-buttuna tal-attivazzjoni fit-tab Ġiroskopju. Iż-żewġ sorsi jingħaqdu b'OR, għalhekk l-ebda wieħed ma jista' jitfi dak li attiva l-ieħor.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Jissettja l-istat ta' attivazzjoni tal-ġiroskopju tas-slot minn makro. Ibdel jaqleb l-istat attwali. Mixgħul iġiegħel il-ġiroskopju attiv. Mitfi jġiegħlu inattiv. Indipendenti mill-buttuna tal-attivazzjoni tal-immirar fit-taqsima Moviment u Mess. Iż-żewġ sorsi jingħaqdu b'OR, għalhekk l-ebda wieħed ma jista' jitfi dak li attiva l-ieħor.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Ibdel</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Mixgħul</value></data>
@@ -1725,7 +1759,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input għal kull touchpad. Il-ġesti (swipe, tap, qrusa, forom) u l-modi ta' output kontinwu (stick / D-pad virtwali, maws) isiru sorsi ta' mappjar li tista' tassenja fit-tab tal-mappjar.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input għal kull touchpad. Il-ġesti (swipe, tap, qrusa, forom) u l-modi ta' output kontinwu (stick / D-pad virtwali, maws) isiru sorsi ta' mappjar li tista' tassenja lil kwalunkwe output.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numru tat-touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Liema touchpad ta' dan il-kontrollur japplikaw għalih is-settings ta' hawn taħt. Kull touchpad iżomm il-ġesti tiegħu, is-sens tal-maws u r-reġjun tal-indikatur.</value></data>
@@ -2015,10 +2049,14 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Ġiroskopju</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Aġġusta kif is-sensur tal-moviment ta' dan il-kontrollur imexxi l-output tal-maws u tal-istick. Ikkalibra fuq wiċċ ċatt biex tneħħi d-drift fil-mistrieħ, imbagħad aġġusta s-sensittività, it-twittija u r-regoli tal-attivazzjoni kif tixtieq.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrazzjoni</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Qari tal-ġiroskopju u l-aċċelerometru f'ħin reali</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensittività</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitajiet, Spazju, id-direzzjoni tal-assi, Kalibrazzjoni tad-dinja reali</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitajiet, id-direzzjoni tal-assi, Kalibrazzjoni tad-dinja reali</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° għal kull dawra</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Iffurmar tar-rispons</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Żona mejta, twittija, Aċċelerazzjoni, Kurva tal-output</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Qafas ta' referenza</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokali, Plejer jew Dinja</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Spazju</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Kif jiġi interpretat il-moviment tal-ġiroskopju. Lokali juża l-assi mhux ipproċessati tal-kontrollur. Plejer jipproġetta l-moviment orizzontali fuq il-vertikali tad-dinja reali (il-gravità), biex l-istess dawra tal-polz dejjem iddawwar il-kamera, ikun kif ikun iżżomm il-kontrollur. Dinja jipproġetta wkoll il-moviment vertikali fuq l-assi tad-dinja.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Miżmum bħala</value></data>
@@ -2090,6 +2128,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Wieqaf</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Żamma</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Kif jinżamm il-kontrollur. Iddawwar il-ġiroskopju, l-aċċelerometru u l-gravità flimkien, għall-mappjar u għall-moviment li jirrapporta l-kontrollur virtwali. Id-D-pad isegwi l-istess qafas, għalhekk Fuq huwa fuq fiż-żamma.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Kif jinżamm il-kontrollur</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineari</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressiva</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Rilassata</value></data>
@@ -2122,7 +2161,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Irrisettja d-direzzjoni tal-attivazzjoni</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Passthrough tal-moviment</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Applika l-aġġustamenti tal-ġiroskopju għall-passthrough tal-moviment</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Iħaddem l-aġġustamenti tal-ġiroskopju ta' din it-tab (żona mejta, sensittività, twittija, kurva tar-rispons, bdil tad-direzzjoni) fuq il-moviment li l-kontrollur virtwali jirrapporta lil-logħba jew lill-emulatur. Itfih biex tibgħat biss il-qari kkalibrat u tħalli l-logħba tapplika s-sensittività u t-twittija tagħha. Il-korrezzjoni tad-drift tal-kalibrazzjoni dejjem tapplika xorta waħda.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Iħaddem l-aġġustamenti tal-karti Ġiroskopju (żona mejta, sensittività, twittija, kurva tar-rispons, bdil tad-direzzjoni) fuq il-moviment li l-kontrollur virtwali jirrapporta lil-logħba jew lill-emulatur. Itfih biex tibgħat biss il-qari kkalibrat u tħalli l-logħba tapplika s-sensittività u t-twittija tagħha. Il-korrezzjoni tad-drift tal-kalibrazzjoni dejjem tapplika xorta waħda.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Irrisettja l-aġġustamenti tal-passthrough</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensittività</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikatur tas-sensittività tal-ġiroskopju għal kull sors. 1.0 = id-default tal-magna (500°/s → devjazzjoni sħiħa). Valuri 'l fuq minn 1.0 huma aktar sensittivi. Valuri taħt 1.0 huma inqas sensittivi.</value></data>
@@ -2139,7 +2178,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Irrisettja l-firxa tal-inklinazzjoni sħiħa</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Irrisettja ż-żona mejta tal-inklinazzjoni</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Irrisettja l-inklinazzjoni tal-ġiroskopju</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Kif jingħaqdu s-sorsi ta' din ir-ringiela meta jkun attiv aktar minn wieħed. Agħżel ir-ringiela biex tibdlu fl-istrixxa tad-dettalji ta' hawn taħt.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Kif jingħaqdu s-sorsi ta' din ir-ringiela meta jkun attiv aktar minn wieħed. Iftaħ ir-ringiela biex tibdlu taħt “Għaqqad”.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modalità trackball: agħti flick lill-istick u ħallih, u l-kursur jibqa' miexi sakemm jieqaf bil-mod. Meta terġa' ċċaqlaq l-istick, taqbdu.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Kemm jiżloq il-kursur wara flick. Fl-ogħla tal-firxa jibqa' miexi sakemm terġa' ċċaqlaq l-istick.</value></data>
@@ -2316,7 +2355,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Assi tat-trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain għal kull mutur, rumble tat-triggers, tibdil tal-muturi</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain għal kull mutur, rumble tat-triggers, Rumble tal-angolu tat-tmun, Forza kostanti</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Qawwa ġenerali</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mutur tax-xellug</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mutur tal-lemin</value></data>
@@ -2325,6 +2364,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Dan il-kontrollur m'għandux muturi fit-triggers, għalhekk il-logħob li juża l-impulse triggers tal-Xbox ma jinħassx. Għaqqad kull kanal tat-trigger mal-mutur ewlieni fl-istess naħa minflok.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Ittestja r-rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Attività tal-muturi</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Xellug</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Lemin</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Applika forza kontinwa fuq dan l-apparat sakemm titfiha. Il-forza mil-logħba, minn kwalunkwe sors, tieħu postha waqt li tkun attiva, u din terġa' tibda meta l-logħba tieqaf.</value></data>
@@ -2403,7 +2444,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Agħfas buttuni jew ċaqlaq assi/trigger biex tirrekordja. L-assi jinqabdu meta jiċċaqalqu aktar minn 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Żid mil-lista</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Agħżel l-input li jattiva mill-apparati tas-slot minflok ma tirrekordjah. Il-ġesti tat-touchpad attivati fit-tab Touchpad jidhru hawn.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Ikklirja l-attivatur</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Agħżel l-input li jattiva mill-apparati tas-slot minflok ma tirrekordjah. Il-ġesti tat-touchpad attivati fit-taqsima Moviment u Mess jidhru hawn.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Neħħi l-input</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Agħfas kwalunkwe input…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>maqlub</value></data>
@@ -2627,7 +2669,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekondi qabel ma kontrollur virtwali jitneħħa meta l-apparati kollha mmappjati tiegħu jkunu offline. 0 jiddiżattiva. Il-kontrolluri li jibqgħu tal-istess tip jitilgħu 'l fuq biex jimlew il-vojt u jintrabtu mill-ġdid ma' slots aktar baxxi.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekondi (0 = qatt)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Saff shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Żid saff</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Żid saff shift: tabella oħra ta' mappjar li tiġi attivata waqt li buttuna tinżamm jew waqt li tkun mixgħula.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bażi</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Saff shift</value></data>
@@ -2728,7 +2770,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Sewqan bil-moviment</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° sa {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Żoni mejta tal-inklinazzjoni, Orjentazzjoni tal-kontrollur</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings għall-input Inklinazzjoni bil-moviment: inklina l-kontrollur bħal rota tas-sewqan. Immappja “Inklinazzjoni bil-moviment” fuq assi ta' stick mil-lista tal-input fil-Mappjar.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings għall-input Inklinazzjoni bil-moviment: inklina l-kontrollur bħal rota tas-sewqan. Immappja “Inklinazzjoni bil-moviment” fuq assi ta' stick fit-taqsima Buttuni.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Irrisettja s-sewqan bil-moviment</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (stick tal-lemin)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stick tax-xellug)</value></data>
@@ -2737,7 +2779,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ċirku tal-istick tal-lemin</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Settings għall-inputs tal-flick stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings għall-inputs tal-flick stick: ipponta l-istick u l-kamera ddur biex taqbel, iġbed tul it-tarf biex iddawwar b'mod fin. Immappja “Flick stick (stick tal-lemin)” fuq Maws X mil-lista tal-input fil-Mappjar, fi kwalunkwe saff.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings għall-inputs tal-flick stick: ipponta l-istick u l-kamera ddur biex taqbel, iġbed tul it-tarf biex iddawwar b'mod fin. Immappja “Flick stick (stick tal-lemin)” fuq Maws X fit-taqsima Tasti u Maws, fi kwalunkwe saff.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Irrisettja l-flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punti għal kull 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>L-għadd tal-maws għal dawra sħiħa ta' 360° tal-kamera. Jiddependi mis-sensittività tal-maws tal-logħba: għollih jekk flick ma jdurx biżżejjed, naqqsu jekk idur iżżejjed.</value></data>
@@ -2829,7 +2871,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Awdjo</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Il-ħsejjes tal-makro u l-awdjo tas-sistema kkopjat jindaqqu mill-ispeaker integrat tal-kontrollur magħżul, permezz ta' USB jew Bluetooth. Agħżel l-apparat fil-lista ta' hawn fuq. Kull setting hawn isegwih.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ħruġ tal-ħoss</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sors tal-kopja, haptics, Volum tal-headphones, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sors tal-kopja, Volum tal-headphones, buffer, Mogħdija tal-output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Il-ħsejjes jintbagħtu lill-kontrollur magħżul awtomatikament. Permezz ta' USB, l-endpoint tal-awdjo tal-pad stess jiġi identifikat mill-container tal-ħardwer. Permezz ta' Bluetooth, l-awdjo jiġi streamjat fi frames HID ta' Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sors tal-kopja</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Liema apparat tad-daqq jiġi kkopjat fl-ispeaker tal-kontrollur. Logħob li jibgħat ħsejjes speċifiċi lil apparat tad-daqq separat jista' juża dan.</value></data>
@@ -2842,10 +2884,10 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Waqqaf il-ħsejjes kollha</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Waqqaf kull ħoss tal-makro fuq dan il-pad</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Makros tal-ħoss</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Il-ħsejjes jindaqqu permezz ta' makros: kundizzjoni ta' attivazzjoni (għafsa ta' buttuna, meta titħalla, żamma jew formula) flimkien ma' azzjoni Doqq ħoss. Ibnihom hawn jew fit-tab Makros. Dewmien, ripetizzjonijiet u toggles kollha jaħdmu.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Il-ħsejjes jindaqqu permezz ta' makros: kundizzjoni ta' attivazzjoni (għafsa ta' buttuna, meta titħalla, żamma jew formula) flimkien ma' azzjoni Doqq ħoss. Ibnihom hawn jew fit-taqsima Makros u Menus. Dewmien, ripetizzjonijiet u toggles kollha jaħdmu.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Makro ġdid tal-ħoss</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Għad m'hemmx makros tal-ħoss. Oħloq wieħed u agħżel fajl tal-ħoss u kundizzjoni ta' attivazzjoni.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Iftaħ dan il-makro fit-tab Makros</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Iftaħ dan il-makro fit-taqsima Makros u Menus</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makro tal-ħoss {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Doqq ħoss</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Doqq fajl tal-ħoss (.wav, .mp3, .m4a, .aac, .wma, .flac) fuq l-apparat tal-ħruġ ta' dan il-pad</value></data>
@@ -3121,6 +3163,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Qed jaħdem</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Qed jaħdem, driver konness</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Qed jaħdem, kontrolluri attivi</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR installat</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR mhux installat</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR qed jaħdem</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR qed jaħdem, driver konness</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR qed jaħdem, kontrolluri attivi</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Driver ieħor tal-OpenVR juża l-isem tad-driver ta' HIDMaestro, għalhekk SteamVR jista' jtellgħu minflok dak ta' PadForge u l-kontrolluri virtwali tal-VR ma jidhrux. Neħħi dak id-driver biex tirranġa dan: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Kontrollur serjali (port COM)</value></data>
@@ -3264,7 +3311,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Konsumatur {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Maws</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ġesti tal-maws</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Żomm il-buttuna tal-ġest, agħmel flick, u azzjoni waħda tiskatta meta tħalli: xellug, lemin, fuq, isfel, jew klikk sempliċi taħt id-distanza tal-flick. Immappja l-ħames ġesti fit-tab tal-mappjar jew użahom bħala attivaturi tal-makros.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Żomm il-buttuna tal-ġest, agħmel flick, u azzjoni waħda tiskatta meta tħalli: xellug, lemin, fuq, isfel, jew klikk sempliċi taħt id-distanza tal-flick. Immappja l-ħames ġesti fuq kwalunkwe output jew użahom bħala attivaturi tal-makros.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Attiva l-ġesti tal-maws</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Jattiva r-rikonoxxitur tal-ġesti għal dan il-maws f'dan is-slot. Il-buttuna tal-ġest iżżomm il-klikk normali tagħha waqt il-ġest, għalhekk agħżel buttuna tal-ġenb li ma timmappjax mod ieħor.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Buttuni tal-ġest</value></data>
@@ -3298,7 +3345,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Aqleb is-saff</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Issettja l-kulur Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Iżebgħa l-apparati Razer assenjati lil dan il-kontrollur virtwali, u kull apparat Razer ieħor tal-istess tip, b'kulur wieħed waqt li l-azzjoni tkun għaddejja.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Għat-tul ta' żmien ta' hawn fuq, iżebgħa dan il-kulur fuq l-apparati Razer assenjati lil dan il-kontrollur virtwali u fuq kull apparat Razer ieħor tal-istess tip, jew fuq kull apparat Razer meta r-ringiela Razer Chroma tkun assenjata. Jieħu preċedenza fuq it-tab tad-dawl ta' kwalunkwe kontrollur virtwali, imbagħad jagħti d-dawl lura. Biex iżżomm il-kulur sakemm l-attivatur jinżamm, uża “Waqt li jinżamm” ma' “Sa ma tħalli”. Meta żewġ makros iżebgħu fl-istess ħin, jirbaħ dak l-iktar 'l isfel fil-lista, għalhekk poġġi makro ta' għafsa sħiħa taħt it-tewmi tagħha ta' għafsa ħafifa. Meta makros fuq żewġ kontrolluri virtwali jżebgħu l-istess tip ta' apparat Razer, jirbaħ l-iżgħar numru tal-plejer. Jeħtieġ li Razer Synapse ikun għaddej.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Għat-tul ta' żmien ta' hawn fuq, iżebgħa dan il-kulur fuq l-apparati Razer assenjati lil dan il-kontrollur virtwali u fuq kull apparat Razer ieħor tal-istess tip, jew fuq kull apparat Razer meta r-ringiela Razer Chroma tkun assenjata. Jieħu preċedenza fuq id-dawl li jissettja kwalunkwe kontrollur virtwali fit-taqsima Dawl u Awdjo, imbagħad jagħti d-dawl lura. Biex iżżomm il-kulur sakemm l-attivatur jinżamm, uża “Waqt li jinżamm” ma' “Sa ma tħalli”. Meta żewġ makros iżebgħu fl-istess ħin, jirbaħ dak l-iktar 'l isfel fil-lista, għalhekk poġġi makro ta' għafsa sħiħa taħt it-tewmi tagħha ta' għafsa ħafifa. Meta makros fuq żewġ kontrolluri virtwali jżebgħu l-istess tip ta' apparat Razer, jirbaħ l-iżgħar numru tal-plejer. Jeħtieġ li Razer Synapse ikun għaddej.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Uri l-iskrin tad-Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Juri stampi fuq il-VMU ta' kull pad tad-Dreamcast f'port tal-Bliss-Box li jitma' dan is-slot, imbagħad jerġa' jagħti lil kull port l-issettjar tal-iskrin tiegħu.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Uri stampi tad-Dreamcast: {0} × {1} ms, għadd ta' ripetizzjonijiet {2}</value></data>
@@ -3589,10 +3636,12 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Iżżero r-referenzi akkumulati tal-mira tal-ġiroskopju tal-pad meta tagħfas. L-istorja tal-illixxar titħassar, in-newtrali ta' Tmil tal-moviment jerġa' jinqabad, l-istima tal-gravità terġa' tinbeda mill-pożizzjoni attwali tal-kontrollur, u d-dawran li bnew ir-ringieli Pitch, Yaw u Roll tal-moviment jitħassar.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Kwalunkwe apparat)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Il-menus ibiddlu stick jew touchpad fiżiku f'ċirku jew grilja fuq l-iskrin. Żid menu, agħżel x'jiftħu, imbagħad agħti tikketta lil kull ċellola u agħtiha rabta.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Il-menus ibiddlu stick jew touchpad fiżiku f'ċirku jew grilja fuq l-iskrin. Agħfas + ħdejn Menus biex toħloq wieħed, agħżel x'jiftħu, imbagħad agħti lil kull ċellola isem u azzjoni.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu ġdid</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Isem tal-menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Attivat</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Ftuħ</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stil</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Ċirku radjali</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Grilja tal-mess</value></data>
@@ -3612,12 +3661,16 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Ċelloli</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Ċellola ċentrali</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Uri t-tikketti</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Pożizzjoni fuq l-iskrin</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Daqs</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Opaċità</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Żona mejta tal-attivazzjoni</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Rabtiet taċ-ċelloli</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Ċellola {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Żid ċellola</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Neħħi l-aħħar ċellola</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Editja ċ-ċellola</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Isem</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Azzjoni</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikona</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Ċentru</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Xejn</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tast tat-tastiera</value></data>
@@ -3630,7 +3683,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Jattiva darba meta jinħeles il-klikk: ipponta lejn iċ-ċellola, ikklikkja l-istick jew it-trackpad 'il ġewwa, imbagħad ħalli l-klikk.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Jattiva darba meta tħalli: erfa' subgħajk mill-pad, jew ħalli l-istick jerġa' lura għaċ-ċentru waqt li ċellola tkun enfasizzata.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Ir-rabta tinżamm il-ħin kollu li ċ-ċellola tkun enfasizzata. M'hemmx bżonn ta' klikk.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Kemm-il ċellola għandu l-menu. Għal ċirku radjali dan jgħodd iċ-ċirku biss. Iċ-ċellola ċentrali hija separata.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Iżżid ċellola ċentrali, magħżula waqt li l-istick jew is-saba' jkun ġewwa ż-Żona mejta tal-attivazzjoni.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Għall-isticks, kemm trid timbotta qabel ma jinfetaħ il-menu u jiġu enfasizzati ċ-ċelloli taċ-ċirku. Fil-menus radjali hija wkoll ir-reġjun ċentrali kemm għall-isticks kif ukoll għat-touchpads: ġewwa fiha, tintgħażel iċ-ċellola ċentrali meta teżisti.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Uri t-tikketta ta' kull ċellola fuq l-overlay fuq l-iskrin.</value></data>
@@ -3640,8 +3692,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Id-daqs tal-overlay, f'perċentwal tad-daqs normali tiegħu.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>L-opaċità tal-overlay. 100% huwa solidu għalkollox.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>It-test muri fuq din iċ-ċellola fl-overlay.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>X'tagħmel din iċ-ċellola meta tattiva: “Tast tat-tastiera” jagħfas tast tat-tastiera, “Buttuna tal-kontrollur” tagħfas buttuna fuq il-kontrollur virtwali ta' dan is-slot. Ċellola issettjata għal “Xejn” xorta tattiva bħala sors ta' oġġett tal-menu għar-ringieli tal-mappjar u għall-attivaturi tal-makros.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Jinqara mill-kontrolluri fiżiċi assenjati lil dan is-slot, mhux mil-layout tal-kontrollur virtwali. Ir-rabtiet taċ-ċelloli hawn taħt huma dak li joħroġ il-menu.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>X'tagħmel din iċ-ċellola meta tattiva: “Tast tat-tastiera” jagħfas tast tat-tastiera, “Buttuna tal-kontrollur” tagħfas buttuna fuq il-kontrollur virtwali ta' dan is-slot. Ċellola issettjata għal “Xejn” xorta tattiva bħala sors ta' oġġett tal-menu għall-mappjar u għall-attivaturi tal-makros.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Jinqara mill-kontrolluri fiżiċi assenjati lil dan is-slot, mhux mil-layout tal-kontrollur virtwali. Iċ-ċelloli hawn taħt jgħidu x'joħroġ il-menu.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Assi personalizzati</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Mexxi X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Mexxi Y</value></data>
@@ -3666,13 +3718,16 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buttuni</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasti u Maws</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noti u Kontrolli</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Idejn</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Sticks u Triggers</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrazzjoni u Feedback</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment u Mess</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Dawl u Awdjo</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makros u Menus</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Jibgħat ir-rumble u l-force feedback tal-logħba li jirċievi dan il-kontrollur virtwali lejn output tal-awdjo bħala toni ta' frekwenza baxxa għal bass shakers u subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Idoqq ir-rumble tal-logħba bħala toni baxxi permezz ta' bass shakers jew subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Apparat tal-output, kanali, gain, ton għal kull mutur</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Jaħdem mal-kontrolluri virtwali Xbox, DualShock 3, DualShock 4 / DualSense u Nintendo Switch Pro, kif ukoll mal-kontrolluri virtwali Extended b'force feedback, bħal roti tas-sewqan, u mas-Steam Deck Controller (Composite). Il-feedback tal-logħba u Test Rumble jindaqqu permezz tal-output tal-awdjo. Ir-rumble tal-makros jibqa' fuq il-kontrollur.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Irrisettja Rumble għall-awdjo</value></data>
@@ -3701,19 +3756,22 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Idoqq dan il-kanal tal-feedback bħala ton. Il-gain u l-frekwenza jibqgħu ssettjati waqt li jkun mitfi.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekwenza tat-ton għal dan il-kanal, 20 sa 120 Hz. Ħaddem il-frequency sweep biex issib fejn il-shaker tiegħek jirrispondi l-aktar.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Il-volum ta' dan il-kanal qabel il-gain ġenerali.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Gain</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Ittestja</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Idoqq it-ton ta' dan il-kanal għal 1.5 sekondi bil-gain issettjat tiegħu.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Irrisettja l-mutur baxx</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Irrisettja l-mutur għoli</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Irrisettja t-trigger tax-xellug</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Irrisettja t-trigger tal-lemin</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Iċċekkja x-shakers</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Sweep tal-frekwenza</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Jagħmel sweep ta' ton minn 20 sa 120 Hz fi żmien tmien sekondi fuq ir-routing tal-mutur baxx. Innota fejn ix-shaker tiegħek jirrispondi l-aktar b'saħħtu u ssettja l-frekwenzi tal-vuċijiet hemmhekk.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Waqqaf</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Iwaqqaf it-ton tat-test jew is-sweep.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Kwalunkwe tag NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Iffiltra l-inputs (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Iffiltra l-outputs u l-inputs</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Juri biss ir-ringieli u l-inputs li jaqblu. Agħfas Ctrl+F biex tikteb hawn.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Agħżel l-inputs ta' liema apparati jidhru fl-għażla</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Jidhru fl-għażla</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Kwalunkwe frażi bil-vuċi</value></data>
@@ -3820,6 +3878,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Irrisettja l-feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>EQ parametriku</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtri għal kull banda fuq l-awdjo tal-kontrollur. Jiġu applikati qabel ma l-awdjo jiġi kkodifikat, għalhekk il-limiter hawn taħt iżomm banda msaħħa milli tagħmel clipping.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, bandi, importazzjoni</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Il-livell ġenerali qabel il-bandi. Il-profili AutoEq jiġu b'preamp negattiv biex iż-żidiet tagħhom ma jagħmlux clipping, u meta timporta wieħed dan jiġi ssettjat għalik.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Mixgħul</value></data>
@@ -4040,7 +4099,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Irrisettja għall-ftuħ bil-mess jew bid-devjazzjoni.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Mexxi bi</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L-input fiżiku li jmexxi ċ-ċellula enfasizzata waqt li s-saff iżomm dan il-menu miftuħ.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Jinqara mill-kontrolluri fiżiċi assenjati lil dan is-slot. Is-saff jiftaħ il-menu, u dan l-input imexxih. Ir-rabtiet taċ-ċelluli jiddeterminaw l-output tiegħu.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Jinqara mill-kontrolluri fiżiċi assenjati lil dan is-slot. Is-saff jiftaħ il-menu, u dan l-input imexxih. Iċ-ċelloli tiegħu jgħidu x'joħroġ.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Daqs tal-ikona</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Id-daqs tal-ikona meta mqabbel mad-daqs normali tal-ikoni tal-menu, minn 25% sa 200%. Jekk tneħħi l-ikona, dan jerġa' lura għal 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Iżomm ir-rabta taċ-ċellula enfasizzata waqt li l-input tal-klikk ikun miżmum. Ċentru radjali enfasizzat jista' jattiva waqt li l-istick ikun mistrieħ.</value></data>
@@ -4163,7 +4222,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referenza minn Antoine Aflalo għat-tqassim tal-interface IPolicyConfig mhux dokumentata ta' Windows, li PadForge juża biex jerġa' jattiva l-endpoint tal-awdjo ta' kontrollur. MIT. Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Il-format tal-profili EQ parametriċi li t-tab Awdjo jimporta, minn Jaakko Pasanen. MIT. Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Il-format tal-profili EQ parametriċi li l-EQ parametriku ta' kontrollur jimporta, minn Jaakko Pasanen. MIT. Dokumentazzjoni biss, l-ebda kodiċi ma jiġi inkluż.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>It-tekniki ta' SendInput wara l-makro ta' blokk ta' test u l-hook tal-kombinazzjonijiet tat-tastiera: ittajpjar Unicode, limiti tal-lottijiet, it-tast tal-maskra għal Win, u input injettat ittikkettjat. GPL-2.0-or-later, moqri biss bħala dokumentazzjoni, l-ebda kodiċi GPL ma jiġi inkluż.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4367,6 +4426,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direzzjoni</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Pass</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>sa</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Maqbad</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} qed jikkontrolla t-triggers ta' dan il-kontrollur.</value></data>
@@ -4411,7 +4471,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Il-maqbad ma mexiex biżżejjed, għalhekk il-medda tibqa' kif kienet. Ċaqalqu sa kull tarf waqt li jkun għaddej il-kejl.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Il-Falcon ingħalaq qabel ma spiċċa l-kejl.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Jippermettilek tilgħab logħob b'Novint Falcon permezz tal-SDK ta' Force Dimension, li tinstalla mingħand Force Dimension. Il-maqbad huwa stick, l-erba' buttuni tal-maqbad huma buttuni, u PadForge ipoġġi r-rumble u l-effetti tal-logħba fuq il-maqbad bħala forza. It-tab Force feedback ta' kull slot jiddetermina kif iġib ruħu l-Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Jippermettilek tilgħab logħob b'Novint Falcon permezz tal-SDK ta' Force Dimension, li tinstalla mingħand Force Dimension. Il-maqbad huwa stick, l-erba' buttuni tal-maqbad huma buttuni, u PadForge ipoġġi r-rumble u l-effetti tal-logħba fuq il-maqbad bħala forza. Il-karta Novint Falcon fit-taqsima Vibrazzjoni u Feedback ta' kull kontrollur tiddetermina kif iġib ruħu l-Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Ħaddem in-Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Jiftaħ kull Falcon permezz tad-dhd64.dll ta' Force Dimension. Falcon miftuħ huwa ta' PadForge biss, għalhekk FalconJoyForce u l-għodod ta' Force Dimension ma jistgħux jiftħuh waqt li dan ikun mixgħul. Meta jkun mitfi, PadForge jagħlaq kull Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Il-librerija tal-Falcon issettjata għal {0}. PadForge jgħabbiha fi ftit sekondi, u Falcon miftuħ fuq kopja oħra jerġa' jinfetaħ fuq din.</value></data>
@@ -4577,7 +4637,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Għal ħin stabbilit</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Sakemm jitwaqqaf</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ħin</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Idoqq fuq kull DualSense u DualSense Edge f'dan is-slot. L-effett tat-trigger tal-logħba stess u dak ta' mod tal-logħba jiġu l-ewwel, u l-issettjar tat-tab Triggers adattivi jerġa' lura meta jispiċċa l-effett. Iż-żoni jmorru minn 0 meta ma jintmissx sa 9 meta jinġibed kompletament. Qaws, Galopp u Magna mhumiex effetti uffiċjali tad-DualSense, u aġġornament tal-firmware jista' jneħħihom. Kontrolluri Xbox b'Ittraduċi l-vibrazzjonijiet tat-triggers adattivi mixgħul iħossu l-effetti li jivvibraw bħala rumble fit-triggers.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Idoqq fuq kull DualSense u DualSense Edge f'dan is-slot. L-effett tat-trigger tal-logħba stess u dak ta' mod tal-logħba jiġu l-ewwel, u l-issettjar tal-karta Triggers adattivi jerġa' lura meta jispiċċa l-effett. Iż-żoni jmorru minn 0 meta ma jintmissx sa 9 meta jinġibed kompletament. Qaws, Galopp u Magna mhumiex effetti uffiċjali tad-DualSense, u aġġornament tal-firmware jista' jneħħihom. Kontrolluri Xbox b'Ittraduċi l-vibrazzjonijiet tat-triggers adattivi mixgħul iħossu l-effetti li jivvibraw bħala rumble fit-triggers.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} fuq {1} għal {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} fuq {1} waqt li jinżamm</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} fuq {1} sakemm jitwaqqaf</value></data>

@@ -153,20 +153,23 @@ namespace PadForge.Tests
             Assert.Equal(new[]
             {
                 "Preview_Buttons", "Preview_DPad", "Pad_Triggers", "Menu_Host_LeftStick", "Menu_Host_RightStick",
-                "Pad_Touchpad", "Pad_Gyro_Passthrough_Header",
+                "Pad_Touchpad", "Pad_Band_Motion",
             }, bindings.Skip(1).Select(b => (string)b.Attribute("Path")));
             Assert.All(bindings.Skip(1), b => Assert.Equal("{x:Static strings:Strings.Instance}", (string)b.Attribute("Source")));
         }
 
         /// <summary>A group's fold is kept by category on the view model,
-        /// so it holds when the table builds its groups again. Every group
-        /// starts open.</summary>
+        /// so it holds when the table builds its groups again. The two
+        /// sticks' groups start folded, as the List board opens (#574), and
+        /// every other group starts open.</summary>
         [Fact]
         public void AGroupsFoldIsKeptByCategory()
         {
             var vm = new PadViewModel(0);
             foreach (MappingCategory category in Enum.GetValues(typeof(MappingCategory)))
-                Assert.True(vm.IsListGroupOpen(category));
+                Assert.Equal(category is not (MappingCategory.LeftStick or MappingCategory.RightStick), vm.IsListGroupOpen(category));
+            vm.SetListGroupOpen(MappingCategory.LeftStick, true);
+            Assert.True(vm.IsListGroupOpen(MappingCategory.LeftStick));
 
             vm.SetListGroupOpen(MappingCategory.DPad, false);
             Assert.False(vm.IsListGroupOpen(MappingCategory.DPad));
@@ -232,9 +235,18 @@ namespace PadForge.Tests
             Assert.Equal("13", (string)title.Attribute("FontSize"));
             Assert.Equal("SemiBold", (string)title.Attribute("FontWeight"));
             Assert.Equal("{DynamicResource TextFillColorSecondaryBrush}", (string)title.Attribute("Foreground"));
-            var count = Assert.Single(style.Descendants(), e => (string)e.Attribute("Text") == "{Binding ItemCount}");
+            // The count says what it counts, as the List board has it: "11
+            // outputs".
+            var counted = Assert.Single(style.Descendants(), e => e.Name.LocalName == "Binding"
+                && (string)e.Attribute("Path") == "ItemCount");
+            var countText = counted.Parent;
+            Assert.Equal("{StaticResource FormatTextConverter}", (string)countText.Attribute("Converter"));
+            Assert.Equal(new[] { "ItemCount", "Pad_Band_Count_Format" }, countText.Elements().Select(b => (string)b.Attribute("Path")));
+            var count = countText.Parent.Parent;
+            Assert.Equal("TextBlock", count.Name.LocalName);
             Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)count.Attribute("Foreground"));
             Assert.Equal("13", (string)count.Attribute("FontSize"));
+            Assert.Contains("{0}", PadForge.Resources.Strings.Strings.Instance.Pad_Band_Count_Format);
 
             // The band's fill follows the theme.
             Assert.Contains("<SolidColorBrush x:Key=\"SteelBandBrush\" Color=\"#0F1520\"/>",
@@ -668,8 +680,12 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource RowOptionCombineMinWidth}", (string)combinePicker.Attribute("MinWidth"));
             Assert.Equal("200", Keyed(page, "RowOptionCombineMinWidth").Value);
             var add = Assert.Single(details.Descendants(), e => (string)e.Attribute("Command") == "{Binding AddExtraSourceCommand}");
-            Assert.Equal("{StaticResource QuietPlainButton}", (string)add.Attribute("Style"));
+            Assert.Equal("{StaticResource QuietTextButton}", (string)add.Attribute("Style"));
             Assert.Equal("{DynamicResource RowOptionAddSource}", (string)add.Attribute("Visibility"));
+            // Its plus is drawn, as the List board has it, and it is drawn out
+            // to the start by its own inset.
+            Assert.Equal("-14,4,0,0", (string)add.Attribute("Margin"));
+            Assert.Equal("M 7,3 L 7,11 M 3,7 L 11,7", (string)Assert.Single(add.Descendants(), e => e.Name.LocalName == "Path").Attribute("Data"));
 
             // Nothing runs past the card's edge: the table does not scroll
             // sideways, and no strip of an open row is a panel that cannot
@@ -989,24 +1005,26 @@ namespace PadForge.Tests
         /// <summary>The bar's row is the one the pick names. On a gamepad a
         /// stick's axes and the D-pad's directions are one control with the
         /// group's name, and any other control is its own row. The bar
-        /// shows under the picture with a control picked, and its options
-        /// when they are opened.</summary>
+        /// shows under the picture, which always has a control picked, the
+        /// first at the start (#574), and its options when they are
+        /// opened.</summary>
         [Fact]
         public void TheBarIsOnThePickedRow()
         {
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
-            Assert.Null(vm.PickedRow);
-            Assert.Equal(string.Empty, vm.PickedName);
-            Assert.False(vm.ShowPictureBar);
+            var a = vm.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            Assert.Same(a, vm.PickedRow);
+            Assert.Equal(a.TargetLabel, vm.PickedName);
+            Assert.True(vm.ShowPictureBar);
 
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
 
-            var a = vm.Mappings.First(m => m.TargetSettingName == "ButtonA");
-            vm.PickedTarget = "ButtonA";
-            Assert.Same(a, vm.PickedRow);
-            Assert.Equal(a.TargetLabel, vm.PickedName);
+            var b = vm.Mappings.First(m => m.TargetSettingName == "ButtonB");
+            vm.PickedTarget = "ButtonB";
+            Assert.Same(b, vm.PickedRow);
+            Assert.Equal(b.TargetLabel, vm.PickedName);
             Assert.True(vm.ShowPictureBar);
             Assert.Contains(nameof(PadViewModel.PickedRow), raised);
             Assert.Contains(nameof(PadViewModel.PickedName), raised);
@@ -1038,6 +1056,16 @@ namespace PadForge.Tests
             vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
             Assert.True(vm.ShowPictureBar);
 
+            // With nothing picked, which only the list allows, the bar has
+            // no row and no name.
+            var held = vm.PickedTarget;
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            vm.PickedTarget = null;
+            Assert.Null(vm.PickedRow);
+            Assert.Equal(string.Empty, vm.PickedName);
+            vm.PickedTarget = held;
+            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+
             // Rows built again are new objects: the bar is on the new one.
             var before = vm.PickedRow;
             raised.Clear();
@@ -1046,16 +1074,239 @@ namespace PadForge.Tests
             Assert.Equal(before.TargetSettingName, vm.PickedRow.TargetSettingName);
             Assert.Contains(nameof(PadViewModel.PickedRow), raised);
 
-            // A type with rows of its own names a control by its row.
+            // A type with rows of its own names a control by its row. A
+            // MIDI note is headed by its pitch, as its key on the picture
+            // says it, and the row's name is the small line under it, as
+            // the MIDI board has it.
             vm.OutputType = VirtualControllerType.Midi;
             vm.RebuildMappings();
-            var note = vm.Mappings.First();
+            var cc = vm.Mappings.First();
+            Assert.StartsWith("MidiCC", cc.TargetSettingName);
+            Assert.Null(cc.PictureName);
+            vm.PickedTarget = cc.TargetSettingName;
+            Assert.Equal(cc.TargetLabel, vm.PickedName);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Pad_Kind_ControlChange, vm.PickedKind);
+            int first = vm.MidiConfig.GetNoteNumbers()[0];
+            var note = vm.Mappings.First(m => m.TargetSettingName == "MidiNote0");
+            Assert.Equal("Note " + first, note.TargetLabel);
+            Assert.Equal(MidiSlotConfig.PitchName(first), note.PictureName);
+            Assert.Equal(note.PictureName, note.BarLabel);
             vm.PickedTarget = note.TargetSettingName;
-            Assert.Equal(note.TargetLabel, vm.PickedName);
+            Assert.Equal(note.PictureName, vm.PickedName);
+            Assert.Equal(note.TargetLabel, vm.PickedKind);
+            // The picture's keys and the bar read one pitch name.
+            Assert.Equal("C4", MidiSlotConfig.PitchName(60));
+            Assert.Equal("C-1", MidiSlotConfig.PitchName(0));
+            Assert.Equal("G9", MidiSlotConfig.PitchName(127));
+            Assert.Equal("A#3", MidiSlotConfig.PitchName(58));
+            Assert.Null(MidiSlotConfig.PitchName(128));
+            Assert.Null(MidiSlotConfig.PitchName(-1));
+            Assert.Contains("string name = MidiSlotConfig.PitchName(midiNote);",
+                ExtrasPageTests.RepoText("PadForge.App", "Views", "MidiPreviewView.xaml.cs"));
 
+            // A pick of none under the picture goes back to the first row.
             vm.PickedTarget = null;
-            Assert.Null(vm.PickedRow);
-            Assert.False(vm.ShowPictureBar);
+            Assert.Same(cc, vm.PickedRow);
+            Assert.True(vm.ShowPictureBar);
+        }
+
+        /// <summary>A stick's click is a button in the list and one of
+        /// its stick's rows under the picture, after the two axes, as the
+        /// Buttons board has it. Picked by its click or by an axis, the
+        /// stick is one control. The list keeps the rows' own order.</summary>
+        [Fact]
+        public void AStickClickIsOneOfItsSticksRowsUnderThePicture()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var vm = new PadViewModel(0);
+            vm.ApplyMappingPickerFilter();
+            var click = vm.Mappings.First(m => m.TargetSettingName == "LeftThumbButton");
+            var axes = vm.Mappings.Where(m => m.Category == MappingCategory.LeftStick).ToList();
+            Assert.Equal(2, axes.Count);
+            Assert.Equal(MappingCategory.Buttons, click.Category);
+            Assert.Equal(MappingCategory.LeftStick, PadViewModel.FamilyOf(click));
+            Assert.Equal(MappingCategory.RightStick,
+                PadViewModel.FamilyOf(vm.Mappings.First(m => m.TargetSettingName == "RightThumbButton")));
+            Assert.Equal(MappingCategory.DPad, PadViewModel.FamilyOf(vm.Mappings.First(m => m.TargetSettingName == "DPadUp")));
+            Assert.Null(PadViewModel.FamilyOf(vm.Mappings.First(m => m.TargetSettingName == "ButtonA")));
+            Assert.Null(PadViewModel.FamilyOf(vm.Mappings.First(m => m.TargetSettingName == "LeftTrigger")));
+            Assert.Null(PadViewModel.FamilyOf(null));
+            Assert.True(PadViewModel.SameControl(click, axes[0]));
+            Assert.False(PadViewModel.SameControl(click, vm.Mappings.First(m => m.TargetSettingName == "RightThumbAxisX")));
+
+            // The bar holds the two axes, then the click. The table under
+            // the picture holds the same rows in the list's own order.
+            var bar = vm.PickedRowsView;
+            var table = Assert.IsType<ListCollectionView>(Rows(vm));
+            foreach (string pick in new[] { "LeftThumbButton", "LeftThumbAxisY", "LeftThumbAxisXNeg" })
+            {
+                vm.PickedTarget = null;
+                vm.PickedTarget = pick;
+                Assert.Equal(s.Menu_Host_LeftStick, vm.PickedName);
+                Assert.Equal(s.Pad_Kind_Stick, vm.PickedKind);
+                Assert.Equal(new[] { axes[0], axes[1], click }, bar.Cast<MappingItem>());
+                Assert.Equal(new[] { click, axes[0], axes[1] }, table.Cast<MappingItem>());
+                Assert.Equal(new[] { "LeftThumbAxisX", "LeftThumbAxisY", "LeftThumbButton" }, vm.PickedTargets().OrderBy(t => t, StringComparer.Ordinal));
+            }
+            Assert.Null(table.CustomSort);
+
+            // The list has every row in its own order, the click among the
+            // buttons, and the bar keeps the picked control's rows.
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.Equal(vm.Mappings.Where(m => m.Category == MappingCategory.Buttons),
+                table.Cast<MappingItem>().Where(m => m.Category == MappingCategory.Buttons));
+            Assert.Equal(new[] { axes[0], axes[1], click }, bar.Cast<MappingItem>());
+            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+            Assert.Equal(new[] { axes[0], axes[1], click }, bar.Cast<MappingItem>());
+
+            // A VR hand's stick holds its click the same way, and says its
+            // hand.
+            var vr = new PadViewModel(1) { OutputType = VirtualControllerType.Vr };
+            vr.RebuildMappings();
+            vr.PickedTarget = "VrRStickClick";
+            Assert.Equal(s.Menu_Host_RightStick, vr.PickedName);
+            Assert.Equal(string.Format(s.Pad_Kind_RightHand_Format, s.Pad_Kind_Stick), vr.PickedKind);
+            Assert.Equal(new[] { "VrRStickX", "VrRStickY", "VrRStickClick" },
+                vr.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+
+            // A lettered preset's raw rows say the control each one is, so
+            // its stick's click is found by that.
+            string stamp = SettingsManager.GetWireStamp(11);
+            try
+            {
+                var sw = new PadViewModel(11) { OutputType = VirtualControllerType.Nintendo };
+                sw.RebuildMappings();
+                var l3 = Assert.Single(sw.Mappings, m => m.Role == "LeftThumbButton");
+                Assert.StartsWith("RawBtn", l3.TargetSettingName);
+                Assert.Equal(MappingCategory.LeftStick, PadViewModel.FamilyOf(l3));
+                sw.PickedTarget = l3.TargetSettingName;
+                Assert.Equal(s.Menu_Host_LeftStick, sw.PickedName);
+                Assert.Equal(s.Pad_Kind_Stick, sw.PickedKind);
+                Assert.Equal(new[] { "RawAxis0", "RawAxis1", l3.TargetSettingName },
+                    sw.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+                Assert.Equal(s.Pad_Kind_Trigger, sw.KindOf(Assert.Single(sw.Mappings, m => m.Role == "LeftTrigger")));
+                Assert.Equal(s.Pad_Kind_SystemButton, sw.KindOf(Assert.Single(sw.Mappings, m => m.Role == "ButtonGuide")));
+                Assert.Equal(s.Pad_Kind_FaceButton, sw.KindOf(Assert.Single(sw.Mappings, m => m.Role == "ButtonA")));
+                sw.PickedTarget = sw.Mappings.First(m => m.Category == MappingCategory.DPad).TargetSettingName;
+                Assert.Equal(s.Preview_DPad, sw.PickedName);
+                Assert.Equal(s.Pad_Kind_DPad, sw.PickedKind);
+            }
+            finally
+            {
+                SettingsManager.StampNintendoWire(11, stamp);
+            }
+
+            // A custom Extended slot's control is named by its picked row.
+            var custom = new PadViewModel(2) { OutputType = VirtualControllerType.Extended };
+            custom.RebuildMappings();
+            var stick = custom.Mappings.First(m => m.Category == MappingCategory.LeftStick);
+            Assert.NotNull(stick.Control);
+            custom.PickedTarget = stick.TargetSettingName;
+            Assert.Equal(stick.TargetLabel, custom.PickedName);
+            Assert.Equal(s.Pad_Kind_Stick, custom.PickedKind);
+        }
+
+        /// <summary>The bar under the picture has a view of its own over
+        /// the rows. In the list, where the bar is hidden, it holds the
+        /// picked control's rows and no others, so it builds no block for
+        /// each of the table's rows: it built 148 on a Keyboard + Mouse slot
+        /// while it shared the table's view.</summary>
+        [Fact]
+        public void TheBarsRowsAreItsOwn_SoTheHiddenBarBuildsNoBlockPerRow()
+        {
+            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            vm.RebuildMappings();
+            vm.ApplyMappingPickerFilter();
+            // The picture opens with the first row the slot shows picked.
+            Assert.Equal(new[] { "KbmMBtn0" }, vm.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+            vm.PickedTarget = "KbmKey57";
+            Assert.Equal(new[] { "KbmKey57" }, vm.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.True(Rows(vm).Cast<MappingItem>().Count() > 100);
+            Assert.Equal(new[] { "KbmKey57" }, vm.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+            // Rows built again: the bar holds the new row.
+            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+            vm.RebuildMappings();
+            Assert.Same(vm.PickedRow, Assert.Single(vm.PickedRowsView.Cast<MappingItem>()));
+            // In the list nothing need be picked, and then the bar holds
+            // no row.
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            vm.PickedTarget = null;
+            Assert.Empty(vm.PickedRowsView.Cast<MappingItem>());
+            Assert.Contains("ItemsSource=\"{Binding PickedRowsView}\"", PageText());
+        }
+
+        /// <summary>The small line under the picked control's name says
+        /// what kind of control it is, in the boards' words. A controller's
+        /// rows go by their group, and its buttons by which button each is.
+        /// A keyboard and mouse slot's rows and a VR slot's go by their
+        /// target, and a VR control says its hand.</summary>
+        [Fact]
+        public void TheBarSaysWhatKindOfControlIsPicked()
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            string Kind(PadViewModel vm, string target) => vm.KindOf(vm.Mappings.First(m => m.TargetSettingName == target));
+
+            var pad = new PadViewModel(0);
+            Assert.Equal(string.Empty, pad.KindOf(null));
+            // The picture opens with its first control, A, picked (#574).
+            Assert.Equal(s.Pad_Kind_FaceButton, pad.PickedKind);
+            Assert.All(new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY" }, t => Assert.Equal(s.Pad_Kind_FaceButton, Kind(pad, t)));
+            Assert.All(new[] { "LeftShoulder", "RightShoulder" }, t => Assert.Equal(s.Pad_Kind_ShoulderButton, Kind(pad, t)));
+            Assert.All(new[] { "ButtonBack", "ButtonStart", "ButtonGuide" }, t => Assert.Equal(s.Pad_Kind_SystemButton, Kind(pad, t)));
+            Assert.All(new[] { "LeftThumbButton", "RightThumbButton", "LeftThumbAxisX", "RightThumbAxisY" },
+                t => Assert.Equal(s.Pad_Kind_Stick, Kind(pad, t)));
+            Assert.All(new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" }, t => Assert.Equal(s.Pad_Kind_DPad, Kind(pad, t)));
+            Assert.All(new[] { "LeftTrigger", "RightTrigger" }, t => Assert.Equal(s.Pad_Kind_Trigger, Kind(pad, t)));
+
+            // The picked control's kind follows the pick.
+            var raised = new List<string>();
+            pad.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            pad.PickedTarget = "LeftShoulder";
+            Assert.Equal(s.Pad_Kind_ShoulderButton, pad.PickedKind);
+            Assert.Contains(nameof(PadViewModel.PickedKind), raised);
+
+            // Rows a row builder makes for some presets only.
+            Assert.Equal(s.Pad_Kind_SystemButton, pad.KindOf(new MappingItem("Share", "ButtonShare", MappingCategory.Buttons)));
+            Assert.Equal(s.Pad_Kind_SystemButton, pad.KindOf(new MappingItem("Mute", "ButtonMute", MappingCategory.Buttons)));
+            Assert.Equal(s.Pad_Kind_Button, pad.KindOf(new MappingItem("Paddle", "LeftPaddle", MappingCategory.Buttons)));
+            Assert.Equal(s.Pad_Kind_Touchpad, pad.KindOf(new MappingItem("Click", "TouchpadClick", MappingCategory.Buttons)));
+            Assert.Equal(s.Pad_Kind_Touchpad, pad.KindOf(new MappingItem("X", "TouchpadX1", MappingCategory.Touchpad)));
+            Assert.Equal(s.Pad_Kind_Motion, pad.KindOf(new MappingItem("Gyro", "MotionGyro", MappingCategory.Motion)));
+            // A pressure row reads like a trigger and is no trigger.
+            Assert.Equal(string.Empty, pad.KindOf(new MappingItem("Cross", MappingSetMigrator.PressureTargets[0], MappingCategory.Triggers)));
+            // A lettered preset's raw rows, by the control each one is.
+            Assert.Equal(s.Pad_Kind_Trigger, pad.KindOf(new MappingItem("ZL", "RawBtn6", MappingCategory.Buttons) { Role = "LeftTrigger" }));
+            Assert.Equal(s.Pad_Kind_SystemButton, pad.KindOf(new MappingItem("C", "RawBtn20", MappingCategory.Buttons) { Role = "ButtonC" }));
+            Assert.Equal(s.Pad_Kind_SystemButton, pad.KindOf(new MappingItem("QAM", "RawBtn9", MappingCategory.Buttons) { Role = "ButtonQuickAccess" }));
+            Assert.Equal(s.Pad_Kind_Touchpad, pad.KindOf(new MappingItem("Pad", "RawBtn16", MappingCategory.Buttons) { Role = "LeftTouchpadClick" }));
+            Assert.Equal(s.Pad_Kind_Stick, pad.KindOf(new MappingItem("L3", "RawBtn10", MappingCategory.Buttons) { Role = "LeftThumbButton" }));
+            Assert.Equal(s.Pad_Kind_Button, pad.KindOf(new MappingItem("5", "RawBtn4", MappingCategory.Buttons)));
+
+            // Keyboard + Mouse: by the target's name.
+            var kbm = new PadViewModel(1) { OutputType = VirtualControllerType.KeyboardMouse };
+            kbm.RebuildMappings();
+            Assert.Equal(s.Pad_Kind_Key, Kind(kbm, "KbmKey57"));
+            Assert.Equal(s.Pad_Kind_MouseButton, Kind(kbm, "KbmMBtn0"));
+            Assert.Equal(s.Pad_Kind_MouseMovement, Kind(kbm, "KbmMouseX"));
+            Assert.All(new[] { "KbmScroll", "KbmScrollH" }, t => Assert.Equal(s.Pad_Kind_ScrollWheel, Kind(kbm, t)));
+            // The mouse's two axes are one control's rows, named by the row.
+            kbm.PickedTarget = "KbmMouseY";
+            Assert.Equal(kbm.PickedRow.TargetLabel, kbm.PickedName);
+            Assert.Equal(s.Pad_Kind_MouseMovement, kbm.PickedKind);
+
+            // VR: the kind and the hand.
+            var vr = new PadViewModel(2) { OutputType = VirtualControllerType.Vr };
+            vr.RebuildMappings();
+            Assert.Equal(string.Format(s.Pad_Kind_RightHand_Format, s.Pad_Kind_AnalogPull), Kind(vr, "VrRTrigger"));
+            Assert.Equal(string.Format(s.Pad_Kind_LeftHand_Format, s.Pad_Kind_AnalogPull), Kind(vr, "VrLGrip"));
+            Assert.Equal(string.Format(s.Pad_Kind_LeftHand_Format, s.Pad_Kind_Button), Kind(vr, "VrLA"));
+            Assert.Equal(string.Format(s.Pad_Kind_RightHand_Format, s.Pad_Kind_Button), Kind(vr, "VrRTriggerClick"));
+            Assert.Equal(string.Format(s.Pad_Kind_RightHand_Format, s.Pad_Kind_TouchSensor), Kind(vr, "VrRBTouch"));
+            Assert.Equal(string.Format(s.Pad_Kind_LeftHand_Format, s.Pad_Kind_Stick), Kind(vr, "VrLStickX"));
+            Assert.Equal(string.Format(s.Pad_Kind_LeftHand_Format, s.Pad_Kind_Stick), Kind(vr, "VrLStickClick"));
+            Assert.All(vr.Mappings, m => Assert.NotEqual(string.Empty, vr.KindOf(m)));
+            Assert.All(new[] { s.Pad_Kind_LeftHand_Format, s.Pad_Kind_RightHand_Format }, f => Assert.Contains("{0}", f));
         }
 
         /// <summary>The bar, as the Buttons board draws it: the control's
@@ -1068,7 +1319,7 @@ namespace PadForge.Tests
             var page = Page();
             var bar = Named(page, "PictureBar");
             Assert.Equal("Border", bar.Name.LocalName);
-            Assert.Equal("1", (string)bar.Attribute("Grid.Row"));
+            Assert.Equal("2", (string)bar.Attribute("Grid.Row"));
             Assert.Equal("20,16", (string)bar.Attribute("Padding"));
             Assert.Equal("{Binding ShowPictureBar, Converter={StaticResource BoolToVisibilityConverter}}", (string)bar.Attribute("Visibility"));
 
@@ -1083,23 +1334,38 @@ namespace PadForge.Tests
             Assert.Equal(3, parts.Count);
             Assert.Equal(new[] { "170", "420", "220" },
                 parts.Select(p => (string)p.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.Basis")));
-            Assert.Equal("PickedNameText", Name(parts[0]));
-            Assert.Equal("{Binding PickedName}", (string)parts[0].Attribute("Text"));
-            Assert.Equal("20", (string)parts[0].Attribute("FontSize"));
-            Assert.Equal("SemiBold", (string)parts[0].Attribute("FontWeight"));
+            // The name, and under it what kind of control it is, which
+            // shows where there is one to say.
+            Assert.Equal("StackPanel", parts[0].Name.LocalName);
+            var heads = parts[0].Elements().ToList();
+            Assert.Equal(new[] { "PickedNameText", "PickedKindText" }, heads.Select(Name));
+            Assert.Equal("{Binding PickedName}", (string)heads[0].Attribute("Text"));
+            Assert.Equal("20", (string)heads[0].Attribute("FontSize"));
+            Assert.Equal("SemiBold", (string)heads[0].Attribute("FontWeight"));
+            Assert.Equal("{Binding PickedKind}", (string)heads[1].Attribute("Text"));
+            Assert.Equal("13", (string)heads[1].Attribute("FontSize"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)heads[1].Attribute("Foreground"));
+            Assert.Equal("{Binding PickedKind, Converter={StaticResource StringToVisibility}}", (string)heads[1].Attribute("Visibility"));
 
             // The blocks: the view's rows, which under the picture are the
             // picked control's.
             var blocks = parts[1];
             Assert.Equal("PickedBlocks", Name(blocks));
-            Assert.Equal("{Binding Mappings}", (string)blocks.Attribute("ItemsSource"));
+            Assert.Equal("{Binding PickedRowsView}", (string)blocks.Attribute("ItemsSource"));
             Assert.Equal("999", (string)blocks.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.Grow"));
             var tiles = Assert.Single(blocks.Descendants(), e => e.Name.LocalName == "TileGridPanel");
             Assert.Equal("300", (string)tiles.Attribute("MinItemWidth"));
             Assert.Equal("True", (string)tiles.Attribute("FillRows"));
             var block = Assert.Single(blocks.Elements().Single(e => e.Name.LocalName == "ItemsControl.ItemTemplate").Elements()).Elements().First();
             Assert.Equal("PickedBlock_GotFocus", (string)block.Attribute("GotKeyboardFocus"));
-            Assert.Equal("{Binding TargetLabel}", (string)Named(block, "Caption").Attribute("Text"));
+            // The caption is the output, then "driven by": the picker
+            // under it names the input.
+            var caption = Named(block, "Caption");
+            Assert.Null(caption.Attribute("Text"));
+            var said = Assert.Single(caption.Descendants(), e => e.Name.LocalName == "MultiBinding");
+            Assert.Equal("{StaticResource FormatTextConverter}", (string)said.Attribute("Converter"));
+            Assert.Equal(new[] { "BarLabel", "Pad_DrivenBy_Format" }, said.Elements().Select(b => (string)b.Attribute("Path")));
+            Assert.Contains("{0}", PadForge.Resources.Strings.Strings.Instance.Pad_DrivenBy_Format);
             var picker = Assert.Single(block.Descendants(), e => e.Name.LocalName == "ComboBox");
             Assert.Equal("{Binding AvailableInputsView}", (string)picker.Attribute("ItemsSource"));
             Assert.Equal("{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)picker.Attribute("SelectedItem"));
@@ -1141,18 +1407,44 @@ namespace PadForge.Tests
             var side = parts[2];
             Assert.Equal("{Binding PickedRow}", (string)side.Attribute("DataContext"));
             Assert.Equal("{Binding LiveLevel, Mode=OneWay}", (string)Assert.Single(side.Descendants(), e => e.Name.LocalName == "ProgressBar").Attribute("Value"));
-            Assert.Contains(side.Descendants(), e => (string)e.Attribute("Text") == "{Binding CurrentValueText, Mode=OneWay}");
+            // The value as the boards read it, a share of the full scale,
+            // where a slot's board draws one.
+            Assert.Contains(side.Descendants(), e => (string)e.Attribute("Text") == "{Binding CurrentPercentText, Mode=OneWay}");
+            var value = side.Elements().First();
+            Assert.Equal("DockPanel", value.Name.LocalName);
+            Assert.Equal("{Binding DataContext.ShowPickedValue, ElementName=PictureBar, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)value.Attribute("Visibility"));
+            // Add Source, as the board draws it: a quiet button with its plus
+            // drawn and its word, at the column's start.
             var add = Named(side, "PickedAddSource");
+            Assert.Equal("Button", add.Name.LocalName);
+            Assert.Equal("{StaticResource QuietTextButton}", (string)add.Attribute("Style"));
+            Assert.Equal("10,0", (string)add.Attribute("Padding"));
+            Assert.Equal("0,10,0,0", (string)add.Parent.Attribute("Margin"));
+            Assert.Equal("{Binding Pad_Mapping_AddSource" + S, (string)add.Attribute("AutomationProperties.Name"));
+            Assert.Equal("M 7,3 L 7,11 M 3,7 L 11,7", (string)Assert.Single(add.Descendants(), e => e.Name.LocalName == "Path").Attribute("Data"));
+            Assert.Contains(add.Descendants(), e => (string)e.Attribute("Text") == "{Binding Pad_Mapping_AddSource" + S);
+            Assert.Equal("Add Source", PadForge.Resources.Strings.Strings.Instance.Pad_Mapping_AddSource);
             Assert.Equal("{Binding AddExtraSourceCommand}", (string)add.Attribute("Command"));
             Assert.Equal("PickedAddSource_Click", (string)add.Attribute("Click"));
             var toggle = Named(side, "PickedOptionsToggle");
             Assert.Equal("ToggleButton", toggle.Name.LocalName);
             Assert.Equal("{Binding DataContext.IsPickedOptionsOpen, ElementName=PictureBar, Mode=TwoWay}", (string)toggle.Attribute("IsChecked"));
+            // It says More Options while they are closed and Fewer Options
+            // while they are open.
+            Assert.Equal("{Binding Pad_MoreOptions" + S, (string)toggle.Attribute("AutomationProperties.Name"));
+            var word = Assert.Single(toggle.Descendants(), e => e.Name.LocalName == "Style"
+                && (string)e.Attribute("TargetType") == "TextBlock");
+            Assert.Equal("{Binding Pad_MoreOptions" + S, SetterOf(word, "Text"));
+            var opened = Assert.Single(word.Descendants(), e => e.Name.LocalName == "DataTrigger");
+            Assert.Equal("{Binding IsChecked, ElementName=PickedOptionsToggle}", (string)opened.Attribute("Binding"));
+            Assert.Equal("True", (string)opened.Attribute("Value"));
+            Assert.Equal("{Binding Pad_FewerOptions" + S, (string)Assert.Single(opened.Elements()).Attribute("Value"));
 
             // The options, under the bar: the same rows as the list's open
             // row shows.
             var options = Named(page, "PickedOptions");
-            Assert.Equal("2", (string)options.Attribute("Grid.Row"));
+            Assert.Equal("3", (string)options.Attribute("Grid.Row"));
             Assert.Equal("{Binding ShowPickedOptions, Converter={StaticResource BoolToVisibilityConverter}}", (string)options.Attribute("Visibility"));
             Assert.Equal("0,1,0,0", (string)options.Attribute("BorderThickness"));
             Assert.Equal("20,4,12,12", (string)options.Attribute("Padding"));

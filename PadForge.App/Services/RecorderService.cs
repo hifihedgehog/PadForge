@@ -199,6 +199,15 @@ namespace PadForge.Services
         /// <summary>Raised when recording times out without detection.</summary>
         public event EventHandler RecordingTimedOut;
 
+        /// <summary>Raised when a mapping row's recording cannot start, with
+        /// the slot's index and the reason the status line shows too: none
+        /// of the slot's devices is connected, or none of them has the
+        /// motion sensor a motion row records. The line under the
+        /// controller's picture says it where the click was (#574). Raised
+        /// before <see cref="RecordingTimedOut"/>, which ends the attempt
+        /// as a timeout does.</summary>
+        public event Action<int, string> RecordingRefused;
+
         /// <summary>Raised when a cancel drops a freeform or press recording's
         /// callback unanswered: the user's own stop, a timeout, or another
         /// recording starting. A record button that waits on its callback to
@@ -636,7 +645,9 @@ namespace PadForge.Services
             {
                 _activeMapping = null;
                 _activeExtraSource = null;
-                _mainVm.SetStatus(Strings.Instance.Status_NoDeviceToRecord, persist: true);
+                string noDevice = Strings.Instance.Status_NoDeviceToRecord;
+                _mainVm.SetStatus(noDevice, persist: true);
+                RecordingRefused?.Invoke(padIndex, noDevice);
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -657,7 +668,9 @@ namespace PadForge.Services
                 _baselines.Clear();
                 _isMouseByDevice.Clear();
                 _axisCandidates.Clear();
-                _mainVm.SetStatus(string.Format(Strings.Instance.Status_NoMotionSensorToRecord_Format, mapping.TargetLabel), persist: true);
+                string noSensor = string.Format(Strings.Instance.Status_NoMotionSensorToRecord_Format, mapping.TargetLabel);
+                _mainVm.SetStatus(noSensor, persist: true);
+                RecordingRefused?.Invoke(padIndex, noSensor);
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }

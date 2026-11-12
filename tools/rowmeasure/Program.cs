@@ -136,8 +136,9 @@ internal static class Program
 
         var baseStyle = (Style)app.Resources["DefaultComboBoxStyle"];
         var comboStyle = new Style(typeof(ComboBox), baseStyle);
-        comboStyle.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(8, 4, 8, 4)));
-        comboStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 30.0));
+        comboStyle.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(8, 6, 8, 6)));
+        comboStyle.Setters.Add(new Setter(FrameworkElement.MinHeightProperty, 34.0));
+        comboStyle.Setters.Add(new Setter(Control.VerticalContentAlignmentProperty, VerticalAlignment.Center));
         app.Resources[typeof(ComboBox)] = comboStyle;
 
         _bodyFont = new FontFamily("Segoe UI Variable Text, Segoe UI");
@@ -371,7 +372,7 @@ internal static class Program
         }
 
         // Preset: in a 20 left margin, the word Preset at 13 in an 8 right
-        // margin, the profile combo at its 380 cap and a reset, 28 in a 4
+        // margin, the profile combo at its 380 cap and a reset, 32 in a 14
         // left margin.
         foreach (var (tag, _) in Locales)
         {
@@ -382,7 +383,7 @@ internal static class Program
             var inner = new StackPanel { Orientation = Orientation.Horizontal };
             inner.Children.Add(word);
             inner.Children.Add(new Border { Width = 380 });
-            inner.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 0, 0) });
+            inner.Children.Add(new Border { Width = 32, Margin = new Thickness(14, 0, 0, 0) });
             Add("hdr-preset", tag, "Preset at the combo's 380 cap", new Border
             {
                 Margin = new Thickness(20, 0, 0, 0),
@@ -395,7 +396,7 @@ internal static class Program
             var floorWord = Text(label, 13);
             floorWord.Margin = new Thickness(0, 0, 8, 0);
             floor.Children.Add(floorWord);
-            floor.Children.Add(new Border { Width = 28, Margin = new Thickness(4, 0, 0, 0) });
+            floor.Children.Add(new Border { Width = 32, Margin = new Thickness(14, 0, 0, 0) });
             Add("hdr-preset-floor", tag, "Preset without its combo", new Border
             {
                 Margin = new Thickness(20, 0, 0, 0),
@@ -425,10 +426,10 @@ internal static class Program
             }
         }
 
-        // Driven by at 13 in a 12 right margin. Add Device in a 4,2,0,2
-        // margin: a 1 border and 8,0 padding around a 14 plus in an 8 right
+        // Driven by at 13 in a 12 right margin. Add Device in a -8,2,0,2
+        // margin: a 1 border and 8,0 padding around a 14 plus in a 6 right
         // margin and the words at 13. A device's pill between them is as
-        // wide as its name asks, 320 at most, in an 8 right margin.
+        // wide as its name asks, 320 at most, in a 12 right margin.
         foreach (var (tag, _) in Locales)
         {
             string driven = S("Pad_DrivenBy", tag);
@@ -442,11 +443,11 @@ internal static class Program
             if (add != null)
             {
                 var inner = new StackPanel { Orientation = Orientation.Horizontal };
-                inner.Children.Add(new Canvas { Width = 14, Height = 14, Margin = new Thickness(0, 0, 8, 0) });
+                inner.Children.Add(new Canvas { Width = 14, Height = 14, Margin = new Thickness(0, 0, 6, 0) });
                 inner.Children.Add(Text(add, 13));
                 Add("hdr-add", tag, "Add Device", new Border
                 {
-                    Margin = new Thickness(4, 2, 0, 2),
+                    Margin = new Thickness(-8, 2, 0, 2),
                     Padding = new Thickness(8, 0, 8, 0),
                     BorderThickness = new Thickness(1),
                     Child = inner,
@@ -584,8 +585,8 @@ internal static class Program
         // default 1100 window 788.
         Console.WriteLine("== Pad page header (window minimum 900) ==");
         const double chip = 34 + 14;
-        // The More button: 34 in an 8 left margin.
-        const double more = 34 + 8;
+        // The More button: 34 in a 14 left margin.
+        const double more = 34 + 14;
         double title = Max("hdr-title"), preset = Max("hdr-preset"), presetFloor = Max("hdr-preset-floor");
         double power = Max("hdr-power");
         double widestSection = Max("hdr-section-bold");
@@ -646,9 +647,9 @@ internal static class Program
         Console.WriteLine($"  Macros & Menus parts, one line : {macrosParts.Width:F1} (worst {macrosParts.Tag})");
 
         // Line 2 wraps. Its widest single piece is a device's pill at its
-        // 320 cap in an 8 right margin, and the three side by side are
+        // 320 cap in a 12 right margin, and the three side by side are
         // Driven by, one such pill and Add Device.
-        const double pill = 320 + 8;
+        const double pill = 320 + 12;
         double deviceLine = Max("hdr-driven") + pill + Max("hdr-add");
         foreach (var (name, line) in new[]
                  { ("a 900 window", 900.0 - 248 - 64), ("a 1100 window", 1100.0 - 248 - 64) })

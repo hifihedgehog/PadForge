@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopírovat</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Vložit</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplikovat</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Přejmenovat</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Povoleno</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Zakázáno</value></data>
   <data name="Common_On" xml:space="preserve"><value>Zapnuto</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Zařízení</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Vstup ze zařízení</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Přidat zařízení</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Obrázek</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Seznam</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Výstupy: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Pohyb</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klikněte na ovládací prvek a poté stiskněte vstup, který ho má ovládat.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klikněte na klávesu nebo tlačítko myši a poté stiskněte vstup, který ho má ovládat.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klikněte na notu nebo posuvník a poté stiskněte vstup, který ho má ovládat.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Tlačítko Namapovat vše přeskočí dotykové výstupy tlačítek A a B. Jeden z nich navážete kliknutím na kroužek kolem A nebo B.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Čekání na vstup pro {0}. Stiskněte vstup na svém zařízení.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, vstup ze zařízení</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Další možnosti</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Méně možností</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Čelní tlačítko</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Ramenní tlačítko</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Systémové tlačítko</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Tlačítko</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Směrový kříž</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Páčka</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Spoušť</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Snímač pohybu</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Klávesa klávesnice</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Tlačítko myši</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Pohyb myši</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Kolečko myši</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Změna kontroléru</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Dotykový snímač</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analogový stisk</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, levá ruka</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, pravá ruka</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Který stisk hra uvidí, když jsou držena obě tlačítka páru</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Který stisk hra uvidí, když jsou drženy obě klávesy páru</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Drží malou výchylku páčky, aby hry dál zobrazovaly nápovědu ovladače</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Kuje se</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Vyberte makro vlevo, nebo ho vytvořte stisknutím tlačítka Přidat.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Vyberte makro v seznamu, nebo ho vytvořte stisknutím + vedle nadpisu Makra.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>VSTUP</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>VÝSTUP</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Studený</value></data>
@@ -917,7 +946,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulzní spouště</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzní spouště</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Zesílení jednotlivých spouští, prohození motorů, vibrace adaptivních spouští</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Zesílení spouští, prohození motorů, vibrace adaptivních spouští, Stálá síla spouští</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Přeposílá příkazy pro motory jednotlivých spouští (Xbox Impulse Triggers) z virtuálního ovladače do přiřazeného fyzického ovladače Xbox One, Elite nebo Series. Vibrace spouští řízené hrou se předávají automaticky. Ovládací prvky níže upravují sílu pro každou spoušť zvlášť.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Levá spoušť</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pravá spoušť</value></data>
@@ -987,9 +1016,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Páčky</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Mrtvé zóny, anti-mrtvé zóny, křivky citlivosti a kalibrace posunu středu pro každou páčku. Každá sekce níže se týká jedné analogové páčky aktivního výstupu. Rozšířené profily mohou mít až čtyři páčky. Standardní gamepady mají dvě.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Spouště</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Mrtvé zóny, anti-mrtvé zóny, škálování maximálního rozsahu a křivky citlivosti pro každou spoušť. Každá sekce níže se týká jedné osy spouště aktivního výstupu. Rozšířené profily mohou nabídnout až osm os sdílených s kartou Páčky.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Mrtvé zóny, anti-mrtvé zóny, škálování maximálního rozsahu a křivky citlivosti pro každou spoušť. Každá karta spouště se týká jedné osy spouště aktivního výstupu. Rozšířené profily mohou nabídnout až osm os sdílených mezi páčkami a spouštěmi.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Silová zpětná vazba</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ladí, jak PadForge škáluje události silové zpětné vazby ze hry a jak je směruje do vibračních motorů nebo haptických aktuátorů fyzického ovladače. Vibrace podle zvuku k tomu přidávají vrstvu řízenou systémovým zvukem.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Toto zařízení</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Celý ovladač</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrace se na zařízení {0} přehrávají jako haptické pulzy posílané přímo do zařízení. Silnější vibrace zvolí silnější pulz a opakuje ho rychleji.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptická odezva je pro {0} v Logi Options+ vypnutá, takže se nic nepřehraje, dokud ji tam znovu nezapnete.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Toto zařízení zatím neodpovědělo. Jeho vibrace se přehrají, jakmile se probudí.</value></data>
@@ -1077,6 +1108,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>základní desky a grafické karty</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš, sluchátka a stojany na sluchátka</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Světelný panel</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Hry osvětlení přebírají, kdykoli do něj zapíší.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadejte šestimístnou hexadecimální barvu (RRGGBB nebo #RRGGBB) a potvrďte ji klávesou Enter nebo kliknutím jinam.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Odebrat tuto barvu z palety</value></data>
@@ -1094,7 +1126,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Resetovat vibrace podle zvuku</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Resetovat: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Vymazat mapování</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Všechna mapování na této kartě budou vymazána. Přiřazení zdrojů, další zdroje a nastavení kombinování se resetují na výchozí hodnoty.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Všechna mapování v této vrstvě budou vymazána. Přiřazení zdrojů, další zdroje a nastavení kombinování se resetují na výchozí hodnoty.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Vzor hráče</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Režim diody LED ztlumení</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Jas diod LED</value></data>
@@ -1247,6 +1279,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Tlačítka</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importované profily…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Rozšířený ovladač</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Správa uživatelsky importovaných profilů HIDMaestro: zachyťte nový z připojeného zařízení, exportujte stávající do JSON nebo odstraňte ten, který už nepotřebujete.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klonovat zařízení 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Namapuje každou osu, tlačítko a POV vybraného zařízení přímo na virtuální výstup se stejným číslem. Přizpůsobí rozložení zařízení a nahradí řádky tohoto zařízení ve slotu předáváním 1:1.</value></data>
@@ -1294,6 +1327,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Silová zpětná vazba</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanál</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Výstup MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kanál MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Počet CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Počet výstupů CC (maximum závisí na počátečním CC)</value></data>
@@ -1325,7 +1359,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Odebere tento pár kláves.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>První klávesa protilehlého páru.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Druhá klávesa protilehlého páru.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Současné protilehlé směry (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Udržovat ovladač aktivní</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Některé hry zastaví vibrace a přepnou nápovědu tlačítek ve chvíli, kdy zaznamenají vstup myši nebo klávesnice. Držení malé výchylky páčky zajistí, že hra tento ovladač dál považuje za aktivní zařízení. Držení se uplatní, jen dokud jsou obě osy této páčky pod drženou úrovní, takže páčka s driftem se stále počítá jako v klidu. Vstup nad tuto úroveň na kterékoli ose držení uvolní a projde beze změny. Výchylku nastavte pod mrtvou zónu samotné hry, aby se ve hře nic nehýbalo.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Udržovat aktivní</value></data>
@@ -1345,7 +1378,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Resetovat kliknutí</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Resetovat polovinu touchpadu</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Resetovat režim spuštění</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Resetovat buňky</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Resetovat aktivační mrtvou zónu</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Resetovat geometrii nabídky</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Resetovat buňku</value></data>
@@ -1401,6 +1433,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Vymazat vše</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Zdroj</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Hodnota</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Možnosti</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Mrtvá zóna osy jako tlačítka</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invertovat</value></data>
@@ -1438,7 +1471,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Když je zaškrtnuto, osa se po uvolnění plynule vrací na střed. Když není, drží poslední polohu.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Tlačítko, které při držení invertuje výstup řádku</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikátor: při držení se znaménko výstupu řádku obrátí.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Přidat zdroj</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Přidat zdroj</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Přidat k tomuto řádku další fyzický vstup</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Odebrat tento zdroj</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Bod {0} z {1}, vstup {2} %, výstup {3} %</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrovat střed</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Středový bod</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Střed</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Mrtvá zóna</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Posuny středu, tvar mrtvé zóny a hodnoty pro každou osu, křivka pro každou osu, rozsah, řízení</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rozsah</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Funkce Kalibrovat hranici je doporučený způsob, jak páčku srovnat. Projde okraj, na který páčka fyzicky dosáhne, a pak každou polohu úměrně přeškáluje vůči tomuto změřenému okraji, takže se celý přirozený pohyb při každém úhlu a každé výchylce promítne na ideální kruh a nic se neořízne. Čtyři posuvníky níže jen omezují hlavní osy. Používejte je k záměrnému omezení rozsahu, ne k jeho opravě.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Funkce Kalibrovat hranici změří okraj, kam páčka dosáhne, a přetvoří ho na plný kruh. Čtyři posuvníky jen omezují jednotlivé směry.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Vzorkování...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Posun středu X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Posun středu Y</value></data>
@@ -1581,7 +1615,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Název</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Spouštěč</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Když</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Spuštění</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Při stisku</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Při uvolnění</value></data>
@@ -1613,9 +1647,9 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Ke které vrstvě toto makro patří. Volba Libovolná vrstva se spouští bez ohledu na aktivní vrstvu. Základní a pojmenované vrstvy se spouštějí, jen dokud je daná vrstva aktivní, stejně jako řádek mapování.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Libovolná vrstva</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Běží nepřetržitě, dokud je tento virtuální ovladač aktivní. Tlačítko spouštěče není potřeba.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Posloupnost akcí</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Provést</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Vrstva, Zdroj, Práh, Směr, Pohltit tlačítka spouštěče, Opakování</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Přidat akci</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Upravit akci</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Typ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuální tlačítka</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuální osy a volant</value></data>
@@ -1684,11 +1718,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Tlačítko {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Stisknout {0} na {1} ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Stisknout {0} po dobu {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Uvolnit {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Klávesy {0} na {1} ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Klávesy {0} po dobu {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Uvolnit klávesy {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Čekat {0} ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Počkat {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Nastavit {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Hlasitost systému ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Hlasitost systému ← {0} (max. {1} %)</value></data>
@@ -1700,15 +1734,15 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Uvolnit tlačítko myši {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Přepnout překryvný touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Nastavit barvu světelného panelu</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Přepíše světelný panel přiřazeného slotu PlayStation zvolenou barvou RGB. Režim Reaktivní během nastavené doby doznívání zeslábne z plné intenzity do černé a pak předá řízení zpět nastavení na kartě Osvětlení. Režim Trvalý drží barvu, dokud neproběhne akce Zrušit přepsání světelného panelu. Zápisy řízené hrou mají před přepsáním stále přednost.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Bliknout světelným panelem {0} (doznívání {1} ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Přepíše světelný panel přiřazeného slotu PlayStation zvolenou barvou RGB. Režim Reaktivní během nastavené doby doznívání zeslábne z plné intenzity do černé a pak předá řízení zpět nastavení na kartě Světelný panel. Režim Trvalý drží barvu, dokud neproběhne akce Zrušit přepsání světelného panelu. Zápisy řízené hrou mají před přepsáním stále přednost.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Bliknout světelným panelem: {0} (doznívání {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Držet světelný panel {0} do zrušení</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Zrušit přepsání světelného panelu</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Zrušit přepsání světelného panelu</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Uvolní jakékoli aktivní přepsání světelného panelu na přiřazeném slotu. Zkombinujte s akcí Nastavit barvu světelného panelu v režimu Trvalý, abyste ji mohli zrušit jiným makrem.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Nastavit režim světelného panelu</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Nastavit režim světelného panelu na {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim světelného panelu přiřazeného slotu na konkrétní hodnotu. Zůstává v platnosti jako úprava na kartě Osvětlení, dokud ji nezmění jiná akce nebo uživatel.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim světelného panelu přiřazeného slotu na konkrétní hodnotu. Zůstává v platnosti jako úprava na kartě Světelný panel, dokud ji nezmění jiná akce nebo uživatel.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Střídat režimy světelného panelu</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Střídat režimy světelného panelu (počet: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Posouvá režim světelného panelu slotu přes režimy vybrané níže. Každé spuštění přejde na další zaškrtnutý režim. Pozice v cyklu je pro každou akci zvlášť a po restartu aplikace se resetuje.</value></data>
@@ -1723,14 +1757,14 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Doznívání</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Zeslabení</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdná paleta použije vlastní paletu slotu z karty Osvětlení.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdná paleta použije paletu z karty Světelný panel daného slotu.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režim</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Vyberte, které režimy světelného panelu má makro střídat. Každé spuštění přejde na další zaškrtnutý režim.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibrace</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Řídí vibrace fyzického zařízení slotu z makra. Režim Reaktivní běží po dobu držení na plnou sílu a pak během doby zeslabení klesne na nulu. Režim Trvalý drží plnou sílu, dokud neproběhne akce Zastavit vibrace. Vrství se na vibrace řízené hrou pomocí max(), takže uživatelská odezva je cítit vždy.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulz vibrací {0} ({1} ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulz vibrací: {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Držet vibrace {0} do zrušení</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Zastavit vibrace</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Zastavit vibrace</value></data>
@@ -1741,7 +1775,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Zastavit vibrace spouští</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Uvolní jakékoli aktivní vibrace spouští z makra na slotu. Zkombinujte s Přepsáním vibrací spouští v režimu Trvalý, abyste držení mohli ukončit z makra.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Nastavit aktivaci gyroskopu</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Nastaví stav aktivace gyroskopu slotu z makra. Přepnout obrátí aktuální stav. Zapnuto gyroskop vynuceně aktivuje. Vypnuto ho vynuceně deaktivuje. Je nezávislé na aktivačním tlačítku na kartě Gyroskop. Oba zdroje se kombinují operací OR, takže žádný nemůže vypnout to, co aktivoval druhý.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Nastaví stav aktivace gyroskopu slotu z makra. Přepnout obrátí aktuální stav. Zapnuto gyroskop vynuceně aktivuje. Vypnuto ho vynuceně deaktivuje. Je nezávislé na nastavení Tlačítko aktivace míření v části Pohyb a dotyk. Oba zdroje se kombinují operací OR, takže žádný nemůže vypnout to, co aktivoval druhý.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Režim</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Přepnout</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Zapnuto</value></data>
@@ -1889,7 +1923,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Vstup jednotlivých touchpadů. Gesta (přejetí, klepnutí, stažení, tvary) a režimy plynulého výstupu (virtuální páčka / směrový kříž, myš) se stanou zdroji mapování, které můžete navázat na kartě Mapování.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Vstup jednotlivých touchpadů. Gesta (přejetí, klepnutí, stažení, tvary) a režimy plynulého výstupu (virtuální páčka / směrový kříž, myš) se stanou zdroji mapování, které můžete navázat na libovolný výstup.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Číslo touchpadu</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Na který touchpad tohoto ovladače se vztahuje nastavení níže. Každý touchpad má vlastní gesta, chování myši a oblast ukazatele.</value></data>
@@ -2179,10 +2213,14 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Vylaďte, jak pohybový senzor tohoto gamepadu řídí výstup myši a páčky. Kalibrací na rovném povrchu vynulujete klidový drift, pak si podle chuti nastavte citlivost, vyhlazování a pravidla aktivace.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrace</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Živé hodnoty gyroskopu a akcelerometru</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Citlivost</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednotky, Prostor, invertování os, Kalibrace na reálný svět</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednotky, inverze os, Kalibrace na reálný svět</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° na otáčku</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Tvarování odezvy</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Mrtvá zóna, Utažení, Práh vyhlazování, Okno vyhlazování, Akcelerace, Výstupní křivka</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Vztažná soustava</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Místní, Hráč nebo Svět</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Prostor</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Jak se pohyb gyroskopu vykládá. Místní používá nezpracované osy ovladače. Hráč promítá vodorovný pohyb na skutečnou svislici (gravitaci), takže stejné otočení zápěstí vždy otočí kameru bez ohledu na to, jak gamepad držíte. Svět navíc promítá svislý pohyb na osy světa.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Způsob držení</value></data>
@@ -2254,6 +2292,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Nastojato</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Úchop</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Jak je ovladač držen. Otáčí gyroskop, akcelerometr a gravitaci společně, pro mapování i pro pohyb, který hlásí virtuální ovladač. Směrový kříž se řídí stejnou soustavou, takže Nahoru je v daném držení nahoře.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Jak je ovladač držen</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineární</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresivní</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Uvolněná</value></data>
@@ -2286,7 +2325,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetovat směr aktivace</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Předávání pohybu</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Použít ladění gyroskopu na předávání pohybu</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Použije volitelné ladění gyroskopu z této karty (mrtvá zóna, citlivost, vyhlazování, křivka odezvy, invertování) na pohyb, který virtuální ovladač hlásí hře nebo emulátoru. Vypněte, pokud chcete posílat jen kalibrovanou hodnotu a nechat hru použít vlastní citlivost a vyhlazování. Korekce driftu z kalibrace se použije vždy.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Použije volitelné ladění z karet skupiny Gyroskop (mrtvá zóna, citlivost, vyhlazování, křivka odezvy, invertování) na pohyb, který virtuální ovladač hlásí hře nebo emulátoru. Vypněte, pokud chcete posílat jen kalibrovanou hodnotu a nechat hru použít vlastní citlivost a vyhlazování. Korekce driftu z kalibrace se použije vždy.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetovat ladění předávání</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Citlivost</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Násobitel citlivosti gyroskopu pro jednotlivý zdroj. 1.0 = výchozí hodnota jádra (500°/s → plná výchylka). Hodnoty nad 1.0 jsou citlivější. Hodnoty pod 1.0 jsou méně citlivé.</value></data>
@@ -2303,7 +2342,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Resetovat rozsah plného sklonu</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Resetovat mrtvou zónu sklonu</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Resetovat sklon gyroskopu</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Jak se zdroje tohoto řádku sloučí, když je aktivní víc než jeden. Vyberte řádek a změňte to v pruhu podrobností níže.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Jak se zdroje tohoto řádku sloučí, když je aktivní víc než jeden. Otevřete řádek a změňte to v nastavení Kombinování.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Setrvačnost</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Režim trackballu: švihněte páčkou a pusťte ji, kurzor se pohybuje dál a postupně dojede. Dalším pohybem páčky ho zachytíte.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Jak daleko kurzor po švihu dojede. Na horním konci rozsahu se pohybuje, dokud páčkou znovu nepohnete.</value></data>
@@ -2504,7 +2543,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Osa spouště</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Zesílení jednotlivých motorů, vibrace spouští, prohození motorů</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Zesílení motorů, vibrace spouští, Vibrace podle úhlu řízení, Stálá síla</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Celkové zesílení</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Levý motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Pravý motor</value></data>
@@ -2513,6 +2552,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Tento ovladač nemá motory ve spouštích, takže hry využívající impulzní spouště Xbox by nebyly cítit. Sloučí proto každý kanál spouště do hlavního motoru na stejné straně.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Otestovat vibrace</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivita motorů</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Levý</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Pravý</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Působí na toto zařízení nepřetržitou silou, dokud ji nevypnete. Síla řízená hrou z libovolného zdroje má přednost, dokud je aktivní, a po skončení hry se stálá síla obnoví.</value></data>
@@ -2591,7 +2632,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Záznam provedete stiskem tlačítek nebo pohybem osy či spouště. Osy se detekují při výchylce nad 50 %.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Přidat ze seznamu</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Vyberte vstup spouštěče ze zařízení slotu, místo abyste ho zaznamenávali. Zobrazují se tu gesta touchpadu povolená na kartě Touchpad.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Vymazat spouštěč</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Vyberte vstup spouštěče ze zařízení slotu, místo abyste ho zaznamenávali. Zobrazují se tu gesta touchpadu zapnutá v části Pohyb a dotyk.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Odebrat vstup</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Stiskněte libovolný vstup…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertováno</value></data>
@@ -2852,7 +2894,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Počet sekund, po kterých se virtuální ovladač zruší, když jsou všechna jeho namapovaná zařízení offline. 0 funkci vypne. Zbývající ovladače stejného typu se posunou nahoru, zaplní mezeru a znovu se navážou na nižší sloty.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekund (0 = nikdy)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Vrstva Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Přidat vrstvu</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Přidá vrstvu Shift. Druhá tabulka mapování, která se aktivuje, dokud je tlačítko držené nebo přepnuté.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Základ</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Vrstva Shift</value></data>
@@ -2953,7 +2995,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Řízení pohybem</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° až {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Vnitřní mrtvá zóna náklonu, Vnější mrtvá zóna náklonu, Orientace ovladače</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavení vstupu Pohyb – náklon: naklánějte ovladač jako volant. Namapujte „Pohyb – náklon“ na osu páčky z rozevíracího seznamu vstupů na kartě Mapování.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavení vstupu náklonu: naklánějte ovladač jako volant. Namapujte „Pohyb: náklon“ na osu páčky v části Tlačítka.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetovat řízení pohybem</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (pravá páčka)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (levá páčka)</value></data>
@@ -2962,7 +3004,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Prstenec pravé páčky</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ladění vstupů Flick stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Nastavení vstupů Flick stick: namiřte páčku a kamera se otočí stejným směrem, objížděním okraje otáčíte jemně. Namapujte „Flick stick (pravá páčka)“ na Myš X z rozevíracího seznamu vstupů na kartě Mapování, v libovolné vrstvě.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Nastavení vstupů Flick stick: namiřte páčku a kamera se otočí stejným směrem, objížděním okraje otáčíte jemně. Namapujte „Flick stick (pravá páčka)“ na Myš X v části Klávesy a myš, v libovolné vrstvě.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Resetovat flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Body na 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Počet kroků myši na jednu celou otáčku kamery o 360°. Závisí na citlivosti myši ve hře: zvyšte ho, pokud flick otočí málo, snižte, pokud otočí moc.</value></data>
@@ -3054,7 +3096,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky maker a zrcadlený systémový zvuk se přehrávají vestavěným reproduktorem vybraného ovladače, přes USB nebo Bluetooth. Zařízení vyberte v rozevíracím seznamu výše. Řídí se jím všechna zdejší nastavení.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Zvukový výstup</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Zdroj zrcadlení, haptika, Hlasitost sluchátek, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Zdroj zrcadlení, Hlasitost sluchátek, buffer, Výstupní cesta</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Zvuky se do vybraného ovladače směrují automaticky. Přes USB se vlastní zvukový koncový bod gamepadu dohledá podle hardwarového kontejneru. Přes Bluetooth se zvuk streamuje v rámcích Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Zdroj zrcadlení</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Které přehrávací zařízení se má zrcadlit do reproduktoru ovladače. Hry, které posílají určité zvuky na samostatné přehrávací zařízení, mohou mířit na toto.</value></data>
@@ -3067,10 +3109,10 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Zastavit všechny zvuky</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Zastavit všechny zvuky maker na tomto gamepadu</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Zvuková makra</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Zvuky přehrávají makra: spouštěč (stisk, uvolnění nebo držení tlačítka, případně vzorec) a akce Přehrát zvuk. Vytvořte je tady nebo na kartě Makra. Fungují prodlevy, opakování i přepínače.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Zvuky přehrávají makra: spouštěč (stisk, uvolnění nebo držení tlačítka, případně vzorec) a akce Přehrát zvuk. Vytvořte je tady nebo v části Makra a nabídky. Fungují prodlevy, opakování i přepínače.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nové zvukové makro</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Zatím žádná zvuková makra. Vytvořte makro a vyberte zvukový soubor a spouštěč.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Otevřít toto makro na kartě Makra</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Otevřít toto makro v části Makra a nabídky</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Zvukové makro {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Přehrát zvuk</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Přehraje zvukový soubor (.wav, .mp3, .m4a, .aac, .wma, .flac) na výstupním zařízení tohoto gamepadu</value></data>
@@ -3347,6 +3389,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Spuštěno</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Spuštěno, systémový ovladač připojen</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Spuštěno, ovladače aktivní</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR je nainstalovaný</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR není nainstalovaný</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR je spuštěný</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR je spuštěný, systémový ovladač připojen</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR je spuštěný, ovladače aktivní</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Jiný ovladač OpenVR používá název ovladače HIDMaestro, takže jej SteamVR může načíst místo ovladače PadForge a virtuální VR ovladače se nezobrazí. Odstraňte tento ovladač, tím problém vyřešíte: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Sériový ovladač (port COM)</value></data>
@@ -3516,7 +3563,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimédia {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Myš</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesta myši</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Podržte tlačítko gest, švihněte a při uvolnění se spustí jedna akce: doleva, doprava, nahoru, dolů, nebo prosté kliknutí pod vzdáleností švihu. Těchto pět gest namapujte na kartě Mapování nebo je použijte jako spouštěče maker.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Podržte tlačítko gest, švihněte a při uvolnění se spustí jedna akce: doleva, doprava, nahoru, dolů, nebo prosté kliknutí pod vzdáleností švihu. Těchto pět gest namapujte na libovolný výstup nebo je použijte jako spouštěče maker.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Povolit gesta myši</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Aktivuje rozpoznávání gest pro tuto myš v tomto slotu. Tlačítko gest si při gestech ponechává běžné kliknutí, takže vyberte boční tlačítko, které jinak nemapujete.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Tlačítka gest</value></data>
@@ -3550,7 +3597,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Přepnout vrstvu</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Nastavit barvu Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Dokud akce běží, obarví jednou barvou zařízení Razer přiřazená k tomuto virtuálnímu ovladači a všechna další zařízení Razer stejných druhů.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Po dobu uvedenou výše obarví touto barvou zařízení Razer přiřazená k tomuto virtuálnímu ovladači a všechna další zařízení Razer stejných druhů, případně všechna zařízení Razer, pokud je přiřazen řádek Razer Chroma. Přepíše kartu Osvětlení kteréhokoli virtuálního ovladače a pak osvětlení vrátí. Chcete-li barvu držet po celou dobu držení spouštěče, použijte Při držení s volbou Do uvolnění. Když barví dvě makra současně, vyhrává to, které je v seznamu níž, takže makro pro plný stisk dejte pod jeho dvojče pro lehký stisk. Když makra na dvou virtuálních ovladačích barví stejný druh zařízení Razer, vyhrává nižší číslo hráče. Vyžaduje spuštěný Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Po dobu uvedenou výše obarví touto barvou zařízení Razer přiřazená k tomuto virtuálnímu ovladači a všechna další zařízení Razer stejných druhů, případně všechna zařízení Razer, pokud je přiřazen řádek Razer Chroma. Přepíše osvětlení, které kterýkoli virtuální ovladač nastavuje v části Světla a zvuk, a pak osvětlení vrátí. Chcete-li barvu držet po celou dobu držení spouštěče, použijte Při držení s volbou Do uvolnění. Když barví dvě makra současně, vyhrává to, které je v seznamu níž, takže makro pro plný stisk dejte pod jeho dvojče pro lehký stisk. Když makra na dvou virtuálních ovladačích barví stejný druh zařízení Razer, vyhrává nižší číslo hráče. Vyžaduje spuštěný Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Zobrazit na obrazovce Dreamcastu</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Přehraje obrázky na VMU každého ovladače Dreamcastu v portu Bliss-Box, který napájí tento slot, a pak každý port vrátí k jeho vlastnímu nastavení obrazovky.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Zobrazit obrázky Dreamcastu: {0} × {1} ms, počet opakování {2}</value></data>
@@ -3844,10 +3891,12 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Při stisku vynuluje nahromaděné reference míření gyroskopem tohoto gamepadu. Vymaže se historie vyhlazování, znovu se zachytí neutrál vstupu Pohyb – náklon, odhad gravitace se znovu nastaví z aktuální polohy ovladače a zruší se otočení, které vytvořily řádky Pohyb – pitch, yaw a roll.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Libovolné zařízení)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Nabídky</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Nabídky promění fyzickou páčku nebo touchpad v prstenec či mřížku na obrazovce. Přidejte nabídku, vyberte, čím se otevírá, a pak každou buňku popište a přiřaďte jí vazbu.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Nabídky promění fyzickou páčku nebo touchpad v prstenec či mřížku na obrazovce. Nabídku vytvořte stisknutím + vedle nadpisu Nabídky, vyberte, čím se otevírá, a pak každé buňce zadejte název a akci.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Nová nabídka</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Nabídka {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Název nabídky</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Povoleno</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Otevření</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Styl</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radiální prstenec</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Dotyková mřížka</value></data>
@@ -3867,12 +3916,16 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Buňky</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Středová buňka</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Zobrazit popisky</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Pozice na obrazovce</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Velikost</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Neprůhlednost</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Aktivační mrtvá zóna</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Vazby buněk</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Buňka {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Přidat buňku</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Odebrat poslední buňku</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Upravit buňku</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Název</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Akce</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikona</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Střed</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Žádná</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Klávesa klávesnice</value></data>
@@ -3885,7 +3938,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Spustí se jednou při uvolnění kliknutí: namiřte na buňku, stiskněte páčku nebo touchpad a pak kliknutí pusťte.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Spustí se jednou při puštění: zvedněte prst z touchpadu, nebo nechte páčku vrátit se na střed, zatímco je buňka zvýrazněná.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Vazba je držená po celou dobu, kdy je buňka zvýrazněná. Kliknutí není potřeba.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Kolik buněk nabídka má. U radiálního prstence se počítá jen prstenec; středová buňka je zvlášť.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Přidá středovou buňku, která je vybraná, dokud páčka nebo prst spočívá uvnitř Aktivační mrtvé zóny.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>U páček určuje, jak daleko je potřeba páčku vychýlit, než se nabídka otevře a buňky prstence se zvýrazní. U radiálních nabídek je to také středová oblast pro páčky i touchpady: uvnitř ní je vybraná středová buňka, pokud existuje.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Vykreslí popisek každé buňky v překrytí na obrazovce.</value></data>
@@ -3895,8 +3947,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Velikost překrytí v procentech běžné velikosti.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Neprůhlednost překrytí. 100 % je zcela neprůhledné.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text zobrazený na této buňce v překrytí.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Co tato buňka udělá při spuštění: „Klávesa klávesnice“ stiskne klávesu klávesnice, „Tlačítko ovladače“ stiskne tlačítko virtuálního ovladače tohoto slotu. Buňka nastavená na „Žádná“ se dál spouští jako zdroj typu položka nabídky pro řádky Mapování a spouštěče maker.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Čte se z fyzických ovladačů přiřazených k tomuto slotu, ne z rozložení virtuálního ovladače. Výstupem nabídky jsou vazby buněk níže.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Co tato buňka udělá při spuštění: „Klávesa klávesnice“ stiskne klávesu klávesnice, „Tlačítko ovladače“ stiskne tlačítko virtuálního ovladače tohoto slotu. Buňka nastavená na „Žádná“ se dál spouští jako zdroj typu položka nabídky pro mapování a spouštěče maker.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Čte se z fyzických ovladačů přiřazených k tomuto slotu, ne z rozložení virtuálního ovladače. Výstup nabídky určují buňky níže.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Vlastní osy</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Řízení X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Řízení Y</value></data>
@@ -3921,13 +3973,16 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Výstup</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tlačítka</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klávesy a myš</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noty a kontroléry</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Ruce</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Páčky a spouště</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrace a haptika</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Pohyb a dotyk</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Světla a zvuk</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makra a nabídky</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakery</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Směruje vibrace a silovou zpětnou vazbu ze hry, které tento virtuální ovladač dostává, na zvukový výstup jako nízkofrekvenční tóny pro bass shakery a subwoofery.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Přehrává vibrace ze hry jako hluboké tóny přes bass shakery nebo subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Výstupní zařízení, režim kanálů, zesílení, tón pro každý motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funguje s virtuálními ovladači Xbox, DualShock 3, DualShock 4 / DualSense a Nintendo Switch Pro, dále s rozšířenými virtuálními ovladači se silovou zpětnou vazbou, jako jsou závodní volanty, a s ovladačem Steam Deck Controller (Composite). Odezva ze hry a Otestovat vibrace se přehrávají zvukovým výstupem. Vibrace z maker zůstávají na ovladači.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Resetovat vibrace do zvuku</value></data>
@@ -3956,19 +4011,22 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Přehrává tento kanál odezvy jako tón. Zesílení a frekvence zůstávají nastavené, i když je vypnutý.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekvence tónu pro tento kanál, 20 až 120 Hz. Spusťte přeladění frekvence a zjistěte, kde váš shaker reaguje nejsilněji.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Hlasitost tohoto kanálu před hlavním zesílením.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Zesílení</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Test</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Přehraje tón tohoto kanálu na 1.5 sekundy s nastaveným zesílením.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Resetovat nízkofrekvenční motor</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Resetovat vysokofrekvenční motor</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Resetovat levou spoušť</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Resetovat pravou spoušť</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kontrola shakerů</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Přeladění frekvence</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Během osmi sekund přeladí tón od 20 do 120 Hz na směrování nízkofrekvenčního motoru. Všimněte si, kde váš shaker reaguje nejsilněji, a nastavte tam frekvence hlasů.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Zastavit</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Zastaví testovací tón nebo přeladění.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Libovolný štítek NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Štítek NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrovat vstupy (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrovat výstupy a vstupy</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Zobrazí jen odpovídající řádky a vstupy. Stiskněte Ctrl+F a pište sem.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Zvolte, vstupy kterých zařízení výběry nabízejí</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Zobrazeno ve výběru</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Libovolná hlasová fráze</value></data>
@@ -4077,6 +4135,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Resetovat přimíchání</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrický ekvalizér</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtry jednotlivých pásem pro zvuk ovladače. Používají se před kódováním zvuku, takže limiter níže zabrání ořezu zesíleného pásma.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Předzesílení, pásma, import</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Předzesílení</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Celková úroveň před pásmy. Profily AutoEq mají záporné předzesílení, aby se jejich zesílení neořezávala, a import profilu ho nastaví za vás.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Zap.</value></data>
@@ -4307,7 +4366,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Resetovat na otevírání dotykem nebo výchylkou.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Řídit pomocí</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Fyzický vstup, který řídí zvýrazněnou buňku, dokud vrstva drží tuto nabídku otevřenou.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Čte se z fyzických ovladačů přiřazených k tomuto slotu. Nabídku otevírá vrstva; tento vstup ji řídí. Její výstup určují vazby buněk.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Čte se z fyzických ovladačů přiřazených k tomuto slotu. Nabídku otevírá vrstva a tento vstup ji řídí. Výstup nabídky určují její buňky.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Velikost ikon</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Velikost ikony vůči běžné velikosti ikon nabídky, od 25 % do 200 %. Vymazáním ikony se resetuje na 100 %.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Drží vazbu zvýrazněné buňky, dokud je držený Vstup kliknutí. Zvýrazněný střed radiální nabídky se může spustit, i když je páčka v klidu.</value></data>
@@ -4432,7 +4491,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Předloha, autor Antoine Aflalo, pro rozložení nedokumentovaného rozhraní IPolicyConfig systému Windows, které PadForge používá k opětovnému povolení zvukového koncového bodu ovladače. MIT. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formát profilu parametrického ekvalizéru, který karta Zvuk importuje, autor Jaakko Pasanen. MIT. Jen dokumentace, žádný kód se nedodává.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formát profilu parametrického ekvalizéru, který importuje Parametrický ekvalizér ovladače, autor Jaakko Pasanen. MIT. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Techniky SendInput, které stojí za makry Blok textu a za zachytáváním klávesových akordů: psaní v Unicode, limity dávek, maskovací klávesa klávesy Win a označený vložený vstup. GPL-2.0-or-later, čteno jen jako dokumentace, žádný kód pod GPL se nedodává.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Směr</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Krok</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>až</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Rukojeť</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} nastavuje spouště tohoto ovladače.</value></data>
@@ -4716,7 +4776,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Rukojeť se nepohnula dostatečně daleko, takže dosah zůstává beze změny. Během měření ji přesuňte ke všem okrajům.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon se zavřel dříve, než měření skončilo.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Hraje hry s Novint Falcon přes Force Dimension SDK, které si nainstalujete od Force Dimension. Rukojeť je páčka, čtyři tlačítka na úchopu jsou tlačítka a PadForge přenáší vibrace a efekty hry na rukojeť jako sílu. Karta Silová zpětná vazba každého slotu určuje, jak se Falcon chová.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Hraje hry s Novint Falcon přes Force Dimension SDK, které si nainstalujete od Force Dimension. Rukojeť je páčka, čtyři tlačítka na úchopu jsou tlačítka a PadForge přenáší vibrace a efekty hry na rukojeť jako sílu. Karta Novint Falcon v části Vibrace a haptika u každého ovladače určuje, jak se Falcon chová.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Ovládat Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Otevírá každý Falcon přes dhd64.dll od Force Dimension. Otevřený Falcon patří jen PadForge, takže ho FalconJoyForce ani nástroje Force Dimension nemohou při zapnutí otevřít. Při vypnutí PadForge všechny Falcony zavře.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Knihovna Falcon nastavena na {0}. PadForge ji načte během několika sekund a Falcon otevřený v jiné kopii se znovu otevře v této.</value></data>
@@ -4929,7 +4989,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Po nastavenou dobu</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Do zastavení</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Doba</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Přehraje se na každém DualSense a DualSense Edge v tomto slotu. Vlastní efekt spouště hry a efekt herního modu mají přednost a nastavení karty Adaptivní spouště se vrátí, když efekt skončí. Zóny jdou od 0 v klidu do 9 při plném stisku. Luk, Cval a Stroj nejsou oficiální efekty DualSense a aktualizace firmwaru je může odstranit. Ovladače Xbox se zapnutým přepínačem Převádět vibrace adaptivních spouští cítí vibrující efekty jako vibrace spouští.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Přehraje se na každém DualSense a DualSense Edge v tomto slotu. Vlastní efekt spouště hry a efekt herního modu mají přednost a nastavení na kartě Adaptivní spouště se vrátí, když efekt skončí. Zóny jdou od 0 v klidu do 9 při plném stisku. Luk, Cval a Stroj nejsou oficiální efekty DualSense a aktualizace firmwaru je může odstranit. Ovladače Xbox se zapnutým přepínačem Převádět vibrace adaptivních spouští cítí vibrující efekty jako vibrace spouští.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{1}: {0} po dobu {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{1}: {0}, dokud je držen</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1}: {0}, do zastavení</value></data>
@@ -4958,7 +5018,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Do zrušení</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Doba</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Ponechat jejich barvy</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Akce rozsvítí stejné klávesy na každé klávesnici, kterou tento virtuální ovladač osvětluje, přes barvy z jeho karty Osvětlení. Čísla ukazují pořadí výběru. Odpočet zhasíná klávesy po jedné, nejdříve poslední vybranou, takže pro odpočet na číselné řadě vyberte 1 až 0. Klávesnice nebo myš svítí jen při zapnuté volbě Řídit osvětlení tohoto zařízení.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Akce rozsvítí stejné klávesy na každé klávesnici, kterou tento virtuální ovladač osvětluje, přes barvy, které jim nastavuje v části Světla a zvuk. Čísla ukazují pořadí výběru. Odpočet zhasíná klávesy po jedné, nejdříve poslední vybranou, takže pro odpočet na číselné řadě vyberte 1 až 0. Klávesnice nebo myš svítí jen při zapnuté volbě Řídit osvětlení tohoto zařízení.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Ostatní</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, číslo {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Překryvná obrazovka</value></data>
@@ -5018,7 +5078,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Body aktivace analogových kláves se nepřenesly.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD poslal tento ovladač přes adaptér do jiného zařízení. PadForge ho přehrává na tomto počítači a Vzdálené propojení ho pošle do jiného počítače s PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>Program PadForge čte dvě páčky a tady je uvedena třetí.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulace volantu se nepřenesla. Volant namapujte na kartě Mapování.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulace volantu se nepřenesla. Volant namapujte v části Tlačítka.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tento profil uvádí zvláštní akci, která chybí v souboru Actions.xml vedle složky Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Toto nastavení se nepřeneslo: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bránil těmto vstupům v dosažení Windows. Zapněte pro {0} na stránce Zařízení volbu Pohlcovat namapované vstupy, která zastaví ty vstupy, jež tento profil mapuje.</value></data>
@@ -5026,8 +5086,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Potvrdí se, když se páčka vrátí do středu nebo když vrstva skončí. Tlačítko Použít z reWASD se nepoužívá.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tento soubor drží dva ovladače odděleně. V programu PadForge tato mapování spouští libovolný ovladač na daném slotu.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Rychlost pohybu ani švih se nepřenesly.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tyto se nepřenesly. Nastavte je na kartě Touchpad.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nic v tomto souboru tuto vrstvu neotevírá. Přiřaďte jí tlačítko na kartě Mapování.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tyto se nepřenesly. Nastavte je v části Pohyb a dotyk.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nic v tomto souboru tuto vrstvu neotevírá. V části Tlačítka klikněte na vrstvu pravým tlačítkem myši a vyberte Konfigurovat aktivátor.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Jeho tlačítka po stisknutí spustí: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Zkratka profilu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Provede to, co zkratka profilu: načte pojmenovaný profil, další nebo předchozí, zobrazí či skryje okno, nebo vypne a zapne virtuální ovladače.</value></data>
@@ -5197,7 +5257,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Vybraná buňka se spustí jednou, jako krátké klepnutí, když se „Spustit“ uvolní. Když je zapnuto „Skrýt po spuštění“, spustí se hned, jakmile „Spustit“ lištu skryje.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Buňka se spustí jednou, jako krátké klepnutí, když „Spustit“ skryje lištu při zapnutém „Skrýt po spuštění“. Když je zapnuto „Vždy znovu vystředit“, spustí se střední buňka.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Vybraná buňka je držená po celou dobu, kdy je lišta zobrazená. Krokem se jedna buňka pustí a drží se další.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiální prstenec, Dotyková mřížka a Hotbar spouštějí vazby buněk. Klávesnice píše klávesy používaného rozložení Windows.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Radiální prstenec, Dotyková mřížka a Hotbar spouštějí akce svých buněk. Klávesnice píše klávesy používaného rozložení Windows.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Rozložení</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Jak klávesnice uspořádá klávesy a jak je ovladač vybírá.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Jedno zvýraznění, posouvané páčkou nebo čtyřmi vstupy, rozložení, které používají Windows, Xbox a Steam.</value></data>
@@ -5304,11 +5364,11 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tlačítka kapesní konzole PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podsvícení kláves PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nemůže stisknout {0}. Mapování na kartě Mapování to dokáže.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nemůže stisknout {0}. Mapování v části Tlačítka to dokáže.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge spouští osm překryvných obrazovek a toto je devátý nebo desátý zaměřovač z reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge čte Gyroskop – náklon X a Y z rollu a náklon z yawu, což je výchozí nastavení reWASD. V Předvolbách reWASD lze tyto dvě osy prohodit a tento soubor neuvádí, zda byly prohozeny.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V režimu naklonění je náklon v reWASD otočení kolem svislé osy a snímač pohybu pro takové otočení neposkytuje žádný úhel.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge čte úhlopříčku touchpadu jako dva směry najednou, což touchpad hlásí jen tehdy, když je Režim směrového kříže na jeho kartě Touchpad nastaven na 8směrný.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge čte úhlopříčku touchpadu jako dva směry najednou, což touchpad hlásí jen tehdy, když je jeho Režim směrového kříže v části Pohyb a dotyk nastaven na 8směrný.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge čte směr gyroskopu za jednou prahovou hodnotou a reWASD neuvádí pro okraj zóny gyroskopu žádnou jednotku.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows umisťoval ukazatel tam, kam páčka mířila. V PadForge páčka ukazatelem pohybuje.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} čte páčku před jejím otočením. DS4Windows ji četl až po něm.</value></data>

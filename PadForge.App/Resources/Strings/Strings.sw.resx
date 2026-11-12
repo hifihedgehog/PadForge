@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Nakili</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Bandika</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Rudufu</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Badilisha Jina</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Imewashwa</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Imezimwa</value></data>
   <data name="Common_On" xml:space="preserve"><value>Imewashwa</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Kifaa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Chanzo cha ingizo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeza kifaa</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Picha</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Orodha</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Matokeo: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Mwendo</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Bofya kidhibiti kimoja kisha bonyeza kitufe kwenye kifaa chako kitakachokiendesha.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Bofya kitufe cha kibodi au cha kipanya kisha bonyeza kitufe kwenye kifaa chako kitakachokiendesha.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Bofya noti au kitelezi kisha bonyeza kitufe kwenye kifaa chako kitakachokiendesha.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Ramani Zote huruka matokeo ya mguso ya A na B. Bofya pete inayozunguka A au B ili kuunganisha mojawapo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Inasikiliza {0}. Bonyeza ingizo kwenye kifaa chako.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, huendeshwa na</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Chaguo Zaidi</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Chaguo Chache</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Kitufe cha uso</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Kitufe cha bega</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Kitufe cha mfumo</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Kitufe</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pedi ya mwelekeo</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Kijiti</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Kichochezi</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Kihisi cha mwendo</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Kitufe cha kibodi</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Kitufe cha kipanya</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mwendo wa kipanya</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Gurudumu la kusogeza</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Badiliko la kidhibiti</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Kihisi cha mguso</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Kuvuta kwa analogi</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, mkono wa kushoto</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, mkono wa kulia</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Bonyezo lipi mchezo unaliona vitufe vyote viwili vya jozi vikishikiliwa</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Bonyezo lipi mchezo unaliona vitufe vyote viwili vya jozi vikishikiliwa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hushikilia mkengeuko mdogo wa kijiti ili michezo iendelee kuonyesha vielekezo vya kidhibiti</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Inaunda</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro upande wa kushoto, au bonyeza Ongeza ili kuunda mpya.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro kwenye orodha, au bonyeza + kando ya Makro ili kuunda mpya.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Baridi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Hakikisho</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Vipengele vya ziada</value></data>
@@ -860,7 +889,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Vichochezi vya Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Vichochezi vya Impulse</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya kila kichochezi, kubadilishana motor, mitetemo ya vichochezi vinavyojirekebisha</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya kila kichochezi, kubadilishana motor, mitetemo ya vichochezi vinavyojirekebisha, Nguvu Endelevu ya Kichochezi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Hupitisha amri za motor kwa kila kichochezi (Xbox Impulse Triggers) kutoka kidhibiti pepe hadi kidhibiti halisi kilichogawiwa cha Xbox One, Elite, au Series. Mtetemo wa vichochezi unaoendeshwa na mchezo hupita kiotomatiki. Vidhibiti vilivyo hapa chini hupima ukubwa kwa kila kichochezi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kichochezi cha Kushoto</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kichochezi cha Kulia</value></data>
@@ -930,9 +959,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Vijiti</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Deadzone kwa kila kijiti, anti-deadzone, mikunjo ya unyeti, na usawazishaji wa mkengeuko wa kituo. Kila sehemu iliyo hapa chini inalenga kijiti kimoja cha analogi kwenye matokeo yanayotumika. Wasifu uliopanuliwa unaweza kuwa na hadi vijiti vinne. Gamepad za kawaida zina viwili.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Vichochezi</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Deadzone kwa kila kichochezi, anti-deadzone, upimaji wa masafa ya juu, na mikunjo ya unyeti. Kila sehemu iliyo hapa chini inalenga mhimili mmoja wa kichochezi kwenye matokeo yanayotumika. Wasifu uliopanuliwa unaweza kuonyesha hadi mihimili minane inayoshirikiwa na kichupo cha Vijiti.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Deadzone kwa kila kichochezi, anti-deadzone, upimaji wa masafa ya juu, na mikunjo ya unyeti. Kila kadi ya kichochezi inalenga mhimili mmoja wa kichochezi kwenye matokeo yanayotumika. Wasifu uliopanuliwa unaweza kuonyesha hadi mihimili minane, inayoshirikiwa kati ya vijiti na vichochezi.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Hurekebisha jinsi PadForge inavyopima matukio ya force feedback kutoka kwa mchezo na jinsi inavyoyaelekeza kwenye motor za mtetemo za kidhibiti halisi au haptic actuators. Mtetemo wa Sauti huongeza tabaka linaloendeshwa na sauti ya mfumo juu yake.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Kifaa hiki</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kidhibiti kizima</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Mtetemo hucheza kwenye {0} kama mipigo ya haptic, inayotumwa moja kwa moja kwenye kifaa. Mtetemo mkali huchagua mpigo mkali zaidi na kuurudia kwa kasi zaidi.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Mrejesho wa haptic umezimwa kwa {0} katika Logi Options+, kwa hivyo haichezi chochote hadi uuwashe tena huko.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Kifaa hiki hakijajibu bado. Mtetemo wake utacheza kikiamka.</value></data>
@@ -999,6 +1030,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headset, mousepad, na spika</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headset</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Michezo huchukua udhibiti wakati wowote inapoandika taa.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ingiza rangi ya hex ya tarakimu sita (RRGGBB au #RRGGBB) kisha bonyeza Enter au bofya mahali pengine ili kutumia.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Ondoa rangi hii kwenye paleti</value></data>
@@ -1016,7 +1048,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Weka Upya Mtetemo wa Sauti</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Weka Upya {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Futa Ramani</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Kila ramani kwenye kichupo hiki itafutwa. Ugawaji wa vyanzo, vyanzo vya ziada, na mipangilio ya kuunganisha huwekwa upya kuwa chaguomsingi.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Kila ramani kwenye tabaka hili itafutwa. Ugawaji wa vyanzo, vyanzo vya ziada, na mipangilio ya kuunganisha huwekwa upya kuwa chaguomsingi.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Muundo wa Mchezaji</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Hali ya LED ya Kunyamazisha</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Mwangaza wa LED</value></data>
@@ -1082,6 +1114,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Vitufe</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Wasifu Ulioingizwa…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kidhibiti Kilichopanuliwa</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Simamia wasifu wa HIDMaestro ulioingizwa na mtumiaji: nasa mpya kutoka kifaa kilichounganishwa, hamisha uliopo hadi JSON, au futa usiohitaji tena.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Nakili Kifaa 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Weka ramani ya kila mhimili, kitufe, na hat kwenye kifaa kilichochaguliwa moja kwa moja hadi towe pepe lenye nambari ileile. Hurekebisha mpangilio kulingana na kifaa na kubadilisha mistari ya kifaa hiki kwenye nafasi kwa upitishaji wa 1:1.</value></data>
@@ -1129,6 +1162,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Chaneli</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Pato la MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Chaneli ya MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Idadi ya CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Idadi ya matokeo ya CC (kiwango cha juu hutegemea CC ya Kuanzia)</value></data>
@@ -1160,7 +1194,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Huondoa jozi hii ya vitufe.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Kitufe cha kwanza cha jozi pinzani.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Kitufe cha pili cha jozi pinzani.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Pande Kuu Pinzani kwa Wakati Mmoja (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Weka Kidhibiti Macho</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Baadhi ya michezo husimamisha mtetemo na kubadilisha vielekezo vyake vya vitufe mara tu inapoona ingizo la kipanya au kibodi. Kushikilia mkengeuko mdogo wa kijiti hufanya mchezo uendelee kukichukulia kidhibiti hiki kuwa kifaa kinachotumika. Ushikiliaji huanza tu wakati mihimili yote miwili ya kijiti hicho iko chini ya kiwango kinachoshikiliwa, kwa hiyo kijiti kinachopeperuka bado huhesabiwa kuwa kimetulia. Ingizo linalovuka kiwango kwenye mhimili wowote huachilia ushikiliaji na kupita bila mabadiliko. Weka mkengeuko chini ya deadzone ya mchezo wenyewe ili kisisogeze chochote ndani ya mchezo.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Weka Macho</value></data>
@@ -1180,7 +1213,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Weka Upya Mbofyo</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Weka Upya Nusu ya Kidhibiti</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Weka Upya Hali ya Kufyatua</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Weka Upya Seli</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Weka Upya Deadzone ya Kuwasha</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Weka Upya Jiometri ya Menyu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Weka Upya Seli</value></data>
@@ -1236,6 +1268,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Futa Vyote</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Chanzo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Thamani</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Chaguo</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Deadzone ya Mhimili-hadi-Kitufe</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Geuza</value></data>
@@ -1273,7 +1306,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Ikiwa imetiwa alama, mhimili hurudi katikati baada ya kuachilia. Isipotiwa alama, hubaki mahali ulipo mwisho.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Kitufe kinachogeuza utoaji wa safu kikishikiliwa</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Kirekebishaji: kikishikiliwa, utoaji wa safu hubadilisha alama.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ongeza Chanzo</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ongeza Chanzo</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Ongeza ingizo jingine halisi kwenye safu hii</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Ondoa chanzo hiki</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1393,10 +1426,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Maalum</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Sawazisha Kituo</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Sehemu ya Kituo</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Kituo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Marekebisho ya kituo, umbo la deadzone na thamani kwa kila mhimili, mkunjo kwa kila mhimili, masafa, usukani</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Masafa</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Sawazisha Mpaka ndiyo njia inayopendekezwa ya kunyoosha kijiti. Hufagia ukingo ambao kijiti kinaweza kufikia kimwili, kisha hupima upya kila nafasi kulingana na ukingo huo uliopimwa, ili mwendo wote wa asili, kwa kila pembe na kila mkengeuko, ulingane na duara bora bila kukatwa chochote. Vitelezi vinne vilivyo hapa chini hudhibiti tu mihimili minne mikuu. Vitumie kupunguza masafa kwa makusudi, si kuyasahihisha.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Fanya Usawazishaji wa Mpaka hupima ukingo ambao kijiti kinaweza kufikia na kuugeuza kuwa duara kamili. Vitelezi vinne huweka tu kikomo cha kila mwelekeo.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Inapima...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Mkengeuko wa Kituo X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Mkengeuko wa Kituo Y</value></data>
@@ -1415,7 +1449,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Jina</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Kichochezi</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Wakati</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Fyatua</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Wakati wa Kubonyeza</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Wakati wa Kuachilia</value></data>
@@ -1447,9 +1481,9 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Tabaka la shift ambalo makro hii inalihusu. Tabaka lolote hufyatua bila kujali tabaka lililowashwa. Msingi na tabaka lenye jina hufyatua tu wakati tabaka hilo limewashwa, kama safu ya ramani.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Tabaka Lolote</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Hufanya kazi mfululizo wakati kidhibiti pepe hiki kiko hai. Hakuna kitufe cha kichochezi kinachohitajika.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Mfuatano wa Vitendo</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Fanya</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Tabaka, Chanzo, Kizingiti, Mwelekeo, Tumia Vitufe vya Kichochezi, Rudia</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ongeza Kitendo</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Hariri Kitendo</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Aina</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Vitufe Pepe</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Mihimili Pepe na Usukani</value></data>
@@ -1518,11 +1552,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Kitufe {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Bonyeza {0} kwa {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Bonyeza {0} kwa {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Achilia {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Vitufe {0} kwa {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Vitufe {0} kwa {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Achilia vitufe {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Subiri {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Subiri {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Weka {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Sauti ya Mfumo ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Sauti ya Mfumo ← {0} (juu zaidi {1}%)</value></data>
@@ -1534,15 +1568,15 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Achilia Kipanya {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Badilisha Overlay ya Touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Weka Rangi ya Lightbar</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Badilisha lightbar ya nafasi ya PlayStation iliyokabidhiwa kuwa rangi ya RGB iliyochaguliwa. Reactive hufifia kutoka kiwango kamili hadi nyeusi katika dirisha la kupungua lililosanidiwa, kisha hurudisha udhibiti kwenye mipangilio ya kichupo cha Taa. Sticky hushikilia rangi hadi kitendo cha Futa Ubatilishaji wa Lightbar kitekelezwe. Maandishi yanayoendeshwa na mchezo bado yana kipaumbele juu ya ubatilishaji.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Mweko wa lightbar {0} (kupungua {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Badilisha lightbar ya nafasi ya PlayStation iliyokabidhiwa kuwa rangi ya RGB iliyochaguliwa. Reactive hufifia kutoka kiwango kamili hadi nyeusi katika dirisha la kupungua lililosanidiwa, kisha hurudisha udhibiti kwenye mipangilio ya kadi ya Lightbar. Sticky hushikilia rangi hadi kitendo cha Futa Ubatilishaji wa Lightbar kitekelezwe. Maandishi yanayoendeshwa na mchezo bado yana kipaumbele juu ya ubatilishaji.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Mweko wa lightbar {0} (kupungua {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Shikilia lightbar {0} hadi ifutwe</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Futa Ubatilishaji wa Lightbar</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Futa ubatilishaji wa lightbar</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Huachilia ubatilishaji wowote unaofanya kazi wa lightbar kwenye nafasi iliyokabidhiwa. Oanisha na kitendo cha Sticky cha Weka Rangi ya Lightbar ili kuutendua kupitia makro nyingine.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Weka Hali ya Lightbar</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Weka hali ya lightbar kuwa {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Huweka hali ya lightbar ya nafasi iliyokabidhiwa kuwa thamani mahususi. Hudumu kama mabadiliko ya kichupo cha Taa hadi kitendo kingine au mtumiaji aibadilishe.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Huweka hali ya lightbar ya nafasi iliyokabidhiwa kuwa thamani mahususi. Hudumu kama mabadiliko kwenye kadi ya Lightbar hadi kitendo kingine au mtumiaji aibadilishe.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Zungusha Hali za Lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Zungusha kupitia hali {0} za lightbar</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Husogeza hali ya lightbar ya nafasi kupitia hali zilizochaguliwa hapa chini. Kila ufyatuaji huhamia hali inayofuata iliyotiwa alama. Nafasi ya mzunguko ni ya kila kitendo na huwekwa upya programu inapoanzishwa tena.</value></data>
@@ -1557,14 +1591,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Kupungua</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Kufifia</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleti</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paleti tupu hutumia paleti ya kichupo cha Taa cha nafasi yenyewe.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paleti tupu hutumia paleti iliyo kwenye kadi ya Lightbar ya nafasi.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Hali</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Chagua hali za lightbar ambazo makro inapaswa kuzungusha. Kila ufyatuaji huhamia hali inayofuata iliyotiwa alama.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Mtetemo</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Huendesha mtetemo wa kifaa halisi cha nafasi kutoka kwa makro. Reactive hukimbia kwa nguvu kamili kwa dirisha la kushikilia kisha hufifia hadi sifuri katika dirisha la kufifia. Sticky hushikilia kwa nguvu kamili hadi kitendo cha Simamisha Mtetemo kitekelezwe. Huwekwa juu ya mtetemo unaoendeshwa na mchezo kupitia max() ili mrejesho unaoendeshwa na mtumiaji uhisiwe daima.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pigisha mtetemo {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pigisha mtetemo {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Shikilia mtetemo {0} hadi ufutwe</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Simamisha Mtetemo</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Simamisha mtetemo</value></data>
@@ -1575,7 +1609,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Simamisha mtetemo wa kichochezi</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Huachilia mtetemo wowote wa kichochezi wa makro unaofanya kazi kwenye nafasi. Oanisha na Ubatilishaji wa Mtetemo wa Kichochezi wa Sticky ili kumaliza ushikiliaji kutoka kwa makro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Weka Gyro Iliyowashwa</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Huweka hali ya kuwasha gyro ya nafasi kutoka kwa makro. Badilisha hugeuza hali ya sasa. Imewashwa hulazimisha gyro iwashwe. Imezimwa hulazimisha izimwe. Haitegemei kitufe cha kuwasha cha kichupo cha Gyro. Vyanzo viwili huunganishwa kwa OR, kwa hiyo hakuna kinachoweza kuzima kile ambacho kingine kimewasha.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Huweka hali ya kuwasha gyro ya nafasi kutoka kwa makro. Badilisha hugeuza hali ya sasa. Imewashwa hulazimisha gyro iwashwe. Imezimwa hulazimisha izimwe. Haitegemei Kitufe cha kuwasha lengo kilicho chini ya Mwendo na Mguso. Vyanzo viwili huunganishwa kwa OR, kwa hiyo hakuna kinachoweza kuzima kile ambacho kingine kimewasha.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Hali</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Badilisha</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Imewashwa</value></data>
@@ -1723,7 +1757,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Ingizo la kila touchpad. Ishara (kutelezesha, kugusa, kufinya, maumbo) na modi za pato endelevu (kijiti pepe / D-pad, kipanya) huwa vyanzo vya ramani unavyoweza kuviunganisha kwenye kichupo cha ramani.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Ingizo la kila touchpad. Ishara (kutelezesha, kugusa, kufinya, maumbo) na modi za pato endelevu (kijiti pepe / D-pad, kipanya) huwa vyanzo vya ramani unavyoweza kuviunganisha na matokeo yoyote.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nambari ya touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Touchpad ipi ya kidhibiti hiki ambayo mipangilio iliyo hapa chini inaihusu. Kila touchpad ina ishara zake, hisia yake ya kipanya na eneo lake la kielekezi.</value></data>
@@ -2013,10 +2047,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Rekebisha jinsi kihisi cha mwendo cha pedi hii kinavyoendesha pato la kipanya na kijiti. Sawazisha kwenye uso tambarare ili kuondoa kuteleza kwa hali tulivu, kisha weka unyeti, ulainishaji na sheria za kuwasha upendavyo.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Usawazishaji</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Usomaji wa sasa wa gyroscope na accelerometer</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Unyeti</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Vizio, Mfumo, geuza mihimili, Usawazishaji wa ulimwengu halisi</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Vizio, geuza mihimili, Usawazishaji wa ulimwengu halisi</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° kwa kila zamu</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Kuunda mwitikio</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Deadzone, ulainishaji, mchapuko, mkunjo wa pato</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Fremu ya Marejeo</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Wa ndani, Wa mchezaji au Wa ulimwengu</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Mfumo</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Jinsi mwendo wa gyro unavyofasiriwa. Wa ndani hutumia mihimili ghafi ya kidhibiti. Wa mchezaji huweka mwendo wa mlalo kwenye wima halisi wa dunia (uvutano) ili msokoto uleule wa kifundo cha mkono ugeuze kamera kila mara, bila kujali unavyoshika pedi. Wa ulimwengu huweka tena mwendo wa wima kwenye mihimili ya ulimwengu.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Jinsi inavyoshikwa</value></data>
@@ -2088,6 +2126,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Wima</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Shikio</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Jinsi kidhibiti kinavyoshikwa. Huzungusha gyro, accelerometer na uvutano pamoja, kwa ramani na kwa mwendo ambao kidhibiti pepe huripoti. D-pad hufuata fremu ileile, hivyo Juu ni juu katika shikio.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Jinsi kidhibiti kinavyoshikwa</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Mstari</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Kali</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Laini</value></data>
@@ -2120,7 +2159,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Weka upya mwelekeo wa kuwasha</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Upitishaji wa mwendo</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Tumia mpangilio wa gyro kwenye upitishaji wa mwendo</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Huendesha mpangilio wa hiari wa gyro wa kichupo hiki (deadzone, unyeti, ulainishaji, mkunjo wa mwitikio, kugeuza) kwenye mwendo ambao kidhibiti pepe huripoti kwa mchezo au emulator. Uzime ili utume usomaji uliosawazishwa pekee na uuache mchezo utumie unyeti na ulainishaji wake. Usahihishaji wa kuteleza wa usawazishaji hutumika kila mara kwa vyovyote vile.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Huendesha mpangilio wa hiari wa kadi za Gyro (deadzone, unyeti, ulainishaji, mkunjo wa mwitikio, kugeuza) kwenye mwendo ambao kidhibiti pepe huripoti kwa mchezo au emulator. Uzime ili utume usomaji uliosawazishwa pekee na uuache mchezo utumie unyeti na ulainishaji wake. Usahihishaji wa kuteleza wa usawazishaji hutumika kila mara kwa vyovyote vile.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Weka upya mpangilio wa upitishaji</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Unyeti</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Kizidishi cha unyeti wa gyro kwa kila chanzo. 1.0 = chaguomsingi ya injini (500°/s → mkengeuko kamili). Thamani zaidi ya 1.0 ni nyeti zaidi. Thamani chini ya 1.0 ni nyeti kidogo.</value></data>
@@ -2137,7 +2176,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Weka upya masafa kamili ya mwinamo</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Weka upya deadzone ya mwinamo</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Weka upya mwinamo wa gyro</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Jinsi vyanzo vya safu hii vinavyounganishwa zaidi ya kimoja kinapokuwa hai. Chagua safu ili kuibadilisha kwenye ukanda wa maelezo ulio chini.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Jinsi vyanzo vya safu hii vinavyounganishwa zaidi ya kimoja kinapokuwa hai. Fungua safu ili kuibadilisha chini ya Unganisha.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modi ya trackball: piga kijiti kisha uachilie, na kielekezi huendelea kusafiri, kikitelemka hadi kusimama. Kusogeza kijiti tena huisimamisha.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Kielekezi hutelemka umbali gani baada ya kupiga kijiti. Kwenye kikomo cha juu cha masafa huendelea hadi usogeze kijiti tena.</value></data>
@@ -2322,7 +2361,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mhimili wa Kichochezi</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya kila motor, mtetemo wa kichochezi, kubadilishana motor</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya kila motor, mtetemo wa kichochezi, Mtetemo wa Pembe ya Usukani, Nguvu ya Kudumu</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ukuzaji wa Jumla</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor ya Kushoto</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor ya Kulia</value></data>
@@ -2331,6 +2370,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Kidhibiti hiki hakina motor za vichochezi, kwa hivyo michezo inayotumia vichochezi vya msukumo vya Xbox isingehisiwa. Unganisha kila chaneli ya kichochezi kwenye motor kuu ya upande uleule badala yake.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Jaribu Mtetemo</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Shughuli ya Motor</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kushoto</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kulia</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Tumia nguvu endelevu kwenye kifaa hiki hadi uizime. Nguvu inayotoka kwenye mchezo kutoka chanzo chochote hubatilisha ikiwa hai na kurudi mchezo unaposimama.</value></data>
@@ -2409,7 +2450,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Bonyeza vitufe au sogeza mhimili/kichochezi ili kurekodi. Mihimili hutambuliwa inapokengeushwa zaidi ya 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ongeza kutoka Orodha</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Chagua ingizo la kichochezi kutoka kwa vifaa vya nafasi badala ya kulirekodi. Ishara za touchpad zilizowezeshwa kwenye kichupo cha Touchpad huonekana hapa.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Safisha Kichochezi</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Chagua ingizo la kichochezi kutoka kwa vifaa vya nafasi badala ya kulirekodi. Ishara za touchpad zilizowashwa chini ya Mwendo na Mguso huonekana hapa.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Ondoa Ingizo</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Bonyeza ingizo lolote…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>imegeuzwa</value></data>
@@ -2630,7 +2672,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekunde kabla kidhibiti pepe kuharibiwa vifaa vyake vyote vilivyoramaniwa vikiwa nje ya mtandao. 0 huzima. Vidhibiti vilivyobaki vya aina ileile husogea juu kujaza pengo na kujiunganisha tena na nafasi za chini.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekunde (0 = kamwe)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Tabaka la Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ongeza Tabaka</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ongeza tabaka la shift. Jedwali la pili la ramani linalowashwa kitufe kikishikiliwa au kubadilishwa.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Msingi</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Tabaka la Shift</value></data>
@@ -2830,7 +2872,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Sauti</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Sauti za makro na sauti ya mfumo iliyoakisiwa hucheza kupitia spika iliyojengewa ndani ya kidhibiti kilichochaguliwa, kupitia USB au Bluetooth. Chagua kifaa kwenye orodha ya juu. Kila mpangilio hapa unakifuata.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Pato la Sauti</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Chanzo cha Kuakisi, haptics, Sauti ya Vipokea Sauti, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Chanzo cha Kuakisi, Sauti ya Vipokea Sauti, bafa, Njia ya Matokeo</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sauti hupelekwa kwa kidhibiti kilichochaguliwa kiotomatiki. Kupitia USB, sehemu ya sauti ya pedi yenyewe hulinganishwa kwa kontena la maunzi. Kupitia Bluetooth sauti hutiririshwa kwa fremu za Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Chanzo cha Kuakisi</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Kifaa kipi cha kucheza sauti kiakisiwe kwenye spika ya kidhibiti. Michezo inayotuma sauti maalum kwa kifaa tofauti cha kucheza inaweza kulenga hiki.</value></data>
@@ -2843,10 +2885,10 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Simamisha Sauti Zote</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Simamisha kila sauti ya makro kwenye pedi hii</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Makro za Sauti</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sauti huchezwa na makro: kichochezi (kubonyeza kitufe, kuachilia, kushikilia, au fomula) pamoja na kitendo cha Cheza Sauti. Zijenge hapa au kwenye kichupo cha Makro. Ucheleweshaji, marudio na badilisha vyote hufanya kazi.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Sauti huchezwa na makro: kichochezi (kubonyeza kitufe, kuachilia, kushikilia, au fomula) pamoja na kitendo cha Cheza Sauti. Zijenge hapa au chini ya Makro na Menyu. Ucheleweshaji, marudio na badilisha vyote hufanya kazi.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Makro Mpya ya Sauti</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Hakuna makro za sauti bado. Unda moja na uchague faili ya sauti na kichochezi.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Fungua makro hii kwenye kichupo cha Makro</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Fungua makro hii chini ya Makro na Menyu</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makro ya Sauti {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Cheza Sauti</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Cheza faili ya sauti (.wav, .mp3, .m4a, .aac, .wma, .flac) kwenye kifaa cha pato cha pedi hii</value></data>
@@ -3122,6 +3164,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Inaendesha</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Inaendesha, kiendeshi kimeunganishwa</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Inaendesha, vidhibiti vinafanya kazi</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR imesakinishwa</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR haijasakinishwa</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR inaendesha</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR inaendesha, kiendeshi kimeunganishwa</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR inaendesha, vidhibiti vinafanya kazi</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Kiendeshi kingine cha OpenVR kinatumia jina la kiendeshi la HIDMaestro, kwa hivyo SteamVR inaweza kukipakia badala cha PadForge na vidhibiti pepe vya VR havitaonekana. Ondoa kiendeshi hicho ili kutatua hili: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Kidhibiti cha Serial (Mlango wa COM)</value></data>
@@ -3265,7 +3312,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Kipanya</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ishara za Kipanya</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Shikilia kitufe cha ishara, piga kwa haraka, na kitendo kimoja hutekelezwa unapoachilia: kushoto, kulia, juu, chini, au mbofyo wa kawaida chini ya umbali wa kupiga. Ramanisha ishara hizo tano kwenye kichupo cha Ramani au zitumie kama vichochezi vya makro.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Shikilia kitufe cha ishara, piga kwa haraka, na kitendo kimoja hutekelezwa unapoachilia: kushoto, kulia, juu, chini, au mbofyo wa kawaida chini ya umbali wa kupiga. Ramanisha ishara hizo tano kwenye matokeo yoyote au zitumie kama vichochezi vya makro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Washa Ishara za Kipanya</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Huwezesha kitambua ishara kwa kipanya hiki kwenye nafasi hii. Kitufe cha ishara hudumisha mbofyo wake wa kawaida wakati wa kutoa ishara, kwa hivyo chagua kitufe cha pembeni usichokiramanisha vinginevyo.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Vitufe vya Ishara</value></data>
@@ -3299,7 +3346,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Hamia Tabaka</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Weka Rangi ya Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Hupaka vifaa vya Razer vilivyokabidhiwa kidhibiti pepe hiki, na kila kifaa kingine cha Razer cha aina hizo, rangi moja wakati kitendo kinaendelea.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Kwa muda ulio hapo juu, hupaka rangi hii kwenye vifaa vya Razer vilivyokabidhiwa kidhibiti pepe hiki na kwenye kila kifaa kingine cha Razer cha aina hizo, au kwenye kila kifaa cha Razer wakati safu ya Razer Chroma imekabidhiwa. Hubatilisha kichupo cha Taa cha kidhibiti pepe chochote, kisha hurudisha taa. Ili kushikilia rangi kwa muda wote kichochezi kinashikiliwa, tumia Wakati Inashikiliwa pamoja na Hadi Kuachilia. Makro mbili zikipaka kwa wakati mmoja, ile iliyo chini zaidi kwenye orodha hushinda, kwa hivyo weka makro ya mbonyezo kamili chini ya pacha wake wa mbonyezo laini. Makro za vidhibiti pepe viwili zikipaka aina ile ile ya kifaa cha Razer, nambari ndogo ya mchezaji hushinda. Inahitaji Razer Synapse iwe inafanya kazi.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Kwa muda ulio hapo juu, hupaka rangi hii kwenye vifaa vya Razer vilivyokabidhiwa kidhibiti pepe hiki na kwenye kila kifaa kingine cha Razer cha aina hizo, au kwenye kila kifaa cha Razer wakati safu ya Razer Chroma imekabidhiwa. Hubatilisha taa ambazo kidhibiti pepe chochote huweka chini ya Taa na Sauti, kisha hurudisha taa. Ili kushikilia rangi kwa muda wote kichochezi kinashikiliwa, tumia Wakati wa Kushikilia pamoja na Hadi Kuachilia. Makro mbili zikipaka kwa wakati mmoja, ile iliyo chini zaidi kwenye orodha hushinda, kwa hivyo weka makro ya mbonyezo kamili chini ya pacha wake wa mbonyezo laini. Makro za vidhibiti pepe viwili zikipaka aina ile ile ya kifaa cha Razer, nambari ndogo ya mchezaji hushinda. Inahitaji Razer Synapse iwe inafanya kazi.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Onyesha Skrini ya Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Huonyesha picha kwenye VMU ya kila kidhibiti cha Dreamcast kwenye mlango wa Bliss-Box unaolisha nafasi hii, kisha hurudisha kila mlango kwenye mpangilio wake wa skrini.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Onyesha picha za Dreamcast: {0} × {1} ms, idadi ya marudio {2}</value></data>
@@ -3593,10 +3640,12 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Huweka sifuri marejeleo ya lengo la gyro yaliyokusanywa ya kidhibiti unapobonyeza. Historia ya ulainishaji husafishwa, kituo cha kuegemea kwa mwendo hunaswa tena, makadirio ya mvuto huanzishwa upya kutoka mkao wa sasa wa kidhibiti, na zamu iliyojengwa na safu za Pitch, Yaw na Roll ya Mwendo hutenguliwa.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Kifaa Chochote)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menyu</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menyu hugeuza kijiti au touchpad halisi kuwa pete au gridi kwenye skrini. Ongeza menyu, chagua kinachoifungua, kisha weka lebo kwa kila seli na uipe ramani.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menyu hugeuza kijiti au touchpad halisi kuwa pete au gridi kwenye skrini. Bonyeza + kando ya Menyu ili kuunda mpya, chagua kinachoifungua, kisha ipe kila seli jina na kitendo.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menyu Mpya</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menyu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Jina la Menyu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Imewashwa</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Ufunguzi</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Mtindo</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Pete ya Mviringo</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Gridi ya Mguso</value></data>
@@ -3616,12 +3665,16 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Seli</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Seli ya Kati</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Onyesha Lebo</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Nafasi kwenye Skrini</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Ukubwa</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Uwazi</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Deadzone ya Kuanza</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Ramani za Seli</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Seli {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Ongeza Seli</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Ondoa Seli ya Mwisho</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Hariri Seli</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Jina</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Kitendo</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Aikoni</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Kati</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Hakuna</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Kitufe cha Kibodi</value></data>
@@ -3634,7 +3687,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Hutekelezwa mara moja mbofyo ukiachiliwa: elekeza seli, bofya kijiti au touchpad ndani, kisha achilia mbofyo.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Hutekelezwa mara moja ukiachilia: inua kidole chako kutoka kwenye touchpad, au acha kijiti kirudi katikati wakati seli imeangaziwa.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Ramani hushikiliwa muda wote seli imeangaziwa. Hakuna mbofyo unaohitajika.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Seli ngapi menyu ina. Kwa pete ya mviringo hii huhesabu pete tu. Seli ya kati ni tofauti.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Huongeza seli ya kati, inayochaguliwa kijiti au kidole kikiwa ndani ya Deadzone ya Kuanza.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Kwa vijiti, umbali wa kusukuma kabla menyu haijafunguka na seli za pete kuangaziwa. Kwenye menyu za mviringo pia ni eneo la kati kwa vijiti na touchpad: ndani yake, seli ya kati huchaguliwa ikiwepo.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Chora lebo ya kila seli kwenye overlay ya skrini.</value></data>
@@ -3644,8 +3696,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Ukubwa wa overlay, kwa asilimia ya ukubwa wake wa kawaida.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Uwazi wa overlay. 100% ni imara kabisa.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Maandishi yanayoonyeshwa kwenye seli hii kwenye overlay.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Kile seli hii hufanya inapotekelezwa: "Kitufe cha Kibodi" hubonyeza kitufe cha kibodi, "Kitufe cha Kidhibiti" hubonyeza kitufe kwenye kidhibiti pepe cha nafasi hii. Seli iliyowekwa "Hakuna" bado hutekelezwa kama chanzo cha kipengee cha menyu kwa safu za Ramani na vichochezi vya makro.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Husomwa kutoka vidhibiti halisi vilivyokabidhiwa nafasi hii, si kutoka muundo wa kidhibiti pepe. Ramani za seli zilizo hapa chini ndizo menyu hutoa.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Kile seli hii hufanya inapotekelezwa: "Kitufe cha Kibodi" hubonyeza kitufe cha kibodi, "Kitufe cha Kidhibiti" hubonyeza kitufe kwenye kidhibiti pepe cha nafasi hii. Seli iliyowekwa "Hakuna" bado hutekelezwa kama chanzo cha kipengee cha menyu kwa ramani na vichochezi vya makro.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Husomwa kutoka vidhibiti halisi vilivyokabidhiwa nafasi hii, si kutoka muundo wa kidhibiti pepe. Seli zilizo hapa chini huonyesha kile ambacho menyu hutoa.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Mihimili Maalum</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Elekeza X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Elekeza Y</value></data>
@@ -3670,13 +3722,16 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Towe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Vitufe</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Kibodi na Kipanya</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noti na Vidhibiti</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mikono</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Vijiti na Vichochezi</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Mtetemo na Mrejesho</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mwendo na Mguso</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Taa na Sauti</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makro na Menyu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Huelekeza mtetemo wa mchezo na force feedback ambayo kidhibiti pepe hiki hupokea kwenye towe la sauti kama toni za masafa ya chini kwa bass shakers na subwoofer.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Hucheza mtetemo wa mchezo kama toni za chini kupitia bass shakers au subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Kifaa cha towe, chaneli, gain, toni kwa kila motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Hufanya kazi na vidhibiti pepe vya Xbox, DualShock 3, DualShock 4 / DualSense, na Nintendo Switch Pro, pamoja na vidhibiti pepe vya Extended vyenye force feedback, kama usukani wa mbio, na Steam Deck Controller (Composite). Maoni ya mchezo na Test Rumble hucheza kupitia towe la sauti. Mtetemo wa makro hubaki kwenye kidhibiti.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Weka Upya Mtetemo hadi Sauti</value></data>
@@ -3705,19 +3760,22 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Hucheza chaneli hii ya maoni kama toni. Gain na masafa hubaki yamewekwa ikiwa imezimwa.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Masafa ya toni ya chaneli hii, 20 hadi 120 Hz. Endesha frequency sweep ili kupata mahali bass shaker yako inapojibu kwa nguvu zaidi.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Sauti ya kituo hiki kabla ya master gain.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Gain</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Jaribu</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Hucheza toni ya kituo hiki kwa sekunde 1.5 kwa gain yake iliyowekwa.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Weka Upya Motor ya Chini</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Weka Upya Motor ya Juu</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Weka Upya Kichochezi cha Kushoto</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Weka Upya Kichochezi cha Kulia</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kagua Shakers</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Skani ya Marudio</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Hupitisha toni kutoka 20 hadi 120 Hz kwa sekunde nane kwenye uelekezaji wa motor ya chini. Angalia mahali shaker yako inapojibu kwa nguvu zaidi, kisha weka marudio ya sauti hapo.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Simamisha</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Husimamisha toni ya majaribio au skani.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Lebo Yoyote ya NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Lebo ya NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Chuja maingizo (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Chuja matokeo na maingizo</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Huonyesha tu safu na maingizo yanayolingana. Bonyeza Ctrl+F ili uandike hapa.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Chagua maingizo ya vifaa vipi vitolewe na vichaguzi</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Vinavyoonyeshwa kwenye Kichaguzi</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Kifungu Chochote cha Sauti</value></data>
@@ -3824,6 +3882,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Weka Upya Feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametric EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Vichujio vya kila bendi juu ya sauti ya kidhibiti. Hutumika kabla sauti haijasimbwa, kwa hivyo limiter iliyo hapa chini huzuia bendi iliyoongezwa isisababishe sauti kupasuka.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, bendi, kuingiza</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Kiwango cha jumla kabla ya bendi. Wasifu wa AutoEq huja na preamp hasi ili ongezeko lao lisipasue sauti, na kuingiza mmoja huweka hii kwa niaba yako.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Washa</value></data>
@@ -4047,7 +4106,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Weka upya kuwa ufunguzi kwa mguso au mkengeuko.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Elekeza Kwa</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Ingizo halisi linaloelekeza kisanduku kilichoangaziwa tabaka linaposhikilia menyu hii wazi.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Husomwa kutoka vidhibiti halisi vilivyoagizwa kwa nafasi hii. Tabaka hufungua menyu, ingizo hili huielekeza. Viambatisho vya visanduku huamua matokeo yake.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Husomwa kutoka vidhibiti halisi vilivyokabidhiwa nafasi hii. Tabaka hufungua menyu, na ingizo hili huielekeza. Seli zake huonyesha kile inachotoa.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ukubwa wa Ikoni</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Ukubwa wa ikoni ukilinganishwa na ukubwa wa kawaida wa ikoni ya menyu, kutoka 25% hadi 200%. Kufuta ikoni huirejesha kuwa 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Hushikilia kiambatisho cha kisanduku kilichoangaziwa Click Input inaposhikiliwa. Kituo cha radial kilichoangaziwa kinaweza kuwaka kijiti kikiwa kimetulia.</value></data>
@@ -4170,7 +4229,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rejeo la Antoine Aflalo kwa mpangilio wa kiolesura kisichoandikwa cha IPolicyConfig cha Windows, ambacho PadForge hutumia kuwasha tena sehemu ya mwisho ya sauti ya kidhibiti. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Muundo wa wasifu wa parametric EQ ambao kichupo cha Sauti huingiza, na Jaakko Pasanen. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Muundo wa wasifu wa parametric EQ ambao Parametric EQ ya kidhibiti huingiza, na Jaakko Pasanen. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Mbinu za SendInput nyuma ya makro za Text Block na ndoano ya mchanganyiko wa kibodi: uandishi wa Unicode, mipaka ya kundi, kitufe cha kuficha cha Win, na ingizo lililotiwa lebo. GPL-2.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4366,6 +4425,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Mwelekeo</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Hatua</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>hadi</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Kishikio</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} inaweka vichochezi vya kidhibiti hiki.</value></data>
@@ -4410,7 +4470,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Kishikio hakikusafiri umbali wa kutosha, kwa hiyo masafa yanabaki kama yalivyokuwa. Kisogeze hadi kila ukingo wakati kipimo kinaendelea.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon ilifungwa kabla kipimo hakijakamilika.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Hucheza michezo kwa Novint Falcon kupitia SDK ya Force Dimension, ambayo unaisakinisha kutoka Force Dimension. Kishikio ni kijiti, vitufe vinne vya mshiko ni vitufe, na PadForge huweka mtetemo na athari za mchezo kwenye kishikio kama nguvu. Kichupo cha Force Feedback cha kila nafasi huweka jinsi Falcon inavyohisi.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Hucheza michezo kwa Novint Falcon kupitia SDK ya Force Dimension, ambayo unaisakinisha kutoka Force Dimension. Kishikio ni kijiti, vitufe vinne vya mshiko ni vitufe, na PadForge huweka mtetemo na athari za mchezo kwenye kishikio kama nguvu. Kadi ya Novint Falcon iliyo chini ya Mtetemo na Mrejesho ya kila kidhibiti huweka jinsi Falcon inavyohisi.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Endesha Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Hufungua kila Falcon kupitia dhd64.dll ya Force Dimension. Falcon iliyofunguliwa ni ya PadForge peke yake, kwa hiyo FalconJoyForce na zana za Force Dimension haziwezi kuifungua hii ikiwa imewashwa. Ikizimwa, PadForge hufunga kila Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Maktaba ya Falcon imewekwa kuwa {0}. PadForge huipakia ndani ya sekunde chache, na Falcon iliyofunguliwa kwenye nakala nyingine hufunguliwa tena kwenye hii.</value></data>
@@ -4578,7 +4638,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Kwa Muda Uliowekwa</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Hadi Isimamishwe</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Muda</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Hucheza kwenye kila DualSense na DualSense Edge kwenye nafasi hii. Athari ya kichochezi ya mchezo wenyewe na ya mod ya mchezo hutangulia, na mpangilio wa kichupo cha Vichochezi Vinavyojirekebisha hurudi athari inapoisha. Maeneo huanzia 0 kichochezi kikiwa kimetulia hadi 9 kikivutwa kikamilifu. Upinde, Mbio za Farasi na Mashine si athari rasmi za DualSense, na sasisho la firmware linaweza kuziondoa. Vidhibiti vya Xbox ambavyo Tafsiri Mitetemo ya Vichochezi Vinavyojirekebisha imewashwa huhisi athari za mtetemo kama mtetemo wa kichochezi.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Hucheza kwenye kila DualSense na DualSense Edge kwenye nafasi hii. Athari ya kichochezi ya mchezo wenyewe na ya mod ya mchezo hutangulia, na mpangilio wa kadi ya Vichochezi Vinavyojirekebisha hurudi athari inapoisha. Maeneo huanzia 0 kichochezi kikiwa kimetulia hadi 9 kikivutwa kikamilifu. Upinde, Mbio za Farasi na Mashine si athari rasmi za DualSense, na sasisho la firmware linaweza kuziondoa. Vidhibiti vya Xbox ambavyo Tafsiri Mitetemo ya Vichochezi Vinavyojirekebisha imewashwa huhisi athari za mtetemo kama mtetemo wa kichochezi.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} kwenye {1} kwa ms {2}</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} kwenye {1} ikishikiliwa</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} kwenye {1} hadi isimamishwe</value></data>

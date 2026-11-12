@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopjo</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Ngjit</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Dyfisho</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Riemërto</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivizuar</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Çaktivizuar</value></data>
   <data name="Common_On" xml:space="preserve"><value>Aktiv</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pajisje</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Drejtuar nga</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Shto pajisje</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imazh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listë</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} dalje</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Lëvizja</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kliko një kontroll, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Kliko një tast ose një buton të mausit, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kliko një notë ose një rrëshqitës, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Hartëzo të gjitha“ i anashkalon daljet e prekjes për A dhe B. Kliko unazën rreth A ose B për të lidhur njërën.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Po regjistron {0}. Shtyp hyrjen në pajisjen tënde.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, drejtuar nga</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Më shumë opsione</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Më pak opsione</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buton ballor</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buton supi</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buton sistemi</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Buton</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad drejtimor</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Levë</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Këmbëz</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor lëvizjeje</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tast tastiere</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Buton mausi</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Lëvizje mausi</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rrotë mausi</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Ndryshim kontrolli</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor prekjeje</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Tërheqje analoge</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, dora e majtë</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, dora e djathtë</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Cilën shtypje e sheh loja kur mbahen të dy butonat e një çifti</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Cilën shtypje e sheh loja kur mbahen të dy tastet e një çifti</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mban një devijim të vogël të levës që lojërat të shfaqin treguesit e kontrolluesit</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Po farkëton</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Zgjidh një makro në të majtë ose shtyp Shto për të krijuar një.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Zgjidh një makro në listë ose shtyp + pranë titullit Makrot për të krijuar një.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>I ftohtë</value></data>
@@ -862,7 +891,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Këmbëza impulsi</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Këmbëza impulsi</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forca për çdo këmbëz, këmbimi i motorëve, dridhjet e këmbëzave adaptive</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forca për çdo këmbëz, këmbimi i motorëve, dridhjet e këmbëzave adaptive, Forca e vazhdueshme e këmbëzës</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Përcjell komandat e motorit për çdo këmbëz (Xbox Impulse Triggers) nga kontrolluesi virtual te kontrolluesi fizik i caktuar Xbox One, Elite ose Series. Dridhja e këmbëzave e drejtuar nga loja kalon automatikisht. Kontrollet më poshtë shkallëzojnë madhësinë për çdo këmbëz.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Këmbëza e majtë</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Këmbëza e djathtë</value></data>
@@ -932,9 +961,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Levat</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zona të vdekura për çdo levë, anti-zona të vdekura, kurba ndjeshmërie dhe kalibrim i zhvendosjes së qendrës. Çdo seksion më poshtë synon një levë analoge në daljen aktive. Profilet e zgjeruara mund të kenë deri në katër leva. Gamepad-et standardë kanë dy.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Këmbëzat</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zona të vdekura për çdo këmbëz, anti-zona të vdekura, shkallëzim i diapazonit maksimal dhe kurba ndjeshmërie. Çdo seksion më poshtë synon një bosht këmbëze në daljen aktive. Profilet e zgjeruara mund të ekspozojnë deri në tetë boshte të ndara me skedën Levat.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zona të vdekura për çdo këmbëz, anti-zona të vdekura, shkallëzim i diapazonit maksimal dhe kurba ndjeshmërie. Çdo kartë këmbëze synon një bosht këmbëze në daljen aktive. Profilet e zgjeruara mund të ekspozojnë deri në tetë boshte, të përbashkëta për levat dhe këmbëzat.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Rregullon si i shkallëzon PadForge ngjarjet e force feedback nga loja dhe si i përcjell te motorët e dridhjes ose aktuatorët haptikë të kontrolluesit fizik. Dridhja nga audio shton një shtresë të drejtuar nga audio e sistemit sipër.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Kjo pajisje</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Gjithë kontrolluesi</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Dridhja luhet në {0} si impulse haptikë, të dërguar drejtpërdrejt te pajisja. Dridhja më e fortë zgjedh një impuls më të fortë dhe e përsërit më shpejt.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Reagimi haptik është çaktivizuar për {0} në Logi Options+, ndaj nuk luan asgjë deri sa ta aktivizoni përsëri atje.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Kjo pajisje nuk është përgjigjur ende. Dridhja e saj luhet sapo të zgjohet.</value></data>
@@ -1001,6 +1032,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kufje, tapete mausi dhe altoparlantë</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kufje</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Shiriti i dritës</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Lojërat marrin kontrollin sa herë që shkruajnë ndriçim.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Futni një ngjyrë hex gjashtëshifrore (RRGGBB ose #RRGGBB) dhe shtypni Enter ose klikoni jashtë për ta zbatuar.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Hiq këtë ngjyrë nga paleta</value></data>
@@ -1018,7 +1050,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Rivendos dridhjen nga audio</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Rivendos {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Pastro hartëzimet</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Çdo hartëzim në këtë skedë do të pastrohet. Caktimet e burimeve, burimet shtesë dhe cilësimet e kombinimit rivendosen në parazgjedhje.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Çdo hartëzim në këtë shtresë do të pastrohet. Caktimet e burimeve, burimet shtesë dhe cilësimet e kombinimit rivendosen në parazgjedhje.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Modeli i lojtarit</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mënyra e LED-it të heshtjes</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Shkëlqimi i LED-eve</value></data>
@@ -1084,6 +1116,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Butonat</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profilet e importuara…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontrolluesi i zgjeruar</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Menaxhoni profilet HIDMaestro të importuara nga përdoruesi: kapni një të ri nga një pajisje e lidhur, eksportoni një ekzistues në JSON, ose fshini një që nuk ju duhet më.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klono pajisjen 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Hartëzon çdo bosht, buton dhe POV në pajisjen e zgjedhur drejtpërdrejt te dalja virtuale me të njëjtin numër. E përshtat paraqitjen me pajisjen dhe zëvendëson rreshtat e kësaj pajisjeje në slot me një kalim të drejtpërdrejtë 1:1.</value></data>
@@ -1131,6 +1164,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanali</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Dalja MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kanali MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Numri i CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Numri i daljeve CC (maksimumi varet nga CC e fillimit)</value></data>
@@ -1162,7 +1196,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Heq këtë çift tastesh.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Tasti i parë i çiftit të kundërt.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Tasti i dytë i çiftit të kundërt.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Drejtime kardinale të kundërta të njëkohshme (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Mbaje kontrolluesin zgjuar</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Disa lojëra ndalojnë dridhjen dhe ndërrojnë treguesit e butonave sapo shohin hyrje nga maus ose tastiera. Mbajtja e një devijimi të vogël të levës e bën lojën ta trajtojë këtë kontrollues si pajisjen aktive. Mbajtja aktivizohet vetëm kur të dy boshtet e asaj leve ndodhen nën nivelin e mbajtur, ndaj një levë me drift llogaritet prapë si në qetësi. Hyrja mbi nivel në cilindo bosht e lëshon mbajtjen dhe kalon e pandryshuar. Mbaje devijimin nën zonën e vdekur të lojës, që të mos lëvizë asgjë në lojë.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Mbaje zgjuar</value></data>
@@ -1182,7 +1215,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Rivendos klikimin</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Rivendos gjysmën e kontrollit</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Rivendos mënyrën e gjuajtjes</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Rivendos qelizat</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Rivendos zonën e vdekur të angazhimit</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Rivendos gjeometrinë e menysë</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Rivendos qelizën</value></data>
@@ -1238,6 +1270,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ClearAll" xml:space="preserve"><value>Pastro të gjitha</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Burimi</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Vlera</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsione</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona e vdekur nga boshti në buton</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Përmbys</value></data>
@@ -1275,7 +1308,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Kur është i shënuar, boshti kthehet në qendër pas lëshimit. Kur nuk është i shënuar, e mban pozicionin e fundit.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Butoni që përmbys daljen e rreshtit për sa kohë mbahet</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikuesi: për sa kohë mbahet, dalja e rreshtit ndërron shenjë.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Shto burim</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Shto burim</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Shto një hyrje tjetër fizike në këtë rresht</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Hiq këtë burim</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1395,10 +1428,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Curve_Custom" xml:space="preserve"><value>E personalizuar</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibro qendrën</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pika qendrore</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Qendra</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona e vdekur</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Zhvendosjet e qendrës, forma e zonës së vdekur dhe vlerat për çdo bosht, një kurbë për çdo bosht, diapazoni, drejtimi</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Diapazoni</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrimi i kufirit është mënyra e rekomanduar për ta saktësuar një levë. Fshin skajin që leva mund ta arrijë fizikisht, pastaj rishkallëzon proporcionalisht çdo pozicion kundrejt atij skaji të matur, ndaj e gjithë lëvizja e natyrshme, në çdo kënd dhe çdo devijim, përkon me një rreth ideal pa asgjë të prerë. Katër rrëshqitësit më poshtë kufizojnë vetëm boshtet kardinale. Përdori për ta kufizuar diapazonin me qëllim, jo për ta korrigjuar.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Kalibro kufirin“ mat skajin që leva mund të arrijë dhe e kthen në një rreth të plotë. Katër rrëshqitësit vetëm kufizojnë çdo drejtim.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Po mostrohet...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Zhvendosja e qendrës X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Zhvendosja e qendrës Y</value></data>
@@ -1417,7 +1451,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Emri</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Këmbëza</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Kur</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Aktivizimi</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Gjatë shtypjes</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Gjatë lëshimit</value></data>
@@ -1449,9 +1483,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Cilës shtresë ndërrimi i përket kjo makro. Çdo shtresë aktivizohet pavarësisht shtresës së angazhuar. Baza dhe shtresat me emër aktivizohen vetëm kur ajo shtresë është e angazhuar, saktësisht si një rresht hartëzimi.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Çdo shtresë</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ekzekutohet vazhdimisht për sa kohë ky kontrollues virtual është aktiv. Nuk kërkohet buton këmbëze.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Sekuenca e veprimeve</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Bëj</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Shtresa, Burimi, Pragu, Drejtimi, Konsumo butonat e këmbëzës, Përsërit</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Shto veprim</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Redakto veprimin</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Lloji</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Butonat virtualë</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Boshtet virtuale dhe timoni</value></data>
@@ -1520,11 +1554,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_Button_Format" xml:space="preserve"><value>Butoni {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Shtyp {0} për {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Shtyp {0} për {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lësho {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tastet {0} për {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Tastet {0} për {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lësho tastet {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Prit {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Prit {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Cakto {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volumi i sistemit ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Volumi i sistemit ← {0} (maks {1}%)</value></data>
@@ -1536,15 +1570,15 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lëshimi i mausit {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Ndërro mbivendosjen e touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Cakto ngjyrën e shiritit të dritës</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ndryshon shiritin e dritës të slotit PlayStation të caktuar në një ngjyrë RGB të zgjedhur. Reaktive zbehet nga intensiteti i plotë në të zezë gjatë dritares së caktuar të shuarjes, pastaj ia kthen cilësimeve të skedës Ndriçim. E ngjitur e mban ngjyrën derisa të ekzekutohet veprimi Pastro ndryshimin e shiritit të dritës. Shkrimet e drejtuara nga loja kanë prapë përparësi mbi ndryshimin.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Pulso shiritin e dritës {0} (shuarje {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ndryshon shiritin e dritës të slotit PlayStation të caktuar në një ngjyrë RGB të zgjedhur. Reaktive zbehet nga intensiteti i plotë në të zezë gjatë dritares së caktuar të shuarjes, pastaj ia kthen cilësimeve të kartës „Shiriti i dritës“. E ngjitur e mban ngjyrën derisa të ekzekutohet veprimi Pastro ndryshimin e shiritit të dritës. Shkrimet e drejtuara nga loja kanë prapë përparësi mbi ndryshimin.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Pulso shiritin e dritës {0} (shuarje {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mbaje shiritin e dritës {0} deri në pastrim</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Pastro ndryshimin e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Pastro ndryshimin e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Lëshon çdo ndryshim aktiv të shiritit të dritës në slotin e caktuar. Çiftoje me një veprim Cakto ngjyrën e shiritit të dritës të ngjitur për ta zhbërë përmes një makroje tjetër.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Cakto mënyrën e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Cakto mënyrën e shiritit të dritës në {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Cakton mënyrën e shiritit të dritës të slotit në një vlerë të caktuar. Mbetet si një redaktim në skedën Ndriçim derisa ta ndryshojë një veprim tjetër ose përdoruesi.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Cakton mënyrën e shiritit të dritës të slotit në një vlerë të caktuar. Mbetet si një redaktim në kartën „Shiriti i dritës“ derisa ta ndryshojë një veprim tjetër ose përdoruesi.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Qarko mënyrat e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Qarko nëpër {0} mënyra të shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>E çon mënyrën e shiritit të dritës të slotit nëpër mënyrat e zgjedhura më poshtë. Çdo aktivizim kalon te mënyra tjetër e shënuar. Pozicioni i ciklit është për çdo veprim dhe rivendoset kur riniset aplikacioni.</value></data>
@@ -1559,14 +1593,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Shuarja</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Zbehja</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paleta e zbrazët përdor paletën e skedës Ndriçim të vetë slotit.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Një paletë e zbrazët përdor paletën në kartën „Shiriti i dritës“ të slotit.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mënyra</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Zgjidh nëpër cilat mënyra të shiritit të dritës duhet të qarkojë makroja. Çdo aktivizim kalon te mënyra tjetër e shënuar.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Dridhje</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Drejton dridhjen e pajisjes fizike të slotit nga një makro. Reaktive ekzekutohet me forcë të plotë gjatë dritares së mbajtjes, pastaj zbehet në zero gjatë dritares së zbehjes. E ngjitur e mban me forcë të plotë derisa të ekzekutohet një veprim Ndalo dridhjen. Shtohet mbi dridhjen e drejtuar nga loja përmes max(), ndaj ndjesia e drejtuar nga përdoruesi ndihet gjithmonë.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso dridhjen {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso dridhjen {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Mbaje dridhjen {0} deri në pastrim</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Ndalo dridhjen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Ndalo dridhjen</value></data>
@@ -1577,7 +1611,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Ndalo dridhjen e këmbëzave</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Lëshon çdo dridhje aktive të këmbëzave nga makroja në slot. Çiftoje me një ndryshim të ngjitur të dridhjes së këmbëzës për ta mbyllur mbajtjen nga një makro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Cakto xhiron të angazhuar</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Cakton gjendjen e angazhimit të xhiros së slotit nga një makro. Ndërro e kthen gjendjen aktuale. Aktive e detyron xhiron të angazhuar. Joaktive e detyron të çangazhuar. Pavarur nga butoni i angazhimit të skedës Xhiro. Dy burimet kombinohen me OR, ndaj asnjëri nuk mund ta çaktivizojë atë që angazhoi tjetri.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Cakton gjendjen e angazhimit të xhiros së slotit nga një makro. Ndërro e kthen gjendjen aktuale. Aktive e detyron xhiron të angazhuar. Joaktive e detyron të çangazhuar. Pavarur nga „Butoni i aktivizimit të synimit“ në seksionin Lëvizja dhe prekja. Dy burimet kombinohen me OR, ndaj asnjëri nuk mund ta çaktivizojë atë që angazhoi tjetri.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mënyra</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Ndërro</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Aktive</value></data>
@@ -1725,7 +1759,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Hyrje për çdo touchpad. Gjestet (rrëshqitje, prekje, shtrëngime, forma) dhe mënyrat e vazhdueshme të daljes (levë virtuale / D-pad, maus) bëhen burime hartëzimi që mund t'i lidhni te skeda Hartëzimet.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Hyrje për çdo touchpad. Gjestet (rrëshqitje, prekje, shtrëngime, forma) dhe mënyrat e vazhdueshme të daljes (levë virtuale / D-pad, maus) bëhen burime hartëzimi që mund t'i lidhni me çdo dalje.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numri i touchpad-it</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Se cilit touchpad të këtij kontrolluesi i vlejnë cilësimet më poshtë. Çdo touchpad ka gjestet, ndjesinë e mausit dhe zonën e treguesit të vet.</value></data>
@@ -2015,10 +2049,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Xhira</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Rregulloni si e drejton sensori i lëvizjes i këtij kontrolluesi daljen e mausit dhe të levës. Kalibroni në një sipërfaqe të sheshtë për të zeruar zhvendosjen në pushim, pastaj rregulloni ndjeshmërinë, zbutjen dhe rregullat e aktivizimit sipas dëshirës.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrimi</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Xhiroskopi dhe akselerometri drejtpërdrejt</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ndjeshmëria</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Njësitë, Hapësira, përmbysja e boshteve, Kalibrimi në botën reale</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Njësitë, përmbysja e boshteve, Kalibrimi në botën reale</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° për rrotullim</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Formësimi i përgjigjes</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona e vdekur, Zbutja, Përshpejtimi, Kurba e daljes</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Sistemi i referimit</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokale, Lojtari ose Bota</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Hapësira</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Si interpretohet lëvizja e xhirës. Lokale përdor boshtet e papërpunuara të kontrolluesit. Lojtari e projekton lëvizjen horizontale mbi vertikalen reale (gravitetin), kështu që i njëjti kthim i kyçit e kthen gjithmonë kamerën, pa marrë parasysh si e mbani kontrolluesin. Bota e riprojekton edhe lëvizjen vertikale mbi boshtet e botës.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Mbahet si</value></data>
@@ -2090,6 +2128,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Vertikal</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Mbajtja</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Si mbahet kontrolluesi. E rrotullon xhirën, akselerometrin dhe gravitetin së bashku, për hartëzimet dhe për lëvizjen që raporton kontrolluesi virtual. D-pad-i ndjek të njëjtin kuadër, kështu që Lart është lart në mbajtje.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Si mbahet kontrolluesi</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineare</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresive</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>E çlirët</value></data>
@@ -2122,7 +2161,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Rivendos drejtimin e aktivizimit</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Kalim i drejtpërdrejtë i lëvizjes</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Zbato rregullimin e xhirës te kalimi i drejtpërdrejtë i lëvizjes</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ekzekuton rregullimin opsional të xhirës të kësaj skede (zonë e vdekur, ndjeshmëri, zbutje, kurbë përgjigjeje, përmbysje) te lëvizja që kontrolluesi virtual i raporton lojës ose emulatorit. Çaktivizojeni që të dërgohet vetëm leximi i kalibruar dhe loja të zbatojë ndjeshmërinë dhe zbutjen e vet. Korrigjimi i zhvendosjes së kalibrimit zbatohet gjithmonë.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ekzekuton rregullimin opsional të kartave të grupit Xhira (zonë e vdekur, ndjeshmëri, zbutje, kurbë përgjigjeje, përmbysje) te lëvizja që kontrolluesi virtual i raporton lojës ose emulatorit. Çaktivizojeni që të dërgohet vetëm leximi i kalibruar dhe loja të zbatojë ndjeshmërinë dhe zbutjen e vet. Korrigjimi i zhvendosjes së kalibrimit zbatohet gjithmonë.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Rivendos rregullimin e kalimit të drejtpërdrejtë</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ndjeshmëria</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Shumëzuesi i ndjeshmërisë së xhirës për burim. 1.0 = parazgjedhja e motorit (500°/s → devijim i plotë). Vlerat mbi 1.0 janë më të ndjeshme. Vlerat nën 1.0 janë më pak të ndjeshme.</value></data>
@@ -2139,7 +2178,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Rivendos diapazonin e pjerrjes së plotë</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Rivendos zonën e vdekur të pjerrjes</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Rivendos pjerrjen e xhirës</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Si bashkohen burimet e këtij rreshti kur janë aktive më shumë se një. Zgjidhni rreshtin për ta ndryshuar në shiritin e detajeve më poshtë.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Si bashkohen burimet e këtij rreshti kur janë aktive më shumë se një. Hap rreshtin për ta ndryshuar te „Kombino“.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Vrulli</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mënyra trackball: godisni levën dhe lëshojeni, dhe kursori vazhdon të udhëtojë dhe ndalon gradualisht. Lëvizja e levës sërish e kap.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Sa larg rrëshqet kursori pas një goditjeje. Në majën e diapazonit vazhdon derisa ta lëvizni sërish levën.</value></data>
@@ -2329,7 +2368,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Boshti i këmbëzës</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forca për çdo motor, dridhja e këmbëzave, këmbimi i motorëve</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forca për çdo motor, dridhja e këmbëzave, Dridhja e këndit të drejtimit, Forca konstante</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Fitimi i përgjithshëm</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motori i majtë</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motori i djathtë</value></data>
@@ -2338,6 +2377,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Ky kontrollues nuk ka motorë në këmbëza, ndaj lojërat që përdorin këmbëzat me impuls të Xbox nuk do të ndjeheshin. Në vend të kësaj, bashko çdo kanal këmbëze me motorin kryesor në të njëjtën anë.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Provo dridhjen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktiviteti i motorëve</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>I majtë</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>I djathtë</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apliko një forcë të vazhdueshme në këtë pajisje derisa ta çaktivizosh. Forca e dërguar nga loja, nga çdo burim, e zëvendëson atë për sa kohë është aktive dhe ajo rifillon kur loja ndalon.</value></data>
@@ -2415,7 +2456,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Shtyp butona ose lëviz një bosht/këmbëzë për të regjistruar. Boshtet zbulohen kur devijohen mbi 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Shto nga lista</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Zgjidh një hyrje nxitëse nga pajisjet e slotit në vend që ta regjistrosh. Gjestet e touchpad-it të aktivizuara te skeda Touchpad shfaqen këtu.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Pastro nxitësin</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Zgjidh një hyrje nxitëse nga pajisjet e slotit në vend që ta regjistrosh. Gjestet e touchpad-it të aktivizuara në seksionin Lëvizja dhe prekja shfaqen këtu.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Hiq hyrjen</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Shtyp çfarëdo hyrjeje…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>i përmbysur</value></data>
@@ -2633,7 +2675,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekonda para se një kontrollues virtual të shkatërrohet kur të gjitha pajisjet e tij të hartëzuara janë jashtë linje. 0 e çaktivizon. Kontrolluesit e mbetur të të njëjtit lloj lëvizin lart për të plotësuar boshllëkun dhe lidhen sërish me sloto më të ulëta.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonda (0 = asnjëherë)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shtresë Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Shto shtresë</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Shto një shtresë shift. Një tabelë e dytë hartëzimesh që aktivizohet ndërsa një buton mbahet shtypur ose ndërrohet.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Baza</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shtresa Shift</value></data>
@@ -2734,7 +2776,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Drejtimi me lëvizje</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° deri në {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona e vdekur e brendshme e pjerrjes, Zona e vdekur e jashtme e pjerrjes, Orientimi i kontrolluesit</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjen e pjerrjes me lëvizje: anoje kontrolluesin si timon. Hartëzo "Pjerrje me lëvizje" te një bosht leve nga lista e hyrjeve te Hartëzimet.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjen e pjerrjes me lëvizje: anoje kontrolluesin si timon. Hartëzo "Pjerrje e lëvizjes" te një bosht leve në seksionin Butonat.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Rivendos drejtimin me lëvizje</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Leva e djathtë)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Leva e majtë)</value></data>
@@ -2743,7 +2785,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Unaza e levës së djathtë</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Rregullime për hyrjet Flick Stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjet Flick Stick: drejto levën dhe kamera kthehet njësoj, rrëshqit buzën për kthim të imët. Hartëzo "Flick Stick (Leva e djathtë)" te Maus X nga lista e hyrjeve te Hartëzimet, në çdo shtresë.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Cilësimet për hyrjet Flick Stick: drejto levën dhe kamera kthehet njësoj, rrëshqit buzën për kthim të imët. Hartëzo "Flick Stick (Leva e djathtë)" te Maus X në seksionin Tastet dhe mausi, në çdo shtresë.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Rivendos Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pika për 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Njësitë e mausit për një kthim të plotë të kamerës 360°. Varet nga ndjeshmëria e mausit në lojë: rrite nëse flick-u kthen pak, ule nëse kthen shumë.</value></data>
@@ -2835,7 +2877,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Tingujt e makrove dhe audioja e pasqyruar e sistemit luhen përmes altoparlantit të integruar të kontrolluesit të zgjedhur, me USB ose Bluetooth. Zgjidh pajisjen te lista sipër. Çdo cilësim këtu e ndjek atë.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Dalja e zërit</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Burimi i pasqyrës, haptikët, Volumi i kufjeve, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Burimi i pasqyrës, Volumi i kufjeve, buferi, Rruga e daljes</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Tingujt drejtohen automatikisht te kontrolluesi i zgjedhur. Me USB, pika e audios e vetë kontrolluesit përputhet sipas kontejnerit të harduerit. Me Bluetooth, audioja transmetohet në kuadro Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Burimi i pasqyrës</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Cila pajisje luajtjeje të pasqyrohet te altoparlanti i kontrolluesit. Lojërat që dërgojnë tinguj të veçantë te një pajisje tjetër luajtjeje mund ta synojnë këtë.</value></data>
@@ -2848,10 +2890,10 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Ndalo të gjithë tingujt</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Ndalo çdo tingull makroje në këtë kontrollues</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Makro tingujsh</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Tingujt luhen nga makrot: një nxitës (shtypje, lëshim, mbajtje ose formulë) plus një veprim Luaj tingullin. Ndërtoji këtu ose te skeda Makro. Vonesat, përsëritjet dhe ndërrimet funksionojnë të gjitha.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Tingujt luhen nga makrot: një nxitës (shtypje, lëshim, mbajtje ose formulë) plus një veprim Luaj tingullin. Ndërtoji këtu ose në seksionin Makrot dhe menytë. Vonesat, përsëritjet dhe ndërrimet funksionojnë të gjitha.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Makro e re tingulli</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Ende pa makro tingulli. Krijo një dhe zgjidh një skedar tingulli dhe një nxitës.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Hap këtë makro te skeda Makro</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Hap këtë makro në seksionin Makrot dhe menytë</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makro tingulli {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Luaj tingullin</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Luaj një skedar tingulli (.wav, .mp3, .m4a, .aac, .wma, .flac) në pajisjen e daljes të këtij kontrolluesi</value></data>
@@ -3127,6 +3169,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Vr_Status_Running" xml:space="preserve"><value>Në punë</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Në punë, drajveri i lidhur</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Në punë, kontrolluesit aktivë</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR i instaluar</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR nuk është instaluar</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR në punë</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR në punë, drajveri i lidhur</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR në punë, kontrolluesit aktivë</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Një drajver tjetër OpenVR përdor emrin e drajverit të HIDMaestro, prandaj SteamVR mund ta ngarkojë atë në vend të drajverit të PadForge dhe kontrolluesit virtualë VR nuk do të shfaqen. Hiqeni atë drajver për ta zgjidhur: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Kontrollues serial (portë COM)</value></data>
@@ -3270,7 +3317,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Konsumator {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gjestet e mausit</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mbaj shtypur butonin e gjestit, bëj një goditje të shpejtë dhe një veprim aktivizohet kur e lëshon: majtas, djathtas, lart, poshtë, ose një klik i thjeshtë nën distancën e goditjes. Hartëzo pesë gjestet te skeda Hartëzimet ose përdori si aktivizues makrosh.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mbaj shtypur butonin e gjestit, bëj një goditje të shpejtë dhe një veprim aktivizohet kur e lëshon: majtas, djathtas, lart, poshtë, ose një klik i thjeshtë nën distancën e goditjes. Hartëzo pesë gjestet te çdo dalje ose përdori si aktivizues makrosh.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktivizo gjestet e mausit</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Armon njohësin e gjesteve për këtë maus në këtë slot. Butoni i gjestit e mban klikun normal gjatë gjestit, ndaj zgjidh një buton anësor që nuk e hartëzon për gjë tjetër.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Butonat e gjestit</value></data>
@@ -3304,7 +3351,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Kalo shtresën</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Cakto ngjyrën Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Ngjyros pajisjet Razer të caktuara për këtë kontrollues virtual, dhe çdo pajisje tjetër Razer të llojeve të tyre, me një ngjyrë sa kohë ekzekutohet veprimi.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Për kohëzgjatjen më sipër, ngjyros me këtë ngjyrë pajisjet Razer të caktuara për këtë kontrollues virtual dhe çdo pajisje tjetër Razer të të njëjtave lloje, ose çdo pajisje Razer kur është caktuar rreshti Razer Chroma. Kjo anashkalon skedën Ndriçim të çdo kontrolluesi virtual, pastaj ua kthen ndriçimin. Për ta mbajtur ngjyrën për aq kohë sa mbahet nxitësi, përdorni „Ndërsa mbahet“ me „Deri në lëshim“. Kur dy makro ngjyrosin njëkohësisht, fiton ajo që është më poshtë në listë, ndaj vendoseni makron me shtypje të plotë poshtë binjakes së saj me shtypje të lehtë. Kur makrot në dy kontrollues virtualë ngjyrosin të njëjtin lloj pajisjeje Razer, fiton numri më i vogël i lojtarit. Kërkon që Razer Synapse të jetë në punë.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Për kohëzgjatjen më sipër, ngjyros me këtë ngjyrë pajisjet Razer të caktuara për këtë kontrollues virtual dhe çdo pajisje tjetër Razer të të njëjtave lloje, ose çdo pajisje Razer kur është caktuar rreshti Razer Chroma. Kjo anashkalon ndriçimin që cakton çdo kontrollues virtual në seksionin Dritat dhe zëri, pastaj ua kthen ndriçimin. Për ta mbajtur ngjyrën për aq kohë sa mbahet nxitësi, përdorni „Gjatë mbajtjes“ me „Deri në lëshim“. Kur dy makro ngjyrosin njëkohësisht, fiton ajo që është më poshtë në listë, ndaj vendoseni makron me shtypje të plotë poshtë binjakes së saj me shtypje të lehtë. Kur makrot në dy kontrollues virtualë ngjyrosin të njëjtin lloj pajisjeje Razer, fiton numri më i vogël i lojtarit. Kërkon që Razer Synapse të jetë në punë.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Shfaq ekranin Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Shfaq imazhe në VMU-në e çdo kontrolluesi Dreamcast në një portë Bliss-Box që ushqen këtë slot, pastaj e kthen çdo portë te cilësimi i vet i ekranit.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Shfaq pamjet Dreamcast: {0} × {1} ms, numri i përsëritjeve {2}</value></data>
@@ -3598,10 +3645,12 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Në shtypje, zeroon referencat e akumuluara të shënjestrimit me xhiro të kontrolluesit. Historiku i zbutjes pastrohet, pozicioni neutral i „Përkulje lëvizjeje“ rimerret, vlerësimi i gravitetit rinis nga pozicioni aktual i kontrolluesit, dhe kthimi që ndërtuan rreshtat „Anim lëvizjeje“, „Kthim lëvizjeje“ dhe „Rrotullim lëvizjeje“ zhbëhet.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Çdo pajisje)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menytë</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menytë e kthejnë një levë fizike ose touchpad në një unazë ose rrjetë në ekran. Shto një meny, zgjidh çfarë e hap, pastaj emërto çdo qelizë dhe jepi një lidhje.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menytë e kthejnë një levë fizike ose touchpad në një unazë ose rrjetë në ekran. Shtyp + pranë titullit Menytë për të krijuar një, zgjidh çfarë e hap, pastaj jepi çdo qelize një emër dhe një veprim.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Meny e re</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menyja {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Emri i menysë</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktivizuar</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Hapja</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stili</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Unazë radiale</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Rrjetë prekjeje</value></data>
@@ -3621,12 +3670,16 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Menu_Cells" xml:space="preserve"><value>Qelizat</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Qelizë qendrore</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Shfaq etiketat</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Pozicioni në ekran</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Madhësia</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Errësira</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Zonë e vdekur e aktivizimit</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Caktimet e qelizave</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Qeliza {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Shto qelizë</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Hiq qelizën e fundit</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Ndrysho qelizën</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Emri</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Veprimi</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikona</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Qendra</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Asnjë</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tast tastiere</value></data>
@@ -3639,7 +3692,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Niset një herë kur klikimi lëshohet: drejtojuni qelizës, shtypni levën ose trackpad-in, pastaj lëshoni klikimin.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Niset një herë kur lëshoni: ngrini gishtin nga pad-i ose lëreni levën të kthehet në qendër ndërsa një qelizë është e theksuar.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Caktimi mbahet gjatë gjithë kohës që qeliza është e theksuar. Nuk nevojitet klikim.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Sa qeliza ka menyja. Për një unazë radiale kjo numëron vetëm unazën. Qeliza qendrore është më vete.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Shton një qelizë qendrore, të zgjedhur ndërsa leva ose gishti qëndron brenda „Zonë e vdekur e aktivizimit“.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Për levat, sa duhet shtyrë para se të hapet menyja dhe të theksohen qelizat e unazës. Në menytë radiale është edhe zona qendrore për levat dhe touchpad-et: brenda saj zgjidhet qeliza qendrore kur ekziston.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Vizato etiketën e secilës qelizë në mbivendosjen në ekran.</value></data>
@@ -3649,8 +3701,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Madhësia e mbivendosjes, në përqindje të madhësisë normale.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opaciteti i mbivendosjes. 100% është plotësisht e patejdukshme.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Teksti i shfaqur në këtë qelizë në mbivendosje.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Çfarë bën kjo qelizë kur niset: „Tast tastiere“ shtyp një tast të tastierës, „Buton kontrolluesi“ shtyp një buton në kontrolluesin virtual të këtij sloti. Një qelizë e caktuar në „Asnjë“ niset prapë si burim artikulli menyje për rreshtat e hartëzimeve dhe nxitësit e makrove.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lexohet nga kontrolluesit fizikë të caktuar për këtë slot, jo nga paraqitja e kontrolluesit virtual. Caktimet e qelizave më poshtë janë ato që jep menyja.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Çfarë bën kjo qelizë kur niset: „Tast tastiere“ shtyp një tast të tastierës, „Buton kontrolluesi“ shtyp një buton në kontrolluesin virtual të këtij sloti. Një qelizë e caktuar në „Asnjë“ niset prapë si burim artikulli menyje për hartëzimet dhe nxitësit e makrove.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lexohet nga kontrolluesit fizikë të caktuar për këtë slot, jo nga paraqitja e kontrolluesit virtual. Qelizat më poshtë tregojnë çfarë jep menyja.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Boshte të personalizuara</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Drejto X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Drejto Y</value></data>
@@ -3675,13 +3727,16 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Dalja</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butonat</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tastet dhe mausi</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notat dhe kontrollet</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Duart</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Levat dhe këmbëzat</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Dridhja dhe haptika</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Lëvizja dhe prekja</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Dritat dhe zëri</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Makrot dhe menytë</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Dërgon dridhjen e lojës dhe force feedback që merr ky kontrollues virtual te një dalje audio si tone me frekuencë të ulët për bass shaker dhe subwoofer.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Luan dridhjen e lojës si tone të ulëta në bass shaker ose në subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pajisja e daljes, kanalet, përforcimi, një tone për çdo motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funksionon me kontrolluesit virtualë Xbox, DualShock 3, DualShock 4 / DualSense dhe Nintendo Switch Pro, si dhe me kontrolluesit virtualë Extended me force feedback, si timonët e garave, dhe me Steam Deck Controller (Composite). Reagimi i lojës dhe „Testo dridhjen“ luhen përmes daljes audio. Dridhja e makrove mbetet në kontrollues.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Rivendos dridhjen në audio</value></data>
@@ -3710,19 +3765,22 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Luan këtë kanal reagimi si ton. Përforcimi dhe frekuenca mbeten të caktuara ndërsa është i fikur.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekuenca e tonit për këtë kanal, 20 deri në 120 Hz. Ekzekutoni kalimin e frekuencave për të gjetur ku reagon më fort shaker-i juaj.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volumi i këtij kanali përpara fitimit kryesor.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Përforcimi</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Provo</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Luan tonin e këtij kanali për 1.5 sekonda me fitimin e caktuar.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Rivendos motorin e ulët</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Rivendos motorin e lartë</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kontrollo shaker-ët</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Skanim i frekuencës</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Kalon një ton nga 20 në 120 Hz brenda tetë sekondave në rrugëzimin e motorit të ulët. Vini re ku reagon më fort shaker-i juaj dhe vendosni aty frekuencat e zërave.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Ndalo</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Ndalon tonin provë ose skanimin.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Çdo etiketë NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiketa NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtro hyrjet (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtro daljet dhe hyrjet</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Shfaq vetëm rreshtat dhe hyrjet që përputhen. Shtyp Ctrl+F për të shkruar këtu.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Zgjidhni hyrjet e cilave pajisje i ofrojnë zgjedhësit</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Shfaqur në zgjedhës</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Çdo frazë zanore</value></data>
@@ -3829,6 +3887,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Rivendos dhënien</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>EQ parametrik</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtra për çdo brez mbi audion e kontrolluesit. Zbatohen para kodimit të audios, ndaj kufizuesi më poshtë e pengon një brez të amplifikuar të shtrembërohet.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, brezat, importimi</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Niveli i përgjithshëm para brezave. Profilet AutoEq vijnë me një preamp negativ që përforcimet e tyre të mos shtrembërohen, dhe importimi i njërit e cakton këtë për ju.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aktiv</value></data>
@@ -4055,7 +4114,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Rivendos te hapja me prekje ose devijim.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Drejto me</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Hyrja fizike që drejton qelizën e theksuar ndërsa shtresa e mban këtë meny të hapur.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lexohet nga kontrolluesit fizikë të caktuar në këtë slot. Shtresa e hap menynë, kjo hyrje e drejton atë. Lidhjet e qelizave përcaktojnë daljen e saj.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lexohet nga kontrolluesit fizikë të caktuar në këtë slot. Shtresa e hap menynë dhe kjo hyrje e drejton atë. Qelizat e saj tregojnë çfarë jep ajo.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Madhësia e ikonës</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Madhësia e ikonës në raport me madhësinë normale të ikonës së menysë, nga 25% në 200%. Pastrimi i ikonës e rikthen në 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Mban lidhjen e qelizës së theksuar ndërsa mbahet Hyrja e klikimit. Qendra e theksuar e një menyje radiale mund të aktivizohet ndërsa leva është në prehje.</value></data>
@@ -4178,7 +4237,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referencë nga Antoine Aflalo për strukturën e ndërfaqes së padokumentuar IPolicyConfig të Windows, që PadForge e përdor për të riaktivizuar pikën fundore audio të një kontrolluesi. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formati i profilit EQ parametrik që importon skeda Audio, nga Jaakko Pasanen. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formati i profilit EQ parametrik që importon „EQ parametrik“ i një kontrolluesi, nga Jaakko Pasanen. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknikat SendInput pas makrove Text Block dhe grepit të akordit të tastierës: shkrimi Unicode, kufijtë e grupeve, tasti maskues Win dhe hyrja e injektuar me etiketë. GPL-2.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4382,6 +4441,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Drejtimi</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Hapi</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>deri në</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Dorezë</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} po vendos këmbëzat e këtij kontrolluesi.</value></data>
@@ -4426,7 +4486,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Doreza nuk lëvizi mjaftueshëm, prandaj shtrirja mbetet siç ishte. Lëvize deri në çdo skaj gjatë skanimit.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon u mbyll para se të mbaronte skanimi.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Luan me një Novint Falcon përmes SDK-së së Force Dimension, që e instalon nga Force Dimension. Doreza është një levë, katër butonat e kapëses janë butona dhe PadForge e vendos dridhjen dhe efektet e lojës te doreza si forcë. Skeda Force feedback e secilit slot cakton si ndihet Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Luan me një Novint Falcon përmes SDK-së së Force Dimension, që e instalon nga Force Dimension. Doreza është një levë, katër butonat e kapëses janë butona dhe PadForge e vendos dridhjen dhe efektet e lojës te doreza si forcë. Karta Novint Falcon në seksionin Dridhja dhe haptika të çdo kontrolluesi cakton si ndihet Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Drejto Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>E hap çdo Falcon përmes dhd64.dll të Force Dimension. Një Falcon i hapur i përket vetëm PadForge, ndaj FalconJoyForce dhe mjetet e Force Dimension nuk mund ta hapin ndërsa kjo është e aktivizuar. Kur është e çaktivizuar, PadForge mbyll çdo Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Biblioteka e Falcon u caktua te {0}. PadForge e ngarkon brenda pak sekondash, dhe një Falcon i hapur në një kopje tjetër hapet përsëri në këtë.</value></data>
@@ -4591,7 +4651,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Për një kohë të caktuar</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Deri sa të ndalohet</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Koha</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Luan në çdo DualSense dhe DualSense Edge në këtë slot. Efekti i vetë lojës për këmbëzën dhe ai i një modi loje kanë përparësi, dhe cilësimi i skedës Këmbëza adaptive kthehet kur efekti mbaron. Zonat shkojnë nga 0 në prehje deri në 9 në tërheqje të plotë. Hark, Galop dhe Makinë nuk janë efekte zyrtare të DualSense, dhe një përditësim firmueri mund t'i heqë. Kontrollues Xbox me Përkthe dridhjet e këmbëzave adaptive të aktivizuar i ndjejnë efektet dridhëse si dridhje të këmbëzës.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Luan në çdo DualSense dhe DualSense Edge në këtë slot. Efekti i vetë lojës për këmbëzën dhe ai i një modi loje kanë përparësi, dhe cilësimi i kartës „Këmbëza adaptive“ kthehet kur efekti mbaron. Zonat shkojnë nga 0 në prehje deri në 9 në tërheqje të plotë. Hark, Galop dhe Makinë nuk janë efekte zyrtare të DualSense, dhe një përditësim firmueri mund t'i heqë. Kontrollues Xbox me Përkthe dridhjet e këmbëzave adaptive të aktivizuar i ndjejnë efektet dridhëse si dridhje të këmbëzës.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} në {1} për {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} në {1} ndërsa mbahet</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} në {1} deri sa të ndalohet</value></data>

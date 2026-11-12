@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Sao chép</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Dán</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Nhân bản</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Đổi tên</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Đã bật</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Đã tắt</value></data>
   <data name="Common_On" xml:space="preserve"><value>Bật</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Thiết bị</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Nguồn đầu vào</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Thêm thiết bị</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hình ảnh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Danh sách</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} đầu ra</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Chuyển động</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Nhấp vào một điều khiển rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Nhấp vào một phím hoặc một nút chuột rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Nhấp vào một nốt hoặc một thanh trượt rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Nút Ánh xạ tất cả bỏ qua các đầu ra chạm của A và B. Nhấp vào vòng quanh A hoặc B để gán đầu ra chạm của nút đó.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Đang chờ {0}. Hãy nhấn đầu vào trên thiết bị của bạn.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>Nguồn đầu vào của {0}</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Thêm tùy chọn</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ít tùy chọn hơn</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Nút mặt</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Nút vai</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Nút hệ thống</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Nút</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Phím điều hướng</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Cần analog</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Cò</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Bàn cảm ứng</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Cảm biến chuyển động</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Phím bàn phím</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Nút chuột</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Di chuyển chuột</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Con lăn</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Cảm biến chạm</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Bóp analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, tay trái</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tay phải</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Game thấy lần nhấn nào khi giữ cả hai nút của một cặp</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Game thấy lần nhấn nào khi giữ cả hai phím của một cặp</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Giữ cần analog lệch nhẹ để game luôn hiện gợi ý tay cầm</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Đang rèn</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chọn một macro ở bên trái, hoặc nhấn Thêm để tạo mới.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chọn một macro trong danh sách, hoặc nhấn + bên cạnh Macro để tạo mới.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>THÔ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>RA</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Nguội</value></data>
@@ -917,7 +946,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Cò xung lực</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Cò xung lực</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Độ lợi từng cò, hoán đổi mô-tơ, chuyển đổi rung của cò thích ứng</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Độ lợi từng cò, hoán đổi mô-tơ, chuyển đổi rung của cò thích ứng, Lực cò không đổi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Chuyển tiếp lệnh mô-tơ của từng cò (Xbox Impulse Triggers) từ tay cầm ảo đến tay cầm vật lý Xbox One, Elite hoặc Series đã gán. Rung cò do trò chơi điều khiển được tự động truyền qua. Các điều khiển bên dưới chỉnh tỷ lệ cường độ cho từng cò.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Cò trái</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Cò phải</value></data>
@@ -987,9 +1016,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Cần analog</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Vùng chết, chống vùng chết, đường cong độ nhạy và hiệu chỉnh bù lệch tâm cho từng cần analog. Mỗi phần bên dưới ứng với một cần analog trên đầu ra đang hoạt động. Hồ sơ Mở rộng có thể có tối đa bốn cần analog. Tay cầm tiêu chuẩn có hai.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Cò</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Vùng chết, chống vùng chết, tỷ lệ phạm vi tối đa và đường cong độ nhạy cho từng cò. Mỗi phần bên dưới ứng với một trục cò trên đầu ra đang hoạt động. Hồ sơ Mở rộng có thể có tối đa tám trục dùng chung với tab Cần analog.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Vùng chết, chống vùng chết, tỷ lệ phạm vi tối đa và đường cong độ nhạy cho từng cò. Mỗi thẻ cò ứng với một trục cò trên đầu ra đang hoạt động. Hồ sơ Mở rộng có thể có tối đa tám trục, dùng chung cho cần analog và cò.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Phản hồi lực</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tinh chỉnh cách PadForge chỉnh tỷ lệ các sự kiện phản hồi lực từ trò chơi và cách định tuyến chúng đến mô-tơ rung hoặc bộ truyền động xúc giác của tay cầm vật lý. Rung theo âm thanh thêm một lớp do âm thanh hệ thống điều khiển lên trên.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Thiết bị này</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Toàn bộ tay cầm</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rung được phát trên {0} dưới dạng các xung xúc giác, gửi thẳng đến thiết bị. Rung mạnh hơn sẽ chọn xung mạnh hơn và lặp lại nhanh hơn.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Phản hồi xúc giác của {0} đang tắt trong Logi Options+, nên thiết bị không phát gì cho đến khi bạn bật lại ở đó.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Thiết bị này chưa trả lời. Rung của nó sẽ phát khi nó thức dậy.</value></data>
@@ -1077,6 +1108,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bo mạch chủ và card đồ họa</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>tấm lót chuột, tai nghe và giá đỡ tai nghe</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Thanh đèn</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Trò chơi giành quyền điều khiển mỗi khi chúng ghi đèn.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Nhập mã màu hex sáu chữ số (RRGGBB hoặc #RRGGBB) rồi nhấn Enter hoặc nhấp ra ngoài để áp dụng.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Gỡ màu này khỏi bảng màu</value></data>
@@ -1094,7 +1126,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Đặt lại rung theo âm thanh</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Đặt lại {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Xóa ánh xạ</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Mọi ánh xạ trên tab này sẽ bị xóa. Các nguồn đã gán, nguồn bổ sung và thiết lập kết hợp được đặt lại về mặc định.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Mọi ánh xạ trên lớp này sẽ bị xóa. Các nguồn đã gán, nguồn bổ sung và thiết lập kết hợp được đặt lại về mặc định.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Kiểu đèn người chơi</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Chế độ đèn LED tắt tiếng</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Độ sáng LED</value></data>
@@ -1247,6 +1279,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Nút</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Hồ sơ đã nhập…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Tay cầm Mở rộng</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Quản lý các hồ sơ HIDMaestro do người dùng nhập: thu một hồ sơ mới từ thiết bị đang kết nối, xuất một hồ sơ hiện có ra JSON, hoặc xóa hồ sơ bạn không còn cần.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Nhân bản thiết bị 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ánh xạ thẳng mọi trục, nút và POV trên thiết bị đã chọn sang đầu ra ảo cùng số. Chỉnh kích thước bố cục theo thiết bị và thay các hàng của thiết bị này trên khe bằng một ánh xạ truyền thẳng 1:1.</value></data>
@@ -1294,6 +1327,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Phản hồi lực</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kênh</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Đầu ra MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kênh MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Số lượng CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Số đầu ra CC (tối đa tùy thuộc vào CC bắt đầu)</value></data>
@@ -1325,7 +1359,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Gỡ bỏ cặp phím này.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Phím thứ nhất của cặp đối nhau.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Phím thứ hai của cặp đối nhau.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Các hướng chính đối nhau đồng thời (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Giữ tay cầm thức</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Một số trò chơi ngừng rung và đổi gợi ý nút ngay khi thấy đầu vào chuột hoặc bàn phím. Giữ một độ lệch nhỏ của cần analog sẽ khiến trò chơi tiếp tục coi tay cầm này là thiết bị đang hoạt động. Việc giữ chỉ có hiệu lực khi cả hai trục của cần đó nằm dưới mức giữ, nên cần bị trôi vẫn được tính là đang nghỉ. Đầu vào vượt quá mức này trên bất kỳ trục nào sẽ nhả việc giữ và đi qua không thay đổi. Hãy giữ độ lệch dưới vùng chết của chính trò chơi để không có gì di chuyển trong game.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Giữ thức</value></data>
@@ -1345,7 +1378,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Đặt lại nhấp</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Đặt lại nửa bàn cảm ứng</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Đặt lại thời điểm kích hoạt</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Đặt lại các ô</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Đặt lại vùng chết kích hoạt</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Đặt lại bố trí menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Đặt lại ô</value></data>
@@ -1401,6 +1433,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ClearAll" xml:space="preserve"><value>Xóa tất cả</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Nguồn</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Giá trị</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Tùy chọn</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Vùng chết trục thành nút</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Đảo ngược</value></data>
@@ -1438,7 +1471,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Khi được chọn, trục trở dần về tâm khi thả. Khi bỏ chọn, nó giữ vị trí cuối cùng.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Nút đảo ngược đầu ra của hàng khi được giữ</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Nút bổ trợ: khi được giữ, đầu ra của hàng đổi dấu.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Thêm nguồn</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Thêm nguồn</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Thêm một đầu vào vật lý khác vào hàng này</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Gỡ bỏ nguồn này</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Điểm {0} trên {1}, đầu vào {2}%, đầu ra {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Hiệu chỉnh tâm</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Điểm tâm</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Tâm</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Vùng chết</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Điểm tâm, hình dạng vùng chết và giá trị từng trục, đường cong từng trục, phạm vi, đánh lái</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Phạm vi</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Hiệu chỉnh biên là cách được khuyến nghị để chỉnh chuẩn một cần analog. Nó quét theo mép mà cần có thể chạm tới về mặt vật lý, rồi chỉnh lại tỷ lệ mọi vị trí theo mép đã đo đó, nhờ vậy toàn bộ chuyển động gốc, ở mọi góc và mọi độ lệch, được ánh xạ lên một đường tròn lý tưởng mà không bị cắt xén gì. Bốn thanh trượt bên dưới chỉ giới hạn các trục chính. Hãy dùng chúng để chủ động giới hạn phạm vi, không phải để sửa nó.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Hiệu chỉnh biên đo mép mà cần analog có thể chạm tới và định hình lại mép đó thành một đường tròn đầy đủ. Bốn thanh trượt chỉ giới hạn từng hướng.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Đang lấy mẫu...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Bù lệch tâm X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Bù lệch tâm Y</value></data>
@@ -1581,7 +1615,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Tên</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Bộ kích hoạt</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Khi</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Kích hoạt</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Khi nhấn</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Khi thả</value></data>
@@ -1613,9 +1647,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Macro này thuộc lớp shift nào. Bất kỳ lớp nào thì kích hoạt bất kể lớp đang hoạt động. Lớp Cơ sở và các lớp có tên chỉ kích hoạt khi lớp đó đang hoạt động, giống hệt một hàng ánh xạ.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Bất kỳ lớp nào</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Chạy liên tục khi tay cầm ảo này đang hoạt động. Không cần nút kích hoạt.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Chuỗi hành động</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Thực hiện</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Lớp, Nguồn, Ngưỡng, Hướng, Chặn các nút kích hoạt, Lặp lại</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Thêm hành động</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Sửa hành động</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Loại</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Nút ảo</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Trục ảo và vô lăng</value></data>
@@ -1684,11 +1718,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_Button_Format" xml:space="preserve"><value>Nút {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Nhấn {0} trong {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Nhấn {0} trong {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Thả {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Phím {0} trong {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Phím {0} trong {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Thả phím {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Chờ {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Chờ {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Đặt {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Âm lượng hệ thống ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Âm lượng hệ thống ← {0} (tối đa {1}%)</value></data>
@@ -1700,15 +1734,15 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Thả chuột {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ bàn cảm ứng</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Đặt màu thanh đèn</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ghi đè thanh đèn của khe PlayStation đã gán bằng một màu RGB được chọn. Phản ứng sẽ mờ dần từ cường độ tối đa về đen trong khoảng thời gian tắt dần đã cấu hình, rồi trả lại quyền cho thiết lập của tab Đèn. Duy trì sẽ giữ màu cho đến khi một hành động Xóa ghi đè thanh đèn chạy. Lệnh ghi do trò chơi điều khiển vẫn được ưu tiên hơn phần ghi đè.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Nháy thanh đèn {0} (tắt dần {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ghi đè thanh đèn của khe PlayStation đã gán bằng một màu RGB được chọn. Phản ứng sẽ mờ dần từ cường độ tối đa về đen trong khoảng thời gian tắt dần đã cấu hình, rồi trả lại quyền cho thiết lập của thẻ Thanh đèn. Duy trì sẽ giữ màu cho đến khi một hành động Xóa ghi đè thanh đèn chạy. Lệnh ghi do trò chơi điều khiển vẫn được ưu tiên hơn phần ghi đè.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Nháy thanh đèn {0} (tắt dần {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Giữ thanh đèn {0} cho đến khi xóa</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Xóa ghi đè thanh đèn</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Xóa ghi đè thanh đèn</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Giải phóng mọi phần ghi đè thanh đèn đang hoạt động trên khe đã gán. Dùng kèm với một hành động Đặt màu thanh đèn kiểu Duy trì để hoàn tác nó bằng một macro khác.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Đặt chế độ thanh đèn</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Đặt chế độ thanh đèn thành {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Đặt chế độ thanh đèn của khe đã gán thành một giá trị cụ thể. Được giữ lại như một chỉnh sửa trên tab Đèn cho đến khi một hành động khác hoặc người dùng thay đổi.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Đặt chế độ thanh đèn của khe đã gán thành một giá trị cụ thể. Được giữ lại như một chỉnh sửa trên thẻ Thanh đèn cho đến khi một hành động khác hoặc người dùng thay đổi.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Xoay vòng chế độ thanh đèn</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Xoay vòng qua {0} chế độ thanh đèn</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Chuyển chế độ thanh đèn của khe lần lượt qua các chế độ được chọn bên dưới. Mỗi lần kích hoạt chuyển sang chế độ được đánh dấu kế tiếp. Vị trí trong vòng được tính riêng cho từng hành động và đặt lại khi khởi động lại ứng dụng.</value></data>
@@ -1723,14 +1757,14 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Tắt dần</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Mờ dần</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Bảng màu</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Bảng màu trống sẽ dùng bảng màu trên tab Đèn của chính khe.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Bảng màu trống sẽ dùng bảng màu trên thẻ Thanh đèn của khe.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Chế độ</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Chọn những chế độ thanh đèn mà macro sẽ xoay vòng qua. Mỗi lần kích hoạt chuyển sang chế độ được đánh dấu kế tiếp.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Rung</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Điều khiển rung của thiết bị vật lý trên khe từ một macro. Phản ứng chạy ở cường độ tối đa trong khoảng thời gian giữ rồi mờ dần về không trong khoảng thời gian mờ dần. Duy trì giữ ở cường độ tối đa cho đến khi một hành động Dừng rung chạy. Được chồng lên rung do trò chơi điều khiển bằng max() nên phản hồi do người dùng điều khiển luôn được cảm nhận.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Rung xung {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Rung xung {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Giữ rung {0} cho đến khi xóa</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Dừng rung</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Dừng rung</value></data>
@@ -1741,7 +1775,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Dừng rung cò</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Giải phóng mọi rung cò do macro đang hoạt động trên khe. Dùng kèm với một Ghi đè rung cò kiểu Duy trì để kết thúc việc giữ từ một macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Đặt trạng thái kích hoạt con quay hồi chuyển</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Đặt trạng thái kích hoạt con quay hồi chuyển của khe từ một macro. Bật/tắt đảo trạng thái hiện tại. Bật buộc con quay hồi chuyển kích hoạt. Tắt buộc nó ngừng kích hoạt. Độc lập với nút kích hoạt trên tab Con quay hồi chuyển. Hai nguồn được kết hợp theo phép OR, nên không bên nào tắt được thứ bên kia đã kích hoạt.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Đặt trạng thái kích hoạt con quay hồi chuyển của khe từ một macro. Bật/tắt đảo trạng thái hiện tại. Bật buộc con quay hồi chuyển kích hoạt. Tắt buộc nó ngừng kích hoạt. Độc lập với Nút kích hoạt ngắm trong mục Chuyển động và cảm ứng. Hai nguồn được kết hợp theo phép OR, nên không bên nào tắt được thứ bên kia đã kích hoạt.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Chế độ</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Bật/tắt</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Bật</value></data>
@@ -1889,7 +1923,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Bàn cảm ứng</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Đầu vào theo từng bàn cảm ứng. Các cử chỉ (vuốt, chạm, chụm, hình vẽ) và các chế độ đầu ra liên tục (cần analog ảo / D-pad, chuột) trở thành nguồn ánh xạ mà bạn có thể gán trên tab Ánh xạ.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Đầu vào theo từng bàn cảm ứng. Các cử chỉ (vuốt, chạm, chụm, hình vẽ) và các chế độ đầu ra liên tục (cần analog ảo / D-pad, chuột) trở thành nguồn ánh xạ mà bạn có thể gán cho bất kỳ đầu ra nào.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Số bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Các thiết lập bên dưới áp dụng cho bàn cảm ứng nào trên tay cầm này. Mỗi bàn cảm ứng giữ cử chỉ, cảm giác chuột và vùng con trỏ riêng.</value></data>
@@ -2179,10 +2213,14 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Con quay hồi chuyển</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tinh chỉnh cách cảm biến chuyển động của tay cầm này điều khiển đầu ra chuột và cần analog. Hiệu chỉnh trên một mặt phẳng để khử độ trôi khi đứng yên, rồi chỉnh độ nhạy, làm mượt và các quy tắc kích hoạt theo ý thích.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Hiệu chỉnh</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Số đọc trực tiếp của con quay và gia tốc kế</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Độ nhạy</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Đơn vị, Không gian, đảo ngược trục, Hiệu chỉnh theo thực tế</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Đơn vị, đảo ngược trục, Hiệu chỉnh theo thực tế</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° mỗi vòng quay</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Định hình đáp ứng</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Vùng chết, làm mượt, Gia tốc, Đường cong đầu ra</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Hệ quy chiếu</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Cục bộ, Người chơi hoặc Thế giới</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Không gian</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Cách diễn giải chuyển động của con quay hồi chuyển. Cục bộ dùng các trục thô của tay cầm. Người chơi chiếu chuyển động ngang lên phương thẳng đứng thực tế (trọng lực) để cùng một động tác vặn cổ tay luôn xoay camera, bất kể bạn cầm tay cầm thế nào. Thế giới còn chiếu lại chuyển động dọc lên các trục của thế giới.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Cách cầm</value></data>
@@ -2254,6 +2292,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Dựng đứng</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Kiểu cầm</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Cách cầm tay cầm. Xoay đồng thời con quay hồi chuyển, gia tốc kế và trọng lực, cho các ánh xạ lẫn chuyển động mà tay cầm ảo báo về. D-pad theo cùng hệ quy chiếu, nên Lên là lên theo kiểu cầm.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Cách cầm tay cầm</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Tuyến tính</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Gắt</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Thoải</value></data>
@@ -2286,7 +2325,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Đặt lại hướng kích hoạt</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Truyền thẳng chuyển động</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Áp dụng tinh chỉnh con quay hồi chuyển cho truyền thẳng chuyển động</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Chạy các tinh chỉnh con quay hồi chuyển tùy ý của tab này (vùng chết, độ nhạy, làm mượt, đường cong đáp ứng, đảo ngược) trên chuyển động mà tay cầm ảo báo cho trò chơi hoặc trình giả lập. Hãy tắt để chỉ gửi số đọc đã hiệu chỉnh và để trò chơi tự áp dụng độ nhạy và làm mượt của nó. Việc khử trôi nhờ hiệu chỉnh luôn được áp dụng trong cả hai trường hợp.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Chạy các tinh chỉnh tùy ý của các thẻ Con quay hồi chuyển (vùng chết, độ nhạy, làm mượt, đường cong đáp ứng, đảo ngược) trên chuyển động mà tay cầm ảo báo cho trò chơi hoặc trình giả lập. Hãy tắt để chỉ gửi số đọc đã hiệu chỉnh và để trò chơi tự áp dụng độ nhạy và làm mượt của nó. Việc khử trôi nhờ hiệu chỉnh luôn được áp dụng trong cả hai trường hợp.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Đặt lại tinh chỉnh truyền thẳng</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Hệ số nhân độ nhạy con quay hồi chuyển theo từng nguồn. 1.0 = mặc định của bộ máy (500°/s → độ lệch tối đa). Giá trị trên 1.0 nhạy hơn. Giá trị dưới 1.0 kém nhạy hơn.</value></data>
@@ -2303,7 +2342,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Đặt lại phạm vi nghiêng tối đa</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Đặt lại vùng chết nghiêng</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Đặt lại con quay hồi chuyển nghiêng</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cách các nguồn của hàng này được gộp khi có hơn một nguồn đang hoạt động. Chọn hàng để thay đổi trong dải chi tiết bên dưới.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cách các nguồn của hàng này được gộp khi có hơn một nguồn đang hoạt động. Mở hàng để thay đổi ở mục Kết hợp.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Quán tính</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Chế độ trackball: gạt nhanh cần analog rồi thả, con trỏ tiếp tục di chuyển và trượt dần đến khi dừng. Di chuyển cần lần nữa sẽ bắt nó lại.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Con trỏ trượt đi bao xa sau một cú gạt. Ở mức cao nhất của phạm vi, nó tiếp tục đi cho đến khi bạn di chuyển cần analog lần nữa.</value></data>
@@ -2504,7 +2543,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trục cò</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Độ lợi từng mô-tơ, rung cò, hoán đổi mô-tơ</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Độ lợi từng mô-tơ, rung cò, Rung theo góc lái, Lực không đổi</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Độ lợi tổng</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mô-tơ trái</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mô-tơ phải</value></data>
@@ -2513,6 +2552,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Tay cầm này không có mô-tơ cò, nên các trò chơi dùng cò xung lực của Xbox sẽ không tạo ra cảm giác gì. Thay vào đó, hãy gộp mỗi kênh cò vào mô-tơ chính ở cùng bên.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Thử rung</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Hoạt động của mô-tơ</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Trái</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Phải</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Áp dụng một lực liên tục lên thiết bị này cho đến khi bạn tắt. Lực do trò chơi điều khiển từ bất kỳ nguồn nào sẽ ghi đè khi đang hoạt động, và lực không đổi tiếp tục khi trò chơi dừng.</value></data>
@@ -2591,7 +2632,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Nhấn các nút hoặc di chuyển một trục/cò để ghi. Trục được phát hiện khi lệch quá 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Thêm từ danh sách</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Chọn một đầu vào kích hoạt từ các thiết bị của khe thay vì ghi nó. Các cử chỉ bàn cảm ứng được bật trên tab Bàn cảm ứng xuất hiện ở đây.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Xóa bộ kích hoạt</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Chọn một đầu vào kích hoạt từ các thiết bị của khe thay vì ghi nó. Các cử chỉ bàn cảm ứng được bật trong mục Chuyển động và cảm ứng xuất hiện ở đây.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Gỡ bỏ đầu vào</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Nhấn bất kỳ đầu vào nào…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>đảo ngược</value></data>
@@ -2852,7 +2894,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Số giây trước khi một tay cầm ảo bị hủy khi mọi thiết bị đã ánh xạ của nó đều ngoại tuyến. 0 để tắt. Các tay cầm còn lại cùng loại sẽ dồn lên để lấp chỗ trống và gắn lại vào các khe thấp hơn.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>giây (0 = không bao giờ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Lớp shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Thêm lớp</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Thêm một lớp shift. Một bảng ánh xạ thứ hai được kích hoạt khi một nút được giữ hoặc bật/tắt.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Cơ sở</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lớp shift</value></data>
@@ -2953,7 +2995,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Đánh lái bằng chuyển động</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° đến {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Vùng chết trong của độ ngả, Vùng chết ngoài của độ ngả, Hướng tay cầm</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Thiết lập cho đầu vào Chuyển động ngả: nghiêng tay cầm như một vô lăng. Hãy ánh xạ "Chuyển động ngả" sang một trục cần analog từ danh sách đầu vào thả xuống trong Ánh xạ.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Thiết lập cho đầu vào Chuyển động ngả: nghiêng tay cầm như một vô lăng. Hãy ánh xạ "Chuyển động ngả" sang một trục cần analog trong mục Nút bấm.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Đặt lại đánh lái bằng chuyển động</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (cần phải)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (cần trái)</value></data>
@@ -2962,7 +3004,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Vòng cần phải</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Tinh chỉnh các đầu vào Flick stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Thiết lập cho các đầu vào Flick stick: chĩa cần analog về một hướng thì camera xoay theo, quét quanh vành để xoay tinh. Hãy ánh xạ "Flick stick (cần phải)" sang Chuột X từ danh sách đầu vào thả xuống trong Ánh xạ, trên bất kỳ lớp nào.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Thiết lập cho các đầu vào Flick stick: chĩa cần analog về một hướng thì camera xoay theo, quét quanh vành để xoay tinh. Hãy ánh xạ "Flick stick (cần phải)" sang Chuột X trong mục Phím và chuột, trên bất kỳ lớp nào.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Đặt lại flick stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Số điểm mỗi 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Số điểm chuột cho một vòng xoay camera 360° đầy đủ. Tùy thuộc vào độ nhạy chuột của trò chơi: hãy tăng nếu một cú gạt xoay chưa đủ, giảm nếu xoay quá.</value></data>
@@ -3054,7 +3096,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Âm thanh</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Âm thanh macro và âm thanh hệ thống được phản chiếu sẽ phát qua loa tích hợp của tay cầm đã chọn, qua USB hoặc Bluetooth. Hãy chọn thiết bị trong danh sách thả xuống ở trên. Mọi thiết lập ở đây đều theo thiết bị đó.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Đầu ra âm thanh</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Nguồn phản chiếu, phản hồi xúc giác, Âm lượng tai nghe, Trộn chéo kênh, Parametric EQ, bộ giới hạn</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Nguồn phản chiếu, Âm lượng tai nghe, bộ đệm, Đường đầu ra</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Âm thanh tự động được định tuyến đến tay cầm đã chọn. Qua USB, điểm cuối âm thanh riêng của tay cầm được đối chiếu theo vùng chứa phần cứng. Qua Bluetooth, âm thanh được truyền trong các khung HID của Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Nguồn phản chiếu</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Thiết bị phát nào sẽ được phản chiếu sang loa tay cầm. Những trò chơi gửi các âm thanh riêng đến một thiết bị phát riêng có thể nhắm vào thiết bị này.</value></data>
@@ -3067,10 +3109,10 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Dừng mọi âm thanh</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Dừng mọi âm thanh macro trên tay cầm này</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macro âm thanh</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Âm thanh được phát bởi macro: một bộ kích hoạt (nhấn nút, thả, giữ hoặc công thức) cộng với một hành động Phát âm thanh. Hãy tạo chúng ở đây hoặc trên tab Macro. Độ trễ, lặp lại và bật/tắt đều hoạt động.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Âm thanh được phát bởi macro: một bộ kích hoạt (nhấn nút, thả, giữ hoặc công thức) cộng với một hành động Phát âm thanh. Hãy tạo chúng ở đây hoặc trong mục Macro và menu. Độ trễ, lặp lại và bật/tắt đều hoạt động.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Macro âm thanh mới</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Chưa có macro âm thanh nào. Hãy tạo một macro rồi chọn một tệp âm thanh và một bộ kích hoạt.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Mở macro này trên tab Macro</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Mở macro này trong mục Macro và menu</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Macro âm thanh {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Phát âm thanh</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Phát một tệp âm thanh (.wav, .mp3, .m4a, .aac, .wma, .flac) trên thiết bị đầu ra của tay cầm này</value></data>
@@ -3347,6 +3389,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Vr_Status_Running" xml:space="preserve"><value>Đang chạy</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Đang chạy, trình điều khiển đã kết nối</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Đang chạy, tay cầm đang hoạt động</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR đã cài đặt</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR chưa cài đặt</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR đang chạy</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR đang chạy, trình điều khiển đã kết nối</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR đang chạy, tay cầm đang hoạt động</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Một trình điều khiển OpenVR khác dùng cùng tên trình điều khiển với HIDMaestro, nên SteamVR có thể tải nó thay cho trình điều khiển của PadForge và các tay cầm VR ảo sẽ không xuất hiện. Hãy gỡ trình điều khiển đó để khắc phục: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Tay cầm nối tiếp (cổng COM)</value></data>
@@ -3516,7 +3563,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Đa phương tiện {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Chuột</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Cử chỉ chuột</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Giữ nút cử chỉ, gạt chuột, và một hành động sẽ kích hoạt khi bạn thả: trái, phải, lên, xuống, hoặc một lần nhấp thường nếu chưa đạt khoảng cách gạt. Hãy ánh xạ năm cử chỉ trên tab Ánh xạ hoặc dùng chúng làm bộ kích hoạt macro.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Giữ nút cử chỉ, gạt chuột, và một hành động sẽ kích hoạt khi bạn thả: trái, phải, lên, xuống, hoặc một lần nhấp thường nếu chưa đạt khoảng cách gạt. Hãy ánh xạ năm cử chỉ sang bất kỳ đầu ra nào hoặc dùng chúng làm bộ kích hoạt macro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Bật cử chỉ chuột</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Bật sẵn bộ nhận dạng cử chỉ cho chuột này trên khe này. Nút cử chỉ vẫn giữ chức năng nhấp bình thường trong lúc thực hiện cử chỉ, vì vậy hãy chọn một nút bên mà bạn không ánh xạ vào việc khác.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Nút cử chỉ</value></data>
@@ -3550,7 +3597,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Chuyển lớp</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Đặt màu Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Tô một màu cho các thiết bị Razer đã gán cho tay cầm ảo này, và mọi thiết bị Razer khác cùng loại, trong lúc hành động chạy.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Trong thời lượng ở trên, tô màu này lên các thiết bị Razer đã gán cho tay cầm ảo này và lên mọi thiết bị Razer khác cùng loại, hoặc lên mọi thiết bị Razer khi hàng Razer Chroma được gán. Nó ghi đè tab Đèn của bất kỳ tay cầm ảo nào, rồi trả lại quyền điều khiển đèn. Để giữ màu chừng nào bộ kích hoạt còn được giữ, hãy dùng Trong khi giữ cùng với Cho đến khi thả. Khi hai macro tô màu cùng lúc, macro nằm thấp hơn trong danh sách được ưu tiên, vì vậy hãy đặt macro nhấn hết bên dưới macro nhấn nhẹ tương ứng của nó. Khi macro trên hai tay cầm ảo tô cùng một loại thiết bị Razer, số thứ tự người chơi nhỏ hơn được ưu tiên. Cần Razer Synapse đang chạy.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Trong thời lượng ở trên, tô màu này lên các thiết bị Razer đã gán cho tay cầm ảo này và lên mọi thiết bị Razer khác cùng loại, hoặc lên mọi thiết bị Razer khi hàng Razer Chroma được gán. Nó ghi đè thiết lập đèn của bất kỳ tay cầm ảo nào trong mục Đèn và âm thanh, rồi trả lại quyền điều khiển đèn. Để giữ màu chừng nào bộ kích hoạt còn được giữ, hãy dùng Trong khi giữ cùng với Cho đến khi thả. Khi hai macro tô màu cùng lúc, macro nằm thấp hơn trong danh sách được ưu tiên, vì vậy hãy đặt macro nhấn hết bên dưới macro nhấn nhẹ tương ứng của nó. Khi macro trên hai tay cầm ảo tô cùng một loại thiết bị Razer, số thứ tự người chơi nhỏ hơn được ưu tiên. Cần Razer Synapse đang chạy.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Hiện màn hình Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Phát các hình trên VMU của từng tay cầm Dreamcast cắm vào một cổng Bliss-Box đang cấp cho khe này, rồi trả mỗi cổng về thiết lập màn hình riêng của nó.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Hiện hình Dreamcast: {0} × {1} ms, số lần lặp {2}</value></data>
@@ -3844,10 +3891,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Đưa các mốc ngắm tích lũy của con quay hồi chuyển trên tay cầm về không khi nhấn. Lịch sử làm mượt được xóa, vị trí trung lập của Chuyển động ngả được lấy lại, ước lượng trọng lực được khởi tạo lại từ tư thế hiện tại của tay cầm, và độ xoay mà các hàng Chuyển động pitch, yaw và roll đã tạo ra được hoàn tác.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Bất kỳ thiết bị nào)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu biến một cần analog hoặc bàn cảm ứng vật lý thành một vòng tròn hoặc lưới trên màn hình. Hãy thêm một menu, chọn thứ sẽ mở nó, rồi đặt nhãn cho từng ô và gán cho ô đó một phép gán.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu biến một cần analog hoặc bàn cảm ứng vật lý thành một vòng tròn hoặc lưới trên màn hình. Hãy nhấn + bên cạnh Menu để tạo một menu, chọn thứ sẽ mở nó, rồi đặt cho từng ô một tên và một hành động.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu mới</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Tên menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Đã bật</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Cách mở</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Kiểu</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Vòng tròn</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Lưới cảm ứng</value></data>
@@ -3867,12 +3916,16 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Cells" xml:space="preserve"><value>Ô</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Ô giữa</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Hiện nhãn</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Vị trí trên màn hình</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Kích thước</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Độ mờ đục</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Vùng chết kích hoạt</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Phép gán của ô</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Ô {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Thêm ô</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Gỡ bỏ ô cuối cùng</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Sửa ô</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Tên</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Hành động</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Biểu tượng</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Giữa</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Phím bàn phím</value></data>
@@ -3885,7 +3938,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Kích hoạt một lần khi thả nhấp: trỏ vào ô, nhấn cần analog hoặc bàn cảm ứng xuống, rồi thả ra.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Kích hoạt một lần khi bạn buông ra: nhấc ngón tay khỏi bàn cảm ứng, hoặc để cần analog bật về giữa trong lúc một ô đang được tô sáng.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Phép gán được giữ suốt thời gian ô được tô sáng. Không cần nhấp.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Menu có bao nhiêu ô. Với vòng tròn, con số này chỉ tính vòng; ô giữa được tính riêng.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Thêm một ô giữa, được chọn khi cần analog hoặc ngón tay nằm trong Vùng chết kích hoạt.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Với cần analog, phải đẩy bao xa thì menu mới mở và các ô trên vòng mới được tô sáng. Trên menu vòng tròn, đây cũng là vùng giữa cho cả cần analog và bàn cảm ứng: bên trong vùng này, ô giữa được chọn nếu có.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Vẽ nhãn của từng ô trên lớp phủ màn hình.</value></data>
@@ -3895,8 +3947,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Kích thước lớp phủ, tính theo phần trăm kích thước bình thường.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Độ mờ đục của lớp phủ. 100% là đặc hoàn toàn.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Văn bản hiển thị trên ô này trong lớp phủ.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ô này làm gì khi kích hoạt: "Phím bàn phím" nhấn một phím bàn phím, "Nút tay cầm" nhấn một nút trên tay cầm ảo của khe này. Ô đặt là "Không có" vẫn kích hoạt như một nguồn mục menu cho các hàng Ánh xạ và bộ kích hoạt macro.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Được đọc từ các tay cầm vật lý đã gán cho khe này, không phải từ bố cục của tay cầm ảo. Các phép gán của ô bên dưới là thứ menu xuất ra.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ô này làm gì khi kích hoạt: "Phím bàn phím" nhấn một phím bàn phím, "Nút tay cầm" nhấn một nút trên tay cầm ảo của khe này. Ô đặt là "Không có" vẫn kích hoạt như một nguồn mục menu cho các ánh xạ và bộ kích hoạt macro.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Được đọc từ các tay cầm vật lý đã gán cho khe này, không phải từ bố cục của tay cầm ảo. Các ô bên dưới cho biết menu xuất ra gì.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Trục tùy chỉnh</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Điều hướng X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Điều hướng Y</value></data>
@@ -3921,13 +3973,16 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Đầu ra</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nút bấm</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Phím và chuột</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nốt và điều khiển</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Tay</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Cần analog và cò</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rung và xúc giác</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Chuyển động và cảm ứng</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Đèn và âm thanh</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro và menu</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bộ rung bass</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Định tuyến rung và phản hồi lực của trò chơi mà tay cầm ảo này nhận được sang một đầu ra âm thanh dưới dạng các âm tần số thấp cho bộ rung bass và loa siêu trầm.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Phát rung của trò chơi dưới dạng âm tần số thấp qua bộ rung bass hoặc loa siêu trầm.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Thiết bị đầu ra, chế độ kênh, độ lợi, âm riêng cho từng mô-tơ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Hoạt động với các tay cầm ảo Xbox, DualShock 3, DualShock 4 / DualSense và Nintendo Switch Pro, cùng các tay cầm ảo Mở rộng có phản hồi lực, chẳng hạn vô lăng đua xe, và Steam Deck Controller (Composite). Phản hồi của trò chơi và Thử rung được phát qua đầu ra âm thanh. Rung từ macro vẫn ở trên tay cầm.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Đặt lại Rung thành âm thanh</value></data>
@@ -3956,19 +4011,22 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Phát kênh phản hồi này dưới dạng một âm. Độ lợi và tần số vẫn được giữ khi nó tắt.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Tần số âm cho kênh này, từ 20 đến 120 Hz. Hãy chạy quét tần số để tìm nơi bộ rung của bạn phản ứng mạnh nhất.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Độ to của kênh này trước độ lợi tổng.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Độ lợi</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Thử</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Phát âm của kênh này trong 1.5 giây ở độ lợi đã đặt.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Đặt lại mô-tơ tần thấp</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Đặt lại mô-tơ tần cao</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Đặt lại cò trái</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Đặt lại cò phải</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kiểm tra bộ rung</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Quét tần số</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Quét một âm từ 20 đến 120 Hz trong tám giây trên đường định tuyến của mô-tơ tần thấp. Hãy ghi nhận nơi bộ rung của bạn phản ứng mạnh nhất rồi đặt tần số của các tiếng ở đó.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Dừng</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Dừng âm thử hoặc lần quét.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Bất kỳ thẻ NFC nào</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Thẻ NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Lọc đầu vào (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Lọc đầu ra và đầu vào</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Chỉ hiển thị các hàng và đầu vào khớp. Nhấn Ctrl+F để gõ vào đây.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Chọn đầu vào của những thiết bị nào được hiện trong các bộ chọn</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Hiện trong bộ chọn</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Bất kỳ cụm từ giọng nói nào</value></data>
@@ -4077,6 +4135,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Đặt lại mức trộn</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>EQ tham số</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Các bộ lọc theo từng dải trên âm thanh tay cầm. Được áp dụng trước khi âm thanh được mã hóa, nên bộ giới hạn bên dưới giữ cho dải được tăng không bị vỡ.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Tiền khuếch đại, các dải, nhập</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Tiền khuếch đại</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Mức tổng thể trước các dải. Các hồ sơ AutoEq đi kèm một mức tiền khuếch đại âm để các phần tăng của chúng không bị vỡ, và việc nhập một hồ sơ sẽ tự đặt mục này cho bạn.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Bật</value></data>
@@ -4307,7 +4366,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Đặt lại về mở khi chạm hoặc khi lệch.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Điều hướng bằng</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Đầu vào vật lý điều hướng ô được tô sáng trong khi lớp giữ menu này mở.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Được đọc từ các tay cầm vật lý đã gán cho khe này. Lớp mở menu; đầu vào này điều hướng nó. Các phép gán của ô quyết định đầu ra của nó.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Được đọc từ các tay cầm vật lý đã gán cho khe này. Lớp mở menu, và đầu vào này điều hướng nó. Các ô của menu cho biết menu xuất ra gì.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Kích thước biểu tượng</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Kích thước biểu tượng so với kích thước biểu tượng bình thường của menu, từ 25% đến 200%. Xóa biểu tượng sẽ đặt lại về 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Giữ phép gán của ô được tô sáng trong khi Đầu vào nhấp được giữ. Ô giữa của vòng tròn đang được tô sáng có thể kích hoạt khi cần analog nghỉ.</value></data>
@@ -4432,7 +4491,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Tài liệu tham chiếu của Antoine Aflalo về bố cục của giao diện IPolicyConfig không được ghi tài liệu của Windows, mà PadForge dùng để bật lại điểm cuối âm thanh của tay cầm. MIT. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Định dạng hồ sơ EQ tham số mà tab Âm thanh nhập, của Jaakko Pasanen. MIT. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Định dạng hồ sơ EQ tham số mà mục EQ tham số của tay cầm nhập, của Jaakko Pasanen. MIT. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Các kỹ thuật SendInput đứng sau macro Khối văn bản và hook tổ hợp phím: gõ Unicode, giới hạn lô, phím che phím Win và đầu vào được chèn có gắn thẻ. GPL-2.0-or-later, chỉ được đọc làm tài liệu, không có mã GPL nào được phát hành kèm.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Hướng</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Bước</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>đến</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Tay nắm</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} đang đặt cò của tay cầm này.</value></data>
@@ -4716,7 +4776,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Tay nắm chưa di chuyển đủ xa nên tầm với giữ nguyên. Hãy di chuyển tới mọi mép trong lúc quét đang chạy.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon đã đóng trước khi quét xong.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Chơi game bằng Novint Falcon qua SDK của Force Dimension, mà bạn cài đặt từ Force Dimension. Tay nắm là một cần analog, bốn nút trên tay nắm là các nút, và PadForge đưa rung và hiệu ứng của game lên tay nắm dưới dạng lực. Tab Phản hồi lực của mỗi khe đặt cảm giác của Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Chơi game bằng Novint Falcon qua SDK của Force Dimension, mà bạn cài đặt từ Force Dimension. Tay nắm là một cần analog, bốn nút trên tay nắm là các nút, và PadForge đưa rung và hiệu ứng của game lên tay nắm dưới dạng lực. Thẻ Novint Falcon trong mục Rung và xúc giác của mỗi tay cầm đặt cảm giác của Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Điều khiển Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Mở từng Falcon qua dhd64.dll của Force Dimension. Falcon đang mở chỉ thuộc về PadForge, nên FalconJoyForce và công cụ của Force Dimension không mở được nó khi tùy chọn này bật. Khi tắt, PadForge đóng mọi Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Đã đặt thư viện Falcon thành {0}. PadForge sẽ tải nó trong vài giây, và Falcon đang mở trên bản khác sẽ mở lại trên bản này.</value></data>
@@ -4929,7 +4989,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Trong một khoảng thời gian</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Cho đến khi bị dừng</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Thời gian</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Phát trên mọi DualSense và DualSense Edge ở khe này. Hiệu ứng cò riêng của trò chơi và của mod trò chơi được ưu tiên, và thiết lập của tab Cò thích ứng quay lại khi hiệu ứng kết thúc. Các vùng chạy từ 0 khi nghỉ đến 9 khi bóp hết. Cung, Phi nước đại và Máy không phải hiệu ứng DualSense chính thức, và một bản cập nhật firmware có thể loại bỏ chúng. Tay cầm Xbox bật Chuyển đổi rung của cò thích ứng sẽ cảm nhận các hiệu ứng rung như rung cò.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Phát trên mọi DualSense và DualSense Edge ở khe này. Hiệu ứng cò riêng của trò chơi và của mod trò chơi được ưu tiên, và thiết lập của thẻ Cò thích ứng quay lại khi hiệu ứng kết thúc. Các vùng chạy từ 0 khi nghỉ đến 9 khi bóp hết. Cung, Phi nước đại và Máy không phải hiệu ứng DualSense chính thức, và một bản cập nhật firmware có thể loại bỏ chúng. Tay cầm Xbox bật Chuyển đổi rung của cò thích ứng sẽ cảm nhận các hiệu ứng rung như rung cò.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} trên {1} trong {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} trên {1} khi đang giữ</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} trên {1} cho đến khi dừng</value></data>
@@ -4958,7 +5018,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Cho đến khi bị xóa</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Thời gian</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Giữ màu của chúng</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Hành động thắp sáng cùng các phím trên mọi bàn phím mà bộ điều khiển ảo này điều khiển đèn, phủ lên các màu mà thẻ Đèn của nó đặt. Các số cho biết thứ tự đã chọn. Đếm ngược tắt từng phím một, phím chọn cuối cùng tắt trước, nên hãy chọn 1 đến 0 để làm bộ đếm hồi chiêu trên hàng số. Bàn phím hoặc chuột chỉ sáng khi Điều khiển đèn của thiết bị này được bật.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Hành động thắp sáng cùng các phím trên mọi bàn phím mà bộ điều khiển ảo này điều khiển đèn, phủ lên các màu mà nó đặt cho chúng trong mục Đèn và âm thanh. Các số cho biết thứ tự đã chọn. Đếm ngược tắt từng phím một, phím chọn cuối cùng tắt trước, nên hãy chọn 1 đến 0 để làm bộ đếm hồi chiêu trên hàng số. Bàn phím hoặc chuột chỉ sáng khi Điều khiển đèn của thiết bị này được bật.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Khác</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, số {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Lớp phủ màn hình</value></data>
@@ -5018,7 +5078,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Điểm kích hoạt analog của phím đã không được chuyển sang.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD đã gửi tay cầm này sang một thiết bị khác qua bộ chuyển đổi. PadForge chạy tay cầm đó trên PC này, còn Liên kết từ xa gửi nó sang một PC khác đang chạy PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge đọc hai cần analog, còn mục này nêu tên một cần thứ ba.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Giả lập vô lăng đã không được chuyển sang. Hãy ánh xạ vô lăng trên tab Ánh xạ.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Giả lập vô lăng đã không được chuyển sang. Hãy ánh xạ vô lăng trong mục Nút bấm.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Hồ sơ này nêu một hành động đặc biệt không có trong Actions.xml cạnh thư mục Profiles của nó: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Thiết lập này đã không được chuyển sang: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD đã chặn các đầu vào này không đến được Windows. Hãy bật Chặn các đầu vào đã ánh xạ cho {0} trên trang Thiết bị, tùy chọn này chặn những đầu vào mà hồ sơ này ánh xạ.</value></data>
@@ -5026,8 +5086,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Xác nhận khi cần analog về tâm hoặc khi lớp kết thúc. Nút Apply của reWASD không được dùng.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tệp này tách riêng hai tay cầm. Trong PadForge, bất kỳ tay cầm nào ở ô này đều kích hoạt các ánh xạ này.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Tốc độ di chuyển hoặc cú gạt nhanh đã không được chuyển sang.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Những mục này đã không được chuyển sang. Hãy đặt chúng trên tab Bàn cảm ứng.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Không có gì trong tệp này mở lớp này. Hãy gán cho nó một nút trên tab Ánh xạ.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Những mục này đã không được chuyển sang. Hãy đặt chúng trong mục Chuyển động và cảm ứng.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Không có gì trong tệp này mở lớp này. Trong mục Nút bấm, hãy nhấp chuột phải vào lớp rồi chọn Cấu hình bộ kích hoạt.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Các nút của hồ sơ chạy những lệnh này khi được nhấn: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Phím tắt hồ sơ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Làm việc mà một phím tắt hồ sơ làm: tải hồ sơ có tên, hồ sơ kế tiếp hoặc hồ sơ trước đó, hiện hoặc ẩn cửa sổ, hoặc tắt và bật các tay cầm ảo.</value></data>
@@ -5197,7 +5257,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Ô đang chọn kích hoạt một lần, như một chạm ngắn, khi "Kích hoạt" được thả. Khi "Ẩn sau khi kích hoạt" bật, ô kích hoạt ngay khi "Kích hoạt" ẩn thanh.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Một ô kích hoạt một lần, như một chạm ngắn, khi "Kích hoạt" ẩn thanh với "Ẩn sau khi kích hoạt" bật. Khi "Về giữa mỗi lần" bật, ô giữa là ô được kích hoạt.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Ô đang chọn được giữ suốt thời gian thanh hiện. Khi bước sang ô khác, ô cũ được thả và ô mới được giữ.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>Vòng tròn, Lưới cảm ứng và Hotbar kích hoạt các liên kết ô. Bàn phím gõ các phím của bố cục Windows đang dùng.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>Vòng tròn, Lưới cảm ứng và Hotbar kích hoạt hành động của các ô. Bàn phím gõ các phím của bố cục Windows đang dùng.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Bố cục</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Cách bàn phím sắp xếp các phím và cách bộ điều khiển chọn chúng.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Một phần tô sáng, di chuyển bằng một cần hoặc bốn đầu vào, là bố cục Windows, Xbox và Steam dùng.</value></data>
@@ -5304,11 +5364,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Nút máy cầm tay PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Hồ sơ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Đèn phím PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một ánh xạ trên tab Ánh xạ thì có thể.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một ánh xạ trong mục Nút bấm thì có thể.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge chạy tám Lớp phủ màn hình, còn đây là tâm ngắm thứ chín hoặc thứ mười của reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge đọc Con quay hồi chuyển trái và phải từ roll, và ngả từ yaw, theo mặc định của reWASD. Preferences của reWASD có thể đổi hai trục này, và tệp này không cho biết có đổi hay không.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Ở chế độ Tilt, ngả của reWASD là một vòng xoay quanh trục thẳng đứng, và cảm biến chuyển động không cho góc nào cho vòng xoay đó.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge đọc đường chéo trên bàn cảm ứng là hai hướng cùng lúc, và bàn cảm ứng chỉ báo như vậy khi Chế độ D-pad trên tab Bàn cảm ứng của nó là 8 hướng.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge đọc đường chéo trên bàn cảm ứng là hai hướng cùng lúc, và bàn cảm ứng chỉ báo như vậy khi Chế độ D-pad của nó trong mục Chuyển động và cảm ứng là 8 hướng.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge đọc hướng của con quay hồi chuyển qua một ngưỡng, còn reWASD không cho đơn vị nào cho mép vùng của con quay hồi chuyển.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows đặt con trỏ tại chỗ cần analog hướng tới. Trong PadForge, cần analog di chuyển con trỏ thay vào đó.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} đọc cần analog trước khi xoay. DS4Windows đọc sau khi xoay.</value></data>

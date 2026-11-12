@@ -1,9 +1,11 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 using PadForge.Controls;
 using Xunit;
@@ -225,6 +227,51 @@ namespace PadForge.Tests
             Assert.Equal(380, TileGridPanel.FullRowWidth(double.PositiveInfinity, 380));
             Assert.Equal(380, TileGridPanel.FullRowWidth(double.NaN, 380));
             Assert.Equal(800, TileGridPanel.FullRowWidth(800, 380));
+        });
+
+        /// <summary>A window's resize measures and arranges its root at the
+        /// new size and only then runs the layout pass, as HwndSource does
+        /// on WM_SIZE. When that arrange reaches the grid while the measure
+        /// for its new tiles still waits in the layout queue, WPF measures
+        /// the grid inside its own Arrange and does not tell the grid's
+        /// parent. The list kept the height of its old tiles, and under the
+        /// picture the picked control's blocks had no room (#574,
+        /// 2026-11-12). The grid tells its parent itself.</summary>
+        [Fact]
+        public void TheGrid_TellsItsListOfNewTiles_WhenAResizeArrangesItFirst() => RunSta(() =>
+        {
+            var host = new FrameworkElementFactory(typeof(TileGridPanel));
+            host.SetValue(TileGridPanel.MinItemWidthProperty, 400.0);
+            var tile = new FrameworkElementFactory(typeof(Border));
+            tile.SetValue(FrameworkElement.HeightProperty, 40.0);
+            var tiles = new ObservableCollection<string> { "A" };
+            var list = new ItemsControl
+            {
+                ItemsSource = tiles,
+                ItemsPanel = new ItemsPanelTemplate(host),
+                ItemTemplate = new DataTemplate { VisualTree = tile },
+            };
+            // A page that scrolls: the list is measured with no bound on its
+            // height and arranged at least as tall as the view, so a taller
+            // window arranges it anew and measures it as before.
+            var page = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Hidden, Content = list };
+            void Resize(double height)
+            {
+                page.Measure(new Size(400, height));
+                page.Arrange(new Rect(0, 0, 400, height));
+                page.UpdateLayout();
+            }
+            Resize(300);
+            Assert.Equal(40, list.DesiredSize.Height);
+
+            // Two tiles come, and the window grows before the layout pass.
+            tiles.Add("B");
+            tiles.Add("C");
+            Resize(500);
+            var grid = (TileGridPanel)VisualTreeHelper.GetParent(list.ItemContainerGenerator.ContainerFromIndex(0));
+            // One column of 400: three rows of 40 with the gap between them.
+            Assert.Equal(40 * 3 + 16 * 2, grid.DesiredSize.Height);
+            Assert.Equal(grid.DesiredSize.Height, list.DesiredSize.Height);
         });
 
         // ── one line or a stack ────────────────────────────────────────

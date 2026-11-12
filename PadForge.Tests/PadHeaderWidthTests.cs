@@ -184,8 +184,8 @@ namespace PadForge.Tests
         /// <summary>The power button and the More button sit at the right
         /// of the title's line and take what they need first, so the power
         /// button's width is bounded: the state word is capped at 204, which
-        /// makes the button 264 at most and, with More's 42, leaves the
-        /// title's column 282 at the minimum. Uncapped, "Virtual controller
+        /// makes the button 264 at most and, with More's 48, leaves the
+        /// title's column 276 at the minimum. Uncapped, "Virtual controller
         /// failed" in Tamil made the button 397 and left the title's column
         /// 149.</summary>
         [Fact]
@@ -199,12 +199,17 @@ namespace PadForge.Tests
             Assert.Equal("1", (string)host.Attribute("Grid.Column"));
             var columns = host.Parent!.Element(host.Parent.Name.Namespace + "Grid.ColumnDefinitions")!.Elements().ToList();
             Assert.Equal(new[] { "*", "Auto", "Auto" }, columns.Select(c => (string)c.Attribute("Width")));
-            // More is the third column's, 34 wide in an 8 left margin.
+            // More is the third column's, 34 wide and 14 after the power
+            // button, as the header board spaces its line (#574), with the
+            // board's three dots.
             var more = Named(page, "PadMoreButton");
             Assert.Same(host.Parent, more.Parent);
             Assert.Equal("2", (string)more.Attribute("Grid.Column"));
             Assert.Equal("34", (string)more.Attribute("Width"));
-            Assert.Equal("8,0,0,0", (string)more.Attribute("Margin"));
+            Assert.Equal("14,0,0,0", (string)more.Attribute("Margin"));
+            var dots = Assert.Single(more.Elements(), e => e.Name.LocalName == "Path");
+            Assert.Equal("12.9", (string)dots.Attribute("Width"));
+            Assert.Equal("2.4", (string)dots.Attribute("Height"));
         }
 
         /// <summary>The title stays beside the type chip and ends in an
@@ -229,8 +234,8 @@ namespace PadForge.Tests
         /// combo, so on a short line the combo narrows and the reset beside
         /// it stays in view. In a horizontal stack the combo took up to its
         /// 380 cap whatever the line held: 603 for the Preset in Swahili,
-        /// against a column of 282. Its two resets sit alike, with the
-        /// margin their style gives them.</summary>
+        /// against a column of 282. Its two resets sit alike, 14 after the
+        /// picker, as the header board spaces its line (#574).</summary>
         [Fact]
         public void ThePresetsComboGivesWay()
         {
@@ -250,7 +255,30 @@ namespace PadForge.Tests
             var resets = grid.Elements().Where(e => e.Name.LocalName == "SettingResetButton").ToList();
             Assert.Equal(2, resets.Count);
             Assert.All(resets, r => Assert.Equal("2", (string)r.Attribute("Grid.Column")));
-            Assert.All(resets, r => Assert.Null(r.Attribute("Margin")));
+            Assert.All(resets, r => Assert.Equal("14,0,0,0", (string)r.Attribute("Margin")));
+        }
+
+        /// <summary>The device line as the header board draws it (#574): a
+        /// pill 12 from the next, and Add Device 12 after the last pill with
+        /// its plus 6 before its words. The button's padding draws it out 8
+        /// to the start, and its template keeps 8 after an icon, of which
+        /// the plus takes 2 back. The width tool measures the same.</summary>
+        [Fact]
+        public void TheDeviceLineIsSpacedAsTheBoardDrawsIt()
+        {
+            var page = XDocument.Parse(PadPage());
+            var pills = Named(page, "DrivenByList");
+            var margin = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "Margin");
+            Assert.Equal("0,2,12,2", (string)margin.Attribute("Value"));
+            var add = Named(page, "AddDeviceButton");
+            Assert.Equal("-8,2,0,2", (string)add.Attribute("Margin"));
+            Assert.Equal("8,0", (string)add.Attribute("Padding"));
+            var plus = Assert.Single(add.Descendants(), e => e.Name.LocalName == "DecorativeStrokeIcon");
+            Assert.Equal("0,0,-2,0", (string)plus.Attribute("Margin"));
+            string prog = File.ReadAllText(Path.Combine(RepoRoot(), "tools", "rowmeasure", "Program.cs"));
+            Assert.Contains("Margin = new Thickness(-8, 2, 0, 2),", prog);
+            Assert.Contains("const double pill = 320 + 12;", prog);
+            Assert.Contains("const double more = 34 + 14;", prog);
         }
 
         /// <summary>The measurement harness carries the header, so the next

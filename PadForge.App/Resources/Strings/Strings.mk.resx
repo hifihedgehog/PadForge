@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Копирај</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Залепи</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Дуплирај</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Преименувај</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Овозможено</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Оневозможено</value></data>
   <data name="Common_On" xml:space="preserve"><value>Вклучено</value></data>
@@ -304,15 +305,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Уред</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Управувано од</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Додај уред</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Слика</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Список</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Излези: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Движење</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Кликнете на контрола, па притиснете го копчето или поместете ја оската на контролерот што треба да ја придвижи.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Кликнете на тастер или на копче на глушецот, па на контролерот притиснете го копчето или поместете ја оската што треба да го придвижи.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Кликнете на нота или на лизгач, па притиснете го копчето или поместете ја оската на контролерот што треба да го придвижи.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Мапирај сѐ“ ги прескокнува излезите за допир на A и B. Кликнете на прстенот околу A или B за да поврзете еден од нив.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Снимање за {0}. Притиснете го копчето на вашиот уред.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, управувано од</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Повеќе опции</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Помалку опции</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Предно копче</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Копче на рамото</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Системско копче</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Копче</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Насочна табла</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Палка</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Тригер</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Допирна табла</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Сензор за движење</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Тастер на тастатура</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Копче на глушецот</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Движење на глушецот</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Тркалце за лизгање</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Контролна промена</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Сензор за допир</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Аналогно влечење</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, лева рака</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, десна рака</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Кој притисок го гледа играта кога се држат двете копчиња од пар</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Кој притисок го гледа играта кога се држат двата тастера од пар</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Држи мал отклон на палката за играта да ги прикажува ознаките на контролерот</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ковање</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макро од левата страна или притиснете „Додај“ за да создадете ново.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Изберете макро од списокот или притиснете + покрај „Макроа“ за да создадете ново.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>СУРОВО</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ИЗЛЕЗ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Ладно</value></data>
@@ -917,7 +946,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импулсни тригери</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импулсни тригери</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>јачина по тригер, замена на моторите, вибрации на адаптивните тригери</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Јачина по тригер, замена на моторите, вибрации на адаптивните тригери, Постојана сила на тригерите</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ги проследува командите за моторите на секој тригер (Xbox Impulse Triggers) од виртуелниот контролер до доделениот физички контролер Xbox One, Elite или Series. Вибрациите на тригерите што ги управува играта поминуваат автоматски. Контролите подолу ја скалираат јачината за секој тригер.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Лев тригер</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Десен тригер</value></data>
@@ -987,9 +1016,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Палки</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Мртви зони, анти-мртви зони, криви на осетливост и калибрација на поместувањето на центарот за секоја палка. Секој дел подолу се однесува на една аналогна палка на активниот излез. Проширените профили можат да имаат до четири палки. Стандардните гејмпади имаат две.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Тригери</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Мртви зони, анти-мртви зони, скалирање на максималниот опсег и криви на осетливост за секој тригер. Секој дел подолу се однесува на една оска на тригер на активниот излез. Проширените профили можат да изложат до осум оски споделени со картичката Палки.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Мртви зони, анти-мртви зони, скалирање на максималниот опсег и криви на осетливост за секој тригер. Секоја картичка за тригер се однесува на една оска на тригер на активниот излез. Проширените профили можат да изложат до осум оски, споделени меѓу палките и тригерите.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Повратна сила</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Подесува како PadForge ги скалира настаните на повратна сила од играта и како ги пренасочува кон моторите за вибрации или хаптичките актуатори на физичкиот контролер. „Вибрации од звук“ додава слој управуван од системскиот звук врз тоа.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Овој уред</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Целиот контролер</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрациите се репродуцираат на {0} како хаптички импулси, испратени директно до уредот. Посилните вибрации избираат посилен импулс и го повторуваат побрзо.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Хаптичката повратна реакција е исклучена за {0} во Logi Options+, па не се репродуцира ништо додека не ја вклучите повторно таму.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Овој уред сѐ уште не одговорил. Неговите вибрации ќе се репродуцираат штом се разбуди.</value></data>
@@ -1077,6 +1108,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>матични плочи и графички картички</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подлоги за глушец, слушалки и држачи за слушалки</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлосна лента</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игрите го преземаат управувањето секогаш кога запишуваат осветлување.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Внесете шестцифрена хексадецимална боја (RRGGBB или #RRGGBB) и притиснете Enter или кликнете надвор за да ја примените.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Отстрани ја оваа боја од палетата</value></data>
@@ -1094,7 +1126,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Ресетирај ги вибрациите од звук</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Ресетирај: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Исчисти ги мапирањата</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Сите мапирања на оваа картичка ќе бидат исчистени. Доделените извори, дополнителните извори и поставките за комбинирање се враќаат на стандардните вредности.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Сите мапирања на овој слој ќе бидат исчистени. Доделените извори, дополнителните извори и поставките за комбинирање се враќаат на стандардните вредности.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Шема за играч</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Режим на LED-диодата за исклучен звук</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Осветленост на LED-диодите</value></data>
@@ -1247,6 +1279,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-прекинувачи</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Копчиња</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Увезени профили…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Проширен контролер</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Управувајте со профилите на HIDMaestro што ги увезол корисникот: снимете нов од поврзан уред, извезете постоечки во JSON или избришете некој што повеќе не ви треба.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Клонирај уред 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ја мапира секоја оска, копче и POV-прекинувач на избраниот уред директно на виртуелниот излез со истиот број. Го приспособува распоредот според уредот и ги заменува редовите на овој уред на слотот со пропуштање 1:1.</value></data>
@@ -1294,6 +1327,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Повратна сила</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Канал</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI-излез</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI-канал (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Број на CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Број на CC-излези (максимумот зависи од „Почетен CC“)</value></data>
@@ -1325,7 +1359,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Го отстранува овој пар тастери.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Прв тастер од спротивниот пар.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Втор тастер од спротивниот пар.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Истовремени спротивни насоки (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Држи го контролерот буден</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Некои игри ги запираат вибрациите и ги менуваат ознаките за копчињата штом ќе видат влез од глушец или тастатура. Задржувањето мал отклон на палката ја тера играта да го третира овој контролер како активен уред. Држењето се вклучува само додека двете оски на таа палка се под зададеното ниво, па палка што лизга сѐ уште се смета за мирна. Влез над нивото на која било оска го ослободува држењето и поминува непроменет. Држете го отклонот под мртвата зона на самата игра, за ништо да не се движи во играта.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Држи буден</value></data>
@@ -1345,7 +1378,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Ресетирај го кликот</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Ресетирај ја половината на таблата</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Ресетирај го режимот на активирање</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Ресетирај ги ќелиите</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Ресетирај ја мртвата зона за активирање</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Ресетирај ја геометријата на менито</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Ресетирај ја ќелијата</value></data>
@@ -1401,6 +1433,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Исчисти сѐ</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Извор</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Вредност</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опции</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Мртва зона оска-кон-копче</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Инвертирај</value></data>
@@ -1438,7 +1471,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Кога е штиклирано, оската постепено се враќа во центарот при пуштање. Кога не е штиклирано, ја задржува последната позиција.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Копче што го инвертира излезот на редот додека се држи</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Модификатор: додека се држи, излезот на редот го менува знакот.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Додај извор</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Додај извор</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Додај уште еден физички влез во овој ред</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Отстрани го овој извор</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1559,10 +1592,11 @@
   <data name="CurveEditor_PointFormat" xml:space="preserve"><value>Точка {0} од {1}, влез {2}%, излез {3}%</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Калибрирај центар</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Централна точка</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Центар</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мртва зона</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>централни поместувања, облик и вредности на мртвата зона по оска, крива за секоја оска, опсег, управување</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Опсег</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Калибрирај граница“ е препорачаниот начин за исправање на палка. Го поминува работ до кој палката физички може да стигне, а потоа пропорционално ја преразмерува секоја позиција според тој измерен раб, па целото природно движење, под секој агол и при секој отклон, се пресликува на идеален круг без ништо да се отсече. Четирите лизгачи подолу ги ограничуваат само главните оски. Користете ги за намерно ограничување на опсегот, а не за корекција.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Калибрирај граница“ го мери работ до кој палката може да стигне и го преобликува во полн круг. Четирите лизгачи само ја ограничуваат секоја насока.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Земање примероци...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Поместување на центарот X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Поместување на центарот Y</value></data>
@@ -1581,7 +1615,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Име</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Активирање</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Кога</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Извршување</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>При притисок</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>При пуштање</value></data>
@@ -1613,9 +1647,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>На кој слој припаѓа ова макро. „Кој било слој“ се извршува без оглед на вклучениот слој. Основниот и именуваните слоеви се извршуваат само додека тој слој е вклучен, исто како ред за мапирање.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Кој било слој</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Работи непрекинато додека овој виртуелен контролер е активен. Не е потребно копче за активирање.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Низа дејства</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Направи</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Слој, Извор, Праг, Насока, Блокирај ги копчињата за активирање, Повторување</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Додај дејство</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Уреди дејство</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Тип</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Виртуелни копчиња</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Виртуелни оски и волан</value></data>
@@ -1684,11 +1718,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Копче {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Притисни {0} за {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Притисни {0} за {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Пушти {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Тастери {0} за {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Тастери {0} за {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Пушти ги тастерите {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Чекај {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Чекај {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Постави {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Системска јачина ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Системска јачина ← {0} (макс. {1}%)</value></data>
@@ -1700,15 +1734,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Пуштање на глушецот {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на допирна табла</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Постави боја на светлосната лента</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ја заменува бојата на светлосната лента на доделениот PlayStation-слот со избрана RGB-боја. „Реактивно“ избледува од полн интензитет до црно во текот на поставеното време на опаѓање, а потоа го враќа управувањето на поставките од картичката Осветлување. „Лепливо“ ја задржува бојата додека не се изврши дејството „Отстрани ја замената на светлосната лента“. Записите од играта и понатаму имаат предност пред замената.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Трепни ја светлосната лента {0} (опаѓање {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ја заменува бојата на светлосната лента на доделениот PlayStation-слот со избрана RGB-боја. „Реактивно“ избледува од полн интензитет до црно во текот на поставеното време на опаѓање, а потоа го враќа управувањето на поставките од картичката „Светлосна лента“. „Лепливо“ ја задржува бојата додека не се изврши дејството „Отстрани ја замената на светлосната лента“. Записите од играта и понатаму имаат предност пред замената.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Трепни ја светлосната лента {0} (опаѓање {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Задржи ја светлосната лента {0} до отстранување</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Отстрани ја замената на светлосната лента</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Отстрани ја замената на светлосната лента</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Ја ослободува секоја активна замена на светлосната лента на доделениот слот. Користете го заедно со лепливото дејство „Постави боја на светлосната лента“ за да ја поништите преку друго макро.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Постави режим на светлосната лента</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Постави го режимот на светлосната лента на {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Го поставува режимот на светлосната лента на доделениот слот на одредена вредност. Останува како измена во картичката Осветлување додека друго дејство или корисникот не го промени.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Го поставува режимот на светлосната лента на доделениот слот на одредена вредност. Останува како измена во картичката „Светлосна лента“ додека друго дејство или корисникот не го промени.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Менувај ги режимите на светлосната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Циклус низ режимите на светлосната лента: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Го менува режимот на светлосната лента на слотот низ режимите избрани подолу. Секое извршување преминува на следниот штиклиран режим. Позицијата во циклусот е посебна за секое дејство и се ресетира при рестартирање на апликацијата.</value></data>
@@ -1723,14 +1757,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Опаѓање</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Избледување</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палета</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета ја користи палетата од картичката Осветлување на слотот.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета ја користи палетата од картичката „Светлосна лента“ на слотот.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Изберете низ кои режими на светлосната лента ќе минува макрото. Секое извршување преминува на следниот штиклиран режим.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Вибрации</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Ги управува вибрациите на физичкиот уред на слотот од макро. „Реактивно“ работи со полна јачина во текот на времето на задржување, а потоа избледува до нула во текот на времето на избледување. „Лепливо“ задржува полна јачина додека не се изврши дејството „Запри вибрации“. Се додава врз вибрациите од играта преку max(), па вибрациите од корисникот секогаш се чувствуваат.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Импулс на вибрации {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Импулс на вибрации {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Задржи вибрации {0} до отстранување</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Запри вибрации</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Запри вибрации</value></data>
@@ -1741,7 +1775,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Запри ја вибрацијата на тригерите</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Ја ослободува секоја активна вибрација на тригерите од макро на слотот. Користете го заедно со лепливото дејство „Замена на вибрациите на тригерите“ за да го завршите задржувањето од макро.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Постави вклучување на жироскопот</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ја поставува состојбата на вклученост на жироскопот на слотот од макро. „Префрлување“ ја превртува тековната состојба. „Вклучено“ го вклучува жироскопот. „Исклучено“ го исклучува. Не зависи од копчето за вклучување во картичката Жироскоп. Двата извора се комбинираат со ИЛИ, па ниту еден не може да го оневозможи она што другиот го вклучил.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Ја поставува состојбата на вклученост на жироскопот на слотот од макро. „Префрлување“ ја превртува тековната состојба. „Вклучено“ го вклучува жироскопот. „Исклучено“ го исклучува. Не зависи од „Копче за вклучување на нишанењето“ во делот „Движење и допир“. Двата извора се комбинираат со ИЛИ, па ниту еден не може да го оневозможи она што другиот го вклучил.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Префрлување</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Вклучено</value></data>
@@ -1889,7 +1923,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Допирна табла</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Допирна табла</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Влез по допирна табла. Гестовите (лизгања, допири, штипнувања, облици) и режимите на континуиран излез (виртуелна палка / D-pad, глушец) стануваат извори за мапирање што можете да ги поврзете на картичката Мапирања.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Влез по допирна табла. Гестовите (лизгања, допири, штипнувања, облици) и режимите на континуиран излез (виртуелна палка / D-pad, глушец) стануваат извори за мапирање што можете да ги поврзете со кој било излез.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Допирна табла</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Број на допирната табла</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>На која допирна табла на овој контролер важат поставките подолу. Секоја допирна табла ги чува своите гестови, однесување на глушецот и подрачје на покажувачот.</value></data>
@@ -2179,10 +2213,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Подесете како сензорот за движење на овој контролер управува со излезот на глушецот и палката. Калибрирајте на рамна површина за да го поништите лизгањето во мирување, а потоа подесете ги осетливоста, измазнувањето и правилата за вклучување по ваш вкус.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрација</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Читања во живо од жироскопот и акцелерометарот</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Осетливост</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, Простор, инвертирање на оските, Калибрација според реалниот свет</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, инвертирање на оските, Калибрација според реалниот свет</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° по вртење</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Обликување на одзивот</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Мртва зона, измазнување, Забрзување, Излезна крива</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Референтен систем</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Локален, Играч или Свет</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Простор</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Како се толкува движењето на жироскопот. „Локален“ ги користи суровите оски на контролерот. „Играч“ го проектира хоризонталното движење врз вистинската вертикала (гравитацијата), па истото извртување на зглобот секогаш ја врти камерата, без оглед на тоа како го држите контролерот. „Свет“ дополнително го проектира вертикалното движење врз оските на светот.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Држење</value></data>
@@ -2254,6 +2292,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Исправено</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Држење</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Како се држи контролерот. Ги ротира жироскопот, акцелерометарот и гравитацијата заедно, за мапирањата и за движењето што го пријавува виртуелниот контролер. D-pad ја следи истата рамка, па „Горе“ е горе во држењето.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Како се држи контролерот</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Линеарна</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Агресивна</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Опуштена</value></data>
@@ -2286,7 +2325,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ресетирај ја насоката за вклучување</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Пропуштање на движењето</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Примени ги поставките на жироскопот врз пропуштањето на движењето</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ги применува изборните поставки на жироскопот од оваа картичка (мртва зона, осетливост, измазнување, крива на одзив, инвертирање) врз движењето што виртуелниот контролер го пријавува на играта или емулаторот. Исклучете го за да се испраќа само калибрираното читање, а играта да ги примени сопствената осетливост и измазнување. Корекцијата на лизгањето од калибрацијата секогаш важи во двата случаи.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ги применува изборните поставки од картичките за жироскопот (мртва зона, осетливост, измазнување, крива на одзив, инвертирање) врз движењето што виртуелниот контролер го пријавува на играта или емулаторот. Исклучете го за да се испраќа само калибрираното читање, а играта да ги примени сопствената осетливост и измазнување. Корекцијата на лизгањето од калибрацијата секогаш важи во двата случаи.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ресетирај ги поставките за пропуштање</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Осетливост</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множител на осетливоста на жироскопот за секој извор. 1.0 = стандардната вредност на моторот (500°/s → целосен отклон). Вредностите над 1.0 се поосетливи. Вредностите под 1.0 се помалку осетливи.</value></data>
@@ -2303,7 +2342,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Ресетирај го опсегот на целосно накривување</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Ресетирај ја мртвата зона на накривувањето</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Ресетирај го накривувањето со жироскоп</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Како се спојуваат изворите на овој ред кога се активни повеќе од еден. Изберете го редот за да го промените во лентата со детали подолу.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Како се спојуваат изворите на овој ред кога се активни повеќе од еден. Отворете го редот за да го промените во „Комбинирање“.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Инерција</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Режим на трекбол: брзо турнете ја палката и пуштете ја, а курсорот продолжува да се движи и постепено запира. Повторното поместување на палката го фаќа.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Колку далеку се лизга курсорот по брзото туркање. На врвот на опсегот продолжува додека повторно не ја поместите палката.</value></data>
@@ -2504,7 +2543,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Оска на тригерот</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>јачина по мотор, вибрации на тригерите, замена на моторите</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Јачина по мотор, вибрации на тригерите, Вибрации според аголот на управување, Постојана сила</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Вкупно засилување</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Лев мотор</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Десен мотор</value></data>
@@ -2513,6 +2552,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Овој контролер нема мотори во тригерите, па вибрациите од игрите што користат импулсни тригери на Xbox не би се чувствувале. Наместо тоа, спојте го секој канал на тригер со главниот мотор на истата страна.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Тестирај вибрации</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Лев</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Десен</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Применува постојана сила на овој уред додека не ја исклучите. Силата што ја управува играта, од кој било извор, има предност додека е активна, а постојаната сила продолжува кога играта ќе престане.</value></data>
@@ -2591,7 +2632,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Притиснете копчиња или поместете оска/тригер за снимање. Оските се препознаваат кога се отклонети над 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Додај од список</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Изберете влез за активирање од уредите на слотот наместо да го снимате. Тука се појавуваат гестовите на допирната табла овозможени на картичката Допирна табла.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Исчисти го активирањето</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Изберете влез за активирање од уредите на слотот наместо да го снимате. Тука се појавуваат гестовите на допирната табла вклучени во делот „Движење и допир“.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Отстрани влез</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Притиснете кој било влез…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>инвертирано</value></data>
@@ -2852,7 +2894,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Секунди пред да се уништи виртуелен контролер кога сите негови мапирани уреди се офлајн. 0 го оневозможува ова. Преостанатите контролери од истиот тип се поместуваат нагоре за да ја пополнат празнината и повторно се врзуваат за пониските слотови.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунди (0 = никогаш)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Слој</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Додај слој</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Додај слој. Втора табела за мапирање што се активира додека копче се држи или е вклучено.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Основен</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Слој</value></data>
@@ -2953,7 +2995,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управување со движење</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Внатрешна мртва зона на наведнувањето, Ориентација на контролерот</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Поставки за влезот „Движење: наведнување“: навалувајте го контролерот како волан. Мапирајте „Движење: наведнување“ на оска на палка од паѓачкото мени за влез во Мапирања.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Поставки за влезот „Движење: наведнување“: навалувајте го контролерот како волан. Мапирајте „Движење: наведнување“ на оска на палка во делот „Копчиња“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ресетирај го управувањето со движење</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик-стик (десна палка)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флик-стик (лева палка)</value></data>
@@ -2962,7 +3004,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Прстен на десната палка</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Флик-стик</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Поставки за влезовите „Флик-стик“</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Поставки за влезовите „Флик-стик“: насочете ја палката и камерата се врти соодветно, поминете по работ за фино вртење. Мапирајте „Флик-стик (десна палка)“ на „Глушец X“ од паѓачкото мени за влез во Мапирања, во кој било слој.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Поставки за влезовите „Флик-стик“: насочете ја палката и камерата се врти соодветно, поминете по работ за фино вртење. Мапирајте „Флик-стик (десна палка)“ на „Глушец X“ во делот „Тастери и глушец“, во кој било слој.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Ресетирај го флик-стикот</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Точки на 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Број на точки на глушецот за едно целосно вртење на камерата од 360°. Зависи од осетливоста на глушецот во играта: зголемете ја вредноста ако флик-вртењето е недоволно, намалете ја ако е прекумерно.</value></data>
@@ -3054,7 +3096,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците од макроа и пресликаниот системски звук се репродуцираат преку вградениот звучник на избраниот контролер, преку USB или Bluetooth. Изберете го уредот во паѓачкото мени погоре. Секоја поставка тука го следи.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Излез на звук</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Извор за пресликување, хаптика, Јачина на слушалките, Вкрстено мешање, Parametric EQ, Лимитер</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Извор за пресликување, Јачина на слушалките, бафер, Излезна патека</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуците автоматски се насочуваат кон избраниот контролер. Преку USB, аудиокрајната точка на контролерот се пронаоѓа според хардверскиот контејнер. Преку Bluetooth, звукот се емитува во HID-рамки на Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Извор за пресликување</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Кој уред за репродукција да се пресликува на звучникот на контролерот. Игрите што испраќаат одредени звуци на посебен уред за репродукција можат да го користат овој.</value></data>
@@ -3067,10 +3109,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Запри ги сите звуци</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Запри го секој звук од макро на овој контролер</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Звучни макроа</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Звуците се репродуцираат преку макроа: активирање (притисок, пуштање, држење на копче или формула) плус дејство „Пушти звук“. Направете ги тука или на картичката Макроа. Работат задоцнувањата, повторувањата и префрлувањата.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Звуците се репродуцираат преку макроа: активирање (притисок, пуштање, држење на копче или формула) плус дејство „Пушти звук“. Направете ги тука или во делот „Макроа и менија“. Работат задоцнувањата, повторувањата и префрлувањата.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Ново звучно макро</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Сѐ уште нема звучни макроа. Создадете едно и изберете звучна датотека и активирање.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Отвори го ова макро на картичката Макроа</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Отвори го ова макро во делот „Макроа и менија“</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Звучно макро {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Пушти звук</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Пушти звучна датотека (.wav, .mp3, .m4a, .aac, .wma, .flac) на излезниот уред на овој контролер</value></data>
@@ -3347,6 +3389,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Работи</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Работи, двигателот е поврзан</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Работи, контролерите се активни</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR е инсталиран</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR не е инсталиран</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR работи</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR работи, двигателот е поврзан</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR работи, контролерите се активни</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Друг OpenVR двигател го користи името на двигателот на HIDMaestro, па SteamVR може да го вчита наместо оној на PadForge и виртуелните VR-контролери нема да се појават. Отстранете го тој двигател за да го решите ова: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Сериски контролер (COM-порта)</value></data>
@@ -3516,7 +3563,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Мултимедијално {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Глушец</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Гестови со глушецот</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Држете го копчето за гестови, замавнете и при пуштањето се извршува едно дејство: лево, десно, горе, долу или обичен клик под растојанието на замав. Мапирајте ги петте гестови на картичката Мапирања или користете ги за активирање макроа.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Држете го копчето за гестови, замавнете и при пуштањето се извршува едно дејство: лево, десно, горе, долу или обичен клик под растојанието на замав. Мапирајте ги петте гестови на кој било излез или користете ги за активирање макроа.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Овозможи гестови со глушецот</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Го подготвува препознавачот на гестови за овој глушец на овој слот. Копчето за гестови го задржува својот нормален клик за време на гестот, па изберете странично копче што инаку не го мапирате.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Копчиња за гестови</value></data>
@@ -3550,7 +3597,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Промени слој</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Постави Chroma боја</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Ги бои уредите Razer доделени на овој виртуелен контролер, како и секој друг уред Razer од нивниот вид, во една боја додека трае дејството.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Во текот на траењето погоре, ја нанесува оваа боја на уредите Razer доделени на овој виртуелен контролер и на секој друг уред Razer од нивниот вид, или на секој уред Razer кога е доделен редот Razer Chroma. Има предност пред картичката Осветлување на секој виртуелен контролер, а потоа го враќа осветлувањето. За да ја задржите бојата додека се држи активирањето, користете „Додека се држи“ со „До пуштање“. Кога две макроа бојат истовремено, предност има она што е подолу во списокот, па ставете го макрото за целосен притисок под неговиот близнак за лесен притисок. Кога макроа на два виртуелни контролери го бојат истиот вид уред Razer, предност има помалиот број на играч. Потребно е да работи Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Во текот на траењето погоре, ја нанесува оваа боја на уредите Razer доделени на овој виртуелен контролер и на секој друг уред Razer од нивниот вид, или на секој уред Razer кога е доделен редот Razer Chroma. Има предност пред осветлувањето што секој виртуелен контролер го поставува во делот „Осветлување и аудио“, а потоа го враќа осветлувањето. За да ја задржите бојата додека се држи активирањето, користете „Додека се држи“ со „До пуштање“. Кога две макроа бојат истовремено, предност има она што е подолу во списокот, па ставете го макрото за целосен притисок под неговиот близнак за лесен притисок. Кога макроа на два виртуелни контролери го бојат истиот вид уред Razer, предност има помалиот број на играч. Потребно е да работи Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Прикажи на екранот на Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Прикажува слики на VMU-то на секој контролер Dreamcast во порта на Bliss-Box што го напојува овој слот, а потоа ја враќа секоја порта на сопствената поставка за екранот.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Прикажи слики на Dreamcast: {0} × {1} ms, број на повторувања {2}</value></data>
@@ -3844,10 +3891,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>При притисок ги поставува на нула натрупаните референци за нишанење со жироскопот. Историјата на измазнување се брише, неутралната положба за „Движење: наведнување“ повторно се снима, проценката на гравитацијата повторно се иницијализира од тековната положба на контролерот, а вртењето што го натрупале редовите „Движење: наклон“, „Движење: вртење“ и „Движење: навалување“ се поништува.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Кој било уред)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Менија</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Менијата претвораат физичка палка или допирна табла во прстен или мрежа на екранот. Додајте мени, изберете што го отвора, а потоа означете ја секоја ќелија и доделете ѝ поврзување.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Менијата претвораат физичка палка или допирна табла во прстен или мрежа на екранот. Притиснете + покрај „Менија“ за да создадете мени, изберете што го отвора, а потоа дајте ѝ на секоја ќелија име и дејство.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Ново мени</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Мени {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Име на менито</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Овозможено</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Отворање</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Стил</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Радијален прстен</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Мрежа на допир</value></data>
@@ -3867,12 +3916,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Ќелии</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Централна ќелија</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Прикажи ознаки</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Позиција на екранот</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Големина</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Непроѕирност</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Мртва зона за активирање</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Поврзувања на ќелиите</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Ќелија {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Додај ќелија</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Отстрани ја последната ќелија</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Уреди ќелија</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Име</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Дејство</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Икона</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Центар</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ништо</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Тастер на тастатура</value></data>
@@ -3885,7 +3938,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Се извршува еднаш кога кликот ќе се пушти: насочете кон ќелијата, кликнете на палката или тракпедот, а потоа пуштете го кликот.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Се извршува еднаш кога ќе пуштите: кренете го прстот од таблата или оставете ја палката да се врати во центарот додека е означена ќелија.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Поврзувањето се држи цело време додека ќелијата е означена. Не е потребен клик.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Колку ќелии има менито. Кај радијалниот прстен ова го брои само прстенот; централната ќелија е посебна.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Додава централна ќелија, избрана додека палката или прстот мируваат во мртвата зона за активирање.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>За палките, колку треба да се турне пред менито да се отвори и ќелиите на прстенот да се означат. Кај радијалните менија ова е и централното подрачје и за палките и за допирните табли: внатре во него се избира централната ќелија, ако постои.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Ја црта ознаката на секоја ќелија во оверлејот на екранот.</value></data>
@@ -3895,8 +3947,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Големина на оверлејот, во проценти од нормалната големина.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Непроѕирност на оверлејот. 100% е целосно непроѕирно.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Текст прикажан на оваа ќелија во оверлејот.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Што прави оваа ќелија кога се извршува: „Тастер на тастатура“ притиска тастер на тастатурата, „Копче на контролер“ притиска копче на виртуелниот контролер на овој слот. Ќелија поставена на „Ништо“ сепак се извршува како извор од ставка на мени за редовите во Мапирања и за активирањата на макроа.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Се чита од физичките контролери доделени на овој слот, а не од распоредот на виртуелниот контролер. Поврзувањата на ќелиите подолу се она што менито го дава на излез.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Што прави оваа ќелија кога се извршува: „Тастер на тастатура“ притиска тастер на тастатурата, „Копче на контролер“ притиска копче на виртуелниот контролер на овој слот. Ќелија поставена на „Ништо“ сепак се извршува како извор од ставка на мени за мапирањата и за активирањата на макроа.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Се чита од физичките контролери доделени на овој слот, а не од распоредот на виртуелниот контролер. Ќелиите подолу одредуваат што дава менито на излез.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Прилагодени оски</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Управување X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Управување Y</value></data>
@@ -3921,13 +3973,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас-шејкери</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Излез</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Копчиња</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Тастери и глушец</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноти и контроли</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Раце</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Палки и тригери</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Вибрации и хаптика</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Движење и допир</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Осветлување и аудио</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Макроа и менија</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Бас-шејкери</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ги пренасочува вибрациите и повратната сила од играта што ги прима овој виртуелен контролер кон аудиоизлез, како нискофреквентни тонови за бас-шејкери и субвуфери.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Ги пушта вибрациите од играта како ниски тонови преку бас-шејкери или субвуфер.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>излезен уред, режим на канали, засилување, тон за секој мотор</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Работи со виртуелните контролери Xbox, DualShock 3, DualShock 4 / DualSense и Nintendo Switch Pro, како и со проширени виртуелни контролери со повратна сила, како тркачки волани, и со Steam Deck Controller (Composite). Повратната реакција од играта и „Тестирај вибрации“ се пуштаат преку аудиоизлезот. Вибрациите од макроа остануваат на контролерот.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Ресетирај „Вибрации во звук“</value></data>
@@ -3956,19 +4011,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Го пушта овој канал на повратна реакција како тон. Засилувањето и фреквенцијата остануваат поставени додека е исклучен.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Фреквенција на тонот за овој канал, од 20 до 120 Hz. Пуштете го прелетот низ фреквенции за да откриете каде вашиот шејкер реагира најсилно.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Гласност на овој канал пред главното засилување.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Засилување</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Тест</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Го пушта тонот на овој канал 1.5 секунди со поставеното засилување.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Ресетирај го нискиот мотор</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Ресетирај го високиот мотор</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Ресетирај го левиот тригер</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Ресетирај го десниот тригер</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Проверка на шејкерите</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Прелет низ фреквенции</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Пушта тон што минува од 20 до 120 Hz за осум секунди на пренасочувањето на нискиот мотор. Забележете каде вашиот шејкер реагира најсилно и таму поставете ги фреквенциите на гласовите.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Запри</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Го запира тест-тонот или прелетот.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Која било NFC-ознака</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-ознака: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Филтрирај влезови (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Филтрирај излези и влезови</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Ги прикажува само редовите и влезовите што се совпаѓаат. Притиснете Ctrl+F за да пишувате тука.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Изберете од кои уреди влезовите ги нудат изборниците</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Прикажани во изборникот</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Која било гласовна фраза</value></data>
@@ -4077,6 +4135,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Ресетирај го нивото на мешање</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Параметарски EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Филтри по опсег врз звукот на контролерот. Се применуваат пред звукот да се кодира, па ограничувачот подолу спречува засилен опсег да се изобличи.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Претзасилување, опсези, увоз</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Претзасилување</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Вкупно ниво пред опсезите. Профилите на AutoEq доаѓаат со негативно претзасилување за нивните засилувања да не се изобличат, а увозот на таков профил го поставува ова за вас.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Вкл.</value></data>
@@ -4307,7 +4366,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Ресетирај на отворање при допир или отклон.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Управувај со</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Физичкиот влез што ја управува означената ќелија додека слојот го држи менито отворено.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Се чита од физичките контролери доделени на овој слот. Слојот го отвора менито; овој влез го управува. Поврзувањата на ќелиите го одредуваат неговиот излез.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Се чита од физичките контролери доделени на овој слот. Слојот го отвора менито, а овој влез го управува. Неговите ќелии одредуваат што дава на излез.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Големина на иконата</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Големина на иконата во однос на нормалната големина на иконите во менито, од 25% до 200%. Бришењето на иконата ја ресетира на 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Го држи поврзувањето на означената ќелија додека се држи „Влез за клик“. Означениот радијален центар може да се изврши додека палката мирува.</value></data>
@@ -4432,7 +4491,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Референца од Antoine Aflalo за распоредот на недокументираниот интерфејс IPolicyConfig на Windows, кој PadForge го користи за повторно овозможување на аудиокрајната точка на контролерот. MIT. Само документација, не се испорачува код.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Форматот на профилите на параметарскиот EQ што го увезува картичката Аудио, од Jaakko Pasanen. MIT. Само документација, не се испорачува код.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Форматот на профилите на параметарскиот EQ што го увезува „Параметарски EQ“ на контролерот, од Jaakko Pasanen. MIT. Само документација, не се испорачува код.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Техниките со SendInput зад макроата „Блок текст“ и куката за акорди на тастатурата: пишување Unicode, ограничувања на пакетите, тастерот за маскирање на тастерот Win и означен вметнат влез. GPL-2.0-or-later, прочитано само како документација, не се испорачува GPL-код.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4672,6 +4731,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Насока</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Чекор</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>до</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Рачка</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ги поставува тригерите на овој контролер.</value></data>
@@ -4716,7 +4776,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Рачката не помина доволно далеку, па досегот останува како што беше. Поместете ја до секој раб додека трае мерењето.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon се затвори пред да заврши мерењето.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Играјте игри со Novint Falcon преку SDK на Force Dimension, што го инсталирате од Force Dimension. Рачката е палка, четирите копчиња на рачката се копчиња, а PadForge ги става вибрациите и ефектите од играта на рачката како сила. Табот „Повратна сила“ на секој слот поставува како се чувствува Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Играјте игри со Novint Falcon преку SDK на Force Dimension, што го инсталирате од Force Dimension. Рачката е палка, четирите копчиња на рачката се копчиња, а PadForge ги става вибрациите и ефектите од играта на рачката како сила. Картичката „Novint Falcon“ во делот „Вибрации и хаптика“ на секој контролер поставува како се чувствува Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Управувај со Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Го отвора секој Falcon преку dhd64.dll на Force Dimension. Отворен Falcon му припаѓа само на PadForge, па FalconJoyForce и алатките на Force Dimension не можат да го отворат додека ова е вклучено. Кога е исклучено, PadForge го затвора секој Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Библиотеката за Falcon е поставена на {0}. PadForge ја вчитува за неколку секунди, а Falcon отворен на друга копија се отвора повторно на оваа.</value></data>
@@ -4929,7 +4989,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Одредено време</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Додека не се запре</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Време</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Се пушта на секој DualSense и DualSense Edge на овој слот. Сопствениот ефект на тригер на играта и оној на мод за игра имаат предност, а поставката од јазичето Адаптивни тригери се враќа кога ефектот ќе заврши. Зоните одат од 0 при мирување до 9 при полно влечење. Лак, Галоп и Машина не се официјални ефекти на DualSense, а ажурирање на фирмверот може да ги отстрани. Контролерите Xbox со вклучено „Преведувај ги вибрациите на адаптивните тригери“ ги чувствуваат вибрирачките ефекти како вибрации на тригерот.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Се пушта на секој DualSense и DualSense Edge на овој слот. Сопствениот ефект на тригер на играта и оној на мод за игра имаат предност, а поставката од картичката „Адаптивни тригери“ се враќа кога ефектот ќе заврши. Зоните одат од 0 при мирување до 9 при полно влечење. Лак, Галоп и Машина не се официјални ефекти на DualSense, а ажурирање на фирмверот може да ги отстрани. Контролерите Xbox со вклучено „Преведувај ги вибрациите на адаптивните тригери“ ги чувствуваат вибрирачките ефекти како вибрации на тригерот.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} на {1} за {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} на {1} додека се држи</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} на {1} додека не се запре</value></data>
@@ -4958,7 +5018,7 @@
   <data name="MacroAction_KeyColors_HoldCleared" xml:space="preserve"><value>Додека не се отстрани</value></data>
   <data name="MacroAction_KeyColors_Duration" xml:space="preserve"><value>Време</value></data>
   <data name="MacroAction_KeyColors_RestKeep" xml:space="preserve"><value>Задржи ги нивните бои</value></data>
-  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Дејствието ги осветлува истите копчиња на секоја тастатура што ја осветлува овој виртуелен контролер, врз боите што им ги дава јазичето Осветлување. Броевите го покажуваат редоследот на избирање. Одбројувањето ги гаси копчињата едно по едно, почнувајќи од последното избрано, па изберете 1 до 0 за одбројување на редот со бројки. Тастатурата или глушецот светат само додека е вклучено Управувај со осветлувањето на овој уред.</value></data>
+  <data name="MacroAction_SetKeyColors_Hint" xml:space="preserve"><value>Дејствието ги осветлува истите копчиња на секоја тастатура што ја осветлува овој виртуелен контролер, врз боите што им ги поставува во делот „Осветлување и аудио“. Броевите го покажуваат редоследот на избирање. Одбројувањето ги гаси копчињата едно по едно, почнувајќи од последното избрано, па изберете 1 до 0 за одбројување на редот со бројки. Тастатурата или глушецот светат само додека е вклучено Управувај со осветлувањето на овој уред.</value></data>
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>Друго</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}, број {1}</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>Оверлеј на екранот</value></data>
@@ -5018,7 +5078,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на активирање на аналогните тастери не се пренесоа.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD го испраќаше овој контролер до друг уред преку адаптер. PadForge го пушта на овој компјутер, а Далечинска врска го испраќа до друг компјутер на кој работи PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чита два стика, а овде се именува трет.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацијата на воланот не се пренесе. Мапирајте го воланот во табот Мапирања.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацијата на воланот не се пренесе. Мапирајте го воланот во делот „Копчиња“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Овој профил именува посебна акција што недостасува во Actions.xml покрај неговата папка Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Оваа поставка не се пренесе: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD спречуваше овие влезови да стигнат до Windows. Вклучете Блокирај мапирани влезови за {0} на страницата Уреди, што ги запира оние што овој профил ги мапира.</value></data>
@@ -5026,8 +5086,8 @@
   <data name="Import_Tr_RadialMenu" xml:space="preserve"><value>Потврдува кога стикот ќе се врати во центар или кога слојот ќе заврши. Копчето Примени на reWASD не се користи.</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Оваа датотека одржува два контролера одделно. Во PadForge, секој контролер на слотот ги активира овие мапирања.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Брзината на движење или нагло движење не се пренесоа.</value></data>
-  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Овие не се пренесоа. Поставете ги во табот Допирна табла.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништо во оваа датотека не го отвора овој слој. Дајте му копче во табот Мапирања.</value></data>
+  <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Овие не се пренесоа. Поставете ги во делот „Движење и допир“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништо во оваа датотека не го отвора овој слој. Во делот „Копчиња“ кликнете со десното копче на слојот и изберете „Конфигурирај активатор“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Неговите копчиња ги извршуваат овие при притискање: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Кратенка за профил</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Го прави она што го прави кратенката за профил: вчитува именуван профил, следниот или претходниот, го прикажува или скрива прозорецот или ги исклучува и вклучува виртуелните контролери.</value></data>
@@ -5197,7 +5257,7 @@
   <data name="Menu_Fire_ClickRelease_Hotbar_Desc" xml:space="preserve"><value>Избраната ќелија се активира еднаш, како краток допир, кога ќе се пушти „Активирај“. Кога е вклучено „Скриј по активирање“, се активира штом „Активирај“ ја скрие лентата.</value></data>
   <data name="Menu_Fire_TouchRelease_Hotbar_Desc" xml:space="preserve"><value>Ќелија се активира еднаш, како краток допир, кога „Активирај“ ја скрива лентата при вклучено „Скриј по активирање“. Кога е вклучено „Центрирај повторно секој пат“, се активира средната ќелија.</value></data>
   <data name="Menu_Fire_Always_Hotbar_Desc" xml:space="preserve"><value>Избраната ќелија се држи цело време додека лентата е прикажана. Чекорењето ја пушта една ќелија и ја држи следната.</value></data>
-  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радијален прстен“, „Мрежа на допир“ и „Лента со дејства“ ги активираат врзувањата на ќелиите. „Тастатура“ ги пишува тастерите на распоредот на Windows што се користи.</value></data>
+  <data name="Menu_Style_Caption" xml:space="preserve"><value>„Радијален прстен“, „Мрежа на допир“ и „Лента со дејства“ ги активираат дејствата на своите ќелии. „Тастатура“ ги пишува тастерите на распоредот на Windows што се користи.</value></data>
   <data name="Menu_KeyboardLayout" xml:space="preserve"><value>Распоред</value></data>
   <data name="Menu_KeyboardLayout_Tip" xml:space="preserve"><value>Како тастатурата ги распоредува тастерите и како контролерот ги избира.</value></data>
   <data name="Menu_KeyboardLayout_Grid_Desc" xml:space="preserve"><value>Едно означување, движено со палка или четири влеза, распоредот што го користат Windows, Xbox и Steam.</value></data>
@@ -5304,11 +5364,11 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Копчиња на преносен уред на PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Светла на тастерите на PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Мапирање во табот Мапирања може.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Мапирање во делот „Копчиња“ може.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge извршува осум оверлеи на екранот, а ова е деветти или десетти нишан на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чита Жироскоп: навалување како лево и десно, а Жироскоп: вртење како навалување, што е стандардно кај reWASD. Поставките на reWASD можат да ги заменат двете, а оваа датотека не кажува дали биле заменети.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Во режимот Наклон, навалувањето на reWASD е вртење околу вертикалната оска, а сензорот за движење не дава агол за тоа вртење.</value></data>
-  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge ја чита дијагоналата на допирната табла како две насоки истовремено, што таблата го пријавува само кога Режим на D-pad во нејзиниот таб Допирна табла е 8 насоки.</value></data>
+  <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge ја чита дијагоналата на допирната табла како две насоки истовремено, што таблата го пријавува само кога нејзиниот „Режим на D-pad“ во делот „Движење и допир“ е „8 насоки“.</value></data>
   <data name="Import_Tr_GyroZone" xml:space="preserve"><value>PadForge ја чита насоката на жироскопот над еден праг, а reWASD не дава единица за работ на зоната на жироскопот.</value></data>
   <data name="Import_Tr_AbsoluteMouse" xml:space="preserve"><value>DS4Windows го поставуваше покажувачот таму каде што покажува стикот. Во PadForge стикот го движи покажувачот.</value></data>
   <data name="Import_Tr_StickBeforeRotation" xml:space="preserve"><value>{0} го чита стикот пред неговото ротирање. DS4Windows го читаше потоа.</value></data>

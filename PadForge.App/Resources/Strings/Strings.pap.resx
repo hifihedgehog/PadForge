@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Kopia</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Pega</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Dupliká</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Kambia nòmber</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Aktivá</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desaktivá</value></data>
   <data name="Common_On" xml:space="preserve"><value>Sendí</value></data>
@@ -273,11 +274,38 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparato</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input di</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Agregá aparato</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imágen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} salida</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Movementu</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klek riba un kontrol, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klek riba un tekla òf un botòn di mouse, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klek riba un nota òf un slider, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>E botòn Asigná tur ta salta e salidanan di toke di A i B. Klek riba e sírkulo rònt di A òf B pa asigná un di nan.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ta warda {0}. Primi e botòn/eje riba bo aparato.</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selektá un makro na banda robes, òf primi Agregá pa krea un.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input di</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas opshon</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ménos opshon</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Botòn dilanti</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Botòn di skouder</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Botòn di sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Botòn</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad di direkshon</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor di movementu</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tekla di teklado</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Botòn di mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Movementu di mouse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rueda di scroll</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Kambio di kontrol</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor di toke</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Halamentu análogo</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, man robes</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, man drechi</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selektá un makro den e lista, òf primi + banda di Makro pa krea un.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server di movementu</value></data>
@@ -706,6 +734,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Salida MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kanal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Kantidat di CC</value></data>
   <data name="Pad_MidiStartCC" xml:space="preserve"><value>CC inisial</value></data>
@@ -760,6 +789,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpia tur</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Fuente</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Balor</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opshonnan</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morto di eje pa botòn</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invertí</value></data>
@@ -779,7 +809,7 @@
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Larga</value></data>
   <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Sekònde pa bolbe na sentro despues ku bo larga. 0 = mesora.</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Ora e ta marká, e eje ta bolbe na sentro ora bo larga. Ora e no ta marká, e ta keda den su último posishon.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Agregá fuente</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Agregá fuente</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Agregá otro entrada físiko na e fila aki</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Kita e fuente aki</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -844,6 +874,7 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Personalisá</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrá sentro</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto sentral</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Sentro</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morto</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Desplasamentu di sentro, forma di zona morto i balor pa kada eje, un kurva pa kada eje, rango, stür</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rango</value></data>
@@ -858,7 +889,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nòmber</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Aktivadó</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Ora</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Ora bo primi</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Ora bo larga</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Miéntras bo tene primí</value></data>
@@ -880,7 +911,8 @@
   <data name="Macro_Layer" xml:space="preserve"><value>Kapa</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Kualke kapa</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Ta kore kontinuamente miéntras e kontrol virtual aki ta aktivo. No ta nesesario un botòn aktivadó.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Sekuensia di akshon</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Hasi</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Kapa, Fuente, Límite, Direkshon, Konsumí botonnan aktivadó, Ripití</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Agregá akshon</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipo</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botònnan virtual</value></data>
@@ -942,11 +974,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Botòn {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Primi {0} pa {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Primi {0} pa {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Larga {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Teklanan {0} pa {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Teklanan {0} pa {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Larga teklanan {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Warda {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Warda {0} ms</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volúmen di sistema ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Volúmen di sistema ← {0} (máksimo {1}%)</value></data>
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>Volúmen di aplikashon ← {0}</value></data>
@@ -1206,7 +1238,8 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrashon</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidat</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidat, Espasio, invertí eje, Kalibrashon di mundu real</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidat, invertí eje, Kalibrashon di mundu real</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa rotashon</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espasio</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invertí pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invertí yaw (X)</value></data>
@@ -1359,11 +1392,13 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eje di trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fortalesa pa kada motor, vibrashon di trigger, kambio di motor</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fortalesa pa motor, vibrashon di trigger, Vibrashon di stür, Forsa konstante</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor robes</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor drechi</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Purba vibrashon</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktividat di motor</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Robes</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Drechi</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliká forsa konstante</value></data>
@@ -1577,7 +1612,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Nivel</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonde (0 = nunka)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Kapa di Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Agregá kapa</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Agregá un kapa shift: un di dos tabla di asignashon ku ta aktivá miéntras bo ta tene un botòn primí òf ora bo aktivá e botòn.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kapa shift</value></data>
@@ -2041,6 +2076,7 @@
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nòmber di menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktivá</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Habrimentu</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Estilo</value></data>
   <data name="Menu_HostInput" xml:space="preserve"><value>Ta habri ku</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Stick robes</value></data>
@@ -2048,7 +2084,6 @@
   <data name="Menu_Half_Left" xml:space="preserve"><value>Mitar robes</value></data>
   <data name="Menu_Half_Right" xml:space="preserve"><value>Mitar drechi</value></data>
   <data name="Menu_Fire_Click" xml:space="preserve"><value>Na klek</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Posishon riba pantaya</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Tamaño</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Sentro</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ningun</value></data>
@@ -2072,6 +2107,7 @@
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Reset motor di frekuensia abou</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Reset trigger robes</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Reset trigger drechi</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Purba e shakernan</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stòp</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Kualke frase di stem</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Frase di stem: {0}</value></data>
@@ -2318,6 +2354,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direkshon</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Paso</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>te</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ta kambia e triggernan di e kontrol aki.</value></data>
   <data name="Devices_GameModLights_Format" xml:space="preserve"><value>{0} ta kambia e lusnan di e kontrol aki.</value></data>
@@ -2515,6 +2552,9 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pòrtnan, velosidat máksimo, formatonan personalisá</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Usa e</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Boton</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tekla i mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota i kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mannan</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick i trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrashon i háptika</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Movementu i toke</value></data>
@@ -2526,10 +2566,27 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrashon di trigger for di e bas den audio di sistema</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morto di inklinashon, Orientashon di kontrol</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morto, suavisashon, Akselerashon, Kurva di output</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Marko di referensia</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Hugadó òf Mundu</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Botòn pa aktivá apuntamentu, Modo di aktivashon, Límite di Easy Aim</value></data>
   <data name="Pad_TouchpadStick_FoldHint" xml:space="preserve"><value>Usa e touchpad komo stick òf D-pad</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Swipe, toke, pinch, forma</value></data>
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Graba bo mes gestonan</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fortalesa pa kada trigger, kambio di motor, vibrashon di trigger adaptivo</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fortalesa pa trigger, kambio di motor, vibrashon di trigger adaptivo, Forsa konstante</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertí, Momento, Respuesta, Akselerashon, lansamentu</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu nobo</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Agregá selda</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kita e último selda</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Editá selda</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nòmber</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Akshon</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikono</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>E aparato aki</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Henter e kontrol</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instalá</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR no instalá</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ta kore</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR ta kore, driver konektá</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Limpia aktivadó</value></data>
 </root>

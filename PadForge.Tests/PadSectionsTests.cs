@@ -396,14 +396,11 @@ namespace PadForge.Tests
                     }
                     // A group is a panel under its heading, or a group box
                     // that carries the group's name where its board draws no
-                    // heading over the cards. Rumble & Haptics is all group
-                    // boxes, and so are the sticks, the triggers and the
-                    // groups of Motion & Touch and of Lights & Sound.
-                    Assert.All(column.Elements(), g => Assert.Contains(g.Name.LocalName, new[] { "StackPanel", "GroupBox" }));
-                    if (section == PadViewModel.RumbleSection || section == PadViewModel.MotionSection || section == PadViewModel.LightsSection)
-                        Assert.All(column.Elements(), g => Assert.Equal("GroupBox", g.Name.LocalName));
-                    if (section == PadViewModel.SticksSection)
-                        Assert.Equal(new[] { "GroupBox", "GroupBox", "StackPanel" }, column.Elements().Select(g => g.Name.LocalName));
+                    // heading over the cards. Every stacked section is all
+                    // group boxes: the sticks, the triggers and Mouse
+                    // Gestures (#574), Rumble & Haptics, and the groups of
+                    // Motion & Touch and of Lights & Sound.
+                    Assert.All(column.Elements(), g => Assert.Equal("GroupBox", g.Name.LocalName));
                     Assert.Equal(expected, column.Elements().Select(Name));
                 }
                 else
@@ -426,7 +423,8 @@ namespace PadForge.Tests
                         // that stand side by side while the editor has 480
                         // to itself: the lists from 250 to 320 wide, then
                         // the editor with what is left. The editor's card
-                        // holds the tab control.
+                        // holds the tab control, and under it in its column
+                        // stands the Icon Packages line.
                         Assert.Equal("ScrollViewer", content.Name.LocalName);
                         Assert.Equal("MacrosSectionScroll", Name(content));
                         Assert.Equal("{Binding " + sectionKeys[section] + ", Source={x:Static strings:Strings.Instance}}",
@@ -439,16 +437,19 @@ namespace PadForge.Tests
                         Assert.Equal("FlexLinePanel", cards.Name.LocalName);
                         Assert.Equal("16", (string)cards.Attribute("Gap"));
                         Assert.Equal("16", (string)cards.Attribute("LineGap"));
-                        Assert.Equal(new[] { "MacrosListCard", "MacrosEditorCard" }, cards.Elements().Select(Name));
+                        Assert.Equal(new[] { "MacrosListCard", "MacrosEditorColumn" }, cards.Elements().Select(Name));
                         var lists = Named(page, "MacrosListCard");
+                        var editorColumn = Named(page, "MacrosEditorColumn");
                         var editor = Named(page, "MacrosEditorCard");
                         string Flex(XElement e, string property)
                             => (string)e.Attributes().First(a => a.Name.LocalName == "FlexLinePanel." + property);
                         Assert.Equal("250", Flex(lists, "Basis"));
                         Assert.Equal("250", (string)lists.Attribute("MinWidth"));
                         Assert.Equal("320", (string)lists.Attribute("MaxWidth"));
-                        Assert.Equal("480", Flex(editor, "Basis"));
-                        Assert.Equal("999", Flex(editor, "Grow"));
+                        Assert.Equal("480", Flex(editorColumn, "Basis"));
+                        Assert.Equal("999", Flex(editorColumn, "Grow"));
+                        Assert.Equal("Top", (string)editorColumn.Attribute("VerticalAlignment"));
+                        Assert.Equal(new[] { "MacrosEditorCard", "IconPackagesBlock" }, editorColumn.Elements().Select(Name));
                         inner = Assert.Single(editor.Elements());
                         Assert.Equal("ContentTabControl", inner.Name.LocalName);
                         Assert.Same(inner, Assert.Single(content.Descendants(), e => e.Name.LocalName == "ContentTabControl"));
@@ -491,8 +492,8 @@ namespace PadForge.Tests
             var head = Named(page, "ButtonsCardHead");
             Assert.Same(buttonsRoot, head.Parent);
             Assert.Same(head, Named(page, "ButtonsTopRow").Parent);
-            Assert.Equal("{Binding Pad_Section_Buttons, Source={x:Static strings:Strings.Instance}}",
-                (string)scroll.Attribute("AutomationProperties.Name"));
+            // The first section is named for what the slot's picture holds.
+            Assert.Equal("{Binding FirstSectionName, TargetNullValue=''}", (string)scroll.Attribute("AutomationProperties.Name"));
             var buttonsPage = Assert.Single(scroll.Elements());
             Assert.Equal("ButtonsPage", Name(buttonsPage));
             var picture = Assert.Single(buttonsPage.Elements(), e => e.Name.LocalName == "ContentTabControl");
@@ -694,8 +695,11 @@ namespace PadForge.Tests
             // The page's own sync of the checks is not such a check.
             Assert.Matches(@"_syncingStrip = true;\s*try\s*\{\s*int section = vm\.SelectedSection;", code);
             Assert.All(buttons, b => Assert.Equal("{StaticResource SectionStripButton}", (string)b.Attribute("Style")));
-            Assert.Equal(new[] { "Buttons", "Sticks", "Rumble", "Motion", "Lights", "Macros" }
-                    .Select(k => "{Binding Pad_Section_" + k + ", Source={x:Static strings:Strings.Instance}}"),
+            // The first section is named for what the slot's picture holds
+            // (Buttons, Keys & Mouse, Notes & Controls, Hands), the rest by
+            // their own strings.
+            Assert.Equal(new[] { "{Binding FirstSectionName}" }.Concat(new[] { "Sticks", "Rumble", "Motion", "Lights", "Macros" }
+                    .Select(k => "{Binding Pad_Section_" + k + ", Source={x:Static strings:Strings.Instance}}")),
                 buttons.Select(b => (string)Assert.Single(b.Elements()).Attribute("Text")));
 
             // The strip is in the header, above the content.
@@ -777,11 +781,14 @@ namespace PadForge.Tests
                     && (string)e.Attribute("Property") == "AutomationProperties.Name").Attribute("Value"));
             Assert.Same(pills, Assert.Single(page.Descendants(),
                 e => (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}"));
-            // A pill shows what the device's line on the Home card shows:
-            // its kind's glyph, its name, its Bluetooth mark and its battery.
-            Assert.Equal(new[] { "{Binding TypeGlyph}", "{Binding Name}", "{Binding TransportGlyph}", "{Binding BatteryText}" },
-                Assert.Single(pills.Descendants(), e => e.Name.LocalName == "DataTemplate")
-                    .Descendants().Select(e => (string)e.Attribute("Text")).Where(t => t != null));
+            // A pill shows its name, its link written out where it is
+            // Bluetooth, and its battery, as the board draws it: no glyph.
+            var pill = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "DataTemplate");
+            Assert.Equal(new[] { "{Binding Name}", "{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}", "{Binding BatteryText}" },
+                pill.Descendants().Select(e => (string)e.Attribute("Text")).Where(t => t != null));
+            Assert.DoesNotContain(pill.Descendants(), e => e.Name.LocalName == "GlyphText");
+            Assert.Equal("{Binding HasTransportGlyph, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)pill.Descendants().Single(e => (string)e.Attribute("Text") == "{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}").Attribute("Visibility"));
             var add = Named(page, "AddDeviceButton");
             Assert.Equal("Pad_AddDevice", Id(add));
             Assert.Equal("AddDevice_Click", (string)add.Attribute("Click"));
@@ -817,6 +824,96 @@ namespace PadForge.Tests
             Assert.Contains("(vm.PadIndex, !PadForge.Common.Input.SettingsManager.SlotEnabled[vm.PadIndex]));", code);
         }
 
+        /// <summary>The Rumble board's words and units (#574): the motor
+        /// meters are Left and Right, an adaptive trigger's range and
+        /// strength read in percent with their unit while their settings
+        /// keep 0 to 255, and the Falcon card's paragraph is its title's
+        /// tooltip, as Mouse Gestures' is.</summary>
+        [Fact]
+        public void TheRumbleCardsReadAsTheBoardDoes()
+        {
+            var page = Page();
+            const string s = ", Source={x:Static strings:Strings.Instance}}";
+            var activity = Named(page, "TabForceFeedback").Descendants().Where(e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("Grid.Column") is "0" or "2"
+                && ((string)e.Attribute("Text") ?? "").StartsWith("{Binding Pad_MotorActivity_", StringComparison.Ordinal)).ToList();
+            Assert.Equal(new[] { "{Binding Pad_MotorActivity_Left" + s, "{Binding Pad_MotorActivity_Right" + s }, activity.Select(e => (string)e.Attribute("Text")));
+            Assert.Equal("Left", PadForge.Resources.Strings.Strings.Instance.Pad_MotorActivity_Left);
+            Assert.Equal("Right", PadForge.Resources.Strings.Strings.Instance.Pad_MotorActivity_Right);
+
+            var triggers = Named(page, "TabAdaptiveTriggers");
+            foreach (string side in new[] { "Left", "Right" })
+            {
+                var range = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "RangeSlider"
+                    && (string)e.Attribute("LowerValue") == "{Binding DeviceConfig." + side + "StartPosition, Mode=TwoWay, Converter={StaticResource BytePercentConverter}}");
+                Assert.Equal("{Binding DeviceConfig." + side + "EndPosition, Mode=TwoWay, Converter={StaticResource BytePercentConverter}}", (string)range.Attribute("UpperValue"));
+                Assert.Equal("100", (string)range.Attribute("Maximum"));
+                var row = range.Parent.Elements().ToList();
+                Assert.Equal("%", (string)row[row.IndexOf(range) + 4].Attribute("Text"));
+                var strength = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "Slider"
+                    && (string)e.Attribute("Value") == "{Binding DeviceConfig." + side + "Strength, Mode=TwoWay, Converter={StaticResource BytePercentConverter}}");
+                Assert.Equal("100", (string)strength.Attribute("Maximum"));
+                Assert.Equal("{Binding DeviceConfig." + side + "Strength, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource BytePercentConverter}}",
+                    (string)strength.ElementsAfterSelf().First().Attribute("Text"));
+                Assert.Equal("%", (string)strength.ElementsAfterSelf().ElementAt(1).Attribute("Text"));
+            }
+            Assert.Contains("<conv:BytePercentConverter x:Key=\"BytePercentConverter\" />", ExtrasPageTests.RepoText("PadForge.App", "App.xaml"));
+
+            var falcon = Named(page, "FalconCard");
+            var title = Assert.Single(falcon.Descendants(), e => (string)e.Attribute("Text") == "{Binding Pad_Falcon_Header" + s);
+            Assert.Equal("{Binding Pad_Falcon_Description" + s, (string)title.Attribute("ToolTip"));
+            Assert.Single(page.Descendants(), e => ((string)e.Attribute("Text") ?? "").Contains("Pad_Falcon_Description", StringComparison.Ordinal)
+                || ((string)e.Attribute("ToolTip") ?? "").Contains("Pad_Falcon_Description", StringComparison.Ordinal));
+            var gestures = Named(page, "TabMouse");
+            Assert.Equal("GroupBox", gestures.Name.LocalName);
+            var gesturesTitle = Assert.Single(gestures.Descendants(), e => (string)e.Attribute("Text") == "{Binding Pad_MouseGestures_Header" + s);
+            Assert.Equal("{Binding Pad_MouseGestures_Desc" + s, (string)gesturesTitle.Attribute("ToolTip"));
+            var buttons = Assert.Single(gestures.Descendants(), e => (string)e.Attribute("Text") == "{Binding Pad_MouseGestures_Button" + s).Parent;
+            Assert.Equal("SettingRow", buttons.Name.LocalName);
+            Assert.Equal("{StaticResource DzLabel}", (string)buttons.Elements().First().Attribute("Style"));
+            Assert.Contains(buttons.Elements(), e => e.Name.LocalName == "WrapPanel"
+                && e.Attributes().Any(a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True"));
+        }
+
+        /// <summary>The pickers of Motion & Touch and of Lights & Sound are
+        /// as wide as their choices, as the boards draw a select (#574): a
+        /// least width of 120, at the left of the room their row gives
+        /// them. Each keeps its cap and still fills, so a narrow row narrows
+        /// it before its reset. The gyro's readings of degrees per turn are
+        /// rows under Sensitivity's More, and Sound Macros is a line that
+        /// folds, the first of the list Sound Packages is in.</summary>
+        [Fact]
+        public void MotionAndLightsAreAsTheirBoardsDrawThem()
+        {
+            var page = Page();
+            string text = PageText();
+            int motion = text.IndexOf("<ScrollViewer x:Name=\"MotionSectionScroll\"", StringComparison.Ordinal);
+            int macros = text.IndexOf("SECTION 5: Macros & Menus", StringComparison.Ordinal);
+            var pickers = System.Text.RegularExpressions.Regex.Matches(text.Substring(motion, macros - motion),
+                    "<(?:ComboBox|ui:NumberBox)\\b(?:[^<>\"]|\"[^\"]*\")*>")
+                .Select(m => m.Value).Where(t => t.Contains("controls:SettingRow.Fills=\"True\"", StringComparison.Ordinal)).ToList();
+            Assert.Equal(30, pickers.Count);
+            Assert.All(pickers, t => Assert.Contains("MinWidth=\"120\" HorizontalAlignment=\"Left\" MaxWidth=", t));
+
+            var more = Named(page, "GyroSensitivityMore");
+            var turns = more.Descendants().Where(e => e.Name.LocalName == "Binding" && ((string)e.Attribute("Path") ?? "").EndsWith("_DegPerTurn", StringComparison.Ordinal)).ToList();
+            Assert.Equal(new[] { "GyroSensitivityH_DegPerTurn", "GyroSensitivityV_DegPerTurn" }, turns.Select(b => (string)b.Attribute("Path")));
+            Assert.DoesNotContain("°/turn", text);
+            Assert.Equal("\u2248 {0}\u00b0 per turn", PadForge.Resources.Strings.Strings.Instance.Pad_Gyro_DegPerTurn_Format);
+            var vm = new PadViewModel(0) { GyroSensitivityH = 3 };
+            Assert.Equal(120, vm.GyroSensitivityH_DegPerTurn);
+            vm.GyroSensitivityH = 0.7;
+            Assert.Equal(514, vm.GyroSensitivityH_DegPerTurn);
+
+            var macrosLine = Named(page, "SoundMacrosFoldCard");
+            Assert.Equal("Pad.Sound.Macros", (string)macrosLine.Attribute("StateKey"));
+            Assert.Equal("{Binding SoundMacros.Count}", (string)macrosLine.Attribute("Summary"));
+            Assert.Same(Named(page, "SoundPackagesFoldCard").Parent, macrosLine.Parent);
+            Assert.Same(macrosLine, Named(page, "SoundPackagesFoldCard").ElementsBeforeSelf().Last());
+            Assert.Contains(macrosLine.Descendants(), e => (string)e.Attribute("Command") == "{Binding AddSoundMacroCommand}");
+            Assert.Contains(macrosLine.Descendants(), e => (string)e.Attribute("ItemsSource") == "{Binding SoundMacros}");
+            Assert.DoesNotContain("Sound Macros hub card", text);
+        }
+
         /// <summary>A VR slot's header says SteamVR's state after the
         /// slot's name, in the words the Settings row has for it. The state
         /// is the settings view model's, which the window hands the page as
@@ -825,7 +922,6 @@ namespace PadForge.Tests
         [Fact]
         public void AVrSlotsHeaderSaysSteamVrsState()
         {
-            const string s = ", Source={x:Static strings:Strings.Instance}}";
             var page = Page();
             var state = Named(page, "SteamVrState");
             // After the title, on the line another slot's Preset is on.
@@ -839,17 +935,31 @@ namespace PadForge.Tests
             var host = Assert.Single(state.Elements());
             Assert.Equal("SteamVrStateHost", Name(host));
             Assert.Equal("{x:Null}", (string)host.Attribute("DataContext"));
-            var words = host.Elements().ToList();
-            Assert.Equal(new[] { "{Binding Settings_SteamVR" + s, "{Binding SteamVrStatusText}" },
-                words.Select(e => (string)e.Attribute("Text")));
-            Assert.All(words, w =>
-            {
-                Assert.Equal("13", (string)w.Attribute("FontSize"));
-                Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)w.Attribute("Foreground"));
-            });
+            // One line in the VR board's words, "SteamVR installed".
+            var words = Assert.Single(host.Elements());
+            Assert.Equal("{Binding SteamVrSentence}", (string)words.Attribute("Text"));
+            Assert.Equal("13", (string)words.Attribute("FontSize"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)words.Attribute("Foreground"));
             // A screen reader hears the state change, as on the Settings row.
-            Assert.Equal("Pad_SteamVrState", Id(words[1]));
-            Assert.Equal("True", words[1].Attributes().Single(a => a.Name.LocalName == "LiveText.Polite").Value);
+            Assert.Equal("Pad_SteamVrState", Id(words));
+            Assert.Equal("True", words.Attributes().Single(a => a.Name.LocalName == "LiveText.Polite").Value);
+            var strings = PadForge.Resources.Strings.Strings.Instance;
+            var settings = new SettingsViewModel();
+            Assert.Equal(strings.Pad_SteamVr_NotInstalled, settings.SteamVrSentence);
+            Assert.Equal(strings.Common_NotInstalled, settings.SteamVrStatusText);
+            var told = new List<string>();
+            settings.PropertyChanged += (o, e) => told.Add(e.PropertyName);
+            settings.IsSteamVrInstalled = true;
+            Assert.Contains(nameof(SettingsViewModel.SteamVrSentence), told);
+            Assert.StartsWith("SteamVR ", settings.SteamVrSentence);
+            Assert.Equal("SteamVR installed", strings.Pad_SteamVr_Installed);
+            Assert.Equal("SteamVR not installed", strings.Pad_SteamVr_NotInstalled);
+            Assert.Equal("SteamVR running", strings.Pad_SteamVr_Running);
+            Assert.Equal("SteamVR running, driver connected", strings.Pad_SteamVr_DriverConnected);
+            Assert.Equal("SteamVR running, controllers live", strings.Pad_SteamVr_ControllersLive);
+            told.Clear();
+            settings.RefreshSteamVrStatus();
+            Assert.Contains(nameof(SettingsViewModel.SteamVrSentence), told);
 
             // Only a VR slot shows it, and a change of type says so.
             var vm = new PadViewModel(0);
@@ -1087,6 +1197,12 @@ namespace PadForge.Tests
                 Assert.Null(c.Attribute("Width"));
                 if (c.Attribute("MaxWidth") != null)
                     Assert.Contains(c.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
+                // The cap is the room the row gives a picker, so a cap under
+                // its least width would cut its chevron off.
+                if (c.Attribute("MaxWidth") != null && c.Attribute("MinWidth") != null)
+                    Assert.True(double.Parse((string)c.Attribute("MaxWidth"), System.Globalization.CultureInfo.InvariantCulture)
+                        >= double.Parse((string)c.Attribute("MinWidth"), System.Globalization.CultureInfo.InvariantCulture),
+                        (string)c.Attribute("MaxWidth") + " under " + (string)c.Attribute("MinWidth"));
             });
 
             // A card's title row holds its title and its Reset All, and no
@@ -1168,9 +1284,12 @@ namespace PadForge.Tests
             Assert.Equal("154", Setter(Style("DzSubLabel"), "Width"));
             Assert.Null(Setter(Style("DzSlider"), "MaxWidth"));
             Assert.Equal("0,0,0,12", Setter(Style("CardBorder"), "Margin"));
+            // Three lists: the lighting's lines, the audio chain's under Sound
+            // Output, and Sound Packages.
             var lists = scroll.Descendants().Where(e => e.Name.LocalName == "FoldList").ToList();
-            Assert.Equal(2, lists.Count);
+            Assert.Equal(3, lists.Count);
             Assert.All(lists, l => Assert.Equal("12", (string)l.Attribute("Gap")));
+            Assert.Equal("AudioChainList", Name(lists[1]));
 
             // The rows. A color's three and the table's cell stand apart.
             var all = scroll.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
@@ -1209,22 +1328,29 @@ namespace PadForge.Tests
             Assert.All(pickers, c =>
             {
                 Assert.Null(c.Attribute("Width"));
-                Assert.Null(c.Attribute("MinWidth"));
-                Assert.NotNull(c.Attribute("MaxWidth"));
+                // As wide as its choices, as the board draws a select (#574):
+                // a least width of 120 at the left of its room, which a
+                // narrow row still narrows under its cap.
+                Assert.Equal("120", (string)c.Attribute("MinWidth"));
+                Assert.Equal("Left", (string)c.Attribute("HorizontalAlignment"));
+                // The cap is the room the row gives it, so a cap under the
+                // least width would cut the picker's chevron off.
+                Assert.True(double.Parse((string)c.Attribute("MaxWidth"), System.Globalization.CultureInfo.InvariantCulture) >= 120,
+                    (string)c.Attribute("MaxWidth"));
                 Assert.Contains(c.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
             });
 
             // A card's title row: the title and its Reset All, no icon. A
-            // card's paragraph is its title's tooltip.
+            // card's paragraph is its title's tooltip. Sound Macros is a
+            // line that folds (#574), so it has no card title of its own.
             var titles = scroll.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource CardTitle}").ToList();
-            Assert.Equal(5, titles.Count);
+            Assert.Equal(4, titles.Count);
             Assert.All(titles, title => Assert.DoesNotContain(title.Parent!.Elements(), e => e.Name.LocalName == "GlyphText"));
             Assert.DoesNotContain(scroll.Descendants(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
             foreach (var (title, paragraph) in new[]
             {
                 ("Pad_Lighting_LedStrips", "Pad_Lighting_LedStrips_Description"),
                 ("Pad_Audio_Output_Header", "Pad_Audio_Output_Desc"),
-                ("Pad_Audio_Macros_Header", "Pad_Audio_Macros_Desc"),
             })
             {
                 var block = titles.Single(e => ((string)e.Attribute("Text")).Contains(title + ","));
@@ -1232,6 +1358,12 @@ namespace PadForge.Tests
                 Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
                     && ((string)e.Attribute("Text") ?? "").Contains(paragraph + ","));
             }
+            // Sound Macros' paragraph is its line's tooltip.
+            var soundMacros = Named(page, "SoundMacrosFoldCard");
+            Assert.Equal("{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}", (string)soundMacros.Attribute("Description"));
+            Assert.Equal("{Binding Pad_Audio_Macros_Header, Source={x:Static strings:Strings.Instance}}", (string)soundMacros.Attribute("Header"));
+            Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
+                && ((string)e.Attribute("Text") ?? "").Contains("Pad_Audio_Macros_Desc,"));
 
             // Lighting: its label's tooltip holds the group's three
             // paragraphs, which code shows by the device, and the route
@@ -1275,6 +1407,96 @@ namespace PadForge.Tests
             var mirror = scroll.Descendants().Single(e => e.Name.LocalName == "TextBlock"
                 && ((string)e.Attribute("Text") ?? "").Contains("Pad_Audio_Mirror,"));
             Assert.Equal("290", (string)mirror.Attribute("Width"));
+        }
+
+        /// <summary>Rumble and Haptics as its board tags and draws it. A card
+        /// whose settings the device picked under Driven by keeps as its own
+        /// has the tag This device after its title, and Bass Shakers, whose
+        /// settings are the whole controller's, has Whole controller. A Bass
+        /// Shakers tone is a row with Test and the tone's reset, then its gain
+        /// set in under it, and the card's last row is Check the Shakers. The
+        /// two values of a range row have "to" between them, as the Sticks
+        /// board writes it, and no lone dash is left on the page.</summary>
+        [Fact]
+        public void RumbleAndHaptics_TagsItsCards_AndDrawsATonesRows()
+        {
+            var page = Page();
+            var scroll = Named(page, "RumbleSectionScroll");
+            string KeyOf(string binding) => binding.Substring("{Binding ".Length).Split(',')[0];
+
+            // The tags: in a card's head, after its title, before Reset All.
+            var tags = scroll.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource ChipSteel}").ToList();
+            Assert.Equal(new[]
+                {
+                    "Pad_Falcon_Header=Pad_Scope_Device", "Pad_ForceFeedback_Header=Pad_Scope_Device", "Pad_ImpulseTriggers_Header=Pad_Scope_Device",
+                    "Pad_AdaptiveTriggers_Header=Pad_Scope_Device", "Pad_Wheel=Pad_Scope_Device", "Pad_RumbleAudio_Header=Pad_Scope_Controller",
+                },
+                tags.Select(t => KeyOf((string)t.ElementsBeforeSelf().Last().Attribute("Text")) + "=" + KeyOf((string)Assert.Single(t.Elements()).Attribute("Text"))));
+            Assert.All(tags, t =>
+            {
+                Assert.Equal("DockPanel", t.Parent!.Name.LocalName);
+                Assert.Equal("{StaticResource CardTitle}", (string)t.ElementsBeforeSelf().Last().Attribute("Style"));
+                Assert.Equal("{StaticResource ResetAllButton}", (string)t.ElementsAfterSelf().Single().Attribute("Style"));
+                Assert.Equal("10,0,0,0", (string)t.Attribute("Margin"));
+                Assert.Equal("Center", (string)Assert.Single(t.Elements()).Attribute("VerticalAlignment"));
+            });
+            // The tag's look, the boards' chip: a pill 22 tall on the raised
+            // fill inside the pill hairline, its words 12 in the secondary color.
+            var chip = XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "ControllerIcons.xaml")).Descendants()
+                .Single(e => (string)e.Attribute(X + "Key") == "ChipSteel");
+            string Setter(string property) => (string)chip.Elements().Single(e => (string)e.Attribute("Property") == property).Attribute("Value");
+            Assert.Equal("22", Setter("MinHeight"));
+            Assert.Equal("11", Setter("CornerRadius"));
+            Assert.Equal("9,0", Setter("Padding"));
+            Assert.Equal("{DynamicResource SteelPillLineBrush}", Setter("BorderBrush"));
+            Assert.Equal("{DynamicResource SteelRaisedBrush}", Setter("Background"));
+            Assert.Equal("{DynamicResource TextFillColorSecondaryBrush}", Setter("TextElement.Foreground"));
+            Assert.Equal("12", Setter("TextElement.FontSize"));
+
+            // A tone: its row, then its gain set in under it.
+            var tones = scroll.Descendants().Single(e => e.Name.LocalName == "ItemsControl" && (string)e.Attribute("ItemsSource") == "{Binding RumbleAudioVoices}");
+            var tone = Assert.Single(Assert.Single(tones.Descendants(), e => e.Name.LocalName == "DataTemplate").Elements());
+            var rows = tone.Elements().ToList();
+            Assert.Equal(new[] { "SettingRow", "SettingRow" }, rows.Select(r => r.Name.LocalName));
+            var first = rows[0].Elements().ToList();
+            Assert.Equal(new[] { "CheckBox", "Slider", "TextBox", "TextBlock", "Button", "Button" }, first.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Enabled, Mode=TwoWay}", (string)first[0].Attribute("IsChecked"));
+            Assert.Equal("{Binding FrequencyHz, Mode=TwoWay}", (string)first[1].Attribute("Value"));
+            Assert.Equal("{StaticResource DzSlider}", (string)first[1].Attribute("Style"));
+            Assert.Equal("{Binding TestCommand}", (string)first[4].Attribute("Command"));
+            Assert.Equal("{StaticResource QuietPlainButton}", (string)first[4].Attribute("Style"));
+            Assert.Equal("{Binding ResetCommand}", (string)first[5].Attribute("Command"));
+            var gain = rows[1].Elements().ToList();
+            Assert.Equal(new[] { "TextBlock", "Slider", "TextBox", "TextBlock", "ProgressBar" }, gain.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Pad_RumbleAudio_VoiceGain, Source={x:Static strings:Strings.Instance}}", (string)gain[0].Attribute("Text"));
+            Assert.Equal("{StaticResource DzSubLabel}", (string)gain[0].Attribute("Style"));
+            Assert.Equal("{Binding GainPercent, Mode=TwoWay}", (string)gain[1].Attribute("Value"));
+            Assert.Equal("{StaticResource DzSlider}", (string)gain[1].Attribute("Style"));
+            Assert.Equal("{Binding MeterLevel, Mode=OneWay}", (string)gain[4].Attribute("Value"));
+            Assert.Equal("{StaticResource ActivityBar}", (string)gain[4].Attribute("Style"));
+
+            // The card's last row: Check the Shakers, a sweep, and Stop.
+            var check = tones.ElementsAfterSelf().Single();
+            Assert.Equal("SettingRow", check.Name.LocalName);
+            var parts = check.Elements().ToList();
+            Assert.Equal("{Binding Pad_RumbleAudio_CheckShakers, Source={x:Static strings:Strings.Instance}}", (string)parts[0].Attribute("Text"));
+            Assert.Equal("{StaticResource DzLabel}", (string)parts[0].Attribute("Style"));
+            Assert.Equal(new[] { "{Binding RumbleAudioSweepCommand}", "{Binding RumbleAudioStopTestCommand}" }, parts.Skip(1).Select(b => (string)b.Attribute("Command")));
+            Assert.Equal("{StaticResource QuietPlainButton}", (string)parts[2].Attribute("Style"));
+            // The line beside the card's switch is the board's short one.
+            Assert.Contains(scroll.Descendants(), e => (string)e.Attribute("Text") == "{Binding Pad_RumbleAudio_Subtitle, Source={x:Static strings:Strings.Instance}}");
+
+            // A range's two values have "to" between them, and no lone dash is left.
+            var to = page.Descendants().Where(e => e.Name.LocalName == "TextBlock"
+                && (string)e.Attribute("Text") == "{Binding Common_To, Source={x:Static strings:Strings.Instance}}").ToList();
+            Assert.Equal(4, to.Count);
+            Assert.All(to, t =>
+            {
+                Assert.Equal("TextBox", t.ElementsBeforeSelf().Last().Name.LocalName);
+                Assert.Equal("TextBox", t.ElementsAfterSelf().First().Name.LocalName);
+                Assert.Equal("13", (string)t.Attribute("FontSize"));
+            });
+            Assert.DoesNotContain(page.Descendants(), e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("Text") is "\u2013" or "-");
         }
 
         /// <summary>The screenshot script reaches every tab through ids the
@@ -1369,6 +1591,51 @@ namespace PadForge.Tests
             Assert.Equal("Macros & Menus", English("Pad_Section_Macros"));
             Assert.Equal("Driven by", English("Pad_DrivenBy"));
             Assert.Equal("Add Device", English("Pad_AddDevice"));
+        }
+
+        /// <summary>The page's string round (#574): each new string is in the
+        /// table with its English, the strings left with no use are gone from
+        /// the table and from the class that reads it, and no English string
+        /// sends the user to a tab the page no longer has, by the word or by
+        /// the old Mappings tab's name. The Tab key's own name, and the strings
+        /// that name that key, stay.</summary>
+        [Fact]
+        public void TheRoundsStringsAreInTheTable_AndNoneNamesATab()
+        {
+            var table = XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
+            var data = table.Root!.Elements("data").ToDictionary(d => (string)d.Attribute("name"), d => (string)d.Element("value") ?? "");
+            foreach (var (key, english) in new[]
+            {
+                ("Macro_When_Header", "When"), ("Macro_Do_Header", "Do"), ("Menu_Opens_Header", "Opens"), ("Common_Rename", "Rename"),
+                ("Menu_NewMenu", "New Menu"), ("Menu_AddCell", "Add Cell"), ("Menu_RemoveLastCell", "Remove Last Cell"),
+                ("Menu_EditCell", "Edit Cell"), ("Menu_Cell_Name", "Name"), ("Menu_Cell_Action", "Action"), ("Menu_Cell_Icon", "Icon"),
+                ("Pad_Scope_Device", "This device"), ("Pad_Scope_Controller", "Whole controller"), ("Pad_RumbleAudio_VoiceGain", "Gain"),
+                ("Pad_RumbleAudio_CheckShakers", "Check the Shakers"), ("Common_To", "to"), ("Pad_Gyro_Space_Header", "Reference Frame"),
+                ("Pad_GyroSpace_FoldHint", "Local, Player or World"), ("Pad_Grip_FoldHint", "How the controller is held"),
+                ("Pad_More_GyroCalibration", "Live gyroscope and accelerometer readings"),
+                ("Pad_Lighting_GamesWin_Hint", "Games take over whenever they write lighting."), ("Pad_AudioEq_FoldHint", "Preamp, bands, import"),
+                ("Pad_More_ForceFeedback", "Per-motor gain, trigger rumble, Steering Angle Rumble, Constant Force"),
+                ("Pad_More_ImpulseTriggers", "Per-trigger gain, motor swap, adaptive trigger vibrations, Constant Trigger Force"),
+                ("Pad_More_GyroSensitivity", "Units, invert axes, Real-World Calibration"),
+                ("Pad_More_SoundOutput", "Mirror Source, Headphone Volume, buffer, Output Path"),
+                ("Pad_RumbleAudio_Subtitle", "Plays game rumble as low tones through bass shakers or a subwoofer."),
+                ("Macro_EmptyHint", "Pick a macro in the list, or press + beside Macros to make one."),
+                ("Pad_More_Macro", "Layer, Source, Threshold, Direction, Consume Trigger Buttons, Repeat"),
+            })
+                Assert.Equal(english, data[key]);
+            Assert.Contains("Press + beside Menus", data["Menu_EmptyHint"]);
+            string designer = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.Designer.cs");
+            foreach (string gone in new[] { "Menu_Position", "Menu_CellBindings", "Menu_Cells_Tip", "Menu_Reset_Cells", "Macro_EditAction", "Macro_Trigger", "Macro_ActionSequence" })
+            {
+                Assert.False(data.ContainsKey(gone), gone + " is still in the table");
+                Assert.DoesNotContain("public string " + gone + " =>", designer);
+            }
+
+            var keyNames = new HashSet<string> { "Key_Tab", "Osk_Key_Tab", "MacroAction_TextBlock_Tooltip", "Pad_Lighting_KeyColors_PickHint", "Pad_Lighting_KeyColors_PickByPressing_Tooltip" };
+            Assert.Empty(data.Where(d => !keyNames.Contains(d.Key) && System.Text.RegularExpressions.Regex.IsMatch(d.Value, @"(?i)\btabs?\b")).Select(d => d.Key));
+            Assert.Empty(data.Where(d => d.Value.Contains("in Mappings", StringComparison.Ordinal) || d.Value.Contains("Mappings rows", StringComparison.Ordinal)).Select(d => d.Key));
+            // The key's own name is kept.
+            Assert.Equal("Tab", data["Key_Tab"]);
         }
     }
 }

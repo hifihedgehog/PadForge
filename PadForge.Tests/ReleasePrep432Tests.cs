@@ -130,10 +130,12 @@ namespace PadForge.Tests
         {
             string xaml = System.IO.File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
                 System.IO.Path.Combine("PadForge.App", "Views", "PadPage.xaml")));
-            int cf = xaml.IndexOf("<!-- Crossfeed -->", StringComparison.Ordinal);
-            Assert.True(cf > 0, "crossfeed block not found; re-anchor this lock");
-            // The StackPanel that wraps the chain is the nearest one above.
-            int panel = xaml.LastIndexOf("<StackPanel Visibility=", cf, StringComparison.Ordinal);
+            int cf = xaml.IndexOf("x:Name=\"CrossfeedFoldCard\"", StringComparison.Ordinal);
+            Assert.True(cf > 0, "crossfeed line not found; re-anchor this lock");
+            // The chain's lines stand in one list under Sound Output (#574),
+            // and the gate is the list's: the nearest one above.
+            int panel = xaml.LastIndexOf("<controls:FoldList x:Name=\"AudioChainList\"", cf, StringComparison.Ordinal);
+            Assert.True(panel > 0, "the chain's list not found; re-anchor this lock");
             string open = xaml.Substring(panel, cf - panel);
             Assert.Contains("SelectedDeviceHasDspChain", open);
             Assert.DoesNotContain("SelectedDeviceHasSpeaker", open);

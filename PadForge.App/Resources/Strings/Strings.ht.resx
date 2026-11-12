@@ -284,15 +284,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Aparèy</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sous</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ajoute aparèy</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imaj</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} sòti</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Mouvman</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klike sou yon kontwòl, epi peze antre ki dwe kontwole l la.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klike sou yon touch oswa yon bouton sourit, epi peze antre ki dwe kontwole l la.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klike sou yon nòt oswa yon bouton glisan, epi peze antre ki dwe kontwole l la.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Bouton Asiyen tout la sote sòti manyen A ak B yo. Klike sou sèk ki antoure A oswa B pou asiyen youn.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ap tann {0}. Peze antre a sou aparèy ou a.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kontwole pa</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Plis opsyon</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mwens opsyon</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bouton prensipal</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bouton zepòl</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bouton sistèm</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Bouton</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Kwa direksyonèl</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gachèt</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Kaptè mouvman</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Touch klavye</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Bouton sourit</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mouvman sourit</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Wou sourit</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Chanjman kontwòl</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Kaptè manyen</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Rale analòg</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, men gòch</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, men dwat</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Ki peze jwèt yo wè lè de bouton yon pè kenbe ansanm</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Ki peze jwèt yo wè lè de touch yon pè kenbe ansanm</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Kenbe yon ti deplasman stick pou jwèt yo kontinye montre endikasyon kontwolè</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Ap fòje</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chwazi yon makwo sou bò gòch, oswa peze Ajoute pou kreye youn.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Chwazi yon makwo nan lis la, oswa peze + bò kote Makwo pou kreye youn.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frèt</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Apèsi</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
@@ -802,7 +830,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gachèt Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gachèt Impulse</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fòs pa gachèt, chanje plas motè yo, vibrasyon gachèt adaptatif</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fòs pa gachèt, chanje plas motè yo, vibrasyon gachèt adaptatif, Fòs konstan sou gachèt</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Voye kòmand motè pou chak gachèt (Xbox Impulse Triggers) soti nan kontwolè vityèl la rive nan kontwolè fizik Xbox One, Elite oswa Series ki asiyen an. Vibrasyon gachèt jwèt la voye pase otomatikman. Kontwòl ki anba yo ajiste fòs la pou chak gachèt.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gachèt gòch</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gachèt dwat</value></data>
@@ -871,7 +899,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zòn mò, anti-zòn mò, koub sansiblite ak kalibrasyon dekalaj sant pou chak stick. Chak seksyon anba a vize yon stick analòg sou sòti aktif la. Pwofil Extended yo ka gen jiska kat stick. Gamepad estanda yo gen de.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gachèt</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zòn mò, anti-zòn mò, ajisteman plaj maksimòm ak koub sansiblite pou chak gachèt. Chak seksyon anba a vize yon aks gachèt sou sòti aktif la. Pwofil Extended yo ka gen jiska uit aks yo pataje ak onglè Stick la.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zòn mò, anti-zòn mò, ajisteman plaj maksimòm ak koub sansiblite pou chak gachèt. Chak kat gachèt vize yon aks gachèt sou sòti aktif la. Pwofil Extended yo ka gen jiska uit aks, pataje ant stick ak gachèt.</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrasyon jwe sou {0} kòm batman aptik, ki ale dirèkteman nan aparèy la. Yon vibrasyon pi fò chwazi yon batman pi fò epi li repete l pi vit.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Retou aptik etenn pou {0} nan Logi Options+, kidonk li p ap jwe anyen jiskaske ou limen l ankò la.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Aparèy sa a poko reponn. Vibrasyon li ap jwe lè l reveye.</value></data>
@@ -931,6 +959,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kas, tapi sourit ak opalè</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kas</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ba limyè</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jwèt yo pran kontwòl chak fwa yo ekri limyè.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Antre yon koulè ekzadesimal sis chif (RRGGBB oswa #RRGGBB) epi peze Enter oswa klike yon lòt kote pou aplike l.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Retire koulè sa a nan palèt la</value></data>
@@ -948,7 +977,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Reyinisyalize vibrasyon odyo</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Reyinisyalize {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Efase asiyasyon yo</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Tout asiyasyon ki nan onglè sa a ap efase. Sous asiyen yo, sous anplis yo ak paramèt konbinezon yo retounen pa defo.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Tout asiyasyon ki nan kouch sa a ap efase. Sous asiyen yo, sous anplis yo ak paramèt konbinezon yo retounen pa defo.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Modèl jwè</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mòd LED mute</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Klète LED</value></data>
@@ -1008,6 +1037,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Bouton</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Pwofil enpòte…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontwolè elaji</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Jere pwofil HIDMaestro itilizatè enpòte: kaptire yon nouvo apati yon aparèy ki konekte, ekspòte youn ki egziste an JSON, oswa efase youn ou pa bezwen ankò.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klone aparèy 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Asiyen chak aks, bouton ak POV sou aparèy ou chwazi a dirèkteman nan sòti vityèl ki gen menm nimewo a. Li ajiste dispozisyon an selon aparèy la epi li ranplase liy aparèy sa a sou plas la ak yon pasaj dirèk 1:1.</value></data>
@@ -1052,6 +1082,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Retou fòs</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Kanal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Sòti MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Kanal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Kantite CC</value></data>
   <data name="Pad_MidiStartCC" xml:space="preserve"><value>Premye CC</value></data>
@@ -1080,7 +1111,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire pè touch sa a.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Premye touch pè opoze a.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Dezyèm touch pè opoze a.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direksyon kadinal opoze an menm tan (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Kenbe kontwolè a aktif</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Kèk jwèt kanpe vibrasyon epi chanje endikasyon bouton yo depi yo wè antre sourit oswa klavye. Lè ou kenbe yon ti deplasman stick, jwèt la kontinye trete kontwolè sa a kòm aparèy aktif la. Kenbe a aji sèlman pandan de aks stick sa a rete anba nivo ki kenbe a, kidonk yon stick ki derive toujou konte kòm an repo. Yon antre ki depase nivo a sou nenpòt aks lage l, epi li pase san chanjman. Kenbe deplasman an anba zòn mò jwèt la pou anyen pa bouje nan jwèt la.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Kenbe aktif</value></data>
@@ -1097,7 +1127,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Reyinisyalize X pèsonalize</value></data>
   <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Reyinisyalize Y pèsonalize</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Reyinisyalize klik</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Reyinisyalize selil yo</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Reyinisyalize zòn mò aktivasyon</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Reyinisyalize jeyometri meni</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Reyinisyalize selil</value></data>
@@ -1145,6 +1174,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Efase tout</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sous</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valè</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsyon</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zòn mò aks-a-bouton</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Envèse</value></data>
@@ -1173,7 +1203,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Lè li koche, aks la retounen nan sant lè ou lage. Lè li pa koche, li kenbe dènye pozisyon li.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Bouton ki envèse sòti liy lan pandan ou kenbe l</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modifikatè: pandan ou kenbe l, siy sòti liy lan chanje.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ajoute yon sous</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ajoute yon sous</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Ajoute yon lòt antre fizik nan liy sa a</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Retire sous sa a</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1271,6 +1301,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Pèsonalize</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibre sant</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pwen santral</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Sant</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zòn mò</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Dekalaj sant, fòm zòn mò ak valè pa aks, yon koub pou chak aks, plaj, direksyon</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plaj</value></data>
@@ -1289,7 +1320,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Non</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Deklanchè</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Lè</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Deklanche</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Lè ou peze</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Lè ou lage</value></data>
@@ -1317,9 +1348,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Kouch</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Nenpòt kouch</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Li fonksyone san rete pandan kontwolè vityèl sa a aktif. Pa bezwen bouton deklanchè.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Sekans aksyon</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Fè</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Kouch, Sous, Papòt, Direksyon, Bloke bouton deklanchè yo, Repete</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajoute yon aksyon</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Modifye aksyon</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tip</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Bouton vityèl</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Aks vityèl ak volan</value></data>
@@ -1384,11 +1415,11 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Bouton {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Peze {0} pandan {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Peze {0} pandan {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lage {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Touch {0} pandan {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Touch {0} pandan {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lage touch {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tann {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Tann {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Regle {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volim sistèm ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Volim sistèm ← {0} (max {1}%)</value></data>
@@ -1557,7 +1588,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Antre pou chak touchpad. Jès yo (glise, tape, pense, fòm) ak mòd soti kontinyèl yo (stick vityèl / D-pad, sourit) vin tounen sous asiyasyon ou ka konekte nan seksyon Asiyasyon an.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Antre pou chak touchpad. Jès yo (glise, tape, pense, fòm) ak mòd sòti kontinyèl yo (stick vityèl / D-pad, sourit) vin tounen sous asiyasyon ou ka konekte ak nenpòt sòti.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nimewo touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Ki touchpad sou kontwolè sa a paramèt ki anba yo aplike. Chak touchpad gen pwòp jès li, pwòp fason sourit la reyaji ak pwòp zòn kisè li.</value></data>
@@ -1829,8 +1860,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Jiwoskòp</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jiwoskòp</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Valè jiwoskòp ak akselewomèt an dirèk</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sansiblite</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Inite, Espas, envèse aks yo, Kalibrasyon monn reyèl</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Inite, envèse aks yo, Kalibrasyon monn reyèl</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa vire</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espas</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Kenbe tankou</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Envèse pitch (Y)</value></data>
@@ -1887,6 +1920,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mond</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Fason pou kenbe</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Fason ou kenbe kontwolè a. Li vire jiwoskòp la, akselewomèt la ak gravite a ansanm, pou asiyasyon yo ak pou mouvman kontwolè vityèl la rapòte. D-pad la swiv menm pozisyon an, kidonk Anwo se anwo nan fason ou kenbe l.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Fason ou kenbe kontwolè a</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineyè</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresif</value></data>
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Laj</value></data>
@@ -1918,7 +1952,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Miltiplikatè sansiblite jiwoskòp pou chak sous. 1.0 = valè pa defo (500°/s → deplasman konplè). Valè ki pi wo pase 1.0 pi sansib. Valè ki pi ba pase 1.0 mwens sansib.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Miltiplikatè sansiblite panche pou chak sous. 1.0 = 90° panche pou deplasman konplè. Valè ki pi wo pase 1.0 rive nan deplasman konplè ak mwens panche.</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Kijan sous liy sa a yo melanje lè plis pase youn aktif. Chwazi liy lan pou chanje sa nan pano detay ki anba a.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Kijan sous liy sa a yo melanje lè plis pase youn aktif. Louvri liy lan pou chanje sa nan opsyon Konbine a.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Elan</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mòd trackball: voye stick la epi lage l, kisè a kontinye deplase epi l ralanti jiskaske l kanpe. Si ou deplase stick la ankò, li kanpe kisè a.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Ki distans kisè a fè apre ou voye l. Nan tèt plaj la, li kontinye jiskaske ou deplase stick la ankò.</value></data>
@@ -2069,12 +2103,14 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aks gachèt</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fòs pa motè, vibrasyon gachèt, chanje plas motè yo</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fòs pa motè, vibrasyon gachèt, Vibrasyon selon ang direksyon, Fòs konstan</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motè gòch</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motè dwat</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Chanje plas motè gòch ak motè dwat</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Teste vibrasyon</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivite motè</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Gòch</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Dwat</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplike fòs konstan</value></data>
@@ -2126,6 +2162,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Peze bouton oswa deplase yon aks/gachèt pou anrejistre. Yo detekte yon aks lè li depase 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ajoute nan lis</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Efase deklanchè</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Retire antre a</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Peze nenpòt antre…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>envèse</value></data>
@@ -2315,7 +2352,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Kantite segonn anvan yon kontwolè vityèl detwi lè tout aparèy ki asiyen ladan l yo pa konekte. 0 dezaktive sa. Kontwolè ki rete yo ki menm kalite a monte pou ranpli espas la epi yo pran plas ki pi ba yo.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segonn (0 = janm)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Kouch Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ajoute yon kouch</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ajoute yon kouch Shift. Yon dezyèm tablo asiyasyon ki aktive pandan w ap kenbe yon bouton oswa lè w limen l.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Baz</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kouch Shift</value></data>
@@ -2408,7 +2445,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direksyon pa mouvman</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zòn mò pou panche, Oryantasyon kontwolè</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Paramèt pou antre Mouvman panche a: panche kontwolè a tankou yon volan. Asiyen "Mouvman panche" sou yon aks stick nan lis antre yo nan Asiyasyon.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Paramèt pou antre Mouvman panche a: panche kontwolè a tankou yon volan. Asiyen "Mouvman panche" sou yon aks stick nan seksyon Bouton an.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reyinisyalize direksyon pa mouvman</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick dwat)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick goch)</value></data>
@@ -2504,7 +2541,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Odyo</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Son makwo ak odyo sistèm ki kopye a jwe nan opalè entegre kontwolè ou chwazi a, sou USB oswa Bluetooth. Chwazi aparèy la nan lis anlè a. Tout paramèt isit la swiv li.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sòti son</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sous miwa, aptik, Volim ekoutè, Crossfeed, Parametric EQ, Limitè</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sous miwa, Volim ekoutè, tanpon, Chemen sòti</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sous miwa</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Ki aparèy lekti pou kopye nan opalè kontwolè a. Jwèt ki voye kèk son nan yon aparèy lekti apa ka vize sa a.</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Pa defo sistèm nan</value></data>
@@ -2516,10 +2553,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Kanpe tout son</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Kanpe tout son makwo sou kontwolè sa a</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Makwo son</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Se makwo ki jwe son yo: yon deklanchè (peze, lage, kenbe oswa fòmil) plis yon aksyon Jwe son. Kreye yo isit la oswa nan onglè Makwo a. Reta, repetisyon ak limen/etenn tout mache.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Se makwo ki jwe son yo: yon deklanchè (peze, lage, kenbe oswa fòmil) plis yon aksyon Jwe son. Kreye yo isit la oswa nan seksyon Makwo ak meni an. Reta, repetisyon ak limen/etenn tout mache.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nouvo makwo son</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Pa gen makwo son ankò. Kreye youn epi chwazi yon fichye son ak yon deklanchè.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Louvri makwo sa a nan onglè Makwo a</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Louvri makwo sa a nan seksyon Makwo ak meni an</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makwo son {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Jwe son</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Jwe yon fichye son (.wav, .mp3, .m4a, .aac, .wma, .flac) sou aparèy sòti kontwolè sa a</value></data>
@@ -2774,6 +2811,11 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Ap mache</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Ap mache, pilòt konekte</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Ap mache, kontwolè aktif</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR enstale</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR pa enstale</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ap mache</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR ap mache, pilòt konekte</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR ap mache, kontwolè aktif</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Yon lòt pilòt OpenVR ap itilize non pilòt HIDMaestro a, kidonk SteamVR ka chaje l olye pilòt PadForge la, epi kontwolè VR vityèl yo p ap parèt. Retire pilòt sa a pou rezoud pwoblèm nan: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Kontwolè seri (pò COM)</value></data>
@@ -3061,6 +3103,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Meni {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Non meni</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktive</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Louvri</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Estil</value></data>
   <data name="Menu_HostInput" xml:space="preserve"><value>Louvri ak</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Stick goch</value></data>
@@ -3073,10 +3116,15 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Kaz</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Kaz santral</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Montre etikèt yo</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Pozisyon sou ekran an</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Gwosè</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Opasite</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Kaz {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Ajoute yon kaz</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Retire dènye kaz la</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Modifye kaz</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Non</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksyon</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikòn</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Sant</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Okenn</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Touch klavye</value></data>
@@ -3099,6 +3147,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Montre bag oswa griy sou ekran an pandan yon meni aktif. Meni yo toujou mache menm lè sipèpozisyon an etenn.</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sòti</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Bouton</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Touch ak sourit</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nòt ak kontwòl</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Men</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick ak gachèt</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibrasyon ak retou fòs</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvman ak manyen</value></data>
@@ -3129,13 +3180,15 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Reyinisyalize motè wo</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Reyinisyalize gachèt gòch</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Reyinisyalize gachèt dwat</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Teste shaker yo</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Baleyaj frekans</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Fè yon son monte soti 20 rive 120 Hz pandan uit segonn sou wout motè ba a. Note ki kote shaker ou a reponn pi fò epi mete frekans vwa yo la.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Sispann</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Sispann son tès la oswa baleyaj la.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Nenpòt etikèt NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etikèt NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtre antre yo (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtre sòti ak antre yo</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Montre sèlman liy ak antre ki koresponn yo. Peze Ctrl+F pou tape isit la.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Chwazi ki aparèy selektè yo montre antre yo</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Parèt nan selektè a</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Nenpòt fraz vokal</value></data>
@@ -3241,6 +3294,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reyinisyalize diferans nivo</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Egalizè paramètrik</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtè pa bann sou odyo kontwolè a. Yo aplike yo anvan odyo a kode, kidonk limitè ki anba a anpeche yon bann ki ranfòse satire.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preanpli, bann, enpòtasyon</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preanpli</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nivo jeneral anvan bann yo. Pwofil AutoEq yo vini ak yon preanpli negatif pou ranfòsman yo pa satire, epi lè w enpòte youn, sa regle sa pou ou.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aktif</value></data>
@@ -3460,7 +3514,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Remèt ouvèti lè w manyen oswa lè w deplase stick la.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Dirije ak</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Antre fizik ki dirije selil ki an evidans lan pandan kouch la kenbe meni sa a louvri.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Li soti nan kontwolè fizik ki atribiye ak plas sa a. Kouch la louvri meni an, antre sa a dirije l. Asiyasyon selil yo deside sa li voye.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Li soti nan kontwolè fizik ki atribiye ak plas sa a. Kouch la louvri meni an, epi antre sa a dirije l. Se selil li yo ki di sa li voye.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Gwosè ikòn</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Gwosè ikòn lan konpare ak gwosè ikòn nòmal meni an, soti 25% rive 200%. Lè w efase ikòn lan, li tounen 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Kenbe asiyasyon selil ki an evidans lan pandan w ap kenbe Antre klik la. Yon sant radyal ki an evidans ka deklanche pandan stick la an repo.</value></data>
@@ -3583,7 +3637,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referans pa Antoine Aflalo pou dispozisyon entèfas IPolicyConfig Windows ki pa dokimante a, ke PadForge sèvi ak li pou reaktive pwen odyo yon kontwolè. MIT. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Fòma pwofil egalizè paramètrik onglè Odyo a enpòte, pa Jaakko Pasanen. MIT. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Fòma pwofil egalizè paramètrik ke Egalizè paramètrik yon kontwolè enpòte, pa Jaakko Pasanen. MIT. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknik SendInput ki dèyè makwo Blòk tèks ak hook akò klavye a: ekri Unicode, limit pa lo, touch maske pou touch Win, ak antre enjekte ki make. GPL-2.0-or-later, li kòm dokimantasyon sèlman, okenn kòd GPL pa enkli.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -3787,6 +3841,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direksyon</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Etap</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>a</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Manch</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ap regle gachèt kontwolè sa a.</value></data>
@@ -3830,7 +3885,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Manch lan pa t deplase ase lwen, kidonk distans lan rete jan l te ye a. Deplase l rive nan chak bout pandan mezi a ap fèt.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon nan fèmen anvan mezi a te fini.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Jwe jwèt ak yon Novint Falcon atravè SDK Force Dimension lan, ke ou enstale soti nan Force Dimension. Manch lan se yon stick, kat bouton manch lan se bouton, epi PadForge transfòme vibrasyon ak efè jwèt la an fòs sou manch lan. Onglè Retou fòs chak plas detèmine kijan Falcon nan reyaji.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Jwe jwèt ak yon Novint Falcon atravè SDK Force Dimension lan, ke ou enstale soti nan Force Dimension. Manch lan se yon stick, kat bouton manch lan se bouton, epi PadForge transfòme vibrasyon ak efè jwèt la an fòs sou manch lan. Kat Novint Falcon ki nan seksyon Vibrasyon ak retou fòs chak kontwolè detèmine kijan Falcon nan reyaji.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Kontwole Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Louvri chak Falcon atravè dhd64.dll Force Dimension lan. Yon Falcon ki louvri se pou PadForge sèlman, kidonk FalconJoyForce ak zouti Force Dimension yo pa ka louvri l pandan opsyon sa a aktive. Lè l dezaktive, PadForge fèmen tout Falcon yo.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Bibliyotèk Falcon an kounye a se {0}. PadForge ap chaje l nan kèk segonn, epi yon Falcon ki louvri sou yon lòt kopi ap louvri ankò sou kopi sa a.</value></data>
@@ -3982,11 +4037,17 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Pou yon tan fiks</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Jiskaske yo kanpe l</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Tan</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Jwe sou chak DualSense ak DualSense Edge nan plas sa a. Efè gachèt pwòp yon jwèt ak efè yon mod jwèt pase anvan, epi paramèt tab Gachèt adaptatif la retounen lè efè a fini. Zòn yo soti 0 an repo rive 9 lè gachèt la peze nèt. Bow, Galloping ak Machine pa efè DualSense ofisyèl, epi yon mizajou firmware ka retire yo. Kontwolè Xbox ki gen Tradui vibrasyon gachèt adaptatif yo aktive santi efè vibrasyon yo kòm vibrasyon gachèt.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Jwe sou chak DualSense ak DualSense Edge nan plas sa a. Efè gachèt pwòp yon jwèt ak efè yon mod jwèt pase anvan, epi paramèt kat Gachèt adaptatif la retounen lè efè a fini. Zòn yo soti 0 an repo rive 9 lè gachèt la peze nèt. Bow, Galloping ak Machine pa efè DualSense ofisyèl, epi yon mizajou firmware ka retire yo. Kontwolè Xbox ki gen Tradui vibrasyon gachèt adaptatif yo aktive santi efè vibrasyon yo kòm vibrasyon gachèt.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} sou {1} pandan {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sou {1} pandan yo kenbe l</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sou {1} jiskaske yo kanpe l</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Kanpe efè gachèt sou {0}</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zòn mò, adousisman, Akselerasyon, Koub soti</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Kad referans</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Lokal, Jwè oswa Mond</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontwole limyè aparèy sa a, Kontwòl limyè</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Chanje non</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Nouvo meni</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Aparèy sa a</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tout kontwolè a</value></data>
 </root>

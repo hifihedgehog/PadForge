@@ -317,7 +317,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya gâchette moko moko, kobongola ba moteur, ba vibration ya gâchette adaptative</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya gâchette moko moko, kobongola ba moteur, ba vibration ya gâchette adaptative, Constant Trigger Force</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette ya loboko ya mwasi</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette ya loboko ya mobali</value></data>
   <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Ntango lisano moko ezali kotambwisa esika oyo lokola DualSense virtuelle, to mod moko ya lisano ezali kotinda ba effet ya gâchette, ba effet ya gâchette adaptative ya lolenge ya vibration ebetamaka na ba moteur ya ba gâchette Impulse ya manette oyo. Ba effet ya lolenge ya résistance ezali na vibration oyo ekokani na yango te, yango wana etikamaka pembeni.</value></data>
@@ -438,12 +438,13 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Kozongisa nyonso</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Kolongola nyonso</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Motuya</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Kobalola</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Ndambo</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Basculer</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Kotika</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Kobakisa source</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Kobakisa source</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Kolongola source oyo</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_Sum_Description" xml:space="preserve"><value>Kobakisa ba source elongo</value></data>
@@ -476,6 +477,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Kombo</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Ntango</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Na kofina</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Na kotika</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Ntango nyonso</value></data>
@@ -483,7 +485,6 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Couche</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Kobakisa action</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Kobongola action</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Ba bouton virtuel</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Clavier na makomi</value></data>
   <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Souris</value></data>
@@ -525,11 +526,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Bouton {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Kofina {0} mpo na {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Kofina {0} mpo na {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Kotika {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ba touche {0} mpo na {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ba touche {0} mpo na {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Kotika ba touche {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Kozela {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Kozela {0} ms</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Volume ya système ← {0}</value></data>
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>Volume ya application ← {0}</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Kofina souris {0}</value></data>
@@ -730,7 +731,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrage</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ba unité, Espace, kobalola ba axe, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ba unité, kobalola ba axe, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Kobalola tangage (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Kobalola lacet (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Kobalola roulis (X)</value></data>
@@ -862,7 +863,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe ya gâchette</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya moteur moko moko, vibration ya gâchette, kobongola ba moteur</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya moteur moko moko, vibration ya gâchette, Steering Angle Rumble, Constant Force</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteur ya mwasi</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Moteur ya mobali</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Komeka vibration</value></data>
@@ -907,6 +908,7 @@
 
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Kobakisa longwa na liste</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Kopangusa déclencheur</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ebalolami</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>ndambo ya axe</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Kobalola axe</value></data>
@@ -1072,7 +1074,7 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Moteur ya mobali</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonde (0 = ata mokolo moko te)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Couche Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Kobakisa couche</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Kobongisa Base</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nkombo ya couche</value></data>
@@ -1305,6 +1307,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Komeka</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Kozongisa gâchette ya mwasi</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Kozongisa gâchette ya mobali</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Komeka ba shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Kotelemisa</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Tag NFC nyonso</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
@@ -1598,6 +1601,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="MacroAction_Stopwatch_Reset" xml:space="preserve"><value>Zongisa chronomètre</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Écran</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>kino</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ezali kobongisa ba gâchette ya manette oyo.</value></data>
   <data name="Devices_GameModLights_Format" xml:space="preserve"><value>{0} ezali kobongisa miinda ya manette oyo.</value></data>
@@ -1728,16 +1732,46 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kosalela yango</value></data>
   <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ndako etunaka mbala moko mpo na appareil moko moko ya sika oyo manette virtuelle moko te ezali kosalela. Kosalela yango esalaka manette virtuelle mpo na yango, mpe Sikoyo te esukisaka motuna mpo na appareil wana.</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ba touche na souris</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ba note na ba contrôle</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mabɔkɔ</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ba stick na ba gâchette</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibration na haptique</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Mouvement na tactile</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Miinda na audio</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ba macro na ba menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Kobakisa appareil</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Elilingi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ba sortie: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Mouvement</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Pona contrôle moko, sima finá entrée oyo ekotambwisa yango.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Pona touche moko to bouton moko ya souris, sima finá entrée oyo ekotambwisa yango.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Pona note moko to curseur moko, sima finá entrée oyo ekotambwisa yango.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Bouton Map All etikaka ba sortie ya kosimba ya A na B pembeni. Pona anneau oyo ezingi A to B mpo na kotia assignation na yango.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Tozali kozela {0}. Finá entrée na appareil na yo.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, etambwisami na</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ba option mosusu</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ba option moke</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bouton ya action</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bouton ya lipeka</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bouton ya système</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Bouton</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Croix directionnelle</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gâchette</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Capteur ya mouvement</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Touche ya clavier</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Bouton ya souris</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mouvement ya souris</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Molette</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Changement ya contrôle</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Capteur ya kosimba</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Kobenda analogique</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lobɔkɔ ya mwasi</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, lobɔkɔ ya mobali</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Elembo ntango stick ya volant ekómi na nsuka</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Etindi vibration ya ba moteur monene na ba gâchette</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibration ya gâchette uta na basse ya audio ya système</value></data>
@@ -1752,5 +1786,20 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ba fichier zip ya ba son mpo na ba macro ya son</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ba fichier zip ya ba image mpo na ba case ya menu</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kobalola, Élan, Réponse, Accélération, kobwaka</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Source ya miroir, haptique, Volume ya casque, Crossfeed, Parametric EQ, Limiteur</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Source ya miroir, Volume ya casque, buffer, Nzela ya kobima</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Sala</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Couche, Source, Seuil, Direction, Consume Trigger Buttons, Repeat</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Kobongola nkombo</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu ya sika</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Kobakisa case</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Kolongola case ya nsuka</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Kobongola case</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icône</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Appareil oyo</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Manette mobimba</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mosakani to Mokili</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Préampli, ba bande, kokotisa</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ya mwasi</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ya mobali</value></data>
 </root>

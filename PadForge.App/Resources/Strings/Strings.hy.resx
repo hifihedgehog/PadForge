@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Պատճենել</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Կպցնել</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Կրկնօրինակել</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Վերանվանել</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Միացված</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Անջատված</value></data>
   <data name="Common_On" xml:space="preserve"><value>Միացված</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ազդանշանի աղբյուր</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ավելացնել սարք</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ելք</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Շարժում</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Սեղմեք կառավարման տարրի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Սեղմեք ստեղնի կամ մկնիկի կոճակի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Սեղմեք նոտայի կամ սլայդերի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Կապակցել բոլորը» կոճակը բաց է թողնում A և B հպման ելքերը։ Սեղմեք A-ի կամ B-ի շուրջ գտնվող օղակի վրա՝ դրանցից մեկը կապակցելու համար։</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Սպասվում է մուտք {0}-ի համար։ Սեղմեք մուտքը ձեր սարքի վրա։</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ազդանշանի աղբյուր</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ավելի շատ ընտրանքներ</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ավելի քիչ ընտրանքներ</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Դիմային կոճակ</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Ուսային կոճակ</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Համակարգային կոճակ</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Կոճակ</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Խաչաձև կոճակ</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Ձող</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Ձգան</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Հպահարթակ</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Շարժման սենսոր</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Ստեղնաշարի ստեղն</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Մկնիկի կոճակ</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Մկնիկի շարժում</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Ոլորման անիվ</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Կառավարման փոփոխություն</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Հպման սենսոր</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Անալոգային ձգում</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, ձախ ձեռք</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, աջ ձեռք</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կտեսնեն խաղերը, երբ զույգի երկու կոճակները սեղմված են</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կտեսնեն խաղերը, երբ զույգի երկու ստեղները սեղմված են</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Պահում է ձողի փոքր շեղում, որպեսզի խաղերը շարունակեն ցույց տալ կառավարիչի հուշումները</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Դարբնում է</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեք մակրո ձախ կողմում կամ սեղմեք Ավելացնել՝ նորը ստեղծելու համար։</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեք մակրո ցանկից կամ սեղմեք «Մակրոներ»-ի կողքի + կոճակը՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Սառը</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Իմպուլսային ձգաններ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Իմպուլսային ձգաններ</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ձգանի առանձին ուժեղացում, շարժիչների փոխանակում, հարմարվող ձգանների թրթռումներ</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ձգանների ուժեղացում, շարժիչների փոխանակում, հարմարվող ձգանների թրթռումներ, ձգանի հաստատուն ուժ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Փոխանցում է ձգանի շարժիչների հրամանները (Xbox Impulse Triggers) վիրտուալ կառավարչից դեպի վերագրված ֆիզիկական Xbox One, Elite կամ Series կառավարիչ։ Խաղի կողմից կառավարվող ձգանի թրթռոցն անցնում է ինքնաբերաբար։ Ստորև բերված կարգավորիչները մասշտաբավորում են ուժգնությունը յուրաքանչյուր ձգանի համար։</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ձախ ձգան</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Աջ ձգան</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Ձողեր</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր ձողի մեռյալ գոտիներ, հակամեռյալ գոտիներ, զգայունության կորեր և կենտրոնի շեղման չափաբերում։ Ստորև յուրաքանչյուր բաժին վերաբերում է ակտիվ ելքի մեկ անալոգային ձողին։ Extended պրոֆիլները կարող են ունենալ մինչև չորս ձող։ Ստանդարտ խաղային կառավարիչներն ունեն երկու։</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ձգաններ</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր ձգանի մեռյալ գոտիներ, հակամեռյալ գոտիներ, առավելագույն միջակայքի մասշտաբավորում և զգայունության կորեր։ Ստորև յուրաքանչյուր բաժին վերաբերում է ակտիվ ելքի մեկ ձգանի առանցքին։ Extended պրոֆիլները կարող են ցուցադրել մինչև ութ առանցք, որոնք ընդհանուր են Ձողեր ներդիրի հետ։</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր ձգանի մեռյալ գոտիներ, հակամեռյալ գոտիներ, առավելագույն միջակայքի մասշտաբավորում և զգայունության կորեր։ Ձգանի յուրաքանչյուր քարտ վերաբերում է ակտիվ ելքի մեկ ձգանի առանցքին։ Extended պրոֆիլները կարող են ցուցադրել մինչև ութ առանցք, որոնք ընդհանուր են ձողերի և ձգանների համար։</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Հետադարձ ուժ</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Կարգավորում է, թե ինչպես է PadForge-ը մասշտաբավորում խաղից եկող հետադարձ ուժի իրադարձությունները և ինչպես է դրանք երթուղավորում ֆիզիկական կառավարչի թրթռաշարժիչներին կամ հապտիկ ակտուատորներին։ Աուդիո թրթռոցը ավելացնում է համակարգի աուդիոյով վարվող շերտ դրա վրա։</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Այս սարքը</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Ամբողջ կառավարիչը</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Թրթռոցը նվագարկվում է {0}-ի վրա որպես հապտիկ իմպուլսներ, որոնք ուղարկվում են անմիջապես սարքին։ Ավելի ուժեղ թրթռոցն ընտրում է ավելի ուժեղ իմպուլս և կրկնում է այն ավելի արագ։</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0}-ի համար Logi Options+-ում հապտիկ հետադարձն անջատված է, ուստի ոչինչ չի նվագարկվում, մինչև այն նորից միացնեք այնտեղ։</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Այս սարքը դեռ չի պատասխանել։ Դրա թրթռոցը կնվագարկվի արթնանալուց հետո։</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ականջակալներ, մկնիկի գորգեր և բարձրախոսներ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ականջակալներ</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Լուսաշերտ</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Խաղերը վերցնում են վերահսկողությունը, երբ գրում են լուսավորություն։</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Մուտքագրեք վեցանիշ hex գույն (RRGGBB կամ #RRGGBB) և սեղմեք Enter կամ կտտացրեք այլ տեղ՝ կիրառելու համար։</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Հեռացնել այս գույնը գունապնակից</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Վերականգնել աուդիո թրթռոցը</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Վերականգնել {0}-ը</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Մաքրել կապակցումները</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Այս ներդիրի բոլոր կապակցումները կմաքրվեն։ Աղբյուրների վերագրումները, լրացուցիչ աղբյուրները և համակցման կարգավորումները կվերականգնվեն լռելյայնի։</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Այս շերտի բոլոր կապակցումները կմաքրվեն։ Աղբյուրների վերագրումները, լրացուցիչ աղբյուրները և համակցման կարգավորումները կվերականգնվեն լռելյայնի։</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Խաղացողի նմուշ</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Խլացման LED-ի ռեժիմ</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-ի պայծառություն</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ներ</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Կոճակներ</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ներմուծված պրոֆիլներ…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Ընդլայնված կառավարիչ</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Կառավարեք օգտատիրոջ ներմուծած HIDMaestro պրոֆիլները՝ գրավեք նորը միացված սարքից, արտահանեք գոյություն ունեցողը JSON-ի կամ ջնջեք այն, որն այլևս պետք չէ։</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Կլոնավորել սարքը 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ընտրված սարքի յուրաքանչյուր առանցք, կոճակ և POV ուղղակի կապակցում է նույն համարով վիրտուալ ելքին։ Դասավորությունը չափվում է սարքին համապատասխան, և այս սարքի տողերը սլոթում փոխարինվում են 1:1 փոխանցմամբ։</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Հետադարձ ուժ</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Ալիք</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI ելք</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI ալիք (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC քանակ</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC ելքերի քանակ (առավելագույնը կախված է Սկզբնական CC-ից)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Հեռացնում է այս ստեղների զույգը։</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Հակադիր զույգի առաջին ստեղնը։</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Հակադիր զույգի երկրորդ ստեղնը։</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Միաժամանակ հակադիր հիմնական ուղղություններ (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Կառավարիչը արթուն պահել</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Որոշ խաղեր դադարեցնում են թրթռոցը և փոխում կոճակների հուշումները, հենց տեսնում են մկնիկի կամ ստեղնաշարի մուտք։ Ձողի փոքր շեղումը պահելով՝ խաղը շարունակում է այս կառավարիչը համարել ակտիվ սարք։ Պահումը գործում է միայն այն ժամանակ, երբ այդ ձողի երկու առանցքներն էլ պահվող մակարդակից ցածր են, ուստի շեղվող ձողը դեռ համարվում է հանգստի վիճակում։ Ցանկացած առանցքով այդ մակարդակը գերազանցող մուտքը վերացնում է պահումը և փոխանցվում է անփոփոխ։ Շեղումը պահեք խաղի սեփական մեռյալ գոտուց ցածր, որպեսզի խաղում ոչինչ չշարժվի։</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Արթուն պահել</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Վերականգնել սեղմումը</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Վերականգնել կառավարիչի կեսը</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Վերականգնել գործարկման ռեժիմը</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Վերականգնել վանդակները</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Վերականգնել ներգրավման մեռյալ գոտին</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Վերականգնել ընտրացանկի երկրաչափությունը</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Վերականգնել վանդակը</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Մաքրել բոլորը</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Աղբյուր</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Արժեք</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Ընտրանքներ</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Առանցքից կոճակի մեռյալ գոտի</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Շրջել</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Նշված լինելու դեպքում առանցքը բաց թողնելիս աստիճանաբար վերադառնում է կենտրոն։ Չնշվածի դեպքում պահում է իր վերջին դիրքը։</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Կոճակ, որը պահելիս շրջում է տողի ելքը</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Փոփոխիչ՝ պահելիս տողի ելքի նշանը շրջվում է։</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ավելացնել աղբյուր</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ավելացնել աղբյուր</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Ավելացնել ևս մեկ ֆիզիկական մուտք այս տողին</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Հեռացնել այս աղբյուրը</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Հարմարեցված</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Չափաբերել կենտրոնը</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Կենտրոնի կետ</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Կենտրոն</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Մեռյալ գոտի</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Կենտրոնի շեղումներ, մեռյալ գոտու ձև և արժեքներ ըստ առանցքի, կոր յուրաքանչյուր առանցքի համար, միջակայք, ղեկավարում</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Միջակայք</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Եզրի չափաբերումը ձողը ճշգրտելու խորհուրդ տրվող եղանակն է։ Այն սահում է այն եզրով, որին ձողը ֆիզիկապես հասնում է, ապա համաչափորեն վերամասշտաբում է բոլոր դիրքերը չափված եզրի նկատմամբ, այնպես որ ամբողջ բնական շարժումը, ցանկացած անկյան և ցանկացած շեղման դեպքում, արտապատկերվում է իդեալական շրջանագծի վրա՝ առանց որևէ բան կտրելու։ Ներքևի չորս սահոցները սահմանափակում են միայն հիմնական առանցքները։ Օգտագործեք դրանք միջակայքը միտումնավոր սահմանափակելու համար, ոչ թե այն ուղղելու։</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Չափաբերել սահմանը» կոճակը չափում է այն եզրը, որին ձողը կարող է հասնել, և այն վերածում է լրիվ շրջանի։ Չորս սահոցները միայն սահմանափակում են յուրաքանչյուր ուղղությունը։</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Նմուշառում...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Կենտրոնի շեղում X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Կենտրոնի շեղում Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Անուն</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Գործարկիչ</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Երբ</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Գործարկել</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Սեղմելիս</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Բաց թողնելիս</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Այս մակրոն ո՞ր տեղափոխման շերտին է պատկանում։ Ցանկացած շերտ գործարկվում է՝ անկախ ներգրավված շերտից։ Հիմնական և անվանված շերտերը գործարկվում են միայն երբ այդ շերտը ներգրավված է, ճիշտ կապակցման տողի նման։</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Ցանկացած շերտ</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Աշխատում է անընդհատ, քանի դեռ այս վիրտուալ կառավարիչը ակտիվ է։ Գործարկիչ կոճակ պետք չէ։</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Գործողությունների հաջորդականություն</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Կատարել</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Շերտ, աղբյուր, շեմ, ուղղություն, կլանել գործարկիչի կոճակները, կրկնել</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ավելացնել գործողություն</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Խմբագրել գործողությունը</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Տեսակ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Վիրտուալ կոճակներ</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Վիրտուալ առանցքներ և ղեկ</value></data>
@@ -1521,11 +1555,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Կոճակ {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Սեղմել {0}՝ {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Սեղմել {0}՝ {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Բաց թողնել {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ստեղներ {0}՝ {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ստեղներ {0}՝ {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Բաց թողնել ստեղները {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Սպասել {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Սպասել {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Սահմանել {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Համակարգի ձայնի ուժգնություն ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Համակարգի ձայնի ուժգնություն ← {0} (առավ. {1}%)</value></data>
@@ -1537,15 +1571,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Մկնիկի բաց թողնում {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Փոխանջատել հպահարթակի վերադիրը</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Սահմանել լուսաշերտի գույնը</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Վերասահմանում է նշանակված PlayStation սլոթի լուսաշերտը ընտրված RGB գույնով։ Արձագանքողը լրիվ ուժգնությունից մարում է մինչև սև կարգավորված մարման պատուհանի ընթացքում, ապա վերադարձնում է կառավարումը Լուսավորություն ներդիրի կարգավորումներին։ Կպչունը պահում է գույնը, մինչև գործարկվի Մաքրել լուսաշերտի վերասահմանումը գործողությունը։ Խաղի կողմից արված գրառումները դեռ առաջնահերթ են վերասահմանումից։</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Լուսաշերտի փայլատակում {0} (մարում {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Վերասահմանում է նշանակված PlayStation սլոթի լուսաշերտը ընտրված RGB գույնով։ Արձագանքողը լրիվ ուժգնությունից մարում է մինչև սև կարգավորված մարման պատուհանի ընթացքում, ապա վերադարձնում է կառավարումը Լուսաշերտ քարտի կարգավորումներին։ Կպչունը պահում է գույնը, մինչև գործարկվի Մաքրել լուսաշերտի վերասահմանումը գործողությունը։ Խաղի կողմից արված գրառումները դեռ առաջնահերթ են վերասահմանումից։</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Լուսաշերտի փայլատակում {0} (մարում {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Պահել լուսաշերտը {0}՝ մինչև մաքրվի</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Մաքրել լուսաշերտի վերասահմանումը</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>Մաքրել լուսաշերտի վերասահմանումը</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Վերացնում է նշանակված սլոթի ցանկացած ակտիվ լուսաշերտի վերասահմանում։ Զույգեք կպչուն Սահմանել լուսաշերտի գույնը գործողության հետ՝ այն մեկ այլ մակրոյով չեղարկելու համար։</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Սահմանել լուսաշերտի ռեժիմը</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Սահմանել լուսաշերտի ռեժիմը՝ {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Նշանակված սլոթի լուսաշերտի ռեժիմը սահմանում է կոնկրետ արժեքի։ Պահպանվում է ինչպես Լուսավորություն ներդիրի խմբագրումը, մինչև մեկ այլ գործողություն կամ օգտատերը փոխի այն։</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Նշանակված սլոթի լուսաշերտի ռեժիմը սահմանում է կոնկրետ արժեքի։ Պահպանվում է ինչպես Լուսաշերտ քարտում կատարված խմբագրումը, մինչև մեկ այլ գործողություն կամ օգտատերը փոխի այն։</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Շրջանցել լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Շրջանցել {0} լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Սլոթի լուսաշերտի ռեժիմը անցկացնում է ներքևում ընտրված ռեժիմներով։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։ Շրջանի դիրքը յուրաքանչյուր գործողության համար առանձին է և վերականգնվում է հավելվածը վերագործարկելիս։</value></data>
@@ -1560,14 +1594,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Մարում</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Մարում</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Գունապնակ</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Դատարկ գունապնակի դեպքում օգտագործվում է սլոթի սեփական Լուսավորություն ներդիրի գունապնակը։</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Դատարկ գունապնակի դեպքում օգտագործվում է սլոթի Լուսաշերտ քարտի գունապնակը։</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Ռեժիմ</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Ընտրեք, թե լուսաշերտի որ ռեժիմներով պետք է անցնի մակրոն։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Թրթռոց</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Մակրոյից կառավարում է սլոթի ֆիզիկական սարքի թրթռոցը։ Արձագանքողը աշխատում է լրիվ ուժգնությամբ պահման պատուհանի ընթացքում, ապա մարում է մինչև զրո մարման պատուհանի ընթացքում։ Կպչունը պահում է լրիվ ուժգնությամբ, մինչև գործարկվի Դադարեցնել թրթռոցը գործողությունը։ Խաղի թրթռոցի վրա դրվում է max()-ով, որպեսզի օգտատիրոջ կողմից կառավարվող հետադարձ կապը միշտ զգացվի։</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Թրթռոցի իմպուլս {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Թրթռոցի իմպուլս {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Պահել թրթռոցը {0}՝ մինչև մաքրվի</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Դադարեցնել թրթռոցը</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Դադարեցնել թրթռոցը</value></data>
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Դադարեցնել ձգանի թրթռոցը</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Վերացնում է սլոթի ցանկացած ակտիվ մակրոյի ձգանի թրթռոց։ Զույգեք կպչուն Ձգանի թրթռոցի վերասահմանման հետ՝ պահումը մակրոյից ավարտելու համար։</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Սահմանել գիրոյի ներգրավումը</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Մակրոյից սահմանում է սլոթի գիրոյի ներգրավման վիճակը։ Փոխանջատելը շրջում է ընթացիկ վիճակը։ Միացնելը ստիպում է գիրոն ներգրավված լինել։ Անջատելը ստիպում է չներգրավված լինել։ Անկախ է Գիրո ներդիրի ներգրավման կոճակից։ Երկու աղբյուրները համակցվում են OR-ով, ուստի ոչ մեկը չի կարող անջատել մյուսի ներգրավածը։</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Մակրոյից սահմանում է սլոթի գիրոյի ներգրավման վիճակը։ Փոխանջատելը շրջում է ընթացիկ վիճակը։ Միացնելը ստիպում է գիրոն ներգրավված լինել։ Անջատելը ստիպում է չներգրավված լինել։ Անկախ է «Շարժում և հպում» բաժնի Նպատակադրման միացման կոճակից։ Երկու աղբյուրները համակցվում են OR-ով, ուստի ոչ մեկը չի կարող անջատել մյուսի ներգրավածը։</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Ռեժիմ</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Փոխանջատել</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Միացնել</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Հպահարթակ</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Հպահարթակ</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր հպահարթակի մուտքը։ Ժեստերը (սահեցումներ, հպումներ, կծկումներ, ձևեր) և անընդհատ ելքի ռեժիմները (վիրտուալ ձող / D-pad, մկնիկ) դառնում են կապակցման աղբյուրներ, որոնք կարող եք կապել «Կապակցումներ» ներդիրում։</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր հպահարթակի մուտքը։ Ժեստերը (սահեցումներ, հպումներ, կծկումներ, ձևեր) և անընդհատ ելքի ռեժիմները (վիրտուալ ձող / D-pad, մկնիկ) դառնում են կապակցման աղբյուրներ, որոնք կարող եք կապել ցանկացած ելքի։</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Հպահարթակ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Հպահարթակի համար</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Այս կառավարիչի որ հպահարթակին են վերաբերում ստորև բերված կարգավորումները։ Յուրաքանչյուր հպահարթակ ունի իր ժեստերը, մկնիկի զգացողությունը և ցուցիչի տարածքը։</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Գիրո</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Կարգավորեք, թե ինչպես է այս կառավարիչի շարժման սենսորը կառավարում մկնիկի և ձողի ելքը։ Չափաբերեք հարթ մակերևույթի վրա՝ անշարժ վիճակի շեղումը զրոյացնելու համար, ապա ըստ ցանկության կարգավորեք զգայունությունը, հարթեցումը և միացման կանոնները։</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Չափաբերում</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Գիրոյի և արագացուցաչափի ընթացիկ ցուցմունքներ</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Զգայունություն</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Միավորներ, տարածք, առանցքների շրջում, իրական աշխարհի չափաբերում</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Միավորներ, շրջում, իրական աշխարհի չափաբերում</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° մեկ պտույտի համար</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Արձագանքի ձևավորում</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Մեռյալ գոտի, հարթեցում, արագացում, ելքի կոր</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Հաշվարկման համակարգ</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Տեղական, Խաղացող կամ Աշխարհ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Տարածք</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Ինչպես է մեկնաբանվում գիրոյի շարժումը։ «Տեղական»-ը օգտագործում է կառավարիչի հում առանցքները։ «Խաղացող»-ը հորիզոնական շարժումը պրոյեկտում է իրական աշխարհի ուղղահայացի (ծանրության) վրա, այնպես որ դաստակի նույն ոլորումը միշտ պտտում է տեսախցիկը՝ անկախ այն բանից, թե ինչպես եք բռնել կառավարիչը։ «Աշխարհ»-ը լրացուցիչ նորից պրոյեկտում է ուղղահայաց շարժումը աշխարհի առանցքների վրա։</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Բռնելու ձև</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Ուղղահայաց</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Բռնելու ձև</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Ինչպես է բռնված կառավարիչը։ Միասին պտտում է գիրոն, արագացուցաչափը և ծանրությունը՝ կապակցումների և վիրտուալ կառավարչի հայտնած շարժման համար։ D-pad-ը հետևում է նույն շրջանակին, այնպես որ «Վերև»-ը բռնելիս վերև է։</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Ինչպես է բռնված կառավարիչը</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Գծային</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Կտրուկ</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Մեղմ</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Վերականգնել միացման ուղղությունը</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Շարժման փոխանցում</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Կիրառել գիրոյի կարգավորումները շարժման փոխանցման վրա</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Այս ներդիրի ըստ ցանկության գիրոյի կարգավորումները (մեռյալ գոտի, զգայունություն, հարթեցում, արձագանքի կոր, շրջում) կիրառում է այն շարժման վրա, որը վիրտուալ կառավարիչը հայտնում է խաղին կամ էմուլյատորին։ Անջատեք՝ միայն չափաբերված ցուցմունքն ուղարկելու համար, որպեսզի խաղն ինքը կիրառի իր զգայունությունն ու հարթեցումը։ Չափաբերման շեղման ուղղումը միշտ կիրառվում է երկու դեպքում էլ։</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Գիրոյի քարտերի ըստ ցանկության կարգավորումները (մեռյալ գոտի, զգայունություն, հարթեցում, արձագանքի կոր, շրջում) կիրառում է այն շարժման վրա, որը վիրտուալ կառավարիչը հայտնում է խաղին կամ էմուլյատորին։ Անջատեք՝ միայն չափաբերված ցուցմունքն ուղարկելու համար, որպեսզի խաղն ինքը կիրառի իր զգայունությունն ու հարթեցումը։ Չափաբերման շեղման ուղղումը միշտ կիրառվում է երկու դեպքում էլ։</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Վերականգնել փոխանցման կարգավորումները</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Աղբյուրի գիրոյի զգայունության բազմապատկիչ։ 1.0 = շարժիչի լռելյայնը (500°/վ → լրիվ շեղում)։ 1.0-ից բարձր արժեքներն ավելի զգայուն են։ 1.0-ից ցածր արժեքներն ավելի քիչ զգայուն են։</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Վերականգնել լրիվ թեքման տիրույթը</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Վերականգնել թեքման մեռյալ գոտին</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Վերականգնել գիրոյի թեքումը</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Ինչպես են այս տողի աղբյուրները միաձուլվում, երբ մեկից ավելին ակտիվ է։ Ընտրեք տողը՝ այն ստորև բերված մանրամասների շերտում փոխելու համար։</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Ինչպես են այս տողի աղբյուրները միաձուլվում, երբ մեկից ավելին ակտիվ է։ Բացեք տողը՝ այն «Համադրել» կարգավորումում փոխելու համար։</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Իներցիա</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Թրեքբոլի ռեժիմ. նետեք ձողը և բաց թողեք, ցուցիչը շարունակում է շարժվել և աստիճանաբար կանգ է առնում։ Ձողը նորից շարժելը կանգնեցնում է այն։</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Որքան հեռու է ցուցիչը սահում նետումից հետո։ Տիրույթի վերին մասում այն շարունակում է մինչև նորից շարժեք ձողը։</value></data>
@@ -2330,7 +2369,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Թրթռաշարժիչի առանձին ուժեղացում, ձգանների թրթռոց, թրթռաշարժիչների տեղափոխում</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Շարժիչների ուժեղացում, ձգանների թրթռոց, ղեկի անկյան թրթռոց, հաստատուն ուժ</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ընդհանուր ուժեղացում</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Ձախ թրթռաշարժիչ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Աջ թրթռաշարժիչ</value></data>
@@ -2339,6 +2378,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Այս կառավարիչը ձգանի թրթռաշարժիչներ չունի, ուստի Xbox-ի իմպուլսային ձգաններ օգտագործող խաղերում թրթռոցը չի զգացվի։ Փոխարենը ձգանի յուրաքանչյուր ալիքը ավելացրեք նույն կողմի հիմնական թրթռաշարժիչին։</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Ստուգել թրթռոցը</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Թրթռաշարժիչների ակտիվություն</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ձախ</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Աջ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Կիրառում է շարունակական ուժ այս սարքի վրա, մինչև չանջատեք։ Խաղի ուժը ցանկացած աղբյուրից գերակայում է հաստատուն ուժի վրա, մինչ ակտիվ է, իսկ խաղի դադարելուց հետո հաստատուն ուժը վերսկսվում է։</value></data>
@@ -2417,7 +2458,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Սեղմեք կոճակներ կամ շարժեք առանցք/ձգան՝ գրանցելու համար։ Առանցքները հայտնաբերվում են, երբ շեղվում են 50%-ից ավելի։</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ավելացնել ցուցակից</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Ընտրեք ակտիվացնող մուտքը սլոթի սարքերից՝ այն գրանցելու փոխարեն։ Հպահարթակի ներդիրում միացված ժեստերը երևում են այստեղ։</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Մաքրել գործարկիչը</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Ընտրեք ակտիվացնող մուտքը սլոթի սարքերից՝ այն գրանցելու փոխարեն։ «Շարժում և հպում» բաժնում միացված հպահարթակի ժեստերը երևում են այստեղ։</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Հեռացնել մուտքը</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Սեղմեք ցանկացած մուտք…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>շրջված</value></data>
@@ -2647,7 +2689,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Վայրկյանների քանակը, որից հետո վիրտուալ կառավարիչը ոչնչացվում է, երբ նրա բոլոր կապակցված սարքերը անջատված են։ 0-ն անջատում է այն։ Նույն տիպի մնացած կառավարիչները տեղափոխվում են վերև՝ բացը լրացնելու համար և նորից կապվում ավելի փոքր համարով սլոթերին։</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>վայրկյան (0 = երբեք)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift շերտ</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ավելացնել շերտ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Ավելացնել shift շերտ։ Կապակցումների երկրորդ աղյուսակ, որն ակտիվանում է, երբ կոճակը պահվում կամ փոխանջատվում է։</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Հիմնական</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift շերտ</value></data>
@@ -2748,7 +2790,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Շարժումային ղեկավարում</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° մինչև {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Թեքման մեռյալ գոտիներ, կառավարիչի դիրքավորում</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Շարժումային թեքման մուտքի կարգավորումներ. թեքեք կառավարիչը ղեկի պես։ Կապակցումներում մուտքի բացվող ցանկից «Շարժումային թեքում» մուտքը կապակցեք ձողի առանցքին։</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Շարժման թեքության մուտքի կարգավորումներ. թեքեք կառավարիչը ղեկի պես։ «Կոճակներ» բաժնում «Շարժման թեքություն» մուտքը կապակցեք ձողի առանցքին։</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Վերականգնել շարժումային ղեկավարումը</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (աջ ձող)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (ձախ ձող)</value></data>
@@ -2757,7 +2799,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Աջ ձողի օղակ</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Flick Stick մուտքերի կարգավորում</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick մուտքերի կարգավորումներ. ուղղեք ձողը, և տեսախցիկը կշրջվի նույն ուղղությամբ, իսկ եզրով սահեցնելով կարելի է մանրակրկիտ պտտել։ Կապակցումներում մուտքի բացվող ցանկից ցանկացած շերտում «Flick Stick (աջ ձող)» մուտքը կապակցեք Մկնիկ X-ին։</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick մուտքերի կարգավորումներ. ուղղեք ձողը, և տեսախցիկը կշրջվի նույն ուղղությամբ, իսկ եզրով սահեցնելով կարելի է մանրակրկիտ պտտել։ «Ստեղներ և մկնիկ» բաժնում ցանկացած շերտում «Flick Stick (աջ ձող)» մուտքը կապակցեք Մկնիկ X-ին։</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Վերականգնել Flick Stick-ը</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Կետեր 360°-ում</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Մկնիկի հաշվարկներ տեսախցիկի մեկ ամբողջական 360° պտույտի համար։ Կախված է խաղի մկնիկի զգայունությունից. մեծացրեք, եթե ֆլիքը թերպտտում է, փոքրացրեք, եթե գերպտտում է։</value></data>
@@ -2849,7 +2891,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Աուդիո</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Մակրոների ձայները և հայելացված համակարգային աուդիոն հնչում են ընտրված կառավարիչի ներկառուցված բարձրախոսով՝ USB կամ Bluetooth-ով։ Սարքն ընտրեք վերևի բացվող ցանկում։ Այստեղի բոլոր կարգավորումները հետևում են դրան։</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ձայնի ելք</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Հայելացման աղբյուր, հապտիկա, ականջակալների ձայնի ուժգնություն, խաչաձև խառնում, Parametric EQ, սահմանափակիչ</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Հայելացման աղբյուր, ականջակալների ձայն, բուֆեր, ելքի ուղի</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Ձայները ինքնաբերաբար ուղղվում են ընտրված կառավարիչին։ USB-ով կառավարիչի սեփական աուդիո վերջնակետը համընկնում է սարքակազմի կոնտեյներով։ Bluetooth-ով աուդիոն հոսում է Sony HID շրջանակներով։</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Հայելացման աղբյուր</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Նվագարկման որ սարքը հայելացնել կառավարիչի բարձրախոսին։ Այն խաղերը, որոնք որոշակի ձայներ ուղարկում են առանձին նվագարկման սարքի, կարող են ուղղվել այս սարքին։</value></data>
@@ -2862,10 +2904,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Դադարեցնել բոլոր ձայները</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Դադարեցնել այս կառավարիչի բոլոր մակրո ձայները</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Ձայնային մակրոներ</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Ձայները նվագարկվում են մակրոներով. գործարկիչ (կոճակի սեղմում, բաց թողում, պահում կամ բանաձև) գումարած «Նվագարկել ձայն» գործողություն։ Ստեղծեք դրանք այստեղ կամ Մակրոներ ներդիրում։ Հապաղումները, կրկնությունները և փոխանջատիչները բոլորն աշխատում են։</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Ձայները նվագարկվում են մակրոներով. գործարկիչ (կոճակի սեղմում, բաց թողում, պահում կամ բանաձև) գումարած «Նվագարկել ձայն» գործողություն։ Ստեղծեք դրանք այստեղ կամ «Մակրոներ և ընտրացանկեր» բաժնում։ Հապաղումները, կրկնությունները և փոխանջատիչները բոլորն աշխատում են։</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Նոր ձայնային մակրո</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Ձայնային մակրոներ դեռ չկան։ Ստեղծեք մեկը և ընտրեք ձայնային ֆայլ ու գործարկիչ։</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Բացել այս մակրոն Մակրոներ ներդիրում</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Բացել այս մակրոն «Մակրոներ և ընտրացանկեր» բաժնում</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Ձայնային մակրո {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Նվագարկել ձայն</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Նվագարկել ձայնային ֆայլ (.wav, .mp3, .m4a, .aac, .wma, .flac) այս կառավարիչի ելքային սարքով</value></data>
@@ -3141,6 +3183,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>Աշխատում է</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Աշխատում է, դրայվերը միացված է</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Աշխատում է, կառավարիչները ակտիվ են</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR-ը տեղադրված է</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR-ը տեղադրված չէ</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR-ը աշխատում է</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR-ը աշխատում է, դրայվերը միացված է</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR-ը աշխատում է, կառավարիչները ակտիվ են</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Մեկ այլ OpenVR դրայվեր օգտագործում է HIDMaestro-ի դրայվերի անունը, ուստի SteamVR-ը կարող է բեռնել այն PadForge-ի դրայվերի փոխարեն, և վիրտուալ VR կառավարիչները չեն հայտնվի։ Խնդիրը վերացնելու համար հեռացրեք այդ դրայվերը՝ {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Սերիական կառավարիչ (COM պորտ)</value></data>
@@ -3284,7 +3331,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Սպառողական {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Մկնիկ</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Մկնիկի ժեստեր</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Պահեք ժեստի կոճակը, շարժեք մկնիկը, և բաց թողնելիս կատարվում է մեկ գործողություն՝ ձախ, աջ, վերև, ներքև կամ սովորական սեղմում, եթե շարժումը արագ շարժման հեռավորությունից փոքր է։ Հինգ ժեստերը կապակցեք «Կապակցումներ» ներդիրում կամ օգտագործեք որպես մակրոյի գործարկիչներ։</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Պահեք ժեստի կոճակը, շարժեք մկնիկը, և բաց թողնելիս կատարվում է մեկ գործողություն՝ ձախ, աջ, վերև, ներքև կամ սովորական սեղմում, եթե շարժումը արագ շարժման հեռավորությունից փոքր է։ Հինգ ժեստերը կապակցեք ցանկացած ելքի կամ օգտագործեք որպես մակրոյի գործարկիչներ։</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Միացնել մկնիկի ժեստերը</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Այս սլոթում ակտիվացնում է այս մկնիկի ժեստերի ճանաչիչը։ Ժեստի կոճակը ժեստի ընթացքում պահպանում է իր սովորական սեղմումը, ուստի ընտրեք կողային կոճակ, որը այլ կերպ չեք կապակցում։</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Ժեստի կոճակներ</value></data>
@@ -3318,7 +3365,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Անցնել շերտին</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Սահմանել Chroma գույնը</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Գունավորում է այս վիրտուալ կառավարիչին վերագրված Razer սարքերը և իրենց տեսակի մյուս բոլոր Razer սարքերը մեկ գույնով, քանի դեռ գործողությունն աշխատում է։</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Վերևի տևողության ընթացքում այս գույնը կիրառում է այս վիրտուալ կառավարիչին վերագրված Razer սարքերի և իրենց տեսակի մյուս բոլոր Razer սարքերի վրա, կամ բոլոր Razer սարքերի վրա, երբ վերագրված է Razer Chroma տողը։ Այն վերացնում է ցանկացած վիրտուալ կառավարիչի «Լուսավորություն» ներդիրի կարգավորումը, ապա լուսավորությունը վերադարձնում է։ Գույնը գործարկիչը պահելու ողջ ընթացքում պահելու համար օգտագործեք «Պահելիս»՝ «Մինչև բաց թողնելը» կրկնության հետ։ Երբ երկու մակրո միաժամանակ գունավորում են, հաղթում է ցանկում ավելի ցածրը, ուստի լրիվ սեղմման մակրոն դրեք իր թեթև սեղմման զույգի տակ։ Երբ երկու վիրտուալ կառավարիչների մակրոները գունավորում են նույն տեսակի Razer սարքը, հաղթում է խաղացողի ավելի փոքր համարը։ Պահանջվում է աշխատող Razer Synapse։</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Վերևի տևողության ընթացքում այս գույնը կիրառում է այս վիրտուալ կառավարիչին վերագրված Razer սարքերի և իրենց տեսակի մյուս բոլոր Razer սարքերի վրա, կամ բոլոր Razer սարքերի վրա, երբ վերագրված է Razer Chroma տողը։ Այն վերացնում է «Լույս և ձայն» բաժնում ցանկացած վիրտուալ կառավարչի սահմանած լուսավորությունը, ապա լուսավորությունը վերադարձնում է։ Գույնը գործարկիչը պահելու ողջ ընթացքում պահելու համար օգտագործեք «Պահելիս»՝ «Մինչև բաց թողնելը» կրկնության հետ։ Երբ երկու մակրո միաժամանակ գունավորում են, հաղթում է ցանկում ավելի ցածրը, ուստի լրիվ սեղմման մակրոն դրեք իր թեթև սեղմման զույգի տակ։ Երբ երկու վիրտուալ կառավարիչների մակրոները գունավորում են նույն տեսակի Razer սարքը, հաղթում է խաղացողի ավելի փոքր համարը։ Պահանջվում է աշխատող Razer Synapse։</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Ցուցադրել Dreamcast էկրանը</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Նկարներ է ցուցադրում այս սլոթը սնուցող Bliss-Box պորտի յուրաքանչյուր Dreamcast պադի VMU-ի վրա, ապա յուրաքանչյուր պորտ վերադարձնում է իր սեփական էկրանի կարգավորմանը։</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Ցուցադրել Dreamcast նկարներ՝ {0} × {1} մվ, կրկնությունների քանակ՝ {2}</value></data>
@@ -3612,10 +3659,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Սեղմելիս զրոյացնում է կառավարիչի կուտակված գիրո նպատակառման հիմքերը։ Հարթեցման պատմությունը մաքրվում է, «Շարժման հակում»-ի չեզոքը նորից ֆիքսվում է, ծանրության գնահատականը նորից սկզբնավորվում է կառավարիչի ընթացիկ դիրքից, և «Շարժում՝ թեքում», «Շարժում՝ պտույտ» և «Շարժում՝ գլորում» տողերի կուտակած պտույտը չեղարկվում է։</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Ցանկացած սարք)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Ընտրացանկեր</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Ընտրացանկերը ֆիզիկական ձողը կամ հպահարթակը դարձնում են էկրանային օղակ կամ ցանց։ Ավելացրեք ընտրացանկ, ընտրեք, թե ինչն է այն բացում, ապա անվանեք յուրաքանչյուր բջիջը և տվեք կապակցում։</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Ընտրացանկերը ֆիզիկական ձողը կամ հպահարթակը դարձնում են էկրանային օղակ կամ ցանց։ Սեղմեք «Ընտրացանկեր»-ի կողքի + կոճակը՝ նորը ստեղծելու համար, ընտրեք, թե ինչն է այն բացում, ապա յուրաքանչյուր բջջի տվեք անուն և գործողություն։</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Նոր ընտրացանկ</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Ընտրացանկ {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Ընտրացանկի անունը</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Միացված</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Բացում</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Ոճ</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Շառավղային օղակ</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Հպման ցանց</value></data>
@@ -3635,12 +3684,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>Բջիջներ</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Կենտրոնական բջիջ</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Ցուցադրել պիտակները</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Էկրանի դիրքը</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Չափս</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Անթափանցիկություն</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Ներգրավման մեռյալ գոտի</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Բջիջների կապակցումներ</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Բջիջ {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Ավելացնել բջիջ</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Հեռացնել վերջին բջիջը</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Խմբագրել բջիջը</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Անուն</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Գործողություն</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Պատկերակ</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Կենտրոն</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ոչինչ</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Ստեղնաշարի ստեղն</value></data>
@@ -3653,7 +3706,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Գործարկվում է մեկ անգամ սեղմումը բաց թողնելիս։ Ուղղեք դեպի բջիջը, սեղմեք ձողը կամ հպահարթակը, ապա բաց թողեք սեղմումը։</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Գործարկվում է մեկ անգամ, երբ բաց եք թողնում։ Բարձրացրեք մատը հարթակից կամ թողեք, որ ձողը վերադառնա կենտրոն, մինչ բջիջն ընդգծված է։</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>Կապակցումը պահվում է այնքան ժամանակ, քանի դեռ բջիջը ընդգծված է։ Սեղմում պետք չէ։</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Քանի բջիջ ունի ընտրացանկը։ Շառավղային օղակի դեպքում սա հաշվում է միայն օղակը, կենտրոնական բջիջը առանձին է։</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Ավելացնում է կենտրոնական բջիջ, որն ընտրվում է, երբ ձողը կամ մատը գտնվում է «Ներգրավման մեռյալ գոտու» ներսում։</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Ձողերի համար՝ որքան հեռու պետք է հրել, որ ընտրացանկը բացվի և օղակի բջիջները ընդգծվեն։ Շառավղային ընտրացանկերում սա նաև կենտրոնական տարածքն է ձողերի և հպահարթակների համար. դրա ներսում կենտրոնական բջիջն է ընտրվում, եթե այն կա։</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Էկրանային վերադիրի վրա գծել յուրաքանչյուր բջջի պիտակը։</value></data>
@@ -3663,8 +3715,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Վերադիրի չափը՝ իր նորմալ չափի տոկոսով։</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Վերադիրի անթափանցիկությունը։ 100%-ը լրիվ անթափանց է։</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Վերադիրում այս բջջի վրա ցուցադրվող տեքստը։</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ինչ է անում այս բջիջը գործարկվելիս. «Ստեղնաշարի ստեղն»-ը սեղմում է ստեղնաշարի ստեղն, «Կառավարիչի կոճակ»-ը սեղմում է այս սլոթի վիրտուալ կառավարիչի կոճակը։ «Ոչինչ» դրված բջիջը դարձյալ գործարկվում է որպես ընտրացանկի տարր՝ «Կապակցումներ» տողերի և մակրոյի գործարկիչների համար։</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Կարդացվում է այս սլոթին վերագրված ֆիզիկական կառավարիչներից, ոչ թե վիրտուալ կառավարիչի դասավորությունից։ Ստորև բջիջների կապակցումները ընտրացանկի ելքն են։</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ինչ է անում այս բջիջը գործարկվելիս. «Ստեղնաշարի ստեղն»-ը սեղմում է ստեղնաշարի ստեղն, «Կառավարիչի կոճակ»-ը սեղմում է այս սլոթի վիրտուալ կառավարիչի կոճակը։ «Ոչինչ» դրված բջիջը դարձյալ գործարկվում է որպես ընտրացանկի տարր՝ կապակցումների և մակրոյի գործարկիչների համար։</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Կարդացվում է այս սլոթին վերագրված ֆիզիկական կառավարիչներից, ոչ թե վիրտուալ կառավարիչի դասավորությունից։ Ստորև բերված բջիջները որոշում են ընտրացանկի ելքը։</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Հատուկ առանցքներ</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Ղեկավարման X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Ղեկավարման Y</value></data>
@@ -3689,13 +3741,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ելք</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ստեղներ և մկնիկ</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Նոտաներ և կարգավորիչներ</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Ձեռքեր</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ձողեր և ձգաններ</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Թրթռոց և հետադարձ կապ</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Շարժում և հպում</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Լույս և ձայն</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Մակրոներ և ընտրացանկեր</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Բաս շեյքերներ</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Այս վիրտուալ կառավարիչի ստացած խաղի թրթռոցը և հետադարձ ուժը ուղղորդում է աուդիո ելքին՝ որպես ցածր հաճախականության տոներ բաս շեյքերների և սաբվուֆերների համար։</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Խաղի թրթռոցը նվագարկում է որպես ցածր տոներ՝ բաս շեյքերների կամ սաբվուֆերի միջոցով։</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Ելքային սարք, ալիքներ, ուժեղացում, հնչերանգ յուրաքանչյուր շարժիչի համար</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Աշխատում է Xbox, DualShock 3, DualShock 4 / DualSense և Nintendo Switch Pro վիրտուալ կառավարիչների հետ, ինչպես նաև հետադարձ ուժով Extended վիրտուալ կառավարիչների, օրինակ մրցարշավային ղեկերի, և Steam Deck Controller-ի (Composite) հետ։ Խաղի հետադարձ կապը և «Փորձարկել թրթռոցը» նվագարկվում են աուդիո ելքով։ Մակրոյի թրթռոցը մնում է կառավարիչի վրա։</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Վերականգնել թրթռոցը դեպի աուդիո</value></data>
@@ -3724,19 +3779,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Այս հետադարձ կապի ալիքը նվագարկում է որպես տոն։ Ուժեղացումն ու հաճախականությունը մնում են սահմանված անջատված ժամանակ։</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Այս ալիքի տոնի հաճախականությունը՝ 20-ից 120 Հց։ Գործարկեք հաճախականության սրբագրումը՝ գտնելու համար, թե որտեղ է ձեր շեյքերն ամենաուժեղ արձագանքում։</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Այս ալիքի ձայնի ուժգնությունը մինչև գլխավոր ուժեղացումը։</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Ուժեղացում</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Փորձարկել</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Նվագարկում է այս ալիքի տոնը 1.5 վայրկյան՝ սահմանված ուժեղացմամբ։</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Վերականգնել ցածր թրթռաշարժիչը</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Վերականգնել բարձր թրթռաշարժիչը</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Վերականգնել ձախ ձգանը</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Վերականգնել աջ ձգանը</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Ստուգել շեյքերները</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Հաճախականության անցում</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Ցածր թրթռաշարժիչի երթուղավորման վրա ութ վայրկյանում տոնն անցկացնում է 20-ից 120 Hz։ Նկատեք, թե որտեղ է շեյքերը ամենաուժեղ արձագանքում, և ալիքների հաճախականությունները սահմանեք այնտեղ։</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Կանգնեցնել</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Կանգնեցնում է փորձնական տոնը կամ անցումը։</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Ցանկացած NFC պիտակ</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC պիտակ՝ {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Զտել մուտքերը (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Զտել ելքերն ու մուտքերը</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Ցույց է տալիս միայն համապատասխանող տողերն ու մուտքերը։ Սեղմեք Ctrl+F՝ այստեղ մուտքագրելու համար։</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Ընտրեք, թե որ սարքերի մուտքերը առաջարկեն ընտրիչները</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Ցուցադրվում է ընտրիչում</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Ցանկացած ձայնային արտահայտություն</value></data>
@@ -3843,6 +3901,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Վերականգնել սնումը</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Պարամետրիկ EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Յուրաքանչյուր գոտու զտիչներ կառավարչի աուդիոյի վրա։ Կիրառվում է աուդիոն կոդավորելուց առաջ, ուստի ստորև նշված սահմանափակիչը թույլ չի տալիս ուժեղացված գոտուն կտրվել։</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Նախաուժեղարար, գոտիներ, ներմուծում</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Նախաուժեղարար</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Ընդհանուր մակարդակը մինչև գոտիները։ AutoEq պրոֆիլները գալիս են բացասական նախաուժեղացմամբ, որպեսզի նրանց ուժեղացումները չկտրվեն, և ներմուծումը սահմանում է սա ձեր փոխարեն։</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Միաց.</value></data>
@@ -4069,7 +4128,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Վերականգնել՝ բացում հպումով կամ շեղումով։</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Ղեկավարել սրանով</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Ֆիզիկական մուտքը, որը ղեկավարում է ընդգծված վանդակը, մինչ շերտը պահում է այս ընտրացանկը բաց։</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Կարդացվում է այս սլոթին նշանակված ֆիզիկական կառավարիչներից։ Շերտը բացում է ընտրացանկը, այս մուտքը ղեկավարում է այն։ Վանդակների կապակցումները որոշում են նրա ելքը։</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Կարդացվում է այս սլոթին նշանակված ֆիզիկական կառավարիչներից։ Շերտը բացում է ընտրացանկը, և այս մուտքը ղեկավարում է այն։ Ընտրացանկի ելքը որոշում են նրա բջիջները։</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Պատկերակի չափ</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Պատկերակի չափը ընտրացանկի սովորական պատկերակի չափի նկատմամբ՝ 25%-ից 200%։ Պատկերակը մաքրելը վերականգնում է այն 100%-ի։</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Պահում է ընդգծված վանդակի կապակցումը, քանի դեռ պահվում է Սեղմման մուտքը։ Ընդգծված շառավղային կենտրոնը կարող է գործարկվել, մինչ ձողը հանգստի վիճակում է։</value></data>
@@ -4192,7 +4251,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ի հղումը Windows-ի չփաստաթղթավորված IPolicyConfig ինտերֆեյսի դասավորության վերաբերյալ, որը PadForge-ը օգտագործում է կառավարչի աուդիո վերջնակետը վերամիացնելու համար։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Պարամետրիկ EQ պրոֆիլի ձևաչափը, որը Աուդիո ներդիրը ներմուծում է՝ Jaakko Pasanen։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Պարամետրիկ EQ պրոֆիլի ձևաչափը, որը ներմուծում է կառավարչի Պարամետրիկ EQ-ն՝ Jaakko Pasanen։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ի տեխնիկաները Տեքստային բլոկի մակրոների և ստեղնաշարի համակցության կեռիկի հիմքում՝ Unicode մուտքագրում, փաթեթի սահմաններ, Win ստեղնի դիմակավորող ստեղն և նշված ներարկված մուտք։ GPL-2.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4396,6 +4455,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Ուղղություն</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Քայլ</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>մինչև</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Բռնակ</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} կարգավորում է այս կառավարչի ձգանները։</value></data>
@@ -4440,7 +4500,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Բռնակը բավականաչափ հեռու չշարժվեց, ուստի տիրույթը մնում է նախկինը։ Սկանավորման ընթացքում տեղափոխեք այն յուրաքանչյուր եզր։</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon-ը փակվեց մինչև սկանավորման ավարտը։</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Խաղում է Novint Falcon-ով Force Dimension-ի SDK-ի միջոցով, որը դուք տեղադրում եք Force Dimension-ից։ Բռնակը ձող է, բռնակի չորս կոճակները կոճակներ են, իսկ PadForge-ը խաղի թրթռոցն ու էֆեկտները բռնակին հաղորդում է որպես ուժ։ Յուրաքանչյուր սլոթի Հետադարձ ուժ ներդիրում կարգավորվում է, թե ինչպես է Falcon-ը զգացվում։</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Խաղում է Novint Falcon-ով Force Dimension-ի SDK-ի միջոցով, որը դուք տեղադրում եք Force Dimension-ից։ Բռնակը ձող է, բռնակի չորս կոճակները կոճակներ են, իսկ PadForge-ը խաղի թրթռոցն ու էֆեկտները բռնակին հաղորդում է որպես ուժ։ Յուրաքանչյուր կառավարչի «Թրթռոց և հետադարձ կապ» բաժնի Novint Falcon քարտում կարգավորվում է, թե ինչպես է Falcon-ը զգացվում։</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Կառավարել Novint Falcon-ը</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Բացում է յուրաքանչյուր Falcon Force Dimension-ի dhd64.dll-ի միջոցով։ Բաց Falcon-ը պատկանում է միայն PadForge-ին, ուստի այս ընտրանքը միացրած ժամանակ FalconJoyForce-ը և Force Dimension-ի գործիքները չեն կարող այն բացել։ Անջատված վիճակում PadForge-ը փակում է բոլոր Falcon-ները։</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-ի գրադարանը սահմանվեց՝ {0}։ PadForge-ը բեռնում է այն մի քանի վայրկյանում, և մեկ այլ օրինակի վրա բաց Falcon-ը նորից բացվում է այս օրինակի վրա։</value></data>
@@ -4608,7 +4668,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Որոշակի ժամանակ</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Մինչև դադարեցումը</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Ժամանակ</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Նվագարկվում է այս սլոթի յուրաքանչյուր DualSense-ի և DualSense Edge-ի վրա։ Խաղի սեփական ձգանի էֆեկտը և խաղի մոդինը առաջնային են, իսկ Հարմարվող ձգաններ ներդիրի կարգավորումը վերադառնում է էֆեկտի ավարտին։ Գոտիները տատանվում են 0-ից (հանգիստ) մինչև 9 (լրիվ սեղմում)։ Աղեղը, Վարգը և Մեքենան DualSense-ի պաշտոնական էֆեկտներ չեն, և որոնվածքի թարմացումը կարող է հեռացնել դրանք։ Երբ «Թարգմանել հարմարվող ձգանների թրթռումները» միացված է, Xbox-ի կառավարիչները թրթռացող էֆեկտները զգում են որպես ձգանի թրթռոց։</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Նվագարկվում է այս սլոթի յուրաքանչյուր DualSense-ի և DualSense Edge-ի վրա։ Խաղի սեփական ձգանի էֆեկտը և խաղի մոդինը առաջնային են, իսկ Հարմարվող ձգաններ քարտի կարգավորումը վերադառնում է էֆեկտի ավարտին։ Գոտիները տատանվում են 0-ից (հանգիստ) մինչև 9 (լրիվ սեղմում)։ Աղեղը, Վարգը և Մեքենան DualSense-ի պաշտոնական էֆեկտներ չեն, և որոնվածքի թարմացումը կարող է հեռացնել դրանք։ Երբ «Թարգմանել հարմարվող ձգանների թրթռումները» միացված է, Xbox-ի կառավարիչները թրթռացող էֆեկտները զգում են որպես ձգանի թրթռոց։</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0}՝ {1}, {2} մվ</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}՝ {1}, մինչ պահված է</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}՝ {1}, մինչև դադարեցումը</value></data>

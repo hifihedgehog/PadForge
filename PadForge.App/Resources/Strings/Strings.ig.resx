@@ -111,6 +111,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ngwaọrụ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ntinye sitere na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tinye ngwaọrụ</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod egwuregwu</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Nabata mod egwuregwu DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port mod egwuregwu</value></data>
@@ -328,6 +329,7 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Ọwa</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Mwepụta MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Ọwa MIDI (1-16)</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Tọgharịa deflection</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Tọgharịa sensitivity</value></data>
@@ -367,13 +369,13 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Aha</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Mgbe</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Mgbe a pịara</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Mgbe a hapụrụ</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Mgbe a na-ejide ya</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Mgbe niile</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Layer ọ bụla</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Tinye omume</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Dezie omume</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Ụdị</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Keyboard na ederede</value></data>
   <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Mouse</value></data>
@@ -413,10 +415,10 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Bọtịn {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pịa {0} maka {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Pịa {0} maka {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Hapụ {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Hapụ key {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Chere {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Chere {0} ms</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Pịa mouse {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Hapụ mouse {0}</value></data>
 
@@ -962,6 +964,7 @@
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Tọgharịa motor dị elu</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Tọgharịa trigger aka ekpe</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Tọgharịa trigger aka nri</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Lelee shaker ndị ahụ</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Kwụsị</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Tag NFC ọ bụla</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC: {0}</value></data>
@@ -1268,6 +1271,26 @@
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Dekọọ nke gị</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Brightness LED, Usoro onye egwuregwu, Ọnọdụ LED mute</value></data>
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ìhè bọtịnụ Guide ma ọ bụ Home</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ike motor ọ bụla, rumble trigger, ịgbanwe motor</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ike trigger ọ bụla, ịgbanwe motor, ịma jijiji adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ike motor ọ bụla, rumble trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ike trigger ọ bụla, ịgbanwe motor, ịma jijiji adaptive trigger, Constant Trigger Force</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Key na Mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note na Control</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Aka</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Mee</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Gụgharịa aha</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu ọhụrụ</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Tinye cell</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Wepụ cell ikpeazụ</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Dezie cell</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Aha</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Omume</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Akara ngosi</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ngwaọrụ a</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller dum</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Onye egwuregwu ma ọ bụ Ụwa</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>A wụnyela SteamVR</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR na-agba ọsọ</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Aka ekpe</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Aka nri</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Kpochapụ trigger</value></data>
 </root>

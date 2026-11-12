@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Copia</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Enganxa</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplica</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Canvia el nom</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>Activat</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>Desactivat</value></data>
   <data name="Common_On" xml:space="preserve"><value>Activat</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositiu</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imatge</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Llista</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Sortides: {0}</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Moviment</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Fes clic en un control i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Fes clic en una tecla o en un botó del ratolí i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Fes clic en una nota o en un control lliscant i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Assigna-ho tot omet les sortides de contacte dels botons A i B. Fes clic a l'anell que envolta A o B per vincular-ne una.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>S'està esperant {0}. Prem l'entrada al dispositiu.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, s'acciona amb</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Més opcions</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Menys opcions</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Botó frontal</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Botó superior</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Botó de sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Botó</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Creueta direccional</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Palanca</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gallet</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Panell tàctil</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor de moviment</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Tecla del teclat</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Botó del ratolí</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Moviment del ratolí</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Roda de desplaçament</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Canvi de control</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor de contacte</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Recorregut analògic</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, mà esquerra</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, mà dreta</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>Quina pulsació veuen els jocs quan es mantenen premuts els dos botons d'un parell</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Quina pulsació veuen els jocs quan es mantenen premudes les dues tecles d'un parell</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Manté una petita desviació de la palanca perquè els jocs mostrin les indicacions del comandament</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjant</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecciona una macro a l'esquerra o prem Afegeix per crear-ne una.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecciona una macro de la llista o prem + al costat de Macros per crear-ne una.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Freda</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Previsualització</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extres</value></data>
@@ -861,7 +890,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gallets d'impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gallets d'impuls</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guany per gallet, intercanvi de motors, vibracions dels gallets adaptatius</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guany per gallet, intercanvi de motors, vibracions dels gallets adaptatius, força constant</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvia les ordres dels motors de cada gallet (gallets d'impuls de Xbox) del comandament virtual al comandament físic Xbox One, Elite o Series assignat. La vibració dels gallets que genera el joc passa automàticament. Els controls de sota escalen la intensitat de cada gallet.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gallet esquerre</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gallet dret</value></data>
@@ -931,9 +960,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palanques</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zones mortes, antizones mortes, corbes de sensibilitat i calibratge del desplaçament del centre per a cada palanca. Cada secció de sota correspon a una palanca analògica de la sortida activa. Els perfils ampliats poden tenir fins a quatre palanques. Els comandaments estàndard en tenen dues.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gallets</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zones mortes, antizones mortes, escalat del rang màxim i corbes de sensibilitat per a cada gallet. Cada secció de sota correspon a un eix de gallet de la sortida activa. Els perfils ampliats poden oferir fins a vuit eixos compartits amb la pestanya Palanques.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>Zones mortes, antizones mortes, escalat del rang màxim i corbes de sensibilitat per a cada gallet. Cada targeta de gallet correspon a un eix de gallet de la sortida activa. Els perfils ampliats poden oferir fins a vuit eixos, compartits entre palanques i gallets.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>Retroacció de força</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ajusta com PadForge escala els esdeveniments de retroacció de força del joc i com els encamina cap als motors de vibració o els actuadors hàptics del comandament físic. Vibració per àudio hi afegeix una capa que depèn de l'àudio del sistema.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Aquest dispositiu</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tot el comandament</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>La vibració es reprodueix a {0} com a polsos hàptics, enviats directament al dispositiu. Com més forta és la vibració, més fort és el pols triat i més ràpid es repeteix.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>La resposta hàptica de {0} està desactivada a Logi Options+, així que no reprodueix res fins que la tornis a activar allà.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Aquest dispositiu encara no ha respost. La vibració es reproduirà quan es desperti.</value></data>
@@ -1000,6 +1031,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>auriculars, catifes de ratolí i altaveus</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>auriculars</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra de llum</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Els jocs prenen el control quan escriuen la il·luminació.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introdueix un color hexadecimal de sis dígits (RRGGBB o #RRGGBB) i prem Retorn o fes clic fora per aplicar-lo.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Elimina aquest color de la paleta</value></data>
@@ -1017,7 +1049,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Restableix la vibració per àudio</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Restableix {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Esborra les assignacions</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>S'esborraran totes les assignacions d'aquesta pestanya. Les fonts assignades, les fonts addicionals i la configuració de combinació tornaran als valors per defecte.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>S'esborraran totes les assignacions d'aquesta capa. Les fonts assignades, les fonts addicionals i la configuració de combinació tornaran als valors per defecte.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Patró de jugador</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mode del LED de silenci</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Brillantor dels LED</value></data>
@@ -1083,6 +1115,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botons</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Perfils importats…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Comandament ampliat</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gestiona els perfils de HIDMaestro importats per l'usuari: captura'n un de nou des d'un dispositiu connectat, exporta'n un d'existent a JSON o suprimeix-ne un que ja no necessitis.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clona el dispositiu 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Assigna directament cada eix, botó i POV del dispositiu seleccionat a la sortida virtual amb el mateix número. Ajusta la disposició a la mida del dispositiu i substitueix les files d'aquest dispositiu a la ranura per una transmissió directa 1:1.</value></data>
@@ -1130,6 +1163,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Retroacció de força</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Canal</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Sortida MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Nombre de CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>Nombre de sortides CC (el màxim depèn del CC inicial)</value></data>
@@ -1161,7 +1195,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Elimina aquest parell de tecles.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Primera tecla del parell oposat.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Segona tecla del parell oposat.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direccions cardinals oposades simultànies (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Mantén el comandament actiu</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alguns jocs aturen la vibració i canvien les indicacions de botons tan bon punt detecten entrada de ratolí o de teclat. Mantenir una petita desviació de la palanca fa que el joc continuï tractant aquest comandament com el dispositiu actiu. La retenció només actua mentre els dos eixos de la palanca són per sota del nivell mantingut, de manera que una palanca amb deriva continua comptant com en repòs. Una entrada que supera el nivell en qualsevol dels dos eixos l'allibera i passa sense canvis. Mantén la desviació per sota de la zona morta del joc perquè no es mogui res dins del joc.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Mantén actiu</value></data>
@@ -1181,7 +1214,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Restableix el clic</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Restableix la meitat del panell</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Restableix el mode d'activació</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Restableix les cel·les</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Restableix la zona morta d'activació</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Restableix la geometria del menú</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Restableix la cel·la</value></data>
@@ -1237,6 +1269,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Esborra-ho tot</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Font</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opcions</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Zona morta d'eix a botó</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Inverteix</value></data>
@@ -1274,7 +1307,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Si està marcat, l'eix torna gradualment al centre en deixar anar la tecla. Si no està marcat, manté l'última posició.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Botó que inverteix la sortida de la fila mentre es manté premut</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Modificador: mentre es manté premut, la sortida de la fila canvia de signe.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Afegeix una font</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Afegeix una font</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Afegeix una altra entrada física a aquesta fila</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Elimina aquesta font</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1394,10 +1427,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Personalitzada</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibra el centre</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punt central</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Centre</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Desplaçaments del centre, forma i valors de la zona morta per eix, una corba per a cada eix, rang, direcció</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rang</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra el límit és la manera recomanada d'ajustar una palanca. Escombra la vora que la palanca pot assolir físicament i després reescala proporcionalment cada posició respecte a aquesta vora mesurada, de manera que tot el moviment natiu, a cada angle i a cada desviació, es projecta sobre un cercle ideal sense retallar res. Els quatre controls lliscants de sota només limiten els eixos cardinals. Fes-los servir per limitar el rang expressament, no per corregir-lo.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra el límit mesura la vora que la palanca pot assolir i la converteix en un cercle complet. Els quatre controls lliscants només limiten cada direcció.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>S'està mostrejant...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Desplaçament del centre X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Desplaçament del centre Y</value></data>
@@ -1416,7 +1450,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nom</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>Activador</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Quan</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>Activació</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>En prémer</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>En deixar anar</value></data>
@@ -1448,9 +1482,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>La capa a què pertany aquesta macro. Amb Qualsevol capa, s'activa sigui quina sigui la capa activa. Amb Base i les capes amb nom, només s'activa mentre aquesta capa està activa, exactament com una fila d'assignació.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Qualsevol capa</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>S'executa contínuament mentre aquest comandament virtual està actiu. No cal cap botó activador.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Seqüència d'accions</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Fes</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Capa, font, llindar, direcció, consumeix els botons activadors, repetició</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Afegeix una acció</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Edita l'acció</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Tipus</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Botons virtuals</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Eixos virtuals i roda</value></data>
@@ -1535,7 +1569,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Deixa anar el botó del ratolí {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Mostra o amaga la superposició del panell tàctil</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Defineix el color de la barra de llum</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Substitueix el color de la barra de llum de la ranura PlayStation assignada per un color RGB triat. Reactiu s'esvaeix de la intensitat màxima fins al negre durant la finestra d'esvaïment configurada i després torna a la configuració de la pestanya Il·luminació. Persistent manté el color fins que s'executa una acció Esborra la substitució de la barra de llum. Les escriptures del joc continuen tenint prioritat sobre la substitució.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Substitueix el color de la barra de llum de la ranura PlayStation assignada per un color RGB triat. Reactiu s'esvaeix de la intensitat màxima fins al negre durant la finestra d'esvaïment configurada i després torna a la configuració de la targeta Barra de llum. Persistent manté el color fins que s'executa una acció Esborra la substitució de la barra de llum. Les escriptures del joc continuen tenint prioritat sobre la substitució.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Fes centellejar la barra de llum {0} (esvaïment {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mantén la barra de llum {0} fins que s'esborri</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Esborra la substitució de la barra de llum</value></data>
@@ -1543,7 +1577,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Allibera qualsevol substitució activa de la barra de llum a la ranura assignada. Combina-la amb una acció Defineix el color de la barra de llum persistent per desfer-la des d'una altra macro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Defineix el mode de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Defineix el mode de la barra de llum a {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Defineix el mode de la barra de llum de la ranura assignada a un valor concret. Es conserva com un canvi fet a la pestanya Il·luminació fins que una altra acció o l'usuari el canvia.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Defineix el mode de la barra de llum de la ranura assignada a un valor concret. Es conserva com un canvi fet a la targeta Barra de llum fins que una altra acció o l'usuari el canvia.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Canvia cíclicament els modes de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Recorre cíclicament {0} modes de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Fa avançar el mode de la barra de llum de la ranura pels modes seleccionats a sota. Cada activació passa al mode marcat següent. La posició del cicle és pròpia de cada acció i es restableix quan es reinicia l'aplicació.</value></data>
@@ -1558,7 +1592,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Esvaïment</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fosa</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Una paleta buida fa servir la paleta de la pestanya Il·luminació de la mateixa ranura.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Una paleta buida fa servir la paleta de la targeta Barra de llum de la ranura.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Tria per quins modes de la barra de llum ha de passar la macro. Cada activació avança al mode marcat següent.</value></data>
 
@@ -1576,7 +1610,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>Atura la vibració dels gallets</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>Allibera qualsevol vibració dels gallets activada per una macro a la ranura. Combina-la amb una Substitució de la vibració dels gallets persistent per acabar la retenció des d'una macro.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>Defineix l'activació del giroscopi</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Defineix l'estat d'activació del giroscopi de la ranura des d'una macro. Commutació inverteix l'estat actual. Activat força el giroscopi activat. Desactivat el força desactivat. És independent del botó d'activació de la pestanya Giroscopi. Les dues fonts es combinen amb OR, de manera que cap no pot desactivar el que l'altra ha activat.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>Defineix l'estat d'activació del giroscopi de la ranura des d'una macro. Commutació inverteix l'estat actual. Activat força el giroscopi activat. Desactivat el força desactivat. És independent del Botó d'activació de la punteria de la secció Moviment i tacte. Les dues fonts es combinen amb OR, de manera que cap no pot desactivar el que l'altra ha activat.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>Commutació</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Activat</value></data>
@@ -1724,7 +1758,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Panell tàctil</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Panell tàctil</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada de cada panell tàctil. Els gestos (lliscaments, tocs, pinçaments, formes) i els modes de sortida continus (palanca / creueta virtual, ratolí) es converteixen en fonts d'assignació que pots vincular a la pestanya Assignacions.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada de cada panell tàctil. Els gestos (lliscaments, tocs, pinçaments, formes) i els modes de sortida continus (palanca / creueta virtual, ratolí) es converteixen en fonts d'assignació que pots vincular a qualsevol sortida.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Panell tàctil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número del panell tàctil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>El panell tàctil d'aquest comandament al qual s'aplica la configuració de sota. Cada panell tàctil conserva els seus gestos, el comportament del ratolí i la regió del punter.</value></data>
@@ -2014,10 +2048,14 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopi</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajusta com el sensor de moviment d'aquest comandament controla la sortida de ratolí i de palanca. Calibra'l sobre una superfície plana per anul·lar la deriva en repòs i, després, ajusta la sensibilitat, el suavitzat i les regles d'activació al teu gust.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibratge</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroscopi i acceleròmetre en temps real</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilitat</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitats, espai, inversió d'eixos, calibratge amb el món real</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitats, inversió d'eixos, calibratge amb el món real</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per volta</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma de la resposta</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona morta, suavitzat, acceleració, corba de sortida</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Sistema de referència</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Jugador o Món</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espai</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Com s'interpreta el moviment del giroscopi. Local fa servir els eixos del comandament en brut. Jugador projecta el moviment horitzontal sobre la vertical real (la gravetat), de manera que el mateix gir de canell sempre fa girar la càmera, independentment de com aguantis el comandament. Món, a més, torna a projectar el moviment vertical sobre els eixos del món.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Subjecció</value></data>
@@ -2089,6 +2127,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Vertical</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Subjecció</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Com s'agafa el comandament. Fa girar alhora el giroscopi, l'acceleròmetre i la gravetat, per a les assignacions i per al moviment que informa el comandament virtual. La creueta segueix el mateix sistema de referència, de manera que Amunt és amunt en aquesta posició.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Com s'agafa el comandament</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineal</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agressiva</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Relaxada</value></data>
@@ -2121,7 +2160,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Restableix la direcció d'activació</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmissió directa del moviment</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplica l'ajust del giroscopi a la transmissió directa del moviment</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplica l'ajust opcional del giroscopi d'aquesta pestanya (zona morta, sensibilitat, suavitzat, corba de resposta, inversió) al moviment que el comandament virtual comunica al joc o a l'emulador. Desactiva-ho per enviar només la lectura calibrada i deixar que el joc apliqui la seva pròpia sensibilitat i suavitzat. La correcció de la deriva pel calibratge s'aplica sempre en tots dos casos.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplica l'ajust opcional de les targetes de Giroscopi (zona morta, sensibilitat, suavitzat, corba de resposta, inversió) al moviment que el comandament virtual comunica al joc o a l'emulador. Desactiva-ho per enviar només la lectura calibrada i deixar que el joc apliqui la seva pròpia sensibilitat i suavitzat. La correcció de la deriva pel calibratge s'aplica sempre en tots dos casos.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Restableix l'ajust de la transmissió directa</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de la sensibilitat del giroscopi per a cada font. 1.0 = el valor per defecte del motor (500°/s → desviació completa). Els valors per sobre d'1.0 són més sensibles. Els valors per sota d'1.0 són menys sensibles.</value></data>
@@ -2138,7 +2177,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Restableix el rang de basculament complet</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Restableix la zona morta del basculament</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Restableix el basculament del giroscopi</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Com es combinen les fonts d'aquesta fila quan n'hi ha més d'una d'activa. Selecciona la fila per canviar-ho a la franja de detalls de sota.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Com es combinen les fonts d'aquesta fila quan n'hi ha més d'una d'activa. Obre la fila per canviar-ho a l'opció Combina.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Inèrcia</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mode trackball: mou la palanca amb un cop sec i deixa-la anar, i el cursor continua avançant fins que s'atura. Si tornes a moure la palanca, l'atures.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Quant llisca el cursor després d'un cop sec. Al capdamunt del rang, continua fins que tornes a moure la palanca.</value></data>
@@ -2339,7 +2378,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eix del gallet</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guany per motor, vibració dels gallets, intercanvi de motors</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guany per motor, vibració dels gallets i per angle de direcció, força constant</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Guany general</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor esquerre</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor dret</value></data>
@@ -2348,6 +2387,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Aquest comandament no té motors als gallets, de manera que no es notarien els jocs que fan servir els gallets d'impuls de Xbox. En lloc d'això, integra cada canal de gallet al motor principal del mateix costat.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prova la vibració</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitat dels motors</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Esquerre</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Dret</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica una força contínua a aquest dispositiu fins que la desactivis. La força que genera el joc, sigui quina sigui la font, té prioritat mentre està activa, i la força constant es reprèn quan el joc s'atura.</value></data>
@@ -2426,7 +2467,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Prem botons o mou un eix/gallet per enregistrar. Els eixos es detecten quan es desvien més d'un 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Afegeix des de la llista</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Tria una entrada activadora dels dispositius de la ranura en lloc d'enregistrar-la. Aquí apareixen els gestos del panell tàctil activats a la pestanya Panell tàctil.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Esborra l'activador</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Tria una entrada activadora dels dispositius de la ranura en lloc d'enregistrar-la. Aquí apareixen els gestos del panell tàctil activats a Moviment i tacte.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Elimina l'entrada</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Prem qualsevol entrada…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertit</value></data>
@@ -2687,7 +2729,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segons que han de passar perquè es destrueixi un comandament virtual quan tots els seus dispositius assignats estan fora de línia. Amb 0 es desactiva. Els comandaments restants del mateix tipus es desplacen per omplir el buit i es tornen a vincular a ranures inferiors.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segons (0 = mai)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Capa</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Afegeix una capa</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Afegeix una capa: una segona taula d'assignacions que s'activa mentre es manté premut un botó o quan es commuta.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Capa</value></data>
@@ -2788,7 +2830,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direcció per moviment</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zones mortes de la inclinació, orientació del comandament</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configuració de l'entrada Inclinació de moviment: inclina el comandament com un volant. Assigna «Inclinació de moviment» a un eix de palanca des de la llista desplegable d'entrades a Assignacions.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configuració de l'entrada Inclinació de moviment: inclina el comandament com un volant. Assigna «Inclinació de moviment» a un eix de palanca des de la secció Botons.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restableix la direcció per moviment</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (palanca dreta)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (palanca esquerra)</value></data>
@@ -2797,7 +2839,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anell de la palanca dreta</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Ajust de les entrades Flick Stick</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Configuració de les entrades Flick Stick: apunta amb la palanca i la càmera gira en aquella direcció, i escombra la vora per afinar el gir. Assigna «Flick Stick (palanca dreta)» a Ratolí X des de la llista desplegable d'entrades a Assignacions, en qualsevol capa.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Configuració de les entrades Flick Stick: apunta amb la palanca i la càmera gira en aquella direcció, i escombra la vora per afinar el gir. Assigna «Flick Stick (palanca dreta)» a Ratolí X des de la secció Tecles i ratolí, en qualsevol capa.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Restableix el Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Punts per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Recompte del ratolí per a una volta completa de càmera de 360°. Depèn de la sensibilitat del ratolí del joc: apuja'l si un flick no gira prou i abaixa'l si gira massa.</value></data>
@@ -2889,7 +2931,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Àudio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Els sons de les macros i l'àudio del sistema replicat es reprodueixen per l'altaveu integrat del comandament seleccionat, per USB o Bluetooth. Tria el dispositiu a la llista desplegable de dalt. Tota la configuració d'aquí s'hi aplica.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortida de so</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Font de la rèplica, resposta hàptica, volum dels auriculars, mescla creuada, EQ paramètric, limitador</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Font de la rèplica, volum dels auriculars, memòria intermèdia, sortida d'àudio</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Els sons s'envien automàticament al comandament seleccionat. Per USB, el punt final d'àudio del comandament es fa correspondre pel contenidor de maquinari. Per Bluetooth, l'àudio es transmet en trames HID de Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Font de la rèplica</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Quin dispositiu de reproducció es replica a l'altaveu del comandament. Els jocs que envien sons concrets a un dispositiu de reproducció a part poden fer servir aquest.</value></data>
@@ -2902,10 +2944,10 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Atura tots els sons</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Atura tots els sons de macro d'aquest comandament</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Macros de so</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Els sons els reprodueixen les macros: un activador (pulsació, alliberament, retenció o fórmula) més una acció Reprodueix un so. Crea-les aquí o a la pestanya Macros. Els retards, les repeticions i les commutacions funcionen.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>Els sons els reprodueixen les macros: un activador (pulsació, alliberament, retenció o fórmula) més una acció Reprodueix un so. Crea-les aquí o a Macros i menús. Els retards, les repeticions i les commutacions funcionen.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Macro de so nova</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>Encara no hi ha cap macro de so. Crea'n una i tria un fitxer de so i un activador.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Obre aquesta macro a la pestanya Macros</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Obre aquesta macro a Macros i menús</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Macro de so {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Reprodueix un so</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Reprodueix un fitxer de so (.wav, .mp3, .m4a, .aac, .wma, .flac) al dispositiu de sortida d'aquest comandament</value></data>
@@ -3181,6 +3223,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>En execució</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En execució, controlador connectat</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En execució, comandaments actius</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instal·lat</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR no instal·lat</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR en execució</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR en execució, controlador connectat</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR en execució, comandaments actius</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Un altre controlador OpenVR utilitza el nom del controlador de HIDMaestro, de manera que SteamVR pot carregar-lo en lloc del de PadForge i els comandaments virtuals de RV no apareixeran. Elimina aquest controlador per solucionar-ho: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>Comandament sèrie (port COM)</value></data>
@@ -3324,7 +3371,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimèdia {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Ratolí</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gestos del ratolí</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mantén premut el botó de gestos, fes un moviment ràpid i, en deixar-lo anar, s'activa una acció: esquerra, dreta, amunt, avall o un clic simple si no s'arriba a la distància del moviment. Assigna els cinc gestos a la pestanya Assignacions o fes-los servir com a activadors de macros.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mantén premut el botó de gestos, fes un moviment ràpid i, en deixar-lo anar, s'activa una acció: esquerra, dreta, amunt, avall o un clic simple si no s'arriba a la distància del moviment. Assigna els cinc gestos a qualsevol sortida o fes-los servir com a activadors de macros.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Activa els gestos del ratolí</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Activa el reconeixedor de gestos per a aquest ratolí en aquesta ranura. El botó de gestos conserva el clic normal mentre fas gestos, així que tria un botó lateral que no assignis per a res més.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Botons de gestos</value></data>
@@ -3358,7 +3405,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Canvia de capa</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Defineix el color de Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Pinta d'un color els dispositius Razer assignats a aquest comandament virtual, i tots els altres dispositius Razer del mateix tipus, mentre s'executa l'acció.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Durant el temps indicat a dalt, pinta d'aquest color els dispositius Razer assignats a aquest comandament virtual i tots els altres dispositius Razer del mateix tipus, o bé tots els dispositius Razer quan la fila Razer Chroma està assignada. Té prioritat sobre la pestanya Il·luminació de qualsevol comandament virtual i després hi torna la il·luminació. Per mantenir el color mentre es manté premut l'activador, fes servir Mentre es manté premut amb Fins que es deixa anar. Quan dues macros pinten alhora, guanya la que és més avall a la llista, així que posa una macro de pulsació completa sota la seva macro bessona de pulsació suau. Quan macros de dos comandaments virtuals pinten el mateix tipus de dispositiu Razer, guanya el número de jugador més baix. Cal que Razer Synapse s'estigui executant.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Durant el temps indicat a dalt, pinta d'aquest color els dispositius Razer assignats a aquest comandament virtual i tots els altres dispositius Razer del mateix tipus, o bé tots els dispositius Razer quan la fila Razer Chroma està assignada. Té prioritat sobre la il·luminació que qualsevol comandament virtual defineixi a Llums i so i després retorna la il·luminació. Per mantenir el color mentre es manté premut l'activador, fes servir Mentre es manté premut amb Fins que es deixa anar. Quan dues macros pinten alhora, guanya la que és més avall a la llista, així que posa una macro de pulsació completa sota la seva macro bessona de pulsació suau. Quan macros de dos comandaments virtuals pinten el mateix tipus de dispositiu Razer, guanya el número de jugador més baix. Cal que Razer Synapse s'estigui executant.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Mostra la pantalla de Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Mostra imatges a la VMU de cada comandament de Dreamcast connectat a un port Bliss-Box que alimenta aquesta ranura i després torna cada port a la seva pròpia configuració de pantalla.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Mostra imatges de Dreamcast: {0} × {1} ms, repeticions {2}</value></data>
@@ -3652,10 +3699,12 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>En prémer, posa a zero les referències de punteria acumulades del giroscopi del comandament. S'esborra l'historial de suavitzat, es torna a capturar el punt neutre d'Inclinació de moviment, l'estimació de la gravetat es reinicia a partir de la posició actual del comandament i es desfà el gir acumulat per les files Capcineig, Guinyada i Balanceig de moviment.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Qualsevol dispositiu)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menús</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Els menús converteixen una palanca física o un panell tàctil en un anell o una graella a la pantalla. Afegeix un menú, tria què l'obre i després posa una etiqueta a cada cel·la i assigna-li una vinculació.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Els menús converteixen una palanca física o un panell tàctil en un anell o una graella a la pantalla. Prem + al costat de Menús per crear-ne un, tria què l'obre i després posa a cada cel·la un nom i una acció.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menú nou</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menú {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nom del menú</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Activat</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Obertura</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Estil</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Anell radial</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Graella tàctil</value></data>
@@ -3675,12 +3724,16 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Menu_Cells" xml:space="preserve"><value>Cel·les</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>Cel·la central</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Mostra les etiquetes</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Posició a la pantalla</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Mida</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>Opacitat</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>Zona morta d'activació</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>Vinculacions de les cel·les</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Cel·la {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Afegeix una cel·la</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Elimina l'última cel·la</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Edita la cel·la</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nom</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Acció</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icona</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Centre</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Cap</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla del teclat</value></data>
@@ -3693,7 +3746,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>S'activa un cop quan deixes anar el clic: apunta a la cel·la, prem la palanca o el panell tàctil i després deixa anar el clic.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>S'activa un cop quan deixes anar: aixeca el dit del panell o deixa que la palanca torni al centre mentre hi ha una cel·la ressaltada.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>La vinculació es manté tota l'estona que la cel·la està ressaltada. No cal fer clic.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Quantes cel·les té el menú. En un anell radial, només es compta l'anell. La cel·la central va a part.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Afegeix una cel·la central, que se selecciona mentre la palanca o el dit són dins de la zona morta d'activació.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Per a les palanques, quant s'han d'empènyer perquè s'obri el menú i es ressaltin les cel·les de l'anell. En els menús radials també és la regió central, tant per a les palanques com per als panells tàctils: a dins, se selecciona la cel·la central si n'hi ha.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Dibuixa l'etiqueta de cada cel·la a la superposició en pantalla.</value></data>
@@ -3703,8 +3755,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Mida de la superposició, en percentatge de la seva mida normal.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacitat de la superposició. 100% és completament opaca.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text que es mostra en aquesta cel·la a la superposició.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Què fa aquesta cel·la quan s'activa: «Tecla del teclat» prem una tecla del teclat i «Botó del comandament» prem un botó del comandament virtual d'aquesta ranura. Una cel·la amb «Cap» continua activant-se com a font d'element de menú per a les files d'Assignacions i els activadors de macros.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Es llegeix dels comandaments físics assignats a aquesta ranura, no de la disposició del comandament virtual. Les vinculacions de les cel·les de sota són el que genera el menú.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Què fa aquesta cel·la quan s'activa: «Tecla del teclat» prem una tecla del teclat i «Botó del comandament» prem un botó del comandament virtual d'aquesta ranura. Una cel·la amb «Cap» continua activant-se com a font d'element de menú per a les assignacions i els activadors de macros.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Es llegeix dels comandaments físics assignats a aquesta ranura, no de la disposició del comandament virtual. Les cel·les de sota indiquen què genera el menú.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Eixos personalitzats</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Direcció X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Direcció Y</value></data>
@@ -3729,13 +3781,16 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortida</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botons</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecles i ratolí</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notes i controls</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Mans</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palanques i gallets</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Vibració i tacte</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Moviment i tacte</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Llums i so</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macros i menús</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envia la vibració i la retroacció de força del joc que rep aquest comandament virtual a una sortida d'àudio com a tons de baixa freqüència per a bass shakers i subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Reprodueix la vibració del joc com a tons greus a través de bass shakers o d'un subwoofer.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Dispositiu de sortida, canals, guany, un to per a cada motor</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona amb els comandaments virtuals Xbox, DualShock 3, DualShock 4 / DualSense i Nintendo Switch Pro, a més dels comandaments virtuals ampliats amb retroacció de força, com els volants de curses, i el Steam Deck Controller (Composite). La resposta del joc i Prova la vibració es reprodueixen per la sortida d'àudio. La vibració de les macros es manté al comandament.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restableix la vibració a àudio</value></data>
@@ -3764,19 +3819,22 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Reprodueix aquest canal de resposta com un to. El guany i la freqüència es conserven mentre està desactivat.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Freqüència del to d'aquest canal, de 20 a 120 Hz. Fes servir l'escombratge de freqüència per trobar on respon més fort el teu shaker.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volum d'aquest canal abans del guany general.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Guany</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Prova</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Reprodueix el to d'aquest canal durant 1.5 segons amb el guany definit.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Restableix el motor greu</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Restableix el motor agut</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Restableix el gallet dret</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Comprova els shakers</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Escombratge de freqüència</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Fa un escombratge d'un to de 20 a 120 Hz durant vuit segons per la sortida del motor greu. Anota on respon més fort el teu shaker i defineix-hi les freqüències de les veus.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Atura</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Atura el to de prova o l'escombratge.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Qualsevol etiqueta NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiqueta NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtra les entrades (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtra sortides i entrades</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>Mostra només les files i les entrades que coincideixen. Prem Ctrl+F per escriure-hi.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Tria de quins dispositius ofereixen entrades els selectors</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Es mostra al selector</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Qualsevol frase de veu</value></data>
@@ -3883,6 +3941,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restableix el nivell de mescla</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalitzador paramètric</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtres per bandes aplicats a l'àudio del comandament. S'apliquen abans de codificar l'àudio, de manera que el limitador de sota evita que una banda realçada saturi.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamplificació, bandes, importació</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificació</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nivell general abans de les bandes. Els perfils d'AutoEq inclouen una preamplificació negativa perquè els realçaments no saturin, i en importar-ne un es defineix automàticament.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Activa</value></data>
@@ -4109,7 +4168,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Restableix l'obertura en tocar o desviar.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Dirigeix amb</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L'entrada física que mou la cel·la ressaltada mentre la capa manté aquest menú obert.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Es llegeix dels comandaments físics assignats a aquesta ranura. La capa obre el menú i aquesta entrada el dirigeix. Les vinculacions de les cel·les en determinen la sortida.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Es llegeix dels comandaments físics assignats a aquesta ranura. La capa obre el menú i aquesta entrada el dirigeix. Les seves cel·les indiquen què genera.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Mida de la icona</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Mida de la icona respecte a la mida normal de les icones del menú, del 25% al 200%. Si s'esborra la icona, es restableix al 100%.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Manté la vinculació de la cel·la ressaltada mentre es manté premuda l'Entrada de clic. Un centre radial ressaltat es pot activar mentre la palanca és en repòs.</value></data>
@@ -4232,7 +4291,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referència d'Antoine Aflalo per a la disposició de la interfície no documentada IPolicyConfig de Windows, que PadForge fa servir per tornar a activar el punt final d'àudio d'un comandament. MIT. Només documentació, no s'hi inclou cap codi.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>El format de perfils d'equalitzador paramètric que importa la pestanya Àudio, de Jaakko Pasanen. MIT. Només documentació, no s'hi inclou cap codi.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>El format de perfils d'equalitzador paramètric que importa l'apartat Equalitzador paramètric d'un comandament, de Jaakko Pasanen. MIT. Només documentació, no s'hi inclou cap codi.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Tècniques de SendInput de les macros Bloc de text i del ganxo d'acords de teclat: escriptura Unicode, límits de lots, la tecla de màscara per a la tecla Windows i l'entrada injectada etiquetada. GPL-2.0-or-later, llegit només com a documentació, no s'hi inclou cap codi GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4443,6 +4502,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Direcció</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>Pas</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>a</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Mànec</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} està configurant els gallets d'aquest comandament.</value></data>
@@ -4487,7 +4547,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>El mànec no s'ha mogut prou, de manera que l'abast es queda com estava. Mou-lo fins a cada extrem mentre dura el recorregut.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>El Falcon s'ha tancat abans que acabés el recorregut.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Juga amb un Novint Falcon mitjançant l'SDK de Force Dimension, que has d'instal·lar des de Force Dimension. El mànec és una palanca, els quatre botons de l'empunyadura són botons, i PadForge aplica al mànec com a força la vibració i els efectes del joc. La pestanya Retroacció de força de cada ranura defineix com es nota el Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Juga amb un Novint Falcon mitjançant l'SDK de Force Dimension, que has d'instal·lar des de Force Dimension. El mànec és una palanca, els quatre botons de l'empunyadura són botons, i PadForge aplica al mànec com a força la vibració i els efectes del joc. La targeta Novint Falcon de la secció Vibració i tacte de cada comandament defineix com es nota el Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Controla el Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Obre cada Falcon mitjançant el dhd64.dll de Force Dimension. Un Falcon obert pertany només a PadForge, de manera que FalconJoyForce i les eines de Force Dimension no poden obrir-lo mentre això estigui activat. Desactivat, PadForge tanca tots els Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Biblioteca del Falcon establerta a {0}. PadForge la carrega en pocs segons, i un Falcon obert en una altra còpia s'obre de nou en aquesta.</value></data>
@@ -4655,7 +4715,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>Durant un temps fix</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>Fins que s'aturi</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Temps</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Es reprodueix en tots els DualSense i DualSense Edge d'aquesta ranura. L'efecte de gallet del mateix joc i el d'un mod de joc tenen prioritat, i la configuració de la pestanya Gallets adaptatius torna quan l'efecte acaba. Les zones van de 0 en repòs a 9 a fons. Arc, Galop i Màquina no són efectes oficials del DualSense i una actualització del microprogramari els podria eliminar. Els comandaments Xbox amb Tradueix les vibracions dels gallets adaptatius activat noten els efectes vibratoris com a vibració del gallet.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>Es reprodueix en tots els DualSense i DualSense Edge d'aquesta ranura. L'efecte de gallet del mateix joc i el d'un mod de joc tenen prioritat, i la configuració de la targeta Gallets adaptatius torna quan l'efecte acaba. Les zones van de 0 en repòs a 9 a fons. Arc, Galop i Màquina no són efectes oficials del DualSense i una actualització del microprogramari els podria eliminar. Els comandaments Xbox amb Tradueix les vibracions dels gallets adaptatius activat noten els efectes vibratoris com a vibració del gallet.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} a {1} durant {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} a {1} mentre es manté premut</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} a {1} fins que s'aturi</value></data>

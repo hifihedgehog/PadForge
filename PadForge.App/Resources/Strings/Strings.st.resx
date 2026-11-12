@@ -299,13 +299,14 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hlakola tsohle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Mohlodi</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Boleng</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Dikgetho</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Halofo</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>Ka kotloloho</value></data>
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Bohole</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Lokolla</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Eketsa mohlodi</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Eketsa mohlodi</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Tlosa mohlodi ona</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_Label" xml:space="preserve"><value>Kopanya</value></data>
@@ -336,6 +337,7 @@
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Mohlodi wa bone</value></data>
   <data name="Curve_Delay" xml:space="preserve"><value>Tieho</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Ntlha ya bohareng</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Bohareng</value></data>
   <data name="Pad_MouseMovement" xml:space="preserve"><value>Motsamao wa mouse</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Hodimo</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Tlase</value></data>
@@ -344,6 +346,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Lebitso</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Ha</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Ha o tobetsa</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Ha o lokolla</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Ha o ntse o tshwere</value></data>
@@ -353,9 +356,7 @@
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a kapa b</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a empa e seng b</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Mohlodi</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Tatellano ya diketso</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Eketsa ketso</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Fetola ketso</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Mofuta</value></data>
   <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Keyboard le mongolo</value></data>
   <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Mouse</value></data>
@@ -381,7 +382,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lokolla {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Ema {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Ema {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Beha {0} = {1}</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Tshwara</value></data>
@@ -1034,4 +1035,18 @@
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Difaele tsa zip tsa medumo bakeng sa di-macro tsa modumo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Difaele tsa zip tsa ditshwantsho bakeng sa disele tsa menu</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Di-offset tsa bohareng, sebopeho sa deadzone le ditekanyetso tsa axis ka nngwe, curve bakeng sa axis ka nngwe, sebaka, ho kganna</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Di-key le Mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dinoto le Ditaolo</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Matsoho</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Etsa</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Mohlodi, Threshold, Nqa, Consume Trigger Buttons, Pheta</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menyu e ntjha</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Eketsa sele</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tlosa sele ya ho qetela</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Fetola sele</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Lebitso</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Ketso</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Hlahloba di-shaker</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Sebapadi kapa Lefatshe</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
 </root>

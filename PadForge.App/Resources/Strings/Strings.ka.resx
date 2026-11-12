@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>კოპირება</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>ჩასმა</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>დუბლირება</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>გადარქმევა</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ჩართულია</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>გამორთულია</value></data>
   <data name="Common_On" xml:space="preserve"><value>ჩართული</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>მოწყობილობა</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>წყარო</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>მოწყობილობის დამატება</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>სურათი</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>სია</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} გამოსავალი</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>მოძრაობა</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>დააწკაპუნეთ კონტროლზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>დააწკაპუნეთ კლავიშზე ან მაუსის ღილაკზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>დააწკაპუნეთ ნოტზე ან სლაიდერზე და დააჭირეთ ღილაკს ან ღერძს თქვენს კონტროლერზე მის მისანიჭებლად.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„ყველას მიბმა“ A-სა და B-ს შეხების გამოსავლებს გამოტოვებს. რომელიმეს მისაბმელად დააწკაპუნეთ რგოლზე A-ს ან B-ს გარშემო.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>ველოდები: {0}. დააჭირეთ შეყვანას თქვენს მოწყობილობაზე.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, წყარო</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>მეტი პარამეტრი</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>ნაკლები პარამეტრი</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>მოქმედების ღილაკი</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>მხრის ღილაკი</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>სისტემური ღილაკი</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>ღილაკი</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>მიმართულების პანელი</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>სტიკი</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ტრიგერი</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>ტაჩპედი</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>მოძრაობის სენსორი</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>კლავიატურის კლავიში</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>მაუსის ღილაკი</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>მაუსის მოძრაობა</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>გადახვევის ბორბალი</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>კონტროლის ცვლილება</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>შეხების სენსორი</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>ანალოგური დაჭერა</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, მარცხენა ხელი</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, მარჯვენა ხელი</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>რომელ დაჭერას ხედავს თამაში, როცა წყვილის ორივე ღილაკი დაჭერილია</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>რომელ დაჭერას ხედავს თამაში, როცა წყვილის ორივე კლავიში დაჭერილია</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ინარჩუნებს სტიკის მცირე გადახრას, რომ თამაშებმა კონტროლერის მინიშნებები აჩვენონ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ჭედვა</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>აირჩიეთ მაკრო მარცხნივ ან დააჭირეთ „დამატებას“ ახლის შესაქმნელად.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>აირჩიეთ მაკრო სიაში ან ახლის შესაქმნელად დააჭირეთ + ღილაკს „მაკროების“ გვერდით.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ცივი</value></data>
@@ -863,7 +892,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>იმპულსური ტრიგერები</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>იმპულსური ტრიგერები</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ტრიგერის გაძლიერება, ძრავების გაცვლა, ადაპტური ტრიგერის ვიბრაციები</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ტრიგერის გაძლიერება, ძრავების გაცვლა, ადაპტური ტრიგერის ვიბრაციები, ტრიგერის მუდმივი ძალა</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ვირტუალური კონტროლერიდან მინიჭებულ ფიზიკურ Xbox One, Elite ან Series კონტროლერს გადასცემს თითოეული ტრიგერის ძრავის ბრძანებებს (Xbox იმპულსური ტრიგერები). თამაშის მიერ მართული ტრიგერის ვიბრაცია ავტომატურად გადის. ქვემოთ მოცემული საკონტროლო ელემენტები თითოეული ტრიგერისთვის სიდიდის მასშტაბს ცვლის.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>მარცხენა ტრიგერი</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>მარჯვენა ტრიგერი</value></data>
@@ -933,9 +962,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>სტიკები</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>სტიკებისთვის ცალ-ცალკე მკვდარი ზონები, ანტი-მკვდარი ზონები, მგრძნობელობის მრუდები და ცენტრის წანაცვლების კალიბრაცია. ქვემოთ თითოეული განყოფილება აქტიური გამოსავლის ერთ ანალოგურ სტიკს ეხება. გაფართოებულ პროფილებს ოთხამდე სტიკი შეიძლება ჰქონდეს. სტანდარტულ გეიმპადებს ორი აქვს.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ტრიგერები</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ტრიგერებისთვის ცალ-ცალკე მკვდარი ზონები, ანტი-მკვდარი ზონები, მაქსიმალური დიაპაზონის მასშტაბირება და მგრძნობელობის მრუდები. ქვემოთ თითოეული განყოფილება აქტიური გამოსავლის ერთ ტრიგერის ღერძს ეხება. გაფართოებულ პროფილებს შეუძლია სტიკების ჩანართთან გაზიარებული რვამდე ღერძი გამოაჩინოს.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ტრიგერებისთვის ცალ-ცალკე მკვდარი ზონები, ანტი-მკვდარი ზონები, მაქსიმალური დიაპაზონის მასშტაბირება და მგრძნობელობის მრუდები. ტრიგერის თითოეული ბარათი აქტიური გამოსავლის ერთ ტრიგერის ღერძს ეხება. გაფართოებულ პროფილებს შეუძლია რვამდე ღერძი გამოაჩინოს, რომლებიც სტიკებსა და ტრიგერებს შორის არის გაზიარებული.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ძალისმიერი უკუკავშირი</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>არეგულირებს, როგორ ცვლის PadForge თამაშიდან მოსულ ძალისმიერი უკუკავშირის მოვლენათა მასშტაბს და როგორ გადაუგზავნის მათ ფიზიკური კონტროლერის ვიბრაციის ძრავებს ან ჰაპტიკურ აქტუატორებს. აუდიო-ვიბრაცია ამას ზემოდან სისტემური აუდიოთი მართულ შრეს ამატებს.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>ეს მოწყობილობა</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>მთელი კონტროლერი</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>ვიბრაცია უკრავს {0}-ზე ჰაპტიკური იმპულსების სახით, რომლებიც მოწყობილობას პირდაპირ ეგზავნება. ძლიერი ვიბრაცია უფრო ძლიერ იმპულსს არჩევს და მას უფრო ხშირად იმეორებს.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0}-ისთვის ჰაპტიკური უკუკავშირი Logi Options+-ში გამორთულია, ამიტომ ის არაფერს უკრავს, სანამ იქ ისევ არ ჩართავთ.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ეს მოწყობილობა ჯერ არ გამოხმაურებულა. მისი ვიბრაცია გაღვიძებისთანავე ითამაშებს.</value></data>
@@ -1002,6 +1033,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ჰედსეტები, მაუსპადები და დინამიკები</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ჰედსეტები</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>შუქის ზოლი</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>თამაშები განათებას ჩაწერისას გადაიბარებენ.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>შეიყვანეთ ექვსნიშნა hex ფერი (RRGGBB ან #RRGGBB) და გამოსაყენებლად დააჭირეთ Enter-ს ან დააწკაპუნეთ გვერდით.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ამ ფერის პალიტრიდან ამოღება</value></data>
@@ -1019,7 +1051,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>აუდიო-ვიბრაციის საწყისზე დაბრუნება</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>საწყისზე დაბრუნება: {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>მიბმების გასუფთავება</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ამ ჩანართის ყველა მიბმა გასუფთავდება. წყაროს მინიჭებები, დამატებითი წყაროები და გაერთიანების პარამეტრები ნაგულისხმევზე დაბრუნდება.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ამ შრის ყველა მიბმა გასუფთავდება. წყაროს მინიჭებები, დამატებითი წყაროები და გაერთიანების პარამეტრები ნაგულისხმევზე დაბრუნდება.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>მოთამაშის შაბლონი</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>დადუმების LED-ის რეჟიმი</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-ის სიკაშკაშე</value></data>
@@ -1085,6 +1117,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ები</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ღილაკები</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>იმპორტირებული პროფილები…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>გაფართოებული კონტროლერი</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>მომხმარებლის მიერ იმპორტირებული HIDMaestro პროფილების მართვა: ახლის გადაღება შეერთებული მოწყობილობიდან, არსებულის JSON-ში ექსპორტი ან აღარ საჭიროს წაშლა.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>მოწყობილობის 1:1 კლონირება</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>არჩეული მოწყობილობის ყველა ღერძს, ღილაკს და POV-ს პირდაპირ გადასცემს ერთნაირად დანომრილ ვირტუალურ გამოსავალს. განლაგებას მოწყობილობას არგებს და ამ მოწყობილობის რიგებს სლოტზე 1:1 გატარებით ანაცვლებს.</value></data>
@@ -1132,6 +1165,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ძალისმიერი უკუკავშირი</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>არხი</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>MIDI გამოსვლა</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI არხი (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC-ების რაოდენობა</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>CC გამოსავლების რაოდენობა (მაქსიმუმი დამოკიდებულია საწყის CC-ზე)</value></data>
@@ -1163,7 +1197,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>შლის ამ კლავიშთა წყვილს.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>საპირისპირო წყვილის პირველი კლავიში.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>საპირისპირო წყვილის მეორე კლავიში.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>ერთდროული საპირისპირო მთავარი მიმართულებები (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>კონტროლერის გაღვიძებულად შენარჩუნება</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>ზოგი თამაში წყვეტს ვიბრაციას და ცვლის ღილაკების მინიშნებებს, როგორც კი მაუსის ან კლავიატურის შეყვანას დაინახავს. სტიკის მცირე გადახრის შენარჩუნება აიძულებს თამაშს, ეს კონტროლერი აქტიურ მოწყობილობად ჩათვალოს. შენარჩუნება ირთვება მხოლოდ მაშინ, როცა ამ სტიკის ორივე ღერძი შენარჩუნებულ დონეზე დაბლაა, ამიტომ მცოცავი სტიკი მაინც უმოქმედოდ ითვლება. ნებისმიერ ღერძზე დონეზე მეტი შეყვანა მას გამორთავს და უცვლელად გადის. გადახრა თამაშის საკუთარ მკვდარ ზონაზე დაბლა დატოვეთ, რომ თამაშში არაფერი მოძრაობდეს.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>გაღვიძებულად დატოვება</value></data>
@@ -1183,7 +1216,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>დაწკაპუნების საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>კონტროლერის ნახევრის საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>სროლის რეჟიმის საწყისზე დაბრუნება</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>უჯრედების საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>ჩართვის მკვდარი ზონის საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>მენიუს გეომეტრიის საწყისზე დაბრუნება</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>უჯრედის საწყისზე დაბრუნება</value></data>
@@ -1239,6 +1271,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>ყველას გასუფთავება</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>წყარო</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>მნიშვნელობა</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ოპციები</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>ღერძ-ღილაკის მკვდარი ზონა</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>ინვერტირება</value></data>
@@ -1276,7 +1309,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>მონიშნულის შემთხვევაში ღერძი აშვებისას თანდათან ბრუნდება ცენტრში. მოუნიშნავის შემთხვევაში ბოლო პოზიციას ინარჩუნებს.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>ღილაკი, რომელიც დაჭერილად ყოფნისას სტრიქონის გამოსვლას აინვერტირებს</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>მოდიფიკატორი: დაჭერილად ყოფნისას სტრიქონის გამოსვლის ნიშანი იცვლება.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ წყაროს დამატება</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>წყაროს დამატება</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>ამ სტრიქონზე კიდევ ერთი ფიზიკური შეყვანის დამატება</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>ამ წყაროს მოხსნა</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1396,10 +1429,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>საკუთარი</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ცენტრის კალიბრაცია</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ცენტრალური წერტილი</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>ცენტრი</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>მკვდარი ზონა</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ცენტრის წანაცვლება, მკვდარი ზონის ფორმა და ღერძების მნიშვნელობები, მრუდი თითოეული ღერძისთვის, დიაპაზონი, მართვა</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>საზღვრის კალიბრაცია სტიკის გასასწორებლად რეკომენდებული გზაა. ის ავლებს იმ კიდეს, რომლამდეც სტიკს ფიზიკურად შეუძლია მისვლა, და შემდეგ ყველა პოზიციას პროპორციულად გადამასშტაბირებს გაზომილ კიდესთან მიმართებით, ამიტომ სრული ბუნებრივი მოძრაობა ყველა კუთხით და ყველა გადახრით იდეალურ წრეზე აისახება და არაფერი იჭრება. ქვემოთ მოცემული ოთხი სლაიდერი მხოლოდ მთავარ ღერძებს ზღუდავს. გამოიყენეთ ისინი დიაპაზონის განზრახ შესაზღუდად და არა მის გასასწორებლად.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„საზღვრის კალიბრაცია“ ზომავს კიდეს, რომლამდეც სტიკს მისვლა შეუძლია, და მას სრულ წრედ აქცევს. ოთხი სლაიდერი მხოლოდ თითოეულ მიმართულებას ზღუდავს.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ნიმუშის აღება...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ცენტრის წანაცვლება X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ცენტრის წანაცვლება Y</value></data>
@@ -1418,7 +1452,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>სახელი</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>ტრიგერი</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>როცა</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>გააქტიურება</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>დაჭერისას</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>აშვებისას</value></data>
@@ -1450,9 +1484,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>რომელ ცვლის შრეს ეკუთვნის ეს მაკრო. „ნებისმიერი შრე“ ირთვება ჩართული შრის მიუხედავად. ძირითადი და დასახელებული შრეები ირთვება მხოლოდ მაშინ, როცა ის შრეა ჩართული, ზუსტად მიბმის სტრიქონის მსგავსად.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ნებისმიერი შრე</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>მუშაობს განუწყვეტლივ, სანამ ეს ვირტუალური კონტროლერი აქტიურია. ტრიგერის ღილაკი საჭირო არ არის.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>მოქმედებათა თანმიმდევრობა</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>შესრულება</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>შრე, წყარო, ზღვარი, მიმართულება, ტრიგერის ღილაკების მოხმარება, გამეორება</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>მოქმედების დამატება</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>მოქმედების რედაქტირება</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ტიპი</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ვირტუალური ღილაკები</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>ვირტუალური ღერძები და საჭე</value></data>
@@ -1537,7 +1571,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>მაუსის აშვება {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვის გადართვა</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>შუქის ზოლის ფერის დაყენება</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>გადაფარავს მინიჭებული PlayStation სლოტის შუქის ზოლს არჩეულ RGB ფერზე. „რეაქტიული“ სრული სიკაშკაშიდან შავამდე ჩაქრება დაყენებული გაცრის ფანჯრის განმავლობაში, შემდეგ კი უბრუნებს მართვას განათების ჩანართის პარამეტრებს. „ფიქსირებული“ ფერს ინარჩუნებს, სანამ არ შესრულდება შუქის ზოლის გადაფარვის გასუფთავების მოქმედება. თამაშიდან მოსული ჩანაწერები მაინც გადაფარვაზე მაღალი პრიორიტეტისაა.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>გადაფარავს მინიჭებული PlayStation სლოტის შუქის ზოლს არჩეულ RGB ფერზე. „რეაქტიული“ სრული სიკაშკაშიდან შავამდე ჩაქრება დაყენებული გაცრის ფანჯრის განმავლობაში, შემდეგ კი უბრუნებს მართვას „შუქის ზოლი“ ბარათის პარამეტრებს. „ფიქსირებული“ ფერს ინარჩუნებს, სანამ არ შესრულდება შუქის ზოლის გადაფარვის გასუფთავების მოქმედება. თამაშიდან მოსული ჩანაწერები მაინც გადაფარვაზე მაღალი პრიორიტეტისაა.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>შუქის ზოლის აციმციმება {0} (გაცრა {1} მწმ)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>შუქის ზოლის შენარჩუნება {0} გასუფთავებამდე</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>შუქის ზოლის გადაფარვის გასუფთავება</value></data>
@@ -1545,7 +1579,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>მინიჭებულ სლოტზე ხსნის შუქის ზოლის ნებისმიერ აქტიურ გადაფარვას. გამოიყენეთ „ფიქსირებული“ შუქის ზოლის ფერის დაყენების მოქმედებასთან ერთად, რომ სხვა მაკროთი გააუქმოთ.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>შუქის ზოლის რეჟიმის დაყენება</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>შუქის ზოლის რეჟიმის დაყენება: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>სლოტის შუქის ზოლის რეჟიმს ადგენს კონკრეტულ მნიშვნელობაზე. ძალაში რჩება განათების ჩანართის ცვლილების მსგავსად, სანამ სხვა მოქმედება ან მომხმარებელი არ შეცვლის.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>სლოტის შუქის ზოლის რეჟიმს ადგენს კონკრეტულ მნიშვნელობაზე. ძალაში რჩება „შუქის ზოლი“ ბარათზე შეტანილი ცვლილების მსგავსად, სანამ სხვა მოქმედება ან მომხმარებელი არ შეცვლის.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>შუქის ზოლის რეჟიმების ციკლი</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ციკლი {0} შუქის ზოლის რეჟიმზე</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>სლოტის შუქის ზოლის რეჟიმს გადაჰყავს ქვემოთ არჩეულ რეჟიმებზე. ყოველი გააქტიურება შემდეგ მონიშნულ რეჟიმზე გადადის. ციკლის პოზიცია თითოეულ მოქმედებას ცალკე აქვს და აპის გადატვირთვისას ნულდება.</value></data>
@@ -1560,7 +1594,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>გაცრა</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ჩაქრობა</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>პალიტრა</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ცარიელი პალიტრა იყენებს სლოტის საკუთარ განათების ჩანართის პალიტრას.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ცარიელი პალიტრა იყენებს სლოტის „შუქის ზოლი“ ბარათის პალიტრას.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>რეჟიმი</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>აირჩიეთ, რომელ შუქის ზოლის რეჟიმებზე უნდა გადადიოდეს მაკრო. ყოველი გააქტიურება შემდეგ მონიშნულ რეჟიმზე გადადის.</value></data>
 
@@ -1578,7 +1612,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ტრიგერის ვიბრაციის შეჩერება</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>სლოტზე ხსნის მაკროს ტრიგერის ვიბრაციის ნებისმიერ აქტიურ გადაფარვას. გამოიყენეთ „ფიქსირებული“ ტრიგერის ვიბრაციის გადაფარვასთან ერთად, რომ შენარჩუნება მაკროთი დაასრულოთ.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>გიროსკოპის ჩართვის დაყენება</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>მაკროთი ადგენს სლოტის გიროსკოპის ჩართვის მდგომარეობას. „გადართვა“ მიმდინარე მდგომარეობას ცვლის. „ჩართული“ გიროსკოპს ძალით რთავს. „გამორთული“ ძალით ამორთავს. არ არის დამოკიდებული გიროსკოპის ჩანართის ჩართვის ღილაკზე. ორი წყარო OR-ით ერთიანდება, ამიტომ ვერც ერთი ვერ გამორთავს იმას, რაც მეორემ ჩართო.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>მაკროთი ადგენს სლოტის გიროსკოპის ჩართვის მდგომარეობას. „გადართვა“ მიმდინარე მდგომარეობას ცვლის. „ჩართული“ გიროსკოპს ძალით რთავს. „გამორთული“ ძალით ამორთავს. არ არის დამოკიდებული დამიზნების ჩართვის ღილაკზე განყოფილებაში „მოძრაობა და შეხება“. ორი წყარო OR-ით ერთიანდება, ამიტომ ვერც ერთი ვერ გამორთავს იმას, რაც მეორემ ჩართო.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>რეჟიმი</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>გადართვა</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>ჩართული</value></data>
@@ -1726,7 +1760,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>ტაჩპედი</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ტაჩპედი</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>თითოეული ტაჩპედის შეყვანა. ჟესტები (სვაიპები, შეხებები, მოჭერები, ფორმები) და უწყვეტი გამოტანის რეჟიმები (ვირტუალური სტიკი / D-pad, მაუსი) ხდება მიბმის წყარო, რომლის მიბმაც შეგიძლიათ მიბმების ჩანართზე.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>თითოეული ტაჩპედის შეყვანა. ჟესტები (სვაიპები, შეხებები, მოჭერები, ფორმები) და უწყვეტი გამოტანის რეჟიმები (ვირტუალური სტიკი / D-pad, მაუსი) ხდება მიბმის წყაროები, რომლებიც შეგიძლიათ ნებისმიერ გამოსავალს მიაბათ.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ტაჩპედი</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ტაჩპედის ნომერი</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>რომელ ტაჩპედზე ვრცელდება ქვემოთ მოცემული პარამეტრები ამ კონტროლერზე. თითოეულ ტაჩპედს აქვს საკუთარი ჟესტები, მაუსის შეგრძნება და მაჩვენებლის არე.</value></data>
@@ -2016,10 +2050,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>გიროსკოპი</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>მოარგეთ, როგორ აკონტროლებს ამ კონტროლერის მოძრაობის სენსორი მაუსისა და სტიკის გამოტანას. დაკალიბრეთ ბრტყელ ზედაპირზე უძრაობის დრეიფის ნულირებისთვის, შემდეგ დააყენეთ მგრძნობელობა, გასწორება და ჩართვის წესები თქვენს გემოზე.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>კალიბრაცია</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>გიროსკოპი და აქსელერომეტრი ცოცხლად</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>მგრძნობელობა</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ერთეულები, სივრცე, ღერძების ინვერტირება, რეალური სამყაროს კალიბრაცია</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ერთეულები, ღერძების ინვერტირება, რეალური სამყაროს კალიბრაცია</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ერთ შემობრუნებაზე</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>რეაქციის ფორმირება</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>მკვდარი ზონა, გასწორება, აჩქარება, გამოტანის მრუდი</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>ათვლის სისტემა</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>ლოკალური, მოთამაშე ან სამყარო</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>სივრცე</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>როგორ განიმარტება გიროსკოპის მოძრაობა. „ლოკალური“ იყენებს კონტროლერის ნედლ ღერძებს. „მოთამაშე“ ჰორიზონტალურ მოძრაობას რეალური სამყაროს ვერტიკალზე (სიმძიმის ძალა) აპროექტებს, ამიტომ მაჯის იგივე მობრუნება ყოველთვის ატრიალებს კამერას, როგორც არ უნდა გეჭიროთ კონტროლერი. „სამყარო“ დამატებით ვერტიკალურ მოძრაობას მსოფლიო ღერძებზე გადაპროექტებს.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>დაჭერის სახე</value></data>
@@ -2091,6 +2129,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>სწორად</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>დაჭერის სახე</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>როგორ უჭირავთ კონტროლერი. ერთად ატრიალებს გიროსკოპს, აქსელერომეტრსა და სიმძიმეს, როგორც მიბმებისთვის, ისე იმ მოძრაობისთვის, რომელსაც ვირტუალური კონტროლერი აცხადებს. D-pad იმავე სისტემას მიჰყვება, ამიტომ „ზევით“ დაჭერისას ზევითაა.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>როგორ უჭირავთ კონტროლერი</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>წრფივი</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>აგრესიული</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>მშვიდი</value></data>
@@ -2123,7 +2162,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>საწყისზე დაბრუნება: ჩართვის მიმართულება</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>მოძრაობის გატარება</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>გიროსკოპის რეგულირების გამოყენება მოძრაობის გატარებაზე</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ამ ჩანართის არჩევით გიროსკოპულ რეგულირებას (მკვდარი ზონა, მგრძნობელობა, გასწორება, რეაქციის მრუდი, ინვერტირება) უშვებს მოძრაობაზე, რომელსაც ვირტუალური კონტროლერი თამაშს ან ემულატორს აცხადებს. გამორთეთ, რომ გაიგზავნოს მხოლოდ დაკალიბრებული მაჩვენებელი და თამაშმა საკუთარი მგრძნობელობა და გასწორება გამოიყენოს. კალიბრაციის დრეიფის კორექცია ყოველთვის მოქმედებს.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>„გიროსკოპი“ ბარათების არჩევით რეგულირებას (მკვდარი ზონა, მგრძნობელობა, გასწორება, რეაქციის მრუდი, ინვერტირება) უშვებს მოძრაობაზე, რომელსაც ვირტუალური კონტროლერი თამაშს ან ემულატორს აცხადებს. გამორთეთ, რომ გაიგზავნოს მხოლოდ დაკალიბრებული მაჩვენებელი და თამაშმა საკუთარი მგრძნობელობა და გასწორება გამოიყენოს. კალიბრაციის დრეიფის კორექცია ყოველთვის მოქმედებს.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>საწყისზე დაბრუნება: გატარების რეგულირება</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>გიროსკოპის მგრძნობელობის მამრავლი თითოეული წყაროსთვის. 1.0 = ძრავის ნაგულისხმევი (500°/წმ → სრული გადახრა). 1.0-ზე მაღალი მნიშვნელობები უფრო მგრძნობიარეა. 1.0-ზე დაბალი უფრო ნაკლებად.</value></data>
@@ -2140,7 +2179,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>საწყისზე დაბრუნება: სრული დახრის დიაპაზონი</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>საწყისზე დაბრუნება: დახრის მკვდარი ზონა</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>საწყისზე დაბრუნება: გიროსკოპის დახრა</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>როგორ ერწყმის ამ სტრიქონის წყაროები, როცა ერთზე მეტია აქტიური. აირჩიეთ სტრიქონი, რომ ქვემოთ დეტალების ზოლში შეცვალოთ.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>როგორ ერწყმის ამ სტრიქონის წყაროები, როცა ერთზე მეტია აქტიური. გახსენით სტრიქონი და შეცვალეთ ის პარამეტრში „გაერთიანება“.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>ინერცია</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ტრექბოლის რეჟიმი: დაარტყით სტიკს და გაუშვით, კურსორი აგრძელებს მოძრაობას და თანდათან ჩერდება. სტიკის ხელახალი გადახრა მას აჩერებს.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>რამდენად შორს სრიალებს კურსორი დარტყმის შემდეგ. დიაპაზონის ზედა ზღვარზე ის აგრძელებს, სანამ სტიკს ისევ არ გადახრით.</value></data>
@@ -2341,7 +2380,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ტრიგერის ღერძი</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ძრავის გაძლიერება, ტრიგერის ვიბრაცია, ძრავების გაცვლა</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ძრავის გაძლიერება, ტრიგერის ვიბრაცია, საჭის კუთხის ვიბრაცია, მუდმივი ძალა</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>საერთო გაძლიერება</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>მარცხენა ძრავა</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>მარჯვენა ძრავა</value></data>
@@ -2350,6 +2389,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ამ კონტროლერს ტრიგერის ძრავები არ აქვს, ამიტომ თამაშები, რომლებიც Xbox-ის იმპულსურ ტრიგერებს იყენებს, შეუგრძნობელი დარჩებოდა. ამის ნაცვლად თითოეული ტრიგერის არხი გაერთიანდება იმავე მხარის მთავარ ძრავასთან.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>ვიბრაციის ტესტი</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ძრავების აქტივობა</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>მარცხენა</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>მარჯვენა</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ამ მოწყობილობაზე უწყვეტი ძალის მიმართვა, სანამ არ გამორთავთ. თამაშიდან მოსული ძალა ნებისმიერი წყაროდან გადაფარავს მას, სანამ აქტიურია, და განახლდება, როცა თამაში შეწყვეტს.</value></data>
@@ -2428,7 +2469,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>ჩასაწერად დააჭირეთ ღილაკებს ან გადაადგილეთ ღერძი/ტრიგერი. ღერძი გამოვლინდება, როცა 50%-ს გადააჭარბებს.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>სიიდან დამატება</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>აირჩიეთ ტრიგერის შეყვანა სლოტის მოწყობილობებიდან ჩაწერის ნაცვლად. აქ ჩნდება ტაჩპედის ჟესტები, რომლებიც ჩართულია ტაჩპედის ჩანართზე.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>ტრიგერის გასუფთავება</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>აირჩიეთ ტრიგერის შეყვანა სლოტის მოწყობილობებიდან ჩაწერის ნაცვლად. აქ ჩნდება ტაჩპედის ჟესტები, რომლებიც ჩართულია განყოფილებაში „მოძრაობა და შეხება“.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>შეყვანის ამოღება</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>დააჭირეთ ნებისმიერ შეყვანას…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ინვერტირებული</value></data>
@@ -2685,7 +2727,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>წამები, რომლის შემდეგაც ვირტუალური კონტროლერი განადგურდება, როცა მისი ყველა მიბმული მოწყობილობა გათიშულია. 0 გამორთავს. იმავე ტიპის დარჩენილი კონტროლერები ზევით გადაინაცვლებს ხარვეზის შესავსებად და ქვედა სლოტებს თავიდან მიებმება.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>წამი (0 = არასდროს)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift შრე</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>შრის დამატება</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>დაამატეთ Shift შრე. მიბმების მეორე ცხრილი, რომელიც აქტიურდება ღილაკის დაჭერისას ან გადართვისას.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ძირითადი</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift შრე</value></data>
@@ -2786,7 +2828,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>მოძრაობით მართვა</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° და {1}° შორის</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>დახრის მკვდარი ზონები, კონტროლერის ორიენტაცია</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>პარამეტრები „მოძრაობით დახრის“ შეყვანისთვის: დახარეთ კონტროლერი საჭესავით. მიბმებში, შეყვანის ჩამოსაშლელი სიიდან, „მოძრაობით დახრა“ მიაბით სტიკის ღერძს.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>პარამეტრები „მოძრაობის დახრის“ შეყვანისთვის: დახარეთ კონტროლერი საჭესავით. მიაბით „მოძრაობის დახრა“ სტიკის ღერძს განყოფილებაში „ღილაკები“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>მოძრაობით მართვის საწყისზე დაბრუნება</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ფლიკ-სტიკი (მარჯვენა სტიკი)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ფლიკ-სტიკი (მარცხენა სტიკი)</value></data>
@@ -2795,7 +2837,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>მარჯვენა სტიკის რგოლი</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ფლიკ-სტიკი</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ფლიკ-სტიკის შეყვანების დარეგულირება</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>პარამეტრები ფლიკ-სტიკის შეყვანებისთვის: მიმართეთ სტიკი და კამერა შესაბამისად მობრუნდება, კიდის გასწვრივ ძერით კი ზუსტად დაარეგულირებთ. მიბმებში, შეყვანის ჩამოსაშლელი სიიდან, ნებისმიერ შრეზე მიაბით „ფლიკ-სტიკი (მარჯვენა სტიკი)“ მაუსის X-ს.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>პარამეტრები ფლიკ-სტიკის შეყვანებისთვის: მიმართეთ სტიკი და კამერა შესაბამისად მობრუნდება, კიდის გასწვრივ ძერით კი ზუსტად დაარეგულირებთ. ნებისმიერ შრეზე მიაბით „ფლიკ-სტიკი (მარჯვენა სტიკი)“ მაუსის X-ს განყოფილებაში „კლავიშები და მაუსი“.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ფლიკ-სტიკის საწყისზე დაბრუნება</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>წერტილი 360°-ზე</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>მაუსის ერთეულები კამერის ერთი სრული 360°-იანი შემობრუნებისთვის. დამოკიდებულია თამაშის მაუსის მგრძნობელობაზე: გაზარდეთ, თუ ფლიკი ნაკლებს ბრუნავს, შეამცირეთ, თუ მეტს.</value></data>
@@ -2887,7 +2929,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>აუდიო</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>მაკროს ხმები და ასახული სისტემური აუდიო უკრავს არჩეული კონტროლერის ჩაშენებული დინამიკით, USB-ით ან Bluetooth-ით. მოწყობილობა აირჩიეთ ზემოთ ჩამოსაშლელ სიაში. აქ ყველა პარამეტრი მას მიჰყვება.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ხმის გამოსვლა</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ასახვის წყარო, ჰაპტიკა, ყურსასმენის ხმის სიმძლავრე, კროსფიდი, პარამეტრული ეკვალაიზერი, ლიმიტერი</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ასახვის წყარო, ყურსასმენის ხმის სიმძლავრე, ბუფერი, გამოტანის გზა</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ხმები ავტომატურად მიემართება არჩეულ კონტროლერზე. USB-ით კონტროლერის საკუთარი აუდიო-ბოლოწერტილი აპარატურული კონტეინერით ემთხვევა. Bluetooth-ით აუდიო Sony HID კადრებით იგზავნება.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ასახვის წყარო</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>რომელი დაკვრის მოწყობილობა ასახოს კონტროლერის დინამიკზე. თამაშებს, რომლებიც კონკრეტულ ხმებს ცალკე დაკვრის მოწყობილობაზე აგზავნიან, შეუძლიათ ამას დაუმიზნონ.</value></data>
@@ -2900,10 +2942,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>ყველა ხმის შეწყვეტა</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>ამ კონტროლერზე მაკროს ყველა ხმის შეწყვეტა</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ხმის მაკროები</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ხმებს მაკროები უკრავს: გამშვები (ღილაკის დაჭერა, აშვება, დაჭერილად ყოფნა ან ფორმულა) პლუს ხმის დაკვრის მოქმედება. შექმენით აქ ან მაკროების ჩანართზე. დაყოვნებები, გამეორებები და გადართვები ყველა მუშაობს.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ხმებს მაკროები უკრავს: გამშვები (ღილაკის დაჭერა, აშვება, დაჭერილად ყოფნა ან ფორმულა) პლუს ხმის დაკვრის მოქმედება. შექმენით აქ ან განყოფილებაში „მაკროები და მენიუები“. დაყოვნებები, გამეორებები და გადართვები ყველა მუშაობს.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>ახალი ხმის მაკრო</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>ხმის მაკროები ჯერ არ არის. შექმენით ერთი და აირჩიეთ ხმის ფაილი და გამშვები.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ამ მაკროს გახსნა მაკროების ჩანართზე</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ამ მაკროს გახსნა განყოფილებაში „მაკროები და მენიუები“</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ხმის მაკრო {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>ხმის დაკვრა</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>ხმის ფაილის (.wav, .mp3, .m4a, .aac, .wma, .flac) დაკვრა ამ კონტროლერის გამოსავალ მოწყობილობაზე</value></data>
@@ -3179,6 +3221,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>მუშაობს</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>მუშაობს, დრაივერი დაკავშირებულია</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>მუშაობს, კონტროლერები აქტიურია</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR დაყენებულია</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR არ არის დაყენებული</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR მუშაობს</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR მუშაობს, დრაივერი დაკავშირებულია</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR მუშაობს, კონტროლერები აქტიურია</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>სხვა OpenVR დრაივერი იყენებს HIDMaestro-ს დრაივერის სახელს, ამიტომ SteamVR-მა შეიძლება ის ჩატვირთოს PadForge-ის დრაივერის ნაცვლად და ვირტუალური VR კონტროლერები არ გამოჩნდეს. ამის გასასწორებლად ამოშალეთ ეს დრაივერი: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>სერიული კონტროლერი (COM პორტი)</value></data>
@@ -3322,7 +3369,7 @@
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>სამომხმარებლო {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>მაუსი</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>მაუსის ჟესტები</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>დააჭირეთ ჟესტის ღილაკს, გააკეთეთ მოძრაობა და აშვებისას ერთი მოქმედება სრულდება: მარცხნივ, მარჯვნივ, ზემოთ, ქვემოთ ან უბრალო დაწკაპუნება მოძრაობის მანძილზე ნაკლებისას. მიაბით ხუთივე ჟესტი „მიბმების“ ჩანართზე ან გამოიყენეთ მაკროს გამშვებად.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>დააჭირეთ ჟესტის ღილაკს, გააკეთეთ მოძრაობა და აშვებისას ერთი მოქმედება სრულდება: მარცხნივ, მარჯვნივ, ზემოთ, ქვემოთ ან უბრალო დაწკაპუნება მოძრაობის მანძილზე ნაკლებისას. მიაბით ხუთივე ჟესტი ნებისმიერ გამოსავალს ან გამოიყენეთ მაკროს გამშვებად.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>მაუსის ჟესტების ჩართვა</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>ამ სლოტზე ამ მაუსისთვის ჟესტების ამომცნობს ააქტიურებს. ჟესტის ღილაკი ჟესტიკულაციისას ჩვეულებრივ დაწკაპუნებასაც ინარჩუნებს, ამიტომ აირჩიეთ გვერდითი ღილაკი, რომელსაც სხვაგვარად არ მიაბამთ.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>ჟესტის ღილაკები</value></data>
@@ -3356,7 +3403,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>შრის გადართვა</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma ფერის დაყენება</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>აფერადებს ამ ვირტუალურ კონტროლერზე მიბმულ Razer მოწყობილობებს და იმავე სახეობის ყველა სხვა Razer მოწყობილობას ერთი ფერით, სანამ მოქმედება გრძელდება.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ზემოთ მითითებული ხანგრძლივობით აფერადებს ამ ფერით ამ ვირტუალურ კონტროლერზე მიბმულ Razer მოწყობილობებს და იმავე სახეობის ყველა სხვა Razer მოწყობილობას, ან ყველა Razer მოწყობილობას, როცა მიბმულია Razer Chroma-ს რიგი. ის გადაფარავს ნებისმიერი ვირტუალური კონტროლერის განათების ჩანართს, შემდეგ კი განათებას უბრუნებს. ფერის შესანარჩუნებლად, სანამ გამშვები დაჭერილია, გამოიყენეთ „სანამ დაჭერილია“ და „აშვებამდე“. როცა ორი მაკრო ერთდროულად აფერადებს, იმარჯვებს ის, რომელიც სიაში უფრო დაბლაა, ამიტომ სრული დაჭერის მაკრო მოათავსეთ მისი მსუბუქი დაჭერის ტყუპის ქვემოთ. როცა ორი ვირტუალური კონტროლერის მაკროები ერთი სახეობის Razer მოწყობილობას აფერადებს, იმარჯვებს მოთამაშის უფრო მცირე ნომერი. საჭიროა გაშვებული Razer Synapse.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ზემოთ მითითებული ხანგრძლივობით აფერადებს ამ ფერით ამ ვირტუალურ კონტროლერზე მიბმულ Razer მოწყობილობებს და იმავე სახეობის ყველა სხვა Razer მოწყობილობას, ან ყველა Razer მოწყობილობას, როცა მიბმულია Razer Chroma-ს რიგი. ის გადაფარავს განათებას, რომელსაც ნებისმიერი ვირტუალური კონტროლერი აყენებს განყოფილებაში „განათება და ხმა“, შემდეგ კი განათებას უბრუნებს. ფერის შესანარჩუნებლად, სანამ გამშვები დაჭერილია, გამოიყენეთ „სანამ დაჭერილია“ და „აშვებამდე“. როცა ორი მაკრო ერთდროულად აფერადებს, იმარჯვებს ის, რომელიც სიაში უფრო დაბლაა, ამიტომ სრული დაჭერის მაკრო მოათავსეთ მისი მსუბუქი დაჭერის ტყუპის ქვემოთ. როცა ორი ვირტუალური კონტროლერის მაკროები ერთი სახეობის Razer მოწყობილობას აფერადებს, იმარჯვებს მოთამაშის უფრო მცირე ნომერი. საჭიროა გაშვებული Razer Synapse.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast-ის ეკრანის ჩვენება</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>უშვებს სურათებს VMU-ზე ყველა Dreamcast კონტროლერზე Bliss-Box-ის პორტში, რომელიც ამ სლოტს კვებავს, შემდეგ კი თითოეულ პორტს მისი საკუთარი ეკრანის პარამეტრს უბრუნებს.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast-ის სურათების ჩვენება: {0} × {1} მწ, გამეორება {2}</value></data>
@@ -3650,10 +3697,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>დაჭერისას ანულებს კონტროლერის დაგროვებულ გიროსკოპის დამიზნების საორიენტაციო მნიშვნელობებს. დაგლუვების ისტორია იწმინდება, „მოძრაობის დახრის“ ნეიტრალური ხელახლა ფიქსირდება, სიმძიმის შეფასება კონტროლერის მიმდინარე პოზიდან ახლდება, ხოლო „მოძრაობის პიჩის“, „იაუსა“ და „როლის“ რიგებით აგებული ბრუნვა უქმდება.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ნებისმიერი მოწყობილობა)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>მენიუები</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>მენიუები ფიზიკურ სტიკს ან ტაჩპედს ეკრანულ რგოლად ან ბადედ აქცევს. დაამატეთ მენიუ, აირჩიეთ რა ხსნის მას, შემდეგ თითოეულ უჯრას მიუთითეთ წარწერა და მიბმა.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>მენიუები ფიზიკურ სტიკს ან ტაჩპედს ეკრანულ რგოლად ან ბადედ აქცევს. მენიუს შესაქმნელად დააჭირეთ + ღილაკს „მენიუების“ გვერდით, აირჩიეთ, რა ხსნის მას, შემდეგ კი თითოეულ უჯრას მიუთითეთ სახელი და მოქმედება.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>ახალი მენიუ</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>მენიუ {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>მენიუს სახელი</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>ჩართულია</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>გახსნა</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>სტილი</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>რადიალური რგოლი</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>სენსორული ბადე</value></data>
@@ -3673,12 +3722,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>უჯრები</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>ცენტრალური უჯრა</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>წარწერების ჩვენება</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>ეკრანზე პოზიცია</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>ზომა</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>გაუმჭვირვალობა</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>ჩართვის მკვდარი ზონა</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>უჯრების მიბმები</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>უჯრა {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>უჯრის დამატება</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>ბოლო უჯრის ამოღება</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>უჯრის რედაქტირება</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>სახელი</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>მოქმედება</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>ხატულა</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>ცენტრი</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>არცერთი</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>კლავიატურის კლავიში</value></data>
@@ -3691,7 +3744,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ერთხელ ირთვება, როცა დაწკაპუნება შეჩერდება: მიუთითეთ უჯრაზე, დააჭირეთ სტიკს ან ტრექპედს, შემდეგ გაუშვით.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>ერთხელ ირთვება, როცა გაუშვებთ: თითი აიღეთ პედიდან ან დააბრუნეთ სტიკი ცენტრში, სანამ უჯრა გამოკვეთილია.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>მიბმა დაჭერილი რჩება მთელი იმ დროის განმავლობაში, სანამ უჯრა გამოკვეთილია. დაწკაპუნება საჭირო არ არის.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>რამდენი უჯრა აქვს მენიუს. რადიალური რგოლისთვის ეს მხოლოდ რგოლს ითვლის, ცენტრალური უჯრა ცალკეა.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>ამატებს ცენტრალურ უჯრას, რომელიც ირჩევა, სანამ სტიკი ან თითი „ჩართვის მკვდარ ზონაშია“.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>სტიკებისთვის: რამდენად შორს უნდა გადაწიოთ, რომ მენიუ გაიხსნას და რგოლის უჯრები გამოიკვეთოს. რადიალურ მენიუებზე ის ასევე ცენტრალური არეა სტიკებისა და ტაჩპედებისთვის: მის შიგნით არჩეულია ცენტრალური უჯრა, თუ არსებობს.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>ეკრანულ გადაფარვაზე გამოსახავს თითოეული უჯრის წარწერას.</value></data>
@@ -3701,8 +3753,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>გადაფარვის ზომა მისი ნორმალური ზომის პროცენტებში.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>გადაფარვის გაუმჭვირვალობა. 100% სრულიად მკვრივია.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ტექსტი, რომელიც გადაფარვაზე ამ უჯრაზე ჩანს.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>რას აკეთებს ეს უჯრა გაშვებისას: „კლავიატურის კლავიში“ აჭერს კლავიატურის კლავიშს, „კონტროლერის ღილაკი“ აჭერს ამ სლოტის ვირტუალური კონტროლერის ღილაკს. უჯრა, რომელზეც „არცერთი“ არის დაყენებული, მაინც ირთვება როგორც მენიუს ელემენტის წყარო მიბმების რიგებისა და მაკროს გამშვებებისთვის.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>იკითხება ამ სლოტზე მიბმული ფიზიკური კონტროლერებიდან და არა ვირტუალური კონტროლერის განლაგებიდან. ქვემოთ მოცემული უჯრების მიბმები არის ის, რასაც მენიუ გასცემს.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>რას აკეთებს ეს უჯრა გაშვებისას: „კლავიატურის კლავიში“ აჭერს კლავიატურის კლავიშს, „კონტროლერის ღილაკი“ აჭერს ამ სლოტის ვირტუალური კონტროლერის ღილაკს. უჯრა, რომელზეც „არცერთი“ არის დაყენებული, მაინც ირთვება როგორც მენიუს ელემენტის წყარო მიბმებისა და მაკროს გამშვებებისთვის.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>იკითხება ამ სლოტზე მიბმული ფიზიკური კონტროლერებიდან და არა ვირტუალური კონტროლერის განლაგებიდან. ქვემოთ მოცემული უჯრები განსაზღვრავს, რას გასცემს მენიუ.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>მორგებული ღერძები</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>მართვა X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>მართვა Y</value></data>
@@ -3727,13 +3779,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ბასის შეიკერები</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>გამოსავალი</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ღილაკები</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>კლავიშები და მაუსი</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ნოტები და CC</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>ხელები</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>სტიკები და ტრიგერები</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>ვიბრაცია და უკუკავშირი</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>მოძრაობა და შეხება</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>განათება და ხმა</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>მაკროები და მენიუები</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ბასის შეიკერები</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>თამაშისგან მიღებულ ვიბრაციასა და ძალისმიერ უკუკავშირს, რომელსაც ეს ვირტუალური კონტროლერი იღებს, აუდიო გამოსავალზე მიმართავს დაბალი სიხშირის ტონების სახით ბასის შეიკერებისა და სუბვუფერებისთვის.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>თამაშის ვიბრაციას დაბალი ტონების სახით უკრავს ბასის შეიკერების ან სუბვუფერის მეშვეობით.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>გამოსავლის მოწყობილობა, არხები, გაძლიერება, ტონი თითოეული ძრავისთვის</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>მუშაობს Xbox-ის, DualShock 3-ის, DualShock 4 / DualSense-ისა და Nintendo Switch Pro-ს ვირტუალურ კონტროლერებთან, ასევე ძალისმიერი უკუკავშირის მქონე გაფართოებულ ვირტუალურ კონტროლერებთან, მაგალითად სარბოლო საჭეებთან, და Steam Deck-ის კონტროლერთან (კომპოზიტური). თამაშის უკუკავშირი და ვიბრაციის ტესტი აუდიო გამოსავლით ჟღერს. მაკროს ვიბრაცია კონტროლერზე რჩება.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ვიბრაციის აუდიოში გადაცემის საწყისზე დაბრუნება</value></data>
@@ -3762,19 +3817,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>ამ უკუკავშირის არხს ტონად უკრავს. გაძლიერება და სიხშირე დაყენებული რჩება გამორთვისასაც.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ამ არხის ტონის სიხშირე, 20-დან 120 ჰც-მდე. გაუშვით სიხშირის სკანირება, რომ იპოვოთ, სად რეაგირებს თქვენი შეიკერი ყველაზე ძლიერად.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ამ არხის ხმის სიმძლავრე მთავარ გაძლიერებამდე.</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>გაძლიერება</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>ტესტი</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>უკრავს ამ არხის ტონს 1.5 წამის განმავლობაში მისი დაყენებული გაძლიერებით.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>საწყისზე დაბრუნება: დაბალი ძრავა</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>საწყისზე დაბრუნება: მაღალი ძრავა</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>საწყისზე დაბრუნება: მარცხენა ტრიგერი</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>საწყისზე დაბრუნება: მარჯვენა ტრიგერი</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>შეიკერების შემოწმება</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>სიხშირის სვიპი</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>რვა წამის განმავლობაში ატარებს ტონს 20-დან 120 Hz-მდე დაბალი ძრავის მარშრუტზე. აღნიშნეთ, სად რეაგირებს თქვენი ვიბრაციული მოწყობილობა ყველაზე ძლიერად, და დააყენეთ არხების სიხშირეები იქ.</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>შეჩერება</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>აჩერებს სატესტო ტონს ან სვიპს.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>ნებისმიერი NFC ტეგი</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC ტეგი: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>შეყვანების გაფილტვრა (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>გამოსავალი ან შეყვანა</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>აჩვენებს მხოლოდ შესაბამის რიგებსა და შეყვანებს. აქ ასაკრეფად დააჭირეთ Ctrl+F-ს.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>აირჩიეთ, რომელი მოწყობილობების შეყვანები შემოგთავაზოს ამომრჩევმა</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>ნაჩვენებია ამომრჩევში</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>ნებისმიერი ხმოვანი ფრაზა</value></data>
@@ -3881,6 +3939,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>საწყისზე დაბრუნება: მიწოდება</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>პარამეტრული EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>თითო ზოლის ფილტრები კონტროლერის აუდიოზე. გამოიყენება აუდიოს კოდირებამდე, ამიტომ ქვემოთ მოცემული ლიმიტერი ამაღლებულ ზოლს კლიპინგისგან იცავს.</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>პრეამპი, ზოლები, იმპორტი</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>პრეამპი</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>საერთო დონე ზოლებამდე. AutoEq-ის პროფილებს უარყოფითი პრეამპი აქვთ, რომ მათი ამაღლებები არ დაიკლიპოს, ხოლო იმპორტი ამას თავად აყენებს.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>ჩართ.</value></data>
@@ -4104,7 +4163,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>საწყისზე დაბრუნება შეხებით ან გადახრით გახსნაზე.</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>მართვა ამით</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ფიზიკური შეყვანა, რომელიც მართავს გამოკვეთილ უჯრედს, სანამ შრე მენიუს ღიად ინარჩუნებს.</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>იკითხება ამ სლოტზე მიმაგრებული ფიზიკური კონტროლერებიდან. შრე ხსნის მენიუს, ეს შეყვანა კი მართავს მას. გამოსავალს უჯრედების მიბმები განსაზღვრავს.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>იკითხება ამ სლოტზე მიბმული ფიზიკური კონტროლერებიდან. შრე ხსნის მენიუს, ეს შეყვანა კი მართავს მას. მისი უჯრები განსაზღვრავს, რას გასცემს.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>ხატულის ზომა</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>ხატულის ზომა მენიუს ჩვეულებრივ ხატულასთან შედარებით, 25%-დან 200%-მდე. ხატულის გასუფთავება აბრუნებს 100%-ზე.</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>ინახავს გამოკვეთილი უჯრედის მიბმას, სანამ დაწკაპუნების შეყვანა დაჭერილია. გამოკვეთილ რადიალურ ცენტრს შეუძლია ჩაირთოს, სანამ სტიკი უძრავია.</value></data>
@@ -4226,7 +4285,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ს მიერ Windows-ის დაუდოკუმენტებელი IPolicyConfig ინტერფეისის განლაგების წყარო, რომელსაც PadForge კონტროლერის აუდიო ენდფოინთის თავიდან ჩასართავად იყენებს. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>პარამეტრული EQ პროფილის ფორმატი, რომელსაც აუდიოს ჩანართი აიმპორტებს, ავტორი Jaakko Pasanen. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>პარამეტრული EQ პროფილის ფორმატი, რომელსაც კონტროლერის „პარამეტრული EQ“ აიმპორტებს, ავტორი Jaakko Pasanen. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ის ტექნიკები ტექსტური ბლოკის მაკროებისა და კლავიატურის აკორდის ჰუკის უკან: Unicode აკრეფა, პარტიების ლიმიტები, Win კლავიშის დამაფარავი კლავიში და მონიშნული ინექტირებული შეყვანა. GPL-2.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4422,6 +4481,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>მიმართულება</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>ნაბიჯი</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>და</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>სახელური</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ადგენს ამ კონტროლერის ტრიგერებს.</value></data>
@@ -4466,7 +4526,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>სახელური საკმარისად შორს არ გადაადგილდა, ამიტომ დიაპაზონი უცვლელი რჩება. გადაატარეთ ყველა კიდემდე, სანამ გაზომვა მიმდინარეობს.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon დაიხურა გაზომვის დასრულებამდე.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>თამაშობს Novint Falcon-ით Force Dimension-ის SDK-ის მეშვეობით, რომელსაც Force Dimension-ისგან აყენებთ. სახელური სტიკია, სახელურის ოთხი ღილაკი ღილაკებია, PadForge კი თამაშის ვიბრაციასა და ეფექტებს სახელურზე ძალად გადასცემს. თითოეული სლოტის ძალისმიერი უკუკავშირის ჩანართში განისაზღვრება, როგორ იგრძნობა Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>თამაშობს Novint Falcon-ით Force Dimension-ის SDK-ის მეშვეობით, რომელსაც Force Dimension-ისგან აყენებთ. სახელური სტიკია, სახელურის ოთხი ღილაკი ღილაკებია, PadForge კი თამაშის ვიბრაციასა და ეფექტებს სახელურზე ძალად გადასცემს. თითოეული კონტროლერის განყოფილებაში „ვიბრაცია და უკუკავშირი“ Novint Falcon ბარათი განსაზღვრავს, როგორ იგრძნობა Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Novint Falcon-ის მართვა</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>ხსნის ყველა Falcon-ს Force Dimension-ის dhd64.dll-ის მეშვეობით. გახსნილი Falcon მხოლოდ PadForge-ს ეკუთვნის, ამიტომ ჩართვისას FalconJoyForce და Force Dimension-ის ხელსაწყოები მას ვერ გახსნიან. გამორთვისას PadForge ყველა Falcon-ს ხურავს.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Falcon-ის ბიბლიოთეკად არჩეულია {0}. PadForge მას რამდენიმე წამში ტვირთავს, ხოლო სხვა ასლზე გახსნილი Falcon ამ ასლზე ხელახლა იხსნება.</value></data>
@@ -4629,7 +4689,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>განსაზღვრული დროით</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>შეჩერებამდე</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>დრო</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>მოქმედებს ამ სლოტზე ყველა DualSense-სა და DualSense Edge-ზე. თამაშის საკუთარი ტრიგერის ეფექტი და თამაშის მოდისა პრიორიტეტულია, ხოლო ადაპტური ტრიგერების ჩანართის პარამეტრი ეფექტის დასრულებისას ბრუნდება. ზონები იწყება 0-დან მოსვენებისას და მთავრდება 9-ით სრულ დაჭერაზე. მშვილდი, ჭენება და მექანიზმი DualSense-ის ოფიციალური ეფექტები არ არის და ფირმვერის განახლებამ შეიძლება ისინი მოხსნას. Xbox-ის კონტროლერებზე, როცა ჩართულია „ადაპტური ტრიგერის ვიბრაციების გადათარგმნა“, ვიბრაციული ეფექტები ტრიგერის ვიბრაციად იგრძნობა.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>მოქმედებს ამ სლოტზე ყველა DualSense-სა და DualSense Edge-ზე. თამაშის საკუთარი ტრიგერის ეფექტი და თამაშის მოდისა პრიორიტეტულია, ხოლო „ადაპტური ტრიგერები“ ბარათის პარამეტრი ეფექტის დასრულებისას ბრუნდება. ზონები იწყება 0-დან მოსვენებისას და მთავრდება 9-ით სრულ დაჭერაზე. მშვილდი, ჭენება და მექანიზმი DualSense-ის ოფიციალური ეფექტები არ არის და ფირმვერის განახლებამ შეიძლება ისინი მოხსნას. Xbox-ის კონტროლერებზე, როცა ჩართულია „ადაპტური ტრიგერის ვიბრაციების გადათარგმნა“, ვიბრაციული ეფექტები ტრიგერის ვიბრაციად იგრძნობა.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0}, ტრიგერი: {1}, {2} მწმ</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0}, ტრიგერი: {1}, დაჭერისას</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, ტრიგერი: {1}, შეჩერებამდე</value></data>

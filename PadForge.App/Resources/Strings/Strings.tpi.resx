@@ -183,10 +183,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Masin</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kisim input long</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Putim masin</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Piksa</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} aut</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Muvmen</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Klik long wanpela kontrol, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Klik long wanpela ki o baten bilong maus, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klik long wanpela not o slaida, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All i lusim ol aut bilong tasim long A na B. Klik long ring i raunim A o B bilong mapim wanpela.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>I rekodim {0}. Presim baten o eksis long masin bilong yu.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kisim input long</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Moa seting</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Liklik seting</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Baten long pes</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Baten long sol</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Baten bilong sistem</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Baten</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad bilong rot</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stik</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Triga</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensa bilong muvmen</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Ki bilong kibod</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Baten bilong maus</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Muv bilong maus</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Wil bilong maus</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensa bilong tasim</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Pulim analog</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lephan han</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, raithan han</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod bilong gem</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Kisim ol DSX mod bilong gem</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Pot bilong ol mod bilong gem</value></data>
@@ -467,6 +494,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Taim</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Taim yu presim</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Taim yu lusim</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Taim yu holim</value></data>
@@ -510,11 +538,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Baten {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Presim {0} long {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Presim {0} long {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lusim {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ol ki {0} long {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Ol ki {0} long {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lusim ol ki {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wet {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Wet {0} ms</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Presim maus {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lusim maus {0}</value></data>
 
@@ -698,7 +726,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jairo</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, Spes, tanim eksis i go baksait, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, tanim eksis i go baksait, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Tanim pitch i go baksait (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Tanim yaw i go baksait (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Tanim roll i go baksait (X)</value></data>
@@ -816,12 +844,14 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eksis bilong triga</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Strong bilong wanwan mota, guria bilong triga, senisim mota</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Strong bilong wanwan mota, guria bilong triga, Steering Angle Rumble, Constant Force</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Raithan mota</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Senisim ples bilong lephan na raithan mota</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Traim guria</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Wok bilong mota</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lephan</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Raithan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
@@ -987,7 +1017,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Hamas sekon bipo virtual kontrola i raus taim olgeta masin i mapim long en i of. 0 i stopim dispela. Ol narapela kontrola bilong wankain kain i muv i go antap long pulumapim hul na go long ol slot i gat liklik namba.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekon (0 = nogat)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Shift lea</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Putim lea</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Putim wanpela shift lea. Namba tu tebol bilong mapin i wok taim yu holim o tanim on o of wanpela baten.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bes</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift lea</value></data>
@@ -1099,7 +1129,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Nois</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ol nois bilong makro na nois bilong sistem i kam long spika insait long kontrola yu makim, long USB o Bluetooth. Makim masin long dropdown antap. Olgeta seting hia i bihainim em.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Nois i go aut</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sos bilong mira, haptics, Strong bilong hetfon, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Headphone Volume, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default bilong sistem</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Masin i no stap)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Nois i strong bilong olgeta</value></data>
@@ -1110,7 +1140,7 @@
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>Stopim olgeta nois bilong makro long dispela kontrola</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>Ol makro bilong nois</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>Nupela makro bilong nois</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Opim dispela makro long hap bilong Makro</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>Opim dispela makro long hap Ol makro na menu</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>Makro bilong nois {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>Pilaim nois</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>Pilaim fail bilong nois (.wav, .mp3, .m4a, .aac, .wma, .flac) long masin bilong nois bilong dispela kontrola</value></data>
@@ -1389,6 +1419,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Traim</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Reset triga long han kais</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Reset triga long han sut</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Sekim ol shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stopim</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tapim wanpela tag long Switch kontrola bilong yu…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>I no inap mekim kalibresen. Putim kontrola daun na traim gen.</value></data>
@@ -1649,6 +1680,7 @@
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Wok</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Rot</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>i go inap</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} i senisim ol triga bilong dispela kontrola.</value></data>
   <data name="Devices_GameModLights_Format" xml:space="preserve"><value>{0} i senisim ol lait bilong dispela kontrola.</value></data>
@@ -1755,6 +1787,9 @@
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} i konek na i no stap long wok nau.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Yusim</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ol ki na maus</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ol not na kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Ol han</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ol stik na triga</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Seksek na filim</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muvmen na tasim</value></data>
@@ -1772,6 +1807,22 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Lait bilong LED, Pasin bilong plea, Pasin bilong LED bilong mute</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ol zip fail bilong nois long ol makro bilong nois</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ol zip fail bilong piksa long ol sel bilong menu</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Strong bilong wanwan triga, senisim mota, guria bilong adaptive triga</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Strong bilong wanwan triga, senisim mota, guria bilong adaptive triga, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tanim i go baksait, Momentum, Respons, Spid i go antap, flick</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Mekim</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Lea, Source, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Senisim nem</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Nupela menu</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Rausim las sel</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Senisim sel</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Wok</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Aikon</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Dispela masin</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola olgeta</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR i instol pinis</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR i no instol yet</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR i ran</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR i ran, draiva i konek</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
 </root>

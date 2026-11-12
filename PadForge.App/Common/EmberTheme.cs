@@ -133,6 +133,10 @@ namespace PadForge.Common
             SetBrush("SubRowTextBrush", dark ? Color.FromRgb(0xCF, 0xD7, 0xE3) : Color.FromRgb(0x2D, 0x39, 0x4B));
             // The picked item of a list that stands on a card.
             SetBrush("EmberCardPickBrush", dark ? Color.FromRgb(0x24, 0x16, 0x0D) : Color.FromRgb(0xFF, 0xEA, 0xDF));
+            // The ring on a control of the picture under the pointer (#574):
+            // the boards' ember at 60 percent, and on light the deeper ember
+            // at 60 percent.
+            SetBrush("EmberHoverRingBrush", dark ? Color.FromArgb(0x99, 0xFF, 0x8A, 0x57) : Color.FromArgb(0x99, 0xC2, 0x4A, 0x12));
             // An input pill of a macro's trigger: its edge and its words.
             SetBrush("InputChipEdgeBrush", dark ? Color.FromRgb(0x33, 0x50, 0x6A) : Color.FromRgb(0x9D, 0xBB, 0xD2));
             SetBrush("InputChipTextBrush", dark ? Color.FromRgb(0xCF, 0xE6, 0xF5) : Color.FromRgb(0x1D, 0x4B, 0x6B));
@@ -153,6 +157,11 @@ namespace PadForge.Common
             SetBrush("TextFillColorSecondaryBrush", dark ? Color.FromRgb(0xA9, 0xB4, 0xC4) : Color.FromRgb(0x44, 0x53, 0x6B));
             SetBrush("TextFillColorTertiaryBrush", dark ? Color.FromRgb(0x86, 0x93, 0xA6) : Color.FromRgb(0x6B, 0x7A, 0x94));
             SetBrush("TextFillColorDisabledBrush", dark ? Color.FromRgb(0x56, 0x62, 0x78) : Color.FromRgb(0x9A, 0xA5, 0xB8));
+            // The words of the picked section and of a segmented switch's
+            // chosen segment (#574): white on dark, as the boards draw them,
+            // a step over the text color. Light has no step over its text
+            // color, so it keeps that.
+            SetBrush("SelectedTextBrush", dark ? Color.FromRgb(0xFF, 0xFF, 0xFF) : Color.FromRgb(0x1A, 0x24, 0x33));
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);

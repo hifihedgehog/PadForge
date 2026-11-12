@@ -132,10 +132,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mba'e'oka</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Omboguata</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Embojoapy mba'e'oka</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ta'anga</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Tysỹi</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ñesẽ</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Ñemongu'e</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Eikutu peteĩ votõ ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Eikutu peteĩ tecla térã mouse votõ ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Eikutu peteĩ nota térã deslizador ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All nomoingéi A ha B toque ñesẽ. Peteĩ rembojoaju hag̃ua, eikutu A térã B jerére oĩva círculo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Oha'arõ {0}. Ejopy votõ ne mba'e'okápe.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, omboguata</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Hetave jeporavorã</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mbovyve jeporavorã</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Votõ tenondegua</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper votõ</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistema votõ</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Votõ</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad direccional</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Palanca</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gatillo</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Ñemongu'e sensor</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Teclado tecla</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Mouse votõ</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Mouse ñemongu'e</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Rueda del mouse</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control ñemoambue</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Toque sensor</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Jopy analógico</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, po asu</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, po akatúa</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Mbojoaju</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Mbotove</value></data>
@@ -316,6 +343,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Téra</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Ojehúramo</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Akóinte</value></data>
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a año</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a ha b</value></data>
@@ -354,7 +382,7 @@
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Poi {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Tecla kuéra poi {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Ha'arõ {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Ha'arõ {0} ms</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Mouse jopy {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mouse poi {0}</value></data>
 
@@ -496,7 +524,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidad, Espacio, invertir eje, Calibración mundo añetegua</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidad, invertir eje, Calibración mundo añetegua</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invertir pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invertir yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Invertir roll (X)</value></data>
@@ -889,6 +917,7 @@
   <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Gatillo akatúa</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Restablecer gatillo asu</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Restablecer gatillo akatúa</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Eha'ã umi shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Pyta</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>Ñesẽ</value></data>
   <data name="About_Libinput" xml:space="preserve">
@@ -1052,6 +1081,7 @@
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>{0} ohechauka {1}</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Mba'erechaha</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>guive</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} omboheko hína ko control gatillo kuéra.</value></data>
   <data name="Devices_GameModLights_Format" xml:space="preserve"><value>{0} omboheko hína ko control tesape kuéra.</value></data>
@@ -1093,6 +1123,9 @@
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Emboja'o mando kuéra PadForge ndive ambue PC-pe.</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Joaju jey, puerto, identidad ñeñangareko, joaju direcciónpe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Votõ kuéra</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecla ha mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota ha control</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Pokuéra</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Palanca ha gatillo</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Ryrýi ha force feedback</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Ñemongu'e ha ñepoko</value></data>
@@ -1104,6 +1137,8 @@
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Gatillo vibración sistema audio bajo rehegua</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona muerta ñembojere, Control orientación</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>Zona muerta, suavizado, Aceleración, Curva ñesẽ</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>Marco de referencia</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player térã Arapy</value></data>
   <data name="Pad_GyroEngage_FoldHint" xml:space="preserve"><value>Votõ apuntar ñepyrũ, Modo ñepyrũ, Umbral apuntar hasy'ỹ</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Omyandy ko touchpad gestokuéra</value></data>
   <data name="Pad_InBoxGestures_FoldHint" xml:space="preserve"><value>Deslizar, toque, pellizco, forma</value></data>
@@ -1112,7 +1147,18 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Guide térã Home votõ resape</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip archivo ryapu macro ryapúrã</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip archivo ta'anga menú celda peguarã</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganancia peteĩteĩ motor, gatillo vibración, motor ñemoambue</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganancia peteĩteĩ gatillo, motor ñemoambue, gatillo adaptativo vibración</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganancia peteĩteĩ motor, gatillo vibración, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganancia peteĩteĩ gatillo, motor ñemoambue, gatillo adaptativo vibración, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertir, Impulso, Respuesta, Aceleración, ñemombo</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Japo</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menú pyahu</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Nohẽ celda paha</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Téra</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ko mba'e'oka</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Control virtual</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR mohendapyre</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR noñemohendái</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Asu</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Akatúa</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Mopotĩ activador</value></data>
 </root>

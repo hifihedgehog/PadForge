@@ -349,7 +349,7 @@
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Kaadayo</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Bulosan</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Inayon ti taudan</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Inayon ti taudan</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Ikkaten daytoy a taudan</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
   <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Maysa laeng</value></data>
@@ -368,6 +368,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nagan</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>No</value></data>
   <data name="Macro_Always" xml:space="preserve"><value>Kanayon</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Taudan</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Inayon ti aksion</value></data>
@@ -392,7 +393,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Bulosan ti {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Aguray iti {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Aguray iti {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Iggaman</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Maris</value></data>
@@ -524,7 +525,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasion</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, espasio, ibaliktad dagiti axis, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, ibaliktad ti axis, Real-World Calibration</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Iggaman</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Kannawan a stick</value></data>
@@ -1172,6 +1173,9 @@
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Dagiti port, kapardas, dagiti bukod a format</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Dagiti button</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Dagiti key ken mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dagiti nota ken kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Dagiti ima</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Dagiti stick ken trigger</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Rumble ken haptics</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Garaw ken sagid</value></data>
@@ -1179,8 +1183,34 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Dagiti macro ken menu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ladawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listaan</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} nga output</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Garaw</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>I-click ti maysa a kontrol, sa ipindot ti input a mangpaandar iti dayta.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>I-click ti maysa a key wenno butones ti mouse, sa ipindot ti input a mangpaandar iti dayta.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>I-click ti maysa a nota wenno slider, sa ipindot ti input a mangpaandar iti dayta.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Saan a mairaman iti "Map All" dagiti output ti sagid iti A ken B. I-click ti sirkulo iti aglawlaw ti A wenno B tapno i-map ti maysa kadakuada.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Agur-uray iti {0}. Ipindot ti input iti devicem.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, pinaandar ti</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ad-adu pay a pagpilian</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Basbassit a pagpilian</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Butones iti sango</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Butones iti abaga</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Butones ti sistema</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Butones</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad ti direksion</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensor ti garaw</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Key ti keyboard</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Butones ti mouse</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Garaw ti mouse</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Pilid ti mouse</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensor ti sagid</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog a guyod</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, kannigid nga ima</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, kannawan nga ima</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Senial no dumanon ti stick iti pagpatinggaan iti steering mode</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>Panangiyannatop kadagiti input ti Flick Stick</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Rumble manipud iti bass ti audio ti sistema</value></data>
@@ -1197,6 +1227,21 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ti silap ti Guide wenno Home a buton</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip a file dagiti uni para kadagiti macro ti uni</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Zip a file dagiti ladawan para kadagiti cell ti menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ti tunggal motor, rumble ti trigger, panagsukat dagiti motor</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ti tunggal trigger, panagsukat dagiti motor, adaptive a pigerger ti trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ti motor, rumble ti trigger, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ti trigger, panagsukat dagiti motor, adaptive a pigerger, Constant Trigger Force</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Aramiden</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Taudan, Threshold, Turong, Consume Trigger Buttons, Repeat</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Baro a menu</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Inayon ti cell</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Ikkaten ti maudi a cell</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>I-edit ti cell</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nagan</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksion</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Intero a controller</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Subokan dagiti shaker</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Naikabil ti SteamVR</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Saan a naikabil ti SteamVR</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kannigid</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kannawan</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Dalusan ti trigger</value></data>
 </root>

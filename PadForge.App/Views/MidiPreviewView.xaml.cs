@@ -24,6 +24,11 @@ namespace PadForge.Views
         /// again (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
+        /// <summary>Raised with the control under the pointer, by the name a
+        /// click on it records, and with null when the pointer leaves it
+        /// (#574).</summary>
+        public event EventHandler<string> HoverTargetChanged;
+
         private PadViewModel _vm;
 
         // Input mode (issue #128): the same control reused on the Devices
@@ -120,7 +125,6 @@ namespace PadForge.Views
         // Note layout: which notes in an octave are white keys
         // 0=C, 1=C#, 2=D, 3=D#, 4=E, 5=F, 6=F#, 7=G, 8=G#, 9=A, 10=A#, 11=B
         private static readonly bool[] IsBlackKey = { false, true, false, true, false, false, true, false, true, false, true, false };
-        private static readonly string[] NoteNames = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
         // Which chromatic positions are black: 1, 3, 6, 8, 10
 
@@ -432,12 +436,14 @@ namespace PadForge.Views
             {
                 bg.MouseEnter += (s, e) =>
                 {
+                    HoverTargetChanged?.Invoke(this, $"MidiCC{index}");
                     if (_flashTarget != null) return;
                     bg.Stroke = HoverBrush;
                     bg.StrokeThickness = 2;
                 };
                 bg.MouseLeave += (s, e) =>
                 {
+                    HoverTargetChanged?.Invoke(this, null);
                     if (_flashTarget != null) return;
                     bg.Stroke = DimBrush;
                     bg.StrokeThickness = 1;
@@ -548,8 +554,7 @@ namespace PadForge.Views
             TextBlock label = null;
             if (!isBlack)
             {
-                int octave = (midiNote / 12) - 1;
-                string name = NoteNames[midiNote % 12] + octave;
+                string name = MidiSlotConfig.PitchName(midiNote);
                 label = new TextBlock
                 {
                     Text = name,
@@ -570,12 +575,14 @@ namespace PadForge.Views
             {
                 rect.MouseEnter += (s, e) =>
                 {
+                    HoverTargetChanged?.Invoke(this, $"MidiNote{noteIndex}");
                     if (_flashTarget != null) return;
                     rect.Stroke = HoverBrush;
                     rect.StrokeThickness = 2;
                 };
                 rect.MouseLeave += (s, e) =>
                 {
+                    HoverTargetChanged?.Invoke(this, null);
                     if (_flashTarget != null) return;
                     rect.Stroke = KeyBorderBrush;
                     rect.StrokeThickness = 1;

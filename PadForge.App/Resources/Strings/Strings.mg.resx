@@ -150,10 +150,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Fitaovana</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hanampy fitaovana</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Sary</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lisitra</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} fivoahana</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Fihetsika</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Tsindrio singa iray amin'ny sary, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Tsindrio bokotra fitendry na bokotra totozy, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Tsindrio nota na slider, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mandingana ny fivoahana kasika an'ny A sy B ny bokotra "Map All". Tsindrio ny faribolana manodidina ny A na B raha hanendry ny iray amin'izy ireo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Mandrakitra {0}. Tsindrio ny fampidirana amin'ny fitaovanao.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, entin'ny</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Safidy bebe kokoa</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Safidy vitsy kokoa</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bokotra anoloana</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bokotra rafitra</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Bokotra</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>D-pad</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stick</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Gâchette</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Mpahatsapa fihetsika</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Bokotra fitendry</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Bokotra totozy</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Fihetsehan'ny totozy</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Kodiaran'ny totozy</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Mpahatsapa kasika</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Fisintonana analogique</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, tanana havia</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, tanana havanana</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Mihaino amin'ny :{0}. Mandefa any amin'ny contrôleur laharana {2} ny {1}, nefa tsy misy contrôleur virtoaly misy contrôleur PlayStation manana io laharana io.</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa, toy ny DSX, ny port {0}. Akatony izy na mifidiana port hafa.</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ity PC ity ihany</value></data>
@@ -472,7 +499,6 @@
   <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Averina ny X manokana</value></data>
   <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Averina ny Y manokana</value></data>
   <data name="Menu_Reset_Click" xml:space="preserve"><value>Averina ny kitika</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Averina ny sela</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Averina ny sela</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Averina ny sensibilité</value></data>
   <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Averina ny fanafainganana</value></data>
@@ -513,6 +539,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>Fafao daholo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Loharano</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Sanda</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Safidy</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>Deadzone axe mankany amin'ny bokotra</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Avadika</value></data>
@@ -531,7 +558,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>Rehefa voamarika, miverina moramora any afovoany ny axe rehefa alefa. Rehefa tsy voamarika, mitazona ny toerana farany izy.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>Bokotra mamadika ny vokatry ny andalana raha mbola tazomina</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>Mpanova: raha tazomina, mivadika ny famantarana ny vokatry ny andalana.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ Ampio loharano</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ampio loharano</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>Ampio fampidirana ara-batana hafa amin'ity andalana ity</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Esory ity loharano ity</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -618,6 +645,7 @@
   <data name="Curve_SCurve" xml:space="preserve"><value>Fiolahana S</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Manokana</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Teboka afovoany</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>Afovoany</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Elanelana</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Maka santionany...</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Endriky ny deadzone</value></data>
@@ -629,6 +657,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Anarana</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Rehefa</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Rehefa tsindriana</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Rehefa alefa</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Raha mbola tazomina</value></data>
@@ -648,9 +677,9 @@
   <data name="Macro_Threshold" xml:space="preserve"><value>Seuil</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>Layer rehetra</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Mandeha tsy tapaka raha mbola mavitrika ity contrôleur virtoaly ity. Tsy mila bokotra mpanetsika.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>Filaharan'ny hetsika</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Ataovy</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Loharano, Seuil, Direction, Consume Trigger Buttons, Famerenana</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Ampio hetsika</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>Ovay ny hetsika</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Karazana</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Bokotra virtoaly</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Axe virtoaly sy familiana</value></data>
@@ -709,11 +738,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Bokotra {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tsindrio {0} mandritra ny {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Tsindrio {0} mandritra ny {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Alefaso {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Bokotra fitendry {0} mandritra ny {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>Bokotra fitendry {0} mandritra ny {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Alefaso ny bokotra fitendry {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Andraso {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Andraso {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>Farito {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>Hamafin'ny feon'ny rafitra ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>Hamafin'ny feon'ny rafitra ← {0} (ambony indrindra {1}%)</value></data>
@@ -914,7 +943,8 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Singa, habaka, fivadihan'ny axe, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Singa, fivadihan'ny axe, Real-World Calibration</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° isaky ny fihodinana</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Avadika ny pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Avadika ny yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Avadika ny roll (X)</value></data>
@@ -1035,7 +1065,7 @@
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Tanjaky ny motera tsirairay, vibration amin'ny gâchette, fifanakalozana motera</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Tanjaky ny motera, vibration gâchette, Steering Angle Rumble, Constant Force</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motera havia</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motera havanana</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Ifanakalozy ny motera havia sy havanana</value></data>
@@ -1230,7 +1260,7 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Ambaratonga</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segondra (0 = tsy mihitsy)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ Layer Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ampio layer</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Layer Shift</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Anaran'ny layer</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tazomina</value></data>
@@ -1293,7 +1323,7 @@
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Avereno ny hafainganana FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Feo</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Fivoahan'ny feo</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Loharanon'ny dika, haptique, feon'ny écouteur, Crossfeed, Parametric EQ, Limiter</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Loharanon'ny dika, feon'ny écouteur, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut an'ny rafitra</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Fitaovana tsy misy)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Hamafin'ny feo ankapobeny</value></data>
@@ -1601,6 +1631,7 @@
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Anaran'ny menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Mandeha</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>Fanokafana</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Endrika</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Stick havia</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Stick havanana</value></data>
@@ -1609,13 +1640,15 @@
   <data name="Menu_Half_Left" xml:space="preserve"><value>Antsasaka havia</value></data>
   <data name="Menu_Half_Right" xml:space="preserve"><value>Antsasaka havanana</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>Asehoy ny marika</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>Toerana eo amin'ny efijery</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>Habe</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>Afovoany</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>Tsy misy</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(tsy voafaritra)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Fivoahana</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Bokotra</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Fitendry sy totozy</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota sy CC</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Tanana</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick sy gâchette</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Fihovitrovitra sy fahatsapana</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Fihetsika sy fikasihana</value></data>
@@ -1629,6 +1662,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Andramo</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Averina ny gâchette ankavia</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Averina ny gâchette ankavanana</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Hamarino ny shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Ajanony</value></data>
   <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Tazomy</value></data>
   <data name="LegacyCleanup_Title" xml:space="preserve"><value>Fanadiovana ireo pilote taloha</value></data>
@@ -1855,6 +1889,7 @@
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Hetsika</value></data>
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>Lalana</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>hatramin'ny</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Tahony</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} no mandrindra ny gâchette an'ity contrôleur ity.</value></data>
@@ -1896,7 +1931,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Tsy nandeha lavitra ampy ny tahony, ka tsy miova ny halavirana. Afindrao amin'ny sisiny rehetra izy mandritra ny fandrefesana.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Nikatona ny Falcon talohan'ny nahavitan'ny fandrefesana.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Milalao lalao amin'ny Novint Falcon amin'ny alalan'ny SDK an'ny Force Dimension, izay apetrakao avy amin'ny Force Dimension. Stick ny tahony, bokotra ny bokotra efatra eo amin'ny fihazonana, ary avadik'ny PadForge ho hery eo amin'ny tahony ny vibration sy ny effets an'ny lalao. Ny onglet Force feedback an'ny slot tsirairay no mamaritra ny fahatsapana ny Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Milalao lalao amin'ny Novint Falcon amin'ny alalan'ny SDK an'ny Force Dimension, izay apetrakao avy amin'ny Force Dimension. Stick ny tahony, bokotra ny bokotra efatra eo amin'ny fihazonana, ary avadik'ny PadForge ho hery eo amin'ny tahony ny vibration sy ny effets an'ny lalao. Ny karatra Novint Falcon ao amin'ny fizarana Fihovitrovitra sy fahatsapana an'ny contrôleur tsirairay no mamaritra ny fahatsapana ny Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Ampiasao ny Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Manokatra ny Falcon tsirairay amin'ny alalan'ny dhd64.dll an'ny Force Dimension. An'ny PadForge irery ny Falcon misokatra, ka tsy afaka manokatra azy ny FalconJoyForce sy ny programan'ny Force Dimension raha alefa ity. Raha vonoina, akaton'ny PadForge ny Falcon rehetra.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Napetraka ho {0} ny bibliothèque Falcon. Ampidirin'ny PadForge ao anatin'ny segondra vitsy izy, ary ny Falcon misokatra amin'ny kopia hafa dia misokatra indray amin'ity kopia ity.</value></data>
@@ -2017,9 +2052,28 @@
   <data name="Pad_CustomGestures_FoldHint" xml:space="preserve"><value>Raketo ny geste anao manokana</value></data>
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Hazavan'ny LED, lamina mpilalao, fomban'ny LED fanakatonana feo</value></data>
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Ny hazavan'ny bokotra Guide na Home</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Tanjaky ny gâchette tsirairay, fifanakalozana motera, vibration adaptive trigger</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Tanjaky ny gâchette, fifanakalozana motera, vibration adaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Fivadihana, momentum, valiny, fanafainganana, fling</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Fitaovana fivoahana, fantsona, tanjaka, feo iray isaky ny motera</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Fiovan'ny teboka afovoany, endriky ny deadzone sy ny sandany isaky ny axe, fiolahana isaky ny axe, elanelana, familiana</value></data>
   <data name="Home_EngineLine_Format" xml:space="preserve"><value>Fitaovana mifandray: {0}. Contrôleur: {1}.</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Fivoahana MIDI</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Ovay anarana</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu vaovao</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>Ampio sela</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Esory ny sela farany</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Ovay ny sela</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Anarana</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Hetsika</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>Kisary</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Ity fitaovana ity</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Contrôleur manontolo</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mpilalao na Tontolo</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Voapetraka ny SteamVR</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Mandeha ny SteamVR</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>Mandeha ny SteamVR, mifandray ny pilote</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Havia</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Havanana</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Fafao ny mpanetsika</value></data>
 </root>

@@ -80,8 +80,15 @@
                     <SolidColorBrush x:Key="SteelCardHoverBrush" Color="#161E2B"/>
                     <SolidColorBrush x:Key="QuietGlyphBrush" Color="#6B7890"/>
                     <SolidColorBrush x:Key="SubRowTextBrush" Color="#CFD7E3"/>
+                    <!-- The words of the picked section in a controller's
+                         header and of a segmented switch's chosen segment, a
+                         step brighter than the text color. -->
+                    <SolidColorBrush x:Key="SelectedTextBrush" Color="#FFFFFF"/>
                     <!-- The picked item of a list that stands on a card. -->
                     <SolidColorBrush x:Key="EmberCardPickBrush" Color="#24160D"/>
+                    <!-- The ring on a control of the picture under the
+                         pointer: the boards' ember at 60 percent. -->
+                    <SolidColorBrush x:Key="EmberHoverRingBrush" Color="#99FF8A57"/>
                     <!-- An input pill of a macro's trigger: its edge and its words. -->
                     <SolidColorBrush x:Key="InputChipEdgeBrush" Color="#33506A"/>
                     <SolidColorBrush x:Key="InputChipTextBrush" Color="#CFE6F5"/>
@@ -156,6 +163,14 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Corners (#574). Every control the PadForge 6 boards draw (a
+                 field, a picker, a button, a number box) has corners of 6.
+                 wpf-ui's controls read theirs from this key, which wpf-ui sets
+                 to 4, and an entry of the application's own wins over the
+                 merged dictionaries. The app's own templates (the fold parts,
+                 the segments, the pills, the sidebar's rows) set their own. -->
+            <CornerRadius x:Key="ControlCornerRadius">6</CornerRadius>
+
             <!--
                 WPF UI's default ComboBox style sets ScrollViewer.VerticalScrollBarVisibility
                 to Hidden, which suppresses the scrollbar entirely. Force it Visible so
@@ -169,19 +184,27 @@
             <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
                 <Setter Property="MaxDropDownHeight" Value="200"/>
-                <!-- #175 iteration 53: tighter closed-state metrics so combos
-                     sit on the same rhythm as the 32px control grid. -->
-                <Setter Property="MinHeight" Value="30"/>
-                <Setter Property="Padding" Value="8,4"/>
+                <!-- A closed picker is 34 tall, as the PadForge 6 boards draw
+                     one (#574), with its words in the middle of the box.
+                     wpf-ui sets a picker's content at the top, which left the
+                     words 2 to 4 above center. The part a click opens the
+                     list through is only as tall as the content, so the 6
+                     above and below the words keep it over nearly the whole
+                     box. -->
+                <Setter Property="MinHeight" Value="34"/>
+                <Setter Property="Padding" Value="8,6"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
             </Style>
 
             <!--
-                Chrome unification (#175 control spec §1, route b): plain
-                Button snaps to the 32px grid. Colors come from the
-                EmberTheme key overrides, not from setters here.
+                Chrome unification (#175 control spec §1, route b): a plain
+                Button is the PadForge 6 boards' button (#574), 36 tall with
+                14 at its sides. Colors come from the EmberTheme key
+                overrides, not from setters here.
             -->
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Padding" Value="14,0"/>
             </Style>
 
             <!--
@@ -632,12 +655,13 @@
 
                 A quiet action has no fill and no edge until the pointer is
                 on it (QuietButton for a uictrl:Button, QuietPlainButton for
-                a plain Button). A QuietButton that cannot be used has none
-                either: the button template fills and rings a disabled button
+                a plain Button). A quiet button that cannot be used has none
+                either: both button templates fill and ring a disabled button
                 from two theme keys, which drew a box around Duplicate and
                 Remove under a macro's steps while no step was picked, and
-                the style shadows both keys with nothing, as a quiet reset's
-                does.
+                around a Bass Shakers tone's Test while the shakers were
+                off. Both styles shadow the two keys with nothing, as a
+                quiet reset's does.
 
                 Dialog footer idiom (layout a style cannot carry): a
                 right-aligned horizontal StackPanel, Margin 0,18,0,0,
@@ -709,6 +733,8 @@
                 <Style.Resources>
                     <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
                     <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
                 </Style.Resources>
                 <Setter Property="MinHeight" Value="36"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -754,8 +780,13 @@
                 </Setter>
             </Style>
 
-            <!-- Form checkboxes ride the implicit style (neutral hover glow). -->
+            <!-- Form checkboxes ride the implicit style (neutral hover glow).
+                 A check box keeps the corners of 4 it has always had. At the
+                 6 the other controls take (ControlCornerRadius) its 20 box
+                 reads as a rounded pill, and the boards draw the browser's
+                 own check box, which is squarer still. -->
             <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+                <Setter Property="Border.CornerRadius" Value="4"/>
             </Style>
 
             <!--
@@ -1132,6 +1163,7 @@
             <conv:IndexToLetterConverter x:Key="IndexToLetterConverter" />
             <conv:IndexLessThanVisibilityConverter x:Key="IndexLessThanVisibilityConverter" />
             <conv:OneBasedIndexConverter x:Key="OneBasedIndexConverter" />
+            <conv:BytePercentConverter x:Key="BytePercentConverter" />
             <conv:LogScaleConverter x:Key="LogScaleConverter" />
             <conv:ExeIconConverter x:Key="ExeIconConverter" />
             <conv:CultureLanguageConverter x:Key="CultureLanguageConverter" />

@@ -177,6 +177,12 @@ namespace PadForge.Tests
             // New Macro and New Menu, 28 square at the head's end.
             Assert.Equal("{Binding AddMacroCommand}", (string)ById(card, "MacroAddButton").Attribute("Command"));
             Assert.Equal("{Binding AddMenuCommand}", (string)ById(card, "MenuAddButton").Attribute("Command"));
+            // Each is named for what it makes, as the board names it.
+            foreach (var (id, key) in new[] { ("MacroAddButton", "Macro_NewMacro"), ("MenuAddButton", "Menu_NewMenu") })
+            {
+                Assert.Equal("{Binding " + key + S, (string)ById(card, id).Attribute("AutomationProperties.Name"));
+                Assert.Equal("{Binding " + key + S, (string)ById(card, id).Attribute("ToolTip"));
+            }
             foreach (string id in new[] { "MacroAddButton", "MenuAddButton", "MacroListMoreButton" })
                 Assert.Equal("{StaticResource ListHeadButton}", (string)ById(card, id).Attribute("Style"));
             Assert.Equal("28", SetterOf(Keyed(page, "ListHeadButton"), "Width"));
@@ -228,7 +234,8 @@ namespace PadForge.Tests
         /// <summary>An editor's head, as the board draws it: the name at 20
         /// SemiBold, typed over in place, with a pencil that puts the caret
         /// in it, then Enabled as a switch and More, which holds Duplicate,
-        /// Copy and Remove.</summary>
+        /// Copy, Clear Trigger and Remove for a macro, and Duplicate, Remove
+        /// Last Cell and Remove for a menu.</summary>
         [Fact]
         public void AnEditorsHeadIsItsName_Enabled_AndMore()
         {
@@ -241,9 +248,9 @@ namespace PadForge.Tests
             foreach (var (part, box, nameKey, selected, has, enabled, enabledKey, moreId, commands, removeId) in new[]
             {
                 (parts[0], "MacroNameBox", "Macro_Name", "SelectedMacro", "HasSelectedMacro", "{Binding IsEnabled, Mode=TwoWay}", "Common_Enabled", "MacroMoreButton",
-                    new[] { "{Binding DuplicateMacroCommand}", "{Binding CopyMacroCommand}", "{Binding RemoveMacroCommand}" }, "MacroRemoveButton"),
+                    new[] { "{Binding DuplicateMacroCommand}", "{Binding CopyMacroCommand}", "{Binding SelectedMacro.ClearTriggerCommand}", "{Binding RemoveMacroCommand}" }, "MacroRemoveButton"),
                 (parts[1], "MenuNameBox", "Menu_Name", "SelectedMenu", "HasSelectedMenu", "{Binding Enabled}", "Menu_Enabled", "MenuMoreButton",
-                    new[] { "{Binding DuplicateMenuCommand}", "{Binding RemoveMenuCommand}" }, "MenuRemoveButton"),
+                    new[] { "{Binding DuplicateMenuCommand}", "{Binding SelectedMenu.RemoveLastCellCommand}", "{Binding RemoveMenuCommand}" }, "MenuRemoveButton"),
             })
             {
                 // The editor shows while its part has a selection, on that
@@ -259,6 +266,8 @@ namespace PadForge.Tests
                 Assert.Equal("{Binding " + nameKey + S, (string)name.Attribute("AutomationProperties.Name"));
                 var pencil = Assert.Single(host.Descendants(), e => (string)e.Attribute("Click") == "RenameName_Click");
                 Assert.Equal("{Binding ElementName=" + box + "}", (string)pencil.Attribute("Tag"));
+                Assert.Equal("{Binding Common_Rename" + S, (string)pencil.Attribute("AutomationProperties.Name"));
+                Assert.Equal("{Binding Common_Rename" + S, (string)pencil.Attribute("ToolTip"));
                 Assert.Same(name.Parent, pencil.Parent);
                 Assert.Equal("FlexLinePanel", name.Parent!.Name.LocalName);
 
@@ -276,17 +285,28 @@ namespace PadForge.Tests
                 Assert.Equal("{DynamicResource DangerInkBrush}", (string)items.Last().Attribute("Foreground"));
             }
 
+            // Clear Trigger takes every input out of the macro's trigger. Remove
+            // Last Cell shows while the menu has cells.
+            var clearTrigger = ById(page, "MacroClearTrigger");
+            Assert.Equal("MenuItem", clearTrigger.Name.LocalName);
+            Assert.Equal("{Binding Macro_ClearTrigger" + S, (string)clearTrigger.Attribute("Header"));
+            Assert.Null(clearTrigger.Attribute("Visibility"));
+            var removeCell = ById(page, "MenuRemoveCell");
+            Assert.Equal("MenuItem", removeCell.Name.LocalName);
+            Assert.Equal("{Binding Menu_RemoveLastCell" + S, (string)removeCell.Attribute("Header"));
+            Assert.Equal("{Binding SelectedMenu.IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}", (string)removeCell.Attribute("Visibility"));
+
             var heading = Keyed(page, "HeadNameEdit");
             Assert.Equal("{StaticResource DzValueEdit}", (string)heading.Attribute("BasedOn"));
             Assert.Equal("20", SetterOf(heading, "FontSize"));
             Assert.Equal("SemiBold", SetterOf(heading, "FontWeight"));
             Assert.Equal("Left", SetterOf(heading, "TextAlignment"));
 
-            // A row that reaches its macro or its menu from inside a part of
-            // its own asks the editor's host by name. The nearest scroll
-            // viewer is the section's, whose data is the page's: the selected
-            // action's editor showed with no action selected, and a keyboard
-            // menu's Opens With row showed for every menu (seen 2026-11-11).
+            // No row reaches its macro or its menu through the nearest scroll
+            // viewer, which is the section's, whose data is the page's: the
+            // selected action's editor showed with no action selected, and a
+            // keyboard menu's Opens With row showed for every menu (seen
+            // 2026-11-11).
             var section = Named(page, "MacrosSectionScroll");
             Assert.DoesNotContain(section.Descendants().SelectMany(e => e.Attributes()), a => a.Value.Contains("AncestorType=ScrollViewer", StringComparison.Ordinal));
             // An action's fields are the picked step's own, made inside it,
@@ -294,8 +314,15 @@ namespace PadForge.Tests
             // data or asks whether there is one.
             Assert.DoesNotContain(section.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding SelectedAction}");
             Assert.DoesNotContain(section.Descendants().SelectMany(e => e.Attributes()), a => a.Value.Contains("DataContext.SelectedAction", StringComparison.Ordinal));
-            Assert.Contains(section.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding OpenRow}"
-                && (string)e.Attribute("Visibility") == "{Binding DataContext.IsKeyboard, ElementName=MenuEditorHost, Converter={StaticResource BoolToVisibilityConverter}}");
+            // A keyboard menu's Opens With row takes its opener's row as its
+            // data inside a border that shows by the menu's own style, so it
+            // asks no other element, and the editor with no menu picked has no
+            // lookup that finds nothing.
+            var openRow = Assert.Single(section.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding OpenRow}");
+            Assert.Null(openRow.Attribute("Visibility"));
+            Assert.Equal("Border", openRow.Parent!.Name.LocalName);
+            Assert.Equal("{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}", (string)openRow.Parent.Attribute("Visibility"));
+            Assert.DoesNotContain(section.Descendants().SelectMany(e => e.Attributes()), a => a.Value.Contains("ElementName=MenuEditorHost", StringComparison.Ordinal));
 
             Assert.Matches(@"private void RenameName_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(\(sender as FrameworkElement\)\?\.Tag is not TextBox box\) return;\s*box\.Focus\(\);\s*box\.SelectAll\(\);", Code());
         }
@@ -335,12 +362,14 @@ namespace PadForge.Tests
             var whenRows = Assert.Single(when.Elements()).Elements().ToList();
             Assert.Equal(8, whenRows.Count);
             Assert.Equal("{StaticResource EditorBlockHead}", (string)whenRows[0].Attribute("Style"));
-            Assert.Equal("{Binding Macro_Trigger" + S, (string)whenRows[0].Attribute("Text"));
+            Assert.Equal("{Binding Macro_When_Header" + S, (string)whenRows[0].Attribute("Text"));
             var inputs = whenRows[1];
             Assert.Equal(combination, (string)inputs.Attribute("Visibility"));
             string inputsText = inputs.ToString();
-            foreach (string part in new[] { "SlotMacroTriggerChoicesView", "RecordTriggerCommand", "ClearTriggerCommand", "Macro_RecordHint", "RecordingLiveText", "TriggerInputItems" })
+            foreach (string part in new[] { "SlotMacroTriggerChoicesView", "RecordTriggerCommand", "Macro_RecordHint", "RecordingLiveText", "TriggerInputItems" })
                 Assert.Contains(part, inputsText);
+            // Clear Trigger is an item of the macro's More.
+            Assert.DoesNotContain("ClearTriggerCommand", inputsText);
             Assert.Contains("{Binding TriggerMode, Mode=TwoWay}", whenRows[2].ToString());
             Assert.Null(whenRows[2].Attribute("Visibility"));
             Assert.Equal(new[] { "ShowsHoldTimeRow", "IsDoublePressMode", "ShowsInlineIntervalRow", "IsCustomExpressionMode" },
@@ -352,7 +381,7 @@ namespace PadForge.Tests
             // fields stand in its own step.
             var doRows = Assert.Single(act.Elements()).Elements().ToList();
             Assert.Equal(3, doRows.Count);
-            Assert.Equal("{Binding Macro_ActionSequence" + S, (string)doRows[0].Attribute("Text"));
+            Assert.Equal("{Binding Macro_Do_Header" + S, (string)doRows[0].Attribute("Text"));
             Assert.Equal("ActionsList", Name(doRows[1]));
             Assert.Equal("{Binding AddActionCommand}", (string)doRows[2].Attribute("Command"));
 
@@ -385,7 +414,8 @@ namespace PadForge.Tests
         /// own rows, and More, a fold at the card's foot, what a menu
         /// seldom needs. Every row kept the rule that shows it. No row
         /// shares a label column with another: a row's label is the
-        /// section's 190.</summary>
+        /// section's 190. No row has a caption under it: what a caption
+        /// said is its label's tooltip.</summary>
         [Fact]
         public void TheMenuEditorsRowsStandInOpens_Cells_Keyboard_AndMore()
         {
@@ -402,6 +432,10 @@ namespace PadForge.Tests
             // A block's head has the blocks' look.
             Assert.All(new[] { opens, cells, keyboard }, b => Assert.Equal("{StaticResource EditorBlockHead}",
                 (string)Assert.Single(b.Elements()).Elements().First().Attribute("Style")));
+            // And the board's words: Opens, Cells, and Keyboard, the name of
+            // the style a keyboard menu is.
+            Assert.Equal(new[] { "{Binding Menu_Opens_Header" + S, "{Binding Menu_Cells" + S, "{Binding Menu_Keyboard_Card" + S },
+                new[] { opens, cells, keyboard }.Select(b => (string)Assert.Single(b.Elements()).Elements().First().Attribute("Text")));
 
             string Gate(XElement row) => ((string)row.Attribute("Visibility") ?? "{Binding ").Substring("{Binding ".Length).Split(',')[0];
             // What a row is of: the string of its own text or of its first
@@ -422,19 +456,19 @@ namespace PadForge.Tests
             var opensRows = Assert.Single(opens.Elements()).Elements().Skip(1).ToList();
             Assert.Equal(new[]
                 {
-                    "", "", "IsKeyboard", "IsKeyboard", "DataContext.IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard",
-                    "IsCellMenu", "IsCellMenu", "ShowsCustomAxesRows", "ShowsCustomAxesRows",
-                    "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "ShowsHostHalfRow",
+                    "", "IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard",
+                    "IsCellMenu", "ShowsCustomAxesRows", "ShowsCustomAxesRows",
+                    "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "ShowsHostHalfRow",
                 },
                 opensRows.Select(Gate));
             Assert.Contains("{Binding KindIndex, Mode=TwoWay}", opensRows[0].ToString());
-            Assert.Contains("ElementName=MenuEditorHost", (string)opensRows[4].Attribute("Visibility"));
+            Assert.Equal("{Binding OpenRow}", (string)Assert.Single(opensRows[3].Elements()).Attribute("DataContext"));
 
-            // Cells: the list of them, then Add Cell and Remove. The block
-            // carries the rule. A ring's center cell is a row under More.
+            // Cells: the list of them, then Add Cell. The block carries the
+            // rule. A ring's center cell is a row under More.
             Assert.Equal("{Binding Menu_Cells" + S, (string)Assert.Single(cells.Elements()).Elements().First().Attribute("Text"));
             var cellRows = Assert.Single(cells.Elements()).Elements().Skip(1).ToList();
-            Assert.Equal(new[] { "ListBox", "StackPanel" }, cellRows.Select(r => r.Name.LocalName));
+            Assert.Equal(new[] { "ListBox", "Button" }, cellRows.Select(r => r.Name.LocalName));
             Assert.Equal("{Binding Cells}", (string)cellRows[0].Attribute("ItemsSource"));
             Assert.All(cellRows, r => Assert.Null(r.Attribute("Visibility")));
 
@@ -443,8 +477,7 @@ namespace PadForge.Tests
             var keyboardRows = Assert.Single(keyboard.Elements()).Elements().Skip(1).ToList();
             Assert.Equal(new[]
                 {
-                    "Menu_TypesThrough", "Menu_TypesThrough_Caption", "Menu_FunctionRow", "Menu_FunctionRow_Caption",
-                    "Menu_WordSuggestions", "Menu_WordSuggestions_Caption", "Menu_SymbolsPage",
+                    "Menu_TypesThrough", "Menu_FunctionRow", "Menu_WordSuggestions", "Menu_SymbolsPage",
                     "Menu_Keyboard_Controls", "Menu_Keyboard_Controls_Desc", "Menu_Deadzone", "KeyboardControlRows",
                 },
                 keyboardRows.Select(What));
@@ -457,20 +490,149 @@ namespace PadForge.Tests
             Assert.Equal(new[]
                 {
                     "", "Menu_LayerHoldsOpen", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "SelectedFireDescription",
-                    "Menu_HasCenter", "Menu_Deadzone", "Dashboard_MenuOverlay", "Menu_Keyboard_Overlay_Caption", "Menu_ShowLabels",
-                    "ResetLabel_PositionX", "ResetLabel_PositionY", "Menu_Scale", "Menu_Opacity", "",
+                    "Menu_HasCenter", "Menu_Deadzone", "Dashboard_MenuOverlay", "Menu_ShowLabels",
+                    "ResetLabel_PositionX", "ResetLabel_PositionY", "Menu_Scale", "Menu_Opacity",
                 },
                 moreRows.Select(What));
             Assert.Equal(new[]
                 {
                     "", "ShowLayerHold", "ShowWebControllerRow", "ShowsClickRow", "IsCellMenu", "IsCellMenu",
-                    "IsRadial", "IsCellMenu", "", "IsKeyboard", "IsCellMenu",
-                    "", "", "", "", "",
+                    "IsRadial", "IsCellMenu", "", "IsCellMenu",
+                    "", "", "", "",
                 },
                 moreRows.Select(Gate));
-            Assert.Equal("FoldList", moreRows[^1].Name.LocalName);
-            // The fold stands off the last row.
-            Assert.Equal("0,10,0,0", (string)moreRows[^1].Attribute("Margin"));
+            // Icon Packages is a line of its own under the editor's card.
+            Assert.DoesNotContain(more.Descendants(), e => Name(e) == "IconPackagesFoldCard");
+
+            // What each caption said is the tooltip of its row's label, after
+            // what that tooltip said before, and no caption is a line of its
+            // own.
+            string[] captions =
+            {
+                "Menu_Style_Caption", "Menu_Keyboard_OpensWith_Caption", "Menu_OpenOnTextFocus_Caption", "HostInputCaption",
+                "Menu_Hotbar_Caption", "Menu_TypesThrough_Caption", "Menu_FunctionRow_Caption", "Menu_WordSuggestions_Caption",
+                "Menu_Keyboard_Overlay_Caption",
+            };
+            foreach (string caption in captions)
+            {
+                var uses = host.Descendants().SelectMany(e => e.Attributes())
+                    .Where(a => a.Value.StartsWith("{Binding " + caption + ",", StringComparison.Ordinal) || a.Value == "{Binding " + caption + "}")
+                    .ToList();
+                Assert.NotEmpty(uses);
+                Assert.All(uses, a => Assert.True(a.Name.LocalName == "ToolTip"
+                    || a.Parent!.Ancestors().Any(p => p.Name.LocalName == "TextBlock.ToolTip"), caption + " is a line of its own"));
+            }
+            foreach (var (label, tip, caption) in new[]
+            {
+                ("{Binding Menu_Style" + S, "{Binding Menu_Style_Tip" + S, "{Binding Menu_Style_Caption" + S),
+                ("{Binding HostInputLabel}", "{Binding HostInputTip}", "{Binding HostInputCaption}"),
+                ("{Binding Menu_Hotbar_Show" + S, "{Binding Menu_Hotbar_Show_Tip" + S, "{Binding Menu_Hotbar_Caption" + S),
+            })
+            {
+                var owner = Assert.Single(host.Descendants(), e => e.Name.LocalName == "TextBlock"
+                    && (string)e.Attribute("Style") == "{DynamicResource RowOptionLabel}" && (string)e.Attribute("Text") == label);
+                var paragraphs = Assert.Single(owner.Elements(), e => e.Name.LocalName == "TextBlock.ToolTip")
+                    .Descendants().Where(e => e.Name.LocalName == "TextBlock").ToList();
+                Assert.Equal(new[] { tip, caption }, paragraphs.Select(p => (string)p.Attribute("Text")));
+                Assert.All(paragraphs, p => Assert.Equal("Wrap", (string)p.Attribute("TextWrapping")));
+            }
+            // The overlay's caption spoke of a keyboard menu alone, and its
+            // tooltip shows on one.
+            var overlay = Assert.Single(host.Descendants(), e => (string)e.Attribute("Text") == "{Binding Dashboard_MenuOverlay" + S);
+            Assert.Equal("{Binding Menu_Keyboard_Overlay_Caption" + S, (string)overlay.Attribute("ToolTip"));
+            Assert.Equal("{Binding IsKeyboard}", (string)overlay.Attribute("ToolTipService.IsEnabled"));
+        }
+
+        /// <summary>The menu editor's numbers are the page's number boxes, as
+        /// the Macros board draws them: a field 64 by 34 with its unit after
+        /// it, or where a slider stands beside the number the section's
+        /// slider with its value and the percent sign. No spin box is
+        /// left.</summary>
+        [Fact]
+        public void TheMenuEditorsNumbersAreThePagesNumberBoxes()
+        {
+            var page = Page();
+            var host = Named(page, "MenuEditorHost");
+            Assert.DoesNotContain(host.Descendants(), e => e.Name.LocalName == "NumberBox");
+            var fields = host.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource CardNumberBox}").ToList();
+            Assert.Equal(new[]
+                {
+                    "{Binding OpenPressMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                    "{Binding PosXPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                    "{Binding PosYPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                    "{Binding ScalePercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                    "{Binding OpacityPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                },
+                fields.Select(f => (string)f.Attribute("Text")));
+            // Each field has a name, and its unit stands after it.
+            Assert.All(fields, f => Assert.StartsWith("{Binding ", (string)f.Attribute("AutomationProperties.Name")));
+            var units = fields.Select(f => f.ElementsAfterSelf().First()).ToList();
+            Assert.Equal(new[] { "{Binding Common_Ms" + S, "%", "%", "%", "%" }, units.Select(u => (string)u.Attribute("Text")));
+            Assert.All(units, u => Assert.Equal("{StaticResource DzPercent}", (string)u.Attribute("Style")));
+            var field = Keyed(page, "CardNumberBox");
+            Assert.Equal("64", SetterOf(field, "Width"));
+            Assert.Equal("34", SetterOf(field, "MinHeight"));
+            Assert.Equal("Right", SetterOf(field, "TextAlignment"));
+
+            // Engage Deadzone, in Keyboard Controls and under More: the
+            // section's slider, its value and the percent sign.
+            var sliders = host.Descendants().Where(e => e.Name.LocalName == "Slider"
+                && (string)e.Attribute("Value") == "{Binding EngageDeadzonePercent, Mode=TwoWay}").ToList();
+            Assert.Equal(2, sliders.Count);
+            Assert.All(sliders, s =>
+            {
+                Assert.Equal("{DynamicResource RowOptionDeadzoneSlider}", (string)s.Attribute("Style"));
+                Assert.Null(s.Attribute("Width"));
+                Assert.Equal("{Binding Menu_Deadzone" + S, (string)s.Attribute("AutomationProperties.Name"));
+                var value = s.ElementsAfterSelf().First();
+                Assert.Equal("TextBox", value.Name.LocalName);
+                Assert.Equal("{StaticResource DzValueEdit}", (string)value.Attribute("Style"));
+                Assert.Equal("{Binding EngageDeadzonePercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}", (string)value.Attribute("Text"));
+                Assert.Equal("{Binding Menu_Deadzone" + S, (string)value.Attribute("AutomationProperties.Name"));
+                var unit = value.ElementsAfterSelf().First();
+                Assert.Equal("%", (string)unit.Attribute("Text"));
+                Assert.Equal("{StaticResource DzPercent}", (string)unit.Attribute("Style"));
+            });
+        }
+
+        /// <summary>Icon Packages is a line of a card of its own under the
+        /// editor's card, the Sound Packages line's shape, while a menu with
+        /// cells shows (#574). The packages' buttons and Keyboard Controls'
+        /// Map All are the page's buttons, with no padding of their
+        /// own.</summary>
+        [Fact]
+        public void IconPackagesIsALineOfItsOwnUnderTheMenuEditor()
+        {
+            var page = Page();
+            var column = Named(page, "MacrosEditorColumn");
+            var block = Named(page, "IconPackagesBlock");
+            Assert.Equal(new[] { "MacrosEditorCard", "IconPackagesBlock" }, column.Elements().Select(Name));
+            Assert.Equal("0,16,0,0", (string)block.Attribute("Margin"));
+            // It shows on the menus' part while the picked menu has cells.
+            var look = Assert.Single(Assert.Single(block.Elements(), e => e.Name.LocalName == "Border.Style").Elements());
+            Assert.Equal("Collapsed", SetterOf(look, "Visibility"));
+            var shows = Assert.Single(look.Descendants(), e => e.Name.LocalName == "MultiDataTrigger");
+            Assert.Equal(new[] { "{Binding MacrosPartIndex}=1", "{Binding SelectedMenu.IsCellMenu}=True" },
+                shows.Descendants().Where(e => e.Name.LocalName == "Condition")
+                    .Select(c => (string)c.Attribute("Binding") + "=" + (string)c.Attribute("Value")));
+            Assert.Equal("Visible", (string)Assert.Single(shows.Elements(), e => e.Name.LocalName == "Setter").Attribute("Value"));
+            var list = Assert.Single(block.Elements(), e => e.Name.LocalName == "FoldList");
+            var card = Assert.Single(list.Elements());
+            Assert.Equal("IconPackagesFoldCard", Name(card));
+            Assert.Null(card.Attribute("Visibility"));
+            Assert.DoesNotContain(Named(page, "MenuMore").Descendants(), e => Name(e) == "IconPackagesFoldCard");
+
+            // The packages' buttons and Map All take the page's button look.
+            var buttons = page.Descendants().Where(e => (string)e.Attribute("Click") is "IconPackageAdd_Click" or "IconPackageCreate_Click"
+                or "IconPackageRemove_Click" or "PackageAdd_Click" or "PackageCreate_Click" or "PackageRemove_Click").ToList();
+            Assert.Equal(6, buttons.Count);
+            buttons.Add(Assert.Single(page.Descendants(), e => (string)e.Attribute("Content") == "{Binding MapAllText}"));
+            Assert.All(buttons, b =>
+            {
+                Assert.Equal("Button", b.Name.LocalName);
+                Assert.Null(b.Attribute("Padding"));
+                Assert.Null(b.Attribute("Style"));
+            });
         }
 
         /// <summary>A row of a setting in the menu editor is the section's
@@ -487,6 +649,13 @@ namespace PadForge.Tests
             var host = Named(page, "MenuEditorHost");
             bool IsRow(XElement e) => e.Name.LocalName == "FlexLinePanel" && (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}";
             bool IsReset(XElement e) => e.Name.LocalName == "SettingResetButton" || (string)e.Attribute("Style") == "{StaticResource ResetButton}";
+            // A setter of a style of the page's own resources.
+            string PageStyleSetter(string style, string property)
+            {
+                string key = style.Substring("{StaticResource ".Length).TrimEnd('}');
+                var resources = Assert.Single(page.Root!.Elements(), e => e.Name.LocalName == "UserControl.Resources");
+                return SetterOf(Assert.Single(resources.Elements(), e => (string)e.Attribute(X + "Key") == key), property);
+            }
             var rows = host.Descendants().Where(IsRow).ToList();
             // 33 settings of the menu and the four fields of a cell.
             Assert.Equal(37, rows.Count);
@@ -512,9 +681,10 @@ namespace PadForge.Tests
                 Assert.True(IsReset(parts[^1]), "a row ends with " + parts[^1].Name.LocalName);
                 Assert.Equal(1, parts.Count(IsReset));
                 Assert.Equal("True", (string)parts[^1].Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
-                // A picker or a box of the row stands centered in its height.
+                // A picker or a box of the row stands centered in its height,
+                // by its own setting or by its style's.
                 Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox" or "NumberBox"),
-                    c => Assert.Equal("Center", (string)c.Attribute("VerticalAlignment")));
+                    c => Assert.Equal("Center", (string)c.Attribute("VerticalAlignment") ?? PageStyleSetter((string)c.Attribute("Style"), "VerticalAlignment")));
             });
 
             // A check box of the rows is a switch, which says what the
@@ -569,12 +739,13 @@ namespace PadForge.Tests
             Assert.Equal("{Binding MapAllText}", (string)controlsLine[2].Attribute("Content"));
 
             // Where the overlay sits is a row for each of its two numbers,
-            // named as its reset is.
+            // named as its reset is: a number box and its unit.
             foreach (string axis in new[] { "X", "Y" })
             {
                 var row = rows.Single(r => (string)r.Elements().First().Attribute("Text") == "{Binding ResetLabel_Position" + axis + S);
-                Assert.Equal(new[] { "TextBlock", "NumberBox", "SettingResetButton" }, row.Elements().Select(e => e.Name.LocalName));
-                Assert.Equal("{Binding Pos" + axis + "Percent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)row.Elements().ElementAt(1).Attribute("Value"));
+                Assert.Equal(new[] { "TextBlock", "TextBox", "TextBlock", "SettingResetButton" }, row.Elements().Select(e => e.Name.LocalName));
+                Assert.Equal("{Binding Pos" + axis + "Percent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}", (string)row.Elements().ElementAt(1).Attribute("Text"));
+                Assert.Equal("%", (string)row.Elements().ElementAt(2).Attribute("Text"));
                 Assert.Equal("Pos" + axis + "Percent", (string)row.Elements().Last().Attribute("CommandParameter"));
                 Assert.Equal("{Binding ResetLabel_Position" + axis + S, (string)row.Elements().Last().Attribute("SettingLabel"));
             }
@@ -1110,10 +1281,11 @@ namespace PadForge.Tests
 
         /// <summary>The inputs of a macro's trigger stand on one line, as
         /// the board draws them: a pill for each with its remove, "and"
-        /// between two, then Record and Add from List, and Clear after
-        /// them. The line wraps, and its own parts go on from the last
-        /// pill. Under it stand the record hint, what is being recorded,
-        /// and the settings of each input that has any, as rows.</summary>
+        /// between two, then Record and Add from List. Clear Trigger is an
+        /// item of the macro's More. The line wraps, and its own parts go
+        /// on from the last pill. Under it stand the record hint, what is
+        /// being recorded, and the settings of each input that has any, as
+        /// rows.</summary>
         [Fact]
         public void TheTriggersInputsStandOnOneLine_WithRecordAndAddFromListAfterThem()
         {
@@ -1129,9 +1301,9 @@ namespace PadForge.Tests
             Assert.Equal("{StaticResource InputChipAnd}", Lead("Between"));
 
             // The line's own parts, in order: the words of a trigger with
-            // no input, Record, Add from List and Clear.
+            // no input, Record and Add from List.
             var own = line.Elements().ToList();
-            Assert.Equal(new[] { "TextBlock", "Button", "Grid", "Button" }, own.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "TextBlock", "Button", "Grid" }, own.Select(e => e.Name.LocalName));
             Assert.Equal("{Binding Macro_NotSet" + S, (string)own[0].Attribute("Text"));
             Assert.Equal("{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}",
                 (string)own[0].Attribute("Visibility"));
@@ -1178,13 +1350,7 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)face.Elements().First().Attribute("Foreground"));
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)face.Elements().Last().Attribute("Stroke"));
 
-            var clear = own[3];
-            Assert.Equal("{Binding ClearTriggerCommand}", (string)clear.Attribute("Command"));
-            Assert.Equal("{StaticResource CardIconButton}", (string)clear.Attribute("Style"));
-            // As tall as the line's other parts, so the line is the board's 30.
-            Assert.Equal("30", (string)clear.Attribute("Width"));
-            Assert.Equal("30", (string)clear.Attribute("Height"));
-            Assert.Equal("{Binding Common_Clear" + S, (string)clear.Attribute("AutomationProperties.Name"));
+            Assert.DoesNotContain(when.Descendants(), e => (string)e.Attribute("Command") == "{Binding ClearTriggerCommand}");
 
             // The pill: 30 tall and round at its ends, 12 at its start and 6
             // at its end, the raised fill inside a cold edge. Its words are
@@ -1266,8 +1432,9 @@ namespace PadForge.Tests
         /// them: one under the other in the step's look, each with its
         /// number, its name, what it does in the quiet color and an edit
         /// pencil. The picked cell is open on its fields, which are rows of
-        /// the section with a reset each. Under the list stand Add Cell,
-        /// drawn out so its plus is at the cells' edge, and Remove.</summary>
+        /// the section with a reset each. Under the list stands Add Cell,
+        /// drawn out so its plus is at the cells' edge. Remove Last Cell is
+        /// an item of the menu's More.</summary>
         [Fact]
         public void AMenusCellsAreNumberedRows()
         {
@@ -1316,12 +1483,14 @@ namespace PadForge.Tests
             Assert.Null(parts[4].Attribute("Visibility"));
             Assert.Equal("{Binding DataContext.EditCellCommand, RelativeSource={RelativeSource AncestorType=ListBox}}", (string)parts[4].Attribute("Command"));
             Assert.Equal("{Binding}", (string)parts[4].Attribute("CommandParameter"));
-            Assert.StartsWith("{Binding ", (string)parts[4].Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Menu_EditCell" + S, (string)parts[4].Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Menu_EditCell" + S, (string)parts[4].Attribute("ToolTip"));
             Assert.All(parts.Skip(3), b => Assert.Equal("{StaticResource StepButton}", (string)b.Attribute("Style")));
             var triggers = headTemplate.Descendants().Where(e => e.Name.LocalName == "DataTrigger").ToList();
-            Assert.Equal(new[] { "{Binding HasLabel}", "{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" },
+            // The name is in the quiet color only while it is the cell's place.
+            Assert.Equal(new[] { "{Binding IsPlaceName}", "{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" },
                 triggers.Select(t => (string)t.Attribute("Binding")));
-            Assert.Equal("False", (string)triggers[0].Attribute("Value"));
+            Assert.Equal("True", (string)triggers[0].Attribute("Value"));
             Assert.Equal(new[] { "Words.Foreground={DynamicResource TextFillColorTertiaryBrush}" }, Setters(triggers[0]));
             Assert.Equal(new[] { "ResetAll.Visibility=Visible", "ResetAll.IsTabStop=True", "Edit.IsTabStop=True" }, Setters(triggers[1]));
 
@@ -1336,6 +1505,11 @@ namespace PadForge.Tests
             Assert.All(rows, r => Assert.Equal("{DynamicResource RowOptionLine}", (string)r.Attribute("Style")));
             Assert.Equal(new[] { "Label", "BindingKind", "IconName", "IconScalePercent" },
                 rows.Select(r => (string)r.Elements().Last().Attribute("CommandParameter")));
+            // A row's label names it for the cell, and its reset says the same.
+            Assert.Equal(new[] { "{Binding Menu_Cell_Name" + S, "{Binding Menu_Cell_Action" + S, "{Binding Menu_Cell_Icon" + S, "{Binding Menu_IconScale" + S },
+                rows.Select(r => (string)r.Elements().First().Attribute("Text")));
+            Assert.Equal(new[] { "{Binding Menu_Cell_Name" + S, "{Binding Menu_Cell_Action" + S, "{Binding Menu_Cell_Icon" + S },
+                rows.Take(3).Select(r => (string)r.Elements().Last().Attribute("SettingLabel")));
             Assert.All(rows, r => Assert.Equal("{Binding ResetSettingCommand}", (string)r.Elements().Last().Attribute("Command")));
             Assert.Equal(new[] { null, null, null, "{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}}" },
                 rows.Select(r => (string)r.Attribute("Visibility")));
@@ -1357,22 +1531,22 @@ namespace PadForge.Tests
                 && (string)e.Attribute("Visibility") == "{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}");
             Assert.Contains(rows[3].Elements(), e => (string)e.Attribute("Value") == "{Binding IconScalePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}");
 
-            // Under the list: Add Cell and Remove, quiet in the text color.
-            var under = Assert.Single(list.ElementsAfterSelf());
-            Assert.Equal("StackPanel", under.Name.LocalName);
-            Assert.Equal("Horizontal", (string)under.Attribute("Orientation"));
-            Assert.Equal("-14,2,0,0", (string)under.Attribute("Margin"));
-            var buttons = under.Elements().ToList();
-            Assert.Equal(new[] { "{Binding AddCellCommand}", "{Binding RemoveLastCellCommand}" }, buttons.Select(b => (string)b.Attribute("Command")));
-            Assert.All(buttons, b =>
-            {
-                Assert.Equal("{StaticResource QuietTextButton}", (string)b.Attribute("Style"));
-                Assert.Equal(new[] { "Path", "TextBlock" }, Assert.Single(b.Elements()).Elements().Select(e => e.Name.LocalName));
-                Assert.StartsWith("{Binding ", (string)b.Attribute("AutomationProperties.Name"));
-                // The mark is drawn in the button's own color, which dims.
-                Assert.Equal("{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}",
-                    (string)b.Descendants().Single(e => e.Name.LocalName == "Path").Attribute("Stroke"));
-            });
+            // Under the list: Add Cell alone, quiet in the text color, at the
+            // line's start.
+            var add = Assert.Single(list.ElementsAfterSelf());
+            Assert.Equal("Button", add.Name.LocalName);
+            Assert.Equal("-14,2,0,0", (string)add.Attribute("Margin"));
+            Assert.Equal("Left", (string)add.Attribute("HorizontalAlignment"));
+            Assert.Equal("MenuAddCell", (string)add.Attribute("AutomationProperties.AutomationId"));
+            Assert.Equal("{Binding AddCellCommand}", (string)add.Attribute("Command"));
+            Assert.Equal("{Binding Menu_AddCell" + S, (string)add.Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Menu_AddCell" + S, (string)add.Descendants().Single(e => e.Name.LocalName == "TextBlock").Attribute("Text"));
+            Assert.Equal("{StaticResource QuietTextButton}", (string)add.Attribute("Style"));
+            Assert.Equal(new[] { "Path", "TextBlock" }, Assert.Single(add.Elements()).Elements().Select(e => e.Name.LocalName));
+            // The mark is drawn in the button's own color, which dims.
+            Assert.Equal("{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}",
+                (string)add.Descendants().Single(e => e.Name.LocalName == "Path").Attribute("Stroke"));
+            Assert.DoesNotContain(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding RemoveLastCellCommand}");
             var quiet = Keyed(page, "QuietTextButton");
             Assert.Equal("{StaticResource QuietButton}", (string)quiet.Attribute("BasedOn"));
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", SetterOf(quiet, "Foreground"));
@@ -1463,9 +1637,9 @@ namespace PadForge.Tests
         }
 
         /// <summary>A cell's row says its name and what it does: its label,
-        /// or with none its place, and the kind of its binding with the key
-        /// or the macro of that kind. Each of its fields has a reset, which
-        /// leaves the others.</summary>
+        /// else what it runs, else its place, and the kind of its binding
+        /// with the key or the macro of that kind. Each of its fields has a
+        /// reset, which leaves the others.</summary>
         [Fact]
         public void ACellsRowSaysItsNameAndWhatItDoes()
         {
@@ -1527,6 +1701,38 @@ namespace PadForge.Tests
             cell.ResetSettingCommand.Execute(nameof(MenuCellItem.Label));
             Assert.Equal("", cell.Label);
             Assert.False(cell.HasLabel);
+            // With no label and nothing it runs, the cell is named by its
+            // place, which the list draws in the quiet color.
+            Assert.Equal(string.Format(words.Menu_CellIndex_Format, 1), cell.RowName);
+            Assert.True(cell.IsPlaceName);
+            Assert.True(center.IsPlaceName);
+            // A cell with no label is named by what it runs, the macro or the
+            // key, and says so whenever that changes.
+            raised.Clear();
+            cell.BindingKind = MenuCellItem.MacroKind;
+            Assert.Equal("Quick Combo", cell.RowName);
+            Assert.False(cell.IsPlaceName);
+            Assert.Contains(nameof(MenuCellItem.RowName), raised);
+            Assert.Contains(nameof(MenuCellItem.IsPlaceName), raised);
+            raised.Clear();
+            cell.BindingKind = 1;
+            cell.SelectedKeyVk = 0x52;
+            Assert.Equal(key, cell.RowName);
+            Assert.False(cell.IsPlaceName);
+            Assert.Contains(nameof(MenuCellItem.RowName), raised);
+            Assert.Contains(nameof(MenuCellItem.IsPlaceName), raised);
+            // Its own label comes first.
+            cell.Label = "Reload";
+            Assert.Equal("Reload", cell.RowName);
+            Assert.False(cell.IsPlaceName);
+            cell.ResetSettingCommand.Execute(nameof(MenuCellItem.Label));
+            Assert.Equal(key, cell.RowName);
+            raised.Clear();
+            cell.ResetSettingCommand.Execute(nameof(MenuCellItem.BindingKind));
+            Assert.Equal(string.Format(words.Menu_CellIndex_Format, 1), cell.RowName);
+            Assert.True(cell.IsPlaceName);
+            Assert.Contains(nameof(MenuCellItem.RowName), raised);
+            Assert.Contains(nameof(MenuCellItem.IsPlaceName), raised);
             // A cell with nothing left is no entry of the menu.
             Assert.DoesNotContain(menu.Entry.Items ?? new List<PadForge.Engine.Menus.MenuItemDefinition>(), i => i.Index == 1);
         }

@@ -71,6 +71,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>ສຳເນົາ</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>ວາງ</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>ເຮັດສຳເນົາ</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>ປ່ຽນຊື່</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>ເປີດໃຊ້ຢູ່</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>ປິດໃຊ້ຢູ່</value></data>
   <data name="Common_On" xml:space="preserve"><value>ເປີດ</value></data>
@@ -291,15 +292,43 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ອຸປະກອນ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ຂັບເຄື່ອນໂດຍ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ເພີ່ມອຸປະກອນ</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ຮູບພາບ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ລາຍການ</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ເອົາພຸດ</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>ການເຄື່ອນໄຫວ</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>ຄລິກສ່ວນຄວບຄຸມໃນຮູບ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>ຄລິກປຸ່ມແປ້ນພິມ ຫຼື ປຸ່ມເມົ້າ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ຄລິກໂນ້ດ ຫຼື ສະໄລເດີ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“ແມັບທັງໝົດ” ຈະຂ້າມເອົາພຸດສຳຜັດຂອງ A ແລະ B. ຄລິກວົງອ້ອມ A ຫຼື B ເພື່ອຜູກເອົາພຸດນັ້ນ.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>ກຳລັງລໍຖ້າອິນພຸດສຳລັບ {0}. ກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານ.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ຂັບເຄື່ອນໂດຍ</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>ຕົວເລືອກເພີ່ມເຕີມ</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>ຕົວເລືອກໜ້ອຍລົງ</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ປຸ່ມດ້ານໜ້າ</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ປຸ່ມບ່າ</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>ປຸ່ມລະບົບ</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>ປຸ່ມ</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>ປຸ່ມທິດທາງ</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>ສະຕິກ</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>ທຣິກເກີ</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>ທັດແພດ</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>ເຊັນເຊີການເຄື່ອນໄຫວ</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>ປຸ່ມເມົ້າ</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>ການເຄື່ອນທີ່ເມົ້າ</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>ລໍ້ເລື່ອນ</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>ການປ່ຽນຄ່າຄວບຄຸມ (CC)</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>ເຊັນເຊີສຳຜັດ</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>ການດຶງແບບອະນາລັອກ</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, ມືຊ້າຍ</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, ມືຂວາ</value></data>
   <data name="Pad_Socd_FoldHint" xml:space="preserve"><value>ການກົດທີ່ເກມເຫັນເມື່ອປຸ່ມທັງສອງຂອງຄູ່ຖືກກົດຄ້າງ</value></data>
+  <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ການກົດທີ່ເກມເຫັນເມື່ອປຸ່ມແປ້ນພິມທັງສອງຂອງຄູ່ຖືກກົດຄ້າງ</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ຄ້າງການເບນສະຕິກເລັກນ້ອຍໄວ້ ເພື່ອໃຫ້ເກມສະແດງສັນຍາລັກປຸ່ມຂອງຕົວຄວບຄຸມຕໍ່ໄປ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ກຳລັງຫຼອມ</value></data>
-  <data name="Macro_EmptyHint" xml:space="preserve"><value>ເລືອກມາໂຄຣທາງຊ້າຍ, ຫຼື ກົດ ເພີ່ມ ເພື່ອສ້າງໃໝ່.</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>ເລືອກມາໂຄຣໃນລາຍການ, ຫຼື ກົດ + ຂ້າງ “ມາໂຄຣ” ເພື່ອສ້າງໃໝ່.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ດິບ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ອອກ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ເຢັນ</value></data>
@@ -862,7 +891,7 @@
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ທຣິກເກີ Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ທຣິກເກີ Impulse</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະທຣິກເກີ, ສັບປ່ຽນມໍເຕີ, ການສັ່ນຂອງທຣິກເກີປັບຕົວ</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະທຣິກເກີ, ສັບປ່ຽນມໍເຕີ, ການສັ່ນຂອງທຣິກເກີປັບຕົວ, ແຮງທຣິກເກີຄົງທີ່</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ສົ່ງຕໍ່ຄຳສັ່ງມໍເຕີແຍກແຕ່ລະທຣິກເກີ (Xbox Impulse Triggers) ຈາກຕົວຄວບຄຸມສະເໝືອນ ໄປຫາຕົວຄວບຄຸມ Xbox One, Elite ຫຼື Series ຕົວຈິງທີ່ກຳນົດໄວ້. ການສັ່ນທຣິກເກີທີ່ເກມສັ່ງຈະຜ່ານໄປໂດຍອັດຕະໂນມັດ. ຕົວຄວບຄຸມດ້ານລຸ່ມປັບຂະໜາດຄວາມແຮງຂອງແຕ່ລະທຣິກເກີ.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ທຣິກເກີຂວາ</value></data>
@@ -932,9 +961,11 @@
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ສະຕິກ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ເດດໂຊນ, ແອນຕີເດດໂຊນ, ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແລະ ການປັບທຽບການຊົດເຊີຍຈຸດກາງ ແຍກຕາມແຕ່ລະສະຕິກ. ແຕ່ລະພາກສ່ວນດ້ານລຸ່ມໃຊ້ກັບສະຕິກອະນາລັອກໜຶ່ງອັນຂອງເອົາພຸດທີ່ໃຊ້ຢູ່. ໂປຣໄຟລ໌ Extended ມີສະຕິກໄດ້ເຖິງສີ່ອັນ. ເກມແພດມາດຕະຖານມີສອງອັນ.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ທຣິກເກີ</value></data>
-  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ເດດໂຊນ, ແອນຕີເດດໂຊນ, ການປັບຂະໜາດຂອບເຂດສູງສຸດ ແລະ ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແຍກຕາມແຕ່ລະທຣິກເກີ. ແຕ່ລະພາກສ່ວນດ້ານລຸ່ມໃຊ້ກັບແກນທຣິກເກີໜຶ່ງແກນຂອງເອົາພຸດທີ່ໃຊ້ຢູ່. ໂປຣໄຟລ໌ Extended ມີໄດ້ເຖິງແປດແກນ ທີ່ໃຊ້ຮ່ວມກັບແຖບສະຕິກ.</value></data>
+  <data name="Pad_Triggers_Subtitle" xml:space="preserve"><value>ເດດໂຊນ, ແອນຕີເດດໂຊນ, ການປັບຂະໜາດຂອບເຂດສູງສຸດ ແລະ ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແຍກຕາມແຕ່ລະທຣິກເກີ. ແຕ່ລະບັດທຣິກເກີໃຊ້ກັບແກນທຣິກເກີໜຶ່ງແກນຂອງເອົາພຸດທີ່ໃຊ້ຢູ່. ໂປຣໄຟລ໌ Extended ມີໄດ້ເຖິງແປດແກນ ທີ່ສະຕິກ ແລະ ທຣິກເກີໃຊ້ຮ່ວມກັນ.</value></data>
   <data name="Pad_ForceFeedback_Header" xml:space="preserve"><value>ແຮງສະທ້ອນກັບ</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ປັບວິທີທີ່ PadForge ປັບຂະໜາດເຫດການແຮງສະທ້ອນກັບຈາກເກມ ແລະ ວິທີສົ່ງມັນໄປຫາມໍເຕີສັ່ນ ຫຼື ຕົວສັ່ນແຮັບຕິກຂອງຕົວຄວບຄຸມຕົວຈິງ. ການສັ່ນຕາມສຽງເພີ່ມຊັ້ນທີ່ຂັບດ້ວຍສຽງຂອງລະບົບໄວ້ທາງເທິງ.</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>ອຸປະກອນນີ້</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>ທັງຕົວຄວບຄຸມ</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>ການສັ່ນຫຼິ້ນເທິງ {0} ເປັນຈັງຫວະແຮັບຕິກ ທີ່ສົ່ງກົງໄປຫາອຸປະກອນ. ການສັ່ນທີ່ແຮງກວ່າຈະເລືອກຈັງຫວະທີ່ແຮງກວ່າ ແລະ ເຮັດຊ້ຳໄວກວ່າ.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>ການຕອບສະໜອງແຮັບຕິກຖືກປິດສຳລັບ {0} ໃນ Logi Options+, ສະນັ້ນມັນຈະບໍ່ຫຼິ້ນຫຍັງຈົນກວ່າທ່ານຈະເປີດຄືນຢູ່ທີ່ນັ້ນ.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ອຸປະກອນນີ້ຍັງບໍ່ໄດ້ຕອບ. ການສັ່ນຂອງມັນຈະຫຼິ້ນເມື່ອມັນຕື່ນຂຶ້ນ.</value></data>
@@ -1001,6 +1032,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ຫູຟັງ, ແຜ່ນຮອງເມົ້າ ແລະ ລຳໂພງ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ຫູຟັງ</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ແຖບໄຟ</value></data>
+  <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ເກມຈະຄວບຄຸມແທນທຸກຄັ້ງທີ່ມັນຂຽນແສງໄຟ.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ປ້ອນລະຫັດສີ HEX ຫົກຫຼັກ (RRGGBB ຫຼື #RRGGBB) ແລ້ວກົດ Enter ຫຼື ຄລິກບ່ອນອື່ນເພື່ອນຳໃຊ້.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ລຶບສີນີ້ອອກຈາກຈານສີ</value></data>
@@ -1018,7 +1050,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>ຄືນຄ່າການສັ່ນຕາມສຽງ</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>ຄືນຄ່າ {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>ລຶບລ້າງການແມັບ</value></data>
-  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ທຸກການແມັບໃນແຖບນີ້ຈະຖືກລຶບລ້າງ. ການກຳນົດແຫຼ່ງ, ແຫຼ່ງເພີ່ມເຕີມ ແລະ ການຕັ້ງຄ່າການລວມ ຈະກັບເປັນຄ່າເລີ່ມຕົ້ນ.</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>ທຸກການແມັບໃນຊັ້ນນີ້ຈະຖືກລຶບລ້າງ. ການກຳນົດແຫຼ່ງ, ແຫຼ່ງເພີ່ມເຕີມ ແລະ ການຕັ້ງຄ່າການລວມ ຈະກັບເປັນຄ່າເລີ່ມຕົ້ນ.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>ຮູບແບບຜູ້ຫຼິ້ນ</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ໂໝດ LED ປິດສຽງ</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>ຄວາມສະຫວ່າງ LED</value></data>
@@ -1084,6 +1116,7 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ປຸ່ມ</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ນຳເຂົ້າ…</value></data>
+  <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>ຕົວຄວບຄຸມແບບຂະຫຍາຍ</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ຈັດການໂປຣໄຟລ໌ HIDMaestro ທີ່ຜູ້ໃຊ້ນຳເຂົ້າ: ບັນທຶກອັນໃໝ່ຈາກອຸປະກອນທີ່ເຊື່ອມຕໍ່, ສົ່ງອອກອັນທີ່ມີຢູ່ເປັນ JSON ຫຼື ລຶບອັນທີ່ທ່ານບໍ່ຕ້ອງການແລ້ວ.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>ໂຄລນອຸປະກອນ 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ແມັບທຸກແກນ, ປຸ່ມ ແລະ POV ເທິງອຸປະກອນທີ່ເລືອກ ໄປຫາເອົາພຸດສະເໝືອນທີ່ມີໝາຍເລກດຽວກັນໂດຍກົງ. ປັບຂະໜາດໂຄງຮ່າງໃຫ້ກົງກັບອຸປະກອນ ແລະ ແທນທີ່ແຖວຂອງອຸປະກອນນີ້ໃນຊ່ອງດ້ວຍການສົ່ງຜ່ານແບບ 1:1.</value></data>
@@ -1131,6 +1164,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>ແຮງສະທ້ອນກັບ</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>ຊ່ອງສັນຍານ</value></data>
+  <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>ເອົາພຸດ MIDI</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>ຊ່ອງສັນຍານ MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>ຈຳນວນ CC</value></data>
   <data name="Pad_MidiCCCountTooltip" xml:space="preserve"><value>ຈຳນວນເອົາພຸດ CC (ສູງສຸດຂຶ້ນກັບ CC ເລີ່ມຕົ້ນ)</value></data>
@@ -1162,7 +1196,6 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>ລຶບຄູ່ປຸ່ມນີ້.</value></data>
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>ປຸ່ມທຳອິດຂອງຄູ່ກົງກັນຂ້າມ.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>ປຸ່ມທີສອງຂອງຄູ່ກົງກັນຂ້າມ.</value></data>
-  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>ທິດທາງຫຼັກກົງກັນຂ້າມພ້ອມກັນ (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>ຮັກສາຕົວຄວບຄຸມໃຫ້ເຮັດວຽກ</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>ບາງເກມຈະຢຸດການສັ່ນ ແລະ ປ່ຽນສັນຍາລັກປຸ່ມທັນທີທີ່ເຫັນອິນພຸດຈາກເມົ້າ ຫຼື ແປ້ນພິມ. ການຄ້າງການເບນສະຕິກເລັກນ້ອຍໄວ້ຈະເຮັດໃຫ້ເກມຖືວ່າຕົວຄວບຄຸມນີ້ເປັນອຸປະກອນທີ່ໃຊ້ງານຢູ່. ການຄ້າງນີ້ເຮັດວຽກພຽງເມື່ອແກນທັງສອງຂອງສະຕິກນັ້ນຢູ່ຕ່ຳກວ່າລະດັບທີ່ຄ້າງໄວ້, ສະນັ້ນສະຕິກທີ່ເລື່ອນເອງຍັງຖືວ່າຢູ່ນິ່ງ. ອິນພຸດທີ່ເກີນລະດັບໃນແກນໃດໜຶ່ງຈະປ່ອຍມັນ ແລະ ຜ່ານໄປໂດຍບໍ່ປ່ຽນແປງ. ໃຫ້ການເບນຕ່ຳກວ່າເດດໂຊນຂອງເກມເອງ ເພື່ອບໍ່ໃຫ້ມີຫຍັງເຄື່ອນທີ່ໃນເກມ.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>ຮັກສາໃຫ້ເຮັດວຽກ</value></data>
@@ -1182,7 +1215,6 @@
   <data name="Menu_Reset_Click" xml:space="preserve"><value>ຄືນຄ່າການຄລິກ</value></data>
   <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>ຄືນຄ່າເຄິ່ງແພດ</value></data>
   <data name="Menu_Reset_FireMode" xml:space="preserve"><value>ຄືນຄ່າໂໝດການເປີດໃຊ້</value></data>
-  <data name="Menu_Reset_Cells" xml:space="preserve"><value>ຄືນຄ່າເຊວ</value></data>
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນເປີດໃຊ້ງານ</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>ຄືນຄ່າຮູບຊົງເມນູ</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>ຄືນຄ່າເຊວ</value></data>
@@ -1238,6 +1270,7 @@
   <data name="Pad_ClearAll" xml:space="preserve"><value>ລ້າງທັງໝົດ</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ແຫຼ່ງ</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>ຄ່າ</value></data>
+  <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ຕົວເລືອກ</value></data>
   <data name="Pad_HeaderDeadZone" xml:space="preserve"><value>ເດດໂຊນແກນເປັນປຸ່ມ</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>ປີ້ນກັບ</value></data>
@@ -1275,7 +1308,7 @@
   <data name="Pad_Mapping_Ramp_Autocenter_Tooltip" xml:space="preserve"><value>ເມື່ອເລືອກ, ແກນຈະຄ່ອຍໆກັບຄືນຈຸດກາງເມື່ອປ່ອຍ. ເມື່ອບໍ່ເລືອກ, ມັນຈະຄ້າງຢູ່ຕຳແໜ່ງສຸດທ້າຍ.</value></data>
   <data name="Pad_Mapping_Modifier_IconTooltip" xml:space="preserve"><value>ປຸ່ມທີ່ປີ້ນເອົາພຸດຂອງແຖວຂະນະກົດຄ້າງ</value></data>
   <data name="Pad_Mapping_Modifier_PickerTooltip" xml:space="preserve"><value>ຕົວປັບແຕ່ງ: ຂະນະກົດຄ້າງ, ເຄື່ອງໝາຍຂອງເອົາພຸດແຖວຈະປີ້ນກັບ.</value></data>
-  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>+ ເພີ່ມແຫຼ່ງ</value></data>
+  <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>ເພີ່ມແຫຼ່ງ</value></data>
   <data name="Pad_Mapping_AddSource_Tooltip" xml:space="preserve"><value>ເພີ່ມອິນພຸດທາງກາຍະພາບອີກອັນໜຶ່ງໃສ່ແຖວນີ້</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>ລຶບແຫຼ່ງນີ້</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1395,10 +1428,11 @@
   <data name="Curve_Custom" xml:space="preserve"><value>ກຳນົດເອງ</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ປັບທຽບຈຸດກາງ</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ຈຸດກາງ</value></data>
+  <data name="Pad_Stick_Center" xml:space="preserve"><value>ຈຸດກາງ</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ເດດໂຊນ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ຄ່າຊົດເຊີຍຈຸດກາງ, ຮູບຊົງເດດໂຊນ ແລະ ຄ່າແຕ່ລະແກນ, ເສັ້ນໂຄ້ງແຕ່ລະແກນ, ຂອບເຂດ, ການບັງຄັບລ້ຽວ</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ຂອບເຂດ</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“ປັບທຽບຂອບ” ແມ່ນວິທີທີ່ແນະນຳເພື່ອປັບສະຕິກໃຫ້ຖືກຕ້ອງ. ມັນຈະກວາດຂອບທີ່ສະຕິກສາມາດໄປເຖິງໄດ້ຈິງ, ແລ້ວປັບສະເກລທຸກຕຳແໜ່ງຕາມສັດສ່ວນກັບຂອບທີ່ວັດໄດ້ນັ້ນ, ສະນັ້ນການເຄື່ອນທີ່ດັ້ງເດີມທັງໝົດ ໃນທຸກມຸມ ແລະ ທຸກການເບນ ຈະຖືກແມັບລົງໃສ່ວົງມົນທີ່ສົມບູນໂດຍບໍ່ມີສ່ວນໃດຖືກຕັດ. ແຖບເລື່ອນສີ່ອັນຂ້າງລຸ່ມພຽງແຕ່ຈຳກັດແກນຫຼັກເທົ່ານັ້ນ. ໃຊ້ພວກມັນເພື່ອຈຳກັດຂອບເຂດໂດຍເຈດຕະນາ, ບໍ່ແມ່ນເພື່ອແກ້ໄຂມັນ.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“ປັບທຽບຂອບ” ຈະວັດຂອບທີ່ສະຕິກໄປເຖິງໄດ້ ແລະ ປັບຮູບຂອບນັ້ນໃຫ້ເປັນວົງມົນເຕັມ. ແຖບເລື່ອນສີ່ອັນພຽງແຕ່ຈຳກັດແຕ່ລະທິດທາງ.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ກຳລັງເກັບຕົວຢ່າງ...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ການຊົດເຊີຍຈຸດກາງ X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ການຊົດເຊີຍຈຸດກາງ Y</value></data>
@@ -1417,7 +1451,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>ຊື່</value></data>
-  <data name="Macro_Trigger" xml:space="preserve"><value>ຕົວເປີດໃຊ້</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>ເມື່ອ</value></data>
   <data name="Macro_Fire" xml:space="preserve"><value>ເຮັດວຽກ</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>ເມື່ອກົດ</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>ເມື່ອປ່ອຍ</value></data>
@@ -1449,9 +1483,9 @@
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>ມາໂຄຣນີ້ຢູ່ໃນຊັ້ນໃດ. “ຊັ້ນໃດກໍໄດ້” ຈະເຮັດວຽກບໍ່ວ່າຊັ້ນໃດກຳລັງໃຊ້ງານ. ຊັ້ນພື້ນຖານ ແລະ ຊັ້ນທີ່ມີຊື່ ຈະເຮັດວຽກພຽງຂະນະທີ່ຊັ້ນນັ້ນກຳລັງໃຊ້ງານ, ຄືກັນກັບແຖວການແມັບ.</value></data>
   <data name="Macro_Layer_Any" xml:space="preserve"><value>ຊັ້ນໃດກໍໄດ້</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>ເຮັດວຽກຕໍ່ເນື່ອງຂະນະທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ເຮັດວຽກຢູ່. ບໍ່ຕ້ອງມີປຸ່ມເປີດໃຊ້.</value></data>
-  <data name="Macro_ActionSequence" xml:space="preserve"><value>ລຳດັບການກະທຳ</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>ເຮັດ</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>ຊັ້ນ, ແຫຼ່ງ, ຄ່າເກນ, ທິດທາງ, ສະກັດປຸ່ມເປີດໃຊ້, ເຮັດຊ້ຳ</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>ເພີ່ມການກະທຳ</value></data>
-  <data name="Macro_EditAction" xml:space="preserve"><value>ແກ້ໄຂການກະທຳ</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>ປະເພດ</value></data>
   <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>ປຸ່ມສະເໝືອນ</value></data>
   <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>ແກນສະເໝືອນ ແລະ ພວງມາໄລ</value></data>
@@ -1520,11 +1554,11 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>ປຸ່ມ {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ກົດ {0} ເປັນເວລາ {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ກົດ {0} ເປັນເວລາ {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>ປ່ອຍ {0}</value></data>
-  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ {0} ເປັນເວລາ {1}ms</value></data>
+  <data name="MacroAction_KeyPress_Format" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ {0} ເປັນເວລາ {1} ms</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>ປ່ອຍປຸ່ມແປ້ນພິມ {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>ລໍຖ້າ {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>ລໍຖ້າ {0} ms</value></data>
   <data name="MacroAction_SetAxis_Format" xml:space="preserve"><value>ຕັ້ງ {0} = {1}</value></data>
   <data name="MacroAction_SysVol_Format" xml:space="preserve"><value>ລະດັບສຽງລະບົບ ← {0}</value></data>
   <data name="MacroAction_SysVolLimit_Format" xml:space="preserve"><value>ລະດັບສຽງລະບົບ ← {0} (ສູງສຸດ {1}%)</value></data>
@@ -1536,15 +1570,15 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>ປ່ອຍເມົ້າ {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ສະຫຼັບໂອເວີເລທັດແພດ</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ຕັ້ງສີແຖບໄຟ</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ແທນທີ່ແຖບໄຟຂອງຊ່ອງ PlayStation ທີ່ກຳນົດດ້ວຍສີ RGB ທີ່ເລືອກ. ແບບຕອບສະໜອງ ຈະຈາງຈາກຄວາມເຂັ້ມເຕັມໄປເປັນສີດຳຕາມໄລຍະຈາງທີ່ຕັ້ງໄວ້, ແລ້ວສົ່ງຄືນໃຫ້ການຕັ້ງຄ່າຂອງແທັບ ແສງໄຟ. ແບບຕິດຄ້າງ ຈະຄ້າງສີໄວ້ຈົນກວ່າການກະທຳ “ລ້າງການແທນທີ່ແຖບໄຟ” ຈະເຮັດວຽກ. ການຂຽນຈາກເກມຍັງມີສິດກ່ອນການແທນທີ່.</value></data>
-  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ກະພິບແຖບໄຟ {0} (ຈາງ {1}ms)</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ແທນທີ່ແຖບໄຟຂອງຊ່ອງ PlayStation ທີ່ກຳນົດດ້ວຍສີ RGB ທີ່ເລືອກ. ແບບຕອບສະໜອງ ຈະຈາງຈາກຄວາມເຂັ້ມເຕັມໄປເປັນສີດຳຕາມໄລຍະຈາງທີ່ຕັ້ງໄວ້, ແລ້ວສົ່ງຄືນໃຫ້ການຕັ້ງຄ່າຂອງບັດ “ແຖບໄຟ”. ແບບຕິດຄ້າງ ຈະຄ້າງສີໄວ້ຈົນກວ່າການກະທຳ “ລ້າງການແທນທີ່ແຖບໄຟ” ຈະເຮັດວຽກ. ການຂຽນຈາກເກມຍັງມີສິດກ່ອນການແທນທີ່.</value></data>
+  <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ກະພິບແຖບໄຟ {0} (ຈາງ {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ຄ້າງແຖບໄຟ {0} ຈົນກວ່າຈະລ້າງ</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ລ້າງການແທນທີ່ແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarColorClear" xml:space="preserve"><value>ລ້າງການແທນທີ່ແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>ປ່ອຍການແທນທີ່ແຖບໄຟທີ່ເຮັດວຽກຢູ່ໃນຊ່ອງທີ່ກຳນົດ. ໃຊ້ຄູ່ກັບການກະທຳ “ຕັ້ງສີແຖບໄຟ” ແບບຕິດຄ້າງ ເພື່ອຍົກເລີກມັນຜ່ານມາໂຄຣອື່ນ.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ຕັ້ງໂໝດແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ຕັ້ງໂໝດແຖບໄຟເປັນ {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ຕັ້ງໂໝດແຖບໄຟຂອງຊ່ອງທີ່ກຳນົດເປັນຄ່າສະເພາະ. ຄົງຢູ່ຄືກັບການແກ້ໄຂໃນແທັບ ແສງໄຟ ຈົນກວ່າການກະທຳອື່ນ ຫຼື ຜູ້ໃຊ້ຈະປ່ຽນມັນ.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ຕັ້ງໂໝດແຖບໄຟຂອງຊ່ອງທີ່ກຳນົດເປັນຄ່າສະເພາະ. ຄົງຢູ່ຄືກັບການແກ້ໄຂໃນບັດ “ແຖບໄຟ” ຈົນກວ່າການກະທຳອື່ນ ຫຼື ຜູ້ໃຊ້ຈະປ່ຽນມັນ.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ໝູນວຽນໂໝດແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ໝູນວຽນຜ່ານ {0} ໂໝດແຖບໄຟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ເລື່ອນໂໝດແຖບໄຟຂອງຊ່ອງຜ່ານໂໝດທີ່ເລືອກຂ້າງລຸ່ມ. ແຕ່ລະຄັ້ງທີ່ເຮັດວຽກຈະໄປຫາໂໝດທີ່ເລືອກຖັດໄປ. ຕຳແໜ່ງຮອບວຽນແຍກຕາມແຕ່ລະການກະທຳ ແລະ ຈະຄືນຄ່າເມື່ອເປີດແອັບຄືນໃໝ່.</value></data>
@@ -1559,14 +1593,14 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ໄລຍະຈາງ</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ຈາງອອກ</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>ຊຸດສີ</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ຊຸດສີທີ່ວ່າງຈະໃຊ້ຊຸດສີຂອງແທັບ ແສງໄຟ ຂອງຊ່ອງເອງ.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ຊຸດສີທີ່ວ່າງຈະໃຊ້ຈານສີໃນບັດ “ແຖບໄຟ” ຂອງຊ່ອງ.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>ໂໝດ</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>ເລືອກໂໝດແຖບໄຟທີ່ມາໂຄຣຈະໝູນວຽນຜ່ານ. ແຕ່ລະຄັ້ງທີ່ເຮັດວຽກຈະໄປຫາໂໝດທີ່ເລືອກຖັດໄປ.</value></data>
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>ການສັ່ນ</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>ຄວບຄຸມການສັ່ນຂອງອຸປະກອນຈິງຂອງຊ່ອງຈາກມາໂຄຣ. ແບບຕອບສະໜອງ ຈະສັ່ນເຕັມແຮງຕະຫຼອດໄລຍະຄ້າງ ແລ້ວຈາງລົງເປັນສູນຕະຫຼອດໄລຍະຈາງ. ແບບຕິດຄ້າງ ຈະສັ່ນເຕັມແຮງຈົນກວ່າການກະທຳ “ຢຸດການສັ່ນ” ຈະເຮັດວຽກ. ຊ້ອນທັບກັບການສັ່ນຈາກເກມຜ່ານ max() ເພື່ອໃຫ້ຜູ້ໃຊ້ຮູ້ສຶກໄດ້ເຖິງການສັ່ນທີ່ຕົນສັ່ງສະເໝີ.</value></data>
-  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ສັ່ນເປັນຈັງຫວະ {0} ({1}ms)</value></data>
+  <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ສັ່ນເປັນຈັງຫວະ {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ຄ້າງການສັ່ນ {0} ຈົນກວ່າຈະລ້າງ</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ຢຸດການສັ່ນ</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ຢຸດການສັ່ນ</value></data>
@@ -1577,7 +1611,7 @@
   <data name="MacroAction_RumbleTriggerStop" xml:space="preserve"><value>ຢຸດການສັ່ນທຣິກເກີ</value></data>
   <data name="MacroAction_RumbleTriggerStop_Tooltip" xml:space="preserve"><value>ປ່ອຍການສັ່ນທຣິກເກີຂອງມາໂຄຣທີ່ເຮັດວຽກຢູ່ໃນຊ່ອງ. ໃຊ້ຄູ່ກັບ “ແທນທີ່ການສັ່ນທຣິກເກີ” ແບບຕິດຄ້າງ ເພື່ອສິ້ນສຸດການຄ້າງຈາກມາໂຄຣ.</value></data>
   <data name="Macro_SetGyroEngaged" xml:space="preserve"><value>ຕັ້ງການເປີດໃຊ້ໄຈໂຣ</value></data>
-  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ຕັ້ງສະຖານະການເປີດໃຊ້ໄຈໂຣຂອງຊ່ອງຈາກມາໂຄຣ. “ສະຫຼັບ” ຈະປີ້ນສະຖານະປັດຈຸບັນ. “ເປີດ” ບັງຄັບໃຫ້ໄຈໂຣເປີດໃຊ້. “ປິດ” ບັງຄັບໃຫ້ປິດໃຊ້. ເປັນອິດສະຫຼະຈາກປຸ່ມເປີດໃຊ້ຂອງແທັບ ໄຈໂຣ. ສອງແຫຼ່ງນີ້ລວມກັນແບບ OR, ສະນັ້ນບໍ່ມີອັນໃດປິດສິ່ງທີ່ອີກອັນເປີດໃຊ້ໄດ້.</value></data>
+  <data name="Macro_SetGyroEngaged_Tooltip" xml:space="preserve"><value>ຕັ້ງສະຖານະການເປີດໃຊ້ໄຈໂຣຂອງຊ່ອງຈາກມາໂຄຣ. “ສະຫຼັບ” ຈະປີ້ນສະຖານະປັດຈຸບັນ. “ເປີດ” ບັງຄັບໃຫ້ໄຈໂຣເປີດໃຊ້. “ປິດ” ບັງຄັບໃຫ້ປິດໃຊ້. ເປັນອິດສະຫຼະຈາກ “ປຸ່ມເປີດການເລັງ” ໃນ “ການເຄື່ອນໄຫວ ແລະ ການສຳຜັດ”. ສອງແຫຼ່ງນີ້ລວມກັນແບບ OR, ສະນັ້ນບໍ່ມີອັນໃດປິດສິ່ງທີ່ອີກອັນເປີດໃຊ້ໄດ້.</value></data>
   <data name="Macro_SetGyroEngaged_Mode_Label" xml:space="preserve"><value>ໂໝດ</value></data>
   <data name="Macro_SetGyroEngaged_Toggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>ເປີດ</value></data>
@@ -1725,7 +1759,7 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>ທັດແພດ</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ທັດແພດ</value></data>
-  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ອິນພຸດແຍກຕາມທັດແພດ. ທ່າທາງ (ປັດ, ແຕະ, ບີບ, ຮູບຮ່າງ) ແລະ ໂໝດເອົາພຸດຕໍ່ເນື່ອງ (ສະຕິກສະເໝືອນ / ປຸ່ມທິດທາງ, ເມົ້າ) ຈະກາຍເປັນແຫຼ່ງການແມັບທີ່ທ່ານກຳນົດໄດ້ໃນແຖບການແມັບ.</value></data>
+  <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ອິນພຸດແຍກຕາມທັດແພດ. ທ່າທາງ (ປັດ, ແຕະ, ບີບ, ຮູບຮ່າງ) ແລະ ໂໝດເອົາພຸດຕໍ່ເນື່ອງ (ສະຕິກສະເໝືອນ / ປຸ່ມທິດທາງ, ເມົ້າ) ຈະກາຍເປັນແຫຼ່ງການແມັບທີ່ທ່ານກຳນົດໃຫ້ເອົາພຸດໃດກໍໄດ້.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ທັດແພດ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ໝາຍເລກທັດແພດ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ທັດແພດໃດຂອງຕົວຄວບຄຸມນີ້ທີ່ການຕັ້ງຄ່າດ້ານລຸ່ມໃຊ້ກັບ. ແຕ່ລະທັດແພດມີທ່າທາງ, ຄວາມຮູ້ສຶກຂອງເມົ້າ ແລະ ພື້ນທີ່ຕົວຊີ້ເປັນຂອງຕົນເອງ.</value></data>
@@ -2015,10 +2049,14 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ໄຈໂຣ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ປັບວິທີທີ່ເຊັນເຊີການເຄື່ອນໄຫວຂອງແພດນີ້ຂັບເອົາພຸດເມົ້າ ແລະ ສະຕິກ. ປັບທຽບເທິງພື້ນຮາບເພື່ອລົບການເລື່ອນຂະນະຢູ່ນິ່ງ, ຈາກນັ້ນປັບຄວາມອ່ອນໄຫວ, ການເຮັດໃຫ້ລື່ນ ແລະ ກົດການເປີດໃຊ້ງານຕາມໃຈມັກ.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ການປັບທຽບ</value></data>
+  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ຄ່າແບບສົດຂອງໄຈໂຣສະໂຄບ ແລະ ເຊັນເຊີວັດຄວາມເລັ່ງ</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ຄວາມອ່ອນໄຫວ</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ຫົວໜ່ວຍ, ກອບອ້າງອີງ, ປີ້ນກັບແກນ, ການປັບທຽບຕາມໂລກແທ້</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ຫົວໜ່ວຍ, ປີ້ນກັບແກນ, ການປັບທຽບຕາມໂລກແທ້</value></data>
+  <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ຕໍ່ຮອບ</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ການປັບຮູບແບບການຕອບສະໜອງ</value></data>
   <data name="Pad_GyroResponse_FoldHint" xml:space="preserve"><value>ເດດໂຊນ, ການເຮັດໃຫ້ລື່ນ, ການເລັ່ງ, ເສັ້ນໂຄ້ງເອົາພຸດ</value></data>
+  <data name="Pad_Gyro_Space_Header" xml:space="preserve"><value>ກອບອ້າງອີງ</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>ທ້ອງຖິ່ນ, ຜູ້ຫຼິ້ນ ຫຼື ໂລກ</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>ກອບອ້າງອີງ</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>ວິທີຕີຄວາມໝາຍການເຄື່ອນໄຫວຂອງໄຈໂຣ. ທ້ອງຖິ່ນ ໃຊ້ແກນດິບຂອງຕົວຄວບຄຸມ. ຜູ້ຫຼິ້ນ ສາຍການເຄື່ອນແນວນອນໄປໃສ່ແກນຕັ້ງຂອງໂລກແທ້ (ແຮງໂນ້ມຖ່ວງ) ເພື່ອໃຫ້ການບິດຂໍ້ມືແບບດຽວກັນຫັນກ້ອງສະເໝີ, ບໍ່ວ່າທ່ານຈະຖືແພດແນວໃດ. ໂລກ ສາຍການເຄື່ອນແນວຕັ້ງໄປໃສ່ແກນຂອງໂລກເພີ່ມອີກ.</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>ວິທີຖື</value></data>
@@ -2090,6 +2128,7 @@
   <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>ຕັ້ງຊື່</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>ການຖື</value></data>
   <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>ວິທີຖືຕົວຄວບຄຸມ. ໝູນໄຈໂຣ, ເຊັນເຊີວັດຄວາມເລັ່ງ ແລະ ແຮງໂນ້ມຖ່ວງພ້ອມກັນ, ສຳລັບການແມັບ ແລະ ສຳລັບການເຄື່ອນໄຫວທີ່ຕົວຄວບຄຸມສະເໝືອນລາຍງານ. ປຸ່ມທິດທາງໃຊ້ກອບດຽວກັນ, ສະນັ້ນ ຂຶ້ນ ແມ່ນຂຶ້ນໃນທ່າຖືນັ້ນ.</value></data>
+  <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>ວິທີຖືຕົວຄວບຄຸມ</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>ເສັ້ນຊື່</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>ແຮງ</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>ຜ່ອນຄາຍ</value></data>
@@ -2122,7 +2161,7 @@
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ຄືນຄ່າທິດທາງການເປີດໃຊ້</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>ການສົ່ງຜ່ານການເຄື່ອນໄຫວ</value></data>
   <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ໃຊ້ການປັບແຕ່ງໄຈໂຣກັບການສົ່ງຜ່ານການເຄື່ອນໄຫວ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ໃຊ້ການປັບແຕ່ງໄຈໂຣທາງເລືອກຂອງແຖບນີ້ (ເດດໂຊນ, ຄວາມອ່ອນໄຫວ, ການເຮັດໃຫ້ລື່ນ, ເສັ້ນໂຄ້ງການຕອບສະໜອງ, ປີ້ນກັບ) ກັບການເຄື່ອນໄຫວທີ່ຕົວຄວບຄຸມສະເໝືອນລາຍງານໃຫ້ເກມ ຫຼື ອີມູເລເຕີ. ປິດມັນເພື່ອສົ່ງສະເພາະຄ່າທີ່ປັບທຽບແລ້ວ ແລະ ໃຫ້ເກມໃຊ້ຄວາມອ່ອນໄຫວ ແລະ ການເຮັດໃຫ້ລື່ນຂອງມັນເອງ. ການແກ້ໄຂການເລື່ອນຈາກການປັບທຽບຈະໃຊ້ສະເໝີບໍ່ວ່າກໍລະນີໃດ.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ໃຊ້ການປັບແຕ່ງທາງເລືອກຂອງບັດ “ໄຈໂຣ” (ເດດໂຊນ, ຄວາມອ່ອນໄຫວ, ການເຮັດໃຫ້ລື່ນ, ເສັ້ນໂຄ້ງການຕອບສະໜອງ, ປີ້ນກັບ) ກັບການເຄື່ອນໄຫວທີ່ຕົວຄວບຄຸມສະເໝືອນລາຍງານໃຫ້ເກມ ຫຼື ອີມູເລເຕີ. ປິດມັນເພື່ອສົ່ງສະເພາະຄ່າທີ່ປັບທຽບແລ້ວ ແລະ ໃຫ້ເກມໃຊ້ຄວາມອ່ອນໄຫວ ແລະ ການເຮັດໃຫ້ລື່ນຂອງມັນເອງ. ການແກ້ໄຂການເລື່ອນຈາກການປັບທຽບຈະໃຊ້ສະເໝີບໍ່ວ່າກໍລະນີໃດ.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>ຄືນຄ່າການປັບແຕ່ງການສົ່ງຜ່ານ</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ຄວາມອ່ອນໄຫວ</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ຕົວຄູນຄວາມອ່ອນໄຫວໄຈໂຣຂອງແຕ່ລະແຫຼ່ງ. 1.0 = ຄ່າເລີ່ມຕົ້ນຂອງເອັນຈິນ (500°/s → ການເບນເຕັມ). ຄ່າສູງກວ່າ 1.0 ອ່ອນໄຫວກວ່າ. ຄ່າຕ່ຳກວ່າ 1.0 ອ່ອນໄຫວໜ້ອຍກວ່າ.</value></data>
@@ -2139,7 +2178,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>ຄືນຄ່າຂອບເຂດການອຽງເຕັມ</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>ຄືນຄ່າເດດໂຊນການອຽງ</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ຄືນຄ່າການອຽງໄຈໂຣ</value></data>
-  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ວິທີທີ່ແຫຼ່ງຂອງແຖວນີ້ລວມກັນເມື່ອມີຫຼາຍກວ່າໜຶ່ງແຫຼ່ງເຮັດວຽກ. ເລືອກແຖວເພື່ອປ່ຽນມັນໃນແຖບລາຍລະອຽດດ້ານລຸ່ມ.</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>ວິທີທີ່ແຫຼ່ງຂອງແຖວນີ້ລວມກັນເມື່ອມີຫຼາຍກວ່າໜຶ່ງແຫຼ່ງເຮັດວຽກ. ເປີດແຖວເພື່ອປ່ຽນມັນທີ່ “ລວມ”.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>ແຮງສົ່ງ</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>ໂໝດແທຣັກບອລ: ສະບັດສະຕິກແລ້ວປ່ອຍ, ຕົວຊີ້ຈະເລື່ອນຕໍ່ ແລະ ໄຫຼໄປຈົນຢຸດ. ການເຄື່ອນສະຕິກອີກຄັ້ງຈະຢຸດມັນ.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>ຕົວຊີ້ໄຫຼໄປໄກເທົ່າໃດຫຼັງຈາກສະບັດ. ທີ່ສຸດຂອງຂອບເຂດ ມັນຈະໄປຕໍ່ຈົນກວ່າທ່ານຈະເຄື່ອນສະຕິກອີກຄັ້ງ.</value></data>
@@ -2334,7 +2373,7 @@
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ແກນທຣິກເກີ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະມໍເຕີ, ການສັ່ນຂອງທຣິກເກີ, ສັບປ່ຽນມໍເຕີ</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະມໍເຕີ, ການສັ່ນຂອງທຣິກເກີ, ການສັ່ນຕາມມຸມພວງມາໄລ, ແຮງຄົງທີ່</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍລວມ</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>ມໍເຕີຊ້າຍ</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>ມໍເຕີຂວາ</value></data>
@@ -2343,6 +2382,8 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ຕົວຄວບຄຸມນີ້ບໍ່ມີມໍເຕີທີ່ທຣິກເກີ ດັ່ງນັ້ນເກມທີ່ໃຊ້ impulse trigger ຂອງ Xbox ຈະບໍ່ໃຫ້ຄວາມຮູ້ສຶກໃດໆ. ໃຫ້ລວມແຕ່ລະຊ່ອງສັນຍານຂອງທຣິກເກີເຂົ້າໃນມໍເຕີຫຼັກດ້ານດຽວກັນແທນ.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>ທົດສອບການສັ່ນ</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ການເຮັດວຽກຂອງມໍເຕີ</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ຊ້າຍ</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ຂວາ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ໃຊ້ແຮງຕໍ່ເນື່ອງກັບອຸປະກອນນີ້ຈົນກວ່າທ່ານຈະປິດ. ແຮງທີ່ເກມສົ່ງມາຈາກແຫຼ່ງໃດກໍຕາມຈະມີຜົນເໜືອກວ່າໃນຂະນະທີ່ມັນເຮັດວຽກ ແລະ ແຮງນີ້ຈະກັບມາເມື່ອເກມຢຸດ.</value></data>
@@ -2421,7 +2462,8 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>ກົດປຸ່ມ ຫຼື ເລື່ອນແກນ/ທຣິກເກີເພື່ອບັນທຶກ. ຈະກວດພົບແກນເມື່ອເບນເກີນ 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>ເພີ່ມຈາກລາຍການ</value></data>
-  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>ເລືອກອິນພຸດທີ່ເປີດໃຊ້ມາໂຄຣຈາກອຸປະກອນຂອງຊ່ອງແທນການບັນທຶກ. ທ່າທາງທັດແພດທີ່ເປີດໃຊ້ໃນແຖບ ທັດແພດ ຈະປາກົດຢູ່ນີ້.</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>ລ້າງຕົວເປີດໃຊ້</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>ເລືອກອິນພຸດທີ່ເປີດໃຊ້ມາໂຄຣຈາກອຸປະກອນຂອງຊ່ອງແທນການບັນທຶກ. ທ່າທາງທັດແພດທີ່ເປີດໃຊ້ໃນ “ການເຄື່ອນໄຫວ ແລະ ການສຳຜັດ” ຈະປາກົດຢູ່ນີ້.</value></data>
   <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>ລຶບອິນພຸດ</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>ກົດອິນພຸດໃດກໍໄດ້…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ປີ້ນກັບ</value></data>
@@ -2670,7 +2712,7 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ຈຳນວນວິນາທີກ່ອນທີ່ຕົວຄວບຄຸມສະເໝືອນຈະຖືກທຳລາຍ ເມື່ອອຸປະກອນທີ່ແມັບໄວ້ທັງໝົດອອບລາຍ. 0 ປິດໃຊ້. ຕົວຄວບຄຸມປະເພດດຽວກັນທີ່ເຫຼືອຢູ່ຈະເລື່ອນຂຶ້ນມາເຕີມບ່ອນວ່າງ ແລະ ຜູກກັບຊ່ອງທີ່ຕ່ຳກວ່າໃໝ່.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ວິນາທີ (0 = ບໍ່ເຄີຍ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
-  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>+ ຊັ້ນ Shift</value></data>
+  <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ເພີ່ມຊັ້ນ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ເພີ່ມຊັ້ນ Shift. ຕາຕະລາງການແມັບທີສອງທີ່ເຮັດວຽກໃນຂະນະທີ່ກົດຄ້າງ ຫຼື ສະຫຼັບປຸ່ມ.</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ພື້ນຖານ</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ຊັ້ນ Shift</value></data>
@@ -2771,7 +2813,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ການບັງຄັບລ້ຽວດ້ວຍການເຄື່ອນໄຫວ</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ຫາ {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ເດດໂຊນການອຽງ, ທິດທາງຂອງຕົວຄວບຄຸມ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດ ການອຽງດ້ວຍການເຄື່ອນໄຫວ: ອຽງຕົວຄວບຄຸມຄືພວງມາໄລ. ແມັບ “ການອຽງດ້ວຍການເຄື່ອນໄຫວ” ໄປຫາແກນສະຕິກ ຈາກລາຍການອິນພຸດໃນ ການແມັບ.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດ ການອຽງດ້ວຍການເຄື່ອນໄຫວ: ອຽງຕົວຄວບຄຸມຄືພວງມາໄລ. ແມັບ “ການອຽງດ້ວຍການເຄື່ອນໄຫວ” ໄປຫາແກນສະຕິກໃນ “ປຸ່ມ”.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>ຄືນຄ່າການບັງຄັບລ້ຽວດ້ວຍການເຄື່ອນໄຫວ</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ຟລິກສະຕິກ (ສະຕິກຂວາ)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ຟລິກສະຕິກ (ສະຕິກຊ້າຍ)</value></data>
@@ -2780,7 +2822,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>ວົງສະຕິກຂວາ</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>ຟລິກສະຕິກ</value></data>
   <data name="Pad_FlickStick_FoldHint" xml:space="preserve"><value>ການປັບແຕ່ງອິນພຸດຟລິກສະຕິກ</value></data>
-  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດຟລິກສະຕິກ: ຊີ້ສະຕິກແລ້ວກ້ອງຈະຫັນໄປຕາມ, ປັດຕາມຂອບເພື່ອຫັນແບບລະອຽດ. ແມັບ “ຟລິກສະຕິກ (ສະຕິກຂວາ)” ໄປຫາ ເມົ້າ X ຈາກລາຍການອິນພຸດໃນ ການແມັບ, ໃນຊັ້ນໃດກໍໄດ້.</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດຟລິກສະຕິກ: ຊີ້ສະຕິກແລ້ວກ້ອງຈະຫັນໄປຕາມ, ປັດຕາມຂອບເພື່ອຫັນແບບລະອຽດ. ແມັບ “ຟລິກສະຕິກ (ສະຕິກຂວາ)” ໄປຫາ ເມົ້າ X ໃນ “ປຸ່ມແປ້ນພິມ ແລະ ເມົ້າ”, ໃນຊັ້ນໃດກໍໄດ້.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>ຄືນຄ່າຟລິກສະຕິກ</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>ຈຸດຕໍ່ 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>ຈຳນວນການນັບຂອງເມົ້າສຳລັບການຫັນກ້ອງຄົບ 360°. ຂຶ້ນກັບຄວາມອ່ອນໄຫວເມົ້າຂອງເກມ: ເພີ່ມຂຶ້ນຖ້າການຟລິກຫັນບໍ່ພໍ, ຫຼຸດລົງຖ້າຫັນເກີນ.</value></data>
@@ -2872,7 +2914,7 @@
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ສຽງ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>ສຽງມາໂຄຣ ແລະ ສຽງລະບົບທີ່ສະທ້ອນ ຈະຫຼິ້ນຜ່ານລຳໂພງໃນຕົວຂອງຕົວຄວບຄຸມທີ່ເລືອກ, ຜ່ານ USB ຫຼື Bluetooth. ເລືອກອຸປະກອນໃນລາຍການດ້ານເທິງ. ທຸກການຕັ້ງຄ່າໃນນີ້ໃຊ້ກັບອຸປະກອນນັ້ນ.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ຂາອອກສຽງ</value></data>
-  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ແຫຼ່ງສຽງທີ່ສະທ້ອນ, ແຮັບຕິກ, ລະດັບສຽງຫູຟັງ, ຄຣອສຟີດ, Parametric EQ, ລິມິດເຕີ</value></data>
+  <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ແຫຼ່ງສຽງທີ່ສະທ້ອນ, ລະດັບສຽງຫູຟັງ, ບັບເຟີ, ເສັ້ນທາງສົ່ງສຽງອອກ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ສຽງຈະຖືກສົ່ງໄປຫາຕົວຄວບຄຸມທີ່ເລືອກໂດຍອັດຕະໂນມັດ. ຜ່ານ USB, ອຸປະກອນສຽງຂອງຕົວຄວບຄຸມເອງຈະຖືກລະບຸຕາມ container ຂອງຮາດແວ. ຜ່ານ Bluetooth, ສຽງຈະຖືກສະຕຣີມໃນເຟຣມ HID ຂອງ Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ແຫຼ່ງສຽງທີ່ສະທ້ອນ</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>ອຸປະກອນຫຼິ້ນສຽງທີ່ຈະສະທ້ອນໄປຫາລຳໂພງຕົວຄວບຄຸມ. ເກມທີ່ສົ່ງສຽງສະເພາະໄປຫາອຸປະກອນຫຼິ້ນສຽງແຍກຕ່າງຫາກ ສາມາດເລືອກອຸປະກອນນັ້ນໄດ້ທີ່ນີ້.</value></data>
@@ -2885,10 +2927,10 @@
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>ຢຸດສຽງທັງໝົດ</value></data>
   <data name="Pad_Audio_StopAll_Tooltip" xml:space="preserve"><value>ຢຸດທຸກສຽງມາໂຄຣໃນຕົວຄວບຄຸມນີ້</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>ມາໂຄຣສຽງ</value></data>
-  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ສຽງຈະຖືກຫຼິ້ນໂດຍມາໂຄຣ: ຕົວກະຕຸ້ນ (ການກົດ, ການປ່ອຍ, ການກົດຄ້າງປຸ່ມ ຫຼື ສູດ) ບວກກັບການກະທຳ ຫຼິ້ນສຽງ. ສ້າງມັນໄດ້ທີ່ນີ້ ຫຼື ໃນແຖບ ມາໂຄຣ. ການໜ່ວງເວລາ, ການເຮັດຊ້ຳ ແລະ ການສະຫຼັບ ໃຊ້ໄດ້ທັງໝົດ.</value></data>
+  <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>ສຽງຈະຖືກຫຼິ້ນໂດຍມາໂຄຣ: ຕົວກະຕຸ້ນ (ການກົດ, ການປ່ອຍ, ການກົດຄ້າງປຸ່ມ ຫຼື ສູດ) ບວກກັບການກະທຳ ຫຼິ້ນສຽງ. ສ້າງມັນໄດ້ທີ່ນີ້ ຫຼື ໃນ “ມາໂຄຣ ແລະ ເມນູ”. ການໜ່ວງເວລາ, ການເຮັດຊ້ຳ ແລະ ການສະຫຼັບ ໃຊ້ໄດ້ທັງໝົດ.</value></data>
   <data name="Pad_Audio_NewSoundMacro" xml:space="preserve"><value>ມາໂຄຣສຽງໃໝ່</value></data>
   <data name="Pad_Audio_NoSoundMacros" xml:space="preserve"><value>ຍັງບໍ່ມີມາໂຄຣສຽງ. ສ້າງໜຶ່ງອັນ ແລ້ວເລືອກໄຟລ໌ສຽງ ແລະ ຕົວກະຕຸ້ນ.</value></data>
-  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ເປີດມາໂຄຣນີ້ໃນແຖບ ມາໂຄຣ</value></data>
+  <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>ເປີດມາໂຄຣນີ້ໃນ “ມາໂຄຣ ແລະ ເມນູ”</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>ມາໂຄຣສຽງ {0}</value></data>
   <data name="MacroAction_Type_PlaySound" xml:space="preserve"><value>ຫຼິ້ນສຽງ</value></data>
   <data name="MacroAction_PlaySound_Tooltip" xml:space="preserve"><value>ຫຼິ້ນໄຟລ໌ສຽງ (.wav, .mp3, .m4a, .aac, .wma, .flac) ໃນອຸປະກອນຂາອອກຂອງຕົວຄວບຄຸມນີ້</value></data>
@@ -3163,6 +3205,11 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ໄດຣເວີເຊື່ອມຕໍ່ແລ້ວ</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ຕົວຄວບຄຸມພ້ອມໃຊ້</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR ຕິດຕັ້ງແລ້ວ</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ບໍ່ໄດ້ຕິດຕັ້ງ</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ກຳລັງເຮັດວຽກ</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR ກຳລັງເຮັດວຽກ, ໄດຣເວີເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Pad_SteamVr_ControllersLive" xml:space="preserve"><value>SteamVR ກຳລັງເຮັດວຽກ, ຕົວຄວບຄຸມພ້ອມໃຊ້</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>ມີໄດຣເວີ OpenVR ອື່ນທີ່ໃຊ້ຊື່ໄດຣເວີຂອງ HIDMaestro ດັ່ງນັ້ນ SteamVR ອາດໂຫຼດມັນແທນໄດຣເວີຂອງ PadForge ແລະ ຕົວຄວບຄຸມ VR ສະເໝືອນຈະບໍ່ປາກົດ ລຶບໄດຣເວີນັ້ນອອກເພື່ອແກ້ໄຂບັນຫານີ້: {0}</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_Family" xml:space="preserve"><value>ຕົວຄວບຄຸມຊີຣຽລ (ພອດ COM)</value></data>
@@ -3305,7 +3352,7 @@
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>ເພີ່ມອຸປະກອນ ປຸ່ມທີ່ເຊື່ອງຢູ່ ແລະ ອຸປະກອນ ການເຄື່ອນໄຫວຂອງລະບົບ ໃສ່ໜ້າອຸປະກອນ. ເມື່ອປິດ, ບໍ່ມີຫຍັງເຮັດວຽກ.</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>ເມົ້າ</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>ທ່າທາງເມົ້າ</value></data>
-  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>ກົດຄ້າງປຸ່ມທ່າທາງ, ສະບັດ, ແລ້ວການກະທຳໜຶ່ງຈະທຳງານເມື່ອທ່ານປ່ອຍ: ຊ້າຍ, ຂວາ, ຂຶ້ນ, ລົງ ຫຼື ການຄລິກທຳມະດາເມື່ອຕ່ຳກວ່າໄລຍະສະບັດ. ແມັບທ່າທາງທັງຫ້າໃນແຖບການແມັບ ຫຼື ໃຊ້ພວກມັນເປັນຕົວກະຕຸ້ນມາໂຄຣ.</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>ກົດຄ້າງປຸ່ມທ່າທາງ, ສະບັດ, ແລ້ວການກະທຳໜຶ່ງຈະທຳງານເມື່ອທ່ານປ່ອຍ: ຊ້າຍ, ຂວາ, ຂຶ້ນ, ລົງ ຫຼື ການຄລິກທຳມະດາເມື່ອຕ່ຳກວ່າໄລຍະສະບັດ. ແມັບທ່າທາງທັງຫ້າໄປຫາເອົາພຸດໃດກໍໄດ້ ຫຼື ໃຊ້ພວກມັນເປັນຕົວກະຕຸ້ນມາໂຄຣ.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>ເປີດໃຊ້ທ່າທາງເມົ້າ</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>ເປີດຕົວຮັບຮູ້ທ່າທາງສຳລັບເມົ້ານີ້ໃນຊ່ອງນີ້. ປຸ່ມທ່າທາງຍັງຄລິກຕາມປົກກະຕິໃນຂະນະທີ່ເຮັດທ່າທາງ, ສະນັ້ນເລືອກປຸ່ມຂ້າງທີ່ທ່ານບໍ່ໄດ້ແມັບໄວ້ເພື່ອຢ່າງອື່ນ.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>ປຸ່ມທ່າທາງ</value></data>
@@ -3339,7 +3386,7 @@
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>ຍ້າຍໄປຊັ້ນ</value></data>
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>ຕັ້ງສີ Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>ທາສີອຸປະກອນ Razer ທີ່ກຳນົດໃຫ້ຕົວຄວບຄຸມສະເໝືອນນີ້ ແລະ ອຸປະກອນ Razer ອື່ນທຸກອັນທີ່ເປັນປະເພດດຽວກັນ ເປັນສີດຽວ ໃນຂະນະທີ່ການກະທຳເຮັດວຽກ.</value></data>
-  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ຕະຫຼອດໄລຍະເວລາຂ້າງເທິງ, ທາສີນີ້ໃສ່ອຸປະກອນ Razer ທີ່ກຳນົດໃຫ້ຕົວຄວບຄຸມສະເໝືອນນີ້ ແລະ ອຸປະກອນ Razer ອື່ນທຸກອັນທີ່ເປັນປະເພດດຽວກັນ, ຫຼື ໃສ່ທຸກອຸປະກອນ Razer ເມື່ອແຖວ Razer Chroma ຖືກກຳນົດ. ມັນຈະແທນທີ່ແຖບແສງໄຟຂອງຕົວຄວບຄຸມສະເໝືອນໃດໆ, ແລ້ວຄືນແສງໄຟໃຫ້. ເພື່ອຄົງສີໄວ້ຕາບໃດທີ່ຕົວກະຕຸ້ນຍັງຖືກກົດຄ້າງ, ໃຫ້ໃຊ້ ຂະນະກົດຄ້າງ ກັບ ຈົນກວ່າຈະປ່ອຍ. ເມື່ອມາໂຄຣສອງອັນທາສີພ້ອມກັນ, ອັນທີ່ຢູ່ຕ່ຳກວ່າໃນລາຍການຈະມີຜົນ, ສະນັ້ນວາງມາໂຄຣກົດເຕັມໄວ້ລຸ່ມມາໂຄຣກົດເບົາທີ່ເປັນຄູ່ຂອງມັນ. ເມື່ອມາໂຄຣໃນຕົວຄວບຄຸມສະເໝືອນສອງຕົວທາສີອຸປະກອນ Razer ປະເພດດຽວກັນ, ໝາຍເລກຜູ້ຫຼິ້ນທີ່ນ້ອຍກວ່າຈະມີຜົນ. ຕ້ອງເປີດ Razer Synapse ໄວ້.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>ຕະຫຼອດໄລຍະເວລາຂ້າງເທິງ, ທາສີນີ້ໃສ່ອຸປະກອນ Razer ທີ່ກຳນົດໃຫ້ຕົວຄວບຄຸມສະເໝືອນນີ້ ແລະ ອຸປະກອນ Razer ອື່ນທຸກອັນທີ່ເປັນປະເພດດຽວກັນ, ຫຼື ໃສ່ທຸກອຸປະກອນ Razer ເມື່ອແຖວ Razer Chroma ຖືກກຳນົດ. ມັນຈະແທນທີ່ແສງໄຟທີ່ຕົວຄວບຄຸມສະເໝືອນໃດໆຕັ້ງໄວ້ໃນ “ແສງໄຟ ແລະ ສຽງ”, ແລ້ວຄືນແສງໄຟໃຫ້. ເພື່ອຄົງສີໄວ້ຕາບໃດທີ່ຕົວກະຕຸ້ນຍັງຖືກກົດຄ້າງ, ໃຫ້ໃຊ້ ຂະນະກົດຄ້າງ ກັບ ຈົນກວ່າຈະປ່ອຍ. ເມື່ອມາໂຄຣສອງອັນທາສີພ້ອມກັນ, ອັນທີ່ຢູ່ຕ່ຳກວ່າໃນລາຍການຈະມີຜົນ, ສະນັ້ນວາງມາໂຄຣກົດເຕັມໄວ້ລຸ່ມມາໂຄຣກົດເບົາທີ່ເປັນຄູ່ຂອງມັນ. ເມື່ອມາໂຄຣໃນຕົວຄວບຄຸມສະເໝືອນສອງຕົວທາສີອຸປະກອນ Razer ປະເພດດຽວກັນ, ໝາຍເລກຜູ້ຫຼິ້ນທີ່ນ້ອຍກວ່າຈະມີຜົນ. ຕ້ອງເປີດ Razer Synapse ໄວ້.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>ສະແດງໜ້າຈໍ Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>ສະແດງຮູບໃນ VMU ຂອງແພດ Dreamcast ແຕ່ລະອັນໃນພອດ Bliss-Box ທີ່ສົ່ງຂໍ້ມູນເຂົ້າຊ່ອງນີ້, ແລ້ວຄືນແຕ່ລະພອດໃຫ້ກັບການຕັ້ງຄ່າໜ້າຈໍຂອງມັນເອງ.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>ສະແດງຮູບ Dreamcast: {0} × {1} ms, ຈຳນວນເທື່ອຊ້ຳ {2}</value></data>
@@ -3633,10 +3680,12 @@
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>ຕັ້ງຄ່າອ້າງອີງການເລັງຂອງໄຈໂຣທີ່ສະສົມໄວ້ໃນແພດເປັນສູນເມື່ອກົດ. ປະຫວັດການເຮັດໃຫ້ລຽບຈະຖືກລຶບ, ຈຸດກາງຂອງການອຽງ (ການເຄື່ອນໄຫວ) ຈະຖືກບັນທຶກໃໝ່, ຄ່າປະມານແຮງໂນ້ມຖ່ວງຈະເລີ່ມໃໝ່ຈາກທ່າປັດຈຸບັນຂອງຕົວຄວບຄຸມ, ແລະ ການໝູນທີ່ແຖວການກົ້ມເງີຍ, ການຫັນຊ້າຍຂວາ ແລະ ການອຽງຂ້າງ ຂອງການເຄື່ອນໄຫວສ້າງໄວ້ຈະຖືກຍົກເລີກ.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(ອຸປະກອນໃດກໍໄດ້)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>ເມນູ</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>ເມນູປ່ຽນສະຕິກ ຫຼື ທັດແພດທາງກາຍະພາບໃຫ້ເປັນວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ. ເພີ່ມເມນູ, ເລືອກສິ່ງທີ່ເປີດມັນ, ແລ້ວຕັ້ງປ້າຍໃຫ້ແຕ່ລະເຊວ ແລະ ກຳນົດການຜູກໃຫ້ມັນ.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>ເມນູປ່ຽນສະຕິກ ຫຼື ທັດແພດທາງກາຍະພາບໃຫ້ເປັນວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ. ກົດ + ຂ້າງ “ເມນູ” ເພື່ອສ້າງໃໝ່, ເລືອກສິ່ງທີ່ເປີດມັນ, ແລ້ວຕັ້ງຊື່ ແລະ ການກະທຳໃຫ້ແຕ່ລະເຊວ.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>ເມນູໃໝ່</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>ເມນູ {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>ຊື່ເມນູ</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>ເປີດໃຊ້</value></data>
+  <data name="Menu_Opens_Header" xml:space="preserve"><value>ການເປີດ</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>ຮູບແບບ</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>ວົງມົນ</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>ຕາຕະລາງສຳຜັດ</value></data>
@@ -3656,12 +3705,16 @@
   <data name="Menu_Cells" xml:space="preserve"><value>ເຊວ</value></data>
   <data name="Menu_HasCenter" xml:space="preserve"><value>ເຊວກາງ</value></data>
   <data name="Menu_ShowLabels" xml:space="preserve"><value>ສະແດງປ້າຍ</value></data>
-  <data name="Menu_Position" xml:space="preserve"><value>ຕຳແໜ່ງເທິງໜ້າຈໍ</value></data>
   <data name="Menu_Scale" xml:space="preserve"><value>ຂະໜາດ</value></data>
   <data name="Menu_Opacity" xml:space="preserve"><value>ຄວາມທຶບ</value></data>
   <data name="Menu_Deadzone" xml:space="preserve"><value>ເດດໂຊນເປີດ</value></data>
-  <data name="Menu_CellBindings" xml:space="preserve"><value>ການຜູກເຊວ</value></data>
   <data name="Menu_CellIndex_Format" xml:space="preserve"><value>ເຊວ {0}</value></data>
+  <data name="Menu_AddCell" xml:space="preserve"><value>ເພີ່ມເຊວ</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>ເອົາເຊວສຸດທ້າຍອອກ</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>ແກ້ໄຂເຊວ</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>ການກະທຳ</value></data>
+  <data name="Menu_Cell_Icon" xml:space="preserve"><value>ໄອຄອນ</value></data>
   <data name="Menu_CellCenter" xml:space="preserve"><value>ກາງ</value></data>
   <data name="Menu_Binding_None" xml:space="preserve"><value>ບໍ່ມີ</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ</value></data>
@@ -3674,7 +3727,6 @@
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>ທຳງານໜຶ່ງເທື່ອເມື່ອປ່ອຍຄລິກ: ຊີ້ໄປທີ່ເຊວ, ຄລິກສະຕິກ ຫຼື ແທຣັກແພດລົງ, ແລ້ວປ່ອຍການຄລິກ.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>ທຳງານໜຶ່ງເທື່ອເມື່ອທ່ານປ່ອຍ: ຍົກນິ້ວອອກຈາກແພດ, ຫຼື ປ່ອຍໃຫ້ສະຕິກດີດກັບຈຸດກາງໃນຂະນະທີ່ເຊວຖືກເນັ້ນຢູ່.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>ການຜູກຈະຖືກກົດຄ້າງຕະຫຼອດເວລາທີ່ເຊວຖືກເນັ້ນ. ບໍ່ຕ້ອງຄລິກ.</value></data>
-  <data name="Menu_Cells_Tip" xml:space="preserve"><value>ຈຳນວນເຊວຂອງເມນູ. ສຳລັບວົງມົນ ຈະນັບສະເພາະວົງ. ເຊວກາງແມ່ນແຍກຕ່າງຫາກ.</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>ເພີ່ມເຊວກາງ, ເຊິ່ງຖືກເລືອກເມື່ອສະຕິກ ຫຼື ນິ້ວຢູ່ພາຍໃນ ເດດໂຊນເປີດ.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>ສຳລັບສະຕິກ, ຕ້ອງດັນໄກເທົ່າໃດກ່ອນເມນູຈະເປີດ ແລະ ເຊວໃນວົງຈະຖືກເນັ້ນ. ໃນເມນູວົງມົນ ມັນຍັງເປັນພື້ນທີ່ກາງສຳລັບທັງສະຕິກ ແລະ ທັດແພດ: ພາຍໃນພື້ນທີ່ນັ້ນ, ເຊວກາງຈະຖືກເລືອກຖ້າມີ.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>ສະແດງປ້າຍຂອງແຕ່ລະເຊວໃນໂອເວີເລເທິງໜ້າຈໍ.</value></data>
@@ -3684,8 +3736,8 @@
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>ຂະໜາດໂອເວີເລ, ເປັນເປີເຊັນຂອງຂະໜາດປົກກະຕິ.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>ຄວາມທຶບຂອງໂອເວີເລ. 100% ແມ່ນທຶບເຕັມທີ່.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>ຂໍ້ຄວາມທີ່ສະແດງໃນເຊວນີ້ໃນໂອເວີເລ.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ສິ່ງທີ່ເຊວນີ້ເຮັດເມື່ອທຳງານ: “ປຸ່ມແປ້ນພິມ” ກົດປຸ່ມແປ້ນພິມ, “ປຸ່ມຕົວຄວບຄຸມ” ກົດປຸ່ມໃນຕົວຄວບຄຸມສະເໝືອນຂອງຊ່ອງນີ້. ເຊວທີ່ຕັ້ງເປັນ “ບໍ່ມີ” ຍັງທຳງານເປັນແຫຼ່ງລາຍການເມນູສຳລັບແຖວການແມັບ ແລະ ຕົວກະຕຸ້ນມາໂຄຣ.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ອ່ານຈາກຕົວຄວບຄຸມທາງກາຍະພາບທີ່ກຳນົດໃຫ້ຊ່ອງນີ້, ບໍ່ແມ່ນຈາກໂຄງຮ່າງຂອງຕົວຄວບຄຸມສະເໝືອນ. ການຜູກເຊວຂ້າງລຸ່ມແມ່ນສິ່ງທີ່ເມນູສົ່ງອອກ.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>ສິ່ງທີ່ເຊວນີ້ເຮັດເມື່ອທຳງານ: “ປຸ່ມແປ້ນພິມ” ກົດປຸ່ມແປ້ນພິມ, “ປຸ່ມຕົວຄວບຄຸມ” ກົດປຸ່ມໃນຕົວຄວບຄຸມສະເໝືອນຂອງຊ່ອງນີ້. ເຊວທີ່ຕັ້ງເປັນ “ບໍ່ມີ” ຍັງທຳງານເປັນແຫຼ່ງລາຍການເມນູສຳລັບການແມັບ ແລະ ຕົວກະຕຸ້ນມາໂຄຣ.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>ອ່ານຈາກຕົວຄວບຄຸມທາງກາຍະພາບທີ່ກຳນົດໃຫ້ຊ່ອງນີ້, ບໍ່ແມ່ນຈາກໂຄງຮ່າງຂອງຕົວຄວບຄຸມສະເໝືອນ. ເຊວຂ້າງລຸ່ມບອກວ່າເມນູສົ່ງອອກຫຍັງ.</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>ແກນກຳນົດເອງ</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>ບັງຄັບ X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>ບັງຄັບ Y</value></data>
@@ -3710,13 +3762,16 @@
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ເບສເຊກເກີ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ເອົາພຸດ</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ປຸ່ມ</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ ແລະ ເມົ້າ</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ໂນ້ດ ແລະ ສ່ວນຄວບຄຸມ</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>ມື</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>ສະຕິກ ແລະ ທຣິກເກີ</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>ການສັ່ນ ແລະ ແຮງສະທ້ອນກັບ</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>ການເຄື່ອນໄຫວ ແລະ ການສຳຜັດ</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>ແສງໄຟ ແລະ ສຽງ</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>ມາໂຄຣ ແລະ ເມນູ</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>ເບສເຊກເກີ</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ສົ່ງການສັ່ນ ແລະ ແຮງສະທ້ອນກັບຂອງເກມທີ່ຕົວຄວບຄຸມສະເໝືອນນີ້ໄດ້ຮັບ ໄປຫາເອົາພຸດສຽງເປັນສຽງໂທນຄວາມຖີ່ຕ່ຳ ສຳລັບເບສເຊກເກີ ແລະ ຊັບວູຟເຟີ.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>ຫຼິ້ນການສັ່ນຂອງເກມເປັນສຽງໂທນຕ່ຳຜ່ານເບສເຊກເກີ ຫຼື ຊັບວູຟເຟີ.</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>ອຸປະກອນເອົາພຸດ, ຊ່ອງສຽງ, ອັດຕາຂະຫຍາຍ, ໂທນສຽງຂອງແຕ່ລະມໍເຕີ</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>ໃຊ້ໄດ້ກັບຕົວຄວບຄຸມສະເໝືອນ Xbox, DualShock 3, DualShock 4 / DualSense ແລະ Nintendo Switch Pro, ພ້ອມທັງຕົວຄວບຄຸມສະເໝືອນ Extended ທີ່ມີແຮງສະທ້ອນກັບ ເຊັ່ນ ພວງມາໄລແຂ່ງລົດ, ແລະ Steam Deck Controller (Composite). ການຕອບສະໜອງຂອງເກມ ແລະ ທົດສອບການສັ່ນ ຈະຫຼິ້ນຜ່ານເອົາພຸດສຽງ. ການສັ່ນຈາກມາໂຄຣຍັງຢູ່ໃນຕົວຄວບຄຸມ.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>ຄືນຄ່າການສັ່ນເປັນສຽງ</value></data>
@@ -3745,19 +3800,22 @@
   <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>ຫຼິ້ນຊ່ອງການຕອບສະໜອງນີ້ເປັນສຽງໂທນ. ອັດຕາຂະຫຍາຍ ແລະ ຄວາມຖີ່ຍັງຖືກຕັ້ງໄວ້ໃນຂະນະທີ່ມັນປິດ.</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ຄວາມຖີ່ຂອງສຽງໂທນສຳລັບຊ່ອງນີ້, 20 ຫາ 120 Hz. ເປີດການກວາດຄວາມຖີ່ເພື່ອຊອກຫາບ່ອນທີ່ເຊກເກີຂອງທ່ານຕອບສະໜອງແຮງທີ່ສຸດ.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ຄວາມດັງຂອງຊ່ອງສຽງນີ້ກ່ອນອັດຕາຂະຫຍາຍຫຼັກ</value></data>
+  <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍ</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>ທົດສອບ</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>ຫຼິ້ນສຽງຂອງຊ່ອງສຽງນີ້ 1.5 ວິນາທີ ຕາມອັດຕາຂະຫຍາຍທີ່ຕັ້ງໄວ້</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>ຄືນຄ່າມໍເຕີຕ່ຳ</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>ຄືນຄ່າມໍເຕີສູງ</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>ຄືນຄ່າທຣິກເກີຂວາ</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>ກວດສອບເຊກເກີ</value></data>
   <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>ກວາດຄວາມຖີ່</value></data>
   <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>ກວາດສຽງຈາກ 20 ຫາ 120 Hz ພາຍໃນແປດວິນາທີ ຜ່ານເສັ້ນທາງຂອງມໍເຕີຕ່ຳ ສັງເກດວ່າເຄື່ອງສັ່ນຂອງທ່ານຕອບສະໜອງແຮງທີ່ສຸດຢູ່ໃສ ແລ້ວຕັ້ງຄວາມຖີ່ຂອງສຽງໄວ້ທີ່ນັ້ນ</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>ຢຸດ</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>ຢຸດສຽງທົດສອບ ຫຼື ການກວາດ</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>ແທັກ NFC ໃດກໍໄດ້</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>ແທັກ NFC: {0}</value></data>
-  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ກັ່ນຕອງອິນພຸດ (Ctrl+F)</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>ກັ່ນຕອງເອົາພຸດ ແລະ ອິນພຸດ</value></data>
+  <data name="Mapping_FilterSearch_Tooltip" xml:space="preserve"><value>ສະແດງສະເພາະແຖວ ແລະ ອິນພຸດທີ່ກົງກັນ. ກົດ Ctrl+F ເພື່ອພິມຢູ່ນີ້.</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>ເລືອກວ່າຕົວເລືອກຈະສະເໜີອິນພຸດຈາກອຸປະກອນໃດ</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>ສະແດງໃນຕົວເລືອກ</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>ວະລີສຽງໃດກໍໄດ້</value></data>
@@ -3864,6 +3922,7 @@
   <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>ຄືນຄ່າຟີດ</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>EQ ແບບພາຣາເມຕຣິກ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>ຕົວກອງແຕ່ລະແບນສຳລັບສຽງຂອງຕົວຄວບຄຸມ ນຳໃຊ້ກ່ອນເຂົ້າລະຫັດສຽງ ລິມິດເຕີດ້ານລຸ່ມຈຶ່ງກັນບໍ່ໃຫ້ແບນທີ່ຖືກເພີ່ມເກີດສຽງແຕກ</value></data>
+  <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>ພຣີແອມ, ແບນ, ການນຳເຂົ້າ</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>ພຣີແອມ</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>ລະດັບລວມກ່ອນເຂົ້າແບນ ໂປຣໄຟລ໌ AutoEq ມາພ້ອມພຣີແອມຄ່າລົບ ເພື່ອບໍ່ໃຫ້ການເພີ່ມສຽງແຕກ ແລະ ການນຳເຂົ້າໂປຣໄຟລ໌ຈະຕັ້ງຄ່ານີ້ໃຫ້ທ່ານ</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>ເປີດ</value></data>
@@ -4090,7 +4149,7 @@
   <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>ຄືນຄ່າເປັນການເປີດເມື່ອແຕະ ຫຼື ເມື່ອເບນ</value></data>
   <data name="Menu_Host_SteerWith" xml:space="preserve"><value>ບັງຄັບດ້ວຍ</value></data>
   <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>ອິນພຸດທາງກາຍະພາບທີ່ບັງຄັບເຊວທີ່ຖືກເນັ້ນ ໃນຂະນະທີ່ຊັ້ນເປີດເມນູນີ້ຄ້າງໄວ້</value></data>
-  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ອ່ານຈາກຕົວຄວບຄຸມທາງກາຍະພາບທີ່ກຳນົດໃຫ້ຊ່ອງນີ້ ຊັ້ນເປັນຕົວເປີດເມນູ ອິນພຸດນີ້ເປັນຕົວບັງຄັບມັນ ການຜູກຂອງເຊວເປັນຕົວກຳນົດຜົນອອກ</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>ອ່ານຈາກຕົວຄວບຄຸມທາງກາຍະພາບທີ່ກຳນົດໃຫ້ຊ່ອງນີ້. ຊັ້ນເປັນຕົວເປີດເມນູ ແລະ ອິນພຸດນີ້ເປັນຕົວບັງຄັບມັນ. ເຊວຂອງມັນບອກວ່າມັນສົ່ງອອກຫຍັງ.</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>ຂະໜາດໄອຄອນ</value></data>
   <data name="Menu_IconScale_Tip" xml:space="preserve"><value>ຂະໜາດໄອຄອນທຽບກັບຂະໜາດປົກກະຕິຂອງເມນູ ຈາກ 25% ຫາ 200% ການລຶບໄອຄອນຈະຄືນຄ່າເປັນ 100%</value></data>
   <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>ກົດຄ້າງການຜູກຂອງເຊວທີ່ຖືກເນັ້ນ ໃນຂະນະທີ່ກົດຄ້າງ “ອິນພຸດຄລິກ” ຈຸດກາງຂອງເມນູວົງມົນທີ່ຖືກເນັ້ນສາມາດເຮັດວຽກໄດ້ໃນຂະນະທີ່ສະຕິກຢູ່ກັບທີ່</value></data>
@@ -4212,7 +4271,7 @@
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
   <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂດຍ Antoine Aflalo ສຳລັບໂຄງສ້າງຂອງອິນເຕີເຟດ IPolicyConfig ທີ່ບໍ່ມີເອກະສານຂອງ Windows ເຊິ່ງ PadForge ໃຊ້ເພື່ອເປີດໃຊ້ endpoint ສຽງຂອງຕົວຄວບຄຸມຄືນ MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ຮູບແບບໂປຣໄຟລ໌ EQ ແບບພາຣາເມຕຣິກທີ່ແຖບ “ສຽງ” ນຳເຂົ້າ ໂດຍ Jaakko Pasanen MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>ຮູບແບບໂປຣໄຟລ໌ EQ ແບບພາຣາເມຕຣິກທີ່ “EQ ແບບພາຣາເມຕຣິກ” ຂອງຕົວຄວບຄຸມນຳເຂົ້າ, ໂດຍ Jaakko Pasanen. MIT. ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
   <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>ເທັກນິກ SendInput ທີ່ຢູ່ເບື້ອງຫຼັງມາໂຄຣບລັອກຂໍ້ຄວາມ ແລະ hook ຂອງຄອດແປ້ນພິມ: ການພິມ Unicode, ຂີດຈຳກັດຂອງຊຸດ, ປຸ່ມປິດບັງ Win ແລະ ອິນພຸດທີ່ສີດເຂົ້າແບບມີແທັກ GPL-2.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
@@ -4416,6 +4475,7 @@
   <data name="Macro_Pan_Direction" xml:space="preserve"><value>ທິດທາງ</value></data>
   <data name="Macro_Pan_Step" xml:space="preserve"><value>ຂັ້ນ</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>ຫາ</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>ດ້າມຈັບ</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} ກຳລັງຕັ້ງທຣິກເກີຂອງຕົວຄວບຄຸມນີ້.</value></data>
@@ -4460,7 +4520,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>ດ້າມຈັບເຄື່ອນທີ່ບໍ່ໄກພໍ, ສະນັ້ນໄລຍະເຄື່ອນທີ່ຍັງຄືເດີມ. ເລື່ອນມັນໄປທຸກຂອບໃນຂະນະທີ່ການກວາດກຳລັງເຮັດວຽກ.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon ປິດກ່ອນການກວາດຈະສຳເລັດ.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>ຫຼິ້ນເກມດ້ວຍ Novint Falcon ຜ່ານ SDK ຂອງ Force Dimension ເຊິ່ງທ່ານຕິດຕັ້ງຈາກ Force Dimension. ດ້າມຈັບເປັນສະຕິກ, ປຸ່ມສີ່ປຸ່ມເທິງດ້າມຈັບເປັນປຸ່ມ ແລະ PadForge ປ່ຽນການສັ່ນ ແລະ ເອັບເຟັກຂອງເກມເປັນແຮງໃສ່ດ້າມຈັບ. ແຖບ ແຮງສະທ້ອນກັບ ຂອງແຕ່ລະຊ່ອງກຳນົດວ່າ Falcon ຈະໃຫ້ຄວາມຮູ້ສຶກແນວໃດ.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>ຫຼິ້ນເກມດ້ວຍ Novint Falcon ຜ່ານ SDK ຂອງ Force Dimension ເຊິ່ງທ່ານຕິດຕັ້ງຈາກ Force Dimension. ດ້າມຈັບເປັນສະຕິກ, ປຸ່ມສີ່ປຸ່ມເທິງດ້າມຈັບເປັນປຸ່ມ ແລະ PadForge ປ່ຽນການສັ່ນ ແລະ ເອັບເຟັກຂອງເກມເປັນແຮງໃສ່ດ້າມຈັບ. ບັດ Novint Falcon ໃນ “ການສັ່ນ ແລະ ແຮງສະທ້ອນກັບ” ຂອງແຕ່ລະຕົວຄວບຄຸມ ກຳນົດວ່າ Falcon ຈະໃຫ້ຄວາມຮູ້ສຶກແນວໃດ.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>ຄວບຄຸມ Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>ເປີດ Falcon ແຕ່ລະເຄື່ອງຜ່ານ dhd64.dll ຂອງ Force Dimension. Falcon ທີ່ເປີດຢູ່ເປັນຂອງ PadForge ຜູ້ດຽວ, ສະນັ້ນ FalconJoyForce ແລະ ເຄື່ອງມືຂອງ Force Dimension ບໍ່ສາມາດເປີດມັນໄດ້ໃນຂະນະທີ່ອັນນີ້ເປີດຢູ່. ເມື່ອປິດ, PadForge ຈະປິດ Falcon ທຸກເຄື່ອງ.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>ຕັ້ງໄລບຣາຣີ Falcon ເປັນ {0} ແລ້ວ. PadForge ຈະໂຫຼດມັນພາຍໃນບໍ່ເທົ່າໃດວິນາທີ ແລະ Falcon ທີ່ເປີດຢູ່ກັບສຳເນົາອື່ນຈະເປີດຄືນໃໝ່ກັບສຳເນົານີ້.</value></data>
@@ -4628,7 +4688,7 @@
   <data name="MacroAction_TriggerEffect_HoldDuration" xml:space="preserve"><value>ເປັນເວລາທີ່ກຳນົດ</value></data>
   <data name="MacroAction_TriggerEffect_HoldStopped" xml:space="preserve"><value>ຈົນກວ່າຈະຖືກຢຸດ</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>ເວລາ</value></data>
-  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ຫຼິ້ນໃນທຸກ DualSense ແລະ DualSense Edge ໃນຊ່ອງນີ້. ເອັບເຟັກທຣິກເກີຂອງເກມເອງ ແລະ ຂອງມອດເກມ ມີສິດກ່ອນ, ແລະ ການຕັ້ງຄ່າໃນແຖບ ທຣິກເກີປັບຕົວ ຈະກັບມາເມື່ອເອັບເຟັກສິ້ນສຸດ. ໂຊນມີຄ່າຈາກ 0 ເມື່ອຢູ່ນິ່ງ ຫາ 9 ເມື່ອກົດສຸດ. ຄັນທະນູ, ມ້າຄວບ ແລະ ເຄື່ອງຈັກ ບໍ່ແມ່ນເອັບເຟັກທາງການຂອງ DualSense ແລະ ການອັບເດດເຟີມແວອາດລຶບພວກມັນອອກ. ຕົວຄວບຄຸມ Xbox ທີ່ເປີດ ແປງການສັ່ນຂອງທຣິກເກີປັບຕົວ ໄວ້ ຈະຮູ້ສຶກເອັບເຟັກແບບສັ່ນເປັນການສັ່ນຂອງທຣິກເກີ.</value></data>
+  <data name="MacroAction_TriggerEffect_Hint" xml:space="preserve"><value>ຫຼິ້ນໃນທຸກ DualSense ແລະ DualSense Edge ໃນຊ່ອງນີ້. ເອັບເຟັກທຣິກເກີຂອງເກມເອງ ແລະ ຂອງມອດເກມ ມີສິດກ່ອນ, ແລະ ການຕັ້ງຄ່າໃນບັດ “ທຣິກເກີປັບຕົວ” ຈະກັບມາເມື່ອເອັບເຟັກສິ້ນສຸດ. ໂຊນມີຄ່າຈາກ 0 ເມື່ອຢູ່ນິ່ງ ຫາ 9 ເມື່ອກົດສຸດ. ຄັນທະນູ, ມ້າຄວບ ແລະ ເຄື່ອງຈັກ ບໍ່ແມ່ນເອັບເຟັກທາງການຂອງ DualSense ແລະ ການອັບເດດເຟີມແວອາດລຶບພວກມັນອອກ. ຕົວຄວບຄຸມ Xbox ທີ່ເປີດ ແປງການສັ່ນຂອງທຣິກເກີປັບຕົວ ໄວ້ ຈະຮູ້ສຶກເອັບເຟັກແບບສັ່ນເປັນການສັ່ນຂອງທຣິກເກີ.</value></data>
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} ທີ່ {1} ເປັນເວລາ {2} ms</value></data>
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} ທີ່ {1} ໃນຂະນະກົດຄ້າງ</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ທີ່ {1} ຈົນກວ່າຈະຖືກຢຸດ</value></data>

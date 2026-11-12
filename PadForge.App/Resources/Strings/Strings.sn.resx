@@ -114,6 +114,7 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mudziyo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Inodzorwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Wedzera Mudziyo</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pota {0} iri kushandiswa nechimwe chirongwa, somuenzaniso DSX. Chivhare kana usarudze imwe pota.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Batanidza</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ramba</value></data>
@@ -378,7 +379,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Regedza {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Mira {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Mira {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>Bata</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Ruvara</value></data>
@@ -547,7 +548,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayuniti, Nzvimbo, kupidigura maaxis, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayuniti, kupidigura maaxis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pidigura pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Pidigura yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Pidigura roll (X)</value></data>
@@ -653,12 +654,14 @@
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Simba remota imwe neimwe, kudedera kwetrigger, kuchinjanisa mota</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Simba remota imwe neimwe, kudedera kwetrigger, Steering Angle Rumble, Constant Force</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Mota yekurudyi</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Chinjanisa mota dzekuruboshwe nekurudyi</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Edza kudedera</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Kushanda kwemota</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kuruboshwe</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kurudyi</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
@@ -1010,6 +1013,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Edza</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Dzorera trigger yekuruboshwe</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Dzorera trigger yekurudyi</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Edza mashaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Misa</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Calibration haina kubudirira. Isa kontiroura pasi wozoedza zvakare.</value></data>
   <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Chengeta</value></data>
@@ -1226,6 +1230,7 @@
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Sikirini</value></data>
   <data name="Macro_Stopwatch_Action" xml:space="preserve"><value>Chiito</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>kusvika</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Mubato</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} iri kuseta ma-trigger ekontiroura iyi.</value></data>
@@ -1345,6 +1350,21 @@
   <data name="Pad_GuideLed_FoldHint" xml:space="preserve"><value>Kupenya kwebhatani reGuide kana Home</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mafaira ezip ane manzwi emacro emanzwi</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Mafaira ezip ane mifananidzo yemaseru emenu</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Simba retrigger imwe neimwe, kuchinjanisa mota, kudedera kweadaptive trigger</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Simba retrigger imwe neimwe, kuchinjanisa mota, kudedera kweadaptive trigger, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Kupidigura, Momentum, Mhinduro, Kumhanyisa, kukanda</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Makiyi neMbeva</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Manoti neMacontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Maoko</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menyu itsva</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Bvisa seru rekupedzisira</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Gadzirisa seru</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Zita</value></data>
+  <data name="Menu_Cell_Action" xml:space="preserve"><value>Chiito</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Dzokorora</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Mudziyo uyu</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontiroura yose</value></data>
+  <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mutambi kana World</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yakaiswa</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR iri kushanda</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR iri kushanda, dhiraivha yakabatana</value></data>
 </root>

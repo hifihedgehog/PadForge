@@ -67,6 +67,7 @@
   <data name="Common_Install" xml:space="preserve"><value>Instolem</value></data>
   <data name="Common_Copy" xml:space="preserve"><value>Kopiem</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Mekem wan kopi</value></data>
+  <data name="Common_Rename" xml:space="preserve"><value>Jenisim nem</value></data>
   <data name="Common_Enabled" xml:space="preserve"><value>I on</value></data>
   <data name="Common_Disabled" xml:space="preserve"><value>I of</value></data>
   <data name="Common_On" xml:space="preserve"><value>On</value></data>
@@ -169,10 +170,37 @@
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Divaes</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input i kam long</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Putum wan divaes</value></data>
+  <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pija</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
+  <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} aotput</value></data>
+  <data name="Pad_Band_Motion" xml:space="preserve"><value>Muv</value></data>
   <data name="Pad_PictureHint" xml:space="preserve"><value>Kilikim wan kontrol, afta presem baten o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
+  <data name="Pad_PictureHint_Kbm" xml:space="preserve"><value>Kilikim wan ki o wan baton blong maos, afta presem baton o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
+  <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kilikim wan not o wan slaeda, afta presem baton o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All i no rekodem ol aotput blong taj long A mo B. Kilikim ring raon long A o B blong mapim wan.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>I stap wet blong rekodem {0}. Presem baten long divaes blong yu.</value></data>
+  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input i kam long</value></data>
+  <data name="Pad_MoreOptions" xml:space="preserve"><value>Moa seting</value></data>
+  <data name="Pad_FewerOptions" xml:space="preserve"><value>Sam seting nomo</value></data>
+  <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Baton long fes</value></data>
+  <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Baton long solda</value></data>
+  <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Baton blong sistem</value></data>
+  <data name="Pad_Kind_Button" xml:space="preserve"><value>Baton</value></data>
+  <data name="Pad_Kind_DPad" xml:space="preserve"><value>Pad blong daereksen</value></data>
+  <data name="Pad_Kind_Stick" xml:space="preserve"><value>Stik</value></data>
+  <data name="Pad_Kind_Trigger" xml:space="preserve"><value>Triga</value></data>
+  <data name="Pad_Kind_Touchpad" xml:space="preserve"><value>Tajpad</value></data>
+  <data name="Pad_Kind_Motion" xml:space="preserve"><value>Sensa blong muv</value></data>
+  <data name="Pad_Kind_Key" xml:space="preserve"><value>Ki blong kiboad</value></data>
+  <data name="Pad_Kind_MouseButton" xml:space="preserve"><value>Baton blong maos</value></data>
+  <data name="Pad_Kind_MouseMovement" xml:space="preserve"><value>Muvmen blong maos</value></data>
+  <data name="Pad_Kind_ScrollWheel" xml:space="preserve"><value>Wil blong maos</value></data>
+  <data name="Pad_Kind_ControlChange" xml:space="preserve"><value>Control change</value></data>
+  <data name="Pad_Kind_TouchSensor" xml:space="preserve"><value>Sensa blong taj</value></data>
+  <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analog pul</value></data>
+  <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lef han</value></data>
+  <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, raet han</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pot</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ol mod blong gem</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>I letem ol mod blong gem we oli mekem blong DSX oli setem ol adaptive triga, laetba, ol laet blong plea mo laet blong mute blong ol PlayStation kontrola blong yu.</value></data>
@@ -487,6 +515,7 @@
 
   <!-- ═══ Macros ═══ -->
   <data name="Macro_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="Macro_When_Header" xml:space="preserve"><value>Wetaem</value></data>
   <data name="Macro_OnPress" xml:space="preserve"><value>Taem yu presem</value></data>
   <data name="Macro_OnRelease" xml:space="preserve"><value>Taem yu lego</value></data>
   <data name="Macro_WhileHeld" xml:space="preserve"><value>Taem yu holem</value></data>
@@ -528,7 +557,7 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Baton {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Presem {0} blong {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>Presem {0} blong {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Lego {0}</value></data>
   <data name="MacroAction_KeyRelease_Format" xml:space="preserve"><value>Lego ki {0}</value></data>
 
@@ -693,7 +722,7 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gaero</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
-  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ol yunit, Spes, invert ol aksis, Real-World Calibration</value></data>
+  <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ol yunit, invert ol aksis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert yaw (X)</value></data>
   <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Invert roll (X)</value></data>
@@ -1283,6 +1312,7 @@
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Testem</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Putum bak lef triga</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Putum bak raet triga</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Jekem ol shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stop</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>I no save mekem kalibresen. Putum kontrola i daon mo traem bakegen.</value></data>
   <data name="Common_KeepLegacyDrivers" xml:space="preserve"><value>Kipim</value></data>
@@ -1482,6 +1512,7 @@
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Soem {0} pikja: {1} × {2} ms, ripit {3} taem</value></data>
   <data name="Macro_KeyboardScreen_Kind" xml:space="preserve"><value>Skrin</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
+  <data name="Common_To" xml:space="preserve"><value>kasem</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Devices_FalconHandle" xml:space="preserve"><value>Hanel</value></data>
   <data name="Devices_GameModTriggers_Format" xml:space="preserve"><value>{0} i stap setem ol triga blong kontrola ia.</value></data>
@@ -1522,7 +1553,7 @@
   <data name="Falcon_Calibrate_TooSmall" xml:space="preserve"><value>Hanel i no muv longwe inaf, ale renj i stap olsem bifo. Muvum i go kasem evri saed taem mesarem i stap ron.</value></data>
   <data name="Falcon_Calibrate_Closed" xml:space="preserve"><value>Falcon i klos bifo mesarem i finis.</value></data>
   <data name="Settings_Falcon_Title" xml:space="preserve"><value>Novint Falcon</value></data>
-  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Plei ol gem wetem wan Novint Falcon tru long SDK blong Force Dimension, we yu instolem i kam long Force Dimension. Hanel i wan stik, fo baton long hanel oli ol baton, mo PadForge i putum seksek mo ol efek blong gem long hanel olsem fos. Force Feedback tab blong wanwan slot i setem fasin blong Falcon.</value></data>
+  <data name="Settings_Falcon_Desc" xml:space="preserve"><value>Plei ol gem wetem wan Novint Falcon tru long SDK blong Force Dimension, we yu instolem i kam long Force Dimension. Hanel i wan stik, fo baton long hanel oli ol baton, mo PadForge i putum seksek mo ol efek blong gem long hanel olsem fos. Novint Falcon kad long Seksek mo feedback blong wanwan kontrola i setem fasin blong Falcon.</value></data>
   <data name="Settings_Falcon" xml:space="preserve"><value>Kontrolem Novint Falcon</value></data>
   <data name="Settings_FalconTooltip" xml:space="preserve"><value>Openem wanwan Falcon tru long dhd64.dll blong Force Dimension. Wan Falcon we i open i blong PadForge nomo, ale FalconJoyForce mo ol tul blong Force Dimension oli no save openem taem samting ia i on. Taem i of, PadForge i klosem evri Falcon.</value></data>
   <data name="Status_FalconLibraryPicked_Format" xml:space="preserve"><value>Laebri blong Falcon i stap long {0} naoia. PadForge bambae i lodem insaed long sam sekon, mo wan Falcon we i open long narafala kopi bambae i open bakegen long kopi ia.</value></data>
@@ -1585,6 +1616,9 @@
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP adres, kod blong akses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, samting we i tekem ples blong DSX.exe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ki mo maos</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Not mo kontrol</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Ol han</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stik mo triga</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Seksek mo feedback</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Muv mo taj</value></data>
@@ -1603,8 +1637,23 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Braet blong LED, Paten blong plea, Mod blong LED blong mute</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ol fael zip blong saon blong ol saon makro</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Ol fael zip blong pikja blong ol sel blong menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Paoa blong evri mota, seksek blong triga, jenisim ol mota</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Paoa blong evri triga, jenisim ol mota, seksek blong adaptive triga</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Paoa blong evri mota, seksek blong triga, Steering Angle Rumble, Constant Force</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Paoa blong evri triga, jenisim ol mota, seksek blong adaptive triga, Constant Trigger Force</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Respons, Akselereisen, fling</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Soem QR</value></data>
+  <data name="Macro_Do_Header" xml:space="preserve"><value>Mekem</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Repeat</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Niu menu</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Tekemaot las sel</value></data>
+  <data name="Menu_EditCell" xml:space="preserve"><value>Jenisim sel</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Nem</value></data>
+  <data name="Pad_Scope_Device" xml:space="preserve"><value>Divaes ia</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola olgeta</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR i instol finis</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR i no instol yet</value></data>
+  <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR i stap ron</value></data>
+  <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR i stap ron, draeva i konek</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lef</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Raet</value></data>
+  <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
 </root>

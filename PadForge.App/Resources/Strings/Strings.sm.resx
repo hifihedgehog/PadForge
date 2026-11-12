@@ -372,9 +372,9 @@
   <data name="Macro_Button_Format" xml:space="preserve"><value>Faʻamau {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
-  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ʻOʻomi {0} mo le {1}ms</value></data>
+  <data name="MacroAction_Press_Format" xml:space="preserve"><value>ʻOʻomi {0} mo le {1} ms</value></data>
   <data name="MacroAction_Release_Format" xml:space="preserve"><value>Tuʻu {0}</value></data>
-  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Faʻatali {0}ms</value></data>
+  <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Faʻatali {0} ms</value></data>
 
   <data name="Macro_LightbarHold_Label" xml:space="preserve"><value>ʻUʻu</value></data>
   <data name="Macro_LightbarColorSource_Label" xml:space="preserve"><value>Lanu</value></data>
@@ -913,6 +913,7 @@
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Toe setiina le afi maualuga</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Toe setiina le trigger agavale</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Toe setiina le trigger taumatau</value></data>
+  <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Siaki shaker</value></data>
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Taofi</value></data>
   <data name="About_Libinput" xml:space="preserve">
     <value>libinput</value>
@@ -1158,6 +1159,19 @@
   <data name="Pad_IndicatorLeds_FoldHint" xml:space="preserve"><value>Susulu o le LED, Mamanu o le tagata taʻalo, Faiga o le LED Mute</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faila Zip o leo mo macro o leo</value></data>
   <data name="Pad_IconPackages_FoldHint" xml:space="preserve"><value>Faila Zip o ata mo sela o le menu</value></data>
-  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Malosi o afi taʻitasi, gatete o trigger, fesuiaʻi afi</value></data>
-  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Malosi o trigger taʻitasi, fesuiaʻi afi, gatete o adaptive trigger</value></data>
+  <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Malosi o afi taʻitasi, gatete o trigger, Gatete tulimanu foeuli, Malosi tumau</value></data>
+  <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Malosi o trigger taʻitasi, fesuiaʻi afi, gatete o adaptive trigger, Malosi tumau o trigger</value></data>
+  <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ki ma Mouse</value></data>
+  <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota ma Control</value></data>
+  <data name="Pad_Section_Hands" xml:space="preserve"><value>Lima</value></data>
+  <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>E lē puʻeina e le faʻamau Map All le paʻi i le A ma le B. Kiliki le liʻo faʻataʻamilo i le A po o le B e seti ai lona paʻi.</value></data>
+  <data name="Menu_NewMenu" xml:space="preserve"><value>Menu fou</value></data>
+  <data name="Menu_RemoveLastCell" xml:space="preserve"><value>Aveʻese le sela mulimuli</value></data>
+  <data name="Menu_Cell_Name" xml:space="preserve"><value>Igoa</value></data>
+  <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Puna, Tapulaʻa, Itu, Natia faʻamau e faʻaola ai le macro, Toe fai</value></data>
+  <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller atoa</value></data>
+  <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Ua faʻapipiʻi le SteamVR</value></data>
+  <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>E leʻi faʻapipiʻiina le SteamVR</value></data>
+  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Agavale</value></data>
+  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Taumatau</value></data>
 </root>

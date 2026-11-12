@@ -177,6 +177,21 @@
         <Setter Property="TextElement.FontSize" Value="12.5"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+    <!-- A quiet tag in a card's head (#574), as the boards draw a chip: a
+         pill 22 tall on the raised fill inside the pill hairline, 9 at its
+         sides, its words 12 in the secondary text color. Its words center
+         themselves in it. -->
+    <Style x:Key="ChipSteel" TargetType="Border">
+        <Setter Property="MinHeight" Value="22"/>
+        <Setter Property="CornerRadius" Value="11"/>
+        <Setter Property="Padding" Value="9,0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="TextElement.FontSize" Value="12"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
 
     <Style x:Key="SectionTitle" TargetType="TextBlock">
         <!-- A section header reads as a heading to a screen reader, which
@@ -355,7 +370,7 @@
          keyboard and to a screen reader: the arrow keys move the choice
          and the peer reports which is selected. At rest a segment is its
          words in the secondary color. Chosen, it takes the segment fill,
-         the primary color and a heavier face. -->
+         the selected text color and a heavier face. -->
     <Style x:Key="SegmentTrack" TargetType="Border">
         <Setter Property="Padding" Value="3"/>
         <Setter Property="CornerRadius" Value="8"/>
@@ -384,7 +399,7 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelSegmentBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SelectedTextBrush}"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

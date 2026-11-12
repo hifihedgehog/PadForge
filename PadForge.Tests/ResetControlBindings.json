@@ -1039,6 +1039,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_HasCenter",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "HasCenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuEditorItem_ShowLabels_12924",
     "Owner": "PadForge.ViewModels.MenuEditorItem",
     "Property": "ShowLabels"

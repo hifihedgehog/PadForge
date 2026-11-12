@@ -8,7 +8,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// The slot side of keyboard menus (#566): the Keyboard + Mouse slots a
     /// keyboard can type through, the names the slot's lists give an input,
-    /// and the record and Map All buttons of the Keyboard Controls card, which
+    /// and the record and Map All buttons of the Keyboard Controls rows, which
     /// MainWindow runs on the recorder as it runs the menu host's record
     /// button.
     /// </summary>
@@ -23,7 +23,7 @@ namespace PadForge.ViewModels
         /// for it, or stops the recording it has.</summary>
         public event EventHandler<KeyboardInputRow> MenuKeyboardRecordRequested;
 
-        /// <summary>Map All on the Keyboard Controls card: MainWindow records
+        /// <summary>Map All beside the Keyboard Controls head: MainWindow records
         /// each control in turn, or stops.</summary>
         public event EventHandler MenuKeyboardMapAllRequested;
 

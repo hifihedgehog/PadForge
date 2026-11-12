@@ -1409,11 +1409,9 @@ namespace PadForge.ViewModels
         public RelayCommand ResetHostHalfCommand => _resetHostHalf ??= new RelayCommand(() => HostHalfIndex = 0);
         private RelayCommand _resetHostHalf;
 
-        public RelayCommand ResetCellsCommand => _resetCells ??= new RelayCommand(() =>
-        {
-            CellCount = 4;
-            HasCenter = false;
-        });
+        // The Cells row's reset. Center Cell is a row of its own with its
+        // own reset (ResetSetting).
+        public RelayCommand ResetCellsCommand => _resetCells ??= new RelayCommand(() => CellCount = 4);
         private RelayCommand _resetCells;
 
         public RelayCommand ResetGeometryCommand => _resetGeometry ??= new RelayCommand(() =>

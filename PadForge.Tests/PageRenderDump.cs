@@ -23,7 +23,8 @@ namespace PadForge.Tests
     /// against its board: the page itself under the app's own resources and theme, showing macros
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
     /// a real setup may not have: a trigger of every kind of input, a recording, an open step
-    /// of every action type, and a menu of every style. The page stands in no window, so nothing it does as it loads
+    /// of every action type, and a menu of every style, each a second time in a tall picture with
+    /// its More row open. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -33,7 +34,7 @@ namespace PadForge.Tests
     [Collection("WpfApplicationSingleton")]
     public class PageRenderDump
     {
-        private const double Width = 1473, Height = 985;
+        private const double Width = 1473, Height = 985, TallHeight = 3600;
 
         private static MacroItem QuickCombo()
         {
@@ -136,15 +137,15 @@ namespace PadForge.Tests
                     vm.SelectedConfigTab = PadViewModel.MacrosTabIndex;
 
                     // Shows a state, lets it settle, and pictures it.
-                    void Picture(string file, Action show)
+                    void Picture(string file, Action show, double height = Height)
                     {
                         var clock = System.Diagnostics.Stopwatch.StartNew();
                         show();
-                        Lay(ground);
+                        Lay(ground, height);
                         long shown = clock.ElapsedMilliseconds;
                         Settle(dispatcher);
-                        Lay(ground);
-                        var bitmap = new RenderTargetBitmap((int)Math.Round(Width * scale), (int)Math.Round(Height * scale),
+                        Lay(ground, height);
+                        var bitmap = new RenderTargetBitmap((int)Math.Round(Width * scale), (int)Math.Round(height * scale),
                             96 * scale, 96 * scale, PixelFormats.Pbgra32);
                         bitmap.Render(ground);
                         var png = new PngBitmapEncoder();
@@ -176,12 +177,12 @@ namespace PadForge.Tests
                                 {
                                     var pick = System.Diagnostics.Stopwatch.StartNew();
                                     macro.SelectedAction = action;
-                                    Lay(ground);
+                                    Lay(ground, Height);
                                     times.Add(pick.ElapsedMilliseconds);
                                 }
                             }
                             macro.SelectedAction = picked;
-                            Lay(ground);
+                            Lay(ground, Height);
                             Step("picking a step lays out in " + string.Join(", ", times) + " ms");
                             Step("right after a pick: " + GroupsMade(ground));
                         }
@@ -196,6 +197,14 @@ namespace PadForge.Tests
                         string file = "menus-" + kind.ToString().ToLowerInvariant() + ".png";
                         Picture(file, () => vm.ListedMenu = menu);
                         Lookups(file);
+                        // The whole editor: tall enough for every row, with More
+                        // open. The fold is closed again after, since its state
+                        // is the app's and outlives the page.
+                        var more = (System.Windows.Controls.Expander)page.FindName("MenuMore");
+                        string tall = file.Replace(".png", "-open.png");
+                        Picture(tall, () => more.IsExpanded = true, TallHeight);
+                        Lookups(tall);
+                        more.IsExpanded = false;
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
@@ -301,10 +310,10 @@ namespace PadForge.Tests
 
         /// <summary>Lays the page out at the picture's size. With no window
         /// around it nothing else does.</summary>
-        private static void Lay(FrameworkElement ground)
+        private static void Lay(FrameworkElement ground, double height)
         {
-            ground.Measure(new Size(Width, Height));
-            ground.Arrange(new Rect(0, 0, Width, Height));
+            ground.Measure(new Size(Width, height));
+            ground.Arrange(new Rect(0, 0, Width, height));
             ground.UpdateLayout();
         }
 

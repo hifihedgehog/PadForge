@@ -160,7 +160,7 @@ namespace PadForge.Views
             Place(menu);
         }
 
-        /// <summary>The Menu Overlay card's Size range, which the corner grip
+        /// <summary>The Menu Overlay rows' Size range, which the corner grip
         /// keeps to (MenuEditorItem.ScalePercent).</summary>
         internal const int MinScalePercent = 10, MaxScalePercent = 400;
 

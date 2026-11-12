@@ -121,9 +121,9 @@ namespace PadForge.Tests
                         "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}", "{Binding RepeatCount, Mode=TwoWay}" }),
             // A menu opens on its style, what opens it, and its cells or its
             // keyboard, as its board draws it. Its hint is put together too.
-            ("Pad_More_Menu", "Pad.Menus.More", "Menu_Layer+Menu_ClickInput+Menu_FireMode+Menu_Deadzone+Dashboard_MenuOverlay",
+            ("Pad_More_Menu", "Pad.Menus.More", "Menu_Layer+Menu_ClickInput+Menu_FireMode+Menu_HasCenter+Menu_Deadzone+Dashboard_MenuOverlay",
                 new[] { "{Binding KindIndex, Mode=TwoWay}", "KeyboardLayoutIndex", "{Binding Cells}", "Menu_Hotbar_Show", "Menu_HostHalf", "Menu_Keyboard_Controls" },
-                new[] { "Menu_Layer", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "Menu_Deadzone_Tip", "Dashboard_MenuOverlay",
+                new[] { "Menu_Layer", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "Menu_HasCenter", "Menu_Deadzone_Tip", "Dashboard_MenuOverlay",
                         "Pad_Menus_IconPackages" }),
         };
 

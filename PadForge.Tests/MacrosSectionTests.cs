@@ -382,15 +382,16 @@ namespace PadForge.Tests
         /// <summary>The menu editor's rows stand in blocks, as its board
         /// draws them: Opens holds the menu's style and what opens and
         /// steers it, Cells a cell menu's cells, Keyboard a keyboard menu's
-        /// own cards, and More, a fold at the card's foot, what a menu
-        /// seldom needs. Every row kept the rule that shows it, and the
-        /// label column's width is shared across the blocks.</summary>
+        /// own rows, and More, a fold at the card's foot, what a menu
+        /// seldom needs. Every row kept the rule that shows it. No row
+        /// shares a label column with another: a row's label is the
+        /// section's 190.</summary>
         [Fact]
         public void TheMenuEditorsRowsStandInOpens_Cells_Keyboard_AndMore()
         {
             var page = Page();
             var host = Named(page, "MenuEditorHost");
-            Assert.Equal("True", (string)host.Attribute("Grid.IsSharedSizeScope"));
+            Assert.Null(host.Attribute("Grid.IsSharedSizeScope"));
             var opens = Named(host, "MenuOpensBlock");
             var cells = Named(host, "MenuCellsBlock");
             var keyboard = Named(host, "MenuKeyboardBlock");
@@ -403,6 +404,14 @@ namespace PadForge.Tests
                 (string)Assert.Single(b.Elements()).Elements().First().Attribute("Style")));
 
             string Gate(XElement row) => ((string)row.Attribute("Visibility") ?? "{Binding ").Substring("{Binding ".Length).Split(',')[0];
+            // What a row is of: the string of its own text or of its first
+            // part's, or the list it shows.
+            string What(XElement row)
+            {
+                string bound = (string)row.Attribute("Text") ?? (string)row.Attribute("ItemsSource")
+                    ?? (string)row.Elements().FirstOrDefault()?.Attribute("Text") ?? "";
+                return bound.StartsWith("{Binding ", StringComparison.Ordinal) ? bound.Substring("{Binding ".Length).Split(',', '}')[0] : "";
+            }
             const string cellMenu = "{Binding IsCellMenu, Converter={StaticResource BoolToVisibilityConverter}}";
             const string keys = "{Binding IsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}";
             Assert.Null(opens.Attribute("Visibility"));
@@ -415,29 +424,329 @@ namespace PadForge.Tests
                 {
                     "", "", "IsKeyboard", "IsKeyboard", "DataContext.IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard", "IsKeyboard",
                     "IsCellMenu", "IsCellMenu", "ShowsCustomAxesRows", "ShowsCustomAxesRows",
-                    "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "ShowsHostHalfRow",
+                    "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "IsHotbar", "ShowsHostHalfRow",
                 },
                 opensRows.Select(Gate));
             Assert.Contains("{Binding KindIndex, Mode=TwoWay}", opensRows[0].ToString());
             Assert.Contains("ElementName=MenuEditorHost", (string)opensRows[4].Attribute("Visibility"));
 
-            // Cells: how many, then the cells. Keyboard: its two cards.
+            // Cells: how many, then the cells. A ring's center cell is a row
+            // under More.
             var cellRows = Assert.Single(cells.Elements()).Elements().Skip(1).ToList();
             Assert.Equal(2, cellRows.Count);
-            Assert.Contains("Menu_Cells", cellRows[0].ToString());
+            Assert.Equal("Menu_Cells", What(cellRows[0]));
+            Assert.DoesNotContain(cellRows[0].Elements(), e => e.Name.LocalName == "CheckBox");
             Assert.Equal("{Binding Cells}", (string)cellRows[1].Attribute("ItemsSource"));
             Assert.All(cellRows, r => Assert.Equal("IsCellMenu", Gate(r)));
-            var keyboardRows = Assert.Single(keyboard.Elements()).Elements().Skip(1).ToList();
-            Assert.Equal(2, keyboardRows.Count);
-            Assert.All(keyboardRows, r => Assert.Equal("IsKeyboard", Gate(r)));
 
-            // More: the rest, each under its own rule.
+            // Keyboard: its own rows, then Keyboard Controls under a small
+            // head. The block carries the rule, and none of them repeats it.
+            var keyboardRows = Assert.Single(keyboard.Elements()).Elements().Skip(1).ToList();
+            Assert.Equal(new[]
+                {
+                    "Menu_TypesThrough", "Menu_TypesThrough_Caption", "Menu_FunctionRow", "Menu_FunctionRow_Caption",
+                    "Menu_WordSuggestions", "Menu_WordSuggestions_Caption", "Menu_SymbolsPage",
+                    "Menu_Keyboard_Controls", "Menu_Keyboard_Controls_Desc", "Menu_Deadzone", "KeyboardControlRows",
+                },
+                keyboardRows.Select(What));
+            Assert.All(keyboardRows, r => Assert.Null(r.Attribute("Visibility")));
+
+            // More: the rest, each under its own rule, in the board's order.
             Assert.Equal("Pad.Menus.More", (string)more.Attribute("StateKey"));
             Assert.Equal("0", (string)more.Attribute("Margin"));
             var moreRows = Assert.Single(more.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
-            Assert.Equal(new[] { "", "ShowLayerHold", "ShowWebControllerRow", "ShowsClickRow", "IsCellMenu", "IsCellMenu", "IsCellMenu", "", "" },
+            Assert.Equal(new[]
+                {
+                    "", "Menu_LayerHoldsOpen", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "SelectedFireDescription",
+                    "Menu_HasCenter", "Menu_Deadzone", "Dashboard_MenuOverlay", "Menu_Keyboard_Overlay_Caption", "Menu_ShowLabels",
+                    "ResetLabel_PositionX", "ResetLabel_PositionY", "Menu_Scale", "Menu_Opacity", "",
+                },
+                moreRows.Select(What));
+            Assert.Equal(new[]
+                {
+                    "", "ShowLayerHold", "ShowWebControllerRow", "ShowsClickRow", "IsCellMenu", "IsCellMenu",
+                    "IsRadial", "IsCellMenu", "", "IsKeyboard", "IsCellMenu",
+                    "", "", "", "", "",
+                },
                 moreRows.Select(Gate));
             Assert.Equal("FoldList", moreRows[^1].Name.LocalName);
+            // The fold stands off the last row.
+            Assert.Equal("0,10,0,0", (string)moreRows[^1].Attribute("Margin"));
+        }
+
+        /// <summary>A row of a setting in the menu editor is the section's
+        /// row, as a macro's is: its label, its control and its reset at
+        /// the row's end. A check box is a switch under its own label. A
+        /// group inside a block stands under a small head with its reset,
+        /// in no card, and no row shares a label column with another. A
+        /// row whose control has a line under it is laid out from its top,
+        /// with its label and its reset on the picker's line.</summary>
+        [Fact]
+        public void AMenuRowIsItsLabel_ItsControl_AndItsResetAtTheEnd()
+        {
+            var page = Page();
+            var host = Named(page, "MenuEditorHost");
+            bool IsRow(XElement e) => e.Name.LocalName == "FlexLinePanel" && (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}";
+            bool IsReset(XElement e) => e.Name.LocalName == "SettingResetButton" || (string)e.Attribute("Style") == "{StaticResource ResetButton}";
+            var rows = host.Descendants().Where(IsRow).ToList();
+            Assert.Equal(34, rows.Count);
+            // A keyboard control's row is a template beside the editor.
+            var control = Assert.Single(Keyed(page, "KeyboardControlRowTemplate").Elements());
+            Assert.True(IsRow(control));
+            rows.Add(control);
+
+            // No card is left in the editor and no shared label column on
+            // the page. The cells keep their own columns.
+            Assert.DoesNotContain(host.Descendants(), e => (string)e.Attribute("Style") == "{StaticResource CardBorder}");
+            Assert.Equal(new[] { "MenuCellHeader", "MenuCellIconControls" }, page.Descendants()
+                .Select(e => (string)e.Attribute("SharedSizeGroup")).Where(g => g != null && g.StartsWith("Menu", StringComparison.Ordinal))
+                .Distinct().OrderBy(g => g, StringComparer.Ordinal));
+
+            Assert.All(rows, r =>
+            {
+                var parts = r.Elements().ToList();
+                Assert.Equal("TextBlock", parts[0].Name.LocalName);
+                Assert.Equal("{DynamicResource RowOptionLabel}", (string)parts[0].Attribute("Style"));
+                Assert.StartsWith("{Binding ", (string)parts[0].Attribute("Text"));
+                // One reset, the row's last part, marked as its end part.
+                Assert.True(IsReset(parts[^1]), "a row ends with " + parts[^1].Name.LocalName);
+                Assert.Equal(1, parts.Count(IsReset));
+                Assert.Equal("True", (string)parts[^1].Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+                // A picker or a box of the row stands centered in its height.
+                Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox" or "NumberBox"),
+                    c => Assert.Equal("Center", (string)c.Attribute("VerticalAlignment")));
+            });
+
+            // A check box of the rows is a switch, which says what the
+            // row's label says.
+            var blocks = new[] { "MenuOpensBlock", "MenuCellsBlock", "MenuKeyboardBlock", "MenuMore" }.Select(n => Named(host, n));
+            Assert.All(blocks.SelectMany(b => b.Descendants()).Where(e => e.Name.LocalName == "CheckBox"), box => Assert.True(IsRow(box.Parent!)));
+            var switches = rows.Where(r => r.Elements().Any(c => c.Name.LocalName == "CheckBox")).ToList();
+            Assert.Equal(new[]
+                {
+                    "{Binding OpenOnTextFocus, Mode=TwoWay}", "{Binding HotbarWrap, Mode=TwoWay}", "{Binding HotbarDismissOnFire, Mode=TwoWay}",
+                    "{Binding HotbarRecenter, Mode=TwoWay}", "{Binding FunctionRow, Mode=TwoWay}", "{Binding Suggestions, Mode=TwoWay}",
+                    "{Binding LayerHoldsOpen, Mode=TwoWay}", "{Binding ShowOnWebController, Mode=TwoWay}", "{Binding HasCenter}", "{Binding ShowLabels}",
+                },
+                switches.Select(r => (string)r.Elements().Single(c => c.Name.LocalName == "CheckBox").Attribute("IsChecked")));
+            Assert.All(switches, r =>
+            {
+                var box = r.Elements().Single(c => c.Name.LocalName == "CheckBox");
+                Assert.Equal("{StaticResource SwitchCheckBox}", (string)box.Attribute("Style"));
+                Assert.Equal((string)r.Elements().First().Attribute("Text"), (string)box.Attribute("Content"));
+            });
+
+            // Center Cell, under More: a ring's row, with a reset of its own.
+            var center = switches.Single(r => r.Elements().Any(c => (string)c.Attribute("IsChecked") == "{Binding HasCenter}"));
+            Assert.Contains(Named(host, "MenuMore").Descendants(), e => e == center);
+            Assert.Equal("{Binding IsRadial, Converter={StaticResource BoolToVisibilityConverter}}", (string)center.Attribute("Visibility"));
+            Assert.Equal("HasCenter", (string)center.Elements().Last().Attribute("CommandParameter"));
+            Assert.Equal("{Binding ResetSettingCommand}", (string)center.Elements().Last().Attribute("Command"));
+
+            // A small head: 12 SemiBold in the quiet text color, on a line
+            // with what belongs to its group and the group's reset at the
+            // line's end.
+            var head = Keyed(page, "EditorSubHead");
+            Assert.Equal("12", SetterOf(head, "FontSize"));
+            Assert.Equal("SemiBold", SetterOf(head, "FontWeight"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", SetterOf(head, "Foreground"));
+            var heads = host.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource EditorSubHead}").ToList();
+            Assert.Equal(new[] { "{Binding Menu_Keyboard_Controls" + S, "{Binding Dashboard_MenuOverlay" + S }, heads.Select(h => (string)h.Attribute("Text")));
+            Assert.Equal(new[] { "{Binding ResetKeyboardControlsCommand}", "{Binding ResetGeometryCommand}" }, heads.Select(h =>
+            {
+                var line = h.Parent!;
+                Assert.Equal("FlexLinePanel", line.Name.LocalName);
+                Assert.Same(h, line.Elements().First());
+                Assert.Equal("True", (string)line.Attribute("EndsApart"));
+                Assert.Equal("44", (string)line.Attribute("MinLineHeight"));
+                var reset = line.Elements().Last();
+                Assert.Equal("True", (string)reset.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+                return (string)reset.Attribute("Command");
+            }));
+            // Keyboard Controls keeps its count and Map All on the line.
+            var controlsLine = heads[0].Parent!.Elements().ToList();
+            Assert.Equal("{Binding KeyboardControlsSummary}", (string)controlsLine[1].Attribute("Text"));
+            Assert.Equal("{Binding MapAllText}", (string)controlsLine[2].Attribute("Content"));
+
+            // Where the overlay sits is a row for each of its two numbers,
+            // named as its reset is.
+            foreach (string axis in new[] { "X", "Y" })
+            {
+                var row = rows.Single(r => (string)r.Elements().First().Attribute("Text") == "{Binding ResetLabel_Position" + axis + S);
+                Assert.Equal(new[] { "TextBlock", "NumberBox", "SettingResetButton" }, row.Elements().Select(e => e.Name.LocalName));
+                Assert.Equal("{Binding Pos" + axis + "Percent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)row.Elements().ElementAt(1).Attribute("Value"));
+                Assert.Equal("Pos" + axis + "Percent", (string)row.Elements().Last().Attribute("CommandParameter"));
+                Assert.Equal("{Binding ResetLabel_Position" + axis + S, (string)row.Elements().Last().Attribute("SettingLabel"));
+            }
+
+            // The layer row shows by the holder around it, as a macro's does.
+            var layer = rows.Single(r => r.Elements().Any(c => (string)c.Attribute("SelectedValue") == "{Binding LayerMask, Mode=TwoWay}"));
+            Assert.Null(layer.Attribute("Visibility"));
+            Assert.Equal("StackPanel", layer.Parent!.Name.LocalName);
+            Assert.Equal(new[] { "{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}", "{Binding ShowsLayerRow}" },
+                layer.Parent.Elements().Single(e => e.Name.LocalName == "StackPanel.Style").Descendants()
+                    .Where(e => e.Name.LocalName == "DataTrigger").Select(e => (string)e.Attribute("Binding")));
+
+            // A row laid out from its top: 4 over and under it, as a row of
+            // one line has around its control. Its label and its reset stand
+            // on the picker's line, and the picker and its Record are one
+            // line of the control's stack, so what stands under the picker
+            // moves neither.
+            var fromTop = rows.Where(r => r.Elements().Any(c => c.Name.LocalName == "StackPanel" && (string)c.Attribute("Orientation") == "Vertical")).ToList();
+            Assert.Equal(9, fromTop.Count);
+            Assert.Contains(control, fromTop);
+            Assert.All(fromTop, r =>
+            {
+                Assert.Equal("0,4,0,4", (string)r.Attribute("Margin"));
+                var parts = r.Elements().ToList();
+                Assert.Equal(new[] { "TextBlock", "StackPanel", "Button" }, parts.Select(p => p.Name.LocalName));
+                Assert.Equal("Top", (string)parts[0].Attribute("VerticalAlignment"));
+                Assert.Equal("0,8,12,0", (string)parts[0].Attribute("Margin"));
+                Assert.Equal("Top", (string)parts[2].Attribute("VerticalAlignment"));
+                Assert.Equal("10,2,0,0", (string)parts[2].Attribute("Margin"));
+                var line = parts[1].Elements().First();
+                Assert.Equal("StackPanel", line.Name.LocalName);
+                Assert.Equal("Horizontal", (string)line.Attribute("Orientation"));
+                Assert.Equal(new[] { "ComboBox", "Button" }, line.Elements().Select(p => p.Name.LocalName));
+                Assert.Equal("36", (string)line.Elements().First().Attribute("MinHeight"));
+                Assert.Equal("{StaticResource RecordButton}", (string)line.Elements().Last().Attribute("Style"));
+                Assert.Null(line.Elements().Last().Attribute("VerticalAlignment"));
+            });
+            // Every other row's reset has the rows' margin.
+            Assert.All(rows.Except(fromTop), r => Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)r.Elements().Last().Attribute("Margin")));
+        }
+
+        /// <summary>A record button, as the board draws it: the ember dot and
+        /// the word Record, 36 tall beside a picker of the same height. Its
+        /// content is the glyph that says whether it records, and its face
+        /// follows that: a square and Stop while it records. Every record
+        /// button of the section has the look and a name of its own, since
+        /// the glyph reads as nothing.</summary>
+        [Fact]
+        public void ARecordButtonIsTheBoardsDotAndWord()
+        {
+            var page = Page();
+            var look = Keyed(page, "RecordButton");
+            Assert.Equal("ui:Button", (string)look.Attribute("TargetType"));
+            Assert.Equal("{StaticResource DefaultUiButtonStyle}", (string)look.Attribute("BasedOn"));
+            Assert.Equal("{StaticResource PadUiButtonTemplate}", SetterOf(look, "Template"));
+            Assert.Equal("{StaticResource RecordFace}", SetterOf(look, "ContentTemplate"));
+            Assert.Equal("36", SetterOf(look, "MinHeight"));
+            Assert.Equal("12,0", SetterOf(look, "Padding"));
+            Assert.Equal("10,0,0,0", SetterOf(look, "Margin"));
+            Assert.Equal("Center", SetterOf(look, "VerticalAlignment"));
+
+            var face = Keyed(page, "RecordFace");
+            var parts = Assert.Single(face.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
+            Assert.Equal(new[] { "Rectangle", "TextBlock" }, parts.Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "7", "7", "3.5", "3.5" }, new[] { "Width", "Height", "RadiusX", "RadiusY" }.Select(a => (string)parts[0].Attribute(a)));
+            Assert.Equal("{DynamicResource EmberBrush}", (string)parts[0].Attribute("Fill"));
+            Assert.Equal("0,0,8,0", (string)parts[0].Attribute("Margin"));
+            Assert.Equal("{Binding Common_Record" + S, (string)parts[1].Attribute("Text"));
+
+            // The face, made and shown: the dot and Record on the record
+            // glyph, a square and Stop on the stop glyph.
+            var made = new XElement(face);
+            made.Attribute(X + "Key")!.Remove();
+            made.SetAttributeValue(XNamespace.Xmlns + "x", X.NamespaceName);
+            made.SetAttributeValue(XNamespace.Xmlns + "strings", "clr-namespace:PadForge.Resources.Strings;assembly=" + typeof(PadPage).Assembly.GetName().Name);
+            string xaml = made.ToString();
+            Exception failure = null;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var template = (System.Windows.DataTemplate)System.Windows.Markup.XamlReader.Parse(xaml);
+                    var shown = new ContentPresenter { Content = MenuEditorItem.RecordGlyph, ContentTemplate = template };
+                    void Settle()
+                    {
+                        shown.Measure(new System.Windows.Size(300, 60));
+                        System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.ContextIdle);
+                    }
+                    Settle();
+                    var word = (TextBlock)template.FindName("Word", shown);
+                    var mark = (System.Windows.Shapes.Rectangle)template.FindName("Mark", shown);
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Common_Record, word.Text);
+                    Assert.Equal(3.5, mark.RadiusX);
+                    shown.Content = MenuEditorItem.StopGlyph;
+                    Settle();
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Common_Stop, word.Text);
+                    Assert.Equal(1.0, mark.RadiusX);
+                    Assert.Equal(1.0, mark.RadiusY);
+                    shown.Content = MenuEditorItem.RecordGlyph;
+                    Settle();
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Common_Record, word.Text);
+                    Assert.Equal(3.5, mark.RadiusX);
+                }
+                catch (Exception ex) { failure = ex; }
+            }) { IsBackground = true };
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            Assert.True(thread.Join(TimeSpan.FromSeconds(30)), "the run timed out");
+            if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
+
+            // The glyphs a face reads are the ones the view models show.
+            Assert.Equal("\uE7C8", MenuEditorItem.RecordGlyph);
+            Assert.Equal("\uE71A", MenuEditorItem.StopGlyph);
+            var macro = new MacroItem();
+            Assert.Equal(MenuEditorItem.RecordGlyph, macro.RecordTriggerIcon);
+            macro.IsRecordingTrigger = true;
+            Assert.Equal(MenuEditorItem.StopGlyph, macro.RecordTriggerIcon);
+
+            // Every record button of the section.
+            var section = Named(page, "MacrosSectionScroll");
+            var records = section.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource RecordButton}").ToList();
+            Assert.Equal(16, records.Count);
+            Assert.All(records, r =>
+            {
+                Assert.Matches(@"^\{Binding \w*Record\w*Icon\}$", (string)r.Attribute("Content"));
+                Assert.StartsWith("{Binding ", (string)r.Attribute("AutomationProperties.Name"));
+                Assert.StartsWith("{Binding ", (string)r.Attribute("Command"));
+                // Nothing is drawn in it but its face. A tooltip may hang on it.
+                Assert.All(r.Elements(), e => Assert.Equal("Button.ToolTip", e.Name.LocalName));
+            });
+            // None is left that draws the glyph itself.
+            Assert.DoesNotContain(section.Descendants(), e => e.Name.LocalName == "GlyphText"
+                && System.Text.RegularExpressions.Regex.IsMatch((string)e.Attribute("Text") ?? "", @"^\{Binding \w*Record\w*Icon\}$"));
+
+            // A picker beside a Record is as tall as it. Any other picker of
+            // the section is the board's 34.
+            var looks = Assert.Single(section.Elements(), e => e.Name.LocalName == "ScrollViewer.Resources");
+            var pickerLook = Assert.Single(looks.Elements(), e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "ComboBox");
+            Assert.Null(pickerLook.Attribute(X + "Key"));
+            Assert.Equal("{StaticResource {x:Type ComboBox}}", (string)pickerLook.Attribute("BasedOn"));
+            Assert.Equal("34", SetterOf(pickerLook, "MinHeight"));
+            var beside = records.Select(r => r.ElementsBeforeSelf().LastOrDefault())
+                .Where(e => e != null && e.Name.LocalName == "ComboBox").ToList();
+            Assert.Equal(14, beside.Count);
+            Assert.All(beside, p => Assert.Equal("36", (string)p.Attribute("MinHeight")));
+        }
+
+        /// <summary>The Cells row's reset resets how many cells a menu has
+        /// and leaves its center cell, which has a row and a reset of its
+        /// own under More.</summary>
+        [Fact]
+        public void TheCellsResetLeavesTheCenterCell_WhichHasItsOwn()
+        {
+            var menu = new MenuEditorItem(new PadForge.Engine.Menus.MenuDefinitionEntry
+            {
+                MenuId = 1, Kind = PadForge.Engine.Menus.MenuKind.Radial, CellCount = 7, HasCenter = true,
+            });
+            menu.ResetCellsCommand.Execute(null);
+            Assert.Equal(4, menu.CellCount);
+            Assert.True(menu.HasCenter);
+
+            Assert.True(MenuEditorItem.CanResetSetting(nameof(MenuEditorItem.HasCenter)));
+            menu.CellCount = 6;
+            var raised = new List<string>();
+            menu.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            menu.ResetSettingCommand.Execute(nameof(MenuEditorItem.HasCenter));
+            Assert.False(menu.HasCenter);
+            Assert.False(menu.Entry.HasCenter);
+            Assert.Equal(6, menu.CellCount);
+            Assert.Contains(nameof(MenuEditorItem.HasCenter), raised);
+            // The ring's cells are left, and the center's is gone.
+            Assert.Equal(6, menu.Cells.Count);
         }
 
         /// <summary>A row of a setting in the macro editor, as the board
@@ -833,21 +1142,19 @@ namespace PadForge.Tests
                 (string)own[0].Attribute("Visibility"));
             Assert.All(own.Skip(1), part => Assert.Null(part.Attribute("Visibility")));
 
-            // Record, 30 tall with 12 at its sides: the record glyph and the
-            // word, which is Stop while it records. Its name says what it
-            // records.
+            // Record: the section's record button, 30 tall on this line and
+            // with no margin of its own, since the line spaces its parts. Its
+            // content is the glyph that says whether it records, and its
+            // name says what it records.
             var record = own[1];
+            Assert.Equal("{StaticResource RecordButton}", (string)record.Attribute("Style"));
+            Assert.Equal("{Binding RecordTriggerIcon}", (string)record.Attribute("Content"));
             Assert.Equal("{Binding RecordTriggerCommand}", (string)record.Attribute("Command"));
             Assert.Equal("30", (string)record.Attribute("MinHeight"));
-            Assert.Equal("12,0", (string)record.Attribute("Padding"));
+            Assert.Equal("0", (string)record.Attribute("Margin"));
             Assert.Equal("{Binding RecordTriggerButtonText, TargetNullValue=''}", (string)record.Attribute("AutomationProperties.Name"));
             Assert.Equal("{Binding Macro_RecordHint" + S, (string)record.Attribute("ToolTip"));
-            Assert.Contains(record.Descendants(), e => (string)e.Attribute("Text") == "{Binding RecordTriggerIcon}");
-            var word = Assert.Single(record.Descendants(), e => e.Name.LocalName == "Style");
-            Assert.Equal("{Binding Common_Record" + S, SetterOf(word, "Text"));
-            var recording = Assert.Single(word.Descendants(), e => e.Name.LocalName == "DataTrigger");
-            Assert.Equal("{Binding IsRecordingTrigger}", (string)recording.Attribute("Binding"));
-            Assert.Equal("{Binding Common_Stop" + S, (string)Assert.Single(recording.Elements()).Attribute("Value"));
+            Assert.Empty(record.Elements());
 
             // Add from List: the picker with no fill and no edge and its own
             // chevron not drawn, under its face, which takes no click from

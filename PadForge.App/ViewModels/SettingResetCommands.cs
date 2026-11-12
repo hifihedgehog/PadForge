@@ -976,6 +976,7 @@ namespace PadForge.ViewModels
 
         internal static bool CanResetSetting(string name) => name is
             nameof(Enabled) or
+            nameof(HasCenter) or
             nameof(ShowLabels) or
             nameof(ShowOnWebController) or
             nameof(PosXPercent) or
@@ -1028,6 +1029,11 @@ namespace PadForge.ViewModels
                 case nameof(Suggestions):
                 {
                     Suggestions = true;
+                    break;
+                }
+                case nameof(HasCenter):
+                {
+                    HasCenter = false;
                     break;
                 }
                 case nameof(ShowLabels):

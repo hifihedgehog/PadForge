@@ -42,9 +42,9 @@ namespace PadForge.ViewModels
     /// cells, so the rows only a radial ring or a touch grid uses hide, as
     /// Center Cell hides for a touch grid, and it steers with its own
     /// controls, so the opener rows hide too. What it adds: Layout, Opens
-    /// With and Open When a Text Box Is Selected rows, the Keyboard Controls
-    /// card with a row per control (steering, keys and pointers alike), and
-    /// the Keyboard card. Every control writes through
+    /// With and Open When a Text Box Is Selected rows, the Keyboard block's
+    /// rows, and under them Keyboard Controls with a row per control
+    /// (steering, keys and pointers alike). Every control writes through
     /// <see cref="KeyboardMenuDefaults.Set"/>, which keeps only what differs
     /// from the layout's default.
     /// </summary>
@@ -68,7 +68,7 @@ namespace PadForge.ViewModels
         /// hotbar reads no axes of a Custom opener, only its four controls.</summary>
         public bool ShowsCustomAxesRows => IsCustomHost && IsCellMenu && !IsHotbar;
 
-        /// <summary>The Keyboard Controls card's count: the layout and its rows.</summary>
+        /// <summary>The count beside the Keyboard Controls head: the layout and its rows.</summary>
         public string KeyboardControlsSummary => string.Format(Strings.Instance.Menu_Keyboard_Controls_Summary_Format,
             KeyboardLayoutOptions[Math.Clamp((int)Entry.KeyboardLayout, 0, 2)].Label,
             KeyboardControlRows.Count);
@@ -233,7 +233,7 @@ namespace PadForge.ViewModels
         });
         private RelayCommand _resetOpenPress;
 
-        // ── Keyboard card ────────────────────────────────────────
+        // ── Keyboard block ───────────────────────────────────────
 
         public bool FunctionRow
         {

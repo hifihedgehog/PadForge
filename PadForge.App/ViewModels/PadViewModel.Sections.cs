@@ -155,6 +155,11 @@ namespace PadForge.ViewModels
         /// Customize with what it sets.</summary>
         public bool ShowExtendedCard => IsButtonsPictureView && OutputType == VirtualControllerType.Extended;
 
+        /// <summary>The header says SteamVR's state after the slot's name:
+        /// a VR slot drives nothing without SteamVR, and nothing else on
+        /// the page says whether it is there.</summary>
+        public bool ShowSteamVrState => OutputType == VirtualControllerType.Vr;
+
         private void RaiseButtonsViewChanged()
         {
             OnPropertyChanged(nameof(ButtonsViewIndex));

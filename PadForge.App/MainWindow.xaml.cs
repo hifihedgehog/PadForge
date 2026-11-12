@@ -360,6 +360,9 @@ namespace PadForge
             // word and stage chips from the slot's summary (#574), the one
             // its Home card shows.
             PadPageView.BindSlotState(_viewModel.Dashboard);
+            // A VR slot's header says SteamVR's state, which the settings
+            // view model holds and this window refreshes.
+            PadPageView.BindSteamVrState(_viewModel.Settings);
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);

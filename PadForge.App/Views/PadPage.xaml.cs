@@ -115,6 +115,15 @@ namespace PadForge.Views
             SlotPowerHost.DataContext = dashboard;
         }
 
+        /// <summary>Hands the header the view model that knows SteamVR's
+        /// state (#574), which a VR slot's header says after its name.
+        /// MainWindow calls it once at startup, and its periodic refresh
+        /// keeps the state current.</summary>
+        public void BindSteamVrState(SettingsViewModel settings)
+        {
+            SteamVrStateHost.DataContext = settings;
+        }
+
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyViewMode();

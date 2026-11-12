@@ -255,6 +255,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowOutputGroup));
                     OnPropertyChanged(nameof(ShowMidiCard));
                     OnPropertyChanged(nameof(ShowExtendedCard));
+                    // The header says SteamVR's state on a VR slot (#574).
+                    OnPropertyChanged(nameof(ShowSteamVrState));
                     // The foot of the picture's card is a Keyboard + Mouse
                     // slot's (#574).
                     OnPropertyChanged(nameof(ShowKbmFoot));

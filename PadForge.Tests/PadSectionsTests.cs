@@ -817,6 +817,59 @@ namespace PadForge.Tests
             Assert.Contains("(vm.PadIndex, !PadForge.Common.Input.SettingsManager.SlotEnabled[vm.PadIndex]));", code);
         }
 
+        /// <summary>A VR slot's header says SteamVR's state after the
+        /// slot's name, in the words the Settings row has for it. The state
+        /// is the settings view model's, which the window hands the page as
+        /// it hands the power button the slots' summaries. No other kind of
+        /// slot shows it.</summary>
+        [Fact]
+        public void AVrSlotsHeaderSaysSteamVrsState()
+        {
+            const string s = ", Source={x:Static strings:Strings.Instance}}";
+            var page = Page();
+            var state = Named(page, "SteamVrState");
+            // After the title, on the line another slot's Preset is on.
+            Assert.Same(Named(page, "HMaestroProfileBar").Parent, state.Parent);
+            Assert.Same(Named(page, "HMaestroProfileBar"), state.ElementsBeforeSelf().Last());
+            Assert.Equal("{Binding ShowSteamVrState, Converter={StaticResource BoolToVisibilityConverter}}", (string)state.Attribute("Visibility"));
+            Assert.Equal((string)Named(page, "HMaestroProfileBar").Attribute("Margin"), (string)state.Attribute("Margin"));
+
+            // The host the window binds starts with no data, as the power
+            // button's does.
+            var host = Assert.Single(state.Elements());
+            Assert.Equal("SteamVrStateHost", Name(host));
+            Assert.Equal("{x:Null}", (string)host.Attribute("DataContext"));
+            var words = host.Elements().ToList();
+            Assert.Equal(new[] { "{Binding Settings_SteamVR" + s, "{Binding SteamVrStatusText}" },
+                words.Select(e => (string)e.Attribute("Text")));
+            Assert.All(words, w =>
+            {
+                Assert.Equal("13", (string)w.Attribute("FontSize"));
+                Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)w.Attribute("Foreground"));
+            });
+            // A screen reader hears the state change, as on the Settings row.
+            Assert.Equal("Pad_SteamVrState", Id(words[1]));
+            Assert.Equal("True", words[1].Attributes().Single(a => a.Name.LocalName == "LiveText.Polite").Value);
+
+            // Only a VR slot shows it, and a change of type says so.
+            var vm = new PadViewModel(0);
+            Assert.False(vm.ShowSteamVrState);
+            var raised = new List<string>();
+            vm.PropertyChanged += (o, e) => raised.Add(e.PropertyName);
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Vr;
+            Assert.True(vm.ShowSteamVrState);
+            Assert.Contains(nameof(PadViewModel.ShowSteamVrState), raised);
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Xbox;
+            Assert.False(vm.ShowSteamVrState);
+
+            // The window hands the page the settings, whose state it keeps
+            // current.
+            string window = ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("PadPageView.BindSteamVrState(_viewModel.Settings);", window);
+            Assert.Contains("_viewModel.Settings.RefreshSteamVrStatus();", window);
+            Assert.Contains("SteamVrStateHost.DataContext = settings;", CodeBehind());
+        }
+
         /// <summary>The header's More button, at the right of its first
         /// line, holds what acts on the whole controller: Copy, Paste, Copy
         /// From, then Clear All and Delete under a line. The first four

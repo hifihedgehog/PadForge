@@ -133,6 +133,7 @@ namespace PadForge.Tests
                     }
                     foreach (var (_, macro) in states) vm.Macros.Add(macro);
                     var page = new PadPage { DataContext = vm };
+                    page.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
                     var ground = new Border { Background = (Brush)app.FindResource("SteelGroundBrush"), Child = page };
                     Step("the page is made");
                     vm.SelectedConfigTab = PadViewModel.MacrosTabIndex;
@@ -232,9 +233,17 @@ namespace PadForge.Tests
                              {
                                  PadForge.Engine.VirtualControllerType.Xbox, PadForge.Engine.VirtualControllerType.KeyboardMouse,
                                  PadForge.Engine.VirtualControllerType.Midi, PadForge.Engine.VirtualControllerType.Extended,
+                                 PadForge.Engine.VirtualControllerType.Vr,
                              })
                     {
                         string file = "slot-" + type.ToString().ToLowerInvariant() + ".png";
+                        if (type == PadForge.Engine.VirtualControllerType.Vr)
+                        {
+                            // The picture of the two hands is built as its view
+                            // loads, which a page in no window never does.
+                            var hands = page.FindName("VRPreview");
+                            hands.GetType().GetMethod("Build", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(hands, null);
+                        }
                         Picture(file, () => { vm.OutputType = type; vm.SelectedConfigTab = 0; });
                         Lookups(file);
                         // With its first control picked: the bar under the

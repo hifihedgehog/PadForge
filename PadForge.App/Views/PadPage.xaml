@@ -2743,6 +2743,25 @@
                     </Grid>
                 </Border>
 
+                <!-- SteamVR's state, after a VR slot's name (#574), in the
+                     words the Settings row has for it. A VR slot drives
+                     nothing without SteamVR, and the page said nothing of
+                     it. The state is the settings view model's, which
+                     MainWindow hands the page (BindSteamVrState). The host
+                     starts with no data, as the power button's does. -->
+                <Border x:Name="SteamVrState" Margin="20,0,0,0" VerticalAlignment="Center"
+                        Visibility="{Binding ShowSteamVrState, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel x:Name="SteamVrStateHost" Orientation="Horizontal" DataContext="{x:Null}">
+                        <TextBlock Text="{Binding Settings_SteamVR, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="SteamVrStateText" AutomationProperties.AutomationId="Pad_SteamVrState"
+                                   common:LiveText.Polite="True" Text="{Binding SteamVrStatusText}"
+                                   FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
             </WrapPanel>
 
             <!-- Power button with the slot's state word. The switch and the

@@ -145,12 +145,18 @@ namespace PadForge.ViewModels
         /// that has any.</summary>
         public bool ShowOutputGroup => IsButtonsPictureView && OutputTabVisible;
 
+        /// <summary>A MIDI slot's card shows under the picture's card, where
+        /// a controller has its output cards: the port, the channel and the
+        /// runs of controls and notes.</summary>
+        public bool ShowMidiCard => IsButtonsPictureView && OutputType == VirtualControllerType.Midi;
+
         private void RaiseButtonsViewChanged()
         {
             OnPropertyChanged(nameof(ButtonsViewIndex));
             OnPropertyChanged(nameof(IsButtonsPictureView));
             OnPropertyChanged(nameof(IsButtonsListView));
             OnPropertyChanged(nameof(ShowOutputGroup));
+            OnPropertyChanged(nameof(ShowMidiCard));
             RaisePickedChanged();
         }
 

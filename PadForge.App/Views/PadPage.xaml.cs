@@ -1222,6 +1222,16 @@ namespace PadForge.Views
         /// or it has not been laid out.</summary>
         private double FoldedOutputHeight()
         {
+            // A MIDI slot's card stands where the output cards do, and
+            // folds by its More row.
+            if (MidiConfigBar != null && MidiConfigBar.Visibility == Visibility.Visible && MidiConfigBar.ActualHeight > 0)
+            {
+                double card = MidiConfigBar.ActualHeight + MidiConfigBar.Margin.Top + MidiConfigBar.Margin.Bottom;
+                if (MidiMore != null && MidiMore.IsExpanded
+                    && MidiMore.Template?.FindName("ExpandSite", MidiMore) is FrameworkElement more)
+                    card -= more.ActualHeight;
+                return Math.Max(0, card);
+            }
             if (OutputGroup == null || !OutputGroup.IsVisible || OutputGroup.ActualHeight <= 0) return double.NaN;
             double height = OutputGroup.ActualHeight + OutputGroup.Margin.Top + OutputGroup.Margin.Bottom;
             foreach (var card in new[] { SocdFoldCard, KbmSocdFoldCard, KeepAwakeFoldCard })
@@ -1385,7 +1395,7 @@ namespace PadForge.Views
             // and is not part of its viewport, and the bar a recording
             // shows lies over the picture's foot and takes no room.
             double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();
-            double folded = SteadyFoldedHeight(vm.OutputTabVisible, FoldedOutputHeight(), ref _foldedOutputMeasured);
+            double folded = SteadyFoldedHeight(vm.OutputTabVisible || vm.ShowMidiCard, FoldedOutputHeight(), ref _foldedOutputMeasured);
             double picture = PictureHeightFor(viewport, around, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
             ButtonsPictureRow.Height = new GridLength(picture);
         }
@@ -5066,8 +5076,9 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
+            // The card shows by the view model (ShowMidiCard). Its boxes
+            // are filled for a MIDI slot whether or not it shows now.
             bool isMidi = vm.OutputType == Engine.VirtualControllerType.Midi;
-            MidiConfigBar.Visibility = isMidi ? Visibility.Visible : Visibility.Collapsed;
 
             if (isMidi)
             {

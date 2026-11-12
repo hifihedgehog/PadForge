@@ -550,7 +550,7 @@ namespace PadForge.Tests
             // A pick made on the picture leaves the page where it is: the
             // selected row is scrolled into view in the list only.
             Assert.Matches(@"bool underPicture = DataContext is PadViewModel viewVm && viewVm\.IsButtonsPictureView;\s*if \(!underPicture && e\.AddedItems\.Count > 0 && e\.AddedItems\[0\] is MappingItem sel\)", code);
-            Assert.Matches(@"double folded = SteadyFoldedHeight\(vm\.OutputTabVisible, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
+            Assert.Matches(@"double folded = SteadyFoldedHeight\(vm\.OutputTabVisible \|\| vm\.ShowMidiCard, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
             // Cards that are hidden or not laid out have no height to read.
             Assert.Matches(@"if \(OutputGroup == null \|\| !OutputGroup\.IsVisible \|\| OutputGroup\.ActualHeight <= 0\) return double\.NaN;", code);
             // The cards' folded height is the group as it stands less what
@@ -837,6 +837,119 @@ namespace PadForge.Tests
             Assert.False(vm.ShowKbmFoot);
             Assert.True(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
+        }
+
+        /// <summary>A MIDI slot's card, as its board draws it: MIDI Output,
+        /// a card of its own under the picture's card with the port and the
+        /// channel, More over the runs of controls and notes, and Reset All
+        /// in its head. It stands where a controller has its output cards,
+        /// the picture is sized with it in view, and the old bar between the
+        /// page's head and its sections is gone.</summary>
+        [Fact]
+        public void AMidiSlotsCardStandsUnderThePicture()
+        {
+            var page = Page();
+            var card = Named(page, "MidiConfigBar");
+            Assert.Same(Named(page, "ButtonsPage"), card.Parent);
+            Assert.Equal("4", (string)card.Attribute("Grid.Row"));
+            Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
+            Assert.Equal("0,16,0,0", (string)card.Attribute("Margin"));
+            Assert.Equal("{Binding ShowMidiCard, Converter={StaticResource BoolToVisibilityConverter}}", (string)card.Attribute("Visibility"));
+            Assert.Equal("OutputGroup_SizeChanged", (string)card.Attribute("SizeChanged"));
+            var parts = Assert.Single(card.Elements()).Elements().ToList();
+            Assert.Equal(new[] { "DockPanel", "SettingRow", "SettingRow", "MoreRow" }, parts.Select(e => e.Name.LocalName));
+
+            // The head: the title, and Reset All at its end.
+            var head = parts[0].Elements().ToList();
+            Assert.Equal("{StaticResource CardTitle}", (string)head[0].Attribute("Style"));
+            Assert.StartsWith("{Binding ", (string)head[0].Attribute("Text"));
+            Assert.Equal("{StaticResource ResetAllButton}", (string)head[1].Attribute("Style"));
+            Assert.Equal("ResetMidiAll_Click", (string)head[1].Attribute("Click"));
+            Assert.Equal("{Binding Pad_ResetAll" + S, (string)head[1].Attribute("Content"));
+
+            // The port, which the legacy MIDI API alone picks, then the channel.
+            Assert.Equal("{Binding IsLegacyMidi, Converter={StaticResource BoolToVisibilityConverter}}", (string)parts[1].Attribute("Visibility"));
+            Assert.Equal(new[] { "TextBlock", "ComboBox", "SettingResetButton" }, parts[1].Elements().Select(e => e.Name.LocalName));
+            Assert.Equal("MidiOutputPortBox", Name(parts[1].Elements().ElementAt(1)));
+            Assert.Equal("34", (string)parts[1].Elements().ElementAt(1).Attribute("MinHeight"));
+            Assert.Equal("OutputPort", (string)parts[1].Elements().Last().Attribute("Tag"));
+
+            // A row of a number: its label, the box, its reset.
+            void IsNumberRow(XElement row, string label, string box, string tag)
+            {
+                Assert.Equal("44", (string)row.Attribute("MinHeight"));
+                var own = row.Elements().ToList();
+                Assert.Equal(new[] { "TextBlock", "TextBox", "SettingResetButton" }, own.Select(e => e.Name.LocalName));
+                Assert.Equal("{Binding " + label + S, (string)own[0].Attribute("Text"));
+                Assert.Equal("{StaticResource DzLabel}", (string)own[0].Attribute("Style"));
+                Assert.Equal(box, Name(own[1]));
+                Assert.Equal("{StaticResource CardNumberBox}", (string)own[1].Attribute("Style"));
+                Assert.Equal("MidiConfig_Changed", (string)own[1].Attribute("LostFocus"));
+                Assert.Equal("MidiConfig_KeyDown", (string)own[1].Attribute("KeyDown"));
+                Assert.Equal("ResetMidiSetting_Click", (string)own[2].Attribute("Click"));
+                Assert.Equal(tag, (string)own[2].Attribute("Tag"));
+                Assert.Equal("{Binding " + label + S, (string)own[2].Attribute("SettingLabel"));
+            }
+            IsNumberRow(parts[2], "Pad_MidiChannel", "MidiChannelBox", "Channel");
+
+            // More: the runs of controls and notes, and the velocity.
+            var more = parts[3];
+            Assert.Equal("MidiMore", Name(more));
+            Assert.Equal("Pad.Buttons.Midi.More", (string)more.Attribute("StateKey"));
+            var under = Assert.Single(more.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
+            Assert.Equal(5, under.Count);
+            IsNumberRow(under[0], "Pad_MidiCCCount", "MidiCcCountBox", "CcCount");
+            IsNumberRow(under[1], "Pad_MidiStartCC", "MidiStartCcBox", "StartCc");
+            IsNumberRow(under[2], "Pad_MidiNoteCount", "MidiNoteCountBox", "NoteCount");
+            IsNumberRow(under[3], "Pad_MidiStartNote", "MidiStartNoteBox", "StartNote");
+            IsNumberRow(under[4], "Pad_MidiVelocity", "MidiVelocityBox", "Velocity");
+
+            // A number's box, as the boards draw one.
+            var box = Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Key") == "CardNumberBox");
+            string Set(string property) => (string)box.Elements().Single(e => (string)e.Attribute("Property") == property).Attribute("Value");
+            Assert.Equal("64", Set("Width"));
+            Assert.Equal("34", Set("MinHeight"));
+            Assert.Equal("Right", Set("TextAlignment"));
+            Assert.Equal("{DynamicResource SteelFieldBrush}", Set("Background"));
+
+            // The old bar is gone, and the page's code no longer shows or hides the card.
+            string code = CodeBehind();
+            Assert.DoesNotContain("MIDI CONFIGURATION BAR", PageText());
+            Assert.DoesNotContain("MidiConfigBar.Visibility = ", code);
+            // The picture is sized with the card in view, its More row folded.
+            Assert.Contains("double folded = SteadyFoldedHeight(vm.OutputTabVisible || vm.ShowMidiCard, FoldedOutputHeight(), ref _foldedOutputMeasured);", code);
+            Assert.Matches(@"if \(MidiConfigBar != null && MidiConfigBar\.Visibility == Visibility\.Visible && MidiConfigBar\.ActualHeight > 0\)\s*\{\s*double card = MidiConfigBar\.ActualHeight \+ MidiConfigBar\.Margin\.Top \+ MidiConfigBar\.Margin\.Bottom;\s*if \(MidiMore != null && MidiMore\.IsExpanded\s*&& MidiMore\.Template\?\.FindName\(""ExpandSite"", MidiMore\) is FrameworkElement more\)\s*card -= more\.ActualHeight;\s*return Math\.Max\(0, card\);\s*\}", code);
+
+            // The view model: a MIDI slot's, under the picture.
+            var vm = new PadViewModel(0);
+            Assert.False(vm.ShowMidiCard);
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Midi;
+            Assert.True(vm.ShowMidiCard);
+            Assert.False(vm.ShowOutputGroup);
+            Assert.Contains(nameof(PadViewModel.ShowMidiCard), raised);
+            raised.Clear();
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.False(vm.ShowMidiCard);
+            Assert.Contains(nameof(PadViewModel.ShowMidiCard), raised);
+
+            // Each setting's reset, and Reset All over them all.
+            Assert.Equal(new[] { "OutputPort", "Channel", "CcCount", "StartCc", "NoteCount", "StartNote", "Velocity" }, PadForge.Views.PadPage.MidiFields);
+            var config = new MidiSlotConfig { Channel = 9, CcCount = 3, StartCc = 20, NoteCount = 5, StartNote = 40, Velocity = 80 };
+            Assert.False(PadForge.Views.PadPage.ResetMidiField(config, "Nothing"));
+            Assert.Equal(9, config.Channel);
+            Assert.True(PadForge.Views.PadPage.ResetMidiField(config, "StartNote"));
+            Assert.Equal(60, config.StartNote);
+            Assert.Equal(9, config.Channel);
+            foreach (string field in PadForge.Views.PadPage.MidiFields)
+                Assert.True(PadForge.Views.PadPage.ResetMidiField(config, field), field);
+            Assert.Equal((1, 6, 1, 11, 60, 127), (config.Channel, config.CcCount, config.StartCc, config.NoteCount, config.StartNote, (int)config.Velocity));
+            Assert.Equal(string.Empty, config.OutputPort ?? string.Empty);
+            string resets = ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.SettingResets.cs");
+            // Reset All leaves the port while its row does not show.
+            Assert.Matches(@"private void ResetMidiAll_Click\(object sender, RoutedEventArgs e\)\s*\{\s*bool port = DataContext is PadViewModel \{ IsLegacyMidi: true \};\s*ResetMidiFields\(port \? MidiFields : Array\.FindAll\(MidiFields, f => f != nameof\(MidiSlotConfig\.OutputPort\)\)\);\s*\}", resets);
+            Assert.Matches(@"foreach \(string field in fields\) any \|= ResetMidiField\(config, field\);\s*if \(!any\) return;\s*if \(before != \(config\.CcCount, config\.StartCc, config\.NoteCount, config\.StartNote\)\) vm\.RebuildMappings\(\);\s*SyncMidiConfigBar\(\);", resets);
         }
     }
 }

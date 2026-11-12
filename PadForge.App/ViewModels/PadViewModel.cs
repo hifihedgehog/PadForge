@@ -253,6 +253,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
                     OnPropertyChanged(nameof(OutputTabVisible));
                     OnPropertyChanged(nameof(ShowOutputGroup));
+                    OnPropertyChanged(nameof(ShowMidiCard));
                     // The foot of the picture's card is a Keyboard + Mouse
                     // slot's (#574).
                     OnPropertyChanged(nameof(ShowKbmFoot));

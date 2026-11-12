@@ -419,6 +419,17 @@
         </Style>
         <!-- A small head inside a block, over a group of its rows: 12 SemiBold in
              the quiet text color, as the board draws the heads of the lists' card. -->
+        <!-- A number a card's row holds, as the boards draw one: 64 wide and 34
+             tall on the field fill, with its digits at the right. -->
+        <Style x:Key="CardNumberBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="64"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
+        </Style>
         <Style x:Key="EditorSubHead" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -3291,82 +3302,6 @@
             </StackPanel>
         </Border>
 
-        <!-- ══════════════════════════════════════
-             ROW 1 (alt): MIDI CONFIGURATION BAR
-             (visible only when OutputType == Midi)
-             ══════════════════════════════════════ -->
-        <Border x:Name="MidiConfigBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
-                Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           common:BidiText.ToolTip="{Binding Pad_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiChannelBox" Width="40" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="1"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="Channel" Visibility="{Binding Visibility, ElementName=MidiChannelBox}" SettingLabel="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiChannelBox_961" Margin="4,0,8,0"/>
-
-                <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           ToolTip="{Binding Pad_MidiCCCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiCcCountBox" Width="54" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="6"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="CcCount" Visibility="{Binding Visibility, ElementName=MidiCcCountBox}" SettingLabel="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiCcCountBox_968" Margin="4,0,8,0"/>
-
-                <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           common:BidiText.ToolTip="{Binding Pad_MidiStartCCTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiStartCcBox" Width="54" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="1"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="StartCc" Visibility="{Binding Visibility, ElementName=MidiStartCcBox}" SettingLabel="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiStartCcBox_975" Margin="4,0,8,0"/>
-
-                <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           ToolTip="{Binding Pad_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiNoteCountBox" Width="54" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="11"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="NoteCount" Visibility="{Binding Visibility, ElementName=MidiNoteCountBox}" SettingLabel="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiNoteCountBox_982" Margin="4,0,8,0"/>
-
-                <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           ToolTip="{Binding Pad_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiStartNoteBox" Width="54" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="60"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="StartNote" Visibility="{Binding Visibility, ElementName=MidiStartNoteBox}" SettingLabel="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiStartNoteBox_989" Margin="4,0,8,0"/>
-
-                <TextBlock Text="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           ToolTip="{Binding Pad_MidiVelocityTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBox x:Name="MidiVelocityBox" Width="54" VerticalAlignment="Center"
-                         TextAlignment="Center" Text="127"
-                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
-                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="Velocity" Visibility="{Binding Visibility, ElementName=MidiVelocityBox}" SettingLabel="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiVelocityBox_996"/>
-
-                <!-- The legacy MIDI API cannot create the slot's own port, so
-                     the slot sends to an existing one picked here. Hidden
-                     under Windows MIDI Services, which ignores the pick. -->
-                <StackPanel Orientation="Horizontal"
-                            Visibility="{Binding IsLegacyMidi, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Text="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBox x:Name="MidiOutputPortBox" MinWidth="180" MaxWidth="260" VerticalAlignment="Center"
-                              ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"
-                              DropDownOpened="MidiOutputPortBox_DropDownOpened"
-                              SelectionChanged="MidiOutputPortBox_SelectionChanged"
-                              AutomationProperties.AutomationId="MidiOutputPortBox"/>
-                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="OutputPort" SettingLabel="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiOutputPortBox" Margin="4,0,0,0"/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
         <!-- ═══════════════════════════════════════════
              ROW 2: the selected section (#574).
              Six sections, in the header's order. Buttons and Macros &
@@ -4924,6 +4859,98 @@
                                 </ItemsControl>
                             </StackPanel>
                         </controls:FlexLinePanel>
+                    </Border>
+
+                    <!-- A MIDI slot's card (#574), as its board draws it: MIDI Output, under the
+                         picture's card, where a controller has its output cards. The port the
+                         slot sends to and its channel, and under More how many controls and
+                         notes the slot has, where each run starts and how hard a note is struck.
+                         The page's code fills the boxes from the slot's config and writes them
+                         back when one loses the focus (SyncMidiConfigBar, MidiConfig_Changed).
+                         The picture is sized with the card in view, its More row folded. -->
+                    <Border Grid.Row="4" x:Name="MidiConfigBar" Style="{StaticResource CardBorder}" Margin="0,16,0,0"
+                            SizeChanged="OutputGroup_SizeChanged"
+                            Visibility="{Binding ShowMidiCard, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                                <ui:Button Click="ResetMidiAll_Click" Style="{StaticResource ResetAllButton}"
+                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                            </DockPanel>
+                            <!-- The legacy MIDI API cannot create the slot's own port, so the slot
+                                 sends to an existing one picked here. Hidden under Windows MIDI
+                                 Services, which ignores the pick. -->
+                            <controls:SettingRow MinHeight="44"
+                                                 Visibility="{Binding IsLegacyMidi, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBox x:Name="MidiOutputPortBox" MinHeight="34" MinWidth="220" MaxWidth="360" VerticalAlignment="Center"
+                                          ToolTip="{Binding Pad_MidiOutputPortTooltip, Source={x:Static strings:Strings.Instance}}"
+                                          DropDownOpened="MidiOutputPortBox_DropDownOpened"
+                                          SelectionChanged="MidiOutputPortBox_SelectionChanged"
+                                          AutomationProperties.AutomationId="MidiOutputPortBox"/>
+                                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="OutputPort" SettingLabel="{Binding Pad_MidiOutputPort, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiOutputPortBox"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           common:BidiText.ToolTip="{Binding Pad_MidiChannelTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox x:Name="MidiChannelBox" Style="{StaticResource CardNumberBox}"
+                                         LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="Channel" Visibility="{Binding Visibility, ElementName=MidiChannelBox}" SettingLabel="{Binding Pad_MidiChannel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiChannelBox_961"/>
+                            </controls:SettingRow>
+                            <!-- More (#574): how many controls and notes, where they start, and how
+                                 hard a note is struck. Its hint names them. -->
+                            <controls:MoreRow x:Name="MidiMore" StateKey="Pad.Buttons.Midi.More"
+                                              AutomationProperties.AutomationId="Pad_More_Midi"
+                                              Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
+                                <controls:MoreRow.Hint>
+                                    <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
+                                        <Binding Path="Pad_MidiCCCount" Source="{x:Static strings:Strings.Instance}"/>
+                                        <Binding Path="Pad_MidiStartCC" Source="{x:Static strings:Strings.Instance}"/>
+                                        <Binding Path="Pad_MidiNoteCount" Source="{x:Static strings:Strings.Instance}"/>
+                                        <Binding Path="Pad_MidiStartNote" Source="{x:Static strings:Strings.Instance}"/>
+                                        <Binding Path="Pad_MidiVelocity" Source="{x:Static strings:Strings.Instance}"/>
+                                    </MultiBinding>
+                                </controls:MoreRow.Hint>
+                                <StackPanel>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_MidiCCCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="MidiCcCountBox" Style="{StaticResource CardNumberBox}"
+                                             LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="CcCount" Visibility="{Binding Visibility, ElementName=MidiCcCountBox}" SettingLabel="{Binding Pad_MidiCCCount, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiCcCountBox_968"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               common:BidiText.ToolTip="{Binding Pad_MidiStartCCTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="MidiStartCcBox" Style="{StaticResource CardNumberBox}"
+                                             LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="StartCc" Visibility="{Binding Visibility, ElementName=MidiStartCcBox}" SettingLabel="{Binding Pad_MidiStartCC, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiStartCcBox_975"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_MidiNoteCountTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="MidiNoteCountBox" Style="{StaticResource CardNumberBox}"
+                                             LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="NoteCount" Visibility="{Binding Visibility, ElementName=MidiNoteCountBox}" SettingLabel="{Binding Pad_MidiNoteCount, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiNoteCountBox_982"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_MidiStartNoteTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="MidiStartNoteBox" Style="{StaticResource CardNumberBox}"
+                                             LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="StartNote" Visibility="{Binding Visibility, ElementName=MidiStartNoteBox}" SettingLabel="{Binding Pad_MidiStartNote, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiStartNoteBox_989"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_MidiVelocityTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="MidiVelocityBox" Style="{StaticResource CardNumberBox}"
+                                             LostFocus="MidiConfig_Changed" KeyDown="MidiConfig_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetMidiSetting_Click" Tag="Velocity" Visibility="{Binding Visibility, ElementName=MidiVelocityBox}" SettingLabel="{Binding Pad_MidiVelocity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MidiVelocityBox_996"/>
+                                </controls:SettingRow>
+                                </StackPanel>
+                            </controls:MoreRow>
+                        </StackPanel>
                     </Border>
 
                     <!-- The output cards (#270 follow-up, #574): what shapes the

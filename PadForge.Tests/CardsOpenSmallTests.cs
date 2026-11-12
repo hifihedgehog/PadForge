@@ -119,6 +119,11 @@ namespace PadForge.Tests
                 new[] { "{Binding TriggerMode, Mode=TwoWay}", "RecordTriggerCommand", "TriggerInputItems", "SlotMacroTriggerChoicesView", "ActionsList", "AddActionCommand" },
                 new[] { "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "TriggerAxisThreshold", "TriggerAxisDirectionIndex",
                         "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}", "{Binding RepeatCount, Mode=TwoWay}" }),
+            // A MIDI slot's card opens on its port and its channel, as its
+            // board draws it. Its hint is put together from the rows' names.
+            ("Pad_More_Midi", "Pad.Buttons.Midi.More", "Pad_MidiCCCount+Pad_MidiStartCC+Pad_MidiNoteCount+Pad_MidiStartNote+Pad_MidiVelocity",
+                new[] { "MidiOutputPortBox", "MidiChannelBox", "ResetMidiAll_Click" },
+                new[] { "MidiCcCountBox", "MidiStartCcBox", "MidiNoteCountBox", "MidiStartNoteBox", "MidiVelocityBox" }),
             // A menu opens on its style, what opens it, and its cells or its
             // keyboard, as its board draws it. Its hint is put together too.
             ("Pad_More_Menu", "Pad.Menus.More", "Menu_Layer+Menu_ClickInput+Menu_FireMode+Menu_HasCenter+Menu_Deadzone+Dashboard_MenuOverlay",

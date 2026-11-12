@@ -243,6 +243,16 @@ namespace PadForge.Tests
                         Picture(picked, () => vm.PickedTarget = vm.Mappings.First().TargetSettingName, TallHeight / 2);
                         Lookups(picked);
                         vm.PickedTarget = null;
+                        if (type == PadForge.Engine.VirtualControllerType.Midi)
+                        {
+                            // The slot's own card under the picture, with its
+                            // More row open and closed again after.
+                            var midiMore = (System.Windows.Controls.Expander)page.FindName("MidiMore");
+                            string open = file.Replace(".png", "-more.png");
+                            Picture(open, () => midiMore.IsExpanded = true, TallHeight / 2);
+                            Lookups(open);
+                            midiMore.IsExpanded = false;
+                        }
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }

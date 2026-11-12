@@ -109,6 +109,16 @@ namespace PadForge.Views
         // the bottom when pitched front-facing.
         private readonly TranslateTransform3D _modelRecenter = new();
 
+        // The default camera (#574). The loaded model's outline, measured
+        // once per model load at rest and unturned, sets how far off and
+        // how high the camera stands in a view of a given shape
+        // (ControllerModelFraming).
+        // The camera follows the view's size until the user moves it: a
+        // wheel zoom, a pan or a pinch is theirs to keep. Reset View gives
+        // the camera back to the view. Turning the model moves no camera.
+        private ControllerModelFraming.Outline _modelOutline;
+        private bool _cameraIsDefault = true;
+
         public ControllerModelView()
         {
             InitializeComponent();
@@ -165,7 +175,28 @@ namespace PadForge.Views
             // mechanism; CameraChanged may never fire for this view's
             // direct cam.Position writes.
             ModelViewPort.CameraChanged += (s, e) => ReprojectAnnotations();
-            ModelViewPort.SizeChanged += (s, e) => ReprojectAnnotations();
+            ModelViewPort.SizeChanged += (s, e) =>
+            {
+                // A view of another shape needs another distance to show
+                // the whole controller.
+                if (_cameraIsDefault) ApplyDefaultCamera();
+                ReprojectAnnotations();
+            };
+        }
+
+        /// <summary>Puts the camera where it stands by default for the
+        /// loaded model and the view's size: looking the way it always
+        /// has, as far off as shows the whole controller, and at the height
+        /// that puts the controller in the middle of the view's room.</summary>
+        private void ApplyDefaultCamera()
+        {
+            if (ModelViewPort.Camera is not PerspectiveCamera cam) return;
+            var (distance, lift) = ControllerModelFraming.Fit(
+                _modelOutline, ModelViewPort.ActualWidth, ModelViewPort.ActualHeight);
+            cam.Position = ControllerModelFraming.CameraAt(distance, lift);
+            cam.LookDirection = ControllerModelFraming.Look;
+            cam.UpDirection = ControllerModelFraming.Up;
+            cam.FieldOfView = ControllerModelFraming.FieldOfView;
         }
 
         // ─────────────────────────────────────────────
@@ -368,7 +399,12 @@ namespace PadForge.Views
                 // (see the field note). Z only: X centers are ~0 on every
                 // family, and Y (depth) only shifts apparent zoom.
                 var mb = _currentModel.model3DGroup.Bounds;
-                _modelRecenter.OffsetZ = mb.IsEmpty ? 0 : -(mb.Z + mb.SizeZ / 2.0);
+                _modelRecenter.OffsetZ = ControllerModelFraming.RecenterZ(mb);
+                // The outline the default camera fits, from the same
+                // freshly loaded model under the placement just set.
+                _modelOutline = ControllerModelFraming.Measure(
+                    _currentModel.model3DGroup, ControllerModelFraming.Placement(mb, s));
+                if (_cameraIsDefault) ApplyDefaultCamera();
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
                 RebuildAnnotations();
@@ -1169,6 +1205,7 @@ namespace PadForge.Views
                         cam.Position.X - right.X * dx * panScale + trueUp.X * dy * panScale,
                         cam.Position.Y - right.Y * dx * panScale + trueUp.Y * dy * panScale,
                         cam.Position.Z - right.Z * dx * panScale + trueUp.Z * dy * panScale);
+                    _cameraIsDefault = false;
                 }
                 e.Handled = true;
                 return;
@@ -1193,6 +1230,7 @@ namespace PadForge.Views
                     cam.Position.X + look.X * zoomDelta,
                     cam.Position.Y + look.Y * zoomDelta,
                     cam.Position.Z + look.Z * zoomDelta);
+                _cameraIsDefault = false;
                 e.Handled = true;
                 ReprojectAnnotations();
             }
@@ -1243,6 +1281,8 @@ namespace PadForge.Views
                 var mid = Midpoint(_rightDragLast, _touchSecondLast);
                 if (ModelViewPort.Camera is PerspectiveCamera cam)
                 {
+                    // Two fingers zoom and pan the camera.
+                    _cameraIsDefault = false;
                     // Zoom by moving camera along look direction.
                     if (_pinchStartDist > 1)
                     {
@@ -2183,13 +2223,10 @@ namespace PadForge.Views
 
         private void ResetView_Click(object sender, RoutedEventArgs e)
         {
-            if (ModelViewPort.Camera is PerspectiveCamera cam)
-            {
-                cam.Position = new Point3D(0, -172, 132);
-                cam.LookDirection = new Vector3D(0, 0.793, -0.609);
-                cam.UpDirection = new Vector3D(0, 0, 1);
-                cam.FieldOfView = 55;
-            }
+            // The camera is the view's again: it stands where the whole
+            // controller shows, and follows the view's size from here on.
+            _cameraIsDefault = true;
+            ApplyDefaultCamera();
 
             // Reset model rotation
             _modelYaw = 0;

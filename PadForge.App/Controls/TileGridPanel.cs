@@ -11,7 +11,9 @@ namespace PadForge.Controls
     /// flush with the panel's edge and a wider window gains columns, not
     /// gaps. Every tile of a row is as tall as the row's tallest. A collapsed
     /// tile takes no cell. With <see cref="FillRows"/> a row's tiles share
-    /// the whole width, however few they are.
+    /// the whole width, however few they are. A tile marked
+    /// <see cref="FullRowProperty"/> has a row to itself at the panel's
+    /// whole width.
     /// </summary>
     public sealed class TileGridPanel : Panel
     {
@@ -104,6 +106,55 @@ namespace PadForge.Controls
             return Math.Max(0, (width - gap * (inRow - 1)) / inRow);
         }
 
+        public static readonly DependencyProperty FullRowProperty = DependencyProperty.RegisterAttached(
+            "FullRow", typeof(bool), typeof(TileGridPanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsParentMeasure));
+
+        public static bool GetFullRow(UIElement element) => (bool)element.GetValue(FullRowProperty);
+
+        public static void SetFullRow(UIElement element, bool value) => element.SetValue(FullRowProperty, value);
+
+        /// <summary>How many tiles each row holds: tiles are taken in order,
+        /// <paramref name="columns"/> to a row. A tile that takes a whole
+        /// row ends the row before it, stands alone, and the tile after it
+        /// starts a new row.</summary>
+        internal static System.Collections.Generic.List<int> Rows(System.Collections.Generic.IReadOnlyList<bool> fullRow, int columns)
+        {
+            var rows = new System.Collections.Generic.List<int>();
+            if (columns < 1) columns = 1;
+            int inRow = 0;
+            for (int i = 0; i < fullRow.Count; i++)
+            {
+                if (fullRow[i])
+                {
+                    if (inRow > 0) rows.Add(inRow);
+                    rows.Add(1);
+                    inRow = 0;
+                    continue;
+                }
+                inRow++;
+                if (inRow == columns)
+                {
+                    rows.Add(inRow);
+                    inRow = 0;
+                }
+            }
+            if (inRow > 0) rows.Add(inRow);
+            return rows;
+        }
+
+        /// <summary>The width of a tile that takes a whole row: the panel's
+        /// width, or one column's when there is no width to go by.</summary>
+        internal static double FullRowWidth(double width, double itemWidth)
+            => double.IsInfinity(width) || double.IsNaN(width) ? itemWidth : Math.Max(0, width);
+
+        private static bool[] FullRows(System.Collections.Generic.List<UIElement> shown)
+        {
+            var full = new bool[shown.Count];
+            for (int i = 0; i < shown.Count; i++) full[i] = GetFullRow(shown[i]);
+            return full;
+        }
+
         /// <summary>The tiles that show, in order.</summary>
         private System.Collections.Generic.List<UIElement> Shown()
         {
@@ -119,11 +170,14 @@ namespace PadForge.Controls
             var (columns, itemWidth) = Columns(availableSize.Width, MinItemWidth, Gap, MaxColumns);
             double down = RowGapFor(RowGap, Gap);
             var shown = Shown();
+            bool[] full = FullRows(shown);
             double total = 0;
-            for (int start = 0; start < shown.Count; start += columns)
+            int start = 0, across = 0;
+            foreach (int inRow in Rows(full, columns))
             {
-                int inRow = Math.Min(columns, shown.Count - start);
-                double tileWidth = RowItemWidth(availableSize.Width, Gap, inRow, itemWidth, FillRows);
+                double tileWidth = full[start]
+                    ? FullRowWidth(availableSize.Width, itemWidth)
+                    : RowItemWidth(availableSize.Width, Gap, inRow, itemWidth, FillRows);
                 double rowHeight = 0;
                 for (int i = start; i < start + inRow; i++)
                 {
@@ -131,8 +185,9 @@ namespace PadForge.Controls
                     rowHeight = Math.Max(rowHeight, shown[i].DesiredSize.Height);
                 }
                 total += rowHeight + (start > 0 ? down : 0);
+                across = Math.Max(across, inRow);
+                start += inRow;
             }
-            int across = Math.Min(shown.Count, columns);
             double width = double.IsInfinity(availableSize.Width)
                 ? across * itemWidth + Math.Max(0, across - 1) * Gap
                 : availableSize.Width;
@@ -144,11 +199,14 @@ namespace PadForge.Controls
             var (columns, itemWidth) = Columns(finalSize.Width, MinItemWidth, Gap, MaxColumns);
             double down = RowGapFor(RowGap, Gap);
             var shown = Shown();
+            bool[] full = FullRows(shown);
             double y = 0;
-            for (int start = 0; start < shown.Count; start += columns)
+            int start = 0;
+            foreach (int inRow in Rows(full, columns))
             {
-                int inRow = Math.Min(columns, shown.Count - start);
-                double tileWidth = RowItemWidth(finalSize.Width, Gap, inRow, itemWidth, FillRows);
+                double tileWidth = full[start]
+                    ? FullRowWidth(finalSize.Width, itemWidth)
+                    : RowItemWidth(finalSize.Width, Gap, inRow, itemWidth, FillRows);
                 // A row is as tall as its tallest tile.
                 double height = 0;
                 for (int i = start; i < start + inRow; i++)
@@ -156,6 +214,7 @@ namespace PadForge.Controls
                 for (int i = 0; i < inRow; i++)
                     shown[start + i].Arrange(new Rect(i * (tileWidth + Gap), y, tileWidth, height));
                 y += height + down;
+                start += inRow;
             }
             return finalSize;
         }

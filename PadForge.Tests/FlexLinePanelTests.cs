@@ -173,6 +173,91 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The parts of a line stand from its start, the gap
+        /// between them. When the line's ends are apart, the end parts that
+        /// close it stand against its end, the last flush with it. They
+        /// stay in order when the line has nothing left over, when it has
+        /// no bound, and when another part comes after them.</summary>
+        [Fact]
+        public void EndPartsStandAgainstTheLinesEnd_WhenItsEndsAreApart()
+        {
+            var widths = new double[] { 200, 138, 42 };
+            var atEnd = new[] { false, false, true };
+            Assert.Equal(new double[] { 0, 200, 338 }, FlexLinePanel.Starts(widths, atEnd, 500, 0, false));
+            Assert.Equal(new double[] { 0, 200, 458 }, FlexLinePanel.Starts(widths, atEnd, 500, 0, true));
+            Assert.Equal(new double[] { 0, 200, 338 }, FlexLinePanel.Starts(widths, atEnd, 380, 0, true));
+            Assert.Equal(new double[] { 0, 200, 338 }, FlexLinePanel.Starts(widths, atEnd, 300, 0, true));
+            Assert.Equal(new double[] { 0, 200, 338 }, FlexLinePanel.Starts(widths, atEnd, double.PositiveInfinity, 0, true));
+
+            // Two end parts close the line, the gap between them.
+            Assert.Equal(new double[] { 0, 110, 406, 458 },
+                FlexLinePanel.Starts(new double[] { 100, 50, 42, 42 }, new[] { false, false, true, true }, 500, 10, true));
+            // An end part with another part after it is in order.
+            Assert.Equal(new double[] { 0, 110, 162 },
+                FlexLinePanel.Starts(new double[] { 100, 42, 50 }, new[] { false, true, false }, 500, 10, true));
+            Assert.Empty(FlexLinePanel.Starts(Array.Empty<double>(), Array.Empty<bool>(), 500, 10, true));
+        }
+
+        /// <summary>A row of a setting under the picture's bar: at least
+        /// 44 tall, the label and the control from its start, and the reset
+        /// at its end. A reset that does not fit the row's line stands at
+        /// the end of the next. Where the row's ends are not apart, as in
+        /// the list, the reset follows the control.</summary>
+        [Fact]
+        public void ARowOfASetting_IsAsTallAsItsLeast_AndItsResetStandsAtItsEnd()
+        {
+            RunSta(() =>
+            {
+                var row = new FlexLinePanel { Gap = 0, LineGap = 0, MinLineHeight = 44, EndsApart = true };
+                var label = Part(20, width: 200);
+                var control = Part(34, width: 138);
+                var reset = Part(32, width: 42);
+                FlexLinePanel.SetAtEnd(reset, true);
+                foreach (var part in new[] { label, control, reset }) row.Children.Add(part);
+
+                row.Measure(new Size(500, double.PositiveInfinity));
+                row.Arrange(new Rect(row.DesiredSize));
+                Assert.Equal(new Size(500, 44), row.DesiredSize);
+                Assert.Equal(new Rect(0, 0, 200, 44), Place(label, row));
+                Assert.Equal(new Rect(200, 0, 138, 44), Place(control, row));
+                Assert.Equal(new Rect(458, 0, 42, 44), Place(reset, row));
+
+                // The list's rows: 40 tall, the reset after the control.
+                row.EndsApart = false;
+                row.MinLineHeight = 40;
+                row.Measure(new Size(500, double.PositiveInfinity));
+                row.Arrange(new Rect(row.DesiredSize));
+                Assert.Equal(new Size(500, 40), row.DesiredSize);
+                Assert.Equal(new Rect(338, 0, 42, 40), Place(reset, row));
+
+                // Too narrow for the three: the reset has the next line, at
+                // its end.
+                row.EndsApart = true;
+                row.MinLineHeight = 44;
+                row.Measure(new Size(360, double.PositiveInfinity));
+                row.Arrange(new Rect(row.DesiredSize));
+                Assert.Equal(new Size(360, 88), row.DesiredSize);
+                Assert.Equal(new Rect(200, 0, 138, 44), Place(control, row));
+                Assert.Equal(new Rect(318, 44, 42, 44), Place(reset, row));
+
+                // A part that grows takes what the row has left over, and
+                // the reset is at the end with nothing between: a slider
+                // that fills its row, its number, and the reset.
+                var filled = new FlexLinePanel { Gap = 0, LineGap = 0, MinLineHeight = 44, EndsApart = true };
+                var name = Part(20, width: 200);
+                var slider = Part(20, 60, 1);
+                var number = Part(20, width: 30);
+                var end = Part(32, width: 42);
+                FlexLinePanel.SetAtEnd(end, true);
+                foreach (var part in new[] { name, slider, number, end }) filled.Children.Add(part);
+                filled.Measure(new Size(500, double.PositiveInfinity));
+                filled.Arrange(new Rect(filled.DesiredSize));
+                Assert.Equal(new Rect(200, 0, 228, 44), Place(slider, filled));
+                Assert.Equal(new Rect(428, 0, 30, 44), Place(number, filled));
+                Assert.Equal(new Rect(458, 0, 42, 44), Place(end, filled));
+            });
+        }
+
         private static void RunSta(Action action)
         {
             Exception failure = null;

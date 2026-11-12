@@ -152,6 +152,81 @@ namespace PadForge.Tests
             Assert.Equal(new Size(0, 0), empty.DesiredSize);
         });
 
+        /// <summary>A tile that takes a whole row ends the row before it,
+        /// stands alone, and the tile after it starts a new row.</summary>
+        [Theory]
+        [InlineData(new[] { false, false, false, false, false }, 2, new[] { 2, 2, 1 })]
+        [InlineData(new[] { false, true, false, false, false }, 2, new[] { 1, 1, 2, 1 })]
+        [InlineData(new[] { true, true, false }, 3, new[] { 1, 1, 1 })]
+        [InlineData(new[] { false, false, true }, 2, new[] { 2, 1 })]
+        [InlineData(new[] { false, false, false, true }, 2, new[] { 2, 1, 1 })]
+        [InlineData(new[] { false, false, false }, 1, new[] { 1, 1, 1 })]
+        [InlineData(new[] { false, false, false }, 0, new[] { 1, 1, 1 })]
+        [InlineData(new bool[0], 3, new int[0])]
+        public void ATileThatTakesAWholeRow_StandsAlone(bool[] fullRow, int columns, int[] rows)
+            => Assert.Equal(rows, TileGridPanel.Rows(fullRow, columns));
+
+        /// <summary>Laid out, as the options under the picture's bar are: a
+        /// whole-row tile is the panel's width whatever the columns, the
+        /// row cut short before it fills when rows fill, and a collapsed
+        /// one takes no row. With one column every tile is a row, which is
+        /// the same options in the list.</summary>
+        [Fact]
+        public void AWholeRowTile_IsThePanelsWidth_AndTheRowBeforeItEndsThere() => RunSta(() =>
+        {
+            var panel = new TileGridPanel { MinItemWidth = 380, Gap = 40, RowGap = 0, FillRows = true };
+            var a = new Border { Height = 44 };
+            var b = new Border { Height = 44 };
+            var c = new Border { Height = 44 };
+            var wide = new Border { Height = 100 };
+            var d = new Border { Height = 44 };
+            TileGridPanel.SetFullRow(wide, true);
+            foreach (var tile in new[] { a, b, c, wide, d }) panel.Children.Add(tile);
+
+            // 800 holds two columns of 380 with 40 between them.
+            panel.Measure(new Size(800, double.PositiveInfinity));
+            Assert.Equal(new Size(800, 44 + 44 + 100 + 44), panel.DesiredSize);
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(0, 0, 380, 44), LayoutInformation.GetLayoutSlot(a));
+            Assert.Equal(new Rect(420, 0, 380, 44), LayoutInformation.GetLayoutSlot(b));
+            Assert.Equal(new Rect(0, 44, 800, 44), LayoutInformation.GetLayoutSlot(c));
+            Assert.Equal(new Rect(0, 88, 800, 100), LayoutInformation.GetLayoutSlot(wide));
+            Assert.Equal(new Rect(0, 188, 800, 44), LayoutInformation.GetLayoutSlot(d));
+
+            // Rows that do not fill: a tile keeps its column, and the whole
+            // row is still the panel's width.
+            panel.FillRows = false;
+            panel.Measure(new Size(800, double.PositiveInfinity));
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(0, 44, 380, 44), LayoutInformation.GetLayoutSlot(c));
+            Assert.Equal(new Rect(0, 88, 800, 100), LayoutInformation.GetLayoutSlot(wide));
+
+            // One column: every tile is a row.
+            panel.MaxColumns = 1;
+            panel.Measure(new Size(800, double.PositiveInfinity));
+            Assert.Equal(new Size(800, 44 * 4 + 100), panel.DesiredSize);
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Rect(0, 44, 800, 44), LayoutInformation.GetLayoutSlot(b));
+            Assert.Equal(new Rect(0, 132, 800, 100), LayoutInformation.GetLayoutSlot(wide));
+            Assert.Equal(new Rect(0, 232, 800, 44), LayoutInformation.GetLayoutSlot(d));
+
+            // A collapsed whole-row tile takes no row: the tiles around it
+            // close up.
+            panel.MaxColumns = int.MaxValue;
+            panel.FillRows = true;
+            wide.Visibility = Visibility.Collapsed;
+            panel.Measure(new Size(800, double.PositiveInfinity));
+            panel.Arrange(new Rect(panel.DesiredSize));
+            Assert.Equal(new Size(800, 88), panel.DesiredSize);
+            Assert.Equal(new Rect(0, 44, 380, 44), LayoutInformation.GetLayoutSlot(c));
+            Assert.Equal(new Rect(420, 44, 380, 44), LayoutInformation.GetLayoutSlot(d));
+
+            // With no width to go by a whole row is one column wide.
+            Assert.Equal(380, TileGridPanel.FullRowWidth(double.PositiveInfinity, 380));
+            Assert.Equal(380, TileGridPanel.FullRowWidth(double.NaN, 380));
+            Assert.Equal(800, TileGridPanel.FullRowWidth(800, 380));
+        });
+
         // ── one line or a stack ────────────────────────────────────────
 
         [Theory]

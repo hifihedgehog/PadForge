@@ -1551,7 +1551,7 @@ namespace PadForge.Tests
             int strip = xaml.IndexOf(holder, StringComparison.Ordinal);
             int stripEnd = strip < 0 ? -1 : xaml.IndexOf(
                 "Visibility=\"{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}\"", strip, StringComparison.Ordinal);
-            int extras = xaml.IndexOf("<ItemsControl ItemsSource=\"{Binding ExtraSources}\">", StringComparison.Ordinal);
+            int extras = xaml.IndexOf("<ItemsControl controls:TileGridPanel.FullRow=\"True\" ItemsSource=\"{Binding ExtraSources}\">", StringComparison.Ordinal);
             Assert.True(strip > 0 && stripEnd > strip && extras > stripEnd, "the primary's rows or the extra sources' list were not found");
             int inPrimary = xaml.IndexOf(shownBy, strip, StringComparison.Ordinal);
             Assert.True(inPrimary > 0 && inPrimary < stripEnd, "no switch for a primary key source's saved Invert");
@@ -1564,10 +1564,10 @@ namespace PadForge.Tests
             const string bound = "IsChecked=\"{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"";
 
             // The primary's: the row the flag shows, and the switch in it.
-            int rowOpen = xaml.LastIndexOf("<WrapPanel Style=\"{StaticResource RowOptionLine}\"", inPrimary, StringComparison.Ordinal);
-            int rowClose = xaml.IndexOf("</WrapPanel>", inPrimary, StringComparison.Ordinal);
+            int rowOpen = xaml.LastIndexOf("<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"", inPrimary, StringComparison.Ordinal);
+            int rowClose = xaml.IndexOf("</controls:FlexLinePanel>", inPrimary, StringComparison.Ordinal);
             Assert.True(rowOpen > strip && rowClose > inPrimary, "the flag is not on an option row");
-            Assert.DoesNotContain("</WrapPanel>", xaml[rowOpen..inPrimary]);
+            Assert.DoesNotContain("</controls:FlexLinePanel>", xaml[rowOpen..inPrimary]);
             string optionRow = xaml[rowOpen..rowClose];
             int boxOpen = optionRow.IndexOf("<CheckBox", StringComparison.Ordinal);
             Assert.True(boxOpen > 0 && optionRow.IndexOf("<CheckBox", boxOpen + 1, StringComparison.Ordinal) < 0, "one switch in the row");

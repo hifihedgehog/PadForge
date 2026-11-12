@@ -24,6 +24,14 @@ namespace PadForge.Controls
     /// <para>Every part of a line is as tall as the line's tallest and
     /// stands at its top by its own alignment. A collapsed part takes no
     /// place.</para>
+    ///
+    /// <para>A row of a setting is such a line too: its label, its
+    /// control and its reset. <see cref="MinLineHeight"/> keeps every row
+    /// the same height whatever its control's. With
+    /// <see cref="EndsApart"/> the parts marked
+    /// <see cref="AtEndProperty"/> stand against the line's end, so a
+    /// row's reset is at the row's end and what the row has left over
+    /// lies between it and the control.</para>
     /// </summary>
     public sealed class FlexLinePanel : Panel
     {
@@ -43,6 +51,18 @@ namespace PadForge.Controls
             nameof(LineGap), typeof(double), typeof(FlexLinePanel),
             new FrameworkPropertyMetadata(8.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        public static readonly DependencyProperty AtEndProperty = DependencyProperty.RegisterAttached(
+            "AtEnd", typeof(bool), typeof(FlexLinePanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsParentArrange));
+
+        public static readonly DependencyProperty EndsApartProperty = DependencyProperty.Register(
+            nameof(EndsApart), typeof(bool), typeof(FlexLinePanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+
+        public static readonly DependencyProperty MinLineHeightProperty = DependencyProperty.Register(
+            nameof(MinLineHeight), typeof(double), typeof(FlexLinePanel),
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
         public static double GetBasis(UIElement element) => (double)element.GetValue(BasisProperty);
 
         public static void SetBasis(UIElement element, double value) => element.SetValue(BasisProperty, value);
@@ -50,6 +70,26 @@ namespace PadForge.Controls
         public static double GetGrow(UIElement element) => (double)element.GetValue(GrowProperty);
 
         public static void SetGrow(UIElement element, double value) => element.SetValue(GrowProperty, value);
+
+        public static bool GetAtEnd(UIElement element) => (bool)element.GetValue(AtEndProperty);
+
+        public static void SetAtEnd(UIElement element, bool value) => element.SetValue(AtEndProperty, value);
+
+        /// <summary>Whether the parts marked <see cref="AtEndProperty"/>
+        /// stand against the line's end. Unset, they stand where the line
+        /// puts them, after the part before them.</summary>
+        public bool EndsApart
+        {
+            get => (bool)GetValue(EndsApartProperty);
+            set => SetValue(EndsApartProperty, value);
+        }
+
+        /// <summary>The least height of a line.</summary>
+        public double MinLineHeight
+        {
+            get => (double)GetValue(MinLineHeightProperty);
+            set => SetValue(MinLineHeightProperty, value);
+        }
 
         /// <summary>The space between the parts of a line.</summary>
         public double Gap
@@ -126,6 +166,34 @@ namespace PadForge.Controls
             return widths;
         }
 
+        /// <summary>Where each part of a line starts: from the line's
+        /// start, with the gap between them. With
+        /// <paramref name="endsApart"/> the end parts that close the line
+        /// stand against its end, the last one flush with it, when the
+        /// line has room left over. An end part with another part after it
+        /// stays where the line puts it, and so does every part of a line
+        /// with no bound.</summary>
+        internal static double[] Starts(IReadOnlyList<double> widths, IReadOnlyList<bool> atEnd, double width, double gap, bool endsApart)
+        {
+            var starts = new double[widths.Count];
+            double x = 0;
+            for (int i = 0; i < widths.Count; i++)
+            {
+                starts[i] = x;
+                x += widths[i] + gap;
+            }
+            if (!endsApart || double.IsInfinity(width) || double.IsNaN(width)) return starts;
+            double end = width;
+            for (int i = widths.Count - 1; i >= 0 && atEnd[i]; i--)
+            {
+                double start = end - widths[i];
+                if (start <= starts[i]) break;
+                starts[i] = start;
+                end = start - gap;
+            }
+            return starts;
+        }
+
         private List<UIElement> Shown()
         {
             var shown = new List<UIElement>();
@@ -188,7 +256,7 @@ namespace PadForge.Controls
                     tallest = Math.Max(tallest, parts[first + i].DesiredSize.Height);
                     across += widths[i];
                 }
-                height += tallest + (line > 0 ? LineGap : 0);
+                height += Math.Max(tallest, MinLineHeight) + (line > 0 ? LineGap : 0);
                 widest = Math.Max(widest, across);
                 first += count;
             }
@@ -210,16 +278,17 @@ namespace PadForge.Controls
                 int count = lines[line];
                 var widths = Share(new ArraySegment<double>(bases, first, count), new ArraySegment<double>(grows, first, count),
                     finalSize.Width, Gap);
-                double tallest = 0;
-                for (int i = 0; i < count; i++)
-                    tallest = Math.Max(tallest, parts[first + i].DesiredSize.Height);
-                if (line > 0) y += LineGap;
-                double x = 0;
+                double tallest = MinLineHeight;
+                var atEnd = new bool[count];
                 for (int i = 0; i < count; i++)
                 {
-                    parts[first + i].Arrange(new Rect(x, y, widths[i], tallest));
-                    x += widths[i] + Gap;
+                    tallest = Math.Max(tallest, parts[first + i].DesiredSize.Height);
+                    atEnd[i] = GetAtEnd(parts[first + i]);
                 }
+                if (line > 0) y += LineGap;
+                double[] starts = Starts(widths, atEnd, finalSize.Width, Gap, EndsApart);
+                for (int i = 0; i < count; i++)
+                    parts[first + i].Arrange(new Rect(starts[i], y, widths[i], tallest));
                 y += tallest;
                 first += count;
             }

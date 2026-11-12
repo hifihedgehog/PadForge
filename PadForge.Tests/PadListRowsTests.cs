@@ -49,8 +49,17 @@ namespace PadForge.Tests
         private static XElement Named(XContainer scope, string name)
             => Assert.Single(scope.Descendants(), e => Name(e) == name);
 
+        /// <summary>The page's own resource of a key. The host of the
+        /// options under the bar defines some of the keys again for its
+        /// rows (<see cref="KeyedIn"/>).</summary>
         private static XElement Keyed(XDocument page, string key)
-            => Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Key") == key);
+            => Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Key") == key
+                && !e.Ancestors().Any(a => Name(a) == "PickedOptions"));
+
+        /// <summary>A resource an element defines for what it holds.</summary>
+        private static XElement KeyedIn(XElement host, string key)
+            => Assert.Single(Assert.Single(host.Elements(), e => e.Name.LocalName.EndsWith(".Resources", StringComparison.Ordinal)).Elements(),
+                e => (string)e.Attribute(X + "Key") == key);
 
         private static string SetterOf(XElement style, string property)
             => (string)Assert.Single(style.Elements(), e => e.Name.LocalName == "Setter"
@@ -380,7 +389,9 @@ namespace PadForge.Tests
         /// control, then its reset. They were the table's cells, and every
         /// one of them keeps its binding, its gate and its reset's id.
         /// Nothing in an open row can run past the card's edge: every strip
-        /// of controls wraps.</summary>
+        /// of controls wraps. The rows take their look from styles their
+        /// host can replace, which is how the bar under the picture draws
+        /// the same rows its board's way.</summary>
         [Fact]
         public void AnOpenRowsOptionsAreLabelRowsUnderItsLine()
         {
@@ -388,14 +399,30 @@ namespace PadForge.Tests
             var table = Named(page, "MappingDataGrid");
 
             var rowLine = Keyed(page, "RowOptionLine");
-            Assert.Equal("WrapPanel", (string)rowLine.Attribute("TargetType"));
-            Assert.Equal("40", SetterOf(rowLine, "ItemHeight"));
+            Assert.Equal("controls:FlexLinePanel", (string)rowLine.Attribute("TargetType"));
+            Assert.Equal("40", SetterOf(rowLine, "MinLineHeight"));
+            Assert.Equal("0", SetterOf(rowLine, "Gap"));
+            Assert.Equal("0", SetterOf(rowLine, "LineGap"));
+            Assert.DoesNotContain(rowLine.Elements(), e => (string)e.Attribute("Property") == "EndsApart");
             var label = Keyed(page, "RowOptionLabel");
             Assert.Equal("200", SetterOf(label, "Width"));
             Assert.Equal("0,0,12,0", SetterOf(label, "Margin"));
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", SetterOf(label, "Foreground"));
             Assert.Equal("320", SetterOf(Keyed(page, "RowOptionPicker"), "Width"));
             Assert.Equal("180", SetterOf(Keyed(page, "RowOptionSlider"), "Width"));
+            Assert.Equal("180", SetterOf(Keyed(page, "RowOptionDeadzoneSlider"), "Width"));
+            Assert.Equal("{StaticResource DzSlider}", (string)Keyed(page, "RowOptionDeadzoneSlider").Attribute("BasedOn"));
+            Assert.Equal("180", SetterOf(Keyed(page, "RowOptionModePicker"), "MinWidth"));
+            // A row's reset stands 12 after the control.
+            Assert.Equal("12,0,0,0", Keyed(page, "RowOptionResetMargin").Value);
+            // The options are a grid, which has one column in the list.
+            var grid = Keyed(page, "RowOptionsGrid");
+            Assert.Equal("controls:TileGridPanel", (string)grid.Attribute("TargetType"));
+            Assert.Equal("1", SetterOf(grid, "MaxColumns"));
+            Assert.Equal("0", SetterOf(grid, "RowGap"));
+            Assert.Equal("Collapsed", Keyed(page, "RowOptionDeadzoneEarly").Value);
+            Assert.Equal("Visible", Keyed(page, "RowOptionDeadzoneLate").Value);
+            Assert.Equal("Visible", Keyed(page, "RowOptionAddSource").Value);
 
             // The open row's body: the board's inset on the row's own fill,
             // holding the row's source and value and then its options. Both
@@ -423,18 +450,53 @@ namespace PadForge.Tests
             Assert.Equal("DataTemplate", details.Name.LocalName);
             // The options reach their row through their own root: the bar
             // has no table row above them to ask.
-            Assert.Equal("RowOptionsRoot", Name(Assert.Single(details.Elements())));
+            var root = Assert.Single(details.Elements());
+            Assert.Equal("RowOptionsRoot", Name(root));
+            Assert.Equal("TileGridPanel", root.Name.LocalName);
+            Assert.Equal("{DynamicResource RowOptionsGrid}", (string)root.Attribute("Style"));
             Assert.DoesNotContain("AncestorType={x:Type DataGridRow}", PageText());
 
-            var rows = sourcePart.Descendants().Concat(details.Descendants())
-                .Where(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}").ToList();
-            Assert.All(rows, r => Assert.Equal("WrapPanel", r.Name.LocalName));
+            // The deadzone row is a template of its own, which the options
+            // show in one of two places.
+            var deadzone = Keyed(page, "MappingRowDeadzone");
+            Assert.Equal("DataTemplate", deadzone.Name.LocalName);
+            var rows = sourcePart.Descendants().Concat(details.Descendants()).Concat(deadzone.Descendants())
+                .Where(e => (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}").ToList();
+            Assert.Equal(20, rows.Count);
+            Assert.All(rows, r => Assert.Equal("FlexLinePanel", r.Name.LocalName));
+            Assert.DoesNotContain("{StaticResource RowOptionLine}", PageText());
+            Assert.DoesNotContain("{StaticResource RowOptionLabel}\"", PageText().Replace("BasedOn=\"{StaticResource RowOptionLabel}\"", ""));
             // Source and Value are the first part, and nothing else is.
-            Assert.Equal(2, sourcePart.Descendants().Count(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}"));
+            Assert.Equal(2, sourcePart.Descendants().Count(e => (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}"));
+            // A row's reset is its last part: marked as the row's end part,
+            // at the margin its host gives. Both are its own attributes. A
+            // reset button names its style where it is made, which is a
+            // local value, and a style set on it in a template is the
+            // template's value, which a local one outranks: a reset style
+            // of the rows' never applied (seen 2026-11-11).
+            var resets = rows.Select(r => r.Elements().Last())
+                .Where(e => e.Name.LocalName == "SettingResetButton" || (string)e.Attribute("Style") == "{StaticResource ResetButton}").ToList();
+            Assert.Equal(17, resets.Count);
+            Assert.Equal(10, resets.Count(e => e.Name.LocalName == "SettingResetButton"));
+            Assert.All(resets, e =>
+            {
+                Assert.Equal("True", (string)e.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+                Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)e.Attribute("Margin"));
+                if (e.Name.LocalName == "SettingResetButton") Assert.Null(e.Attribute("Style"));
+            });
+            Assert.DoesNotContain(page.Descendants(), e => e.Name.LocalName == "SettingResetButton" && e.Attribute("Style") != null);
+            // Whatever is not one row of a setting takes a whole row of the
+            // grid: the note, the motion and trim settings, the formula, the
+            // extra sources and Add Source.
+            var whole = root.Elements().Where(e => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "TileGridPanel.FullRow") == "True").ToList();
+            Assert.Equal(new[] { "TextBlock", "StackPanel", "WrapPanel", "StackPanel", "ItemsControl", "Button" }, whole.Select(e => e.Name.LocalName));
+            Assert.All(root.Elements().Except(whole), e => Assert.True(
+                e.Name.LocalName == "FlexLinePanel" || Name(e) == "PrimaryModeRows"
+                || (string)e.Attribute("ContentTemplate") == "{StaticResource MappingRowDeadzone}", e.Name.LocalName + " is neither a row nor a whole row"));
 
             XElement RowOf(string labelKey, string gate = null)
             {
-                var matches = rows.Where(r => r.Elements().Any(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLabel}"
+                var matches = rows.Where(r => r.Elements().Any(e => (string)e.Attribute("Style") == "{DynamicResource RowOptionLabel}"
                     && (string)e.Attribute("Text") == "{Binding " + labelKey + S)).ToList();
                 if (gate != null)
                     matches = matches.Where(r => ((string)r.Attribute("Visibility") ?? "").StartsWith("{Binding " + gate + ",", StringComparison.Ordinal)).ToList();
@@ -484,11 +546,32 @@ namespace PadForge.Tests
             var primary = Named(details, "PrimaryModeRows");
             Assert.Same(Assert.Single(details.Elements()).Elements().First(), primary);
             Assert.Equal("{Binding PrimaryKindSource}", (string)primary.Attribute("DataContext"));
-            Assert.Same(mode, primary.Elements().First());
+            Assert.Same(mode, primary.Elements().First(e => e.Name.LocalName != "StackPanel.Style"));
+            Assert.Equal("{DynamicResource RowOptionModePicker}", (string)Assert.Single(mode.Elements(), e => e.Name.LocalName == "ComboBox").Attribute("Style"));
             var inputs = Assert.Single(primary.Elements(), e => ((string)e.Attribute("Visibility") ?? "")
                 .StartsWith("{Binding DataContext.IsPrimaryDescriptor, ElementName=RowOptionsRoot,", StringComparison.Ordinal));
             Assert.Null(inputs.Attribute("DataContext"));
-            Assert.Equal(3, inputs.Elements().Count(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}"));
+            Assert.Equal(3, inputs.Elements().Count(e => (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}"));
+            // A kind with inputs or tuning of its own takes a whole row of
+            // the grid. Direct and Toggle are one row, a cell like any other.
+            var wide = primary.Elements().Single(e => e.Name.LocalName == "StackPanel.Style").Descendants()
+                .Where(e => e.Name.LocalName == "DataTrigger").ToList();
+            Assert.All(wide, t =>
+            {
+                Assert.Equal("True", (string)t.Attribute("Value"));
+                var set = Assert.Single(t.Elements());
+                Assert.Equal("controls:TileGridPanel.FullRow", (string)set.Attribute("Property"));
+                Assert.Equal("True", (string)set.Attribute("Value"));
+            });
+            // Every part of the group that a kind shows widens it: the flags
+            // that widen are the gates of the group's parts, the mode row
+            // aside, which every kind has.
+            var gates = primary.Elements().Concat(inputs.Elements())
+                .Select(e => (string)e.Attribute("Visibility"))
+                .Where(v => v != null && !v.StartsWith("{Binding DataContext.", StringComparison.Ordinal))
+                .Select(v => v.Substring("{Binding ".Length).Split(',')[0]).Distinct().OrderBy(f => f).ToList();
+            Assert.Equal(6, gates.Count);
+            Assert.Equal(gates, wide.Select(t => ((string)t.Attribute("Binding")).Substring("{Binding ".Length).TrimEnd('}')).OrderBy(f => f));
 
             // The switches that were the Options column's checkboxes.
             foreach (var (key, flag, id, enabled, gate) in new[]
@@ -535,17 +618,48 @@ namespace PadForge.Tests
 
             // The deadzone, where one applies.
             var zone = RowOf("Pad_HeaderDeadZone");
+            Assert.Same(zone, Assert.Single(deadzone.Elements()));
             Assert.Equal("{Binding IsDeadZoneApplicable, Converter={StaticResource BoolToVisibilityConverter}}", (string)zone.Attribute("Visibility"));
-            Assert.Equal("{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
-                (string)Assert.Single(zone.Elements(), e => e.Name.LocalName == "Slider").Attribute("Value"));
+            var zoneSlider = Assert.Single(zone.Elements(), e => e.Name.LocalName == "Slider");
+            Assert.Equal("{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)zoneSlider.Attribute("Value"));
+            Assert.Equal("{DynamicResource RowOptionDeadzoneSlider}", (string)zoneSlider.Attribute("Style"));
+            Assert.Null(zoneSlider.Attribute("Width"));
             Assert.Equal("{Binding ResetDeadZoneCommand}", (string)Assert.Single(zone.Elements(), e => e.Name.LocalName == "Button").Attribute("Command"));
+            // Its two places: second, after Primary Mode, where the Buttons
+            // board has it under the bar, and after the switches and dials,
+            // where the List board has it. A host shows one of them, and
+            // neither where no deadzone applies: a place whose row is gone
+            // would still take a cell of the grid.
+            var places = root.Elements().Where(e => (string)e.Attribute("ContentTemplate") == "{StaticResource MappingRowDeadzone}").ToList();
+            Assert.Equal(2, places.Count);
+            Assert.Same(places[0], primary.ElementsAfterSelf().First());
+            Assert.Same(places[1], root.Elements().TakeWhile(e => !whole.Contains(e)).Last());
+            foreach (var (place, key) in new[] { (places[0], "RowOptionDeadzoneEarly"), (places[1], "RowOptionDeadzoneLate") })
+            {
+                Assert.Equal("ContentControl", place.Name.LocalName);
+                Assert.Equal("{Binding}", (string)place.Attribute("Content"));
+                Assert.Equal("False", (string)place.Attribute("IsTabStop"));
+                var shown = Assert.Single(place.Descendants(), e => e.Name.LocalName == "Style");
+                Assert.Equal("{DynamicResource " + key + "}", SetterOf(shown, "Visibility"));
+                var gone = Assert.Single(shown.Descendants(), e => e.Name.LocalName == "DataTrigger");
+                Assert.Equal("{Binding IsDeadZoneApplicable}", (string)gone.Attribute("Binding"));
+                Assert.Equal("False", (string)gone.Attribute("Value"));
+                Assert.Equal("Collapsed", (string)Assert.Single(gone.Elements()).Attribute("Value"));
+            }
 
-            // Combine, and Add Source as a quiet button.
+            // Combine, and Add Source as a quiet button, which a host can
+            // leave out.
             var combine = RowOf("Pad_Combine_Label");
-            Assert.Equal("{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
-                (string)Assert.Single(combine.Elements(), e => e.Name.LocalName == "ComboBox").Attribute("SelectedValue"));
+            var combinePicker = Assert.Single(combine.Elements(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)combinePicker.Attribute("SelectedValue"));
+            // The picker keeps its own look, and takes its least width from
+            // its host: 200 in the list.
+            Assert.Null(combinePicker.Attribute("Style"));
+            Assert.Equal("{DynamicResource RowOptionCombineMinWidth}", (string)combinePicker.Attribute("MinWidth"));
+            Assert.Equal("200", Keyed(page, "RowOptionCombineMinWidth").Value);
             var add = Assert.Single(details.Descendants(), e => (string)e.Attribute("Command") == "{Binding AddExtraSourceCommand}");
             Assert.Equal("{StaticResource QuietPlainButton}", (string)add.Attribute("Style"));
+            Assert.Equal("{DynamicResource RowOptionAddSource}", (string)add.Attribute("Visibility"));
 
             // Nothing runs past the card's edge: the table does not scroll
             // sideways, and no strip of an open row is a panel that cannot
@@ -708,9 +822,47 @@ namespace PadForge.Tests
             Assert.Equal("2", (string)options.Attribute("Grid.Row"));
             Assert.Equal("{Binding ShowPickedOptions, Converter={StaticResource BoolToVisibilityConverter}}", (string)options.Attribute("Visibility"));
             Assert.Equal("0,1,0,0", (string)options.Attribute("BorderThickness"));
-            var host = Assert.Single(options.Elements());
+            Assert.Equal("20,4,12,12", (string)options.Attribute("Padding"));
+            var host = Assert.Single(options.Elements(), e => e.Name.LocalName == "ContentControl");
             Assert.Equal("{Binding PickedRow}", (string)host.Attribute("Content"));
             Assert.Equal("{StaticResource MappingRowOptions}", (string)host.Attribute("ContentTemplate"));
+
+            // The board's layout of those rows, which they take from this
+            // host: columns of 380 at least with 40 between and no space
+            // between rows, each row 44 tall with its reset at its end, a
+            // label of 190 with 10 after it, and a slider that fills its
+            // row from 60.
+            var grid = KeyedIn(options, "RowOptionsGrid");
+            Assert.Equal("controls:TileGridPanel", (string)grid.Attribute("TargetType"));
+            Assert.Equal("380", SetterOf(grid, "MinItemWidth"));
+            Assert.Equal("40", SetterOf(grid, "Gap"));
+            Assert.Equal("0", SetterOf(grid, "RowGap"));
+            Assert.Equal("True", SetterOf(grid, "FillRows"));
+            Assert.DoesNotContain(grid.Elements(), e => (string)e.Attribute("Property") == "MaxColumns");
+            var optionLine = KeyedIn(options, "RowOptionLine");
+            Assert.Equal("controls:FlexLinePanel", (string)optionLine.Attribute("TargetType"));
+            Assert.Equal("44", SetterOf(optionLine, "MinLineHeight"));
+            Assert.Equal("True", SetterOf(optionLine, "EndsApart"));
+            Assert.Equal("0", SetterOf(optionLine, "Gap"));
+            var optionLabel = KeyedIn(options, "RowOptionLabel");
+            Assert.Equal("{StaticResource RowOptionLabel}", (string)optionLabel.Attribute("BasedOn"));
+            Assert.Equal("190", SetterOf(optionLabel, "Width"));
+            Assert.Equal("0,0,10,0", SetterOf(optionLabel, "Margin"));
+            Assert.Equal("10,0,0,0", KeyedIn(options, "RowOptionResetMargin").Value);
+            // 190, 10, the picker, 10 and the reset's 32 are a column's 380.
+            Assert.Equal("138", SetterOf(KeyedIn(options, "RowOptionModePicker"), "MinWidth"));
+            Assert.Equal("138", KeyedIn(options, "RowOptionCombineMinWidth").Value);
+            foreach (string key in new[] { "RowOptionSlider", "RowOptionDeadzoneSlider" })
+            {
+                var slider = KeyedIn(options, key);
+                Assert.Equal("60", SetterOf(slider, "controls:FlexLinePanel.Basis"));
+                Assert.Equal("1", SetterOf(slider, "controls:FlexLinePanel.Grow"));
+                Assert.DoesNotContain(slider.Elements(), e => (string)e.Attribute("Property") == "Width");
+            }
+            // The deadzone is second, and Add Source is the bar's.
+            Assert.Equal("Visible", KeyedIn(options, "RowOptionDeadzoneEarly").Value);
+            Assert.Equal("Collapsed", KeyedIn(options, "RowOptionDeadzoneLate").Value);
+            Assert.Equal("Collapsed", KeyedIn(options, "RowOptionAddSource").Value);
 
             string code = CodeBehind();
             Assert.Matches(@"private void PickedBlock_GotFocus\(object sender, KeyboardFocusChangedEventArgs e\)\s*\{\s*if \(\(sender as FrameworkElement\)\?\.DataContext is MappingItem row && DataContext is PadViewModel vm\)\s*vm\.PickedTarget = row\.TargetSettingName;", code);

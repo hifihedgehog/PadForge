@@ -97,10 +97,10 @@ namespace PadForge.Tests
             // No gate of its own: the option row it stands in has one. The
             // row's opening tag is the nearest one before the reset, with no
             // row closed in between.
-            const string row = "<WrapPanel Style=\"{StaticResource RowOptionLine}\"";
+            const string row = "<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"";
             int open = x.LastIndexOf(row, start, StringComparison.Ordinal);
             Assert.True(open >= 0, $"{automationId} has no gate and stands in no option row");
-            Assert.DoesNotContain("</WrapPanel>", x.Substring(open, start - open));
+            Assert.DoesNotContain("</controls:FlexLinePanel>", x.Substring(open, start - open));
             string tag = x.Substring(open, x.IndexOf('>', open) - open);
             Assert.Contains("Visibility=", tag);
         }

@@ -528,8 +528,10 @@
              whatever its control's height, and a row that wraps is 40 a
              line. A wrap panel's own least height would leave the parts at
              the row's top. -->
-        <Style x:Key="RowOptionLine" TargetType="WrapPanel">
-            <Setter Property="ItemHeight" Value="40"/>
+        <Style x:Key="RowOptionLine" TargetType="controls:FlexLinePanel">
+            <Setter Property="Gap" Value="0"/>
+            <Setter Property="LineGap" Value="0"/>
+            <Setter Property="MinLineHeight" Value="40"/>
         </Style>
         <Style x:Key="RowOptionLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="200"/>
@@ -552,6 +554,37 @@
             <Setter Property="Width" Value="180"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <!-- The deadzone's slider, which has the deadzone sliders' look. -->
+        <Style x:Key="RowOptionDeadzoneSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
+            <Setter Property="Width" Value="180"/>
+        </Style>
+        <!-- A picker of a mode: as wide as its longest name, whichever is
+             picked. -->
+        <Style x:Key="RowOptionModePicker" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="MinWidth" Value="180"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <!-- A row's reset stands 12 after the control, and is marked as the
+             row's end part: a host whose rows end apart has it at the row's
+             end. Both are attributes of the reset and no style of the rows',
+             since a reset button names its own style where it is made, which
+             a style set on it in a template does not replace. -->
+        <Thickness x:Key="RowOptionResetMargin">12,0,0,0</Thickness>
+        <!-- The least width of the Combine picker, which keeps its own look. -->
+        <sys:Double x:Key="RowOptionCombineMinWidth">200</sys:Double>
+        <!-- The options are a grid of rows. In the list it has one column,
+             so the rows stand one under the other. -->
+        <Style x:Key="RowOptionsGrid" TargetType="controls:TileGridPanel">
+            <Setter Property="MaxColumns" Value="1"/>
+            <Setter Property="Gap" Value="0"/>
+            <Setter Property="RowGap" Value="0"/>
+        </Style>
+        <!-- Which of its two places the deadzone row shows in, and whether the
+             options end with Add Source. -->
+        <Visibility x:Key="RowOptionDeadzoneEarly">Collapsed</Visibility>
+        <Visibility x:Key="RowOptionDeadzoneLate">Visible</Visibility>
+        <Visibility x:Key="RowOptionAddSource">Visible</Visibility>
         <!-- A quiet button that holds a state: no fill until the pointer is
              on it, as QuietPlainButton, in the text color. -->
         <Style x:Key="QuietToggle" TargetType="ToggleButton">
@@ -587,9 +620,9 @@
                      headers each device. SelectedItem tags the row with the
                      picked DeviceGuid + DeviceLabel. The Mode picker has a row
                      of its own below, so this row holds only the mapping (#111). -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBox AutomationProperties.Name="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding AvailableInputsView}"
                               SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               DisplayMemberPath="DisplayName"
@@ -623,12 +656,12 @@
                             MinHeight="30" Padding="10,0" Margin="8,0,0,0" FontSize="13" VerticalAlignment="Center"
                             ToolTip="{Binding Pad_Mapping_AddOppositeDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
                             Visibility="{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                </WrapPanel>
+                </controls:FlexLinePanel>
 
                 <!-- Value: the meter of the row's line, wider, and the number
                      itself, which the line has no room for. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"/>
                     <ProgressBar Style="{StaticResource ValueMeter}" Width="180"
                                  Value="{Binding LiveLevel, Mode=OneWay}"
                                  AutomationProperties.Name="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"/>
@@ -636,8 +669,26 @@
                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                Foreground="{DynamicResource ColdBrush}"
                                VerticalAlignment="Center" Margin="12,0,0,0"/>
-                </WrapPanel>
+                </controls:FlexLinePanel>
             </StackPanel>
+        </DataTemplate>
+
+        <!-- The deadzone row of a mapping row's options: the axis activation
+             threshold of this mapping. A template of its own, since the options
+             show it in one of two places: the List board has it after the row's
+             switches and dials, and the Buttons board second, after Primary Mode. -->
+        <DataTemplate x:Key="MappingRowDeadzone">
+            <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                     Visibility="{Binding IsDeadZoneApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                <Slider AutomationProperties.Name="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionDeadzoneSlider}" Minimum="1"
+                        Value="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TickFrequency="1"/>
+                <TextBox AutomationProperties.Name="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Text="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                         Style="{StaticResource DzValueEdit}"/>
+                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                <ui:Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Pad_Reset_AxisToButtonDeadZone, Source={x:Static strings:Strings.Instance}}"/>
+            </controls:FlexLinePanel>
         </DataTemplate>
 
         <!-- A mapping row's options (#574): how its source is read, then how
@@ -650,36 +701,63 @@
              the row through this template's root, RowOptionsRoot: the list has
              a table row above them to ask, and the bar has none. -->
         <DataTemplate x:Key="MappingRowOptions">
-            <StackPanel x:Name="RowOptionsRoot">
+            <controls:TileGridPanel x:Name="RowOptionsRoot" Style="{DynamicResource RowOptionsGrid}">
                 <!-- Primary mode + kind tuning (#111). The Mode picker has a row of
                      its own, so a row's source holds only the mapping. Set it to
                      Direct (or hit the row's Clear) to drop the kind. The kind's own
                      inputs follow, then the Ramp / Incremental sliders, gated by
                      kind. DataContext is the row's PrimaryKindSource. -->
                 <StackPanel DataContext="{Binding PrimaryKindSource}" x:Name="PrimaryModeRows">
-                    <WrapPanel Style="{StaticResource RowOptionLine}">
-                        <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"/>
+                    <!-- Direct and Toggle are one row, a cell of the options' grid like
+                         any other. A kind with inputs or tuning of its own takes a whole
+                         row of the grid, so those stand under Primary Mode at full width. -->
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsKeyInvertShown}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding UsesUpDownKeys}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsRampedKind}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsIncrementalKind}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsInvertOnHoldKind}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsRapidTriggerKind}" Value="True">
+                                    <Setter Property="controls:TileGridPanel.FullRow" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                        <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBox AutomationProperties.Name="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
                                   ItemsSource="{Binding DataContext.PrimaryKindOptions, ElementName=RowOptionsRoot}"
                                   SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedValuePath="Value" DisplayMemberPath="Name"
-                                  MinWidth="180" MinHeight="34" VerticalAlignment="Center"
+                                  Style="{DynamicResource RowOptionModePicker}"
                                   ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Kind" SettingLabel="{Binding ResetLabel_SourceType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_Kind_4282" Margin="12,0,0,0"/>
-                    </WrapPanel>
+                        <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="Kind" SettingLabel="{Binding ResetLabel_SourceType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_Kind_4282"/>
+                    </controls:FlexLinePanel>
                     <!-- A primary Incremental or Ramp source saved with Invert on: the
                          switch an extra source shows for one (IsKeyInvertShown), and the
                          control that turns the flag off. It is the kind holder's own
                          Invert, which the engine applies and the save writes back. The
                          Invert row further down is the row's flag, which the save leaves
                          out of a key-kind primary. -->
-                    <WrapPanel Style="{StaticResource RowOptionLine}"
-                                Visibility="{Binding IsKeyInvertShown, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"/>
+                    <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                             Visibility="{Binding IsKeyInvertShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"/>
                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </WrapPanel>
+                    </controls:FlexLinePanel>
                     <!-- Primary kind inputs (#111). The Up and Down inputs of Ramp
                          and Incremental (both directions map right here), or the
                          modifier of Invert On Hold. These are for manual edits. The
@@ -687,9 +765,9 @@
                          so there is one Record control. The pickers bind the row's
                          views through the root of these options. -->
                     <StackPanel Visibility="{Binding DataContext.IsPrimaryDescriptor, ElementName=RowOptionsRoot, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
-                        <WrapPanel Style="{StaticResource RowOptionLine}"
-                                    Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}"
+                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                                 Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}"
                                        ToolTip="{Binding Pad_Mapping_Up_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBox AutomationProperties.Name="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}"
                                       ItemsSource="{Binding DataContext.KeyInputsView, ElementName=RowOptionsRoot}"
@@ -729,11 +807,11 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5577" Margin="12,0,0,0"/>
-                        </WrapPanel>
-                        <WrapPanel Style="{StaticResource RowOptionLine}"
-                                    Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}"
+                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5577"/>
+                        </controls:FlexLinePanel>
+                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                                 Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}"
                                        ToolTip="{Binding Pad_Mapping_Down_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBox AutomationProperties.Name="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}"
                                       ItemsSource="{Binding DataContext.KeyInputsView, ElementName=RowOptionsRoot}"
@@ -773,11 +851,11 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5618" Margin="12,0,0,0"/>
-                        </WrapPanel>
-                        <WrapPanel Style="{StaticResource RowOptionLine}"
-                                    Visibility="{Binding IsInvertOnHoldKind, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}"
+                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5618"/>
+                        </controls:FlexLinePanel>
+                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                                 Visibility="{Binding IsInvertOnHoldKind, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}"
                                        ToolTip="{Binding Pad_Mapping_Modifier_IconTooltip, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBox AutomationProperties.Name="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}"
                                       ItemsSource="{Binding DataContext.ParamInputsView, ElementName=RowOptionsRoot}"
@@ -817,8 +895,8 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ParamModifierInputChoice" SettingLabel="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamModifierInputChoice_5659" Margin="12,0,0,0"/>
-                        </WrapPanel>
+                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ParamModifierInputChoice" SettingLabel="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamModifierInputChoice_5659"/>
+                        </controls:FlexLinePanel>
                     </StackPanel>
                     <WrapPanel VerticalAlignment="Center"
                                 Visibility="{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -874,160 +952,179 @@
                     </WrapPanel>
                 </StackPanel>
 
+                <!-- The deadzone, where the Buttons board has it under the bar: second,
+                     after Primary Mode. -->
+                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MappingRowDeadzone}"
+                                Focusable="False" IsTabStop="False">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Visibility" Value="{DynamicResource RowOptionDeadzoneEarly}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+
                 <!-- How the row's value is read. These were the Options column's
                      checkboxes: Invert, Half-axis, Bidirectional, Flip Output and Do
                      Not Inherit, each with its reset. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"/>
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsEnabled="{Binding IsInvertApplicable}"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsInverted" SettingLabel="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsInverted_5758" Margin="12,0,0,0"/>
-                </WrapPanel>
-                <WrapPanel Style="{StaticResource RowOptionLine}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="IsInverted" SettingLabel="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsInverted_5758"/>
+                </controls:FlexLinePanel>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"/>
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsEnabled="{Binding IsHalfAxisApplicable}"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsHalfAxis" SettingLabel="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsHalfAxis_5762" Margin="12,0,0,0"/>
-                </WrapPanel>
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="IsHalfAxis" SettingLabel="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsHalfAxis_5762"/>
+                </controls:FlexLinePanel>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"/>
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding IsBidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsEnabled="{Binding IsHalfAxis}"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsBidirectional" SettingLabel="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsBidirectional_5769" Margin="12,0,0,0"/>
-                </WrapPanel>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="IsBidirectional" SettingLabel="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_IsBidirectional_5769"/>
+                </controls:FlexLinePanel>
                 <!-- Shown with the setting it resets: a row left behind a hidden
                      setting was a lone button. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            ToolTip="{Binding Pad_InvertOutput_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                            Visibility="{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         ToolTip="{Binding Pad_InvertOutput_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                         Visibility="{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}"/>
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding InvertOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="InvertOutput" SettingLabel="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_InvertOutput_5776" Margin="12,0,0,0"/>
-                </WrapPanel>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="InvertOutput" SettingLabel="{Binding Pad_InvertOutput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_InvertOutput_5776"/>
+                </controls:FlexLinePanel>
                 <!-- NoInherit. Only meaningful when authoring a shift layer whose
                      activator has InheritUnmapped enabled. Replace-mode layers (the
                      default) block Base wholesale, making NoInherit a no-op, so the
                      row is hidden outside that narrow case. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            ToolTip="{Binding Pad_Shift_NoInherit_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                            Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         ToolTip="{Binding Pad_Shift_NoInherit_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                         Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"/>
                     <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding NoInherit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="NoInherit" SettingLabel="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_NoInherit_5788" Margin="12,0,0,0"/>
-                </WrapPanel>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="NoInherit" SettingLabel="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_NoInherit_5788"/>
+                </controls:FlexLinePanel>
                 <!-- Per-source gyro sensitivity for the primary source. Mirrors the
                      ExtraSource gyro-sensitivity row. Only for gyro descriptors, so
                      a non-gyro primary has no dial that does nothing. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
                             ToolTip="{Binding Mapping_GyroSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
                 <!-- Gyro Lean primaries: same split as the ExtraSources site (#292):
                      the dial that works binds the generic Sensitivity field. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsGyroLeanSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsGyroLeanSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0.001" Maximum="5" SmallChange="0.1" LargeChange="1"
                             ToolTip="{Binding Mapping_LeanSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00#}}"/>
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
                 <!-- Primary-source acceleration, the twin of the ExtraSources chip's
                      control. Same gate, which excludes the gravity-tilt pairs (#292). -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsParamAccelApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}" ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsParamAccelApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}" ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.5"
                             ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding ParamAccel, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
-                    <ui:Button Command="{Binding ResetParamAccelCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Acceleration, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetParamAccelCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Acceleration, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
                 <!-- Per-source mouse cursor sensitivity for the primary source (#107).
                      Only for "Mouse Position X/Y". -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsMouseCursorSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsMouseCursorSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                             ToolTip="{Binding Mapping_MouseCursorSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
                 <!-- Per-source IR pointer sensitivity (#146). Only for "IR Pointer X/Y". -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsIrPointerSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsIrPointerSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                             ToolTip="{Binding Mapping_IrPointerSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
                 <!-- Per-source mouse-motion sensitivity (#154). Only for "Mouse Motion X/Y". -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionSlider}"
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource RowOptionSlider}"
                             Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                             ToolTip="{Binding Mapping_MouseMotionSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
-                <!-- The deadzone: the axis activation threshold of this mapping. The
-                     row is gone where a deadzone never applies. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsDeadZoneApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}"/>
-                    <Slider AutomationProperties.Name="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzSlider}" Width="180" Minimum="1"
-                            Value="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TickFrequency="1"/>
-                    <TextBox AutomationProperties.Name="{Binding Pad_HeaderDeadZone, Source={x:Static strings:Strings.Instance}}" Text="{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                             Style="{StaticResource DzValueEdit}"/>
-                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                    <ui:Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Pad_Reset_AxisToButtonDeadZone, Source={x:Static strings:Strings.Instance}}"/>
-                </WrapPanel>
+                    <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
+                <!-- The deadzone: the axis activation threshold of this mapping, where the
+                     List board has it, after the row's switches and dials. The row is gone
+                     where a deadzone never applies, and a host shows one of its two places. -->
+                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MappingRowDeadzone}"
+                                Focusable="False" IsTabStop="False">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Visibility" Value="{DynamicResource RowOptionDeadzoneLate}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
 
                 <!-- Note (#475): a Motion row holding a source it cannot read, any
                      other row holding a Motion source it cannot read, or a preset whose
                      report carries no motion. -->
-                <TextBlock Text="{Binding MotionRowNote}" TextWrapping="Wrap" MaxWidth="720" HorizontalAlignment="Left"
+                <TextBlock controls:TileGridPanel.FullRow="True" Text="{Binding MotionRowNote}" TextWrapping="Wrap" MaxWidth="720" HorizontalAlignment="Left"
                            Foreground="{DynamicResource SystemFillColorCautionBrush}" Margin="0,0,0,6"
                            Visibility="{Binding ShowMotionRowNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                 <!-- Motion Pitch, Yaw and Roll settings (#475). Motion Mode on pitch and
                      roll only, then the Speed or Angle settings and the deadzone, laid
                      out like the Ramp panel. -->
-                <StackPanel Orientation="Vertical" Margin="0,0,0,6"
+                <StackPanel controls:TileGridPanel.FullRow="True" Orientation="Vertical" Margin="0,0,0,6"
                             Visibility="{Binding IsMotionAxisRow, Converter={StaticResource BoolToVisibilityConverter}}">
                     <WrapPanel Margin="0,0,0,4"
                                 Visibility="{Binding CanUseMotionAngle, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -1100,14 +1197,14 @@
                      aren't staring at acronyms. EnsureCombineModeDefault
                      auto-picks MaxAbs/OR per target class on first
                      multi-source transition. -->
-                <WrapPanel Style="{StaticResource RowOptionLine}"
-                            Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource RowOptionLabel}" Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}"
+                                         Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBox ItemsSource="{Binding AvailableCombineModes}"
                               SelectedValue="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="Value"
                               DisplayMemberPath="Name"
-                              MinWidth="200" Margin="0" Padding="4,2"
+                              MinWidth="{DynamicResource RowOptionCombineMinWidth}" Margin="0" Padding="4,2"
                               VerticalAlignment="Center"
                               ToolTip="{Binding Pad_Combine_Tooltip, Source={x:Static strings:Strings.Instance}}"
                               PreviewKeyDown="MappingComboBox_PreviewKeyDown">
@@ -1130,8 +1227,8 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CombineMode" SettingLabel="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineMode_4340"/>
-                </WrapPanel>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="CombineMode" SettingLabel="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineMode_4340"/>
+                </controls:FlexLinePanel>
 
 
                 <!-- Stick Trim settings (#155): only visible when the
@@ -1139,7 +1236,7 @@
                      combine, the ShouldShowCustomExpression gating
                      pattern. The row's LAST source is the trim stick.
                      The earlier sources gate the trigger. -->
-                <WrapPanel Margin="0,0,0,4"
+                <WrapPanel controls:TileGridPanel.FullRow="True" Margin="0,0,0,4"
                             Visibility="{Binding ShouldShowTrimSettings, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_TrimDeadzone, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <Slider Value="{Binding TrimDeadzone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="95" SmallChange="1" LargeChange="5" Width="80" VerticalAlignment="Center"
@@ -1178,7 +1275,7 @@
                      ComboBox-SelectedItem write-back hell that
                      made the previous Quick fill dropdown unable
                      to populate the formula on selection. -->
-                <StackPanel x:Name="FormulaEditor" Orientation="Vertical" Margin="0,0,0,4"
+                <StackPanel controls:TileGridPanel.FullRow="True" x:Name="FormulaEditor" Orientation="Vertical" Margin="0,0,0,4"
                             Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
                     <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" VerticalAlignment="Center">
                         <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="CombineExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding ResetLabel_Formula, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineExpression_4415"/>
@@ -1474,7 +1571,7 @@
                      "use the slot's primary device". The parent
                      falls the per-source AvailableInputs back to
                      its own list in that case. -->
-                <ItemsControl ItemsSource="{Binding ExtraSources}">
+                <ItemsControl controls:TileGridPanel.FullRow="True" ItemsSource="{Binding ExtraSources}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <!-- Extra source as a cold chip (#175 final
@@ -2232,14 +2329,14 @@
                 <!-- + Add source -->
                 <!-- A quiet button, drawn out to the start by its own
                      inset so its words stand under the labels. -->
-                <Button Content="{Binding Pad_Mapping_AddSource, Source={x:Static strings:Strings.Instance}}"
+                <Button controls:TileGridPanel.FullRow="True" Visibility="{DynamicResource RowOptionAddSource}" Content="{Binding Pad_Mapping_AddSource, Source={x:Static strings:Strings.Instance}}"
                         Style="{StaticResource QuietPlainButton}"
                         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                         Padding="14,0"
                         HorizontalAlignment="Left" Margin="-14,4,0,0"
                         Command="{Binding AddExtraSourceCommand}"
                         ToolTip="{Binding Pad_Mapping_AddSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-            </StackPanel>
+            </controls:TileGridPanel>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -4015,6 +4112,47 @@
                     <Border Grid.Row="2" x:Name="PickedOptions" Margin="1,0,1,1" Padding="20,4,12,12"
                             BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0"
                             Visibility="{Binding ShowPickedOptions, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- The Buttons board's options: rows in columns of 380 at least with 40
+                             between them, each 44 tall, a label of 190 with 10 after it, the
+                             control, and the reset at the row's end. A slider fills its row. The
+                             deadzone is second, and Add Source is the bar's. The rows are the
+                             list's (MappingRowOptions), which take these looks from their host. -->
+                        <Border.Resources>
+                            <Style x:Key="RowOptionLine" TargetType="controls:FlexLinePanel">
+                                <Setter Property="Gap" Value="0"/>
+                                <Setter Property="LineGap" Value="0"/>
+                                <Setter Property="MinLineHeight" Value="44"/>
+                                <Setter Property="EndsApart" Value="True"/>
+                            </Style>
+                            <Style x:Key="RowOptionLabel" TargetType="TextBlock" BasedOn="{StaticResource RowOptionLabel}">
+                                <Setter Property="Width" Value="190"/>
+                                <Setter Property="Margin" Value="0,0,10,0"/>
+                            </Style>
+                            <Thickness x:Key="RowOptionResetMargin">10,0,0,0</Thickness>
+                            <!-- 190, 10, the picker, 10 and the reset's 32 fit a column of 380. -->
+                            <Style x:Key="RowOptionModePicker" TargetType="ComboBox" BasedOn="{StaticResource RowOptionModePicker}">
+                                <Setter Property="MinWidth" Value="138"/>
+                            </Style>
+                            <sys:Double x:Key="RowOptionCombineMinWidth">138</sys:Double>
+                            <Style x:Key="RowOptionSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
+                                <Setter Property="controls:FlexLinePanel.Basis" Value="60"/>
+                                <Setter Property="controls:FlexLinePanel.Grow" Value="1"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style x:Key="RowOptionDeadzoneSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
+                                <Setter Property="controls:FlexLinePanel.Basis" Value="60"/>
+                                <Setter Property="controls:FlexLinePanel.Grow" Value="1"/>
+                            </Style>
+                            <Style x:Key="RowOptionsGrid" TargetType="controls:TileGridPanel">
+                                <Setter Property="MinItemWidth" Value="380"/>
+                                <Setter Property="Gap" Value="40"/>
+                                <Setter Property="RowGap" Value="0"/>
+                                <Setter Property="FillRows" Value="True"/>
+                            </Style>
+                            <Visibility x:Key="RowOptionDeadzoneEarly">Visible</Visibility>
+                            <Visibility x:Key="RowOptionDeadzoneLate">Collapsed</Visibility>
+                            <Visibility x:Key="RowOptionAddSource">Collapsed</Visibility>
+                        </Border.Resources>
                         <ContentControl Content="{Binding PickedRow}" ContentTemplate="{StaticResource MappingRowOptions}"
                                         Focusable="False" IsTabStop="False"/>
                     </Border>

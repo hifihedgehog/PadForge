@@ -73,7 +73,10 @@ namespace PadForge.Tests
         // C278: a reset button follows the control it resets.
 
         /// <summary>A setting that can be hidden takes its reset button with
-        /// it. An ungated reset left a lone button sitting behind nothing.</summary>
+        /// it. An ungated reset left a lone button sitting behind nothing.
+        /// The gate is the reset's own, or its row's: an option row of the
+        /// mapping table (#574) holds the setting's label, its switch and
+        /// its reset, and hides as one.</summary>
         [Theory]
         [InlineData("Reset_MappingItem_InvertOutput_5776")]
         [InlineData("Reset_MappingSourceItem_InvertOutput_4943")]
@@ -89,8 +92,17 @@ namespace PadForge.Tests
             int start = x.LastIndexOf("<reset:SettingResetButton", i, StringComparison.Ordinal);
             Assert.True(start >= 0);
             string element = x.Substring(start, i - start);
+            if (element.Contains("Visibility=", StringComparison.Ordinal)) return;
 
-            Assert.Contains("Visibility=", element);
+            // No gate of its own: the option row it stands in has one. The
+            // row's opening tag is the nearest one before the reset, with no
+            // row closed in between.
+            const string row = "<WrapPanel Style=\"{StaticResource RowOptionLine}\"";
+            int open = x.LastIndexOf(row, start, StringComparison.Ordinal);
+            Assert.True(open >= 0, $"{automationId} has no gate and stands in no option row");
+            Assert.DoesNotContain("</WrapPanel>", x.Substring(open, start - open));
+            string tag = x.Substring(open, x.IndexOf('>', open) - open);
+            Assert.Contains("Visibility=", tag);
         }
 
         // C279: the shared slider style ticks coarser than this range.

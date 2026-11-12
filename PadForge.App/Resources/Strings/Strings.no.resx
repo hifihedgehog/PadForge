@@ -119,7 +119,6 @@
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ikke tilordnet</value></data>
-  <data name="Common_DoesNotApply" xml:space="preserve"><value>Gjelder ikke</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
@@ -1400,7 +1399,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopier innstillinger fra en annen konfigurert enhet</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tilbakestill alt</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tøm alt</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Utgang</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Kilde</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Verdi</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Alternativer</value></data>

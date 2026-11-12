@@ -1143,7 +1143,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopye paramèt yo soti nan yon lòt aparèy ki konfigire</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reyinisyalize tout</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Efase tout</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Sòti</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sous</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valè</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsyon</value></data>

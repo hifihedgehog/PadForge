@@ -446,7 +446,6 @@
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Huza: {0}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Gusubiza byose uko byari biri</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Siba byose</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ibisohoka</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Inkomoko</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Agaciro</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Amahitamo</value></data>

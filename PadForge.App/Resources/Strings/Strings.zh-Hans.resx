@@ -116,7 +116,6 @@
   <data name="Common_None" xml:space="preserve"><value>无</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未分配</value></data>
-  <data name="Common_DoesNotApply" xml:space="preserve"><value>不适用</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
@@ -709,7 +708,6 @@
   <data name="Pad_RawAxisValue" xml:space="preserve"><value>原始轴值</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>全部重置</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>全部清除</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>输出</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>来源</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>数值</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>选项</value></data>

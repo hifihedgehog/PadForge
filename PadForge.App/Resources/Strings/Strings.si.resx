@@ -1236,7 +1236,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>වින්‍යාස කළ වෙනත් උපාංගයකින් සැකසීම් පිටපත් කරන්න</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>සියල්ල යළි සකසන්න</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>සියල්ල හිස් කරන්න</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>ප්‍රතිදානය</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>මූලාශ්‍රය</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>අගය</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>විකල්ප</value></data>

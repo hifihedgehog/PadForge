@@ -466,9 +466,8 @@ namespace PadForge.Tests
         // ── the table in the page ──────────────────────────────────────
 
         /// <summary>The table is one element in both views. It folds away
-        /// while it has no rows, takes the picked row as its selected row,
-        /// and its columns are measured once, in the list, where every row
-        /// is there to measure.</summary>
+        /// while it has no rows and takes the picked row as its selected
+        /// row. It has no columns, so nothing measures them.</summary>
         [Fact]
         public void OneTableServesBothViews()
         {
@@ -556,12 +555,17 @@ namespace PadForge.Tests
             // frame.
             Assert.Matches(@"_currentPadVm\?\.ApplyMappingPickerFilter\(\);\s*ApplyViewMode\(\);\s*SyncSectionSelection\(\);\s*SyncButtonsLayout\(\);\s*SyncPickedRowSelection\(\);", code);
             Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.ButtonsViewIndex\)\)\s*\{\s*OnButtonsViewChanged\(\);\s*\}\s*else if \(e\.PropertyName == nameof\(PadViewModel\.PickedTarget\)\)\s*\{\s*SyncPickedRowSelection\(\);", code);
-            Assert.Matches(@"private void OnButtonsViewChanged\(\)\s*\{\s*SyncButtonsLayout\(\);\s*FitMappingColumnsOnce\(\);\s*SyncPickedRowSelection\(\);", code);
-            // The fit runs in the list only, and only while a column is
-            // still flexible.
-            Assert.Matches(@"private void MappingDataGrid_Loaded\(object sender, RoutedEventArgs e\) => FitMappingColumnsOnce\(\);", code);
-            Assert.Matches(@"if \(grid == null \|\| !grid\.IsLoaded \|\| grid\.Items\.Count == 0\) return;\s*if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsListView\) return;", code);
-            Assert.Matches(@"if \(!anyFlexible\) return;", code);
+            Assert.Matches(@"private void OnButtonsViewChanged\(\)\s*\{\s*SyncButtonsLayout\(\);\s*SyncPickedRowSelection\(\);", code);
+            // The table has no columns (#574): a row is its line with its
+            // options under it. The pass that sized the columns to their
+            // cells is gone with them, and the table never scrolls
+            // sideways, so a row is the card's width.
+            Assert.DoesNotContain(table.Elements(), e => e.Name.LocalName == "DataGrid.Columns");
+            Assert.Equal("False", (string)table.Attribute("AutoGenerateColumns"));
+            Assert.Equal("Disabled", (string)table.Attribute("ScrollViewer.HorizontalScrollBarVisibility"));
+            Assert.Null(table.Attribute("Loaded"));
+            Assert.DoesNotContain("FitMappingColumnsOnce", code);
+            Assert.DoesNotContain("AutoFitFlexibleColumns", code);
             // A row selected in the table is the picked control.
             Assert.Matches(@"if \(e\.AddedItems\.Count > 0 && e\.AddedItems\[0\] is MappingItem picked\s*&& DataContext is PadViewModel pickVm\)\s*pickVm\.PickedTarget = picked\.TargetSettingName;", code);
             // A chip on the picture picks its control and stays on the

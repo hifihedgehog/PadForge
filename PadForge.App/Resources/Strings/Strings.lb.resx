@@ -1228,7 +1228,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Astellunge vun engem anere konfiguréierten Apparat kopéieren</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Alles zrécksetzen</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Alles läschen</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ausgab</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Quell</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Wäert</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Optiounen</value></data>

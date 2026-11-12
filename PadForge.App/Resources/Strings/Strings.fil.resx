@@ -1237,7 +1237,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopyahin ang mga setting mula sa isa pang naka-configure na device</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset Lahat</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>I-clear Lahat</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Source</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Value</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Options</value></data>

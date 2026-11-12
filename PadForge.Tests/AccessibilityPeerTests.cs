@@ -713,47 +713,52 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AGridCellStyleBasedOnTheGridsCellStyle_NamesTheCell_AsAScreenReaderReadsIt() => RunSta(() =>
+        public void ARowOfATableWithNoColumns_ReadsAsItsItem_AndCanBeSelected() => RunSta(() =>
         {
-            // The Mappings grid's pattern (PadPage.xaml MappingCellStyle): the
-            // grid's cell style is keyed, and each template column's cell
-            // style is based on it and sets the cell's name. A template column
-            // without one reads WPF's "Item: ..., Column Display Index: N"
-            // (DataGridCellItemAutomationPeer.GetNameCore).
+            // The mapping table's shape (#574): it has no columns, its row
+            // style draws the whole row, and a row opens when it is
+            // selected. A screen reader reads each row as its item, by the
+            // item's ToString (a mapping row's is its output and its
+            // source), finds no cells in it, and selects it through the
+            // row's own pattern. A table with template columns read WPF's
+            // "Item: ..., Column Display Index: N" for every cell that was
+            // not named (DataGridCellItemAutomationPeer.GetNameCore).
             var grid = (DataGrid)System.Windows.Markup.XamlReader.Parse(
                 "<DataGrid xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"" +
                 " xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" AutoGenerateColumns=\"False\"" +
-                " CanUserAddRows=\"False\" HeadersVisibility=\"Column\">" +
-                "<DataGrid.Resources><Style x:Key=\"MappingCellStyle\" TargetType=\"DataGridCell\">" +
-                "<Setter Property=\"Padding\" Value=\"2\"/></Style></DataGrid.Resources>" +
-                "<DataGrid.CellStyle><StaticResource ResourceKey=\"MappingCellStyle\"/></DataGrid.CellStyle>" +
-                "<DataGrid.Columns>" +
-                "<DataGridTemplateColumn Header=\"Output\"><DataGridTemplateColumn.CellStyle>" +
-                "<Style TargetType=\"DataGridCell\" BasedOn=\"{StaticResource MappingCellStyle}\">" +
-                "<Setter Property=\"AutomationProperties.Name\" Value=\"{Binding Label, TargetNullValue=''}\"/></Style>" +
-                "</DataGridTemplateColumn.CellStyle><DataGridTemplateColumn.CellTemplate>" +
-                "<DataTemplate><TextBlock Text=\"{Binding Label}\"/></DataTemplate></DataGridTemplateColumn.CellTemplate>" +
-                "</DataGridTemplateColumn>" +
-                "<DataGridTemplateColumn Header=\"Unnamed\"><DataGridTemplateColumn.CellTemplate>" +
-                "<DataTemplate><TextBlock Text=\"{Binding Label}\"/></DataTemplate></DataGridTemplateColumn.CellTemplate>" +
-                "</DataGridTemplateColumn>" +
-                "</DataGrid.Columns></DataGrid>");
-            grid.ItemsSource = new[] { new GridRow { Label = "B" }, new GridRow { Label = "A" } };
+                " CanUserAddRows=\"False\" HeadersVisibility=\"None\" SelectionMode=\"Single\" IsReadOnly=\"True\"" +
+                " RowDetailsVisibilityMode=\"VisibleWhenSelected\">" +
+                "<DataGrid.RowStyle><Style TargetType=\"DataGridRow\"><Setter Property=\"Template\"><Setter.Value>" +
+                "<ControlTemplate TargetType=\"DataGridRow\"><StackPanel>" +
+                "<TextBlock Text=\"{Binding Label}\" Height=\"30\"/>" +
+                "<DataGridDetailsPresenter Visibility=\"{TemplateBinding DetailsVisibility}\"/>" +
+                "</StackPanel></ControlTemplate></Setter.Value></Setter></Style></DataGrid.RowStyle>" +
+                "<DataGrid.RowDetailsTemplate><DataTemplate><TextBlock Text=\"options\" Height=\"50\"/></DataTemplate>" +
+                "</DataGrid.RowDetailsTemplate></DataGrid>");
+            var items = new[] { new GridRow { Label = "B" }, new GridRow { Label = "A" } };
+            grid.ItemsSource = items;
             var window = Host(grid);
             try
             {
                 window.Show();
                 window.UpdateLayout();
                 Pump();
+                Assert.Empty(grid.Columns);
                 var rows = PeerOf(grid).GetChildren().OfType<DataGridItemAutomationPeer>().ToList();
                 Assert.Equal(2, rows.Count);
-                var cells = rows[0].GetChildren().OfType<DataGridCellItemAutomationPeer>().ToList();
-                Assert.Equal(2, cells.Count);
-                Assert.Equal("B", cells[0].GetName());
-                // The unnamed column reads WPF's fallback, which names the
-                // item by its ToString.
-                Assert.Contains("row B", cells[1].GetName());
-                Assert.Equal("A", rows[1].GetChildren().OfType<DataGridCellItemAutomationPeer>().First().GetName());
+                Assert.Equal("row B", rows[0].GetName());
+                Assert.Equal("row A", rows[1].GetName());
+                Assert.Empty(rows[0].GetChildren().OfType<DataGridCellItemAutomationPeer>());
+
+                var select = (System.Windows.Automation.Provider.ISelectionItemProvider)rows[1].GetPattern(PatternInterface.SelectionItem);
+                Assert.NotNull(select);
+                select.Select();
+                window.UpdateLayout();
+                Pump();
+                Assert.Same(items[1], grid.SelectedItem);
+                var opened = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(items[1]);
+                Assert.Equal(Visibility.Visible, opened.DetailsVisibility);
+                Assert.Equal(Visibility.Collapsed, ((DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(items[0])).DetailsVisibility);
             }
             finally
             {

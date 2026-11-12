@@ -1235,7 +1235,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Պատճէնել կարգաւորումները այլ կազմաձեւուած սարքէ մը</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Վերակայել բոլորը</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Մաքրել բոլորը</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ելք</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Աղբիւր</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Արժէք</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Ընտրանքներ</value></data>

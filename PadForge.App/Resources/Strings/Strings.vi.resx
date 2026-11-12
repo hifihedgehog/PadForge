@@ -119,7 +119,6 @@
   <data name="Common_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Chưa gán</value></data>
-  <data name="Common_DoesNotApply" xml:space="preserve"><value>Không áp dụng</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
@@ -1400,7 +1399,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Sao chép thiết lập từ một thiết bị khác đã cấu hình</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Đặt lại tất cả</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Xóa tất cả</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Đầu ra</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Nguồn</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Giá trị</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Tùy chọn</value></data>

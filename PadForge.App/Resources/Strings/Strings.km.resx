@@ -1237,7 +1237,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>ចម្លងការកំណត់ពីឧបករណ៍ផ្សេងទៀតដែលបានកំណត់រចនាសម្ព័ន្ធរួច</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>កំណត់ទាំងអស់ឡើងវិញ</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>សម្អាតទាំងអស់</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>លទ្ធផល</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ប្រភព</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>តម្លៃ</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ជម្រើស</value></data>

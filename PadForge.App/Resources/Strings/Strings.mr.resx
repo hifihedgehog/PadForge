@@ -1234,7 +1234,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>कॉन्फिगर केलेल्या दुसऱ्या डिव्हाइसवरून सेटिंग्ज कॉपी करा</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>सर्व रीसेट करा</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>सर्व साफ करा</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>आउटपुट</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>स्रोत</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>मूल्य</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>पर्याय</value></data>

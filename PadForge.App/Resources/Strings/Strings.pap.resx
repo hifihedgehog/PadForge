@@ -758,7 +758,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopia konfigurashon di otro aparato konfigurá</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset tur</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpia tur</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Salida</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Fuente</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Balor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opshonnan</value></data>

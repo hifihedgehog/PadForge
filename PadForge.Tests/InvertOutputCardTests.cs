@@ -216,7 +216,10 @@ namespace PadForge.Tests
             // Two sites, deliberately: the grid row's primary and the
             // ExtraSources chips (which is also where a bipolar row's neg leg
             // hydrates). A checkbox without the visibility gate would render
-            // on every source and silently do nothing on most of them.
+            // on every source and silently do nothing on most of them. The
+            // primary's is a switch in an option row (#574), and the gate is
+            // on the row, just before the switch. An extra source's carries
+            // the gate itself, just after its binding.
             string xaml = Read("PadForge.App", "Views", "PadPage.xaml");
 
             int first = xaml.IndexOf("Binding InvertOutput,", StringComparison.Ordinal);
@@ -225,7 +228,8 @@ namespace PadForge.Tests
 
             foreach (int site in new[] { first, second })
             {
-                string around = xaml.Substring(site, Math.Min(600, xaml.Length - site));
+                int from = Math.Max(0, site - 600);
+                string around = xaml.Substring(from, Math.Min(1200, xaml.Length - from));
                 Assert.Contains("IsInvertOutputApplicable", around);
             }
         }

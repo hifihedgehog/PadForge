@@ -659,7 +659,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopisha izilungiselelo kusuka kwenye idivayisi elungiselelwe</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Setha kabusha konke</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Sula konke</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Okukhiphayo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Inani</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Izinketho</value></data>

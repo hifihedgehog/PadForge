@@ -392,7 +392,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Mọ́tò ọ̀tún</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Ṣẹ̀dà láti...</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tún gbogbo rẹ̀ tò</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Ìjáde</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Orísun</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Iye</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Àwọn àṣàyàn</value></data>

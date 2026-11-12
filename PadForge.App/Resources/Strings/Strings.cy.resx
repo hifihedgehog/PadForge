@@ -1235,7 +1235,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copïo gosodiadau o ddyfais arall sydd wedi'i ffurfweddu</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ailosod Popeth</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Clirio Popeth</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Allbwn</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Ffynhonnell</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Gwerth</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsiynau</value></data>

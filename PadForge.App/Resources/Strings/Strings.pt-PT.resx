@@ -1237,7 +1237,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copiar definições de outro dispositivo configurado</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Repor tudo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpar tudo</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Saída</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>

@@ -725,7 +725,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopia konfigurason di otu dispozitivu konfiguradu</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ripoi tudu</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpa tudu</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Saída</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Fonti</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opson</value></data>

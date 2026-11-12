@@ -1235,7 +1235,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopijuoti nustatymus iš kito sukonfigūruoto įrenginio</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Nustatyti viską iš naujo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Išvalyti viską</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Išvestis</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Šaltinis</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Reikšmė</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Parinktys</value></data>

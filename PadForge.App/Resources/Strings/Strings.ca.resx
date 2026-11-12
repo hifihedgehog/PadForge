@@ -1235,7 +1235,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copia la configuració d'un altre dispositiu configurat</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Restableix-ho tot</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Esborra-ho tot</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Sortida</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Font</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opcions</value></data>

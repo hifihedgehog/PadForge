@@ -1237,7 +1237,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Басқа бапталған құрылғыдан параметрлерді көшіру</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Барлығын қалпына келтіру</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Барлығын тазалау</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Шығыс</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Көз</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Мән</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опциялар</value></data>

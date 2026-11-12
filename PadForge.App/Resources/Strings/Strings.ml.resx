@@ -1235,7 +1235,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>ക്രമീകരിച്ച മറ്റൊരു ഉപകരണത്തിൽ നിന്ന് ക്രമീകരണങ്ങൾ പകർത്തുക</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>എല്ലാം പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>എല്ലാം മായ്ക്കുക</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>ഔട്ട്പുട്ട്</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ഉറവിടം</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>മൂല്യം</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ഓപ്ഷനുകൾ</value></data>

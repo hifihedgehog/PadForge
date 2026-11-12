@@ -1237,7 +1237,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopieer instellings vanaf 'n ander gekonfigureerde toestel</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Stel alles terug</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Vee alles uit</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Afvoer</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Bron</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Waarde</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsies</value></data>

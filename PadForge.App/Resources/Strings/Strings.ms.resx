@@ -1237,7 +1237,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Salin tetapan daripada peranti lain yang telah dikonfigurasikan</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tetap Semula Semua</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Kosongkan Semua</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sumber</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Nilai</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Pilihan</value></data>

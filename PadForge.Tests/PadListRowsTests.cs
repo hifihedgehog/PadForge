@@ -247,8 +247,8 @@ namespace PadForge.Tests
 
         /// <summary>The table fills the card with no column headings and
         /// no grid lines of its own, and a row draws the hairline over
-        /// itself, since the table's lines belong to a row's cells and a
-        /// closed row hides them.</summary>
+        /// itself, since the table's lines belong to cells and a row has
+        /// none.</summary>
         [Fact]
         public void TheTableFillsTheCard_WithNoHeadingsAndTheRowsOwnHairlines()
         {
@@ -271,26 +271,22 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource SteelCardHoverBrush}", SetterOf(selected, "Background"));
         }
 
-        /// <summary>A closed row's line: the name in a column of 200 and
-        /// the 12 after it, the source as a chip with the device beside it
-        /// and the fan-in tail after that, the meter 96 wide on the row's
-        /// live level, then Record, Clear and the chevron, 12 apart.</summary>
+        /// <summary>A row's line, open or closed: the name in a column of
+        /// 200 and the 12 after it, the source as a chip with the device
+        /// beside it and the fan-in tail after that, the meter 96 wide on
+        /// the row's live level, then Record, Clear and the chevron, 12
+        /// apart. The chevron points up on the open row.</summary>
         [Fact]
-        public void AClosedRowIsOneLine_AsTheListBoardDrawsIt()
+        public void ARowsLineIsAsTheListBoardDrawsIt()
         {
             var page = Page();
-            var line = Named(page, "CompactLine");
-            Assert.Equal("Border", line.Name.LocalName);
-            Assert.Equal("Collapsed", (string)line.Attribute("Visibility"));
-            // As wide as the table's viewport and still when the table
-            // scrolls sideways, so its buttons stay at the card's edge when
-            // an open row's cells make the rows wider than the card.
-            Assert.Equal("{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}}",
-                (string)line.Attribute("Width"));
-            Assert.Equal("Left", (string)line.Attribute("HorizontalAlignment"));
-            Assert.Equal("Vertical", (string)line.Attribute("SelectiveScrollingGrid.SelectiveScrollingOrientation"));
-
-            var grid = Assert.Single(line.Elements());
+            var grid = Named(page, "RowLine");
+            Assert.Equal("Grid", grid.Name.LocalName);
+            // Every row shows it: nothing hides or sizes it by the row's
+            // state.
+            Assert.Null(grid.Attribute("Visibility"));
+            Assert.Null(grid.Attribute("Width"));
+            XElement line = grid;
             Assert.Equal("38", (string)grid.Attribute("MinHeight"));
             Assert.Equal("16,0,8,0", (string)grid.Attribute("Margin"));
             var columns = grid.Elements().First(e => e.Name.LocalName == "Grid.ColumnDefinitions").Elements().ToList();
@@ -351,8 +347,18 @@ namespace PadForge.Tests
             Assert.Equal("{Binding RecordButtonText, TargetNullValue=''}", (string)buttons[0].Attribute("AutomationProperties.Name"));
             Assert.Equal("{Binding ClearCommand}", (string)buttons[1].Attribute("Command"));
             Assert.Equal("{Binding Common_Clear" + S, (string)buttons[1].Attribute("AutomationProperties.Name"));
-            Assert.Equal("MappingRowOpen_Click", (string)buttons[2].Attribute("Click"));
+            Assert.Equal("MappingRowToggle_Click", (string)buttons[2].Attribute("Click"));
             Assert.Equal("{Binding Pad_HeaderOptions" + S, (string)buttons[2].Attribute("AutomationProperties.Name"));
+            // The chevron turns on the open row, which is the selected one.
+            var chevron = Named(buttons[2], "RowChevron");
+            Assert.Equal("0.5,0.5", (string)chevron.Attribute("RenderTransformOrigin"));
+            var open = Assert.Single(template.Elements().Single(e => e.Name.LocalName == "ControlTemplate.Triggers").Elements(),
+                e => e.Name.LocalName == "DataTrigger" && (string)e.Attribute("Binding") == "{Binding IsRowSelected}");
+            Assert.Equal("True", (string)open.Attribute("Value"));
+            var turn = Assert.Single(open.Elements());
+            Assert.Equal("RowChevron", (string)turn.Attribute("TargetName"));
+            Assert.Equal("RenderTransform", (string)turn.Attribute("Property"));
+            Assert.Equal("180", (string)Assert.Single(turn.Descendants(), e => e.Name.LocalName == "RotateTransform").Attribute("Angle"));
 
             // The buttons: the quiet reset's size with the glyph in the
             // text color, 12 apart, and no Tab stops, since the row is one.
@@ -369,15 +375,163 @@ namespace PadForge.Tests
             Assert.Equal("1", SetterOf(value, "Maximum"));
         }
 
+        /// <summary>An open row's options stand under its line as the List
+        /// board draws them: rows 40 tall, a label 200 wide, then the
+        /// control, then its reset. They were the table's cells, and every
+        /// one of them keeps its binding, its gate and its reset's id.
+        /// Nothing in an open row can run past the card's edge: every strip
+        /// of controls wraps.</summary>
+        [Fact]
+        public void AnOpenRowsOptionsAreLabelRowsUnderItsLine()
+        {
+            var page = Page();
+            var table = Named(page, "MappingDataGrid");
+
+            var rowLine = Keyed(page, "RowOptionLine");
+            Assert.Equal("WrapPanel", (string)rowLine.Attribute("TargetType"));
+            Assert.Equal("40", SetterOf(rowLine, "ItemHeight"));
+            var label = Keyed(page, "RowOptionLabel");
+            Assert.Equal("200", SetterOf(label, "Width"));
+            Assert.Equal("0,0,12,0", SetterOf(label, "Margin"));
+            Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", SetterOf(label, "Foreground"));
+            Assert.Equal("320", SetterOf(Keyed(page, "RowOptionPicker"), "Width"));
+            Assert.Equal("180", SetterOf(Keyed(page, "RowOptionSlider"), "Width"));
+
+            var details = Assert.Single(table.Elements(), e => e.Name.LocalName == "DataGrid.RowDetailsTemplate");
+            var body = Assert.Single(Assert.Single(details.Elements()).Elements());
+            Assert.Equal("Border", body.Name.LocalName);
+            // The board's inset, on the row's own fill.
+            Assert.Equal("16,2,8,12", (string)body.Attribute("Padding"));
+            Assert.Null(body.Attribute("Background"));
+            Assert.Null(body.Attribute("BorderThickness"));
+
+            var rows = details.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}").ToList();
+            Assert.All(rows, r => Assert.Equal("WrapPanel", r.Name.LocalName));
+
+            XElement RowOf(string labelKey, string gate = null)
+            {
+                var matches = rows.Where(r => r.Elements().Any(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLabel}"
+                    && (string)e.Attribute("Text") == "{Binding " + labelKey + S)).ToList();
+                if (gate != null)
+                    matches = matches.Where(r => ((string)r.Attribute("Visibility") ?? "").StartsWith("{Binding " + gate + ",", StringComparison.Ordinal)).ToList();
+                return Assert.Single(matches);
+            }
+
+            XElement ResetOf(XElement row, string id)
+                => Assert.Single(row.Elements(), e => (string)e.Attribute("AutomationProperties.AutomationId") == id);
+
+            // Source: the picker, and the way to add the opposite direction.
+            var source = RowOf("Pad_HeaderSource");
+            Assert.Equal("{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}", (string)source.Attribute("Visibility"));
+            var picker = Assert.Single(source.Elements(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{Binding AvailableInputsView}", (string)picker.Attribute("ItemsSource"));
+            Assert.Equal("{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)picker.Attribute("SelectedItem"));
+            Assert.Equal("MappingComboBox_PreviewKeyDown", (string)picker.Attribute("PreviewKeyDown"));
+            Assert.Equal("{StaticResource RowOptionPicker}", (string)picker.Attribute("Style"));
+            var opposite = Assert.Single(source.Elements(), e => e.Name.LocalName == "Button");
+            Assert.Equal("{Binding AddOppositeDirectionCommand}", (string)opposite.Attribute("Command"));
+            Assert.Equal("{Binding ShouldShowEmptyDirectionHint, Converter={StaticResource BoolToVisibilityConverter}}", (string)opposite.Attribute("Visibility"));
+
+            // The kind's own inputs, each with its reset.
+            foreach (var (key, choice, id, gate) in new[]
+            {
+                ("ResetLabel_UpInput", "ParamUpInputChoice", "Reset_MappingSourceItem_ParamUpInputChoice_5577", "UsesUpDownKeys"),
+                ("ResetLabel_DownInput", "ParamDownInputChoice", "Reset_MappingSourceItem_ParamDownInputChoice_5618", "UsesUpDownKeys"),
+                ("ResetLabel_ModifierInput", "ParamModifierInputChoice", "Reset_MappingSourceItem_ParamModifierInputChoice_5659", "IsInvertOnHoldKind"),
+            })
+            {
+                var row = RowOf(key, gate);
+                var input = Assert.Single(row.Elements(), e => e.Name.LocalName == "ComboBox");
+                Assert.Equal("{Binding " + choice + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)input.Attribute("SelectedItem"));
+                Assert.Equal(choice, (string)ResetOf(row, id).Attribute("CommandParameter"));
+            }
+
+            // Value: the meter and the number.
+            var value = RowOf("Pad_HeaderValue");
+            Assert.Equal("{Binding LiveLevel, Mode=OneWay}", (string)Assert.Single(value.Elements(), e => e.Name.LocalName == "ProgressBar").Attribute("Value"));
+            Assert.Contains(value.Elements(), e => (string)e.Attribute("Text") == "{Binding CurrentValueText, Mode=OneWay}");
+
+            // Primary Mode.
+            var mode = RowOf("Pad_Mapping_PrimaryMode");
+            Assert.Equal("{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                (string)Assert.Single(mode.Elements(), e => e.Name.LocalName == "ComboBox").Attribute("SelectedValue"));
+            Assert.Equal("Kind", (string)ResetOf(mode, "Reset_MappingSourceItem_Kind_4282").Attribute("CommandParameter"));
+
+            // The switches that were the Options column's checkboxes.
+            foreach (var (key, flag, id, enabled, gate) in new[]
+            {
+                ("Pad_Invert", "IsInverted", "Reset_MappingItem_IsInverted_5758", "IsInvertApplicable", (string)null),
+                ("Pad_Half", "IsHalfAxis", "Reset_MappingItem_IsHalfAxis_5762", "IsHalfAxisApplicable", null),
+                ("Pad_Either", "IsBidirectional", "Reset_MappingItem_IsBidirectional_5769", "IsHalfAxis", null),
+                ("Pad_InvertOutput", "InvertOutput", "Reset_MappingItem_InvertOutput_5776", null, "IsInvertOutputApplicable"),
+                ("Pad_Shift_NoInherit", "NoInherit", "Reset_MappingItem_NoInherit_5788", null, "DataContext.IsActiveLayerInheriting"),
+            })
+            {
+                var row = rows.Single(r => r.Elements().Any(e => (string)e.Attribute("AutomationProperties.AutomationId") == id));
+                Assert.Contains(row.Elements(), e => (string)e.Attribute("Text") == "{Binding " + key + S);
+                var box = Assert.Single(row.Elements(), e => e.Name.LocalName == "CheckBox");
+                Assert.Equal("{StaticResource SwitchCheckBox}", (string)box.Attribute("Style"));
+                Assert.Equal("{Binding " + key + S, (string)box.Attribute("Content"));
+                Assert.Equal("{Binding " + flag + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)box.Attribute("IsChecked"));
+                Assert.Equal(enabled == null ? null : "{Binding " + enabled + "}", (string)box.Attribute("IsEnabled"));
+                Assert.Equal(flag, (string)ResetOf(row, id).Attribute("CommandParameter"));
+                if (gate != null)
+                    Assert.StartsWith("{Binding " + gate + ",", (string)row.Attribute("Visibility"));
+                else
+                    Assert.Null(row.Attribute("Visibility"));
+            }
+
+            // The dials: one per kind of source, each with its own reset.
+            foreach (var (gate, bound, reset) in new[]
+            {
+                ("IsGyroSource", "GyroSensitivity", "ResetGyroSensitivityCommand"),
+                ("IsGyroLeanSource", "Sensitivity", "ResetSensitivityCommand"),
+                ("IsParamAccelApplicable", "ParamAccel", "ResetParamAccelCommand"),
+                ("IsMouseCursorSource", "MouseCursorSensitivity", "ResetMouseCursorSensitivityCommand"),
+                ("IsIrPointerSource", "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"),
+                ("IsMouseMotionSource", "IrPointerSensitivity", "ResetIrPointerSensitivityCommand"),
+            })
+            {
+                var row = Assert.Single(rows, r => (string)r.Attribute("Visibility") == "{Binding " + gate + ", Converter={StaticResource BoolToVisibilityConverter}}");
+                var slider = Assert.Single(row.Elements(), e => e.Name.LocalName == "Slider");
+                Assert.Equal("{Binding " + bound + ", Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)slider.Attribute("Value"));
+                Assert.StartsWith("{Binding " + bound + ", Mode=TwoWay, UpdateSourceTrigger=LostFocus,",
+                    (string)Assert.Single(row.Elements(), e => e.Name.LocalName == "TextBox").Attribute("Text"));
+                Assert.Equal("{Binding " + reset + "}", (string)Assert.Single(row.Elements(), e => e.Name.LocalName == "Button").Attribute("Command"));
+            }
+
+            // The deadzone, where one applies.
+            var zone = RowOf("Pad_HeaderDeadZone");
+            Assert.Equal("{Binding IsDeadZoneApplicable, Converter={StaticResource BoolToVisibilityConverter}}", (string)zone.Attribute("Visibility"));
+            Assert.Equal("{Binding MappingDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                (string)Assert.Single(zone.Elements(), e => e.Name.LocalName == "Slider").Attribute("Value"));
+            Assert.Equal("{Binding ResetDeadZoneCommand}", (string)Assert.Single(zone.Elements(), e => e.Name.LocalName == "Button").Attribute("Command"));
+
+            // Combine, and Add Source as a quiet button.
+            var combine = RowOf("Pad_Combine_Label");
+            Assert.Equal("{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                (string)Assert.Single(combine.Elements(), e => e.Name.LocalName == "ComboBox").Attribute("SelectedValue"));
+            var add = Assert.Single(details.Descendants(), e => (string)e.Attribute("Command") == "{Binding AddExtraSourceCommand}");
+            Assert.Equal("{StaticResource QuietPlainButton}", (string)add.Attribute("Style"));
+
+            // Nothing runs past the card's edge: the table does not scroll
+            // sideways, and no strip of an open row is a panel that cannot
+            // wrap.
+            Assert.Equal("Disabled", (string)table.Attribute("ScrollViewer.HorizontalScrollBarVisibility"));
+            Assert.DoesNotContain(details.Descendants(), e => e.Name.LocalName == "StackPanel"
+                && (string)e.Attribute("Orientation") == "Horizontal");
+        }
+
         /// <summary>A click on a closed row opens it, and a click on one of
         /// the line's own buttons leaves it closed: opening the row would
-        /// take the button from under the pointer before its click.</summary>
+        /// take the button from under the pointer before its click. The
+        /// chevron opens a closed row and closes the open one.</summary>
         [Fact]
         public void TheLinesButtonsLeaveTheRowClosed()
         {
             string code = CodeBehind();
             Assert.Matches(@"if \(row\.IsSelected \|\| MappingDataGrid == null\) return;[\s\S]{0,400}?if \(IsInsideButton\(e\.OriginalSource as DependencyObject, row\)\) return;\s*MappingDataGrid\.SelectedItem = mi;", code);
-            Assert.Matches(@"private void MappingRowOpen_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(MappingDataGrid != null && \(sender as FrameworkElement\)\?\.DataContext is MappingItem mi\)\s*MappingDataGrid\.SelectedItem = mi;", code);
+            Assert.Matches(@"private void MappingRowToggle_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(MappingDataGrid == null \|\| \(sender as FrameworkElement\)\?\.DataContext is not MappingItem mi\) return;\s*MappingDataGrid\.SelectedItem = ReferenceEquals\(MappingDataGrid\.SelectedItem, mi\) \? null : mi;", code);
             // Enter or Space on a row opens or closes it by selection alone.
             Assert.Matches(@"MappingDataGrid\.SelectedItem = row\.IsSelected \? null : mi;\s*e\.Handled = true;", code);
 

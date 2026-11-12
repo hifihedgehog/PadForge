@@ -1236,7 +1236,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopjo cilësimet nga një pajisje tjetër e konfiguruar</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Rivendos të gjitha</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Pastro të gjitha</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Dalja</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Burimi</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Vlera</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsione</value></data>

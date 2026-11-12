@@ -180,34 +180,33 @@ namespace PadForge.Tests
             Assert.True(((AppSettingsData)ser.Deserialize(new StringReader(older))).AssignOfferHome);
         }
 
-        // ── discussion #348: the row keeps its cells while selected ────
+        // ── discussion #348: the open row keeps its editor ─────────────
 
         /// <summary>A selected Unassigned row became a plain mapping the
-        /// moment its first source landed, and the trigger that swaps a
-        /// plain row's cells for its one line then collapsed the cells
+        /// moment its first source landed, and the trigger that swapped a
+        /// plain row's cells for a one-line summary then collapsed the cells
         /// (Record, Clear, Invert, Half, Bidirectional) under the open
-        /// details strip. The fix was to condition that trigger on the row
-        /// not being selected. Every row that is not selected is its one
-        /// line now (#574), by one trigger, and the condition is what keeps
-        /// a selected row open whatever its sources become. Source-text
-        /// lock, since the template trigger has no in-process seam.</summary>
+        /// details strip. A row has no cells now (#574): it is its line,
+        /// and its options show under the line by selection alone, so no
+        /// state of the row's sources can take them away. This holds the
+        /// two facts that make it so. Source-text lock, since the row
+        /// template has no in-process seam.</summary>
         [Fact]
-        public void TheSwapToARowsOneLine_IsGatedOnNotSelected()
+        public void AnOpenRowsOptionsShowBySelectionAlone()
         {
             string xaml = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
                 Path.Combine("PadForge.App", "Views", "PadPage.xaml")));
-            const string swap = "<Setter TargetName=\"CompactLine\" Property=\"Visibility\" Value=\"Visible\"/>";
-            int setter = xaml.IndexOf(swap, StringComparison.Ordinal);
-            Assert.True(setter > 0, "the trigger that shows a row's one line was not found; re-anchor this lock");
-            // One trigger shows the line: a second would be a way around
-            // the condition.
-            Assert.Equal(-1, xaml.IndexOf(swap, setter + swap.Length, StringComparison.Ordinal));
-            int start = xaml.LastIndexOf("<MultiDataTrigger.Conditions>", setter, StringComparison.Ordinal);
-            int end = xaml.IndexOf("</MultiDataTrigger.Conditions>", start, StringComparison.Ordinal);
-            Assert.True(start > 0 && end > start && end < setter, "the line's trigger has no conditions of its own");
-            string conditions = xaml.Substring(start, end - start);
-            Assert.Contains("<Condition Binding=\"{Binding IsRowSelected}\" Value=\"False\"/>", conditions);
-            Assert.Contains("<Condition Binding=\"{Binding IsExpandedOverride}\" Value=\"False\"/>", conditions);
+            Assert.Contains("<DataGrid.RowDetailsVisibilityMode>VisibleWhenSelected</DataGrid.RowDetailsVisibilityMode>", xaml);
+
+            int start = xaml.IndexOf("<ControlTemplate TargetType=\"DataGridRow\">", StringComparison.Ordinal);
+            Assert.True(start > 0, "the mapping row's template was not found; re-anchor this lock");
+            int end = xaml.IndexOf("</ControlTemplate>", start, StringComparison.Ordinal);
+            string row = xaml.Substring(start, end - start);
+            Assert.Matches(@"<DataGridDetailsPresenter Grid\.Row=""1""\s+Visibility=""\{TemplateBinding DetailsVisibility\}""/>", row);
+            // Nothing in the row hides a part of it by what the row holds.
+            Assert.DoesNotContain("DataGridCellsPresenter", row);
+            Assert.DoesNotContain("IsTrivialDirect", row);
+            Assert.DoesNotContain("HasAnySource", row);
         }
     }
 }

@@ -1234,7 +1234,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Nakili mipangilio kutoka kwa kifaa kingine kilichosanidiwa</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Weka Upya Vyote</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Futa Vyote</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Utoaji</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Chanzo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Thamani</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Chaguo</value></data>

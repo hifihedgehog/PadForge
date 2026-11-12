@@ -1237,7 +1237,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopeeri sätted teisest konfigureeritud seadmest</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Lähtesta kõik</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tühjenda kõik</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Väljund</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Allikas</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Väärtus</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Valikud</value></data>

@@ -205,7 +205,6 @@ public class Strings : INotifyPropertyChanged
     public string Common_None => Get("Common_None");
     public string Common_Ms => Get("Common_Ms");
     public string Common_Unassigned => Get("Common_Unassigned");
-    public string Common_DoesNotApply => Get("Common_DoesNotApply");
     public string Common_PadForge => Get("Common_PadForge");
     public string ControllerType_Xbox => Get("ControllerType_Xbox");
     public string ControllerType_PlayStation => Get("ControllerType_PlayStation");
@@ -1941,7 +1940,6 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_HeadphoneVolumeUp_Tooltip => Get("MacroAction_HeadphoneVolumeUp_Tooltip");
     public string MacroAction_HeadphoneVolumeDown_Tooltip => Get("MacroAction_HeadphoneVolumeDown_Tooltip");
     public string Pad_ClearAll => Get("Pad_ClearAll");
-    public string Pad_HeaderOutput => Get("Pad_HeaderOutput");
     public string Pad_HeaderSource => Get("Pad_HeaderSource");
     public string Pad_HeaderValue => Get("Pad_HeaderValue");
     public string Pad_HeaderOptions => Get("Pad_HeaderOptions");

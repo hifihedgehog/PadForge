@@ -119,7 +119,6 @@
   <data name="Common_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>বরাদ্দ নেই</value></data>
-  <data name="Common_DoesNotApply" xml:space="preserve"><value>প্রযোজ্য নয়</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
@@ -1400,7 +1399,6 @@
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>কনফিগার করা অন্য ডিভাইস থেকে সেটিংস কপি করুন</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>সব রিসেট করুন</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>সব সাফ করুন</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>আউটপুট</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>উৎস</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>মান</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>বিকল্প</value></data>

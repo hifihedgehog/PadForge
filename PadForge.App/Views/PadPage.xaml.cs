@@ -1340,7 +1340,6 @@ namespace PadForge.Views
         private void OnButtonsViewChanged()
         {
             SyncButtonsLayout();
-            FitMappingColumnsOnce();
             SyncPickedRowSelection();
         }
 
@@ -5519,304 +5518,34 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Mappings DataGrid: one open editor at a time.
+        //  The mapping table: one open row at a time.
         //
-        //  Multi-source rows used to force their details strip open
-        //  permanently via code-behind DetailsVisibility writes (#175
-        //  phase two item 10 killed that: two devices on a slot turned
-        //  four outputs into a scroll wall). Details follow the grid's
-        //  stock VisibleWhenSelected mode, and every row that is not
-        //  selected is its one line (#574) through the row template's
-        //  IsRowSelected trigger. SelectionChanged mirrors selection
-        //  onto each MappingItem so that trigger can bind plain
-        //  DataContext state.
+        //  A row is its line, and the selected row is the open one: its
+        //  options show under its line through the grid's stock
+        //  VisibleWhenSelected mode (#574). Multi-source rows used to
+        //  force their details strip open permanently via code-behind
+        //  DetailsVisibility writes (#175 phase two item 10 killed
+        //  that: two devices on a slot turned four outputs into a
+        //  scroll wall). SelectionChanged mirrors selection onto each
+        //  MappingItem, so the row template can turn an open row's
+        //  chevron with a plain DataContext binding.
         // ─────────────────────────────────────────────
 
-        /// <summary>
-        /// WPF's <see cref="DataGrid"/> doesn't honestly auto-collapse columns
-        /// to their content during its initial layout pass — the Auto sizing
-        /// path lets a flexible column quietly absorb the leftover horizontal
-        /// space the fixed-width columns leave behind. The user-visible
-        /// workaround is to double-click the column-header gripper, which the
-        /// DataGrid handles by re-applying Auto and forcing a fresh
-        /// measurement.
-        ///
-        /// Re-applying <see cref="DataGridLength.Auto"/> programmatically at
-        /// Loaded time doesn't reproduce the double-click behavior reliably
-        /// (the value-equality check on the property setter can short-circuit
-        /// the re-measurement). Instead, walk each flexible column, measure
-        /// every realized cell's child template with infinite available
-        /// width, take the max DesiredSize, add a small padding fudge to
-        /// match WPF's own gripper-double-click result, and lock the column
-        /// to that pixel width. That matches the user-initiated double-click
-        /// outcome exactly.
-        /// </summary>
-        private void MappingDataGrid_Loaded(object sender, RoutedEventArgs e) => FitMappingColumnsOnce();
-
-        /// <summary>Sizes the table's flexible columns to their content, once:
-        /// the first time the list shows with rows in it. The pass builds
-        /// every row in its open form to measure it, which took the page
-        /// more than a second (measured 2026-11-11), and it used to run each
-        /// time the table came on the page, doing that work again for
-        /// columns it had already locked. Under the picture the table holds
-        /// a few rows of one control, so it is not measured there: a width
-        /// taken from those rows would lock in too narrow for the list.
-        /// Until the list has shown, the columns size themselves.</summary>
-        private void FitMappingColumnsOnce()
-        {
-            var grid = MappingDataGrid;
-            if (grid == null || !grid.IsLoaded || grid.Items.Count == 0) return;
-            if (DataContext is not PadViewModel vm || !vm.IsButtonsListView) return;
-            bool anyFlexible = false;
-            foreach (var column in grid.Columns)
-            {
-                var unit = column.Width.UnitType;
-                if (unit == DataGridLengthUnitType.Auto
-                    || unit == DataGridLengthUnitType.SizeToCells
-                    || unit == DataGridLengthUnitType.SizeToHeader)
-                {
-                    anyFlexible = true;
-                    break;
-                }
-            }
-            if (!anyFlexible) return;
-            // Run synchronously: containers for the visible viewport
-            // are realized by the time Loaded fires, and
-            // AutoFitFlexibleColumns disables virtualization +
-            // UpdateLayout()s to force-realize the rest. Deferring to
-            // ApplicationIdle (the original approach) let WPF's natural
-            // Auto sizing paint first, producing a brief wide-Options
-            // flash before the measure pass tightened the column.
-            //
-            // A closed row hides its cells presenter, which leaves its
-            // cells ungenerated and invisible to the width pass, and
-            // every row but the selected one is closed (#574). Open them
-            // all for the measurement so each column's honest content
-            // width is taken, then close them again. All inside this one
-            // dispatcher callback, so no frame renders the open state.
-            var expandedForMeasure = new List<MappingItem>();
-            foreach (var item in grid.Items)
-            {
-                if (item is MappingItem mi && !mi.IsRowSelected && !mi.IsExpandedOverride)
-                {
-                    mi.IsExpandedOverride = true;
-                    expandedForMeasure.Add(mi);
-                }
-            }
-            try
-            {
-                AutoFitFlexibleColumns(grid);
-            }
-            finally
-            {
-                foreach (var mi in expandedForMeasure)
-                    mi.IsExpandedOverride = false;
-            }
-        }
-
-        /// <summary>For each column with <see cref="DataGridLength"/>
-        /// unit type Auto / SizeToCells / SizeToHeader, measure realized
-        /// cell content with unbounded width, compute the honest max
-        /// content width across rows + header, and lock the column to
-        /// that as <see cref="DataGridLengthUnitType.Pixel"/>.
-        ///
-        /// <para>Special handling: when a cell contains a
-        /// <see cref="ComboBox"/>, measuring the cell only captures the
-        /// currently-selected item's width — a row with no selection (or
-        /// a short selection like "A") would size the column to almost
-        /// nothing. The widest dropdown ITEM is what the user actually
-        /// needs the column to accommodate, so each cell's measurement
-        /// is augmented with the widest item across every ComboBox in
-        /// the cell's visual tree (plus a small dropdown-arrow allowance).</para>
-        ///
-        /// <para>Row virtualization is off for the length of the
-        /// measurement, through the grid's own
-        /// <see cref="DataGrid.EnableRowVirtualization"/>, so rows that are
-        /// not in view are built and their cells count toward the
-        /// widest.</para></summary>
-        internal static void AutoFitFlexibleColumns(DataGrid grid)
-        {
-            const double CellChromePadding = 12.0; // matches WPF's gripper-double-click delta
-            const double ComboBoxArrowPadding = 32.0; // dropdown-arrow + ComboBox border insets
-
-            // Build every row, so cells in rows that are not in view count
-            // toward the widest, and put the grid's setting back at the end
-            // so scrolling stays as fast as it was. The switch is the grid's
-            // own EnableRowVirtualization. The mapping grid's markup sets
-            // it, and a grid whose own switch is set takes that over the
-            // attached VirtualizingPanel.IsVirtualizing, which this pass set
-            // before: the attached value read back as still on, 11 of 22
-            // rows were built, none of them an axis row, and the Options
-            // column locked too narrow for an axis row's Acceleration
-            // (measured 2026-11-11).
-            bool wasVirtualizing = grid.EnableRowVirtualization;
-            grid.EnableRowVirtualization = false;
-            grid.UpdateLayout();
-
-            try
-            {
-                foreach (var col in grid.Columns)
-                {
-                    var unit = col.Width.UnitType;
-                    bool flexible = unit == DataGridLengthUnitType.Auto
-                                 || unit == DataGridLengthUnitType.SizeToCells
-                                 || unit == DataGridLengthUnitType.SizeToHeader;
-                    if (!flexible) continue;
-
-                    double maxContent = 0.0;
-
-                    // Header DesiredSize (when SizeToCells skip header).
-                    if (unit != DataGridLengthUnitType.SizeToCells)
-                    {
-                        if (FindHeader(grid, col) is DataGridColumnHeader header)
-                        {
-                            header.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                            maxContent = Math.Max(maxContent, header.DesiredSize.Width);
-                        }
-                    }
-
-                    // Cell content DesiredSize across every realized row (when
-                    // SizeToHeader skip cells).
-                    if (unit != DataGridLengthUnitType.SizeToHeader)
-                    {
-                        // The widest dropdown ITEM is the same for every row in a
-                        // column: all Source pickers bind to the slot's single
-                        // cross-device input list. So measure the dropdown once per
-                        // column, not once per row. Per row it was an
-                        // O(rows x ~150 items) TextBlock-allocate-and-measure loop
-                        // that stalled the Mapping tab ~1s on switch; this makes it
-                        // O(items). Stays <= 0 until a row with a ComboBox is found,
-                        // so columns whose combos live only in later rows still size.
-                        double columnComboMax = 0.0;
-                        foreach (var item in grid.Items)
-                        {
-                            if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row)
-                                continue;
-                            var cellContent = col.GetCellContent(row);
-                            if (cellContent == null) continue;
-                            cellContent.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                            double cellWidth = cellContent.DesiredSize.Width;
-
-                            // Augment with the widest dropdown item (measured once).
-                            // A Source-style cell shouldn't shrink to the selected
-                            // item's width when the dropdown carries longer entries.
-                            if (columnComboMax <= 0.0)
-                                columnComboMax = MeasureWidestComboBoxItem(cellContent);
-                            if (columnComboMax > 0.0)
-                                cellWidth = Math.Max(cellWidth, columnComboMax + ComboBoxArrowPadding);
-
-                            maxContent = Math.Max(maxContent, cellWidth);
-                        }
-                    }
-
-                    if (maxContent > 0)
-                    {
-                        col.Width = new DataGridLength(maxContent + CellChromePadding,
-                            DataGridLengthUnitType.Pixel);
-                    }
-                }
-            }
-            finally
-            {
-                grid.EnableRowVirtualization = wasVirtualizing;
-            }
-        }
-
-        /// <summary>Walks the visual tree rooted at <paramref name="root"/>,
-        /// finds every <see cref="ComboBox"/>, and returns the widest item
-        /// width across all of their ItemsSources. Each item is measured by
-        /// rendering its DisplayName (or string form) into a
-        /// <see cref="TextBlock"/> that inherits the ComboBox's font
-        /// metrics. Returns 0 when no ComboBox is present or every dropdown
-        /// is empty.</summary>
-        private static double MeasureWidestComboBoxItem(DependencyObject root)
-        {
-            double widest = 0.0;
-            ForEachDescendant<ComboBox>(root, cb =>
-            {
-                if (cb.ItemsSource == null && cb.Items.Count == 0) return;
-                string memberPath = cb.DisplayMemberPath;
-                System.Collections.IEnumerable source = cb.ItemsSource ?? cb.Items;
-                foreach (var item in source)
-                {
-                    if (item == null) continue;
-                    string text = ResolveDisplayText(item, memberPath);
-                    if (string.IsNullOrEmpty(text)) continue;
-                    var tb = new TextBlock
-                    {
-                        Text = text,
-                        FontFamily = cb.FontFamily,
-                        FontSize = cb.FontSize,
-                        FontStretch = cb.FontStretch,
-                        FontStyle = cb.FontStyle,
-                        FontWeight = cb.FontWeight,
-                    };
-                    tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    if (tb.DesiredSize.Width > widest)
-                        widest = tb.DesiredSize.Width;
-                }
-            });
-            return widest;
-        }
-
-        /// <summary>Reads <paramref name="memberPath"/> off
-        /// <paramref name="item"/> via reflection (matches WPF's
-        /// DisplayMemberPath behavior), or falls back to
-        /// <c>item.ToString()</c> when the path is empty / missing.</summary>
-        private static string ResolveDisplayText(object item, string memberPath)
-        {
-            if (string.IsNullOrEmpty(memberPath))
-                return item.ToString();
-            var prop = item.GetType().GetProperty(memberPath);
-            if (prop == null) return item.ToString();
-            return prop.GetValue(item)?.ToString() ?? string.Empty;
-        }
-
-        /// <summary>Depth-first visual-tree walk that invokes
-        /// <paramref name="action"/> on every descendant of type
-        /// <typeparamref name="T"/>.</summary>
-        private static void ForEachDescendant<T>(DependencyObject root, Action<T> action)
-            where T : DependencyObject
-        {
-            if (root is T match) action(match);
-            int n = VisualTreeHelper.GetChildrenCount(root);
-            for (int i = 0; i < n; i++)
-                ForEachDescendant(VisualTreeHelper.GetChild(root, i), action);
-        }
-
-        /// <summary>Walks the DataGrid's visual tree to find the
-        /// <see cref="DataGridColumnHeader"/> for a given column. Necessary
-        /// because <see cref="DataGridColumn"/> doesn't expose its header
-        /// element publicly.</summary>
-        private static DataGridColumnHeader FindHeader(DependencyObject root, DataGridColumn col)
-        {
-            if (root is DataGridColumnHeader h && h.Column == col) return h;
-            int n = VisualTreeHelper.GetChildrenCount(root);
-            for (int i = 0; i < n; i++)
-            {
-                var found = FindHeader(VisualTreeHelper.GetChild(root, i), col);
-                if (found != null) return found;
-            }
-            return null;
-        }
-
-        /// <summary>A click on a closed row opens it into the full editing
-        /// row. A closed row's cells are collapsed, so the click never
-        /// reaches a DataGridCell and WPF's own selection logic won't run.
-        /// Selecting here opens the row: its cells show, and the details
-        /// strip opens via the VisibleWhenSelected path.
+        /// <summary>A click on a closed row opens it. The table has no
+        /// cells, so WPF's own selection logic, which a click on a cell
+        /// starts, never runs. Selecting here opens the row: its options
+        /// show under its line via the VisibleWhenSelected path.
         /// The click leaves keyboard focus where the window's click handler
         /// put it, which is nowhere for a row, so a key the slot maps,
         /// pressed to test the mapping, never reaches the table. Tab reaches
-        /// the row from the keyboard. Clicks on an open row fall through to
-        /// normal cell handling.</summary>
+        /// the row from the keyboard. A click on an open row is its
+        /// controls' own, and its chevron closes it.</summary>
         private void MappingRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
             if (row.IsSelected || MappingDataGrid == null) return;
-            // The closed line's own buttons act on the row and leave it
-            // closed. Opening here would take the button from under the
-            // pointer before its click (#574).
+            // The line's own buttons act on the row and leave it closed
+            // (#574). The chevron opens it by its own handler.
             if (IsInsideButton(e.OriginalSource as DependencyObject, row)) return;
             MappingDataGrid.SelectedItem = mi;
         }
@@ -5839,13 +5568,14 @@ namespace PadForge.Views
             return false;
         }
 
-        /// <summary>The chevron at a closed row's end opens the row: it
-        /// selects it, which shows its editor and the details under
-        /// it.</summary>
-        private void MappingRowOpen_Click(object sender, RoutedEventArgs e)
+        /// <summary>The chevron at a row's end opens the row, and closes
+        /// the open one. Opening selects the row, which shows its options
+        /// under its line. Closing leaves the table with no selection, as
+        /// Enter or Space on the row does.</summary>
+        private void MappingRowToggle_Click(object sender, RoutedEventArgs e)
         {
-            if (MappingDataGrid != null && (sender as FrameworkElement)?.DataContext is MappingItem mi)
-                MappingDataGrid.SelectedItem = mi;
+            if (MappingDataGrid == null || (sender as FrameworkElement)?.DataContext is not MappingItem mi) return;
+            MappingDataGrid.SelectedItem = ReferenceEquals(MappingDataGrid.SelectedItem, mi) ? null : mi;
         }
 
         /// <summary>Enter/Space on a focused row toggles it open and
@@ -5876,8 +5606,7 @@ namespace PadForge.Views
         {
             if (sender is not DataGrid grid) return;
             // IsRowSelected mirrors selection for the row template's
-            // trigger: a row that loses the selection closes to its one
-            // line, and the row that takes it opens.
+            // trigger, which turns the open row's chevron.
             foreach (var removed in e.RemovedItems)
             {
                 if (removed is MappingItem rm)

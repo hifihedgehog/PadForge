@@ -1171,24 +1171,12 @@ namespace PadForge.ViewModels
             && !_isInverted && !_isHalfAxis && !_isBidirectional
             && !(IsCustomCombine && !string.IsNullOrWhiteSpace(_combineExpression));
 
-        private bool _isExpandedOverride;
-
-        /// <summary>Shows a closed row's cells without selecting it. The Pad
-        /// page's column fit sets it on every closed row while it measures
-        /// the cells and clears it in the same pass. UI-only state, never
-        /// persisted.</summary>
-        public bool IsExpandedOverride
-        {
-            get => _isExpandedOverride;
-            set => SetProperty(ref _isExpandedOverride, value);
-        }
-
         private bool _isRowSelected;
 
         /// <summary>Mirror of the row's DataGrid selection state (#175 phase
         /// two item 10). Written by the Pad page's SelectionChanged handler
-        /// so the row template can show a row that is not selected as its
-        /// one line with a plain DataContext binding (#574). UI-only state,
+        /// so the row template can tell the open row, which is the selected
+        /// one, with a plain DataContext binding (#574). UI-only state,
         /// never persisted.</summary>
         public bool IsRowSelected
         {

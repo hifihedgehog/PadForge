@@ -116,7 +116,6 @@
   <data name="Common_None" xml:space="preserve"><value>Nenhum</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Não Atribuído</value></data>
-  <data name="Common_DoesNotApply" xml:space="preserve"><value>Não se aplica</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->
@@ -709,7 +708,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valor bruto do eixo</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Redefinir Tudo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpar Tudo</value></data>
-  <data name="Pad_HeaderOutput" xml:space="preserve"><value>Saída</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Origem</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opções</value></data>

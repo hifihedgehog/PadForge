@@ -2997,8 +2997,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsRumbleTriggerStopType));
                     OnPropertyChanged(nameof(IsAnyRumbleSetType));
                     OnPropertyChanged(nameof(IsAnyRumbleStopType));
-                    OnPropertyChanged(nameof(RumbleEditorTitle));
-                    OnPropertyChanged(nameof(RumbleStopEditorTitle));
                     OnPropertyChanged(nameof(RumbleStopEditorBody));
                     OnPropertyChanged(nameof(IsPlaySoundType));
                     OnPropertyChanged(nameof(IsSoundStopType));
@@ -3177,20 +3175,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAnyRumbleStopType => IsRumbleStopType || IsRumbleTriggerStopType;
 
-        /// <summary>Header for the shared rumble-set param card: the trigger title
-        /// for a RumbleTrigger action, otherwise the main-motor Rumble title (#102).</summary>
-        [System.Xml.Serialization.XmlIgnore]
-        public string RumbleEditorTitle => IsRumbleTriggerType
-            ? Strings.Instance.MacroAction_Type_RumbleTrigger
-            : Strings.Instance.MacroAction_Type_Rumble;
-
-        /// <summary>Header for the shared rumble-stop card (#102).</summary>
-        [System.Xml.Serialization.XmlIgnore]
-        public string RumbleStopEditorTitle => IsRumbleTriggerStopType
-            ? Strings.Instance.MacroAction_Type_RumbleTriggerStop
-            : Strings.Instance.MacroAction_Type_RumbleStop;
-
-        /// <summary>Body text for the shared rumble-stop card (#102).</summary>
+        /// <summary>What stopping the rumble does, under the Type row of a rumble-stop step (#102).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public string RumbleStopEditorBody => IsRumbleTriggerStopType
             ? Strings.Instance.MacroAction_RumbleTriggerStop_Tooltip

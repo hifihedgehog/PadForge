@@ -407,8 +407,36 @@ namespace PadForge.Tests
             // Fire, its three own rows, the layer, the source, the old
             // trigger's two, Consume, and Repeat's three. Then the rows of an
             // input of the trigger: an axis's three switches and its
-            // deadzone, and the point an input with a depth fires at.
-            Assert.Equal(17, rows.Count);
+            // deadzone, and the point an input with a depth fires at. And
+            // the rows of a step's fields, which stand in the steps' list.
+            var ofSteps = rows.Where(r => r.Ancestors().Any(a => Name(a) == "ActionsList")).ToList();
+            Assert.Equal(106, ofSteps.Count);
+            Assert.Equal(17, rows.Count - ofSteps.Count);
+            // A step's type is the first of its rows, and a check box of the
+            // fields became a switch under its own label.
+            Assert.Contains(ofSteps, r => r.Elements().Any(c => (string)c.Attribute("SelectedValue") == "{Binding Type, Mode=TwoWay}"));
+            var switches = ofSteps.Where(r => r.Elements().Any(c => c.Name.LocalName == "CheckBox")).ToList();
+            Assert.Equal(11, switches.Count);
+            Assert.All(switches, r =>
+            {
+                var box = r.Elements().Single(c => c.Name.LocalName == "CheckBox");
+                Assert.Equal("{StaticResource SwitchCheckBox}", (string)box.Attribute("Style"));
+                Assert.StartsWith("{Binding ", (string)box.Attribute("IsChecked"));
+            });
+            // A group of fields stands in the step itself: none is a card
+            // inside the step, and none has a title that repeats the
+            // action's type, which the Type row and the step's head say.
+            var list = Named(page, "ActionsList");
+            Assert.DoesNotContain(list.Descendants(), e => (string)e.Attribute("Style") == "{StaticResource CardBorder}");
+            Assert.DoesNotContain(list.Descendants(), e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("FontWeight") == "SemiBold"
+                && ((string)e.Attribute("Text") ?? "").StartsWith("{Binding MacroAction_Type_", StringComparison.Ordinal));
+            Assert.DoesNotContain("EditorTitle", page.ToString());
+            // No row of the old shape is left among the fields: a strip with
+            // a label 80, 100 or 120 wide before one control and one reset.
+            Assert.DoesNotContain(list.Descendants(), e => e.Name.LocalName == "StackPanel" && (string)e.Attribute("Orientation") == "Horizontal"
+                && e.Elements().FirstOrDefault() is XElement first && first.Name.LocalName == "TextBlock"
+                && (string)first.Attribute("Width") is "80" or "100" or "120"
+                && e.Elements().Count(c => c.Name.LocalName == "SettingResetButton" || (string)c.Attribute("Style") == "{StaticResource ResetButton}") == 1);
             string[] binds =
             {
                 "{Binding TriggerMode, Mode=TwoWay}", "{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
@@ -424,7 +452,10 @@ namespace PadForge.Tests
             };
             foreach (string bound in binds)
                 Assert.Contains(rows, r => r.Elements().Any(c => c.Attributes().Any(a => a.Value == bound)));
-            Assert.All(rows, r =>
+            // A parameter of a trigger effect has no reset, and its row none.
+            var parameter = Assert.Single(ofSteps, r => (string)r.Elements().First().Attribute("Text") == "{Binding Label}");
+            Assert.Equal(new[] { "TextBlock", "Slider", "TextBox" }, parameter.Elements().Select(c => c.Name.LocalName));
+            Assert.All(rows.Where(r => r != parameter), r =>
             {
                 var parts = r.Elements().ToList();
                 Assert.Equal("TextBlock", parts[0].Name.LocalName);

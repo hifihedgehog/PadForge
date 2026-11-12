@@ -22,7 +22,8 @@ namespace PadForge.Tests
     /// <summary>Draws the controller's page to pictures without a screen (#574), to hold a section
     /// against its board: the page itself under the app's own resources and theme, showing macros
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
-    /// a real setup may not have. The page stands in no window, so nothing it does as it loads
+    /// a real setup may not have: a trigger of every kind of input, a recording, and an open
+    /// step of every action type. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -114,23 +115,20 @@ namespace PadForge.Tests
                     Step("the app's resources and theme are loaded");
 
                     var vm = new PadViewModel(0);
-                    var states = new (string File, MacroItem Macro)[]
+                    var states = new List<(string File, MacroItem Macro)>
                     {
                         ("macros-quick-combo.png", QuickCombo()),
                         ("macros-step-picked.png", PickedStep()),
                         ("macros-axis-inputs.png", AxisInputs()),
                         ("macros-no-inputs.png", new MacroItem { Name = "New Macro" }),
                         ("macros-recording.png", new MacroItem { Name = "Recording", TriggerButtons = 0x1000, IsRecordingTrigger = true }),
-                        ("macros-type-lightbar.png", TypePicked(MacroActionType.LightbarColor, a => a.AddLightbarPaletteColorCommand.Execute(null))),
-                        ("macros-type-switch-layer.png", TypePicked(MacroActionType.SwitchLayer)),
-                        ("macros-type-system-volume.png", TypePicked(MacroActionType.SystemVolume)),
-                        ("macros-type-app-volume.png", TypePicked(MacroActionType.AppVolume)),
-                        ("macros-type-mouse-move.png", TypePicked(MacroActionType.MouseMove)),
-                        ("macros-type-run-program.png", TypePicked(MacroActionType.RunProgram)),
-                        ("macros-type-axis-set.png", TypePicked(MacroActionType.AxisSet)),
-                        ("macros-type-trigger-effect.png", TypePicked(MacroActionType.TriggerEffect)),
-                        ("macros-type-play-sound.png", TypePicked(MacroActionType.PlaySound)),
                     };
+                    // A step of every action type, open on that type's fields.
+                    foreach (MacroActionType type in Enum.GetValues(typeof(MacroActionType)))
+                    {
+                        states.Add(("macros-type-" + type + ".png", TypePicked(type,
+                            type == MacroActionType.LightbarColor ? a => a.AddLightbarPaletteColorCommand.Execute(null) : null)));
+                    }
                     foreach (var (_, macro) in states) vm.Macros.Add(macro);
                     var page = new PadPage { DataContext = vm };
                     var ground = new Border { Background = (Brush)app.FindResource("SteelGroundBrush"), Child = page };
@@ -193,7 +191,7 @@ namespace PadForge.Tests
             }) { IsBackground = true };
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
-            Assert.True(thread.Join(TimeSpan.FromSeconds(90)), "The page render timed out. See steps.txt in the folder.");
+            Assert.True(thread.Join(TimeSpan.FromMinutes(8)), "The page render timed out. See steps.txt in the folder.");
             if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
         }
 

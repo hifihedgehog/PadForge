@@ -684,14 +684,18 @@ namespace PadForge.Tests
 
         /// <summary>The six Up and Down dropdowns bind the key list: the
         /// Incremental pair and the Ramp pair of an added source, and the
-        /// pair in the row's own strip. The two modifier dropdowns keep the
-        /// full list.</summary>
+        /// pair among the row's own options. The two modifier dropdowns
+        /// keep the full list. Each reaches the row through the root of the
+        /// options' template (#574): the list's open row and the bar under
+        /// the picture both show them, and only the list has a table row
+        /// above them.</summary>
         [Fact]
         public void TheSixUpAndDownDropdownsBindTheKeyList()
         {
             string xaml = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "PadPage.xaml"));
+            Assert.DoesNotContain("AncestorType={x:Type DataGridRow}", xaml);
             var bindings = Regex.Matches(xaml,
-                    @"ItemsSource=""\{Binding DataContext\.(\w+),\s*RelativeSource=\{RelativeSource AncestorType=\{x:Type DataGridRow\}\}\}""\s*SelectedItem=""\{Binding (Param\w+InputChoice),")
+                    @"ItemsSource=""\{Binding DataContext\.(\w+),\s*ElementName=RowOptionsRoot\}""\s*SelectedItem=""\{Binding (Param\w+InputChoice),")
                 .Select(m => (List: m.Groups[1].Value, Field: m.Groups[2].Value))
                 .ToList();
 

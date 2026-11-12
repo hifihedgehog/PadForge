@@ -1442,6 +1442,30 @@ namespace PadForge.Views
                 ControllerElementRecordRequested?.Invoke(this, target);
         }
 
+        // ─────────────────────────────────────────────
+        //  The bar under the picture (#574). A stick's or the D-pad's
+        //  rows stand in it side by side, and the one whose controls
+        //  last had the focus is the current row: the bar's value, Add
+        //  Source and options are that row's.
+        // ─────────────────────────────────────────────
+
+        /// <summary>The keyboard's focus came into one of the bar's blocks,
+        /// by Tab or by a click on one of its controls: its row is the
+        /// bar's current row. Rows of one control are already under the
+        /// picture together, so the pick changes no rows.</summary>
+        private void PickedBlock_GotFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is MappingItem row && DataContext is PadViewModel vm)
+                vm.PickedTarget = row.TargetSettingName;
+        }
+
+        /// <summary>Add Source in the bar opens the current row's options,
+        /// where the new source shows. The button's command adds it.</summary>
+        private void PickedAddSource_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PadViewModel vm) vm.IsPickedOptionsOpen = true;
+        }
+
         /// <summary>The header's More button opens its menu under itself. A
         /// context menu is outside the page's tree, so it is handed the
         /// page's view model for its commands.</summary>

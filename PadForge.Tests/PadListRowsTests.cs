@@ -397,16 +397,40 @@ namespace PadForge.Tests
             Assert.Equal("320", SetterOf(Keyed(page, "RowOptionPicker"), "Width"));
             Assert.Equal("180", SetterOf(Keyed(page, "RowOptionSlider"), "Width"));
 
-            var details = Assert.Single(table.Elements(), e => e.Name.LocalName == "DataGrid.RowDetailsTemplate");
-            var body = Assert.Single(Assert.Single(details.Elements()).Elements());
+            // The open row's body: the board's inset on the row's own fill,
+            // holding the row's source and value and then its options. Both
+            // are templates of the page's, which the bar under the picture
+            // shares.
+            var body = Assert.Single(Assert.Single(Assert.Single(table.Elements(),
+                e => e.Name.LocalName == "DataGrid.RowDetailsTemplate").Elements()).Elements());
             Assert.Equal("Border", body.Name.LocalName);
-            // The board's inset, on the row's own fill.
             Assert.Equal("16,2,8,12", (string)body.Attribute("Padding"));
             Assert.Null(body.Attribute("Background"));
             Assert.Null(body.Attribute("BorderThickness"));
+            var parts = Assert.Single(body.Elements()).Elements().ToList();
+            Assert.Equal(new[] { "{StaticResource MappingRowSource}", "{StaticResource MappingRowOptions}" },
+                parts.Select(p => (string)p.Attribute("ContentTemplate")));
+            Assert.All(parts, p =>
+            {
+                Assert.Equal("ContentControl", p.Name.LocalName);
+                Assert.Equal("{Binding}", (string)p.Attribute("Content"));
+                Assert.Equal("False", (string)p.Attribute("IsTabStop"));
+            });
 
-            var rows = details.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}").ToList();
+            var sourcePart = Keyed(page, "MappingRowSource");
+            var details = Keyed(page, "MappingRowOptions");
+            Assert.Equal("DataTemplate", sourcePart.Name.LocalName);
+            Assert.Equal("DataTemplate", details.Name.LocalName);
+            // The options reach their row through their own root: the bar
+            // has no table row above them to ask.
+            Assert.Equal("RowOptionsRoot", Name(Assert.Single(details.Elements())));
+            Assert.DoesNotContain("AncestorType={x:Type DataGridRow}", PageText());
+
+            var rows = sourcePart.Descendants().Concat(details.Descendants())
+                .Where(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}").ToList();
             Assert.All(rows, r => Assert.Equal("WrapPanel", r.Name.LocalName));
+            // Source and Value are the first part, and nothing else is.
+            Assert.Equal(2, sourcePart.Descendants().Count(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}"));
 
             XElement RowOf(string labelKey, string gate = null)
             {
@@ -451,11 +475,20 @@ namespace PadForge.Tests
             Assert.Equal("{Binding LiveLevel, Mode=OneWay}", (string)Assert.Single(value.Elements(), e => e.Name.LocalName == "ProgressBar").Attribute("Value"));
             Assert.Contains(value.Elements(), e => (string)e.Attribute("Text") == "{Binding CurrentValueText, Mode=OneWay}");
 
-            // Primary Mode.
+            // Primary Mode, the first of the options, with the kind's own
+            // inputs under it: the mode decides which inputs there are.
             var mode = RowOf("Pad_Mapping_PrimaryMode");
             Assert.Equal("{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
                 (string)Assert.Single(mode.Elements(), e => e.Name.LocalName == "ComboBox").Attribute("SelectedValue"));
             Assert.Equal("Kind", (string)ResetOf(mode, "Reset_MappingSourceItem_Kind_4282").Attribute("CommandParameter"));
+            var primary = Named(details, "PrimaryModeRows");
+            Assert.Same(Assert.Single(details.Elements()).Elements().First(), primary);
+            Assert.Equal("{Binding PrimaryKindSource}", (string)primary.Attribute("DataContext"));
+            Assert.Same(mode, primary.Elements().First());
+            var inputs = Assert.Single(primary.Elements(), e => ((string)e.Attribute("Visibility") ?? "")
+                .StartsWith("{Binding DataContext.IsPrimaryDescriptor, ElementName=RowOptionsRoot,", StringComparison.Ordinal));
+            Assert.Null(inputs.Attribute("DataContext"));
+            Assert.Equal(3, inputs.Elements().Count(e => (string)e.Attribute("Style") == "{StaticResource RowOptionLine}"));
 
             // The switches that were the Options column's checkboxes.
             foreach (var (key, flag, id, enabled, gate) in new[]
@@ -518,8 +551,184 @@ namespace PadForge.Tests
             // sideways, and no strip of an open row is a panel that cannot
             // wrap.
             Assert.Equal("Disabled", (string)table.Attribute("ScrollViewer.HorizontalScrollBarVisibility"));
-            Assert.DoesNotContain(details.Descendants(), e => e.Name.LocalName == "StackPanel"
+            Assert.DoesNotContain(sourcePart.Descendants().Concat(details.Descendants()), e => e.Name.LocalName == "StackPanel"
                 && (string)e.Attribute("Orientation") == "Horizontal");
+        }
+
+        // ── the bar under the picture ──────────────────────────────────
+
+        /// <summary>The bar's row is the one the pick names. On a gamepad a
+        /// stick's axes and the D-pad's directions are one control with the
+        /// group's name, and any other control is its own row. The bar
+        /// shows under the picture with a control picked, and its options
+        /// when they are opened.</summary>
+        [Fact]
+        public void TheBarIsOnThePickedRow()
+        {
+            var vm = new PadViewModel(0);
+            vm.ApplyMappingPickerFilter();
+            Assert.Null(vm.PickedRow);
+            Assert.Equal(string.Empty, vm.PickedName);
+            Assert.False(vm.ShowPictureBar);
+
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+
+            var a = vm.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            vm.PickedTarget = "ButtonA";
+            Assert.Same(a, vm.PickedRow);
+            Assert.Equal(a.TargetLabel, vm.PickedName);
+            Assert.True(vm.ShowPictureBar);
+            Assert.Contains(nameof(PadViewModel.PickedRow), raised);
+            Assert.Contains(nameof(PadViewModel.PickedName), raised);
+            Assert.Contains(nameof(PadViewModel.ShowPictureBar), raised);
+
+            // The options open and close, and hold from one pick to the next.
+            Assert.False(vm.ShowPickedOptions);
+            raised.Clear();
+            vm.IsPickedOptionsOpen = true;
+            Assert.True(vm.ShowPickedOptions);
+            Assert.Contains(nameof(PadViewModel.ShowPickedOptions), raised);
+
+            var stickY = vm.Mappings.Last(m => m.Category == MappingCategory.LeftStick);
+            vm.PickedTarget = stickY.TargetSettingName;
+            Assert.Same(stickY, vm.PickedRow);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_Host_LeftStick, vm.PickedName);
+            Assert.True(vm.ShowPickedOptions);
+            vm.PickedTarget = vm.Mappings.First(m => m.Category == MappingCategory.DPad).TargetSettingName;
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Preview_DPad, vm.PickedName);
+            vm.PickedTarget = vm.Mappings.First(m => m.Category == MappingCategory.RightStick).TargetSettingName;
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_Host_RightStick, vm.PickedName);
+
+            // The list has no bar, and the picture has it again.
+            raised.Clear();
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.False(vm.ShowPictureBar);
+            Assert.False(vm.ShowPickedOptions);
+            Assert.Contains(nameof(PadViewModel.ShowPictureBar), raised);
+            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+            Assert.True(vm.ShowPictureBar);
+
+            // Rows built again are new objects: the bar is on the new one.
+            var before = vm.PickedRow;
+            raised.Clear();
+            vm.RebuildMappings();
+            Assert.NotSame(before, vm.PickedRow);
+            Assert.Equal(before.TargetSettingName, vm.PickedRow.TargetSettingName);
+            Assert.Contains(nameof(PadViewModel.PickedRow), raised);
+
+            // A type with rows of its own names a control by its row.
+            vm.OutputType = VirtualControllerType.Midi;
+            vm.RebuildMappings();
+            var note = vm.Mappings.First();
+            vm.PickedTarget = note.TargetSettingName;
+            Assert.Equal(note.TargetLabel, vm.PickedName);
+
+            vm.PickedTarget = null;
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
+        }
+
+        /// <summary>The bar, as the Buttons board draws it: the control's
+        /// name, a block for each of its rows with the source's picker,
+        /// Record and Clear, then the current row's value with Add Source
+        /// and the way to its options, which open under the bar.</summary>
+        [Fact]
+        public void TheBarUnderThePictureIsAsItsBoardDrawsIt()
+        {
+            var page = Page();
+            var bar = Named(page, "PictureBar");
+            Assert.Equal("Border", bar.Name.LocalName);
+            Assert.Equal("1", (string)bar.Attribute("Grid.Row"));
+            Assert.Equal("20,16", (string)bar.Attribute("Padding"));
+            Assert.Equal("{Binding ShowPictureBar, Converter={StaticResource BoolToVisibilityConverter}}", (string)bar.Attribute("Visibility"));
+
+            // Three parts that share a line while the card has room: 170
+            // for the name, the blocks from 420 with nearly all that is
+            // left over, the value from 220.
+            var line = Assert.Single(bar.Elements());
+            Assert.Equal("FlexLinePanel", line.Name.LocalName);
+            Assert.Equal("28", (string)line.Attribute("Gap"));
+            Assert.Equal("14", (string)line.Attribute("LineGap"));
+            var parts = line.Elements().ToList();
+            Assert.Equal(3, parts.Count);
+            Assert.Equal(new[] { "170", "420", "220" },
+                parts.Select(p => (string)p.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.Basis")));
+            Assert.Equal("PickedNameText", Name(parts[0]));
+            Assert.Equal("{Binding PickedName}", (string)parts[0].Attribute("Text"));
+            Assert.Equal("20", (string)parts[0].Attribute("FontSize"));
+            Assert.Equal("SemiBold", (string)parts[0].Attribute("FontWeight"));
+
+            // The blocks: the view's rows, which under the picture are the
+            // picked control's.
+            var blocks = parts[1];
+            Assert.Equal("PickedBlocks", Name(blocks));
+            Assert.Equal("{Binding Mappings}", (string)blocks.Attribute("ItemsSource"));
+            Assert.Equal("999", (string)blocks.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.Grow"));
+            var tiles = Assert.Single(blocks.Descendants(), e => e.Name.LocalName == "TileGridPanel");
+            Assert.Equal("300", (string)tiles.Attribute("MinItemWidth"));
+            Assert.Equal("True", (string)tiles.Attribute("FillRows"));
+            var block = Assert.Single(blocks.Elements().Single(e => e.Name.LocalName == "ItemsControl.ItemTemplate").Elements()).Elements().First();
+            Assert.Equal("PickedBlock_GotFocus", (string)block.Attribute("GotKeyboardFocus"));
+            Assert.Equal("{Binding TargetLabel}", (string)Named(block, "Caption").Attribute("Text"));
+            var picker = Assert.Single(block.Descendants(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{Binding AvailableInputsView}", (string)picker.Attribute("ItemsSource"));
+            Assert.Equal("{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)picker.Attribute("SelectedItem"));
+            Assert.Equal("{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}", (string)picker.Attribute("Visibility"));
+            Assert.Equal("MappingComboBox_PreviewKeyDown", (string)picker.Attribute("PreviewKeyDown"));
+            // The closed picker names the input and its device, and an
+            // input in the list is its name alone.
+            Assert.Equal("DisplayName", (string)picker.Attributes().First(a => a.Name.LocalName == "TextSearch.TextPath"));
+            var device = Assert.Single(picker.Descendants(), e => (string)e.Attribute("Text") == "{Binding DeviceLabel}");
+            Assert.Equal("{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, ConverterParameter=Invert, FallbackValue=Visible}",
+                (string)device.Attribute("Visibility"));
+            Assert.Contains(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding ToggleRecordCommand}"
+                && (string)e.Attribute("IsEnabled") == "{Binding IsRecordable}");
+            Assert.Contains(block.Descendants(), e => (string)e.Attribute("Command") == "{Binding ClearCommand}");
+            // The current row's caption is in the text color.
+            var current = Assert.Single(blocks.Descendants(), e => e.Name.LocalName == "DataTrigger"
+                && (string)e.Attribute("Binding") == "{Binding IsRowSelected}");
+            Assert.Equal("Caption", (string)Assert.Single(current.Elements()).Attribute("TargetName"));
+
+            // The current row's value, Add Source and the options' switch.
+            var side = parts[2];
+            Assert.Equal("{Binding PickedRow}", (string)side.Attribute("DataContext"));
+            Assert.Equal("{Binding LiveLevel, Mode=OneWay}", (string)Assert.Single(side.Descendants(), e => e.Name.LocalName == "ProgressBar").Attribute("Value"));
+            Assert.Contains(side.Descendants(), e => (string)e.Attribute("Text") == "{Binding CurrentValueText, Mode=OneWay}");
+            var add = Named(side, "PickedAddSource");
+            Assert.Equal("{Binding AddExtraSourceCommand}", (string)add.Attribute("Command"));
+            Assert.Equal("PickedAddSource_Click", (string)add.Attribute("Click"));
+            var toggle = Named(side, "PickedOptionsToggle");
+            Assert.Equal("ToggleButton", toggle.Name.LocalName);
+            Assert.Equal("{Binding DataContext.IsPickedOptionsOpen, ElementName=PictureBar, Mode=TwoWay}", (string)toggle.Attribute("IsChecked"));
+
+            // The options, under the bar: the same rows as the list's open
+            // row shows.
+            var options = Named(page, "PickedOptions");
+            Assert.Equal("2", (string)options.Attribute("Grid.Row"));
+            Assert.Equal("{Binding ShowPickedOptions, Converter={StaticResource BoolToVisibilityConverter}}", (string)options.Attribute("Visibility"));
+            Assert.Equal("0,1,0,0", (string)options.Attribute("BorderThickness"));
+            var host = Assert.Single(options.Elements());
+            Assert.Equal("{Binding PickedRow}", (string)host.Attribute("Content"));
+            Assert.Equal("{StaticResource MappingRowOptions}", (string)host.Attribute("ContentTemplate"));
+
+            string code = CodeBehind();
+            Assert.Matches(@"private void PickedBlock_GotFocus\(object sender, KeyboardFocusChangedEventArgs e\)\s*\{\s*if \(\(sender as FrameworkElement\)\?\.DataContext is MappingItem row && DataContext is PadViewModel vm\)\s*vm\.PickedTarget = row\.TargetSettingName;", code);
+            Assert.Matches(@"private void PickedAddSource_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(DataContext is PadViewModel vm\) vm\.IsPickedOptionsOpen = true;", code);
+        }
+
+        /// <summary>The converter that shows a part of a picker's item in
+        /// the closed picker only: with Invert, something there is hides
+        /// it and nothing shows it.</summary>
+        [Fact]
+        public void NothingShowsWhatInvertHides()
+        {
+            var converter = new PadForge.Converters.NullToCollapsedConverter();
+            var culture = System.Globalization.CultureInfo.InvariantCulture;
+            Assert.Equal(System.Windows.Visibility.Visible, converter.Convert(new object(), typeof(System.Windows.Visibility), null, culture));
+            Assert.Equal(System.Windows.Visibility.Collapsed, converter.Convert(null, typeof(System.Windows.Visibility), null, culture));
+            Assert.Equal(System.Windows.Visibility.Collapsed, converter.Convert(new object(), typeof(System.Windows.Visibility), "Invert", culture));
+            Assert.Equal(System.Windows.Visibility.Visible, converter.Convert(null, typeof(System.Windows.Visibility), "Invert", culture));
         }
 
         /// <summary>A click on a closed row opens it, and a click on one of

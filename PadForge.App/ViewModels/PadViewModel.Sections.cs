@@ -151,6 +151,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsButtonsPictureView));
             OnPropertyChanged(nameof(IsButtonsListView));
             OnPropertyChanged(nameof(ShowOutputGroup));
+            RaisePickedChanged();
         }
 
         /// <summary>Which part of Macros &amp; Menus shows: 0 the macros,
@@ -206,7 +207,66 @@ namespace PadForge.ViewModels
                 // under the pointer.
                 if (IsButtonsPictureView && !SamePickRows(old, value)) ApplyMappingPickerFilter();
                 OnPropertyChanged();
+                RaisePickedChanged();
             }
+        }
+
+        /// <summary>The row the bar under the picture is on: the one
+        /// <see cref="PickedTarget"/> names. Its value, Add Source and
+        /// options stand at the bar's end. Null with nothing picked.</summary>
+        public MappingItem PickedRow => RowOfTarget(_pickedTarget);
+
+        /// <summary>The bar's heading: the picked control's name. On a
+        /// gamepad a stick's axes and the D-pad's directions are one
+        /// control, named as the list's group is. Any other control is its
+        /// one row.</summary>
+        public string PickedName
+        {
+            get
+            {
+                var row = PickedRow;
+                if (row == null) return string.Empty;
+                if (!HasGamepadRows(OutputType)) return row.TargetLabel;
+                return row.Category switch
+                {
+                    MappingCategory.DPad => Strings.Instance.Preview_DPad,
+                    MappingCategory.LeftStick => Strings.Instance.Menu_Host_LeftStick,
+                    MappingCategory.RightStick => Strings.Instance.Menu_Host_RightStick,
+                    _ => row.TargetLabel,
+                };
+            }
+        }
+
+        /// <summary>The bar shows: under the picture, with a control
+        /// picked.</summary>
+        public bool ShowPictureBar => IsButtonsPictureView && PickedRow != null;
+
+        private bool _isPickedOptionsOpen;
+
+        /// <summary>Whether the bar shows the current row's options under
+        /// itself. It holds from one pick to the next. Session only, never
+        /// saved.</summary>
+        public bool IsPickedOptionsOpen
+        {
+            get => _isPickedOptionsOpen;
+            set
+            {
+                if (!SetProperty(ref _isPickedOptionsOpen, value)) return;
+                OnPropertyChanged(nameof(ShowPickedOptions));
+            }
+        }
+
+        /// <summary>The current row's options show under the bar.</summary>
+        public bool ShowPickedOptions => ShowPictureBar && _isPickedOptionsOpen;
+
+        /// <summary>The picked row may be another: after a pick, a change
+        /// of view, or rows built again.</summary>
+        private void RaisePickedChanged()
+        {
+            OnPropertyChanged(nameof(PickedRow));
+            OnPropertyChanged(nameof(PickedName));
+            OnPropertyChanged(nameof(ShowPictureBar));
+            OnPropertyChanged(nameof(ShowPickedOptions));
         }
 
         /// <summary>Whether two picks put the same rows under the picture:

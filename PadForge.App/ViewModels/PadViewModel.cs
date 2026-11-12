@@ -1536,6 +1536,9 @@ namespace PadForge.ViewModels
                 $"MAPFILTER slot={PadIndex} search=\"{_mappingInputSearch}\" scope={_mappingSurfaceScope} surfaces={(OutputType == VirtualControllerType.KeyboardMouse ? KbmConfig?.Surfaces ?? "n/a" : "n/a")} hiddenDevices={HiddenPickerDeviceKeys.Count} rowsShown={(shown < 0 ? "n/a" : shown.ToString())}/{Mappings.Count}");
 
             OnPropertyChanged(nameof(MappingPickerFilterActive));
+            // The rows may be new objects (a rebuild ends here), so the
+            // picked row is read again.
+            RaisePickedChanged();
         }
 
         /// <summary>Rebuilds the device-filter popup rows from the current

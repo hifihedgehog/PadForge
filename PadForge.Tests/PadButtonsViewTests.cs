@@ -465,9 +465,11 @@ namespace PadForge.Tests
 
         // ── the table in the page ──────────────────────────────────────
 
-        /// <summary>The table is one element in both views. It folds away
-        /// while it has no rows and takes the picked row as its selected
-        /// row. It has no columns, so nothing measures them.</summary>
+        /// <summary>The table is the list. It folds away while it has no
+        /// rows, and under the picture, where the picked control's rows
+        /// are the bar's. It takes the picked row as its selected row in
+        /// both views, so the list opens on the control the picture left.
+        /// It has no columns, so nothing measures them.</summary>
         [Fact]
         public void OneTableServesBothViews()
         {
@@ -475,11 +477,15 @@ namespace PadForge.Tests
             var table = Named(page, "MappingDataGrid");
             Assert.Equal("2", (string)table.Attribute("Grid.Row"));
             Assert.Equal("{Binding Mappings}", (string)table.Attribute("ItemsSource"));
-            var trigger = Assert.Single(table.Elements().First(e => e.Name.LocalName == "DataGrid.Style").Descendants(),
-                e => e.Name.LocalName == "Trigger");
+            var tableStyle = table.Elements().First(e => e.Name.LocalName == "DataGrid.Style");
+            var trigger = Assert.Single(tableStyle.Descendants(), e => e.Name.LocalName == "Trigger");
             Assert.Equal("HasItems", (string)trigger.Attribute("Property"));
             Assert.Equal("False", (string)trigger.Attribute("Value"));
             Assert.Equal("Collapsed", (string)Assert.Single(trigger.Elements()).Attribute("Value"));
+            var underPicture = Assert.Single(tableStyle.Descendants(), e => e.Name.LocalName == "DataTrigger");
+            Assert.Equal("{Binding IsButtonsPictureView}", (string)underPicture.Attribute("Binding"));
+            Assert.Equal("True", (string)underPicture.Attribute("Value"));
+            Assert.Equal("Collapsed", (string)Assert.Single(underPicture.Elements()).Attribute("Value"));
 
             // The picture's view is a page that scrolls, so an open row or
             // an open card never squeezes the picture. The page's code
@@ -501,12 +507,12 @@ namespace PadForge.Tests
             Assert.Equal("1,0,1,1", (string)body.Attribute("BorderThickness"));
             Assert.Equal("0,0,10,10", (string)body.Attribute("CornerRadius"));
             // The picture stands on the page's ground inside the card's
-            // sides, and is the card's foot while no table follows it.
+            // sides, and is the card's foot while no bar follows it.
             var ground = Named(page, "PictureGround");
             Assert.Equal("1,0,1,0", (string)ground.Attribute("Margin"));
             Assert.Equal("{DynamicResource SteelGroundBrush}", (string)ground.Attribute("Background"));
             var foot = Assert.Single(ground.Descendants(), e => e.Name.LocalName == "DataTrigger"
-                && (string)e.Attribute("Binding") == "{Binding HasItems, ElementName=MappingDataGrid}");
+                && (string)e.Attribute("Binding") == "{Binding ShowPictureBar}");
             Assert.Equal("False", (string)foot.Attribute("Value"));
             Assert.Equal("0,0,9,9", (string)Assert.Single(foot.Elements()).Attribute("Value"));
             // The section: the top row, the list's chips, and the view's

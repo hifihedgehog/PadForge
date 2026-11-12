@@ -254,6 +254,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(OutputTabVisible));
                     OnPropertyChanged(nameof(ShowOutputGroup));
                     OnPropertyChanged(nameof(ShowMidiCard));
+                    OnPropertyChanged(nameof(ShowExtendedCard));
                     // The foot of the picture's card is a Keyboard + Mouse
                     // slot's (#574).
                     OnPropertyChanged(nameof(ShowKbmFoot));
@@ -552,8 +553,8 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// True when the slot's category uses an HIDMaestro profile (Xbox /
-        /// PlayStation / Extended). Drives the visibility of the profile picker bar
-        /// on the PadPage.
+        /// PlayStation / Nintendo / Extended). The header's Preset shows for
+        /// such a slot.
         /// </summary>
         public bool HasHMaestroProfileBar =>
             _outputType == VirtualControllerType.Xbox

@@ -231,7 +231,7 @@ namespace PadForge.Tests
                     foreach (var type in new[]
                              {
                                  PadForge.Engine.VirtualControllerType.Xbox, PadForge.Engine.VirtualControllerType.KeyboardMouse,
-                                 PadForge.Engine.VirtualControllerType.Midi,
+                                 PadForge.Engine.VirtualControllerType.Midi, PadForge.Engine.VirtualControllerType.Extended,
                              })
                     {
                         string file = "slot-" + type.ToString().ToLowerInvariant() + ".png";
@@ -252,6 +252,23 @@ namespace PadForge.Tests
                             Picture(open, () => midiMore.IsExpanded = true, TallHeight / 2);
                             Lookups(open);
                             midiMore.IsExpanded = false;
+                        }
+                        if (type == PadForge.Engine.VirtualControllerType.Extended)
+                        {
+                            // The slot's own card with Customize on, the page
+                            // scrolled to its foot, where what Customize shows
+                            // stands. Off again and back at the top after.
+                            var buttonsScroll = (ScrollViewer)page.FindName("ButtonsScroll");
+                            string custom = file.Replace(".png", "-custom.png");
+                            Picture(custom, () =>
+                            {
+                                vm.ExtendedConfig.Customize = true;
+                                Lay(ground, Height);
+                                buttonsScroll.ScrollToEnd();
+                            });
+                            Lookups(custom);
+                            vm.ExtendedConfig.Customize = false;
+                            buttonsScroll.ScrollToHome();
                         }
                     }
                 }

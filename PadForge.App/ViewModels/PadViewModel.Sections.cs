@@ -150,6 +150,11 @@ namespace PadForge.ViewModels
         /// runs of controls and notes.</summary>
         public bool ShowMidiCard => IsButtonsPictureView && OutputType == VirtualControllerType.Midi;
 
+        /// <summary>An Extended slot's card shows under the picture's card,
+        /// over the output cards: what is done to the slot as a whole, and
+        /// Customize with what it sets.</summary>
+        public bool ShowExtendedCard => IsButtonsPictureView && OutputType == VirtualControllerType.Extended;
+
         private void RaiseButtonsViewChanged()
         {
             OnPropertyChanged(nameof(ButtonsViewIndex));
@@ -157,6 +162,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsButtonsListView));
             OnPropertyChanged(nameof(ShowOutputGroup));
             OnPropertyChanged(nameof(ShowMidiCard));
+            OnPropertyChanged(nameof(ShowExtendedCard));
             RaisePickedChanged();
         }
 

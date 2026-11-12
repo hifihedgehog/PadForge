@@ -1474,7 +1474,7 @@ function Wait-EngineForging {
 function Get-PresetText {
     $padPage = Find-UIA -Aid "PadPageView"
     if (-not $padPage) { return $null }
-    foreach ($aid in @("ExtendedProfileCombo", "HMaestroProfileCombo", "KbmSurfacesCombo")) {
+    foreach ($aid in @("HMaestroProfileCombo", "KbmSurfacesCombo")) {
         $cb = Find-UIA -Parent $padPage -Aid $aid
         if (-not $cb) { continue }
         try {
@@ -5286,19 +5286,14 @@ function Select-Preset {
             $tabsSp = $padPage.FindAll($TC, $rbSp)
             if ((Get-Count $tabsSp) -gt 0) { Click-El $tabsSp[0] -Label "Preview tab (preset)" -Delay 1200 | Out-Null }
         }
-        # TWO CONTROLS, ONE JOB. The Xbox / PlayStation / Nintendo slots put
-        # the preset in the top chip bar as HMaestroProfileCombo. An EXTENDED
-        # slot renders its own ExtendedConfigBar instead, and the picker
-        # KbmSurfacesCombo is the Keyboard + Mouse slot's preset: HMaestroProfileCombo
-        # is COLLAPSED on that slot type and collapsed elements are invisible to
-        # UIA, so without this id the harness reports no preset combo on a slot
-        # whose picker is plainly on screen (#408).
-        # there is ExtendedProfileCombo (PadPage.xaml:808, x:Name only, which
-        # WPF surfaces as the AutomationId). Looking for the chip-bar id
-        # alone is why both Valve shots reported "no combo" on a slot whose
-        # picker was plainly on screen, and why the Extended block's own
-        # switch-to-Custom step has been silently doing nothing.
-        foreach ($aid in @("ExtendedProfileCombo", "HMaestroProfileCombo", "KbmSurfacesCombo")) {
+        # TWO CONTROLS, ONE JOB. Every slot with an HIDMaestro profile, an
+        # Extended one among them, has its preset in the header as
+        # HMaestroProfileCombo. KbmSurfacesCombo is the Keyboard + Mouse
+        # slot's preset: HMaestroProfileCombo is COLLAPSED on that slot type
+        # and collapsed elements are invisible to UIA, so without this id the
+        # harness reports no preset combo on a slot whose picker is plainly on
+        # screen (#408).
+        foreach ($aid in @("HMaestroProfileCombo", "KbmSurfacesCombo")) {
             $combo = Find-UIA -Parent $padPage -Aid $aid
             if ($combo) { break }
         }

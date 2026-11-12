@@ -330,10 +330,7 @@ namespace PadForge.Views
                 HMaestroProfileCombo?
                     .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
                     .UpdateTarget();
-                ExtendedProfileCombo?
-                    .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
-                    .UpdateTarget();
-                // The third preset combo needs it for the same reason, and
+                // The other preset combo needs it for the same reason, and
                 // more so: AvailableKbmSurfaces is an LCID-keyed cache that
                 // hands back a NEW array after a language change, and a
                 // Selector drops a selection whose item object is gone.
@@ -1222,8 +1219,25 @@ namespace PadForge.Views
         /// or it has not been laid out.</summary>
         private double FoldedOutputHeight()
         {
-            // A MIDI slot's card stands where the output cards do, and
-            // folds by its More row.
+            // The slot's own card stands over the output cards.
+            double own = FoldedSlotCardHeight();
+            if (OutputGroup == null || !OutputGroup.IsVisible || OutputGroup.ActualHeight <= 0) return own > 0 ? own : double.NaN;
+            double height = OutputGroup.ActualHeight + OutputGroup.Margin.Top + OutputGroup.Margin.Bottom;
+            foreach (var card in new[] { SocdFoldCard, KbmSocdFoldCard, KeepAwakeFoldCard })
+            {
+                if (card == null || !card.IsVisible || !card.IsExpanded) continue;
+                if (card.Template?.FindName("ExpandSite", card) is FrameworkElement open)
+                    height -= open.ActualHeight;
+            }
+            return Math.Max(0, height) + own;
+        }
+
+        /// <summary>The slot's own card under the picture's card, folded: a
+        /// MIDI slot's with its More row closed, an Extended slot's without
+        /// what Customize shows. Nothing for a slot that has none. It goes
+        /// by each card's own Visibility, which the slot's type sets.</summary>
+        private double FoldedSlotCardHeight()
+        {
             if (MidiConfigBar != null && MidiConfigBar.Visibility == Visibility.Visible && MidiConfigBar.ActualHeight > 0)
             {
                 double card = MidiConfigBar.ActualHeight + MidiConfigBar.Margin.Top + MidiConfigBar.Margin.Bottom;
@@ -1232,15 +1246,14 @@ namespace PadForge.Views
                     card -= more.ActualHeight;
                 return Math.Max(0, card);
             }
-            if (OutputGroup == null || !OutputGroup.IsVisible || OutputGroup.ActualHeight <= 0) return double.NaN;
-            double height = OutputGroup.ActualHeight + OutputGroup.Margin.Top + OutputGroup.Margin.Bottom;
-            foreach (var card in new[] { SocdFoldCard, KbmSocdFoldCard, KeepAwakeFoldCard })
+            if (ExtendedConfigBar != null && ExtendedConfigBar.Visibility == Visibility.Visible && ExtendedConfigBar.ActualHeight > 0)
             {
-                if (card == null || !card.IsVisible || !card.IsExpanded) continue;
-                if (card.Template?.FindName("ExpandSite", card) is FrameworkElement open)
-                    height -= open.ActualHeight;
+                double card = ExtendedConfigBar.ActualHeight + ExtendedConfigBar.Margin.Top + ExtendedConfigBar.Margin.Bottom;
+                if (ExtendedCustomRows != null && ExtendedCustomRows.Visibility == Visibility.Visible)
+                    card -= ExtendedCustomRows.ActualHeight;
+                return Math.Max(0, card);
             }
-            return Math.Max(0, height);
+            return 0;
         }
 
         /// <summary>The folded height last measured.</summary>
@@ -3613,23 +3626,23 @@ namespace PadForge.Views
 
             bool isExtended = vm.OutputType == Engine.VirtualControllerType.Extended;
 
-            // Xbox / PlayStation use the compact preset dropdown bar; Extended
-            // has its own full config bar with profile + override fields, so
-            // hide the compact bar when Extended is active.
+            // The header's Preset shows for every slot that has an HIDMaestro
+            // profile, an Extended slot among them: its card under the picture
+            // holds what Customize sets and no picker of its own (#574).
             // Keyboard + Mouse rides the same chip (#408). It has no
             // HIDMaestro profile, so the chip was empty for it, but which
             // halves the slot drives is the same kind of choice as Xbox 360
             // against Elite. The chip carries two combos and shows one.
             bool isKbm = vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
 
-            HMaestroProfileBar.Visibility = ((vm.HasHMaestroProfileBar && !isExtended) || isKbm)
+            HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar || isKbm)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
             HMaestroProfileCombo.Visibility = isKbm ? Visibility.Collapsed : Visibility.Visible;
             KbmSurfacesCombo.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
-            ExtendedConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
-
+            // The card shows by the view model (ShowExtendedCard). Its
+            // boxes are filled for an Extended slot whether or not it shows.
             if (isExtended)
             {
                 _syncingExtendedConfig = true;

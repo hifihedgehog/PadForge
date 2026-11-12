@@ -2620,11 +2620,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <!-- Row 0: Device selector header -->
+            <!-- Row 0: the controller's header -->
             <RowDefinition Height="Auto"/>
-            <!-- Row 1: Extended config bar (visible only for Extended slots) -->
-            <RowDefinition Height="Auto"/>
-            <!-- Row 2: Configuration tabs -->
+            <!-- Row 1: the selected section -->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -3166,144 +3164,8 @@
             </Border>
         </StackPanel>
 
-        <!-- ══════════════════════════════════════
-             ROW 1: HIDMAESTRO PROFILE PICKER BAR
-             (visible for Xbox / PlayStation / Extended slots)
-             ══════════════════════════════════════ -->
-
-
-        <!-- ══════════════════════════════════════
-             ROW 1: EXTENDED CONFIGURATION BAR
-             (visible only when OutputType == Extended)
-             ══════════════════════════════════════ -->
-        <Border x:Name="ExtendedConfigBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,8" CornerRadius="4"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
-                Visibility="Collapsed">
-            <StackPanel>
-                <!-- Row 1: Profile picker + Import-from-device -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="0,0,6,0"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
-                    <ComboBox x:Name="ExtendedProfileCombo" Width="420" VerticalAlignment="Center"
-                              ItemsSource="{Binding AvailableProfiles}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="Id"
-                              SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ProfileId" Visibility="{Binding Visibility, ElementName=ExtendedProfileCombo}" SettingLabel="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ProfileId_845" Margin="4,0,8,0"/>
-                    <Button x:Name="ExtendedImportBtn"
-                            Content="{Binding Pad_ExtendedImportFromDevice, Source={x:Static strings:Strings.Instance}}"
-                            Margin="12,0,0,0" VerticalAlignment="Center"
-                            Click="ExtendedImportBtn_Click"
-                            ToolTip="{Binding Pad_ExtendedImportFromDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <Button x:Name="ExtendedCloneBtn"
-                            Content="{Binding Pad_ExtendedCloneDevice, Source={x:Static strings:Strings.Instance}}"
-                            Margin="8,0,0,0" VerticalAlignment="Center"
-                            Click="ExtendedCloneBtn_Click"
-                            ToolTip="{Binding Pad_ExtendedCloneDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                </StackPanel>
-
-                <!-- Row 2: Master Customize toggle. Controls IsEnabled of rows 3+4 below.
-                     When off, the VC uses the catalog profile as-is with no overrides. -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedCustomizeChk"
-                              VerticalAlignment="Center"
-                              Content="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}"
-                              Checked="ExtendedCustomize_Toggled" Unchecked="ExtendedCustomize_Toggled"
-                              ToolTip="{Binding Pad_ExtendedCustomizeTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="Customize" Visibility="{Binding Visibility, ElementName=ExtendedCustomizeChk}" SettingLabel="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedCustomizeChk_865" Margin="4,0,8,0"/>
-                    <ui:Button x:Name="ExtendedResetDefaultsBtn" Style="{StaticResource ResetButton}"
-                            Click="ExtendedResetDefaults_Click"
-                            IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"
-                            ToolTip="{Binding Pad_ExtendedResetDefaultsTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                </StackPanel>
-
-                <!-- Row 3: Identity override (Product String / OEM / VID / PID) -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <TextBlock Text="{Binding Pad_ExtendedProductString, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               ToolTip="{Binding Pad_ExtendedProductStringTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBox x:Name="ExtendedProductStringBox" Width="280" VerticalAlignment="Center"
-                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ProductString" Visibility="{Binding Visibility, ElementName=ExtendedProductStringBox}" SettingLabel="{Binding Pad_ExtendedProductString, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedProductStringBox_880" Margin="4,0,8,0"/>
-
-                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedOemOverrideChk" Margin="6,0,0,0"
-                              VerticalAlignment="Center"
-                              Content="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}"
-                              Checked="ExtendedOemOverride_Toggled" Unchecked="ExtendedOemOverride_Toggled"
-                              ToolTip="{Binding Pad_ExtendedOemOverrideTooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="OemNameOverride" Visibility="{Binding Visibility, ElementName=ExtendedOemOverrideChk}" SettingLabel="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedOemOverrideChk_886" Margin="4,0,8,0"/>
-
-                    <TextBlock Text="{Binding Pad_ExtendedVid, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedVidBox" Width="78" VerticalAlignment="Center"
-                             TextAlignment="Center"
-                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="VendorId" Visibility="{Binding Visibility, ElementName=ExtendedVidBox}" SettingLabel="{Binding Pad_ExtendedVid, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedVidBox_893" Margin="4,0,8,0"/>
-
-                    <TextBlock Text="{Binding Pad_ExtendedPid, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="12,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedPidBox" Width="78" VerticalAlignment="Center"
-                             TextAlignment="Center"
-                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ProductId" Visibility="{Binding Visibility, ElementName=ExtendedPidBox}" SettingLabel="{Binding Pad_ExtendedPid, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedPidBox_900"/>
-                </StackPanel>
-
-                <!-- Row 4: Layout override (Sticks / Triggers / POVs / Buttons) -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <TextBlock Text="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="RawStickCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="RawStickCountBox"
-                             TextAlignment="Center" Text="2"
-                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ThumbstickCount" Visibility="{Binding Visibility, ElementName=RawStickCountBox}" SettingLabel="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawStickCountBox_912" Margin="4,0,8,0"/>
-
-                    <TextBlock Text="{Binding Pad_ExtendedTriggers, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="ExtendedTriggerCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="ExtendedTriggerCountBox"
-                             TextAlignment="Center" Text="2"
-                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="TriggerCount" Visibility="{Binding Visibility, ElementName=ExtendedTriggerCountBox}" SettingLabel="{Binding Pad_ExtendedTriggers, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedTriggerCountBox_920" Margin="4,0,8,0"/>
-
-                    <TextBlock Text="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="RawPovCountBox" Width="40" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="RawPovCountBox"
-                             TextAlignment="Center" Text="1"
-                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="PovCount" Visibility="{Binding Visibility, ElementName=RawPovCountBox}" SettingLabel="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawPovCountBox_928" Margin="4,0,8,0"/>
-
-                    <TextBlock Text="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="10,0,4,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBox x:Name="RawButtonCountBox" Width="72" VerticalAlignment="Center"
-                             AutomationProperties.AutomationId="RawButtonCountBox"
-                             TextAlignment="Center" Text="11"
-                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ButtonCount" Visibility="{Binding Visibility, ElementName=RawButtonCountBox}" SettingLabel="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawButtonCountBox_936" Margin="4,0,8,0"/>
-
-                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedForceFeedbackChk" Margin="14,0,0,0"
-                              VerticalAlignment="Center"
-                              Content="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}"
-                              IsChecked="{Binding ExtendedConfig.ForceFeedbackEnabled, Mode=TwoWay}" IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"/>
-                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ForceFeedbackEnabled" Visibility="{Binding Visibility, ElementName=ExtendedForceFeedbackChk}" SettingLabel="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_ExtendedSlotConfig_ForceFeedbackEnabled_941"/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
         <!-- ═══════════════════════════════════════════
-             ROW 2: the selected section (#574).
+             ROW 1: the selected section (#574).
              Six sections, in the header's order. Buttons and Macros &
              Menus show one part at a time under a part switch, since
              the preview, the mapping table, the macro editor and the
@@ -3314,7 +3176,7 @@
              number, 0 to 17, in SelectedConfigTab, and
              PadViewModel.Sections.cs maps a tab to its section.
              ═══════════════════════════════════════════ -->
-        <controls:ContentTabControl Grid.Row="2"
+        <controls:ContentTabControl Grid.Row="1"
                     PreviewKeyDown="ConfigTabControl_PreviewKeyDown"
                     SelectedIndex="{Binding SelectedSection, Mode=OneWay}">
             <TabControl.Template>
@@ -3879,11 +3741,13 @@
                     <Grid x:Name="ButtonsPage" Margin="0,0,0,24">
                         <Grid.RowDefinitions>
                             <!-- The picture, the line under it, the table, the
-                                 slot's own foot, the output cards. -->
+                                 slot's own foot, the slot's own card, the
+                                 output cards. -->
                             <RowDefinition x:Name="ButtonsPictureRow" Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition x:Name="ButtonsTableRow" Height="Auto"/>
                             <RowDefinition x:Name="ButtonsFootRow" Height="Auto"/>
+                            <RowDefinition x:Name="ButtonsSlotCardRow" Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <!-- Nothing sits in this row. In the picture's
                                  view the page's code gives it what the
@@ -4861,8 +4725,118 @@
                         </controls:FlexLinePanel>
                     </Border>
 
+                    <!-- An Extended slot's card (#574), under the picture's card, where a MIDI
+                         slot has its own. No board draws it, so it is a card as the MIDI
+                         board's. The profiles the user imported and the 1:1 clone of a device,
+                         then Customize, the switch that lets the slot differ from its preset,
+                         with its settings under it while it is on: the name and the ids Windows
+                         is told, and how many sticks, triggers, POVs and buttons the controller
+                         has. The preset itself is the header's, as on every slot. The page's
+                         code fills the boxes and writes them back (SyncExtendedFields,
+                         ExtendedOverride_Changed, ExtendedCustomValue_Changed). The picture is
+                         sized with the card in view, without what Customize shows. -->
+                    <Border Grid.Row="4" x:Name="ExtendedConfigBar" Style="{StaticResource CardBorder}" Margin="0,16,0,0"
+                            SizeChanged="OutputGroup_SizeChanged"
+                            Visibility="{Binding ShowExtendedCard, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                                <!-- Reset All: every setting Customize shows, back to the preset's. -->
+                                <ui:Button x:Name="ExtendedResetDefaultsBtn" Style="{StaticResource ResetAllButton}"
+                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                           Click="ExtendedResetDefaults_Click"
+                                           IsEnabled="{Binding IsChecked, ElementName=ExtendedCustomizeChk}"
+                                           ToolTip="{Binding Pad_ExtendedResetDefaultsTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            </DockPanel>
+                            <!-- What is done to the slot as a whole. -->
+                            <WrapPanel Margin="0,4,0,4">
+                                <Button x:Name="ExtendedImportBtn" MinHeight="36" Margin="0,0,8,0"
+                                        Content="{Binding Pad_ExtendedImportFromDevice, Source={x:Static strings:Strings.Instance}}"
+                                        Click="ExtendedImportBtn_Click"
+                                        ToolTip="{Binding Pad_ExtendedImportFromDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <Button x:Name="ExtendedCloneBtn" MinHeight="36"
+                                        Content="{Binding Pad_ExtendedCloneDevice, Source={x:Static strings:Strings.Instance}}"
+                                        Click="ExtendedCloneBtn_Click"
+                                        ToolTip="{Binding Pad_ExtendedCloneDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            </WrapPanel>
+                            <!-- Customize: off, the virtual controller is the preset as it ships. -->
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           ToolTip="{Binding Pad_ExtendedCustomizeTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <CheckBox x:Name="ExtendedCustomizeChk" Style="{StaticResource SwitchCheckBox}"
+                                          Content="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}"
+                                          Checked="ExtendedCustomize_Toggled" Unchecked="ExtendedCustomize_Toggled"
+                                          ToolTip="{Binding Pad_ExtendedCustomizeTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="Customize" Visibility="{Binding Visibility, ElementName=ExtendedCustomizeChk}" SettingLabel="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedCustomizeChk_865"/>
+                            </controls:SettingRow>
+                            <!-- What Customize sets, while it is on: the identity, then the layout. -->
+                            <StackPanel x:Name="ExtendedCustomRows"
+                                        Visibility="{Binding IsChecked, ElementName=ExtendedCustomizeChk, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedProductString, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           ToolTip="{Binding Pad_ExtendedProductStringTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox x:Name="ExtendedProductStringBox" Width="280" MinHeight="34" VerticalAlignment="Center"
+                                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ProductString" Visibility="{Binding Visibility, ElementName=ExtendedProductStringBox}" SettingLabel="{Binding Pad_ExtendedProductString, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedProductStringBox_880"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           ToolTip="{Binding Pad_ExtendedOemOverrideTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <CheckBox x:Name="ExtendedOemOverrideChk" Style="{StaticResource SwitchCheckBox}"
+                                              Content="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}"
+                                              Checked="ExtendedOemOverride_Toggled" Unchecked="ExtendedOemOverride_Toggled"
+                                              ToolTip="{Binding Pad_ExtendedOemOverrideTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="OemNameOverride" Visibility="{Binding Visibility, ElementName=ExtendedOemOverrideChk}" SettingLabel="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedOemOverrideChk_886"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedVid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="ExtendedVidBox" Style="{StaticResource CardNumberBox}" Width="78"
+                                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="VendorId" Visibility="{Binding Visibility, ElementName=ExtendedVidBox}" SettingLabel="{Binding Pad_ExtendedVid, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedVidBox_893"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedPid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="ExtendedPidBox" Style="{StaticResource CardNumberBox}" Width="78"
+                                             LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ProductId" Visibility="{Binding Visibility, ElementName=ExtendedPidBox}" SettingLabel="{Binding Pad_ExtendedPid, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedPidBox_900"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="RawStickCountBox" Style="{StaticResource CardNumberBox}" AutomationProperties.AutomationId="RawStickCountBox"
+                                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ThumbstickCount" Visibility="{Binding Visibility, ElementName=RawStickCountBox}" SettingLabel="{Binding Pad_ExtendedSticks, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawStickCountBox_912"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedTriggers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="ExtendedTriggerCountBox" Style="{StaticResource CardNumberBox}" AutomationProperties.AutomationId="ExtendedTriggerCountBox"
+                                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="TriggerCount" Visibility="{Binding Visibility, ElementName=ExtendedTriggerCountBox}" SettingLabel="{Binding Pad_ExtendedTriggers, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ExtendedTriggerCountBox_920"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="RawPovCountBox" Style="{StaticResource CardNumberBox}" AutomationProperties.AutomationId="RawPovCountBox"
+                                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="PovCount" Visibility="{Binding Visibility, ElementName=RawPovCountBox}" SettingLabel="{Binding Pad_ExtendedPOVs, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawPovCountBox_928"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <TextBox x:Name="RawButtonCountBox" Style="{StaticResource CardNumberBox}" AutomationProperties.AutomationId="RawButtonCountBox"
+                                             LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ButtonCount" Visibility="{Binding Visibility, ElementName=RawButtonCountBox}" SettingLabel="{Binding Pad_ExtendedButtons, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_RawButtonCountBox_936"/>
+                                </controls:SettingRow>
+                                <controls:SettingRow MinHeight="44">
+                                    <TextBlock Text="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <CheckBox x:Name="ExtendedForceFeedbackChk" Style="{StaticResource SwitchCheckBox}"
+                                              Content="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding ExtendedConfig.ForceFeedbackEnabled, Mode=TwoWay}"/>
+                                    <reset:SettingResetButton Click="ResetExtendedSetting_Click" Tag="ForceFeedbackEnabled" Visibility="{Binding Visibility, ElementName=ExtendedForceFeedbackChk}" SettingLabel="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_ExtendedSlotConfig_ForceFeedbackEnabled_941"/>
+                                </controls:SettingRow>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
                     <!-- A MIDI slot's card (#574), as its board draws it: MIDI Output, under the
-                         picture's card, where a controller has its output cards. The port the
+                         picture's card, over where a controller has its output cards. The port the
                          slot sends to and its channel, and under More how many controls and
                          notes the slot has, where each run starts and how hard a note is struck.
                          The page's code fills the boxes from the slot's config and writes them
@@ -4959,7 +4933,7 @@
                          line each under the picture. The group carries the
                          tab's AutomationId and its slot-type gate: none on a
                          MIDI or VR slot. -->
-                    <GroupBox Grid.Row="4" x:Name="OutputGroup" Style="{StaticResource BareGroupBox}" Margin="0,8,0,0"
+                    <GroupBox Grid.Row="5" x:Name="OutputGroup" Style="{StaticResource BareGroupBox}" Margin="0,8,0,0"
                               SizeChanged="OutputGroup_SizeChanged"
                               AutomationProperties.AutomationId="OutputTab"
                               AutomationProperties.Name="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}"

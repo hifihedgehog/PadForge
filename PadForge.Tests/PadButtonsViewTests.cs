@@ -377,7 +377,7 @@ namespace PadForge.Tests
         {
             var page = Page();
             var group = Named(page, "OutputGroup");
-            Assert.Equal("4", (string)group.Attribute("Grid.Row"));
+            Assert.Equal("5", (string)group.Attribute("Grid.Row"));
             Assert.Equal("{StaticResource BareGroupBox}", (string)group.Attribute("Style"));
             // The parts stack at their full height in one list. The page
             // around them scrolls, so they have no scroll viewer of their
@@ -525,19 +525,20 @@ namespace PadForge.Tests
                     .Elements().Select(r => (string)r.Attribute("Height")));
             Assert.Equal("2", (string)scroll.Attribute("Grid.Row"));
             // The page inside: the picture, the line, the table, the slot's
-            // own foot, the cards, and an empty row that takes the viewport's
-            // leftover pixels.
+            // own foot, the slot's own card, the cards, and an empty row
+            // that takes the viewport's leftover pixels.
             var rows = Named(page, "ButtonsPage").Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions")
                 .Elements().ToList();
-            Assert.Equal(6, rows.Count);
+            Assert.Equal(7, rows.Count);
             Assert.All(rows, r => Assert.Equal("Auto", (string)r.Attribute("Height")));
             Assert.Equal("ButtonsPictureRow", Name(rows[0]));
             Assert.Equal("ButtonsTableRow", Name(rows[2]));
             Assert.Equal("ButtonsFootRow", Name(rows[3]));
-            Assert.Equal("ButtonsFillRow", Name(rows[5]));
-            Assert.Equal("4", (string)Named(page, "OutputGroup").Attribute("Grid.Row"));
+            Assert.Equal("ButtonsSlotCardRow", Name(rows[4]));
+            Assert.Equal("ButtonsFillRow", Name(rows[6]));
+            Assert.Equal("5", (string)Named(page, "OutputGroup").Attribute("Grid.Row"));
             Assert.DoesNotContain(Named(page, "ButtonsPage").Elements(),
-                e => (string)e.Attribute("Grid.Row") == "5");
+                e => (string)e.Attribute("Grid.Row") == "6");
             Assert.Equal("MappingDataGrid_PreviewMouseWheel", (string)table.Attribute("PreviewMouseWheel"));
 
             string code = CodeBehind();
@@ -552,7 +553,10 @@ namespace PadForge.Tests
             Assert.Matches(@"bool underPicture = DataContext is PadViewModel viewVm && viewVm\.IsButtonsPictureView;\s*if \(!underPicture && e\.AddedItems\.Count > 0 && e\.AddedItems\[0\] is MappingItem sel\)", code);
             Assert.Matches(@"double folded = SteadyFoldedHeight\(vm\.OutputTabVisible \|\| vm\.ShowMidiCard, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
             // Cards that are hidden or not laid out have no height to read.
-            Assert.Matches(@"if \(OutputGroup == null \|\| !OutputGroup\.IsVisible \|\| OutputGroup\.ActualHeight <= 0\) return double\.NaN;", code);
+            // With no output cards to measure, the slot's own card stands
+            // alone, and with neither there is nothing to read.
+            Assert.Matches(@"double own = FoldedSlotCardHeight\(\);\s*if \(OutputGroup == null \|\| !OutputGroup\.IsVisible \|\| OutputGroup\.ActualHeight <= 0\) return own > 0 \? own : double\.NaN;", code);
+            Assert.Matches(@"return Math\.Max\(0, height\) \+ own;", code);
             // The cards' folded height is the group as it stands less what
             // each open card shows, and a change of the group's height sizes
             // the picture again.
@@ -950,6 +954,133 @@ namespace PadForge.Tests
             // Reset All leaves the port while its row does not show.
             Assert.Matches(@"private void ResetMidiAll_Click\(object sender, RoutedEventArgs e\)\s*\{\s*bool port = DataContext is PadViewModel \{ IsLegacyMidi: true \};\s*ResetMidiFields\(port \? MidiFields : Array\.FindAll\(MidiFields, f => f != nameof\(MidiSlotConfig\.OutputPort\)\)\);\s*\}", resets);
             Assert.Matches(@"foreach \(string field in fields\) any \|= ResetMidiField\(config, field\);\s*if \(!any\) return;\s*if \(before != \(config\.CcCount, config\.StartCc, config\.NoteCount, config\.StartNote\)\) vm\.RebuildMappings\(\);\s*SyncMidiConfigBar\(\);", resets);
+        }
+
+        /// <summary>An Extended slot's card. No board draws it, so it is a
+        /// card as the MIDI board's, under the picture's card and over the
+        /// output cards: Reset All in its head, the two things done to the
+        /// slot as a whole, then Customize as a switch with what it sets
+        /// under it while it is on. The preset is the header's, as on every
+        /// slot, and the old bar with a preset picker of its own is gone,
+        /// and with it the page's second row.</summary>
+        [Fact]
+        public void AnExtendedSlotsCardStandsUnderThePicture()
+        {
+            var page = Page();
+            var card = Named(page, "ExtendedConfigBar");
+            Assert.Same(Named(page, "ButtonsPage"), card.Parent);
+            // The slot's own card has a row of its own, which a MIDI slot's
+            // card shares: a slot is one kind or the other.
+            Assert.Equal("4", (string)card.Attribute("Grid.Row"));
+            Assert.Equal("4", (string)Named(page, "MidiConfigBar").Attribute("Grid.Row"));
+            Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
+            Assert.Equal("0,16,0,0", (string)card.Attribute("Margin"));
+            Assert.Equal("{Binding ShowExtendedCard, Converter={StaticResource BoolToVisibilityConverter}}", (string)card.Attribute("Visibility"));
+            Assert.Equal("OutputGroup_SizeChanged", (string)card.Attribute("SizeChanged"));
+            var parts = Assert.Single(card.Elements()).Elements().ToList();
+            Assert.Equal(new[] { "DockPanel", "WrapPanel", "SettingRow", "StackPanel" }, parts.Select(e => e.Name.LocalName));
+
+            // The head: the title, and Reset All, which Customize makes usable.
+            var head = parts[0].Elements().ToList();
+            Assert.Equal("{StaticResource CardTitle}", (string)head[0].Attribute("Style"));
+            Assert.Equal("ExtendedResetDefaultsBtn", Name(head[1]));
+            Assert.Equal("{StaticResource ResetAllButton}", (string)head[1].Attribute("Style"));
+            Assert.Equal("ExtendedResetDefaults_Click", (string)head[1].Attribute("Click"));
+            Assert.Equal("{Binding IsChecked, ElementName=ExtendedCustomizeChk}", (string)head[1].Attribute("IsEnabled"));
+
+            // What is done to the slot as a whole.
+            Assert.Equal(new[] { "ExtendedImportBtn", "ExtendedCloneBtn" }, parts[1].Elements().Select(Name));
+            Assert.Equal(new[] { "ExtendedImportBtn_Click", "ExtendedCloneBtn_Click" }, parts[1].Elements().Select(e => (string)e.Attribute("Click")));
+            Assert.All(parts[1].Elements(), e => Assert.Equal("36", (string)e.Attribute("MinHeight")));
+
+            // Customize: a switch under its own label.
+            var customize = parts[2].Elements().ToList();
+            Assert.Equal(new[] { "TextBlock", "CheckBox", "SettingResetButton" }, customize.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Pad_ExtendedCustomize" + S, (string)customize[0].Attribute("Text"));
+            Assert.Equal("ExtendedCustomizeChk", Name(customize[1]));
+            Assert.Equal("{StaticResource SwitchCheckBox}", (string)customize[1].Attribute("Style"));
+            Assert.Equal("{Binding Pad_ExtendedCustomize" + S, (string)customize[1].Attribute("Content"));
+            Assert.Equal("ExtendedCustomize_Toggled", (string)customize[1].Attribute("Checked"));
+            Assert.Equal("ExtendedCustomize_Toggled", (string)customize[1].Attribute("Unchecked"));
+            Assert.Equal("Customize", (string)customize[2].Attribute("Tag"));
+
+            // What it sets shows while it is on: the identity, then the layout.
+            var custom = parts[3];
+            Assert.Equal("ExtendedCustomRows", Name(custom));
+            Assert.Equal("{Binding IsChecked, ElementName=ExtendedCustomizeChk, Converter={StaticResource BoolToVisibilityConverter}}", (string)custom.Attribute("Visibility"));
+            var rows = custom.Elements().ToList();
+            Assert.All(rows, r =>
+            {
+                Assert.Equal("SettingRow", r.Name.LocalName);
+                Assert.Equal("44", (string)r.Attribute("MinHeight"));
+                var own = r.Elements().ToList();
+                Assert.Equal(3, own.Count);
+                Assert.Equal("{StaticResource DzLabel}", (string)own[0].Attribute("Style"));
+                Assert.Equal("ResetExtendedSetting_Click", (string)own[2].Attribute("Click"));
+                // The reset is named as its row is.
+                Assert.Equal((string)own[0].Attribute("Text"), (string)own[2].Attribute("SettingLabel"));
+            });
+            Assert.Equal(new[]
+                {
+                    "ExtendedProductStringBox", "ExtendedOemOverrideChk", "ExtendedVidBox", "ExtendedPidBox",
+                    "RawStickCountBox", "ExtendedTriggerCountBox", "RawPovCountBox", "RawButtonCountBox", "ExtendedForceFeedbackChk",
+                },
+                rows.Select(r => Name(r.Elements().ElementAt(1))));
+            Assert.Equal(new[]
+                {
+                    "ProductString", "OemNameOverride", "VendorId", "ProductId",
+                    "ThumbstickCount", "TriggerCount", "PovCount", "ButtonCount", "ForceFeedbackEnabled",
+                },
+                rows.Select(r => (string)r.Elements().Last().Attribute("Tag")));
+            // A check box of the card is a switch, and a count is the card's number box.
+            Assert.All(rows.Select(r => r.Elements().ElementAt(1)).Where(e => e.Name.LocalName == "CheckBox"),
+                e => Assert.Equal("{StaticResource SwitchCheckBox}", (string)e.Attribute("Style")));
+            Assert.All(rows.Skip(2).Take(6).Select(r => r.Elements().ElementAt(1)),
+                e => Assert.Equal("{StaticResource CardNumberBox}", (string)e.Attribute("Style")));
+            Assert.All(rows.Skip(4).Take(4).Select(r => r.Elements().ElementAt(1)), e =>
+            {
+                Assert.Equal("ExtendedCustomValue_Changed", (string)e.Attribute("LostFocus"));
+                Assert.Equal("ExtendedCustomValue_KeyDown", (string)e.Attribute("KeyDown"));
+            });
+            Assert.Equal("{Binding ExtendedConfig.ForceFeedbackEnabled, Mode=TwoWay}", (string)rows[8].Elements().ElementAt(1).Attribute("IsChecked"));
+
+            // The preset is the header's on an Extended slot too, and the
+            // bar's own picker is gone.
+            string text = PageText();
+            string code = CodeBehind();
+            Assert.DoesNotContain("ExtendedProfileCombo", text);
+            Assert.DoesNotContain("ExtendedProfileCombo", code);
+            Assert.DoesNotContain("EXTENDED CONFIGURATION BAR", text);
+            Assert.Contains("HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar || isKbm)", code);
+            Assert.DoesNotContain("ExtendedConfigBar.Visibility = ", code);
+            Assert.DoesNotContain("ExtendedProfileCombo", ExtrasPageTests.RepoText("tools", "capture_all.ps1"));
+            // The page has two rows: its head and the selected section.
+            var root = page.Root!.Elements().Single(e => e.Name.LocalName == "Grid");
+            Assert.Equal(new[] { "Auto", "*" }, root.Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions")
+                .Elements().Select(r => (string)r.Attribute("Height")));
+            Assert.Equal("1", (string)root.Elements().Single(e => e.Name.LocalName == "ContentTabControl").Attribute("Grid.Row"));
+            Assert.DoesNotContain(root.Elements(), e => (string)e.Attribute("Grid.Row") == "2");
+
+            // The picture is sized with the card in view, without what
+            // Customize shows.
+            Assert.Matches(@"if \(ExtendedConfigBar != null && ExtendedConfigBar\.Visibility == Visibility\.Visible && ExtendedConfigBar\.ActualHeight > 0\)\s*\{\s*double card = ExtendedConfigBar\.ActualHeight \+ ExtendedConfigBar\.Margin\.Top \+ ExtendedConfigBar\.Margin\.Bottom;\s*if \(ExtendedCustomRows != null && ExtendedCustomRows\.Visibility == Visibility\.Visible\)\s*card -= ExtendedCustomRows\.ActualHeight;\s*return Math\.Max\(0, card\);\s*\}\s*return 0;", code);
+
+            // The view model: an Extended slot's, under the picture, with the
+            // output cards under it.
+            var vm = new PadViewModel(0);
+            Assert.False(vm.ShowExtendedCard);
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Extended;
+            Assert.True(vm.ShowExtendedCard);
+            Assert.True(vm.ShowOutputGroup);
+            Assert.False(vm.ShowMidiCard);
+            Assert.True(vm.HasHMaestroProfileBar);
+            Assert.Contains(nameof(PadViewModel.ShowExtendedCard), raised);
+            raised.Clear();
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.False(vm.ShowExtendedCard);
+            Assert.Contains(nameof(PadViewModel.ShowExtendedCard), raised);
         }
     }
 }

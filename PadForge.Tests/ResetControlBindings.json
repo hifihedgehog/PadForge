@@ -133,12 +133,6 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_ProfileId_845",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "ProfileId"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroItem_TriggerMode_1297",
     "Owner": "PadForge.ViewModels.MacroItem",
     "Property": "TriggerMode"

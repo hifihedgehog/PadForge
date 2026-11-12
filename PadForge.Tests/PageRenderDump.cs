@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -22,7 +25,10 @@ namespace PadForge.Tests
     /// a real setup may not have. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
-    /// steps it reached into steps.txt.</summary>
+    /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
+    /// of a part that shows which looks up an ancestor or a named element and found none. Such a
+    /// binding leaves its part as it was made, so a part that should hide shows (the selected
+    /// action's fields showed with no action selected, 2026-11-11).</summary>
     [Collection("WpfApplicationSingleton")]
     public class PageRenderDump
     {
@@ -37,6 +43,14 @@ namespace PadForge.Tests
             macro.Actions.Add(new MacroAction { Type = MacroActionType.ButtonPress, ButtonFlags = 0x1000, DurationMs = 100 });
             macro.Actions.Add(new MacroAction { Type = MacroActionType.Delay, DurationMs = 200 });
             macro.Actions.Add(new MacroAction { Type = MacroActionType.MouseButtonPress, MouseButton = MacroMouseButton.Left });
+            return macro;
+        }
+
+        private static MacroItem PickedStep()
+        {
+            var macro = QuickCombo();
+            macro.Name = "Picked Step";
+            macro.SelectedAction = macro.Actions[1];
             return macro;
         }
 
@@ -91,6 +105,7 @@ namespace PadForge.Tests
                     var states = new (string File, MacroItem Macro)[]
                     {
                         ("macros-quick-combo.png", QuickCombo()),
+                        ("macros-step-picked.png", PickedStep()),
                         ("macros-axis-inputs.png", AxisInputs()),
                         ("macros-no-inputs.png", new MacroItem { Name = "New Macro" }),
                         ("macros-recording.png", new MacroItem { Name = "Recording", TriggerButtons = 0x1000, IsRecordingTrigger = true }),
@@ -115,6 +130,9 @@ namespace PadForge.Tests
                         using var stream = File.Create(Path.Combine(dir, file));
                         png.Save(stream);
                         Step("drew " + file);
+                        var lost = LostLookups(ground);
+                        File.AppendAllLines(Path.Combine(dir, "lookups.txt"),
+                            new[] { file + ": " + lost.Count + " lookups found nothing" }.Concat(lost.Select(l => "   " + l)));
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }
@@ -157,6 +175,43 @@ namespace PadForge.Tests
             if (queued[0].Status != DispatcherOperationStatus.Aborted)
                 throw new InvalidOperationException("The app's startup could not be taken off the dispatcher: " + queued[0].Status + ".");
             return app;
+        }
+
+        // The properties a binding most often shows, hides, fills or wires a
+        // part through.
+        private static readonly DependencyProperty[] Looked =
+        {
+            UIElement.VisibilityProperty, UIElement.IsEnabledProperty, FrameworkElement.DataContextProperty,
+            FrameworkElement.WidthProperty, FrameworkElement.MaxWidthProperty, FrameworkElement.TagProperty, FrameworkElement.ToolTipProperty,
+            ButtonBase.CommandProperty, ButtonBase.CommandParameterProperty, ToggleButton.IsCheckedProperty,
+            TextBlock.TextProperty, TextBox.TextProperty, ContentControl.ContentProperty,
+            ItemsControl.ItemsSourceProperty, Selector.SelectedItemProperty, Selector.SelectedValueProperty, Selector.SelectedIndexProperty,
+            RangeBase.ValueProperty, Control.ForegroundProperty, System.Windows.Shapes.Shape.StrokeProperty, System.Windows.Shapes.Shape.FillProperty,
+        };
+
+        /// <summary>The bindings under a part that look up an ancestor or a
+        /// named element and are not bound.</summary>
+        private static List<string> LostLookups(DependencyObject root)
+        {
+            var lost = new List<string>();
+            var open = new Stack<DependencyObject>();
+            open.Push(root);
+            while (open.Count > 0)
+            {
+                var part = open.Pop();
+                foreach (var property in Looked)
+                {
+                    var bound = BindingOperations.GetBindingExpression(part, property);
+                    var binding = bound?.ParentBinding;
+                    if (binding == null || bound.Status == BindingStatus.Active) continue;
+                    bool ancestor = binding.RelativeSource != null && binding.RelativeSource.Mode == RelativeSourceMode.FindAncestor;
+                    if (!ancestor && string.IsNullOrEmpty(binding.ElementName)) continue;
+                    lost.Add(part.GetType().Name + " '" + (part as FrameworkElement)?.Name + "' " + property.Name + " <- " + binding.Path?.Path + " from "
+                        + (ancestor ? "the nearest " + binding.RelativeSource.AncestorType?.Name : "the element " + binding.ElementName) + ": " + bound.Status);
+                }
+                for (int i = VisualTreeHelper.GetChildrenCount(part) - 1; i >= 0; i--) open.Push(VisualTreeHelper.GetChild(part, i));
+            }
+            return lost;
         }
 
         /// <summary>Lays the page out at the picture's size. With no window

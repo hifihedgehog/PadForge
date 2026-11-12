@@ -345,6 +345,51 @@
             <TextBlock Text="{Binding Pad_Formula_Status_And, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
         </DataTemplate>
+        <!-- A step of a macro's actions, as the Macros board draws it: 42 tall with
+             corners of 6, the band fill inside a soft edge, 12 at its start and 4 at
+             its end, and 6 under it. The picked step, whose fields show under the
+             steps, has the ember fill a picked macro has, inside an ember rim. -->
+        <Style x:Key="StepItem" TargetType="ListBoxItem">
+            <!-- A step is read by what it does: with a template of its own it
+                 would be read as its type. -->
+            <Setter Property="AutomationProperties.Name" Value="{Binding DisplayText, TargetNullValue=''}"/>
+            <Setter Property="MinHeight" Value="42"/>
+            <Setter Property="Padding" Value="12,0,4,0"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" CornerRadius="6" BorderThickness="1"
+                                Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+                            </Trigger>
+                            <!-- After the pointer's, so the picked step keeps its rim
+                                 under the pointer. -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#66FF6B2C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A step's remove: the quiet icon button. It is no Tab stop, since the
+             step is one, and Remove under the steps takes the picked step out. -->
+        <Style x:Key="StepRemove" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="IsTabStop" Value="False"/>
+        </Style>
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -13592,54 +13637,66 @@
                                         <Border x:Name="MacroDoBlock" Style="{StaticResource EditorBlock}">
                                             <StackPanel>
                                                 <TextBlock Style="{StaticResource EditorBlockHead}" Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}"/>
-                            <!-- Action steps as ember dst chips (#175 item 80):
-                                 each step writes output, so the rows inherit the
-                                 mapping grid's ember chip grammar. Selection and
-                                 interaction stay on the ListBox container. -->
-                            <!-- Bounding box so the sequence reads as one list (user
-                                 report): a steel-lined well. Drag a chip to reorder.
-                                 The drop commits Actions.Move (handlers in code-behind). -->
-                            <Border BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
-                                    CornerRadius="6" Background="{DynamicResource SteelRaisedBrush}"
-                                    Padding="4" Margin="0,0,0,4">
-                                <ListBox x:Name="ActionsList" ItemsSource="{Binding Actions}"
-                                         SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
-                                         ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                                         Background="Transparent" BorderThickness="0"
-                                         MinHeight="100" MaxHeight="200"
-                                         HorizontalContentAlignment="Stretch"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         AllowDrop="True"
-                                         PreviewKeyDown="ActionsList_PreviewKeyDown"
-                                         PreviewMouseLeftButtonDown="ActionsList_PreviewMouseLeftButtonDown"
-                                         PreviewMouseMove="ActionsList_PreviewMouseMove"
-                                         DragOver="ActionsList_DragOver"
-                                         Drop="ActionsList_Drop">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <!-- Wrap long summaries (e.g. a multi-button Button Press)
-                                                 instead of running off the edge. The list disables
-                                                 horizontal scroll so the chip is width-constrained and
-                                                 the text wraps to a second line. -->
-                                            <Border Style="{StaticResource ChipEmber}"
-                                                    HorizontalAlignment="Left" Margin="0,1">
-                                                <TextBlock Text="{Binding DisplayText}" TextWrapping="Wrap"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Border>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <Button Content="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddActionCommand}"
-                                        Padding="8,4" Margin="0,0,4,0"/>
-                                <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveActionCommand}"
-                                        Padding="8,4" Margin="0,0,4,0"/>
-                                <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateActionCommand}"
-                                        Padding="8,4"/>
-                            </StackPanel>
+                                                <!-- The macro's actions, as the board draws them: numbered steps, one under
+                                                     the other, each with its remove at its end. Drag a step onto another to
+                                                     move it (the drop commits Actions.Move, in code-behind), or move the
+                                                     picked one with Alt+Up and Alt+Down. The list has no scroll view of its
+                                                     own: the page scrolls. -->
+                                                <ListBox x:Name="ActionsList" ItemsSource="{Binding Actions}"
+                                                         SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                                         Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource StepItem}"
+                                                         AlternationCount="100000"
+                                                         AllowDrop="True"
+                                                         PreviewKeyDown="ActionsList_PreviewKeyDown"
+                                                         PreviewMouseLeftButtonDown="ActionsList_PreviewMouseLeftButtonDown"
+                                                         PreviewMouseMove="ActionsList_PreviewMouseMove"
+                                                         DragOver="ActionsList_DragOver"
+                                                         Drop="ActionsList_Drop">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <DockPanel>
+                                                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource StepRemove}"
+                                                                           Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                                           CommandParameter="{Binding}"
+                                                                           AutomationProperties.Name="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
+                                                                    <Path FlowDirection="LeftToRight" Data="M 3.5,3.5 L 10.5,10.5 M 10.5,3.5 L 3.5,10.5" Width="14" Height="14"
+                                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                                                </ui:Button>
+                                                                <!-- The step's number: its place in the list, from one. -->
+                                                                <TextBlock Width="18" Margin="0,0,10,0" VerticalAlignment="Center" FontSize="13"
+                                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                           Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource OneBasedIndexConverter}}"/>
+                                                                <!-- A long step, such as a press of many buttons, wraps. -->
+                                                                <TextBlock Text="{Binding DisplayText}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                            </DockPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                                <!-- Add Action, as the board draws it: no fill, a plus and the words in the
+                                                     text color, drawn out 14 so its plus stands at the steps' edge. Duplicate
+                                                     and Remove act on the picked step. -->
+                                                <controls:FlexLinePanel Gap="4" LineGap="4" Margin="-14,2,0,0">
+                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding AddActionCommand}"
+                                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                               AutomationProperties.Name="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
+                                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                  StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </ui:Button>
+                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding DuplicateActionCommand}"
+                                                               Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding RemoveActionCommand}"
+                                                               Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
+                                                </controls:FlexLinePanel>
                             <!-- Action editor (shows when an action is selected) -->
                             <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
-                                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12"
+                                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,8,0,12"
                                     DataContext="{Binding SelectedAction}"
                                     Visibility="{Binding DataContext.SelectedAction,
                                         ElementName=MacroEditorHost,

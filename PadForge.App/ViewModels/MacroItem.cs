@@ -2811,6 +2811,20 @@ namespace PadForge.ViewModels
                 }
             }, () => _selectedAction != null);
 
+        private RelayCommand<MacroAction> _removeStepCommand;
+        /// <summary>Removes one action, by the remove at its own step's end
+        /// (#574). The selected action stays selected unless it is the one
+        /// removed, and then the last one is, as Remove leaves it.</summary>
+        public RelayCommand<MacroAction> RemoveStepCommand =>
+            _removeStepCommand ??= new RelayCommand<MacroAction>(step =>
+            {
+                // Read before the removal: a list bound to the selection
+                // clears it as its item goes.
+                bool wasSelected = ReferenceEquals(step, _selectedAction);
+                if (step == null || !Actions.Remove(step)) return;
+                if (wasSelected) SelectedAction = Actions.LastOrDefault();
+            });
+
         private RelayCommand _duplicateActionCommand;
         /// <summary>Duplicates the selected action and inserts the clone right after it
         /// (#112). Round-trips through the ActionData DTO for a clean deep copy, then

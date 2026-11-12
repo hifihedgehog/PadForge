@@ -5741,7 +5741,23 @@ namespace PadForge.Views
         private void ActionsList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _actionDragStart = e.GetPosition(null);
-            _actionDragItem = ActionFromVisual(e.OriginalSource as DependencyObject);
+            // A press on a step's own button is the button's. It starts no
+            // drag, or a hand that moves while it presses a step's remove
+            // would carry the step off.
+            var pressed = e.OriginalSource as DependencyObject;
+            _actionDragItem = IsInAButtonOfAStep(pressed) ? null : ActionFromVisual(pressed);
+        }
+
+        /// <summary>Whether an element of a step stands in a button of the
+        /// step, such as its remove.</summary>
+        internal static bool IsInAButtonOfAStep(DependencyObject d)
+        {
+            while (d != null && d is not ListBoxItem)
+            {
+                if (d is System.Windows.Controls.Primitives.ButtonBase) return true;
+                d = PadForge.Common.TreeWalk.Parent(d);
+            }
+            return false;
         }
 
         private void ActionsList_PreviewMouseMove(object sender, MouseEventArgs e)

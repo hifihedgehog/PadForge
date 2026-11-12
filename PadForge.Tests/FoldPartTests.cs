@@ -391,6 +391,26 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)color.Attribute("Value"));
         }
 
+        /// <summary>A quiet button has no fill and no edge, and none while
+        /// it cannot be used: the two keys the button template fills and
+        /// rings a disabled button from are shadowed with nothing. Left to
+        /// the theme they drew a box around Duplicate and Remove under a
+        /// macro's steps while no step was picked (seen 2026-11-12).</summary>
+        [Fact]
+        public void AQuietButton_HasNoFillAndNoEdge_AlsoWhileItCannotBeUsed()
+        {
+            var app = XDocument.Parse(RepoText("PadForge.App", "App.xaml"));
+            var quiet = Assert.Single(app.Descendants(), e => e.Name.LocalName == "Style" && (string)e.Attribute(Xaml + "Key") == "QuietButton");
+            string Setter(string property) => (string)Assert.Single(quiet.Elements(),
+                e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property).Attribute("Value");
+            Assert.Equal("Transparent", Setter("Background"));
+            Assert.Equal("Transparent", Setter("BorderBrush"));
+            Assert.Equal("{StaticResource PadUiButtonTemplate}", Setter("Template"));
+            var shadowed = quiet.Elements().Single(e => e.Name.LocalName == "Style.Resources").Elements().ToList();
+            Assert.Equal(new[] { "ButtonBackgroundDisabled", "ButtonBorderBrushDisabled" }, shadowed.Select(e => (string)e.Attribute(Xaml + "Key")));
+            Assert.All(shadowed, e => Assert.Equal("Transparent", (string)e.Attribute("Color")));
+        }
+
         /// <summary>A reset button rests with no ring and a dim glyph, and
         /// takes both back under the pointer or keyboard focus. Every reset
         /// style in the app is based on that one style.</summary>

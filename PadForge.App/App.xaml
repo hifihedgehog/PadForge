@@ -632,7 +632,12 @@
 
                 A quiet action has no fill and no edge until the pointer is
                 on it (QuietButton for a uictrl:Button, QuietPlainButton for
-                a plain Button).
+                a plain Button). A QuietButton that cannot be used has none
+                either: the button template fills and rings a disabled button
+                from two theme keys, which drew a box around Duplicate and
+                Remove under a macro's steps while no step was picked, and
+                the style shadows both keys with nothing, as a quiet reset's
+                does.
 
                 Dialog footer idiom (layout a style cannot carry): a
                 right-aligned horizontal StackPanel, Margin 0,18,0,0,
@@ -680,6 +685,10 @@
             </Style>
 
             <Style x:Key="QuietButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
+                </Style.Resources>
                 <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
                 <Setter Property="MinHeight" Value="36"/>
                 <Setter Property="Background" Value="Transparent"/>

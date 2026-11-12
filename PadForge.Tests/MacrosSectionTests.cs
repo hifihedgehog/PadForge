@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Threading;
+using System.Windows.Controls;
 using System.Xml.Linq;
 using PadForge.ViewModels;
+using PadForge.Views;
 using Xunit;
 
 namespace PadForge.Tests
@@ -347,7 +351,7 @@ namespace PadForge.Tests
             var doRows = Assert.Single(act.Elements()).Elements().ToList();
             Assert.Equal(4, doRows.Count);
             Assert.Equal("{Binding Macro_ActionSequence" + S, (string)doRows[0].Attribute("Text"));
-            Assert.Contains(doRows[1].Descendants(), e => Name(e) == "ActionsList");
+            Assert.Equal("ActionsList", Name(doRows[1]));
             Assert.Contains("AddActionCommand", doRows[2].ToString());
             Assert.Equal("{Binding SelectedAction}", (string)doRows[3].Attribute("DataContext"));
             Assert.Contains("ElementName=MacroEditorHost", (string)doRows[3].Attribute("Visibility"));
@@ -461,6 +465,175 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}", "{Binding ShowsLayerRow}" },
                 holder.Elements().Single(e => e.Name.LocalName == "StackPanel.Style").Descendants()
                     .Where(e => e.Name.LocalName == "DataTrigger").Select(e => (string)e.Attribute("Binding")));
+        }
+
+        /// <summary>A macro's actions are numbered steps, as the board draws
+        /// them: one under the other, each 42 tall on the band fill with
+        /// its number, what it does and its remove. The list keeps its
+        /// selection and the handlers that move a step. Under the steps
+        /// stands Add Action, with no fill and a plus, drawn out so the
+        /// plus is at the steps' edge.</summary>
+        [Fact]
+        public void AMacrosActionsAreNumberedSteps()
+        {
+            var page = Page();
+            var act = Named(page, "MacroDoBlock");
+            var list = Named(act, "ActionsList");
+            Assert.Equal("ListBox", list.Name.LocalName);
+            // The list stands in the block itself, in no well, and has no
+            // height or scroll view of its own.
+            Assert.Same(Assert.Single(act.Elements()), list.Parent);
+            Assert.Equal("{StaticResource PartList}", (string)list.Attribute("Style"));
+            Assert.Null(list.Attribute("MinHeight"));
+            Assert.Null(list.Attribute("MaxHeight"));
+            Assert.Equal("{Binding Actions}", (string)list.Attribute("ItemsSource"));
+            Assert.Equal("{Binding SelectedAction, Mode=TwoWay}", (string)list.Attribute("SelectedItem"));
+            Assert.Equal("True", (string)list.Attribute("AllowDrop"));
+            foreach (string handler in new[] { "PreviewKeyDown", "PreviewMouseLeftButtonDown", "PreviewMouseMove", "DragOver", "Drop" })
+                Assert.Equal("ActionsList_" + handler, (string)list.Attribute(handler));
+
+            // A step: its remove at the end, its number from the list's
+            // count of it, then what it does.
+            Assert.Equal("{StaticResource StepItem}", (string)list.Attribute("ItemContainerStyle"));
+            Assert.Equal("100000", (string)list.Attribute("AlternationCount"));
+            var row = Assert.Single(Assert.Single(list.Descendants(), e => e.Name.LocalName == "DataTemplate").Elements());
+            Assert.Equal("DockPanel", row.Name.LocalName);
+            var parts = row.Elements().ToList();
+            Assert.Equal(new[] { "Button", "TextBlock", "TextBlock" }, parts.Select(e => e.Name.LocalName));
+            Assert.Equal("Right", (string)parts[0].Attribute("DockPanel.Dock"));
+            Assert.Equal("{StaticResource StepRemove}", (string)parts[0].Attribute("Style"));
+            Assert.Equal("{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=ListBox}}", (string)parts[0].Attribute("Command"));
+            Assert.Equal("{Binding}", (string)parts[0].Attribute("CommandParameter"));
+            Assert.Equal("{Binding Common_Remove" + S, (string)parts[0].Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource OneBasedIndexConverter}}",
+                (string)parts[1].Attribute("Text"));
+            Assert.Equal("18", (string)parts[1].Attribute("Width"));
+            Assert.Equal("0,0,10,0", (string)parts[1].Attribute("Margin"));
+            Assert.Equal("{StaticResource TelemetryFontFamily}", (string)parts[1].Attribute("FontFamily"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)parts[1].Attribute("Foreground"));
+            Assert.Equal("{Binding DisplayText}", (string)parts[2].Attribute("Text"));
+            Assert.Equal("Wrap", (string)parts[2].Attribute("TextWrapping"));
+
+            var step = Keyed(page, "StepItem");
+            Assert.Equal("{Binding DisplayText, TargetNullValue=''}", SetterOf(step, "AutomationProperties.Name"));
+            Assert.Equal("42", SetterOf(step, "MinHeight"));
+            Assert.Equal("12,0,4,0", SetterOf(step, "Padding"));
+            Assert.Equal("0,0,0,6", SetterOf(step, "Margin"));
+            var body = Named(step, "Bd");
+            Assert.Equal("6", (string)body.Attribute("CornerRadius"));
+            Assert.Equal("1", (string)body.Attribute("BorderThickness"));
+            Assert.Equal("{DynamicResource SteelBandBrush}", (string)body.Attribute("Background"));
+            Assert.Equal("{DynamicResource SteelLineSoftBrush}", (string)body.Attribute("BorderBrush"));
+            // The picked step, whose fields show under the steps.
+            var picked = Assert.Single(step.Descendants(), e => e.Name.LocalName == "Trigger" && (string)e.Attribute("Property") == "IsSelected");
+            Assert.Equal(new[] { "{DynamicResource EmberCardPickBrush}", "#66FF6B2C" }, picked.Elements().Select(e => (string)e.Attribute("Value")));
+            var removeLook = Keyed(page, "StepRemove");
+            Assert.Equal("{StaticResource QuietResetButton}", (string)removeLook.Attribute("BasedOn"));
+            Assert.Equal("False", SetterOf(removeLook, "IsTabStop"));
+
+            // Under the steps: Add Action, then Duplicate and Remove for the
+            // picked step.
+            var line = list.ElementsAfterSelf().First();
+            Assert.Equal("FlexLinePanel", line.Name.LocalName);
+            Assert.Equal("-14,2,0,0", (string)line.Attribute("Margin"));
+            var buttons = line.Elements().ToList();
+            Assert.Equal(new[] { "{Binding AddActionCommand}", "{Binding DuplicateActionCommand}", "{Binding RemoveActionCommand}" },
+                buttons.Select(b => (string)b.Attribute("Command")));
+            Assert.All(buttons, b =>
+            {
+                Assert.Equal("{StaticResource QuietButton}", (string)b.Attribute("Style"));
+                Assert.Equal("14,0", (string)b.Attribute("Padding"));
+            });
+            Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)buttons[0].Attribute("Foreground"));
+            Assert.Equal("{Binding Macro_AddAction" + S, (string)buttons[0].Attribute("AutomationProperties.Name"));
+            Assert.Equal(new[] { "Path", "TextBlock" }, Assert.Single(buttons[0].Elements()).Elements().Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Macro_AddAction" + S, (string)buttons[0].Descendants().Single(e => e.Name.LocalName == "TextBlock").Attribute("Text"));
+            Assert.Equal("{Binding Common_Duplicate" + S, (string)buttons[1].Attribute("Content"));
+            Assert.Equal("{Binding Common_Remove" + S, (string)buttons[2].Attribute("Content"));
+
+            // The old chips are gone from the list.
+            Assert.DoesNotContain(list.Descendants(), e => (string)e.Attribute("Style") == "{StaticResource ChipEmber}");
+        }
+
+        /// <summary>A step's own remove takes that step out. The selected
+        /// action stays selected unless it is the one removed, and then the
+        /// last one is, as Remove leaves it.</summary>
+        [Fact]
+        public void AStepsOwnRemoveTakesThatStepOut_AndKeepsThePick()
+        {
+            var macro = new MacroItem();
+            var first = new MacroAction { Type = MacroActionType.Delay, DurationMs = 10 };
+            var second = new MacroAction { Type = MacroActionType.Delay, DurationMs = 20 };
+            var third = new MacroAction { Type = MacroActionType.Delay, DurationMs = 30 };
+            foreach (var action in new[] { first, second, third }) macro.Actions.Add(action);
+            macro.SelectedAction = third;
+
+            // Another step than the picked one: the pick stays.
+            macro.RemoveStepCommand.Execute(first);
+            Assert.Equal(new[] { second, third }, macro.Actions);
+            Assert.Same(third, macro.SelectedAction);
+
+            // The picked one: the last is picked.
+            macro.RemoveStepCommand.Execute(third);
+            Assert.Equal(new[] { second }, macro.Actions);
+            Assert.Same(second, macro.SelectedAction);
+
+            // One that is not in the list, and none: nothing changes.
+            macro.RemoveStepCommand.Execute(first);
+            macro.RemoveStepCommand.Execute(null);
+            Assert.Equal(new[] { second }, macro.Actions);
+            Assert.Same(second, macro.SelectedAction);
+
+            // The last step: none is left, and none is picked.
+            macro.RemoveStepCommand.Execute(second);
+            Assert.Empty(macro.Actions);
+            Assert.Null(macro.SelectedAction);
+        }
+
+        /// <summary>A press on a step's own button starts no drag of the
+        /// step: a hand that moves as it presses the remove would carry the
+        /// step off. A press anywhere else on the step still arms one.</summary>
+        [Fact]
+        public void APressOnAStepsButtonStartsNoDrag()
+        {
+            Exception failure = null;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    var glyph = new System.Windows.Shapes.Path();
+                    var remove = new Button { Content = glyph };
+                    var words = new TextBlock();
+                    var row = new DockPanel();
+                    row.Children.Add(remove);
+                    row.Children.Add(words);
+                    var step = new ListBoxItem { Content = row };
+                    // Measured, so the step's parts stand in its visual tree,
+                    // as the parts of a step on the page do.
+                    step.Measure(new System.Windows.Size(300, 100));
+                    Assert.True(PadPage.IsInAButtonOfAStep(glyph));
+                    Assert.True(PadPage.IsInAButtonOfAStep(remove));
+                    Assert.False(PadPage.IsInAButtonOfAStep(words));
+                    Assert.False(PadPage.IsInAButtonOfAStep(row));
+                    Assert.False(PadPage.IsInAButtonOfAStep(step));
+                    Assert.False(PadPage.IsInAButtonOfAStep(null));
+                    // A button the step itself stands in is not the step's.
+                    var inner = new TextBlock();
+                    var around = new Button { Content = new ListBoxItem { Content = inner } };
+                    around.Measure(new System.Windows.Size(300, 100));
+                    Assert.Same(around, System.Windows.Media.VisualTreeHelper.GetParent(
+                        System.Windows.Media.VisualTreeHelper.GetParent(System.Windows.Media.VisualTreeHelper.GetParent((ListBoxItem)around.Content))));
+                    Assert.False(PadPage.IsInAButtonOfAStep(inner));
+                }
+                catch (Exception ex) { failure = ex; }
+            }) { IsBackground = true };
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            Assert.True(thread.Join(TimeSpan.FromSeconds(15)), "the run timed out");
+            if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
+
+            Assert.Matches(@"private void ActionsList_PreviewMouseLeftButtonDown\(object sender, MouseButtonEventArgs e\)\s*\{\s*_actionDragStart = e\.GetPosition\(null\);"
+                + @"[^}]*var pressed = e\.OriginalSource as DependencyObject;\s*_actionDragItem = IsInAButtonOfAStep\(pressed\) \? null : ActionFromVisual\(pressed\);\s*\}", Code());
         }
 
         /// <summary>The inputs of a macro's trigger stand on one line, as

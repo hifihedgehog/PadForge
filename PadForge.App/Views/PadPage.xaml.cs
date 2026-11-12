@@ -1380,10 +1380,11 @@ namespace PadForge.Views
             double viewport = ButtonsScroll.ActualHeight;
             if (viewport <= 0) return;
             // What is always in view with the picture: the room the page
-            // keeps under its last card. The top row sits above the page
+            // keeps under its last card, and the foot a Keyboard + Mouse
+            // slot has at the card's foot. The top row sits above the page
             // and is not part of its viewport, and the bar a recording
             // shows lies over the picture's foot and takes no room.
-            double around = ButtonsPage.Margin.Bottom;
+            double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();
             double folded = SteadyFoldedHeight(vm.OutputTabVisible, FoldedOutputHeight(), ref _foldedOutputMeasured);
             double picture = PictureHeightFor(viewport, around, folded, VisualTreeHelper.GetDpi(ButtonsScroll).DpiScaleY);
             ButtonsPictureRow.Height = new GridLength(picture);
@@ -1393,6 +1394,29 @@ namespace PadForge.Views
         {
             if (e.HeightChanged) SyncButtonsLayout();
         }
+
+        /// <summary>The height of the slot's own foot at the foot of the
+        /// picture's card, with its margins: a Keyboard + Mouse slot's
+        /// line. Nothing while the slot has none. It goes by the foot's own
+        /// Visibility, which the slot's type sets, and not by whether the
+        /// foot is on a screen yet: the picture is sized before it is.</summary>
+        private double ButtonsFootHeight()
+        {
+            if (KbmDeviceBar == null || KbmDeviceBar.Visibility != Visibility.Visible) return 0;
+            return KbmDeviceBar.ActualHeight + KbmDeviceBar.Margin.Top + KbmDeviceBar.Margin.Bottom;
+        }
+
+        /// <summary>The foot changed height: it wrapped onto a second line,
+        /// or a half of the slot came or went. The picture is sized with the
+        /// foot in view.</summary>
+        private void ButtonsFoot_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged) SyncButtonsLayout();
+        }
+
+        /// <summary>The foot came or went with the slot's type.</summary>
+        private void ButtonsFoot_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+            => SyncButtonsLayout();
 
         /// <summary>The output cards changed height: a card came or went
         /// with the controller's type, or one opened or closed. The picture
@@ -3595,9 +3619,6 @@ namespace PadForge.Views
             KbmSurfacesCombo.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
             ExtendedConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
-            // The keyboard and mouse pickers (HIDMaestro 1.12.0) take Row 1
-            // the way the Extended and MIDI bars do.
-            KbmDeviceBar.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
             if (isExtended)
             {

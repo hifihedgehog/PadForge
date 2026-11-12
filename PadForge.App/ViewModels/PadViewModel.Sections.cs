@@ -295,6 +295,16 @@ namespace PadForge.ViewModels
         /// picked.</summary>
         public bool ShowPictureBar => IsButtonsPictureView && PickedRow != null;
 
+        /// <summary>A Keyboard + Mouse slot's foot shows at the foot of the
+        /// picture's card, and under the list: what the slot's keyboard and
+        /// its mouse type through.</summary>
+        public bool ShowKbmFoot => OutputType == VirtualControllerType.KeyboardMouse;
+
+        /// <summary>The picture is the card's foot, and takes its lower
+        /// corners: nothing is picked, so no bar follows it, and the slot
+        /// has no foot of its own.</summary>
+        public bool PictureIsCardFoot => !ShowPictureBar && !ShowKbmFoot;
+
         private bool _isPickedOptionsOpen;
 
         /// <summary>Whether the bar shows the current row's options under
@@ -321,6 +331,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PickedName));
             OnPropertyChanged(nameof(ShowPictureBar));
             OnPropertyChanged(nameof(ShowPickedOptions));
+            OnPropertyChanged(nameof(PictureIsCardFoot));
         }
 
         /// <summary>Whether two picks put the same rows under the picture:

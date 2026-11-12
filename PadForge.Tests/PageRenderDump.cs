@@ -24,7 +24,8 @@ namespace PadForge.Tests
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
     /// a real setup may not have: a trigger of every kind of input, a recording, an open step
     /// of every action type, and a menu of every style, each a second time in a tall picture with
-    /// its More row open, and a ring's cell open on its fields. The page stands in no window, so nothing it does as it loads
+    /// its More row open, and a ring's cell open on its fields. Last come the first section of
+    /// each kind of slot. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -223,6 +224,25 @@ namespace PadForge.Tests
                             Lookups(cell);
                             menu.SelectedCell = null;
                         }
+                    }
+
+                    // The first section of each kind of slot, last, since a
+                    // slot's kind changes what the whole page holds.
+                    foreach (var type in new[]
+                             {
+                                 PadForge.Engine.VirtualControllerType.Xbox, PadForge.Engine.VirtualControllerType.KeyboardMouse,
+                                 PadForge.Engine.VirtualControllerType.Midi,
+                             })
+                    {
+                        string file = "slot-" + type.ToString().ToLowerInvariant() + ".png";
+                        Picture(file, () => { vm.OutputType = type; vm.SelectedConfigTab = 0; });
+                        Lookups(file);
+                        // With its first control picked: the bar under the
+                        // picture, and what the slot has under that.
+                        string picked = file.Replace(".png", "-picked.png");
+                        Picture(picked, () => vm.PickedTarget = vm.Mappings.First().TargetSettingName, TallHeight / 2);
+                        Lookups(picked);
+                        vm.PickedTarget = null;
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }

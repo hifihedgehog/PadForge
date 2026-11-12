@@ -261,8 +261,9 @@ namespace PadForge.Tests
             Assert.Null(stop.Attribute("Visibility"));
             Assert.Contains(line, stop.Ancestors());
             // The page keeps no room for the bar: what is always in view
-            // with the picture is the room under the last card.
-            Assert.Contains("double around = ButtonsPage.Margin.Bottom;", CodeBehind());
+            // with the picture is the room under the last card and the
+            // slot's own foot.
+            Assert.Contains("double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();", CodeBehind());
 
             string code = CodeBehind();
             Assert.Matches(@"private void ListeningStop_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(DataContext is not PadViewModel vm\) return;\s*if \(vm\.IsMapAllActive\)\s*\{\s*vm\.StopMapAll\(\);\s*return;\s*\}\s*string target = vm\.CurrentRecordingTarget;\s*if \(!string\.IsNullOrEmpty\(target\)\)\s*ControllerElementRecordRequested\?\.Invoke\(this, target\);", code);
@@ -376,7 +377,7 @@ namespace PadForge.Tests
         {
             var page = Page();
             var group = Named(page, "OutputGroup");
-            Assert.Equal("3", (string)group.Attribute("Grid.Row"));
+            Assert.Equal("4", (string)group.Attribute("Grid.Row"));
             Assert.Equal("{StaticResource BareGroupBox}", (string)group.Attribute("Style"));
             // The parts stack at their full height in one list. The page
             // around them scrolls, so they have no scroll viewer of their
@@ -499,21 +500,23 @@ namespace PadForge.Tests
             // card's head is, with the page's scroll bar in that margin.
             Assert.Equal("32,0", (string)scroll.Attribute("Padding"));
             // The card's body is drawn behind the picture, the bar's old
-            // row and the table: its sides, its foot and its lower corners.
+            // row, the table and the slot's own foot: its sides, its foot
+            // and its lower corners.
             var body = Named(page, "ButtonsCardBody");
             Assert.Same(Named(page, "ButtonsPage"), body.Parent);
             Assert.Equal("0", (string)body.Attribute("Grid.Row"));
-            Assert.Equal("3", (string)body.Attribute("Grid.RowSpan"));
+            Assert.Equal("4", (string)body.Attribute("Grid.RowSpan"));
             Assert.Equal("1,0,1,1", (string)body.Attribute("BorderThickness"));
             Assert.Equal("0,0,10,10", (string)body.Attribute("CornerRadius"));
             // The picture stands on the page's ground inside the card's
-            // sides, and is the card's foot while no bar follows it.
+            // sides, and is the card's foot while no bar follows it and the
+            // slot has no foot of its own.
             var ground = Named(page, "PictureGround");
             Assert.Equal("1,0,1,0", (string)ground.Attribute("Margin"));
             Assert.Equal("{DynamicResource SteelGroundBrush}", (string)ground.Attribute("Background"));
             var foot = Assert.Single(ground.Descendants(), e => e.Name.LocalName == "DataTrigger"
-                && (string)e.Attribute("Binding") == "{Binding ShowPictureBar}");
-            Assert.Equal("False", (string)foot.Attribute("Value"));
+                && (string)e.Attribute("Binding") == "{Binding PictureIsCardFoot}");
+            Assert.Equal("True", (string)foot.Attribute("Value"));
             Assert.Equal("0,0,9,9", (string)Assert.Single(foot.Elements()).Attribute("Value"));
             // The section: the top row, the list's chips, and the view's
             // content with the room that is left.
@@ -521,17 +524,20 @@ namespace PadForge.Tests
                 Named(page, "MappingsTabRoot").Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions")
                     .Elements().Select(r => (string)r.Attribute("Height")));
             Assert.Equal("2", (string)scroll.Attribute("Grid.Row"));
-            // The page inside: the picture, the line, the table, the cards,
-            // and an empty row that takes the viewport's leftover pixels.
+            // The page inside: the picture, the line, the table, the slot's
+            // own foot, the cards, and an empty row that takes the viewport's
+            // leftover pixels.
             var rows = Named(page, "ButtonsPage").Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions")
                 .Elements().ToList();
-            Assert.Equal(5, rows.Count);
+            Assert.Equal(6, rows.Count);
             Assert.All(rows, r => Assert.Equal("Auto", (string)r.Attribute("Height")));
             Assert.Equal("ButtonsPictureRow", Name(rows[0]));
             Assert.Equal("ButtonsTableRow", Name(rows[2]));
-            Assert.Equal("ButtonsFillRow", Name(rows[4]));
+            Assert.Equal("ButtonsFootRow", Name(rows[3]));
+            Assert.Equal("ButtonsFillRow", Name(rows[5]));
+            Assert.Equal("4", (string)Named(page, "OutputGroup").Attribute("Grid.Row"));
             Assert.DoesNotContain(Named(page, "ButtonsPage").Elements(),
-                e => (string)e.Attribute("Grid.Row") == "4");
+                e => (string)e.Attribute("Grid.Row") == "5");
             Assert.Equal("MappingDataGrid_PreviewMouseWheel", (string)table.Attribute("PreviewMouseWheel"));
 
             string code = CodeBehind();
@@ -736,6 +742,101 @@ namespace PadForge.Tests
             Assert.Equal("Holds a small stick deflection so games keep showing controller prompts", English("Pad_KeepAwake_FoldHint"));
             foreach (string gone in new[] { "Pad_MappingHint", "Pad_Output_Subtitle" })
                 Assert.DoesNotContain(table.Root!.Elements("data"), d => (string)d.Attribute("name") == gone);
+        }
+
+        /// <summary>A Keyboard + Mouse slot's foot, as its board draws it:
+        /// one line at the foot of the picture's card with what the slot's
+        /// keyboard and its mouse type through, each with its reset. It is
+        /// a row of the page's grid, so it stands under the list too, and
+        /// the picture is sized with it in view. The old bar between the
+        /// page's head and its sections is gone.</summary>
+        [Fact]
+        public void AKeyboardAndMouseSlotsFootIsTheCardsFoot()
+        {
+            var page = Page();
+            var foot = Named(page, "KbmDeviceBar");
+            Assert.Same(Named(page, "ButtonsPage"), foot.Parent);
+            Assert.Equal("3", (string)foot.Attribute("Grid.Row"));
+            // Inside the card's sides and its foot, 20 at its start and 12
+            // at its end.
+            Assert.Equal("1,0,1,1", (string)foot.Attribute("Margin"));
+            Assert.Equal("20,10,12,10", (string)foot.Attribute("Padding"));
+            Assert.Equal("{Binding ShowKbmFoot, Converter={StaticResource BoolToVisibilityConverter}}", (string)foot.Attribute("Visibility"));
+            Assert.Equal("ButtonsFoot_SizeChanged", (string)foot.Attribute("SizeChanged"));
+            Assert.Equal("ButtonsFoot_IsVisibleChanged", (string)foot.Attribute("IsVisibleChanged"));
+            // A hairline over it, but for right under the picture, which has
+            // its own.
+            var look = Assert.Single(foot.Elements(), e => e.Name.LocalName == "Border.Style").Elements().Single();
+            Assert.Equal("0,1,0,0", (string)look.Elements().Single(e => e.Name.LocalName == "Setter").Attribute("Value"));
+            var bare = Assert.Single(look.Descendants(), e => e.Name.LocalName == "MultiDataTrigger");
+            Assert.Equal(new[] { "{Binding IsButtonsPictureView}=True", "{Binding ShowPictureBar}=False" },
+                bare.Descendants().Where(e => e.Name.LocalName == "Condition")
+                    .Select(c => (string)c.Attribute("Binding") + "=" + (string)c.Attribute("Value")));
+            Assert.Equal("0", (string)bare.Elements().Single(e => e.Name.LocalName == "Setter").Attribute("Value"));
+
+            // The line: Types Through in the quiet color, then each half.
+            var line = Assert.Single(foot.Elements(), e => e.Name.LocalName == "FlexLinePanel");
+            Assert.Equal("20", (string)line.Attribute("Gap"));
+            Assert.Equal("8", (string)line.Attribute("LineGap"));
+            var parts = line.Elements().ToList();
+            Assert.Equal(new[] { "TextBlock", "StackPanel", "StackPanel" }, parts.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Menu_TypesThrough" + S, (string)parts[0].Attribute("Text"));
+            Assert.Equal("13", (string)parts[0].Attribute("FontSize"));
+            Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)parts[0].Attribute("Foreground"));
+            foreach (var (half, word, name) in new[] { (parts[1], "Keyboard", "DeviceType_Keyboard"), (parts[2], "Mouse", "DeviceType_Mouse") })
+            {
+                Assert.Equal("{Binding Kbm" + word + "DeviceVisible, Converter={StaticResource BoolToVisibilityConverter}}", (string)half.Attribute("Visibility"));
+                var own = half.Elements().ToList();
+                Assert.Equal(new[] { "TextBlock", "ComboBox", "SettingResetButton", "ItemsControl" }, own.Select(e => e.Name.LocalName));
+                Assert.Equal("{Binding " + name + S, (string)own[0].Attribute("Text"));
+                Assert.Equal("0,0,8,0", (string)own[0].Attribute("Margin"));
+                Assert.Equal("Kbm" + word + "DeviceCombo", Name(own[1]));
+                Assert.Equal("34", (string)own[1].Attribute("MinHeight"));
+                Assert.Equal("{Binding Kbm" + word + "Device, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", (string)own[1].Attribute("SelectedValue"));
+                Assert.Equal("Kbm" + word + "Device", (string)own[2].Attribute("CommandParameter"));
+                Assert.Equal("4,0,0,0", (string)own[2].Attribute("Margin"));
+                Assert.Equal("{Binding Kbm" + word + "Capabilities}", (string)own[3].Attribute("ItemsSource"));
+            }
+
+            // The foot's height is part of what is in view with the picture,
+            // read from the foot's own Visibility, and a change of it sizes
+            // the picture again.
+            string code = CodeBehind();
+            Assert.Contains("double around = ButtonsPage.Margin.Bottom + ButtonsFootHeight();", code);
+            Assert.Matches(@"private double ButtonsFootHeight\(\)\s*\{\s*if \(KbmDeviceBar == null \|\| KbmDeviceBar\.Visibility != Visibility\.Visible\) return 0;\s*return KbmDeviceBar\.ActualHeight \+ KbmDeviceBar\.Margin\.Top \+ KbmDeviceBar\.Margin\.Bottom;\s*\}", code);
+            Assert.Matches(@"private void ButtonsFoot_SizeChanged\(object sender, SizeChangedEventArgs e\)\s*\{\s*if \(e\.HeightChanged\) SyncButtonsLayout\(\);\s*\}", code);
+            Assert.Matches(@"private void ButtonsFoot_IsVisibleChanged\(object sender, DependencyPropertyChangedEventArgs e\)\s*=> SyncButtonsLayout\(\);", code);
+            // The page's code no longer shows or hides it.
+            Assert.DoesNotContain("KbmDeviceBar.Visibility =", code);
+            Assert.DoesNotContain("KEYBOARD + MOUSE DEVICE BAR", PageText());
+
+            // The view model: the foot is a Keyboard + Mouse slot's, and the
+            // picture is the card's foot while nothing is picked on a slot
+            // that has none.
+            var vm = new PadViewModel(0);
+            vm.ApplyMappingPickerFilter();
+            Assert.False(vm.ShowKbmFoot);
+            Assert.True(vm.PictureIsCardFoot);
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.PickedTarget = "ButtonA";
+            Assert.True(vm.ShowPictureBar);
+            Assert.False(vm.PictureIsCardFoot);
+            Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
+            vm.PickedTarget = null;
+            Assert.True(vm.PictureIsCardFoot);
+
+            raised.Clear();
+            vm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
+            Assert.True(vm.ShowKbmFoot);
+            Assert.False(vm.PictureIsCardFoot);
+            Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
+            Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
+            raised.Clear();
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Xbox;
+            Assert.False(vm.ShowKbmFoot);
+            Assert.True(vm.PictureIsCardFoot);
+            Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
         }
     }
 }

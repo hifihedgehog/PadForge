@@ -253,6 +253,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
                     OnPropertyChanged(nameof(OutputTabVisible));
                     OnPropertyChanged(nameof(ShowOutputGroup));
+                    // The foot of the picture's card is a Keyboard + Mouse
+                    // slot's (#574).
+                    OnPropertyChanged(nameof(ShowKbmFoot));
+                    OnPropertyChanged(nameof(PictureIsCardFoot));
                     // The table scope only exists on a Keyboard + Mouse slot.
                     // Its box disappears with the slot type, so leaving the
                     // value set would strand a filter nothing can clear.

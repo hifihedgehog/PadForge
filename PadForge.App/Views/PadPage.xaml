@@ -3367,84 +3367,6 @@
             </StackPanel>
         </Border>
 
-        <!-- ══════════════════════════════════════
-             ROW 1 (alt): KEYBOARD + MOUSE DEVICE BAR
-             (visible only when OutputType == KeyboardMouse)
-             The keyboard and the mouse the slot sends through: Windows
-             input, or a keyboard or mouse model from HIDMaestro 1.12.0 that
-             programs see as hardware. Each half's picker shows while the
-             surface mode drives that half, with what the model can send
-             beside it.
-             ══════════════════════════════════════ -->
-        <Border x:Name="KbmDeviceBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
-                Visibility="Collapsed">
-            <WrapPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal" Margin="0,2,16,2"
-                            Visibility="{Binding KbmKeyboardDeviceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Text="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="0,0,6,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <ComboBox x:Name="KbmKeyboardDeviceCombo" MinWidth="220" MaxWidth="360" VerticalAlignment="Center"
-                              AutomationProperties.AutomationId="KbmKeyboardDeviceCombo"
-                              IsSynchronizedWithCurrentItem="False"
-                              ItemsSource="{Binding KbmConfig.AvailableKeyboardDevices}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="Value"
-                              SelectedValue="{Binding KbmKeyboardDevice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ToolTip="{Binding Pad_Kbm_Device_Keyboard_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KbmKeyboardDevice" SettingLabel="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_KbmKeyboardDevice" Margin="4,0,8,0"/>
-                    <ItemsControl ItemsSource="{Binding KbmKeyboardCapabilities}" VerticalAlignment="Center" Focusable="False">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource ChipGhost}" Padding="7,1" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding}" FontSize="11.5"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,2,0,2"
-                            Visibility="{Binding KbmMouseDeviceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Text="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="0,0,6,0" FontSize="13"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <ComboBox x:Name="KbmMouseDeviceCombo" MinWidth="220" MaxWidth="360" VerticalAlignment="Center"
-                              AutomationProperties.AutomationId="KbmMouseDeviceCombo"
-                              IsSynchronizedWithCurrentItem="False"
-                              ItemsSource="{Binding KbmConfig.AvailableMouseDevices}"
-                              DisplayMemberPath="Name"
-                              SelectedValuePath="Value"
-                              SelectedValue="{Binding KbmMouseDevice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ToolTip="{Binding Pad_Kbm_Device_Mouse_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KbmMouseDevice" SettingLabel="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_KbmMouseDevice" Margin="4,0,8,0"/>
-                    <ItemsControl ItemsSource="{Binding KbmMouseCapabilities}" VerticalAlignment="Center" Focusable="False">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource ChipGhost}" Padding="7,1" Margin="0,0,4,0">
-                                    <TextBlock Text="{Binding}" FontSize="11.5"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </WrapPanel>
-        </Border>
-
         <!-- ═══════════════════════════════════════════
              ROW 2: the selected section (#574).
              Six sections, in the header's order. Buttons and Macros &
@@ -4022,10 +3944,11 @@
                     <Grid x:Name="ButtonsPage" Margin="0,0,0,24">
                         <Grid.RowDefinitions>
                             <!-- The picture, the line under it, the table, the
-                                 output cards. -->
+                                 slot's own foot, the output cards. -->
                             <RowDefinition x:Name="ButtonsPictureRow" Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition x:Name="ButtonsTableRow" Height="Auto"/>
+                            <RowDefinition x:Name="ButtonsFootRow" Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <!-- Nothing sits in this row. In the picture's
                                  view the page's code gives it what the
@@ -4038,10 +3961,11 @@
                             <RowDefinition x:Name="ButtonsFillRow" Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                    <!-- The card's body (#574), drawn behind the picture and
-                         the table: its sides, its foot and its lower
-                         corners. The head is the top row over this page. -->
-                    <Border Grid.Row="0" Grid.RowSpan="3" x:Name="ButtonsCardBody"
+                    <!-- The card's body (#574), drawn behind the picture, the
+                         table and the slot's own foot: its sides, its foot
+                         and its lower corners. The head is the top row over
+                         this page. -->
+                    <Border Grid.Row="0" Grid.RowSpan="4" x:Name="ButtonsCardBody"
                             Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1,0,1,1"
                             CornerRadius="0,0,10,10"/>
@@ -4063,14 +3987,15 @@
                             <!-- The page's ground under the picture, as the
                                  board has it, inside the card's sides, with
                                  a hairline under it. With nothing picked no
-                                 bar follows: the picture is the card's foot
-                                 then, and takes its lower corners. -->
+                                 bar follows. Where the slot has no foot of
+                                 its own either, the picture is the card's
+                                 foot then, and takes its lower corners. -->
                             <Border x:Name="PictureGround" Margin="1,0,1,0" Background="{DynamicResource SteelGroundBrush}"
                                     BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowPictureBar}" Value="False">
+                                            <DataTrigger Binding="{Binding PictureIsCardFoot}" Value="True">
                                                 <Setter Property="CornerRadius" Value="0,0,9,9"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -4908,13 +4833,106 @@
                         </DataGrid.RowDetailsTemplate>
                     </DataGrid>
 
+                    <!-- A Keyboard + Mouse slot's foot (#574), as its board draws it: one line at
+                         the card's foot with what the slot's keyboard and its mouse type
+                         through. Windows input, or a keyboard or mouse model from HIDMaestro
+                         1.12.0 that programs see as hardware. Each half shows while the slot
+                         drives that half, with what the model can send after its reset. The
+                         line stands under the list too. It has a hairline over it, but for
+                         right under the picture, which has its own. -->
+                    <Border Grid.Row="3" x:Name="KbmDeviceBar" Margin="1,0,1,1" Padding="20,10,12,10"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            SizeChanged="ButtonsFoot_SizeChanged" IsVisibleChanged="ButtonsFoot_IsVisibleChanged"
+                            Visibility="{Binding ShowKbmFoot, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsButtonsPictureView}" Value="True"/>
+                                            <Condition Binding="{Binding ShowPictureBar}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <controls:FlexLinePanel Gap="20" LineGap="8">
+                            <TextBlock Text="{Binding Menu_TypesThrough, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" FontSize="13"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding KbmKeyboardDeviceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="KbmKeyboardDeviceCombo" MinHeight="34" MinWidth="220" MaxWidth="360" VerticalAlignment="Center"
+                                          AutomationProperties.AutomationId="KbmKeyboardDeviceCombo"
+                                          IsSynchronizedWithCurrentItem="False"
+                                          ItemsSource="{Binding KbmConfig.AvailableKeyboardDevices}"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding KbmKeyboardDevice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ToolTip="{Binding Pad_Kbm_Device_Keyboard_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KbmKeyboardDevice" SettingLabel="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_KbmKeyboardDevice" Margin="4,0,0,0"/>
+                                <ItemsControl ItemsSource="{Binding KbmKeyboardCapabilities}" VerticalAlignment="Center" Focusable="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <!-- The room before a chip is the chip's own, so a
+                                                 half with none ends at its reset. -->
+                                            <Border Style="{StaticResource ChipGhost}" Padding="7,1" Margin="6,0,0,0">
+                                                <TextBlock Text="{Binding}" FontSize="11.5"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding KbmMouseDeviceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="KbmMouseDeviceCombo" MinHeight="34" MinWidth="220" MaxWidth="360" VerticalAlignment="Center"
+                                          AutomationProperties.AutomationId="KbmMouseDeviceCombo"
+                                          IsSynchronizedWithCurrentItem="False"
+                                          ItemsSource="{Binding KbmConfig.AvailableMouseDevices}"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding KbmMouseDevice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ToolTip="{Binding Pad_Kbm_Device_Mouse_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KbmMouseDevice" SettingLabel="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_KbmMouseDevice" Margin="4,0,0,0"/>
+                                <ItemsControl ItemsSource="{Binding KbmMouseCapabilities}" VerticalAlignment="Center" Focusable="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <!-- The room before a chip is the chip's own, so a
+                                                 half with none ends at its reset. -->
+                                            <Border Style="{StaticResource ChipGhost}" Padding="7,1" Margin="6,0,0,0">
+                                                <TextBlock Text="{Binding}" FontSize="11.5"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </controls:FlexLinePanel>
+                    </Border>
+
                     <!-- The output cards (#270 follow-up, #574): what shapes the
                          slot's virtual controller OUTPUT right before the Step 5
                          submit. They were the Output tab and now fold to one
                          line each under the picture. The group carries the
                          tab's AutomationId and its slot-type gate: none on a
                          MIDI or VR slot. -->
-                    <GroupBox Grid.Row="3" x:Name="OutputGroup" Style="{StaticResource BareGroupBox}" Margin="0,8,0,0"
+                    <GroupBox Grid.Row="4" x:Name="OutputGroup" Style="{StaticResource BareGroupBox}" Margin="0,8,0,0"
                               SizeChanged="OutputGroup_SizeChanged"
                               AutomationProperties.AutomationId="OutputTab"
                               AutomationProperties.Name="{Binding Pad_Tab_Output, Source={x:Static strings:Strings.Instance}}"

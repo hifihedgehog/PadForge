@@ -61,11 +61,16 @@ namespace PadForge.Tests
                 Assert.Equal(1, Volatile.Read(ref scans));
             }
             finally { gate.Set(); }
-            // The next tick after the scan ends starts another.
+            // The next tick after the scan ends starts another. Each tick
+            // from here on starts one more as soon as the last has ended, so
+            // the count is two or more when it is looked at: a third scan
+            // can start between the tick and the look. Asking for exactly
+            // two failed once in a full run (2026-11-11), after waiting its
+            // five seconds for a count that had passed two.
             Assert.True(SpinWait.SpinUntil(() =>
             {
                 im.FlydigiWatchTick(Environment.TickCount64, out _);
-                return Volatile.Read(ref scans) == 2;
+                return Volatile.Read(ref scans) >= 2;
             }, 5_000));
             Assert.True(SpinWait.SpinUntil(() => !Running(im), 5_000));
         }

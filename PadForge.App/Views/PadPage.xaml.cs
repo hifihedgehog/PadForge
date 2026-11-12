@@ -1478,6 +1478,16 @@ namespace PadForge.Views
             button.ContextMenu.IsOpen = true;
         }
 
+        /// <summary>The pencil beside a macro's or a menu's name puts the
+        /// caret in the name with the name selected, so typing renames it.
+        /// The button's Tag is the name's box.</summary>
+        private void RenameName_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.Tag is not TextBox box) return;
+            box.Focus();
+            box.SelectAll();
+        }
+
         // ─────────────────────────────────────────────
         //  Pipeline heat chips (#175 item 10)
         // ─────────────────────────────────────────────

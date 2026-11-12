@@ -209,6 +209,7 @@ namespace PadForge.ViewModels
             // rebuilt here without it.
             OnPropertyChanged(nameof(KindOptions));
             OnPropertyChanged(nameof(KindIndex));
+            OnPropertyChanged(nameof(KindLabel));
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(HostHalfOptions));
             OnPropertyChanged(nameof(HostHalfIndex));
@@ -287,6 +288,19 @@ namespace PadForge.ViewModels
         /// row's rule).</summary>
         public bool ShowWebControllerRow => IsGrid || Entry.ShowOnWebController;
 
+        /// <summary>The menu's style in words, which the slot's list of
+        /// menus shows at the end of its item.</summary>
+        public string KindLabel
+        {
+            get
+            {
+                int kind = KindIndex;
+                foreach (var option in KindOptions)
+                    if (option.Value == kind) return option.Label;
+                return string.Empty;
+            }
+        }
+
         /// <summary>0 = Radial, 1 = Grid, 2 = Keyboard, 3 = Hotbar (combo index
         /// = enum value). A Selector losing its items pushes -1, which is no
         /// edit.</summary>
@@ -314,6 +328,7 @@ namespace PadForge.ViewModels
                 if (kind == MenuKind.Keyboard) ApplyKeyboardDefaults();
                 if (kind == MenuKind.Hotbar) ApplyHotbarDefaults();
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(KindLabel));
                 OnPropertyChanged(nameof(IsRadial));
                 OnPropertyChanged(nameof(IsGrid));
                 OnPropertyChanged(nameof(ShowWebControllerRow));

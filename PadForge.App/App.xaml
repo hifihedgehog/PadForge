@@ -80,6 +80,8 @@
                     <SolidColorBrush x:Key="SteelCardHoverBrush" Color="#161E2B"/>
                     <SolidColorBrush x:Key="QuietGlyphBrush" Color="#6B7890"/>
                     <SolidColorBrush x:Key="SubRowTextBrush" Color="#CFD7E3"/>
+                    <!-- The picked item of a list that stands on a card. -->
+                    <SolidColorBrush x:Key="EmberCardPickBrush" Color="#24160D"/>
                     <!-- Tinted grounds: the square behind a lit flame, a
                          running controller's edge, the selected controller
                          in the sidebar, and the band that offers a device. -->

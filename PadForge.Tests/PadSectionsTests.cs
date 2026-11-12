@@ -335,7 +335,9 @@ namespace PadForge.Tests
         /// Buttons and Macros and Menus are a part switch over a tab control
         /// of their own, so the preview, the mapping table, the macro editor
         /// and the menu editor each load only while they show, as they did
-        /// as tabs.</summary>
+        /// as tabs. Macros and Menus scrolls as a page, as its board draws
+        /// it: a card of the two lists, whose heads are the part switch,
+        /// and a card of the editor, which holds the tab control.</summary>
         [Fact]
         public void ThePageHoldsEachSectionsTabs_InTheMapsOrder()
         {
@@ -410,13 +412,45 @@ namespace PadForge.Tests
                     // the cards under the picture. Macros and Menus has one
                     // part per tab.
                     bool buttonsSection = section == PadViewModel.ButtonsSection;
-                    Assert.Equal("Grid", content.Name.LocalName);
-                    // The picture's view of Buttons scrolls as a page, so
-                    // its tab control sits inside that page. The part switch
-                    // of Macros and Menus sits right over its tab control.
-                    var inner = buttonsSection
-                        ? Assert.Single(content.Descendants(), e => e.Name.LocalName == "ContentTabControl")
-                        : Assert.Single(content.Elements(), e => e.Name.LocalName == "ContentTabControl");
+                    XElement inner;
+                    if (buttonsSection)
+                    {
+                        // The picture's view of Buttons scrolls as a page,
+                        // so its tab control sits inside that page.
+                        Assert.Equal("Grid", content.Name.LocalName);
+                        inner = Assert.Single(content.Descendants(), e => e.Name.LocalName == "ContentTabControl");
+                    }
+                    else
+                    {
+                        // Macros and Menus scrolls as a page of two cards
+                        // that stand side by side while the editor has 480
+                        // to itself: the lists from 250 to 320 wide, then
+                        // the editor with what is left. The editor's card
+                        // holds the tab control.
+                        Assert.Equal("ScrollViewer", content.Name.LocalName);
+                        Assert.Equal("MacrosSectionScroll", Name(content));
+                        Assert.Equal("{Binding " + sectionKeys[section] + ", Source={x:Static strings:Strings.Instance}}",
+                            (string)content.Attribute("AutomationProperties.Name"));
+                        Assert.Equal("32,0", (string)content.Attribute("Padding"));
+                        Assert.Equal("Disabled", (string)content.Attribute("HorizontalScrollBarVisibility"));
+                        var cards = Assert.Single(content.Elements());
+                        Assert.Equal("FlexLinePanel", cards.Name.LocalName);
+                        Assert.Equal("16", (string)cards.Attribute("Gap"));
+                        Assert.Equal("16", (string)cards.Attribute("LineGap"));
+                        Assert.Equal(new[] { "MacrosListCard", "MacrosEditorCard" }, cards.Elements().Select(Name));
+                        var lists = Named(page, "MacrosListCard");
+                        var editor = Named(page, "MacrosEditorCard");
+                        string Flex(XElement e, string property)
+                            => (string)e.Attributes().First(a => a.Name.LocalName == "FlexLinePanel." + property);
+                        Assert.Equal("250", Flex(lists, "Basis"));
+                        Assert.Equal("250", (string)lists.Attribute("MinWidth"));
+                        Assert.Equal("320", (string)lists.Attribute("MaxWidth"));
+                        Assert.Equal("480", Flex(editor, "Basis"));
+                        Assert.Equal("999", Flex(editor, "Grow"));
+                        inner = Assert.Single(editor.Elements());
+                        Assert.Equal("ContentTabControl", inner.Name.LocalName);
+                        Assert.Same(inner, Assert.Single(content.Descendants(), e => e.Name.LocalName == "ContentTabControl"));
+                    }
                     Assert.Equal(partIndex[section], (string)inner.Attribute("SelectedIndex"));
                     var switched = buttonsSection ? expected.Take(2).ToList() : expected;
                     Assert.Equal(switched.Count, inner.Elements().Count(e => e.Name.LocalName == "TabItem"));

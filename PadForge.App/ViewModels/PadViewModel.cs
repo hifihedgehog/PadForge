@@ -6034,6 +6034,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _selectedMacro, value))
                 {
                     OnPropertyChanged(nameof(HasSelectedMacro));
+                    OnPropertyChanged(nameof(ListedMacro));
                     _removeMacroCommand?.NotifyCanExecuteChanged();
                     // CommunityToolkit RelayCommand doesn't auto-requery, so the
                     // selection-gated macro commands stay disabled until told (#112).
@@ -6059,6 +6060,7 @@ namespace PadForge.ViewModels
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
+                ShowMacrosPart(MacrosTabIndex);
             });
 
         private RelayCommand _removeMacroCommand;
@@ -6087,6 +6089,7 @@ namespace PadForge.ViewModels
                 clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, _selectedMacro.Name);
                 Macros.Add(clone);
                 SelectedMacro = clone;
+                ShowMacrosPart(MacrosTabIndex);
             }, () => HasSelectedMacro);
 
         // Macro clipboard (#112). The View layer (MainWindow) owns the clipboard
@@ -6102,8 +6105,11 @@ namespace PadForge.ViewModels
         public event EventHandler PasteMacroRequested;
         private RelayCommand _pasteMacroCommand;
         public RelayCommand PasteMacroCommand =>
-            _pasteMacroCommand ??= new RelayCommand(
-                () => PasteMacroRequested?.Invoke(this, EventArgs.Empty));
+            _pasteMacroCommand ??= new RelayCommand(() =>
+            {
+                ShowMacrosPart(MacrosTabIndex);
+                PasteMacroRequested?.Invoke(this, EventArgs.Empty);
+            });
 
         /// <summary>VC-level Copy From (#112): pull macros from another virtual
         /// controller into this one, mirroring the Mappings-tab Copy From. MainWindow
@@ -6111,8 +6117,11 @@ namespace PadForge.ViewModels
         public event EventHandler CopyMacroFromRequested;
         private RelayCommand _copyMacroFromCommand;
         public RelayCommand CopyMacroFromCommand =>
-            _copyMacroFromCommand ??= new RelayCommand(
-                () => CopyMacroFromRequested?.Invoke(this, EventArgs.Empty));
+            _copyMacroFromCommand ??= new RelayCommand(() =>
+            {
+                ShowMacrosPart(MacrosTabIndex);
+                CopyMacroFromRequested?.Invoke(this, EventArgs.Empty);
+            });
 
         // ═══════════════════════════════════════════════
         //  Radial / touch menus (#9 B-17). Slot-level, like Macros.
@@ -6144,6 +6153,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _selectedMenu, value))
                 {
                     OnPropertyChanged(nameof(HasSelectedMenu));
+                    OnPropertyChanged(nameof(ListedMenu));
                     _removeMenuCommand?.NotifyCanExecuteChanged();
                     _duplicateMenuCommand?.NotifyCanExecuteChanged();
                 }
@@ -6207,6 +6217,7 @@ namespace PadForge.ViewModels
                 vm.Changed += OnMenuEdited;
                 Menus.Add(vm);
                 SelectedMenu = vm;
+                ShowMacrosPart(MenusTabIndex);
                 OnMenuEdited();
                 MenusStructureChanged?.Invoke();
             });
@@ -6244,6 +6255,7 @@ namespace PadForge.ViewModels
                 cloneVm.Changed += OnMenuEdited;
                 Menus.Add(cloneVm);
                 SelectedMenu = cloneVm;
+                ShowMacrosPart(MenusTabIndex);
                 OnMenuEdited();
                 MenusStructureChanged?.Invoke();
             }, () => HasSelectedMenu);
@@ -8219,7 +8231,7 @@ namespace PadForge.ViewModels
                 section = SelectedSection;
                 if (section != oldSection) OnPropertyChanged(nameof(SelectedSection));
                 if (buttonsViewChanged) RaiseButtonsViewChanged();
-                else if (section == MacrosSection) OnPropertyChanged(nameof(MacrosPartIndex));
+                else if (section == MacrosSection) RaiseMacrosPartChanged();
                 // Audio and Bass Shakers are groups of a stacked section. A
                 // jump to one by its number refreshes it here. When its
                 // section comes on the page some other way, the page asks

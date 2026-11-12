@@ -186,6 +186,104 @@
             <Setter Property="Margin" Value="12,0,0,0"/>
             <Setter Property="IsTabStop" Value="False"/>
         </Style>
+        <!-- An icon button in a card's head (#574): the quiet reset's size
+             with the glyph in the secondary text color. -->
+        <Style x:Key="CardIconButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <!-- A list head's button, 28 square, as the Macros board draws New
+             Macro and the list's More. -->
+        <Style x:Key="ListHeadButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <!-- A list's head that is the switch of its part: it reads as the
+             head's words, 12 SemiBold in the quiet text color, and shows
+             its part when it is chosen. -->
+        <Style x:Key="ListHeadSwitch" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="Transparent" Padding="0,4">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A list of a card: its items alone, with no scroll view of its
+             own, so the wheel over it scrolls the page. -->
+        <Style x:Key="PartList" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <ItemsPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- An item of such a list, as the Macros board draws it: 38 tall
+             with 12 at its sides and corners of 6. The picked one stands
+             on the ember fill in the text color at SemiBold. -->
+        <Style x:Key="PartListItem" TargetType="ListBoxItem">
+            <!-- An item is read by its name: with a template of its own it
+                 would be read as its type. -->
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
+            <Setter Property="MinHeight" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" CornerRadius="6" Background="Transparent"
+                                Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+                            </Trigger>
+                            <!-- After the pointer's, so the picked item keeps
+                                 its fill under the pointer. -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A name in a card's head that is typed over in place: it reads
+             as the card's heading, 20 SemiBold, and shows its field under
+             the pointer and with the caret in it, as a value box does. Its
+             text stands at the card's inset. -->
+        <Style x:Key="HeadNameEdit" TargetType="TextBox" BasedOn="{StaticResource DzValueEdit}">
+            <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="-5,0,0,0"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="MinWidth" Value="40"/>
+        </Style>
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -12638,30 +12736,127 @@
 
             <!-- ═══ SECTION 5: Macros & Menus ═══ -->
             <TabItem>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Border Padding="10,2,10,0">
-                    <WrapPanel Orientation="Horizontal">
-                        <!-- [Macros] -->
-                        <RadioButton x:Name="TabMacros" Tag="1" GroupName="PadMacrosPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
-                                     IsChecked="True"
-                                     AutomationProperties.AutomationId="MacrosTab">
-                            <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
-                        </RadioButton>
-
-                        <!-- [Menus] (#9 B-17). Menus live on the slot's MappingSet like
-                             the mapping table and macros. -->
-                        <RadioButton x:Name="TabMenus" Tag="15" GroupName="PadMacrosPart" Style="{StaticResource TabStripButton}" Click="TabBtn_Click" Checked="TabBtn_Checked"
-                                     AutomationProperties.AutomationId="MenusTab">
-                            <TextBlock Text="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
-                        </RadioButton>
-                    </WrapPanel>
-                    </Border>
-                    <controls:ContentTabControl Grid.Row="1"
-                                SelectedIndex="{Binding MacrosPartIndex, Mode=OneWay}">
+                <!-- The section, as its board draws it (#574): a card of the slot's macros
+                     and menus at the left, and the editor of the one picked in a card at
+                     the right. The two stand side by side while the editor has 480 to
+                     itself, and one under the other when it has not. The page scrolls as a
+                     whole, as the other sections do. -->
+                <ScrollViewer x:Name="MacrosSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <controls:FlexLinePanel Gap="16" LineGap="16" Margin="0,20,0,24">
+                        <!-- The lists. A head is the switch of its part: it shows the editor of
+                             the macro or the menu last picked, as picking one in its list does. -->
+                        <Border x:Name="MacrosListCard" Style="{StaticResource CardBorder}" Padding="6" Margin="0"
+                                controls:FlexLinePanel.Basis="250" controls:FlexLinePanel.Grow="1" MinWidth="250" MaxWidth="320"
+                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <StackPanel>
+                                <DockPanel Margin="12,4,0,0" MinHeight="32">
+                                    <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                               Foreground="{DynamicResource EmberBrush}"
+                                               AutomationProperties.AutomationId="MacroAddButton"
+                                               AutomationProperties.Name="{Binding Macro_NewMacro, Source={x:Static strings:Strings.Instance}}"
+                                               ToolTip="{Binding Macro_NewMacro, Source={x:Static strings:Strings.Instance}}"
+                                               Command="{Binding AddMacroCommand}">
+                                        <Path FlowDirection="LeftToRight" Data="M 8,3 L 8,13 M 3,8 L 13,8" Width="16" Height="16"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                              StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </ui:Button>
+                                    <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                               AutomationProperties.AutomationId="MacroListMoreButton"
+                                               AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                               ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                               Click="MoreMenu_Click">
+                                        <Path FlowDirection="LeftToRight" Width="16" Height="4" Stretch="Uniform"
+                                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                              Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
+                                        <ui:Button.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"/>
+                                                <MenuItem Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteMacroCommand}"/>
+                                                <MenuItem Header="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroFromCommand}"
+                                                          ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            </ContextMenu>
+                                        </ui:Button.ContextMenu>
+                                    </ui:Button>
+                                    <RadioButton x:Name="TabMacros" Tag="1" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
+                                                 Click="TabBtn_Click" Checked="TabBtn_Checked" IsChecked="True"
+                                                 AutomationProperties.AutomationId="MacrosTab">
+                                        <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}"/>
+                                    </RadioButton>
+                                </DockPanel>
+                                <ListBox AutomationProperties.Name="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Macros}"
+                                         SelectedItem="{Binding ListedMacro, Mode=TwoWay}"
+                                         TextSearch.TextPath="Name"
+                                         Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource PartListItem}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <Ellipse DockPanel.Dock="Left" x:Name="Dot" Width="8" Height="8" Margin="0,0,10,0" VerticalAlignment="Center"
+                                                         Fill="{DynamicResource EmberBrush}"/>
+                                                <!-- #254 A-1: a macro that fires on some layers only says so at
+                                                     its end, so its scope shows without selecting it. -->
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Macro_Layer, Source={x:Static strings:Strings.Instance}}" FontSize="13" Margin="8,0,0,0"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontWeight="Normal" VerticalAlignment="Center"
+                                                           Visibility="{Binding HasLayerScope, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            </DockPanel>
+                                            <DataTemplate.Triggers>
+                                                <!-- The dot is ember on one that is on, and quiet on one that is off. -->
+                                                <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                    <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource QuietGlyphBrush}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0" Padding="0,4,0,0">
+                                    <DockPanel Margin="12,4,0,0" MinHeight="32">
+                                        <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                                   Foreground="{DynamicResource EmberBrush}"
+                                                   AutomationProperties.AutomationId="MenuAddButton"
+                                                   AutomationProperties.Name="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}"
+                                                   Command="{Binding AddMenuCommand}">
+                                            <Path FlowDirection="LeftToRight" Data="M 8,3 L 8,13 M 3,8 L 13,8" Width="16" Height="16"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                  StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        </ui:Button>
+                                        <RadioButton x:Name="TabMenus" Tag="15" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
+                                                     Click="TabBtn_Click" Checked="TabBtn_Checked"
+                                                     AutomationProperties.AutomationId="MenusTab">
+                                            <TextBlock Text="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}"/>
+                                        </RadioButton>
+                                    </DockPanel>
+                                </Border>
+                                <ListBox AutomationProperties.Name="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Menus}"
+                                         SelectedItem="{Binding ListedMenu, Mode=TwoWay}"
+                                         TextSearch.TextPath="Name"
+                                         Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource PartListItem}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <Ellipse DockPanel.Dock="Left" x:Name="Dot" Width="8" Height="8" Margin="0,0,10,0" VerticalAlignment="Center"
+                                                         Fill="{DynamicResource EmberBrush}"/>
+                                                <!-- The menu's style, at its end. -->
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding KindLabel}" FontSize="13" Margin="8,0,0,0"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontWeight="Normal" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            </DockPanel>
+                                            <DataTemplate.Triggers>
+                                                <!-- The dot is ember on one that is on, and quiet on one that is off. -->
+                                                <DataTrigger Binding="{Binding Enabled}" Value="False">
+                                                    <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource QuietGlyphBrush}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Border>
+                        <!-- The editor. Each part loads only while it shows, as it did as a tab. -->
+                        <Border x:Name="MacrosEditorCard" Style="{StaticResource CardBorder}" Padding="0" Margin="0"
+                                controls:FlexLinePanel.Basis="480" controls:FlexLinePanel.Grow="999" VerticalAlignment="Top">
+                            <controls:ContentTabControl
+                                        SelectedIndex="{Binding MacrosPartIndex, Mode=OneWay}">
                         <TabControl.Template>
                             <ControlTemplate TargetType="TabControl">
                                 <ContentPresenter x:Name="PART_SelectedContentHost"
@@ -12669,63 +12864,13 @@
                             </ControlTemplate>
                         </TabControl.Template>
 
-            <!-- The parts below were tabs of the page and keep that
-                 indentation. -->
-            <!-- ─── TAB 1: Macros (slot-level) ─── -->
-            <TabItem>
-                <Grid Margin="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Macro list -->
-                    <DockPanel Grid.Column="0">
-                        <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button AutomationProperties.AutomationId="MacroAddButton" Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button AutomationProperties.AutomationId="MacroRemoveButton" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteMacroCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroFromCommand}"
-                                    Padding="8,4" Margin="0,0,0,4"
-                                    ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        </WrapPanel>
-
-                        <ListBox AutomationProperties.Name="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Macros}"
-                                 SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
-                                 TextSearch.TextPath="Name"
-                                 ItemContainerStyle="{StaticResource EmberSelectListItem}">
-                            <!-- #254 A-1: the scope dot marks layer-scoped
-                                 macros so scope is visible without selecting
-                                 each one, the layer-tab dot's sibling. -->
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="8" Height="8"
-                                                 Margin="0,0,6,0"
-                                                 VerticalAlignment="Center"
-                                                 Fill="{DynamicResource TextFillColorTertiaryBrush}"
-                                                 Visibility="{Binding HasLayerScope, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </DockPanel>
-
-                    <GridSplitter AutomationProperties.Name="{Binding Common_ResizePanes, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" Width="4" Margin="4,0"
-                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                                  ResizeBehavior="PreviousAndNext"/>
-
+                            <!-- The parts below were tabs of the page and keep that
+                                 indentation. -->
+                            <!-- Part 1: Macros (slot-level) -->
+                            <TabItem>
+                                <Grid>
                     <!-- Empty state (#175): cold guidance instead of a bare wall. -->
-                    <Grid Grid.Column="2">
+                    <Grid Margin="20,48">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -12745,32 +12890,57 @@
                                        Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
                         </StackPanel>
                     </Grid>
-
-                    <!-- Macro editor (shows when a macro is selected). Horizontal
-                         scroll DISABLED: Auto handed infinite width to the whole
-                         column, so nothing (action chips, wrapping text) could ever
-                         wrap and the h-scrollbar engaged on any wide row. Disabled
-                         constrains the content to the viewport so it wraps instead. -->
-                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  Padding="8"
-                                  DataContext="{Binding SelectedMacro}"
-                                  Visibility="{Binding DataContext.HasSelectedMacro,
-                                      RelativeSource={RelativeSource AncestorType=TabItem},
-                                      Converter={StaticResource BoolToVisibilityConverter}}">
-                        <StackPanel>
-                            <!-- Macro name -->
-                            <TextBlock Text="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,0,0,12"/>
-
-                            <!-- Enabled -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <CheckBox VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsEnabled, Mode=TwoWay}"/>
-                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsEnabled" SettingLabel="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_IsEnabled_1284"/>
-                            </StackPanel>
-
+                                    <StackPanel DataContext="{Binding SelectedMacro}"
+                                                Visibility="{Binding DataContext.HasSelectedMacro,
+                                                    RelativeSource={RelativeSource AncestorType=TabItem},
+                                                    Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <!-- The head, as the board draws it: the name at 20 SemiBold, which is
+                                             typed over in place (the pencil puts the caret in it), then Enabled
+                                             and More at the card's end. -->
+                                        <DockPanel Margin="20,14,12,14">
+                                            <ui:Button DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                                       AutomationProperties.AutomationId="MacroMoreButton"
+                                                       AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                       ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                       Click="MoreMenu_Click">
+                                                <Path FlowDirection="LeftToRight" Width="16" Height="4" Stretch="Uniform"
+                                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                      Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
+                                                <ui:Button.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMacroCommand}"/>
+                                                        <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"/>
+                                                        <Separator/>
+                                                        <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
+                                                                  Foreground="{DynamicResource DangerInkBrush}"
+                                                                  AutomationProperties.AutomationId="MacroRemoveButton"/>
+                                                    </ContextMenu>
+                                                </ui:Button.ContextMenu>
+                                            </ui:Button>
+                                            <CheckBox DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                                      Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                                      IsChecked="{Binding IsEnabled, Mode=TwoWay}"/>
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="12,0,10,0"/>
+                                            <!-- The name and its pencil share a line while the name fits, and a
+                                                 name too long for it has the line to itself. -->
+                                            <controls:FlexLinePanel Gap="2" LineGap="0" VerticalAlignment="Center">
+                                                <TextBox x:Name="MacroNameBox" Style="{StaticResource HeadNameEdit}"
+                                                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         AutomationProperties.Name="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                                                           Tag="{Binding ElementName=MacroNameBox}" Click="RenameName_Click"
+                                                           AutomationProperties.Name="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}"
+                                                           ToolTip="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}">
+                                                    <Path FlowDirection="LeftToRight" Data="M 3,13 L 3.6,10.2 L 10.8,3 L 13,5.2 L 5.8,12.4 Z M 9.4,4.4 L 11.6,6.6" Width="16" Height="16"
+                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                                </ui:Button>
+                                            </controls:FlexLinePanel>
+                                        </DockPanel>
+                                        <!-- The editor's rows, under a hairline. -->
+                                        <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Padding="20,14,12,14">
+                                            <StackPanel>
                             <!-- Trigger mode -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
@@ -15500,15 +15670,16 @@
                                          Width="60"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                             </StackPanel>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
 
-            <!-- === TAB 15: Menus (slot-level, #9 B-17 radial / touch menus) === -->
-            <TabItem>
-                <Grid Margin="8">
-                    <Grid.Resources>
+                            <!-- Part 15: Menus (slot-level, #9 B-17 radial / touch menus) -->
+                            <TabItem>
+                                <Grid>
+                                    <Grid.Resources>
                         <!-- Every tooltip on this tab is a sentence-or-three
                              string. Without a cap + wrap they render as one
                              screen-wide line. Scoped here because a GLOBAL
@@ -15614,36 +15785,9 @@
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Menu list -->
-                    <DockPanel Grid.Column="0">
-                        <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button AutomationProperties.AutomationId="MenuAddButton" Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMenuCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button AutomationProperties.AutomationId="MenuRemoveButton" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMenuCommand}"
-                                    Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMenuCommand}"
-                                    Padding="8,4" Margin="0,0,0,4"/>
-                        </WrapPanel>
-
-                        <ListBox AutomationProperties.Name="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Menus}"
-                                 SelectedItem="{Binding SelectedMenu, Mode=TwoWay}"
-                                 ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                                 DisplayMemberPath="Name"/>
-                    </DockPanel>
-
-                    <GridSplitter AutomationProperties.Name="{Binding Common_ResizePanes, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" Width="4" Margin="4,0"
-                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                                  ResizeBehavior="PreviousAndNext"/>
-
+                                    </Grid.Resources>
                     <!-- Empty state: cold guidance, same shape as Macros. -->
-                    <Grid Grid.Column="2">
+                    <Grid Margin="20,48">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -15663,39 +15807,56 @@
                                        Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
                         </StackPanel>
                     </Grid>
-
-                    <!-- Menu editor -->
-                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  Padding="8"
-                                  DataContext="{Binding SelectedMenu}"
-                                  Visibility="{Binding DataContext.HasSelectedMenu,
-                                      RelativeSource={RelativeSource AncestorType=TabItem},
-                                      Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!-- Every label row shares one auto-sized column (SharedSizeGroup,
-                             same device as the pipeline-tip and compact-row grids above).
-                             The labels were pinned at Width="200", which fits the English
-                             strings and clips or collides with the longer ones: de/pt-BR
-                             run ~35% longer than en, and "Touch Menu Activation Style"
-                             class strings are already near the limit in English. Auto +
-                             SharedSizeGroup sizes the column to the widest label in
-                             WHATEVER locale is loaded and keeps every row aligned, with no
-                             per-locale numbers to maintain. Fields use MinWidth so they
-                             hold the old rhythm but can still grow to their content. -->
-                        <StackPanel Grid.IsSharedSizeScope="True">
-                            <!-- Name + Enabled -->
-                            <TextBlock Text="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <!-- Fixed width: a Min/Max auto-sized TextBox in a
-                                     left-aligned StackPanel resizes while you type. -->
-                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Width="260" HorizontalAlignment="Left"/>
-                                <CheckBox Content="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
-                                          IsChecked="{Binding Enabled}" Margin="16,0,0,0" VerticalAlignment="Center"/>
-                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Enabled" SettingLabel="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_Enabled_12483"/>
-                            </StackPanel>
-
+                                    <StackPanel DataContext="{Binding SelectedMenu}"
+                                                Visibility="{Binding DataContext.HasSelectedMenu,
+                                                    RelativeSource={RelativeSource AncestorType=TabItem},
+                                                    Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <!-- The head, as the board draws it: the name at 20 SemiBold, which is
+                                             typed over in place (the pencil puts the caret in it), then Enabled
+                                             and More at the card's end. -->
+                                        <DockPanel Margin="20,14,12,14">
+                                            <ui:Button DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                                       AutomationProperties.AutomationId="MenuMoreButton"
+                                                       AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                       ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                       Click="MoreMenu_Click">
+                                                <Path FlowDirection="LeftToRight" Width="16" Height="4" Stretch="Uniform"
+                                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                      Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
+                                                <ui:Button.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMenuCommand}"/>
+                                                        <Separator/>
+                                                        <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMenuCommand}"
+                                                                  Foreground="{DynamicResource DangerInkBrush}"
+                                                                  AutomationProperties.AutomationId="MenuRemoveButton"/>
+                                                    </ContextMenu>
+                                                </ui:Button.ContextMenu>
+                                            </ui:Button>
+                                            <CheckBox DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                                      Content="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                                      IsChecked="{Binding Enabled}"/>
+                                            <TextBlock DockPanel.Dock="Right" Text="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="12,0,10,0"/>
+                                            <!-- The name and its pencil share a line while the name fits, and a
+                                                 name too long for it has the line to itself. -->
+                                            <controls:FlexLinePanel Gap="2" LineGap="0" VerticalAlignment="Center">
+                                                <TextBox x:Name="MenuNameBox" Style="{StaticResource HeadNameEdit}"
+                                                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         AutomationProperties.Name="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                                                           Tag="{Binding ElementName=MenuNameBox}" Click="RenameName_Click"
+                                                           AutomationProperties.Name="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}"
+                                                           ToolTip="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}">
+                                                    <Path FlowDirection="LeftToRight" Data="M 3,13 L 3.6,10.2 L 10.8,3 L 13,5.2 L 5.8,12.4 Z M 9.4,4.4 L 11.6,6.6" Width="16" Height="16"
+                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                                </ui:Button>
+                                            </controls:FlexLinePanel>
+                                        </DockPanel>
+                                        <!-- The editor's rows, under a hairline. -->
+                                        <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Padding="20,14,12,14">
+                                            <StackPanel Grid.IsSharedSizeScope="True">
                             <!-- Style row. All four setting combos below auto-size to
                                  their WIDEST ITEM and share one width group: MinWidth-only
                                  combos resized to the selected option (column rhythm
@@ -16971,12 +17132,15 @@
                                 </StackPanel>
                             </controls:FoldCard>
                             </controls:FoldList>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-                    </controls:ContentTabControl>
-                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                            </controls:ContentTabControl>
+                        </Border>
+                    </controls:FlexLinePanel>
+                </ScrollViewer>
             </TabItem>
         </controls:ContentTabControl>
     </Grid>

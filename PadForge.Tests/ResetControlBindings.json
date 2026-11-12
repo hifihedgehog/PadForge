@@ -139,12 +139,6 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MacroItem_IsEnabled_1284",
-    "Owner": "PadForge.ViewModels.MacroItem",
-    "Property": "IsEnabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroItem_TriggerMode_1297",
     "Owner": "PadForge.ViewModels.MacroItem",
     "Property": "TriggerMode"
@@ -1042,12 +1036,6 @@
     "Id": "Reset_EqBandVm_Q_11952",
     "Owner": "PadForge.ViewModels.EqBandVm",
     "Property": "Q"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuEditorItem_Enabled_12483",
-    "Owner": "PadForge.ViewModels.MenuEditorItem",
-    "Property": "Enabled"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",

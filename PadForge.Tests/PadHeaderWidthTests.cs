@@ -103,11 +103,21 @@ namespace PadForge.Tests
         public void TheTabGroupWrapsItsTabs()
         {
             var page = XDocument.Parse(PadPage());
-            foreach (string button in new[] { "SectionButtons", "SectionMacros", "TabMacros", "TabMenus" })
+            foreach (string button in new[] { "SectionButtons", "SectionMacros" })
             {
                 var strip = Named(page, button).Parent!;
                 Assert.Equal("WrapPanel", strip.Name.LocalName);
                 Assert.Equal("Horizontal", (string)strip.Attribute("Orientation"));
+            }
+            // The two parts of Macros and Menus are no strip: each part's
+            // switch is the head of its list, one under the other in the
+            // list's card, so no row of them can run past an edge.
+            foreach (string head in new[] { "TabMacros", "TabMenus" })
+            {
+                var button = Named(page, head);
+                Assert.Equal("{StaticResource ListHeadSwitch}", (string)button.Attribute("Style"));
+                Assert.Equal("DockPanel", button.Parent!.Name.LocalName);
+                Assert.Contains(Named(page, "MacrosListCard"), button.Ancestors());
             }
             var left = Named(page, "ButtonsTopLeft");
             Assert.Equal("WrapPanel", left.Name.LocalName);

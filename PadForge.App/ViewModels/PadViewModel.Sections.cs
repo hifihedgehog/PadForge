@@ -113,7 +113,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PickedTarget));
             if (ButtonsViewIndex != oldView) RaiseButtonsViewChanged();
             ApplyMappingPickerFilter();
-            OnPropertyChanged(nameof(MacrosPartIndex));
+            RaiseMacrosPartChanged();
         }
 
         /// <summary>The header chip's logo for the slot's type, or null for
@@ -158,6 +158,60 @@ namespace PadForge.ViewModels
         /// 1 the menus.</summary>
         public int MacrosPartIndex
             => Math.Max(0, Array.IndexOf(s_sectionTabs[MacrosSection], _lastTabOfSection[MacrosSection]));
+
+        /// <summary>The Macros tab's number.</summary>
+        public const int MacrosTabIndex = 1;
+
+        /// <summary>The Menus tab's number.</summary>
+        public const int MenusTabIndex = 15;
+
+        /// <summary>The macro its list shows as picked: the selected macro
+        /// while the macros are the part that shows, and none while the
+        /// menus are, so one item is picked across the two lists. Picking a
+        /// macro selects it and shows the macros. A list hands back nothing
+        /// when its pick goes to the other list, which selects
+        /// nothing.</summary>
+        public MacroItem ListedMacro
+        {
+            get => MacrosPartIndex == 0 ? SelectedMacro : null;
+            set
+            {
+                if (value == null) return;
+                SelectedMacro = value;
+                SelectedConfigTab = MacrosTabIndex;
+            }
+        }
+
+        /// <summary>The menu its list shows as picked, as
+        /// <see cref="ListedMacro"/> is for the macros.</summary>
+        public MenuEditorItem ListedMenu
+        {
+            get => MacrosPartIndex == 1 ? SelectedMenu : null;
+            set
+            {
+                if (value == null) return;
+                SelectedMenu = value;
+                SelectedConfigTab = MenusTabIndex;
+            }
+        }
+
+        /// <summary>Shows a part of Macros &amp; Menus while that section is
+        /// the one on the page: a macro or a menu just made shows in its
+        /// editor, whichever part showed before. Off the section it does
+        /// nothing, so a macro added by code moves no page.</summary>
+        private void ShowMacrosPart(int tab)
+        {
+            if (SelectedSection == MacrosSection) SelectedConfigTab = tab;
+        }
+
+        /// <summary>The part of Macros &amp; Menus that shows changed, and
+        /// with it which list has the picked item.</summary>
+        private void RaiseMacrosPartChanged()
+        {
+            OnPropertyChanged(nameof(MacrosPartIndex));
+            OnPropertyChanged(nameof(ListedMacro));
+            OnPropertyChanged(nameof(ListedMenu));
+        }
 
         /// <summary>The tab a section was last on, 0 for a number that names
         /// no section.</summary>

@@ -54,6 +54,18 @@ namespace PadForge.Tests
             return macro;
         }
 
+        // A macro whose one step is of a type and is picked, so the step
+        // stands open on that type's fields.
+        private static MacroItem TypePicked(MacroActionType type, Action<MacroAction> seed = null)
+        {
+            var macro = new MacroItem { Name = type.ToString() };
+            var action = new MacroAction { Type = type };
+            seed?.Invoke(action);
+            macro.Actions.Add(action);
+            macro.SelectedAction = action;
+            return macro;
+        }
+
         private static MacroItem AxisInputs()
         {
             // An axis of a device, a key's depth and a plain button: the
@@ -109,6 +121,15 @@ namespace PadForge.Tests
                         ("macros-axis-inputs.png", AxisInputs()),
                         ("macros-no-inputs.png", new MacroItem { Name = "New Macro" }),
                         ("macros-recording.png", new MacroItem { Name = "Recording", TriggerButtons = 0x1000, IsRecordingTrigger = true }),
+                        ("macros-type-lightbar.png", TypePicked(MacroActionType.LightbarColor, a => a.AddLightbarPaletteColorCommand.Execute(null))),
+                        ("macros-type-switch-layer.png", TypePicked(MacroActionType.SwitchLayer)),
+                        ("macros-type-system-volume.png", TypePicked(MacroActionType.SystemVolume)),
+                        ("macros-type-app-volume.png", TypePicked(MacroActionType.AppVolume)),
+                        ("macros-type-mouse-move.png", TypePicked(MacroActionType.MouseMove)),
+                        ("macros-type-run-program.png", TypePicked(MacroActionType.RunProgram)),
+                        ("macros-type-axis-set.png", TypePicked(MacroActionType.AxisSet)),
+                        ("macros-type-trigger-effect.png", TypePicked(MacroActionType.TriggerEffect)),
+                        ("macros-type-play-sound.png", TypePicked(MacroActionType.PlaySound)),
                     };
                     foreach (var (_, macro) in states) vm.Macros.Add(macro);
                     var page = new PadPage { DataContext = vm };
@@ -118,8 +139,10 @@ namespace PadForge.Tests
 
                     foreach (var (file, macro) in states)
                     {
+                        var clock = System.Diagnostics.Stopwatch.StartNew();
                         vm.SelectedMacro = macro;
                         Lay(ground);
+                        long shown = clock.ElapsedMilliseconds;
                         Settle(dispatcher);
                         Lay(ground);
                         var bitmap = new RenderTargetBitmap((int)Math.Round(Width * scale), (int)Math.Round(Height * scale),
@@ -129,7 +152,28 @@ namespace PadForge.Tests
                         png.Frames.Add(BitmapFrame.Create(bitmap));
                         using var stream = File.Create(Path.Combine(dir, file));
                         png.Save(stream);
-                        Step("drew " + file);
+                        Step("drew " + file + ", first laid out in " + shown + " ms, " + GroupsMade(ground));
+                        // How long picking another step takes: its fields are
+                        // made anew each time.
+                        if (macro.SelectedAction != null && macro.Actions.Count > 1)
+                        {
+                            var times = new List<long>();
+                            var picked = macro.SelectedAction;
+                            for (int round = 0; round < 3; round++)
+                            {
+                                foreach (var action in macro.Actions)
+                                {
+                                    var pick = System.Diagnostics.Stopwatch.StartNew();
+                                    macro.SelectedAction = action;
+                                    Lay(ground);
+                                    times.Add(pick.ElapsedMilliseconds);
+                                }
+                            }
+                            macro.SelectedAction = picked;
+                            Lay(ground);
+                            Step("picking a step lays out in " + string.Join(", ", times) + " ms");
+                            Step("right after a pick: " + GroupsMade(ground));
+                        }
                         var lost = LostLookups(ground);
                         File.AppendAllLines(Path.Combine(dir, "lookups.txt"),
                             new[] { file + ": " + lost.Count + " lookups found nothing" }.Concat(lost.Select(l => "   " + l)));
@@ -212,6 +256,28 @@ namespace PadForge.Tests
                 for (int i = VisualTreeHelper.GetChildrenCount(part) - 1; i >= 0; i--) open.Push(VisualTreeHelper.GetChild(part, i));
             }
             return lost;
+        }
+
+        /// <summary>How many of the fields' groups are built: a group
+        /// stands in a ShownPart, which holds nothing until it shows.</summary>
+        private static string GroupsMade(DependencyObject root)
+        {
+            int groups = 0, made = 0, shown = 0, parts = 0;
+            var open = new Stack<DependencyObject>();
+            open.Push(root);
+            while (open.Count > 0)
+            {
+                var part = open.Pop();
+                parts++;
+                if (part is PadForge.Controls.ShownPart group)
+                {
+                    groups++;
+                    if (group.Child != null) made++;
+                    if (group.Show) shown++;
+                }
+                for (int i = VisualTreeHelper.GetChildrenCount(part) - 1; i >= 0; i--) open.Push(VisualTreeHelper.GetChild(part, i));
+            }
+            return groups + " groups, " + made + " built, " + shown + " shown, " + parts + " parts on the page";
         }
 
         /// <summary>Lays the page out at the picture's size. With no window

@@ -5741,23 +5741,38 @@ namespace PadForge.Views
         private void ActionsList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _actionDragStart = e.GetPosition(null);
-            // A press on a step's own button is the button's. It starts no
-            // drag, or a hand that moves while it presses a step's remove
-            // would carry the step off.
+            // A drag takes hold of a step by its head. A press on one of the
+            // step's buttons is the button's, and a press among the open
+            // step's fields is the field's: it starts no drag, or a hand that
+            // moves while it presses a step's remove, drags a slider or
+            // selects text in a box would carry the step off.
             var pressed = e.OriginalSource as DependencyObject;
-            _actionDragItem = IsInAButtonOfAStep(pressed) ? null : ActionFromVisual(pressed);
+            _actionDragItem = IsOffAStepsHead(pressed) ? null : ActionFromVisual(pressed);
         }
 
-        /// <summary>Whether an element of a step stands in a button of the
-        /// step, such as its remove.</summary>
-        internal static bool IsInAButtonOfAStep(DependencyObject d)
+        /// <summary>Whether an element of a step stands in one of the step's
+        /// buttons or among its fields, and so not on the head a drag takes
+        /// hold of.</summary>
+        internal static bool IsOffAStepsHead(DependencyObject d)
         {
             while (d != null && d is not ListBoxItem)
             {
-                if (d is System.Windows.Controls.Primitives.ButtonBase) return true;
+                if (d is System.Windows.Controls.Primitives.ButtonBase || d is FrameworkElement { Name: "Fields" }) return true;
                 d = PadForge.Common.TreeWalk.Parent(d);
             }
             return false;
+        }
+
+        /// <summary>The keys the list of steps moves its pick by.</summary>
+        internal static bool MovesTheListsPick(Key key)
+            => key is Key.Up or Key.Down or Key.PageUp or Key.PageDown or Key.Home or Key.End;
+
+        // A key that reaches the open step's fields' own panel was taken by
+        // no field. Left to go on, an arrow pressed in a number box would
+        // move the list's pick, which closes the step being edited.
+        private void StepFields_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (MovesTheListsPick(e.Key)) e.Handled = true;
         }
 
         private void ActionsList_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -5799,6 +5814,9 @@ namespace PadForge.Views
         private void ActionsList_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is not ListBox lb) return;
+            // Only with the focus on the step itself. In one of the open
+            // step's fields the keys are the field's: Alt+Down opens a picker.
+            if (e.OriginalSource is not ListBoxItem) return;
             int step = ReorderStep(Keyboard.Modifiers, e.Key, e.SystemKey);
             if (step == 0) return;
             e.Handled = true;

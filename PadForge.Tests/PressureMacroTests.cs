@@ -502,14 +502,19 @@ namespace PadForge.Tests
                     Assert.Contains("Content=\"{Binding " + labels[i] + ", Source={x:Static vm:MacroPressureLabels.Instance}}\"", item);
                     Assert.Contains("Visibility=\"{Binding CarriesPressure, Converter={StaticResource BoolToVisibilityConverter}}\"", item);
 
-                    // The panel the picker sits in names the action family.
+                    // The picker's group of fields is a template of the steps'
+                    // list, and the part of the fields that holds it shows by
+                    // the action family's flag.
                     int combo = xaml.LastIndexOf("<ComboBox ", at, StringComparison.Ordinal);
                     Assert.Contains("SelectedValue=\"{Binding AxisTarget, Mode=TwoWay}\"",
                         xaml.Substring(combo, xaml.IndexOf('>', combo) - combo));
-                    int panel = xaml.LastIndexOf("<StackPanel", combo, StringComparison.Ordinal);
-                    string panelTag = xaml.Substring(panel, xaml.IndexOf('>', panel) - panel);
-                    gates.Add(panelTag.Contains("IsAnyAxisValueType") ? "write"
-                        : panelTag.Contains("IsAxisLatchReleaseType") ? "release" : panelTag);
+                    const string opens = "<DataTemplate x:Key=\"";
+                    int group = xaml.LastIndexOf(opens + "StepFields", combo, StringComparison.Ordinal);
+                    Assert.True(group >= 0);
+                    string key = xaml.Substring(group + opens.Length, xaml.IndexOf('"', group + opens.Length) - group - opens.Length);
+                    string part = "<controls:ShownPart PartTemplate=\"{StaticResource " + key + "}\" Show=\"{Binding ";
+                    gates.Add(xaml.Contains(part + "IsAnyAxisValueType}\"/>", StringComparison.Ordinal) ? "write"
+                        : xaml.Contains(part + "IsAxisLatchReleaseType}\"/>", StringComparison.Ordinal) ? "release" : key);
                 }
                 Assert.Equal(2, found);
             }

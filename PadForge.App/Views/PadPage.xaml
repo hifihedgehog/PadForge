@@ -347,8 +347,9 @@
         </DataTemplate>
         <!-- A step of a macro's actions, as the Macros board draws it: 42 tall with
              corners of 6, the band fill inside a soft edge, 12 at its start and 4 at
-             its end, and 6 under it. The picked step, whose fields show under the
-             steps, has the ember fill a picked macro has, inside an ember rim. -->
+             its end, and 6 under it. The picked step is open: its head has the ember
+             fill a picked macro has, inside an ember rim, and its fields stand under
+             the head, made from the list's StepFields when the step is picked. -->
         <Style x:Key="StepItem" TargetType="ListBoxItem">
             <!-- A step is read by what it does: with a template of its own it
                  would be read as its type. -->
@@ -359,15 +360,21 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="Bd" CornerRadius="6" BorderThickness="1"
-                                Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                                Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                            <StackPanel>
+                                <!-- The head: 40 inside the step's edge, and what a drag
+                                     takes hold of. -->
+                                <Border x:Name="Head" CornerRadius="5" Background="Transparent" Cursor="Hand"
+                                        Padding="{TemplateBinding Padding}" MinHeight="40">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ContentPresenter x:Name="Fields" Content="{Binding}" Visibility="Collapsed" Margin="12,6,4,8"/>
+                            </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -376,17 +383,20 @@
                             <!-- After the pointer's, so the picked step keeps its rim
                                  under the pointer. -->
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="#66FF6B2C"/>
+                                <Setter TargetName="Head" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                <Setter TargetName="Head" Property="CornerRadius" Value="5,5,0,0"/>
+                                <Setter TargetName="Fields" Property="ContentTemplate" Value="{DynamicResource StepFields}"/>
+                                <Setter TargetName="Fields" Property="Visibility" Value="Visible"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <!-- A step's remove: the quiet icon button. It is no Tab stop, since the
-             step is one, and Remove under the steps takes the picked step out. -->
-        <Style x:Key="StepRemove" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+        <!-- A step's own button: the quiet icon button. It is no Tab stop on a step
+             that is not picked, since the step is one. -->
+        <Style x:Key="StepButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="IsTabStop" Value="False"/>
         </Style>
@@ -13638,123 +13648,33 @@
                                             <StackPanel>
                                                 <TextBlock Style="{StaticResource EditorBlockHead}" Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}"/>
                                                 <!-- The macro's actions, as the board draws them: numbered steps, one under
-                                                     the other, each with its remove at its end. Drag a step onto another to
-                                                     move it (the drop commits Actions.Move, in code-behind), or move the
-                                                     picked one with Alt+Up and Alt+Down. The list has no scroll view of its
-                                                     own: the page scrolls. -->
+                                                     the other, each with its remove at its end. The picked step is open: it
+                                                     shows its fields under its head, and has Duplicate beside its remove.
+                                                     Drag a step by its head onto another to move it (the drop commits
+                                                     Actions.Move, in code-behind), or move the picked one with Alt+Up and
+                                                     Alt+Down while the step itself has the focus. Tab goes through the steps
+                                                     and the open one's fields. The list has no scroll view of its own: the
+                                                     page scrolls. -->
                                                 <ListBox x:Name="ActionsList" ItemsSource="{Binding Actions}"
                                                          SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
                                                          Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource StepItem}"
                                                          AlternationCount="100000"
+                                                         KeyboardNavigation.TabNavigation="Continue" IsTextSearchEnabled="False"
                                                          AllowDrop="True"
                                                          PreviewKeyDown="ActionsList_PreviewKeyDown"
                                                          PreviewMouseLeftButtonDown="ActionsList_PreviewMouseLeftButtonDown"
                                                          PreviewMouseMove="ActionsList_PreviewMouseMove"
                                                          DragOver="ActionsList_DragOver"
                                                          Drop="ActionsList_Drop">
-                                                    <ListBox.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <DockPanel>
-                                                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource StepRemove}"
-                                                                           Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                                           CommandParameter="{Binding}"
-                                                                           AutomationProperties.Name="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
-                                                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
-                                                                    <Path FlowDirection="LeftToRight" Data="M 3.5,3.5 L 10.5,10.5 M 10.5,3.5 L 3.5,10.5" Width="14" Height="14"
-                                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
-                                                                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                                                </ui:Button>
-                                                                <!-- The step's number: its place in the list, from one. -->
-                                                                <TextBlock Width="18" Margin="0,0,10,0" VerticalAlignment="Center" FontSize="13"
-                                                                           FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                           Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource OneBasedIndexConverter}}"/>
-                                                                <!-- A long step, such as a press of many buttons, wraps. -->
-                                                                <TextBlock Text="{Binding DisplayText}" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                                            </DockPanel>
-                                                        </DataTemplate>
-                                                    </ListBox.ItemTemplate>
-                                                </ListBox>
-                                                <!-- Add Action, as the board draws it: no fill, a plus and the words in the
-                                                     text color, drawn out 14 so its plus stands at the steps' edge. Duplicate
-                                                     and Remove act on the picked step. -->
-                                                <controls:FlexLinePanel Gap="4" LineGap="4" Margin="-14,2,0,0">
-                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding AddActionCommand}"
-                                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                               AutomationProperties.Name="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
-                                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
-                                                                  StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
-                                                            <TextBlock Text="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                    </ui:Button>
-                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding DuplicateActionCommand}"
-                                                               Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Command="{Binding RemoveActionCommand}"
-                                                               Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"/>
-                                                </controls:FlexLinePanel>
-                            <!-- Action editor (shows when an action is selected) -->
-                            <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
-                                    BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,8,0,12"
-                                    DataContext="{Binding SelectedAction}"
-                                    Visibility="{Binding DataContext.SelectedAction,
-                                        ElementName=MacroEditorHost,
-                                        Converter={StaticResource NullToCollapsedConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Macro_EditAction, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-
-                                    <!-- Action type -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                                   Width="80" Margin="0,0,8,0"/>
-                                        <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
-                                                  SelectedValuePath="Type" MinWidth="150"
-                                                  ItemsSource="{Binding Source={x:Static vm:MacroTypeCatalog.View}}"
-                                                  DisplayMemberPath="Label"
-                                                  IsSynchronizedWithCurrentItem="False"
-                                                  VirtualizingPanel.IsVirtualizing="True"
-                                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                                  VirtualizingPanel.VirtualizationMode="Recycling">
-                                            <!-- Grouped action-type picker: the catalog carries
-                                                 every MacroActionType exactly once (census-
-                                                 pinned), grouped by what the action acts on,
-                                                 the cross-device input picker's GroupStyle
-                                                 arrangement. Tooltips ride the item container. -->
-                                            <ComboBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <VirtualizingStackPanel/>
-                                                </ItemsPanelTemplate>
-                                            </ComboBox.ItemsPanel>
-                                            <ComboBox.ItemContainerStyle>
-                                                <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                                    <Setter Property="ToolTip" Value="{Binding Tooltip}"/>
-                                                </Style>
-                                            </ComboBox.ItemContainerStyle>
-                                            <ComboBox.GroupStyle>
-                                                <GroupStyle>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                                    Padding="6,3,6,3">
-                                                                <TextBlock Text="{Binding Name}"
-                                                                           FontSize="11"
-                                                                           FontWeight="SemiBold"
-                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                           TextTrimming="CharacterEllipsis"/>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
-                                                </GroupStyle>
-                                            </ComboBox.GroupStyle>
-                                        </ComboBox>
-                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Type" SettingLabel="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_Type_1980"/>
-                                    </StackPanel>
-
+                                                    <ListBox.Resources>
+                                                        <!-- The groups of a step's fields that show by a flag of the action, one
+                                                             template each. The fields under them hold a ShownPart for each, which
+                                                             carries the flag: a part that never shows is never built, so a picked
+                                                             step builds the fields of its own type and no others. Built whole, the
+                                                             fields took about 200 ms each time a step was picked. -->
                                     <!-- Disconnect Controller editor (#162). Target mode + device picker -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsDisconnectControllerType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsDisconnectController">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -13783,12 +13703,12 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Run Program editor. Same 80px label column as every other
                                          editor so the fields line up with the type dropdown. The
                                          Working directory label wraps to a second line rather than clip. -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsRunProgram">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
@@ -13817,15 +13737,15 @@
                                                     Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Text Block editor (#201). Multiline text typed out via
                                          Unicode injection. Newlines press Enter, tab CHARACTERS
                                          press Tab. AcceptsTab stays off on purpose: the Tab key
                                          keeps moving focus between fields, so a tab character
                                          only enters the text via paste (the tooltip says so).
                                          Same 80px label column as the other editors. -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsTextBlockType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsTextBlock">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_TextBlock_Text, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -13850,10 +13770,10 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TextPerCharDelayMs" SettingLabel="{Binding MacroAction_TextBlock_Delay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_TextPerCharDelayMs_2103"/>
                                         </StackPanel>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- SetGyroEngaged Mode picker: Toggle / On / Off -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsSetGyroEngagedType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSetGyroEngaged">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"
                                                    Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding SetGyroEngagedMode, Mode=TwoWay}"
@@ -13867,12 +13787,12 @@
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SetGyroEngagedMode" SettingLabel="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_SetGyroEngagedMode_2116"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Gyro Recenter card (issue #9 wave 1b, B-18). Parameter-less.
                                          The card explains what one fire resets, mirroring the Stop
                                          Sounds card shape. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsGyroRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsGyroRecenter">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_GyroRecenter, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -13881,12 +13801,12 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Combo Break card (discussion #237). Parameter-less. The card
                                          explains the park and resume behavior, mirroring the Gyro
                                          Recenter card shape. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsComboBreakType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsComboBreak">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_ComboBreak, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -13895,10 +13815,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Cursor Recenter Mode picker (#108). X / Y / X+Y -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMouseRecenter">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                    Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding CursorRecenterMode, Mode=TwoWay}"
@@ -13911,10 +13831,10 @@
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CursorRecenterMode" SettingLabel="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_CursorRecenterMode_2159"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Fix Mouse Position editor (#109). Mode + Pin X / Pin Y -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseFixPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMouseFixPosition">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -13946,10 +13866,10 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Limit Mouse Region editor (#110). Mode + Inset X / Inset Y -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseLimitRegionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMouseLimitRegion">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -13995,10 +13915,10 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Move Mouse to Screen Position editor (#9). Mouse X / Mouse Y + on-screen pick -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMoveMouseToScreenPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMoveMouseToScreenPosition">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseX_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -14020,12 +13940,12 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Nudge Cursor editor (v16): signed dx / dy pixel deltas.
                                          Deliberately no on-screen pick: a nudge is a relative
                                          offset, not a coordinate. -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseNudgeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMouseNudge">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseX_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -14044,12 +13964,12 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Cycle Tap List editor (v16): the step CSV plus the wrap
                                          toggle. The CSV is the persisted vocabulary the importer
                                          writes (see MacroAction.CycleStepsCsv). -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsCycleTapListType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsCycleTapList">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CycleSteps_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -14063,46 +13983,48 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CycleWrap" SettingLabel="{Binding Macro_CycleWrap_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_CycleWrap_2289"/>
                                         </StackPanel>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Pulse while latched (v19, M1): the toggle latches
                                          (button / key / mouse button / axis) can pulse their held
                                          contribution on the turbo square wave. Checking it surfaces
                                          the shared Interval row below. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsPulseCapableType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsPulseCapable">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   IsChecked="{Binding PulseWhileLatched, Mode=TwoWay}"
                                                   Content="{Binding Macro_PulseWhileLatched, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Macro_PulseWhileLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PulseWhileLatched" SettingLabel="{Binding Macro_PulseWhileLatched, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_PulseWhileLatched_2301"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Turbo interval (#9 + wave 1b, widened v19 M1): shared by the
                                          Repeat While Held turbos, Toggle Wheel Scroll, and any pulsing
                                          latch. Key picker / button grid are the shared panels below. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsRepeatIntervalType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsRepeatInterval">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding IntervalMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                         <ui:Button Command="{Binding ResetIntervalMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0" ToolTip="{Binding Macro_Reset_Interval, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Pressure-scaled turbo (#290): rate follows an analog source.
                                          The Interval row above becomes the FAST end (full press).
                                          Slow Interval is the light-press end. The curve shapes the
                                          pressure between them. Source pickers reuse the sender-generic
                                          DeviceAxisPicker handlers the volume rows already use. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsRepeatIntervalType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsRepeatInterval2">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   IsChecked="{Binding PressureScaledRate, Mode=TwoWay}"
                                                   Content="{Binding Macro_PressureScaledRate, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Macro_PressureScaledRate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PressureScaledRate" SettingLabel="{Binding Macro_PressureScaledRate, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_PressureScaledRate_2326"/>
                                     </StackPanel>
-                                    <StackPanel Visibility="{Binding ShowsPressureTurboRows, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        </DataTemplate>
+                                                        <DataTemplate x:Key="StepFieldsPressureTurboRows">
+                                    <StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SlowInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"
@@ -14184,12 +14106,12 @@
                                                    FontSize="11" Margin="0,0,0,6" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Button flags checkbox grid for ButtonPress / ButtonRelease and
                                          the wave-1b turbo / toggle button actions (all address the
                                          target via the same ButtonFlags / CustomButtonWords pair) -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsAnyVcButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyVcButton">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                             <reset:SettingResetButton Command="{Binding ResetButtonSelectionCommand}" SettingLabel="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}"/>
@@ -14209,10 +14131,10 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Key combo for KeyPress / KeyRelease / RepeatKeyWhileHeld (#9) / ToggleKey (wave 1b) -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsAnyKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyKey">
+                                    <StackPanel Margin="0,0,0,6">
                                         <TextBlock Text="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <DockPanel LastChildFill="True" Margin="0,0,0,4">
                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="KeyString" SettingLabel="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyString_2436"/>
@@ -14236,23 +14158,23 @@
                                                    FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Duration. For ButtonPress / KeyPress / Delay / LightbarColor -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsDuration">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DurationMs" SettingLabel="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DurationMs_2459" Margin="4,0,8,0"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Set Chroma Color card (#468): the color, painted on
                                          the Chroma categories of the Razer devices assigned to
                                          this virtual controller while the action runs. The
                                          hold is the Duration row above. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsSetChromaColorType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSetChromaColor">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_SetChromaColor, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14275,15 +14197,15 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Set Key Colors card (#557): the lights, picked on a
                                          full-size keyboard with a chip per group of lights and
                                          numbered in the order picked, the color, the style, how
                                          long it holds, and what the other lights show meanwhile.
                                          Keys go by HID usage, so the action lights the same keys
                                          on every keyboard this virtual controller lights. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsSetKeyColorsType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSetKeyColors">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_SetKeyColors, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14400,11 +14322,11 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Clear Key Colors card (#557): the lights whose Set Key
                                          Colors it ends, or none for every one. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsClearKeyColorsType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsClearKeyColors">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_ClearKeyColors, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14437,13 +14359,13 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Show Dreamcast Screen card (#469): the pictures in the
                                          order they show, each drawn as the VMU draws it (click
                                          one to remove it), how long each shows and how many
                                          times the set plays. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsShowDreamcastScreenType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsShowDreamcastScreen">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_ShowDreamcastScreen, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14491,12 +14413,12 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Keyboard screen kind row (#519), shared by Show Keyboard
                                          Screen and Keyboard Screen Mode: the kinds in their own
                                          order, so the index is the kind. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsKeyboardScreenKindType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsKeyboardScreenKind">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                         <ComboBox SelectedIndex="{Binding ScreenKindIndex, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
@@ -14509,11 +14431,11 @@
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenKind" SettingLabel="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenKind_13101"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Profile Shortcut (#561): the Profile Shortcuts card's modes
                                          on a macro, and the profile's name for the one that names one. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsProfileShortcutType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsProfileShortcut">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}"
                                                    VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                         <ComboBox SelectedIndex="{Binding ProfileShortcutModeIndex}" MinWidth="200"
@@ -14530,24 +14452,24 @@
                                                   AutomationProperties.Name="{Binding Profiles_ShortcutMode_Specific, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ProfileShortcutMode" SettingLabel="{Binding MacroAction_Type_ProfileShortcut, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ProfileShortcutMode_2980"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Which Screen Overlay (#560): Show Keyboard Screen and
                                          Keyboard Screen Mode with that kind, Toggle Screen Overlay,
                                          and Pan Keyboard Screen Picture. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsScreenOverlayTargetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsScreenOverlayTarget">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                         <ComboBox ItemsSource="{Binding ScreenOverlayChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding ScreenOverlayNumber, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ScreenOverlayNumber" SettingLabel="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenOverlayNumber_55709"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Show Keyboard Screen card (#519): the Show Dreamcast
                                          Screen card's shape, the pictures drawn as the kind's
                                          screen draws them (click one to remove it). -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsShowKeyboardScreenType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsShowKeyboardScreen">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_ShowKeyboardScreen, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14595,11 +14517,11 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Keyboard Screen Mode card (#519): the modes in their own
                                          order, so the index is the mode. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsKeyboardScreenModeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsKeyboardScreenMode">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"
@@ -14623,10 +14545,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Stopwatch card (#519). -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsStopwatchType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsStopwatch">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Stopwatch_Action, Source={x:Static strings:Strings.Instance}}"
@@ -14643,10 +14565,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Pan Keyboard Screen Picture card (#519). -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsPanKeyboardScreenType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsPanKeyboardScreen">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Pan_Direction, Source={x:Static strings:Strings.Instance}}"
@@ -14673,10 +14595,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Lightbar Color card (Reactive | Sticky) -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsLightbarType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsLightbar">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14791,10 +14713,10 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Lightbar Color Clear card -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsLightbarColorClearType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsLightbarColorClear">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_LightbarColorClear, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -14803,10 +14725,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Lightbar Mode Set card -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsLightbarModeSetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsLightbarModeSet">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_LightbarModeSet, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -14838,10 +14760,10 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Lightbar Mode Cycle card. Checkbox grid bound through LightbarCycleModesCsv via the action's CycleModeOptions list. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsLightbarModeCycleType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsLightbarModeCycle">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
@@ -14867,11 +14789,11 @@
                                             </ItemsControl>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Pointer Mode Cycle card (issue #203), same shape as the
                                          lightbar cycle card above. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsPointerModeCycleType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsPointerModeCycle">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{Binding MacroAction_Type_PointerModeCycle, Source={x:Static strings:Strings.Instance}}"
@@ -14897,12 +14819,12 @@
                                             </ItemsControl>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Pointer Mode Set card (issue #203 follow-up): one fixed
                                          mode, the pointer sibling of the lightbar mode-set card.
                                          Combo mirrors the Pointer tab's mode picker. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsPointerModeSetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsPointerModeSet">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -14921,13 +14843,13 @@
                                             </DockPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Switch Layer card (#377): one-shot jump to a shift
                                          layer on this slot. Choices are the slot's own tab
                                          strip (Base + every authored layer), the same
                                          name/mask pairs the layer-scope picker uses. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsSwitchLayerType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSwitchLayer">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_SwitchLayer, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -14944,12 +14866,12 @@
                                             </DockPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Guide LED brightness card (#209): one transient
                                          brightness write for every capable controller on
                                          the slot (Xbox over USB, 2015 Steam Controller). -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsGuideLedBrightnessType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsGuideLedBrightness">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -14966,12 +14888,12 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Rumble card (Reactive | Sticky). Shared by the main-motor
                                          Rumble action and the trigger-channel RumbleTrigger action
                                          (#102). The header title switches per action type. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsAnyRumbleSetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyRumbleSet">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding RumbleEditorTitle}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -15033,12 +14955,12 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Rumble Stop card. Shared by RumbleStop (main motors) and
                                          RumbleTriggerStop (trigger channel, #102). Title + body switch
                                          per action type. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsAnyRumbleStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyRumbleStop">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding RumbleStopEditorTitle}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -15047,12 +14969,12 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Adaptive Trigger Effect card (#531): the trigger, the
                                          effect, its parameters by name within the ranges the
                                          #529 encoder takes, and how long it holds. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsTriggerEffectType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsTriggerEffect">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_TriggerEffect, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -15129,10 +15051,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Stop Adaptive Trigger Effect card (#531): which trigger. -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsTriggerEffectStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsTriggerEffectStop">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_TriggerEffectStop, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -15153,10 +15075,10 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Play Sound card (issue #83). File + volume + loop + preview -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsPlaySoundType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsPlaySound">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -15190,10 +15112,10 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Stop Sounds card (issue #83) -->
-                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
-                                            Visibility="{Binding IsSoundStopType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSoundStop">
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
                                         <StackPanel>
                                             <TextBlock Text="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -15202,13 +15124,13 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
                                     </Border>
-
+                                                        </DataTemplate>
                                     <!-- Axis target + value for AxisSet / AxisHold plus the v19 M1
                                          ToggleVcAxis latch and RepeatVcAxisWhileHeld turbo. The
                                          AxisAdd relative deflection (discussion #237) rides the same
                                          pair, reading the signed value as the per-frame add. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsAnyAxisValueType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyAxisValue">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -15255,32 +15177,11 @@
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AxisValuePercent" SettingLabel="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_AxisValuePercent_2882"/>
                                     </StackPanel>
-
-                                    <!-- Axis Add hint (discussion #237): the shared value box is
-                                         already signed. The hint spells out that negative values
-                                         subtract and that triggers add on the pull scale. -->
-                                    <TextBlock Text="{Binding MacroAction_AxisAdd_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Visibility="{Binding IsAxisAddType, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                                    <!-- Scale Axis hint (#251): the shared signed value box is
-                                         the scale delta, -50% halves the current deflection. -->
-                                    <TextBlock Text="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Visibility="{Binding IsAxisScaleType, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                                    <!-- Set Axis (Latched) hint (#251): ladder semantics. -->
-                                    <TextBlock Text="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Visibility="{Binding IsAxisSetLatchedType, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
+                                                        </DataTemplate>
                                     <!-- Release Axis Latches (#251): target-only row, no value box
                                          (the action carries no value). None reads as all axes. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsAxisLatchReleaseType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAxisLatchRelease">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -15318,23 +15219,23 @@
                                         </ComboBox>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AxisTarget" SettingLabel="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_AxisTarget_2915"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Yield to physical input (discussion #237): the axis holds
                                          can hand the axis back to the player mid-activation. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsAxisYieldCapableType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAxisYieldCapable">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                   IsChecked="{Binding AxisYieldToPhysical, Mode=TwoWay}"
                                                   Content="{Binding Macro_AxisYieldToPhysical, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Macro_AxisYieldToPhysical_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AxisYieldToPhysical" SettingLabel="{Binding Macro_AxisYieldToPhysical, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_AxisYieldToPhysical_2933"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Wheel tick count for MouseWheelTap (v15) and the v19 M1
                                          ToggleWheel latch. Reuses the AxisValue field as the signed
                                          tick count. -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsAnyWheelTapType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyWheelTap">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
@@ -15344,10 +15245,10 @@
                                                   VerticalAlignment="Center"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="WheelHorizontal" SettingLabel="{Binding Mouse_ScrollH, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_WheelHorizontal_2946"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Source axis for SystemVolume -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsSystemVolume">
+                                    <StackPanel Margin="0,0,0,6">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -15445,10 +15346,10 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Source axis + process name. For AppVolume -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsAppVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAppVolume">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Process, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
@@ -15553,10 +15454,10 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Source axis + sensitivity. For MouseMove / MouseScroll -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsMouseMove">
+                                    <StackPanel Margin="0,0,0,6">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -15648,11 +15549,11 @@
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
-
+                                                        </DataTemplate>
                                     <!-- Mouse button picker for MouseButtonPress / MouseButtonRelease
                                          plus the v19 M1 ToggleMouseButton latch -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsAnyMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <DataTemplate x:Key="StepFieldsAnyMouseButton">
+                                    <StackPanel Margin="0,0,0,6">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
@@ -15667,8 +15568,193 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseButton" SettingLabel="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_MouseButton_3233"/>
                                         </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
+                                                        </DataTemplate>
+                                                        <!-- The fields of a step, which the picked step shows under its head. They
+                                                             are made when a step is picked and gone when it no longer is, so one
+                                                             set stands at a time. A key that would move the list's pick stops
+                                                             here when no field takes it. -->
+                                                        <DataTemplate x:Key="StepFields">
+                                                            <StackPanel KeyDown="StepFields_KeyDown">
+                                    <!-- Action type -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
+                                                  SelectedValuePath="Type" MinWidth="150"
+                                                  ItemsSource="{Binding Source={x:Static vm:MacroTypeCatalog.View}}"
+                                                  DisplayMemberPath="Label"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  VirtualizingPanel.IsVirtualizing="True"
+                                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                  VirtualizingPanel.VirtualizationMode="Recycling">
+                                            <!-- Grouped action-type picker: the catalog carries
+                                                 every MacroActionType exactly once (census-
+                                                 pinned), grouped by what the action acts on,
+                                                 the cross-device input picker's GroupStyle
+                                                 arrangement. Tooltips ride the item container. -->
+                                            <ComboBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ComboBox.ItemsPanel>
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="ToolTip" Value="{Binding Tooltip}"/>
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                    Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           FontSize="11"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Type" SettingLabel="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_Type_1980"/>
+                                    </StackPanel>
+
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsDisconnectController}" Show="{Binding IsDisconnectControllerType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsRunProgram}" Show="{Binding IsRunProgramType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsTextBlock}" Show="{Binding IsTextBlockType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSetGyroEngaged}" Show="{Binding IsSetGyroEngagedType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsGyroRecenter}" Show="{Binding IsGyroRecenterType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsComboBreak}" Show="{Binding IsComboBreakType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMouseRecenter}" Show="{Binding IsMouseRecenterType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMouseFixPosition}" Show="{Binding IsMouseFixPositionType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMouseLimitRegion}" Show="{Binding IsMouseLimitRegionType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMoveMouseToScreenPosition}" Show="{Binding IsMoveMouseToScreenPositionType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMouseNudge}" Show="{Binding IsMouseNudgeType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsCycleTapList}" Show="{Binding IsCycleTapListType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPulseCapable}" Show="{Binding IsPulseCapableType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsRepeatInterval}" Show="{Binding IsRepeatIntervalType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsRepeatInterval2}" Show="{Binding IsRepeatIntervalType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPressureTurboRows}" Show="{Binding ShowsPressureTurboRows}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyVcButton}" Show="{Binding IsAnyVcButtonType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyKey}" Show="{Binding IsAnyKeyType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsDuration}" Show="{Binding IsDurationType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSetChromaColor}" Show="{Binding IsSetChromaColorType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSetKeyColors}" Show="{Binding IsSetKeyColorsType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsClearKeyColors}" Show="{Binding IsClearKeyColorsType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsShowDreamcastScreen}" Show="{Binding IsShowDreamcastScreenType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsKeyboardScreenKind}" Show="{Binding IsKeyboardScreenKindType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsProfileShortcut}" Show="{Binding IsProfileShortcutType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsScreenOverlayTarget}" Show="{Binding IsScreenOverlayTargetType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsShowKeyboardScreen}" Show="{Binding IsShowKeyboardScreenType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsKeyboardScreenMode}" Show="{Binding IsKeyboardScreenModeType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsStopwatch}" Show="{Binding IsStopwatchType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPanKeyboardScreen}" Show="{Binding IsPanKeyboardScreenType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsLightbar}" Show="{Binding IsLightbarType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsLightbarColorClear}" Show="{Binding IsLightbarColorClearType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsLightbarModeSet}" Show="{Binding IsLightbarModeSetType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsLightbarModeCycle}" Show="{Binding IsLightbarModeCycleType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPointerModeCycle}" Show="{Binding IsPointerModeCycleType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPointerModeSet}" Show="{Binding IsPointerModeSetType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSwitchLayer}" Show="{Binding IsSwitchLayerType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsGuideLedBrightness}" Show="{Binding IsGuideLedBrightnessType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyRumbleSet}" Show="{Binding IsAnyRumbleSetType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyRumbleStop}" Show="{Binding IsAnyRumbleStopType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsTriggerEffect}" Show="{Binding IsTriggerEffectType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsTriggerEffectStop}" Show="{Binding IsTriggerEffectStopType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsPlaySound}" Show="{Binding IsPlaySoundType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSoundStop}" Show="{Binding IsSoundStopType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyAxisValue}" Show="{Binding IsAnyAxisValueType}"/>
+                                    <!-- Axis Add hint (discussion #237): the shared value box is
+                                         already signed. The hint spells out that negative values
+                                         subtract and that triggers add on the pull scale. -->
+                                    <TextBlock Text="{Binding MacroAction_AxisAdd_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding IsAxisAddType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Scale Axis hint (#251): the shared signed value box is
+                                         the scale delta, -50% halves the current deflection. -->
+                                    <TextBlock Text="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding IsAxisScaleType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Set Axis (Latched) hint (#251): ladder semantics. -->
+                                    <TextBlock Text="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Visibility="{Binding IsAxisSetLatchedType, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAxisLatchRelease}" Show="{Binding IsAxisLatchReleaseType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAxisYieldCapable}" Show="{Binding IsAxisYieldCapableType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyWheelTap}" Show="{Binding IsAnyWheelTapType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsSystemVolume}" Show="{Binding IsSystemVolumeType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAppVolume}" Show="{Binding IsAppVolumeType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsMouseMove}" Show="{Binding IsMouseMoveType}"/>
+                                                                <controls:ShownPart PartTemplate="{StaticResource StepFieldsAnyMouseButton}" Show="{Binding IsAnyMouseButtonType}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.Resources>
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <!-- The step's number: its place in the list, from one. -->
+                                                                <TextBlock Width="18" Margin="0,0,10,0" VerticalAlignment="Center" FontSize="13"
+                                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                           Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource OneBasedIndexConverter}}"/>
+                                                                <!-- A long step, such as a press of many buttons, wraps. -->
+                                                                <TextBlock Grid.Column="1" Text="{Binding DisplayText}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                                <ui:Button x:Name="Duplicate" Grid.Column="2" Style="{StaticResource StepButton}" Visibility="Collapsed"
+                                                                           Command="{Binding DataContext.DuplicateActionCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                                           AutomationProperties.Name="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}"
+                                                                           ToolTip="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}">
+                                                                    <controls:GlyphText Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"/>
+                                                                </ui:Button>
+                                                                <ui:Button x:Name="Remove" Grid.Column="3" Style="{StaticResource StepButton}"
+                                                                           Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                                           CommandParameter="{Binding}"
+                                                                           AutomationProperties.Name="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
+                                                                    <Path FlowDirection="LeftToRight" Data="M 3.5,3.5 L 10.5,10.5 M 10.5,3.5 L 3.5,10.5" Width="14" Height="14"
+                                                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                                                </ui:Button>
+                                                            </Grid>
+                                                            <DataTemplate.Triggers>
+                                                                <!-- The open step has Duplicate, which copies the picked step, and its
+                                                                     two buttons are Tab stops. -->
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                                    <Setter TargetName="Duplicate" Property="Visibility" Value="Visible"/>
+                                                                    <Setter TargetName="Duplicate" Property="IsTabStop" Value="True"/>
+                                                                    <Setter TargetName="Remove" Property="IsTabStop" Value="True"/>
+                                                                </DataTrigger>
+                                                            </DataTemplate.Triggers>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                                <!-- Add Action, as the board draws it: no fill, a plus and the words in the
+                                                     text color, drawn out 14 so its plus stands at the steps' edge. -->
+                                                <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" Margin="-14,2,0,0" HorizontalAlignment="Left"
+                                                           Command="{Binding AddActionCommand}"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                           AutomationProperties.Name="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
+                                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                              StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </ui:Button>
                                             </StackPanel>
                                         </Border>
                                         <!-- More, a fold at the card's foot: the settings a macro seldom needs.

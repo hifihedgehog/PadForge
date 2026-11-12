@@ -357,7 +357,9 @@ namespace PadForge.Tests
             Assert.Equal("Pad.Macros.More", (string)more.Attribute("StateKey"));
             Assert.Equal("0", (string)more.Attribute("Margin"));
             var moreRows = Assert.Single(more.Elements(), e => e.Name.LocalName == "StackPanel").Elements().ToList();
-            Assert.Equal(5, moreRows.Count);
+            // The layer, the rest of the combination, then Repeat: its
+            // head, the mode, the count and the delay.
+            Assert.Equal(6, moreRows.Count);
             Assert.Contains("{Binding LayerMask, Mode=TwoWay}", moreRows[0].ToString());
             var rest = moreRows[1];
             Assert.Equal(combination, (string)rest.Attribute("Visibility"));
@@ -371,6 +373,84 @@ namespace PadForge.Tests
             // The combination's rule stands on those two groups and nowhere
             // else.
             Assert.Equal(2, host.Descendants().Count(e => (string)e.Attribute("Visibility") == combination));
+        }
+
+        /// <summary>A row of a setting in the macro editor, as the board
+        /// draws it: 44 tall, a label of 190 with 10 after it, the
+        /// control, and the reset at the row's end. The section gives its
+        /// rows that look. A reset carries its end mark and its margin as
+        /// its own attributes.</summary>
+        [Fact]
+        public void AMacroRowIsItsLabel_ItsControl_AndItsResetAtTheEnd()
+        {
+            var page = Page();
+            var section = Named(page, "MacrosSectionScroll");
+            var looks = Assert.Single(section.Elements(), e => e.Name.LocalName == "ScrollViewer.Resources");
+            XElement Look(string key) => Assert.Single(looks.Elements(), e => (string)e.Attribute(X + "Key") == key);
+            var line = Look("RowOptionLine");
+            Assert.Equal("controls:FlexLinePanel", (string)line.Attribute("TargetType"));
+            Assert.Equal("44", SetterOf(line, "MinLineHeight"));
+            Assert.Equal("True", SetterOf(line, "EndsApart"));
+            var label = Look("RowOptionLabel");
+            Assert.Equal("{StaticResource RowOptionLabel}", (string)label.Attribute("BasedOn"));
+            Assert.Equal("190", SetterOf(label, "Width"));
+            Assert.Equal("0,0,10,0", SetterOf(label, "Margin"));
+            Assert.Equal("10,0,0,0", Look("RowOptionResetMargin").Value);
+
+            var host = Named(page, "MacroEditorHost");
+            var rows = host.Descendants().Where(e => e.Name.LocalName == "FlexLinePanel"
+                && (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}").ToList();
+            // Fire, its three own rows, the layer, the source, the old
+            // trigger's two, Consume, and Repeat's three.
+            Assert.Equal(12, rows.Count);
+            string[] binds =
+            {
+                "{Binding TriggerMode, Mode=TwoWay}", "{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                "{Binding TriggerDoublePressMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}", "{Binding RepeatDelayMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "{Binding TriggerAxisThreshold, Mode=TwoWay}",
+                "{Binding TriggerAxisDirectionIndex, Mode=TwoWay}", "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}",
+                "{Binding RepeatCount, Mode=TwoWay}", "{Binding RepeatDelayMs, Mode=TwoWay}",
+            };
+            foreach (string bound in binds)
+                Assert.Contains(rows, r => r.Elements().Any(c => c.Attributes().Any(a => a.Value == bound)));
+            Assert.All(rows, r =>
+            {
+                var parts = r.Elements().ToList();
+                Assert.Equal("TextBlock", parts[0].Name.LocalName);
+                Assert.Equal("{DynamicResource RowOptionLabel}", (string)parts[0].Attribute("Style"));
+                Assert.StartsWith("{Binding ", (string)parts[0].Attribute("Text"));
+                // The reset is the row's last part, marked as its end part
+                // at the rows' margin.
+                var reset = parts[^1];
+                Assert.True(reset.Name.LocalName == "SettingResetButton" || (string)reset.Attribute("Style") == "{StaticResource ResetButton}",
+                    "a row ends with " + reset.Name.LocalName);
+                Assert.Equal("True", (string)reset.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+                Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)reset.Attribute("Margin"));
+                // A picker or a box stands centered in the row's height: the
+                // row would stretch it to its 44.
+                Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox"), c => Assert.Equal("Center", (string)c.Attribute("VerticalAlignment")));
+            });
+            // No old row of the editor is left beside them: a horizontal
+            // strip with the old 80 wide label.
+            Assert.DoesNotContain(Named(host, "MacroMore").Descendants(), e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("Width") == "80");
+
+            // Consume Trigger Buttons is a switch under its own long label.
+            var consume = rows.Single(r => r.Elements().Any(c => (string)c.Attribute("IsChecked") == "{Binding ConsumeTriggerButtons, Mode=TwoWay}"));
+            Assert.Equal("320", (string)consume.Elements().First().Attribute("Width"));
+            Assert.Equal("{StaticResource SwitchCheckBox}", (string)consume.Elements().Single(c => c.Name.LocalName == "CheckBox").Attribute("Style"));
+            // Count and Delay are a row each, and Delay has the interval's
+            // reset.
+            var delay = rows.Single(r => r.Elements().Any(c => (string)c.Attribute("Text") == "{Binding RepeatDelayMs, Mode=TwoWay}"));
+            Assert.Equal("{Binding ResetRepeatDelayMsCommand}", (string)delay.Elements().Last().Attribute("Command"));
+            Assert.StartsWith("{Binding ShowsRepeatSection,", (string)delay.Attribute("Visibility"));
+            // The layer row shows by the holder around it.
+            var layer = rows.Single(r => r.Elements().Any(c => (string)c.Attribute("SelectedValue") == "{Binding LayerMask, Mode=TwoWay}"));
+            Assert.Null(layer.Attribute("Visibility"));
+            var holder = layer.Parent!;
+            Assert.Equal("StackPanel", holder.Name.LocalName);
+            Assert.Equal(new[] { "{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}", "{Binding ShowsLayerRow}" },
+                holder.Elements().Single(e => e.Name.LocalName == "StackPanel.Style").Descendants()
+                    .Where(e => e.Name.LocalName == "DataTrigger").Select(e => (string)e.Attribute("Binding")));
         }
     }
 }

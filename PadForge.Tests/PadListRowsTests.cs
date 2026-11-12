@@ -50,11 +50,11 @@ namespace PadForge.Tests
             => Assert.Single(scope.Descendants(), e => Name(e) == name);
 
         /// <summary>The page's own resource of a key. The host of the
-        /// options under the bar defines some of the keys again for its
-        /// rows (<see cref="KeyedIn"/>).</summary>
+        /// options under the bar and the Macros and Menus section define
+        /// some of the keys again for their rows (<see cref="KeyedIn"/>).</summary>
         private static XElement Keyed(XDocument page, string key)
             => Assert.Single(page.Descendants(), e => (string)e.Attribute(X + "Key") == key
-                && !e.Ancestors().Any(a => Name(a) == "PickedOptions"));
+                && !e.Ancestors().Any(a => Name(a) is "PickedOptions" or "MacrosSectionScroll"));
 
         /// <summary>A resource an element defines for what it holds.</summary>
         private static XElement KeyedIn(XElement host, string key)

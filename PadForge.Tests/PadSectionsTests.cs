@@ -433,7 +433,9 @@ namespace PadForge.Tests
                             (string)content.Attribute("AutomationProperties.Name"));
                         Assert.Equal("32,0", (string)content.Attribute("Padding"));
                         Assert.Equal("Disabled", (string)content.Attribute("HorizontalScrollBarVisibility"));
-                        var cards = Assert.Single(content.Elements());
+                        // The section holds the look of its rows beside its
+                        // two cards.
+                        var cards = Assert.Single(content.Elements(), e => e.Name.LocalName != "ScrollViewer.Resources");
                         Assert.Equal("FlexLinePanel", cards.Name.LocalName);
                         Assert.Equal("16", (string)cards.Attribute("Gap"));
                         Assert.Equal("16", (string)cards.Attribute("LineGap"));

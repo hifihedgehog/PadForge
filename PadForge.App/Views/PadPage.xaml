@@ -300,6 +300,51 @@
             <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
+        <!-- An input of a macro's trigger, as the Macros board draws it: a pill
+             30 tall on the raised fill with a cold edge, 12 at its start, and
+             its remove 6 after its words. A name too long for the line is cut
+             short. -->
+        <Style x:Key="InputChip" TargetType="Border">
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="12,0,6,0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource InputChipEdgeBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource InputChipTextBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="InputChipRemove" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="CornerRadius" Value="11"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <DataTemplate x:Key="InputChipPart">
+            <Border Style="{StaticResource InputChip}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Label}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <ui:Button Grid.Column="1" Style="{StaticResource InputChipRemove}" Command="{Binding RemoveCommand}"
+                               AutomationProperties.Name="{Binding Macro_RemoveTriggerInput, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Macro_RemoveTriggerInput, Source={x:Static strings:Strings.Instance}}">
+                        <Path FlowDirection="LeftToRight" Data="M 3,3 L 9,9 M 9,3 L 3,9" Width="12" Height="12"
+                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                              StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    </ui:Button>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <!-- The word between two inputs, which all must be held. -->
+        <DataTemplate x:Key="InputChipAnd">
+            <TextBlock Text="{Binding Pad_Formula_Status_And, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+        </DataTemplate>
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -12760,9 +12805,9 @@
                 <ScrollViewer x:Name="MacrosSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <!-- A row of a setting in this section, as its board draws it: 44 tall,
-                             a label of 190 with 10 after it, the control, and the reset at
-                             the row's end. These shadow the page's looks for the rows of
-                             this section, as the options under the picture's bar do. -->
+                             a label of 190 with 12 after it, the control, and the reset 10
+                             after that at the row's end. These shadow the page's looks for the
+                             rows of this section, as the options under the picture's bar do. -->
                         <Style x:Key="RowOptionLine" TargetType="controls:FlexLinePanel">
                             <Setter Property="Gap" Value="0"/>
                             <Setter Property="LineGap" Value="0"/>
@@ -12771,7 +12816,7 @@
                         </Style>
                         <Style x:Key="RowOptionLabel" TargetType="TextBlock" BasedOn="{StaticResource RowOptionLabel}">
                             <Setter Property="Width" Value="190"/>
-                            <Setter Property="Margin" Value="0,0,10,0"/>
+                            <Setter Property="Margin" Value="0,0,12,0"/>
                         </Style>
                         <Thickness x:Key="RowOptionResetMargin">10,0,0,0</Thickness>
                     </ScrollViewer.Resources>
@@ -12980,158 +13025,161 @@
                                                 <!-- The trigger's combination: its list, Record and Clear, and the
                                                      inputs it holds. -->
                                                 <StackPanel Visibility="{Binding ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <!-- Dropdown trigger picker (#177): appends an input to the
-                                     combo without recording. The list is the slot's cross-device
-                                     choices filtered to entry-convertible descriptors, so the
-                                     touchpad gestures the user enabled on the Touchpad tab are
-                                     pickable here (recording can't capture them, and the issue
-                                     reporter explicitly did not want it to). Kept aligned under
-                                     the Source dropdown. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Text="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}"
-                                               Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
-                                              SelectionChanged="MacroTriggerPick_SelectionChanged"
-                                              PreviewKeyDown="MacroTriggerPick_PreviewKeyDown"
-                                              IsTextSearchEnabled="False"
-                                              ToolTip="{Binding Macro_AddTriggerFromList_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <ComboBox.GroupStyle>
-                                            <GroupStyle>
-                                                <GroupStyle.HeaderTemplate>
-                                                    <DataTemplate>
-                                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                       TextTrimming="CharacterEllipsis"/>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </GroupStyle.HeaderTemplate>
-                                            </GroupStyle>
-                                        </ComboBox.GroupStyle>
-                                    </ComboBox>
-                                </StackPanel>
-                                <!-- Record + Clear all, above the list like the action sequence's
-                                     Add / Remove / Duplicate sit above its list. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <ui:Button Command="{Binding RecordTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
-                                        <controls:GlyphText Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{DynamicResource EmberBrush}"/>
-                                        <ui:Button.ToolTip>
-                                            <TextBlock Text="{Binding RecordTriggerButtonText}"/>
-                                        </ui:Button.ToolTip>
-                                    </ui:Button>
-                                    <ui:Button AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
-                                        <controls:GlyphText Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        <ui:Button.ToolTip>
-                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                                        </ui:Button.ToolTip>
-                                    </ui:Button>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
-                                           FontSize="11" TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Margin="0,0,0,4"/>
-                                <!-- Live preview of what's being recorded, just above the list. -->
-                                <TextBlock Text="{Binding RecordingLiveText}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                           Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <!-- Trigger inputs as a scrollable list, one removable row per
-                                     input, in the same steel-lined well the action sequence uses.
-                                     Each input keeps the mapping grid's cold chip grammar
-                                     (#175 item 80). The X drops just that input. -->
-                                <Border BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
-                                        CornerRadius="6" Background="{DynamicResource SteelRaisedBrush}"
-                                        Padding="4" Margin="0,0,0,4">
-                                    <Grid>
-                                        <TextBlock Text="{Binding Macro_NotSet, Source={x:Static strings:Strings.Instance}}"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                   Margin="4,2" VerticalAlignment="Center"
-                                                   Visibility="{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                                        <ScrollViewer MaxHeight="140" VerticalScrollBarVisibility="Auto"
-                                                      HorizontalScrollBarVisibility="Disabled"
-                                                      Visibility="{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <!-- Right inset clears the 14px always-on overlay scrollbar so it
-                                                 doesn't sit on top of the row X buttons. -->
-                                            <ItemsControl ItemsSource="{Binding TriggerInputItems}" Margin="0,0,16,0">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Margin="0,1">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                                                <Border Style="{StaticResource ChipCold}" HorizontalAlignment="Left">
-                                                                    <TextBlock Text="{Binding Label}" TextWrapping="Wrap"/>
-                                                                </Border>
-                                                                <!-- Axis rows only: Invert / Half / Either + a labeled
-                                                                     Deadzone. Folded in from what used to be a second,
-                                                                     duplicate axis list, and the bare "%" now reads
-                                                                     "Deadzone". Wraps if the row is narrow. -->
-                                                                <WrapPanel Orientation="Horizontal" Margin="0,3,0,1"
-                                                                           Visibility="{Binding IsAxis, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
-                                                                              IsChecked="{Binding AxisEntry.Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                              IsEnabled="{Binding AxisEntry.IsInvertApplicable}"
-                                                                              VerticalAlignment="Center" Margin="0,0,6,2"/>
-                                                                    <reset:SettingResetButton Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="Invert" SettingLabel="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_Invert_1825" Margin="4,0,8,0"/>
-                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
-                                                                              IsChecked="{Binding AxisEntry.HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                              VerticalAlignment="Center" Margin="0,0,6,2"/>
-                                                                    <reset:SettingResetButton Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="HalfAxis" SettingLabel="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_HalfAxis_1828" Margin="4,0,8,0"/>
-                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
-                                                                              ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                                              IsChecked="{Binding AxisEntry.Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                              IsEnabled="{Binding AxisEntry.HalfAxis}"
-                                                                              VerticalAlignment="Center" Margin="0,0,10,2"/>
-                                                                    <reset:SettingResetButton Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="Bidirectional" SettingLabel="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_Bidirectional_1833" Margin="4,0,8,0"/>
-                                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"
-                                                                               VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                                    <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
-                                                                            Value="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TickFrequency="1"/>
-                                                                    <TextBox Text="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                                             Style="{StaticResource DzValueEdit}"/>
-                                                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                                    <ui:Button Command="{Binding AxisEntry.ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </WrapPanel>
-                                                                <!-- Thresholded descriptor rows (#468): the depth or
-                                                                     radius the input fires at, the mapping grid's
-                                                                     button-row Deadzone. On an analog key it is the
-                                                                     actuation point, so two entries at two values are
-                                                                     a soft press and a full press. -->
-                                                                <WrapPanel Orientation="Horizontal" Margin="0,3,0,1"
-                                                                           Visibility="{Binding HasThreshold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"
-                                                                               VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                                    <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
-                                                                            Value="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            TickFrequency="1"/>
-                                                                    <TextBox Text="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                                             Style="{StaticResource DzValueEdit}"/>
-                                                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                                    <ui:Button Command="{Binding ThresholdEntry.ResetDescriptorDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </WrapPanel>
+                                                    <!-- The inputs' line, as the board draws it: each input a pill with its
+                                                         remove, "and" between two, then Record and Add from List, with
+                                                         Clear after them. The line wraps, and Record goes on from the last
+                                                         pill wherever that one stands. The pills are made before the line's
+                                                         own parts, which stay where they are when the inputs change. -->
+                                                    <controls:FlexLinePanel x:Name="MacroInputsLine" Gap="8" LineGap="8" Margin="0,0,0,6"
+                                                                            controls:LeadItems.Source="{Binding TriggerInputItems}"
+                                                                            controls:LeadItems.Template="{StaticResource InputChipPart}"
+                                                                            controls:LeadItems.Between="{StaticResource InputChipAnd}">
+                                                        <TextBlock Text="{Binding Macro_NotSet, Source={x:Static strings:Strings.Instance}}"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                                        <!-- Record reads Stop while it records. Its name for a screen reader
+                                                             says what it records, and its tooltip how. -->
+                                                        <ui:Button Command="{Binding RecordTriggerCommand}" MinHeight="30" Padding="12,0" VerticalAlignment="Center"
+                                                                   AutomationProperties.Name="{Binding RecordTriggerButtonText, TargetNullValue=''}"
+                                                                   ToolTip="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <controls:GlyphText Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,8,0"
+                                                                                    Foreground="{DynamicResource EmberBrush}" VerticalAlignment="Center"/>
+                                                                <TextBlock VerticalAlignment="Center">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsRecordingTrigger}" Value="True">
+                                                                                    <Setter Property="Text" Value="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
                                                             </StackPanel>
-                                                            <ui:Button AutomationProperties.Name="{Binding Macro_RemoveTriggerInput, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" Command="{Binding RemoveCommand}"
-                                                                       Style="{StaticResource EmberIconButtonHot}"
-                                                                       VerticalAlignment="Top">
-                                                                <controls:GlyphText Text="&#xE711;" FontFamily="Segoe MDL2 Assets"
-                                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                                <ui:Button.ToolTip>
-                                                                    <TextBlock Text="{Binding Macro_RemoveTriggerInput, Source={x:Static strings:Strings.Instance}}"/>
-                                                                </ui:Button.ToolTip>
-                                                            </ui:Button>
+                                                        </ui:Button>
+                                                        <!-- Add from List (#177): adds an input to the combination without
+                                                             recording it. The list is the slot's choices across its devices
+                                                             that can be a trigger's input, so a touchpad gesture enabled on the
+                                                             Touchpad tab can be picked here, which recording cannot capture.
+                                                             The picker is quiet and shows no pick: picking an input adds it and
+                                                             clears the picker. Its closed face is drawn over it, the words and a
+                                                             chevron in the text color, and it is as wide as that face. -->
+                                                        <Grid VerticalAlignment="Center">
+                                                            <ComboBox ItemsSource="{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                      DisplayMemberPath="DisplayName" MinWidth="0" MinHeight="30" Padding="4,2" Background="Transparent" BorderBrush="Transparent"
+                                                                      AutomationProperties.Name="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}"
+                                                                      SelectionChanged="MacroTriggerPick_SelectionChanged"
+                                                                      PreviewKeyDown="MacroTriggerPick_PreviewKeyDown"
+                                                                      IsTextSearchEnabled="False"
+                                                                      ToolTip="{Binding Macro_AddTriggerFromList_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                                                <ComboBox.Resources>
+                                                                    <!-- The picker's own chevron is not drawn. -->
+                                                                    <SolidColorBrush x:Key="ComboBoxDropDownGlyphForeground" Color="Transparent"/>
+                                                                </ComboBox.Resources>
+                                                                <ComboBox.GroupStyle>
+                                                                    <GroupStyle>
+                                                                        <GroupStyle.HeaderTemplate>
+                                                                            <DataTemplate>
+                                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                                </Border>
+                                                                            </DataTemplate>
+                                                                        </GroupStyle.HeaderTemplate>
+                                                                    </GroupStyle>
+                                                                </ComboBox.GroupStyle>
+                                                            </ComboBox>
+                                                            <StackPanel Orientation="Horizontal" IsHitTestVisible="False" Margin="10,0,12,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                                                <Path FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3" Width="10" Height="10" Margin="11,0,0,0"
+                                                                      Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.4"
+                                                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" VerticalAlignment="Center"/>
+                                                            </StackPanel>
                                                         </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Border>
+                                                        <ui:Button Style="{StaticResource CardIconButton}" Width="30" Height="30" Command="{Binding ClearTriggerCommand}"
+                                                                   AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                                   ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
+                                                            <controls:GlyphText Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                                                        </ui:Button>
+                                                    </controls:FlexLinePanel>
+                                                    <!-- How to record and what is being recorded, while it records. At rest
+                                                         the block is the board's: the line, then the way the macro fires. -->
+                                                    <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
+                                                               FontSize="11" TextWrapping="Wrap"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                               Margin="0,0,0,4"
+                                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <TextBlock Text="{Binding RecordingLiveText}" FontWeight="SemiBold" Margin="0,0,0,4"
+                                                               Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <!-- The settings of each input that has any, as rows under its name: an
+                                                         axis has Invert, Half, Bidirectional and its deadzone, and an input
+                                                         with a depth or a radius has the point it fires at (#468). On an
+                                                         analog key that is the actuation point, so two entries at two values
+                                                         are a soft press and a full press. -->
+                                                    <ItemsControl ItemsSource="{Binding TriggerInputItems}" Focusable="False" IsTabStop="False">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <StackPanel Visibility="{Binding IsAxis, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                        <TextBlock Text="{Binding Label}" FontSize="13" FontWeight="SemiBold" Margin="0,6,0,0" TextTrimming="CharacterEllipsis"
+                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                                                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
+                                                                                      IsChecked="{Binding AxisEntry.Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                      IsEnabled="{Binding AxisEntry.IsInvertApplicable}"/>
+                                                                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="Invert" SettingLabel="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_Invert_1825"/>
+                                                                        </controls:FlexLinePanel>
+                                                                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                                                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
+                                                                                      IsChecked="{Binding AxisEntry.HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="HalfAxis" SettingLabel="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_HalfAxis_1828"/>
+                                                                        </controls:FlexLinePanel>
+                                                                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                                                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                                                      ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                                      IsChecked="{Binding AxisEntry.Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                      IsEnabled="{Binding AxisEntry.HalfAxis}"/>
+                                                                            <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding AxisEntry.ResetSettingCommand}" CommandParameter="Bidirectional" SettingLabel="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerInputEntry_Bidirectional_1833"/>
+                                                                        </controls:FlexLinePanel>
+                                                                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                                                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Slider AutomationProperties.Name="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionDeadzoneSlider}" Minimum="1"
+                                                                                    Value="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                    TickFrequency="1"/>
+                                                                            <TextBox AutomationProperties.Name="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Text="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                                     Style="{StaticResource DzValueEdit}"/>
+                                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                                            <ui:Button Command="{Binding AxisEntry.ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                                        </controls:FlexLinePanel>
+                                                                    </StackPanel>
+                                                                    <StackPanel Visibility="{Binding HasThreshold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                        <TextBlock Text="{Binding Label}" FontSize="13" FontWeight="SemiBold" Margin="0,6,0,0" TextTrimming="CharacterEllipsis"
+                                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                                        <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
+                                                                            <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                                            <Slider AutomationProperties.Name="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource RowOptionDeadzoneSlider}" Minimum="1"
+                                                                                    Value="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                    TickFrequency="1"/>
+                                                                            <TextBox AutomationProperties.Name="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Text="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                                     Style="{StaticResource DzValueEdit}"/>
+                                                                            <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                                            <ui:Button Command="{Binding ThresholdEntry.ResetDescriptorDeadZoneCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                                        </controls:FlexLinePanel>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}"/>

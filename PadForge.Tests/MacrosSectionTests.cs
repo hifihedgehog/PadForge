@@ -376,8 +376,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>A row of a setting in the macro editor, as the board
-        /// draws it: 44 tall, a label of 190 with 10 after it, the
-        /// control, and the reset at the row's end. The section gives its
+        /// draws it: 44 tall, a label of 190 with 12 after it, the
+        /// control, and the reset 10 after that at the row's end. The section gives its
         /// rows that look. A reset carries its end mark and its margin as
         /// its own attributes.</summary>
         [Fact]
@@ -394,15 +394,17 @@ namespace PadForge.Tests
             var label = Look("RowOptionLabel");
             Assert.Equal("{StaticResource RowOptionLabel}", (string)label.Attribute("BasedOn"));
             Assert.Equal("190", SetterOf(label, "Width"));
-            Assert.Equal("0,0,10,0", SetterOf(label, "Margin"));
+            Assert.Equal("0,0,12,0", SetterOf(label, "Margin"));
             Assert.Equal("10,0,0,0", Look("RowOptionResetMargin").Value);
 
             var host = Named(page, "MacroEditorHost");
             var rows = host.Descendants().Where(e => e.Name.LocalName == "FlexLinePanel"
                 && (string)e.Attribute("Style") == "{DynamicResource RowOptionLine}").ToList();
             // Fire, its three own rows, the layer, the source, the old
-            // trigger's two, Consume, and Repeat's three.
-            Assert.Equal(12, rows.Count);
+            // trigger's two, Consume, and Repeat's three. Then the rows of an
+            // input of the trigger: an axis's three switches and its
+            // deadzone, and the point an input with a depth fires at.
+            Assert.Equal(17, rows.Count);
             string[] binds =
             {
                 "{Binding TriggerMode, Mode=TwoWay}", "{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
@@ -410,6 +412,11 @@ namespace PadForge.Tests
                 "{Binding LayerMask, Mode=TwoWay}", "{Binding TriggerSource, Mode=TwoWay}", "{Binding TriggerAxisThreshold, Mode=TwoWay}",
                 "{Binding TriggerAxisDirectionIndex, Mode=TwoWay}", "{Binding ConsumeTriggerButtons, Mode=TwoWay}", "{Binding RepeatMode, Mode=TwoWay}",
                 "{Binding RepeatCount, Mode=TwoWay}", "{Binding RepeatDelayMs, Mode=TwoWay}",
+                "{Binding AxisEntry.Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                "{Binding AxisEntry.HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                "{Binding AxisEntry.Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                "{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
+                "{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}",
             };
             foreach (string bound in binds)
                 Assert.Contains(rows, r => r.Elements().Any(c => c.Attributes().Any(a => a.Value == bound)));
@@ -427,8 +434,11 @@ namespace PadForge.Tests
                 Assert.Equal("True", (string)reset.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
                 Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)reset.Attribute("Margin"));
                 // A picker or a box stands centered in the row's height: the
-                // row would stretch it to its 44.
-                Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox"), c => Assert.Equal("Center", (string)c.Attribute("VerticalAlignment")));
+                // row would stretch it to its 44. The page's value text is
+                // centered by its style.
+                Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox"), c => Assert.True(
+                    (string)c.Attribute("VerticalAlignment") == "Center" || (string)c.Attribute("Style") == "{StaticResource DzValueEdit}",
+                    "a row's " + c.Name.LocalName + " is not centered"));
             });
             // No old row of the editor is left beside them: a horizontal
             // strip with the old 80 wide label.
@@ -451,6 +461,162 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}", "{Binding ShowsLayerRow}" },
                 holder.Elements().Single(e => e.Name.LocalName == "StackPanel.Style").Descendants()
                     .Where(e => e.Name.LocalName == "DataTrigger").Select(e => (string)e.Attribute("Binding")));
+        }
+
+        /// <summary>The inputs of a macro's trigger stand on one line, as
+        /// the board draws them: a pill for each with its remove, "and"
+        /// between two, then Record and Add from List, and Clear after
+        /// them. The line wraps, and its own parts go on from the last
+        /// pill. Under it stand the record hint, what is being recorded,
+        /// and the settings of each input that has any, as rows.</summary>
+        [Fact]
+        public void TheTriggersInputsStandOnOneLine_WithRecordAndAddFromListAfterThem()
+        {
+            var page = Page();
+            var when = Named(page, "MacroWhenBlock");
+            var line = Named(when, "MacroInputsLine");
+            Assert.Equal("FlexLinePanel", line.Name.LocalName);
+            Assert.Equal("8", (string)line.Attribute("Gap"));
+            Assert.Equal("8", (string)line.Attribute("LineGap"));
+            string Lead(string name) => (string)Assert.Single(line.Attributes(), a => a.Name.LocalName == "LeadItems." + name);
+            Assert.Equal("{Binding TriggerInputItems}", Lead("Source"));
+            Assert.Equal("{StaticResource InputChipPart}", Lead("Template"));
+            Assert.Equal("{StaticResource InputChipAnd}", Lead("Between"));
+
+            // The line's own parts, in order: the words of a trigger with
+            // no input, Record, Add from List and Clear.
+            var own = line.Elements().ToList();
+            Assert.Equal(new[] { "TextBlock", "Button", "Grid", "Button" }, own.Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Macro_NotSet" + S, (string)own[0].Attribute("Text"));
+            Assert.Equal("{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}",
+                (string)own[0].Attribute("Visibility"));
+            Assert.All(own.Skip(1), part => Assert.Null(part.Attribute("Visibility")));
+
+            // Record, 30 tall with 12 at its sides: the record glyph and the
+            // word, which is Stop while it records. Its name says what it
+            // records.
+            var record = own[1];
+            Assert.Equal("{Binding RecordTriggerCommand}", (string)record.Attribute("Command"));
+            Assert.Equal("30", (string)record.Attribute("MinHeight"));
+            Assert.Equal("12,0", (string)record.Attribute("Padding"));
+            Assert.Equal("{Binding RecordTriggerButtonText, TargetNullValue=''}", (string)record.Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Macro_RecordHint" + S, (string)record.Attribute("ToolTip"));
+            Assert.Contains(record.Descendants(), e => (string)e.Attribute("Text") == "{Binding RecordTriggerIcon}");
+            var word = Assert.Single(record.Descendants(), e => e.Name.LocalName == "Style");
+            Assert.Equal("{Binding Common_Record" + S, SetterOf(word, "Text"));
+            var recording = Assert.Single(word.Descendants(), e => e.Name.LocalName == "DataTrigger");
+            Assert.Equal("{Binding IsRecordingTrigger}", (string)recording.Attribute("Binding"));
+            Assert.Equal("{Binding Common_Stop" + S, (string)Assert.Single(recording.Elements()).Attribute("Value"));
+
+            // Add from List: the picker with no fill and no edge and its own
+            // chevron not drawn, under its face, which takes no click from
+            // it: the words and a chevron in the text color. The picker is
+            // as wide as that face and as tall as Record.
+            var picker = Assert.Single(own[2].Elements(), e => e.Name.LocalName == "ComboBox");
+            Assert.Equal("{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}",
+                (string)picker.Attribute("ItemsSource"));
+            Assert.Equal("MacroTriggerPick_SelectionChanged", (string)picker.Attribute("SelectionChanged"));
+            Assert.Equal("MacroTriggerPick_PreviewKeyDown", (string)picker.Attribute("PreviewKeyDown"));
+            Assert.Equal("False", (string)picker.Attribute("IsTextSearchEnabled"));
+            Assert.Equal("Transparent", (string)picker.Attribute("Background"));
+            Assert.Equal("Transparent", (string)picker.Attribute("BorderBrush"));
+            Assert.Equal("0", (string)picker.Attribute("MinWidth"));
+            Assert.Equal("30", (string)picker.Attribute("MinHeight"));
+            var ownChevron = Assert.Single(picker.Elements().Single(e => e.Name.LocalName == "ComboBox.Resources").Elements());
+            Assert.Equal("ComboBoxDropDownGlyphForeground", (string)ownChevron.Attribute(X + "Key"));
+            Assert.Equal("Transparent", (string)ownChevron.Attribute("Color"));
+            Assert.Equal("{Binding Macro_AddTriggerFromList" + S, (string)picker.Attribute("AutomationProperties.Name"));
+            Assert.Contains(picker.Descendants(), e => e.Name.LocalName == "GroupStyle");
+            var face = Assert.Single(own[2].Elements(), e => e.Name.LocalName == "StackPanel");
+            Assert.Equal("False", (string)face.Attribute("IsHitTestVisible"));
+            Assert.Equal(new[] { picker, face }, own[2].Elements());
+            Assert.Equal(new[] { "TextBlock", "Path" }, face.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal("{Binding Macro_AddTriggerFromList" + S, (string)face.Elements().First().Attribute("Text"));
+            Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)face.Elements().First().Attribute("Foreground"));
+            Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)face.Elements().Last().Attribute("Stroke"));
+
+            var clear = own[3];
+            Assert.Equal("{Binding ClearTriggerCommand}", (string)clear.Attribute("Command"));
+            Assert.Equal("{StaticResource CardIconButton}", (string)clear.Attribute("Style"));
+            // As tall as the line's other parts, so the line is the board's 30.
+            Assert.Equal("30", (string)clear.Attribute("Width"));
+            Assert.Equal("30", (string)clear.Attribute("Height"));
+            Assert.Equal("{Binding Common_Clear" + S, (string)clear.Attribute("AutomationProperties.Name"));
+
+            // The pill: 30 tall and round at its ends, 12 at its start and 6
+            // at its end, the raised fill inside a cold edge. Its words are
+            // cut short on a line too narrow for them, and its remove, a
+            // round 22, stands 6 after them.
+            var pill = Keyed(page, "InputChip");
+            Assert.Equal("30", SetterOf(pill, "MinHeight"));
+            Assert.Equal("15", SetterOf(pill, "CornerRadius"));
+            Assert.Equal("12,0,6,0", SetterOf(pill, "Padding"));
+            Assert.Equal("1", SetterOf(pill, "BorderThickness"));
+            Assert.Equal("{DynamicResource InputChipEdgeBrush}", SetterOf(pill, "BorderBrush"));
+            Assert.Equal("{DynamicResource SteelRaisedBrush}", SetterOf(pill, "Background"));
+            Assert.Equal("{DynamicResource InputChipTextBrush}", SetterOf(pill, "TextElement.Foreground"));
+            var removeLook = Keyed(page, "InputChipRemove");
+            Assert.Equal("{StaticResource QuietResetButton}", (string)removeLook.Attribute("BasedOn"));
+            Assert.Equal("22", SetterOf(removeLook, "Width"));
+            Assert.Equal("22", SetterOf(removeLook, "Height"));
+            Assert.Equal("11", SetterOf(removeLook, "CornerRadius"));
+            Assert.Equal("6,0,0,0", SetterOf(removeLook, "Margin"));
+            var part = Keyed(page, "InputChipPart");
+            var body = Assert.Single(part.Elements());
+            Assert.Equal("{StaticResource InputChip}", (string)body.Attribute("Style"));
+            var label = Assert.Single(body.Descendants(), e => e.Name.LocalName == "TextBlock");
+            Assert.Equal("{Binding Label}", (string)label.Attribute("Text"));
+            Assert.Equal("CharacterEllipsis", (string)label.Attribute("TextTrimming"));
+            var remove = Assert.Single(body.Descendants(), e => e.Name.LocalName == "Button");
+            Assert.Equal("{StaticResource InputChipRemove}", (string)remove.Attribute("Style"));
+            Assert.Equal("{Binding RemoveCommand}", (string)remove.Attribute("Command"));
+            Assert.Equal("{Binding Macro_RemoveTriggerInput" + S, (string)remove.Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding Pad_Formula_Status_And" + S, (string)Assert.Single(Keyed(page, "InputChipAnd").Elements()).Attribute("Text"));
+
+            // The pill's two colors, in both themes.
+            string app = ExtrasPageTests.RepoText("PadForge.App", "App.xaml");
+            Assert.Contains("<SolidColorBrush x:Key=\"InputChipEdgeBrush\" Color=\"#33506A\"/>", app);
+            Assert.Contains("<SolidColorBrush x:Key=\"InputChipTextBrush\" Color=\"#CFE6F5\"/>", app);
+            string theme = ExtrasPageTests.RepoText("PadForge.App", "Common", "EmberTheme.cs");
+            Assert.Contains("SetBrush(\"InputChipEdgeBrush\", dark ? Color.FromRgb(0x33, 0x50, 0x6A) : Color.FromRgb(0x9D, 0xBB, 0xD2));", theme);
+            Assert.Contains("SetBrush(\"InputChipTextBrush\", dark ? Color.FromRgb(0xCF, 0xE6, 0xF5) : Color.FromRgb(0x1D, 0x4B, 0x6B));", theme);
+
+            // Under the line: how to record and what is being recorded, both
+            // only while it records, and each input's settings. At rest the
+            // way the macro fires follows the line, as on the board.
+            var group = line.Parent!;
+            var under = group.Elements().ToList();
+            Assert.Equal(4, under.Count);
+            Assert.Same(line, under[0]);
+            Assert.Equal("{Binding Macro_RecordHint" + S, (string)under[1].Attribute("Text"));
+            Assert.Equal("{Binding RecordingLiveText}", (string)under[2].Attribute("Text"));
+            Assert.All(under.Skip(1).Take(2), text => Assert.Equal(
+                "{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}", (string)text.Attribute("Visibility")));
+            var settings = under[3];
+            Assert.Equal("ItemsControl", settings.Name.LocalName);
+            Assert.Equal("{Binding TriggerInputItems}", (string)settings.Attribute("ItemsSource"));
+            var kinds = Assert.Single(settings.Descendants(), e => e.Name.LocalName == "DataTemplate").Elements().Single().Elements().ToList();
+            Assert.Equal(new[]
+                {
+                    "{Binding IsAxis, Converter={StaticResource BoolToVisibilityConverter}}",
+                    "{Binding HasThreshold, Converter={StaticResource BoolToVisibilityConverter}}",
+                },
+                kinds.Select(k => (string)k.Attribute("Visibility")));
+            // Each kind's rows stand under the input's name.
+            Assert.All(kinds, k => Assert.Equal("{Binding Label}", (string)k.Elements().First().Attribute("Text")));
+            Assert.Equal(new[] { 4, 1 }, kinds.Select(k => k.Elements().Count(e => e.Name.LocalName == "FlexLinePanel")));
+            Assert.Equal(new[] { "Reset_TriggerInputEntry_Invert_1825", "Reset_TriggerInputEntry_HalfAxis_1828", "Reset_TriggerInputEntry_Bidirectional_1833" },
+                kinds[0].Descendants().Select(e => (string)e.Attribute("AutomationProperties.AutomationId")).Where(id => id != null));
+            Assert.Contains(kinds[0].Descendants(), e => (string)e.Attribute("Command") == "{Binding AxisEntry.ResetDeadZoneCommand}");
+            Assert.Contains(kinds[1].Descendants(), e => (string)e.Attribute("Command") == "{Binding ThresholdEntry.ResetDescriptorDeadZoneCommand}");
+            // A slider and its number have their row's name.
+            Assert.All(settings.Descendants().Where(e => e.Name.LocalName is "Slider" or "TextBox"),
+                e => Assert.Equal("{Binding Pad_Sticks_Section_DeadZone" + S, (string)e.Attribute("AutomationProperties.Name")));
+
+            // The old list of inputs is gone: its well with a scroll view of
+            // its own, and the mapping grid's chip.
+            Assert.DoesNotContain(when.Descendants(), e => e.Name.LocalName == "ScrollViewer");
+            Assert.DoesNotContain(when.Descendants(), e => (string)e.Attribute("Style") == "{StaticResource ChipCold}");
         }
     }
 }

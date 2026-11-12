@@ -264,7 +264,7 @@ namespace PadForge.Tests
         /// once-per-process guard, and the shutting-down flag its dispatcher's
         /// shutdown raises. Left set, that flag stops every later Window from
         /// loading.</summary>
-        private static void ReleaseApplication()
+        internal static void ReleaseApplication()
         {
             var type = typeof(Application);
             const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;

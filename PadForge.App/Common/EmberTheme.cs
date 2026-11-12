@@ -133,6 +133,9 @@ namespace PadForge.Common
             SetBrush("SubRowTextBrush", dark ? Color.FromRgb(0xCF, 0xD7, 0xE3) : Color.FromRgb(0x2D, 0x39, 0x4B));
             // The picked item of a list that stands on a card.
             SetBrush("EmberCardPickBrush", dark ? Color.FromRgb(0x24, 0x16, 0x0D) : Color.FromRgb(0xFF, 0xEA, 0xDF));
+            // An input pill of a macro's trigger: its edge and its words.
+            SetBrush("InputChipEdgeBrush", dark ? Color.FromRgb(0x33, 0x50, 0x6A) : Color.FromRgb(0x9D, 0xBB, 0xD2));
+            SetBrush("InputChipTextBrush", dark ? Color.FromRgb(0xCF, 0xE6, 0xF5) : Color.FromRgb(0x1D, 0x4B, 0x6B));
             SetBrush("EmberWellBrush", dark ? Color.FromRgb(0x2A, 0x15, 0x09) : Color.FromRgb(0xFF, 0xE9, 0xDD));
             SetBrush("EmberEdgeBrush", dark ? Color.FromRgb(0x4A, 0x2C, 0x1A) : Color.FromRgb(0xF0, 0xB7, 0x9C));
             SetBrush("EmberPickBrush", dark ? Color.FromRgb(0x1D, 0x16, 0x11) : Color.FromRgb(0xFF, 0xF1, 0xE9));

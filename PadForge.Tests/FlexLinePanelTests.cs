@@ -258,6 +258,59 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>A part that says how wide it was asked to be, and is
+        /// cut short when that is less than its 54.5.</summary>
+        private sealed class Text : FrameworkElement
+        {
+            public readonly System.Collections.Generic.List<double> Asked = new();
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                Asked.Add(availableSize.Width);
+                return new Size(availableSize.Width >= 54.5 ? 54.5 : 30, 20);
+            }
+        }
+
+        /// <summary>A part that keeps the width it asked for is measured
+        /// once, with no bound. Layout rounding takes part of a pixel off
+        /// the width a part asks for, and a text measured again at that
+        /// width was cut short where it fits. A part that grows, and one
+        /// alone on a line too narrow for it, are measured at the width
+        /// they get.</summary>
+        [Fact]
+        public void APartThatKeepsItsOwnWidthIsMeasuredOnce_WithNoBound()
+        {
+            RunSta(() =>
+            {
+                var line = new FlexLinePanel { Gap = 8, LineGap = 8 };
+                var text = new Text();
+                var other = new Text();
+                line.Children.Add(text);
+                line.Children.Add(other);
+                line.Measure(new Size(400, double.PositiveInfinity));
+                line.Arrange(new Rect(line.DesiredSize));
+                Assert.Equal(new[] { double.PositiveInfinity }, text.Asked);
+                Assert.Equal(new[] { double.PositiveInfinity }, other.Asked);
+                Assert.Equal(new Rect(0, 0, 54.5, 20), Place(text, line));
+                Assert.Equal(new Rect(62.5, 0, 54.5, 20), Place(other, line));
+
+                // One that grows is measured at its share.
+                FlexLinePanel.SetGrow(other, 1);
+                line.Measure(new Size(400, double.PositiveInfinity));
+                Assert.Equal(new[] { double.PositiveInfinity, 337.5 }, other.Asked);
+                Assert.Equal(new[] { double.PositiveInfinity }, text.Asked);
+
+                // One alone on a line too narrow for it is measured at the
+                // line's width, and is cut short.
+                var narrow = new FlexLinePanel();
+                var cut = new Text();
+                narrow.Children.Add(cut);
+                narrow.Measure(new Size(40, double.PositiveInfinity));
+                Assert.Equal(new[] { double.PositiveInfinity, 40 }, cut.Asked);
+                Assert.Equal(30, cut.DesiredSize.Width);
+            });
+        }
+
         private static void RunSta(Action action)
         {
             Exception failure = null;

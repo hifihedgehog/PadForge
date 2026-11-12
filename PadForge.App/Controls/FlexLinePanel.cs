@@ -25,6 +25,12 @@ namespace PadForge.Controls
     /// stands at its top by its own alignment. A collapsed part takes no
     /// place.</para>
     ///
+    /// <para>A part that keeps the width it asked for is measured once,
+    /// with no bound. Measured again at that width, which layout rounding
+    /// may have taken part of a pixel off, a text that fits was cut short
+    /// with an ellipsis and a name box lost the edge of its last letter
+    /// (seen 2026-11-12).</para>
+    ///
     /// <para>A row of a setting is such a line too: its label, its
     /// control and its reset. <see cref="MinLineHeight"/> keeps every row
     /// the same height whatever its control's. With
@@ -252,7 +258,9 @@ namespace PadForge.Controls
                 double tallest = 0, across = Gap * (count - 1);
                 for (int i = 0; i < count; i++)
                 {
-                    parts[first + i].Measure(new Size(widths[i], double.PositiveInfinity));
+                    var part = parts[first + i];
+                    bool keepsItsOwnWidth = double.IsNaN(GetBasis(part)) && widths[i] == bases[first + i];
+                    if (!keepsItsOwnWidth) part.Measure(new Size(widths[i], double.PositiveInfinity));
                     tallest = Math.Max(tallest, parts[first + i].DesiredSize.Height);
                     across += widths[i];
                 }

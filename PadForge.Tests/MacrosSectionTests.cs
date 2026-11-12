@@ -246,6 +246,7 @@ namespace PadForge.Tests
                 // selection.
                 var host = Assert.Single(part.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding " + selected + "}");
                 Assert.StartsWith("{Binding DataContext." + has + ",", (string)host.Attribute("Visibility"));
+                Assert.Equal(selected == "SelectedMacro" ? "MacroEditorHost" : "MenuEditorHost", Name(host));
 
                 var name = Named(host, box);
                 Assert.Equal("TextBox", name.Name.LocalName);
@@ -276,6 +277,19 @@ namespace PadForge.Tests
             Assert.Equal("20", SetterOf(heading, "FontSize"));
             Assert.Equal("SemiBold", SetterOf(heading, "FontWeight"));
             Assert.Equal("Left", SetterOf(heading, "TextAlignment"));
+
+            // A row that reaches its macro or its menu from inside a part of
+            // its own asks the editor's host by name. The nearest scroll
+            // viewer is the section's, whose data is the page's: the selected
+            // action's editor showed with no action selected, and a keyboard
+            // menu's Opens With row showed for every menu (seen 2026-11-11).
+            var section = Named(page, "MacrosSectionScroll");
+            Assert.DoesNotContain(section.Descendants().SelectMany(e => e.Attributes()), a => a.Value.Contains("AncestorType=ScrollViewer", StringComparison.Ordinal));
+            var action = Assert.Single(section.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding SelectedAction}");
+            Assert.Matches(@"^\{Binding DataContext\.SelectedAction,\s*ElementName=MacroEditorHost,\s*Converter=\{StaticResource NullToCollapsedConverter\}\}$",
+                (string)action.Attribute("Visibility"));
+            Assert.Contains(section.Descendants(), e => (string)e.Attribute("DataContext") == "{Binding OpenRow}"
+                && (string)e.Attribute("Visibility") == "{Binding DataContext.IsKeyboard, ElementName=MenuEditorHost, Converter={StaticResource BoolToVisibilityConverter}}");
 
             Assert.Matches(@"private void RenameName_Click\(object sender, RoutedEventArgs e\)\s*\{\s*if \(\(sender as FrameworkElement\)\?\.Tag is not TextBox box\) return;\s*box\.Focus\(\);\s*box\.SelectAll\(\);", Code());
         }

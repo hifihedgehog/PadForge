@@ -12890,7 +12890,7 @@
                                        Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
                         </StackPanel>
                     </Grid>
-                                    <StackPanel DataContext="{Binding SelectedMacro}"
+                                    <StackPanel x:Name="MacroEditorHost" DataContext="{Binding SelectedMacro}"
                                                 Visibility="{Binding DataContext.HasSelectedMacro,
                                                     RelativeSource={RelativeSource AncestorType=TabItem},
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
@@ -13115,7 +13115,7 @@
                                            FontSize="10"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="2,4,0,2"/>
-                                <WrapPanel Margin="0,0,0,4" MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                                <WrapPanel Margin="0,0,0,4">
                                     <WrapPanel.Resources>
                                         <Style x:Key="MacroFormulaChipStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                             <Setter Property="Padding" Value="6,2"/>
@@ -13211,7 +13211,7 @@
                                            FontSize="10"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="2,2,0,2"/>
-                                <WrapPanel Margin="0,0,0,6" MaxWidth="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                                <WrapPanel Margin="0,0,0,6">
                                     <WrapPanel.Resources>
                                         <Style x:Key="MacroFormulaPresetStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                             <Setter Property="Padding" Value="8,3"/>
@@ -13661,7 +13661,7 @@
                                     BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12"
                                     DataContext="{Binding SelectedAction}"
                                     Visibility="{Binding DataContext.SelectedAction,
-                                        RelativeSource={RelativeSource AncestorType=ScrollViewer},
+                                        ElementName=MacroEditorHost,
                                         Converter={StaticResource NullToCollapsedConverter}}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Macro_EditAction, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"
@@ -15807,7 +15807,7 @@
                                        Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
                         </StackPanel>
                     </Grid>
-                                    <StackPanel DataContext="{Binding SelectedMenu}"
+                                    <StackPanel x:Name="MenuEditorHost" DataContext="{Binding SelectedMenu}"
                                                 Visibility="{Binding DataContext.HasSelectedMenu,
                                                     RelativeSource={RelativeSource AncestorType=TabItem},
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
@@ -16020,7 +16020,7 @@
                             <!-- Opens With (#566): any input on the slot's devices, or two
                                  held together, the row shape of a keyboard control. -->
                             <Grid Margin="0,0,0,4" DataContext="{Binding OpenRow}"
-                                  Visibility="{Binding DataContext.IsKeyboard, RelativeSource={RelativeSource AncestorType=ScrollViewer}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                  Visibility="{Binding DataContext.IsKeyboard, ElementName=MenuEditorHost, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
                                     <ColumnDefinition Width="*"/>

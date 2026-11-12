@@ -1117,6 +1117,24 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_Label",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "Label"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_BindingKind",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "BindingKind"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_IconName",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "IconName"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuCellItem_IconScalePercent_13029",
     "Owner": "PadForge.ViewModels.MenuCellItem",
     "Property": "IconScalePercent"

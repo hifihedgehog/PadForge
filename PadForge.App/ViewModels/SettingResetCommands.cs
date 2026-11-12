@@ -1081,12 +1081,31 @@ namespace PadForge.ViewModels
             _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
 
         internal static bool CanResetSetting(string name) => name is
+            nameof(Label) or
+            nameof(BindingKind) or
+            nameof(IconName) or
             nameof(IconScalePercent);
 
         private void ResetSetting(string name)
         {
             switch (name)
             {
+                case nameof(Label):
+                {
+                    Label = "";
+                    break;
+                }
+                case nameof(BindingKind):
+                {
+                    BindingKind = 0;
+                    break;
+                }
+                // Through SetIcon, so the icon's size resets with it (#413).
+                case nameof(IconName):
+                {
+                    SetIcon("");
+                    break;
+                }
                 case nameof(IconScalePercent):
                 {
                     IconScalePercent = 100;

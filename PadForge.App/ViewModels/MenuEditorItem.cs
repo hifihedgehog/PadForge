@@ -1301,11 +1301,13 @@ namespace PadForge.ViewModels
             get => Entry.CellCount;
             set
             {
-                int v = Math.Clamp(value, 1, 20);
+                int v = Math.Clamp(value, 1, MaxCells);
                 if (Entry.CellCount == v) return;
                 Entry.CellCount = v;
                 OnPropertyChanged();
                 RebuildCells();
+                _addCell?.NotifyCanExecuteChanged();
+                _removeLastCell?.NotifyCanExecuteChanged();
                 OnEdited();
                 StructureChanged?.Invoke();
             }
@@ -1409,11 +1411,6 @@ namespace PadForge.ViewModels
         public RelayCommand ResetHostHalfCommand => _resetHostHalf ??= new RelayCommand(() => HostHalfIndex = 0);
         private RelayCommand _resetHostHalf;
 
-        // The Cells row's reset. Center Cell is a row of its own with its
-        // own reset (ResetSetting).
-        public RelayCommand ResetCellsCommand => _resetCells ??= new RelayCommand(() => CellCount = 4);
-        private RelayCommand _resetCells;
-
         public RelayCommand ResetGeometryCommand => _resetGeometry ??= new RelayCommand(() =>
         {
             PosXPercent = 50;
@@ -1435,13 +1432,54 @@ namespace PadForge.ViewModels
 
         public ObservableCollection<MenuCellItem> Cells { get; } = new();
 
+        /// <summary>The most cells a ring, a grid or a hotbar has.</summary>
+        internal const int MaxCells = 20;
+
+        private MenuCellItem _selectedCell;
+
+        /// <summary>The cell open in the editor's list, or none. It is not
+        /// saved: a menu opens with its cells closed.</summary>
+        public MenuCellItem SelectedCell
+        {
+            get => _selectedCell;
+            set => SetProperty(ref _selectedCell, value);
+        }
+
+        /// <summary>A cell's pencil: opens that cell, and closes it when it
+        /// is the open one.</summary>
+        public RelayCommand<MenuCellItem> EditCellCommand => _editCell ??= new RelayCommand<MenuCellItem>(
+            cell => SelectedCell = ReferenceEquals(cell, _selectedCell) ? null : cell);
+        private RelayCommand<MenuCellItem> _editCell;
+
+        /// <summary>Add Cell: one more cell at the end, open. Cells come and
+        /// go at the end alone: a cell's number is what a mapping or a macro
+        /// names it by ("Menu 1 Item 3"), so no cell changes its number.</summary>
+        public RelayCommand AddCellCommand => _addCell ??= new RelayCommand(() =>
+        {
+            CellCount = Entry.CellCount + 1;
+            SelectedCell = Cells.Count > 0 ? Cells[^1] : null;
+        }, () => Entry.CellCount < MaxCells);
+        private RelayCommand _addCell;
+
+        /// <summary>Remove: the last cell leaves the menu. What it held
+        /// stays with the menu out of reach, as a cell past a smaller
+        /// shape's reach does (RebuildCells), and comes back with the cell.</summary>
+        public RelayCommand RemoveLastCellCommand => _removeLastCell ??= new RelayCommand(
+            () => CellCount = Entry.CellCount - 1, () => Entry.CellCount > 1);
+        private RelayCommand _removeLastCell;
+
         /// <summary>Rebuilds the visible cell rows for the current shape:
         /// grid 0..N-1, radial (optional center 0 +) ring 1..N. Existing
         /// item entries keep their data; out-of-range entries are pruned
         /// from the definition so the serialized shape matches the editor.</summary>
         internal void RebuildCells()
         {
+            // The open cell stays open across a rebuild, which makes every
+            // row anew: the cell of its number, while the shape has one.
+            int open = _selectedCell?.Index ?? -1;
+            bool openIsCenter = _selectedCell?.IsCenter == true;
             Cells.Clear();
+            SelectedCell = null;
             // A keyboard (#566) has no cells. Items a ring or a grid left keep
             // their data, as an out-of-reach cell does below, for a flip back.
             if (Entry.Kind == MenuKind.Keyboard) return;
@@ -1467,6 +1505,16 @@ namespace PadForge.ViewModels
             else
             {
                 for (int k = 0; k < Entry.CellCount; k++) AddCell(k, isCenter: false);
+            }
+
+            if (open >= 0)
+            {
+                foreach (var cell in Cells)
+                {
+                    if (cell.Index != open || cell.IsCenter != openIsCenter) continue;
+                    SelectedCell = cell;
+                    break;
+                }
             }
 
             // Prune entries the shape no longer reaches (a shrunken ring's
@@ -1543,6 +1591,63 @@ namespace PadForge.ViewModels
             ? Strings.Instance.Menu_CellCenter
             : string.Format(Strings.Instance.Menu_CellIndex_Format, Index);
 
+        /// <summary>Whether the cell has a label of its own.</summary>
+        public bool HasLabel => Label.Length > 0;
+
+        /// <summary>The cell's name in the editor's list: its label, or with
+        /// none its place ("Cell 3", a ring's "Center").</summary>
+        public string RowName => HasLabel ? Label : Header;
+
+        /// <summary>What the cell does, in the editor's list: the kind of
+        /// its binding and, where the kind has one, what it presses or runs
+        /// ("Keyboard Key, R").</summary>
+        public string Summary
+        {
+            get
+            {
+                int kind = BindingKind;
+                string kindText = "";
+                foreach (var option in BindingKindOptions)
+                {
+                    if (option.Value != kind) continue;
+                    kindText = option.Label;
+                    break;
+                }
+                string target = "";
+                if (kind == 1)
+                {
+                    int vk = SelectedKeyVk;
+                    foreach (var key in KeyOptions)
+                    {
+                        if (key.Vk != vk) continue;
+                        target = key.Label;
+                        break;
+                    }
+                }
+                else if (kind == 2)
+                {
+                    int flag = SelectedButtonFlag;
+                    foreach (var button in ButtonOptions)
+                    {
+                        if (button.Value != flag) continue;
+                        target = button.Label;
+                        break;
+                    }
+                }
+                else if (kind == MacroKind)
+                {
+                    string name = SelectedMacroName;
+                    foreach (var macro in MacroOptions)
+                    {
+                        if (!string.Equals(macro.Descriptor, name, StringComparison.OrdinalIgnoreCase)) continue;
+                        target = macro.Label;
+                        break;
+                    }
+                }
+                return target.Length == 0 ? kindText : kindText + ", " + target;
+            }
+        }
+
         public MenuCellItem(MenuEditorItem owner, int index, bool isCenter, MenuItemDefinition item)
         {
             _owner = owner;
@@ -1610,6 +1715,8 @@ namespace PadForge.ViewModels
                 _owner.DropItemIfEmpty(_item);
                 if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasLabel));
+                OnPropertyChanged(nameof(RowName));
                 _owner.RaiseChanged();
             }
         }
@@ -1681,6 +1788,8 @@ namespace PadForge.ViewModels
         internal void RefreshCulture()
         {
             OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(RowName));
+            OnPropertyChanged(nameof(Summary));
             OnPropertyChanged(nameof(BindingKindOptions));
             OnPropertyChanged(nameof(KeyOptions));
             OnPropertyChanged(nameof(ButtonOptions));
@@ -1787,6 +1896,7 @@ namespace PadForge.ViewModels
                 // The row-bound sentinel entry appears only while no
                 // direct binding exists, so the list follows the kind.
                 OnPropertyChanged(nameof(BindingKindOptions));
+                OnPropertyChanged(nameof(Summary));
                 _owner.RaiseChanged();
             }
         }
@@ -1842,6 +1952,7 @@ namespace PadForge.ViewModels
                 _item.XboxButtons = 0;
                 _item.ExtendedButton = 0;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Summary));
                 _owner.RaiseChanged();
             }
         }
@@ -1927,6 +2038,7 @@ namespace PadForge.ViewModels
                 _item.XboxButtons = 0;
                 _item.ExtendedButton = 0;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Summary));
                 _owner.RaiseChanged();
             }
         }
@@ -1998,6 +2110,7 @@ namespace PadForge.ViewModels
                 }
                 _item.VirtualKey = 0;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Summary));
                 _owner.RaiseChanged();
             }
         }
@@ -2012,6 +2125,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(BindingKind));
             OnPropertyChanged(nameof(ShowKeyPicker));
             OnPropertyChanged(nameof(ShowButtonPicker));
+            OnPropertyChanged(nameof(Summary));
         }
 
         public RelayCommand ResetCellCommand => _resetCell ??= new RelayCommand(() =>

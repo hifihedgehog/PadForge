@@ -29,8 +29,6 @@ public class SettingResetTests
     [InlineData("ResetRangeCommand", "DeadZone")]
     [InlineData("DeviceConfig.ResetLeftRangeCommand", "DeviceConfig.LeftStartPosition")]
     [InlineData("DeviceConfig.ResetRightRangeCommand", "DeviceConfig.RightStartPosition")]
-    [InlineData("ResetCellsCommand", "CellCount")]
-    [InlineData("ResetCellCommand", "BindingKind")]
     [InlineData("ResetMouseGestureButtonCommand", "MouseGestureButtonLeft")]
     [InlineData("ResetCommand", "FrequencyHz")]
     public void ExistingResetRowsKeepOneResetAction(string command, string input)

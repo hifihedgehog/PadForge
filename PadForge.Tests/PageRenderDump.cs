@@ -24,7 +24,7 @@ namespace PadForge.Tests
     /// made here. WPF draws to a bitmap whether or not a display is on, and the page shows states
     /// a real setup may not have: a trigger of every kind of input, a recording, an open step
     /// of every action type, and a menu of every style, each a second time in a tall picture with
-    /// its More row open. The page stands in no window, so nothing it does as it loads
+    /// its More row open, and a ring's cell open on its fields. The page stands in no window, so nothing it does as it loads
     /// runs. Does nothing unless PADFORGE_PAGE_RENDER_DIR names a folder, and then writes one PNG
     /// per state into it, at the scale in PADFORGE_PAGE_RENDER_SCALE (1.5 when unset), and the
     /// steps it reached into steps.txt. It also writes lookups.txt: for each state, every binding
@@ -193,6 +193,16 @@ namespace PadForge.Tests
                     foreach (PadForge.Engine.Menus.MenuKind kind in Enum.GetValues(typeof(PadForge.Engine.Menus.MenuKind)))
                     {
                         var menu = new MenuEditorItem(new PadForge.Engine.Menus.MenuDefinitionEntry { MenuId = 1 + (int)kind, Name = kind + " Menu", Kind = kind });
+                        if (kind == PadForge.Engine.Menus.MenuKind.Radial)
+                        {
+                            // The Macros board's own two cells: a key, and a macro
+                            // with no label of its own.
+                            menu.MacroNamesProvider = () => new[] { "Quick Combo" };
+                            menu.Cells[0].Label = "Reload";
+                            menu.Cells[0].BindingKind = 1;
+                            menu.Cells[0].SelectedKeyVk = 0x52;
+                            menu.Cells[1].BindingKind = MenuCellItem.MacroKind;
+                        }
                         vm.Menus.Add(menu);
                         string file = "menus-" + kind.ToString().ToLowerInvariant() + ".png";
                         Picture(file, () => vm.ListedMenu = menu);
@@ -205,6 +215,14 @@ namespace PadForge.Tests
                         Picture(tall, () => more.IsExpanded = true, TallHeight);
                         Lookups(tall);
                         more.IsExpanded = false;
+                        if (kind == PadForge.Engine.Menus.MenuKind.Radial)
+                        {
+                            // A cell open on its fields.
+                            string cell = file.Replace(".png", "-cell.png");
+                            Picture(cell, () => menu.SelectedCell = menu.Cells[0]);
+                            Lookups(cell);
+                            menu.SelectedCell = null;
+                        }
                     }
                 }
                 catch (Exception error) { failure = error; Step("failed: " + error); }

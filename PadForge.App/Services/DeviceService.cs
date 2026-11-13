@@ -30,12 +30,6 @@ namespace PadForge.Services
         /// </summary>
         public event EventHandler DeviceAssignmentChanged;
 
-        /// <summary>
-        /// Raised after a device is assigned to a slot, carrying the slot index.
-        /// MainWindow subscribes to navigate to the newly assigned controller page.
-        /// </summary>
-        public event EventHandler<int> NavigateToSlotRequested;
-
         public DeviceService(MainViewModel mainVm, SettingsService settingsService)
         {
             _mainVm = mainVm ?? throw new ArgumentNullException(nameof(mainVm));
@@ -58,9 +52,7 @@ namespace PadForge.Services
         /// </summary>
         public void WireEvents()
         {
-            _mainVm.Devices.AssignToSlotRequested += OnAssignToSlot;
             _mainVm.Devices.ToggleSlotRequested += OnToggleSlot;
-            _mainVm.Devices.HideDeviceRequested += OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested += OnRemoveDevice;
             _mainVm.Devices.DeviceHidingChanged += OnDeviceHidingChanged;
         }
@@ -70,9 +62,7 @@ namespace PadForge.Services
         /// </summary>
         public void UnwireEvents()
         {
-            _mainVm.Devices.AssignToSlotRequested -= OnAssignToSlot;
             _mainVm.Devices.ToggleSlotRequested -= OnToggleSlot;
-            _mainVm.Devices.HideDeviceRequested -= OnHideDevice;
             _mainVm.Devices.RemoveDeviceRequested -= OnRemoveDevice;
             _mainVm.Devices.DeviceHidingChanged -= OnDeviceHidingChanged;
         }
@@ -80,134 +70,6 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  Assign to slot
         // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Assigns the currently selected device to a controller slot.
-        /// Creates a default PadSetting if the device doesn't have one.
-        /// </summary>
-        private void OnAssignToSlot(object sender, int slotIndex)
-        {
-            var selectedRow = _mainVm.Devices.SelectedDevice;
-            if (selectedRow == null)
-            {
-                _mainVm.SetStatus(Strings.Instance.Status_NoDeviceSelected, persist: true);
-                return;
-            }
-
-            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
-            {
-                _mainVm.SetStatus(string.Format(Strings.Instance.Status_InvalidSlotIndex_Format, slotIndex), persist: true);
-                return;
-            }
-
-            _settingsService.FlushPendingDeviceEdits();
-
-            // Auto-create the virtual controller slot if it doesn't exist yet.
-            if (!SettingsManager.SlotCreated[slotIndex])
-            {
-                // Seed the category default, the same reason the create path in
-                // CreateSlotsForDevices documents: the engine falls back to this
-                // default silently when SlotProfileIds is null, so without the
-                // seed the profile dropdown shows NO selection on a slot that is
-                // in fact running the default. All three auto-create blocks in
-                // this file missed it.
-                _mainVm.Pads[slotIndex].ProfileId =
-                    InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
-                // The new slot's data is authored under that profile. When
-                // the pad already carried it, the setter did not run and the
-                // stamp a deleted slot left unknown would stay unknown.
-                SettingsManager.StampNintendoWire(slotIndex, _mainVm.Pads[slotIndex].ProfileId);
-                SettingsManager.SlotCreated[slotIndex] = true;
-                SettingsManager.SlotEnabled[slotIndex] = true;
-                SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
-            }
-
-            Guid instanceGuid = selectedRow.InstanceGuid;
-
-            // Create or update the UserSetting.
-            var us = SettingsManager.AssignDeviceToSlot(instanceGuid, slotIndex);
-            if (us == null)
-            {
-                _mainVm.SetStatus(Strings.Instance.Status_FailedAssignDevice, persist: true);
-                return;
-            }
-
-            // Ensure ProductGuid is populated for fallback matching.
-            var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-            if (udForGuid != null)
-                us.ProductGuid = udForGuid.ProductGuid;
-
-            // If no PadSetting exists, create defaults. Also re-auto-map when the
-            // existing PadSetting is foreign — descriptors authored for a different
-            // device that shared this slot (a wheel's raw Button 24 / IAxis 3 on a
-            // DualSense). FillEmpty can't heal that: the foreign fields aren't empty,
-            // so only the genuinely empty Share button gets filled.
-            var existingPs = us.GetPadSetting();
-            var outputType = _mainVm.Pads[slotIndex].OutputType;
-            var slotProfileId = _mainVm.Pads[slotIndex].ProfileId;
-            if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
-            {
-                if (existingPs != null)
-                    SettingsService.StripDeviceFromSlot(instanceGuid, slotIndex);
-                var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId,
-                    _mainVm.Pads[slotIndex].ExtendedConfig);
-                us.SetPadSetting(ps);
-                us.PadSettingChecksum = ps.PadSettingChecksum;
-                // A Bliss-Box port with nothing to place its controls through
-                // owes the slot its default. A fresh default replaces whatever
-                // the assignment owed before.
-                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);
-            }
-            else
-            {
-                // Defensive: an existing PadSetting may have been authored
-                // before the touchpad auto-map shipped, or carried over from
-                // an Xbox/Extended slot via XML load + slot-type change.
-                // Fill empty touchpad mappings when assigning a Touchpad-type
-                // device to a PlayStation slot so the user gets the
-                // auto-map they expect on first assign.
-                FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
-                // A Bliss-Box port with no placement answered nothing here.
-                PadForge.Common.Input.BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);
-            }
-
-            // A Workshop import parks its device tuning on the slot because it
-            // runs before any device exists. Now that one does, fold those
-            // stamps into the device's OWN settings. This is the SIBLING of
-            // the call in AssignDeviceToSlot: the runtime overlays it replaced
-            // applied on every assignment path by construction, so covering
-            // one entry point and not the other silently drops the tuning for
-            // whichever path the user happens to take.
-            WorkshopTuningApplier.ApplyToAssignedDevice(slotIndex, us.GetPadSetting(), us.InstanceGuid.ToString());
-            FoldBatteryColors(slotIndex, us.InstanceGuid);
-
-            // Update the row display.
-            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
-
-            // Auto-enable input hiding defaults for newly assigned devices.
-            AutoEnableHidingDefaults(udForGuid, selectedRow);
-
-            // Mark settings as dirty.
-            _settingsService.MarkDirty();
-
-            // Rebuild the per-VC MappingSet from every assigned device's
-            // PadSetting on this slot so the Mappings tab + engine see
-            // the just-auto-mapped sources without waiting for a save +
-            // reload cycle. The merge is additive — existing rows / user
-            // edits on the per-VC MappingSet are preserved.
-            SettingsService.RefreshMappingSetsFromLegacy();
-
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssigned_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
-
-            // Notify listeners so PadPage dropdowns refresh immediately.
-            DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
-
-            // Re-apply hiding with the new device included.
-            DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
-
-            // Navigate to the assigned controller page.
-            NavigateToSlotRequested?.Invoke(this, slotIndex);
-        }
 
         /// <summary>
         /// Assigns a device (by GUID) to a specific slot. Used by cross-panel drag-and-drop.
@@ -233,7 +95,7 @@ namespace PadForge.Services
                 // CreateSlotsForDevices documents: the engine falls back to this
                 // default silently when SlotProfileIds is null, so without the
                 // seed the profile dropdown shows NO selection on a slot that is
-                // in fact running the default. All three auto-create blocks in
+                // in fact running the default. Every auto-create block in
                 // this file missed it.
                 _mainVm.Pads[slotIndex].ProfileId =
                     InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
@@ -354,20 +216,6 @@ namespace PadForge.Services
             _settingsService.MarkDirty();
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>Hide a device card without removing its settings.</summary>
-        private void OnHideDevice(object sender, Guid instanceGuid)
-        {
-            var ud = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-            if (ud != null)
-            {
-                ud.IsHidden = true;
-            }
-
-
-            _settingsService.MarkDirty();
-            _mainVm.StatusText = Strings.Instance.Status_DeviceHidden;
         }
 
         // ─────────────────────────────────────────────

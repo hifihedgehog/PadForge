@@ -28,11 +28,15 @@ namespace PadForge.Common
     /// string BidiText.ToolTip draws, or a TextBlock.</para>
     ///
     /// <para>An input (TextBox, NumberBox, PasswordBox, ComboBox, Slider,
-    /// RichTextBox, ListBox, CurveEditor) without a name of its own is
+    /// RangeSlider, RichTextBox, ListBox, CurveEditor) without a name of its
+    /// own is
     /// labeled by the label beside it or above its row (FindLabel), and
     /// AccessibilityXamlTests counts the inputs that rule reaches as named. An
     /// input without such a label is named by its tooltip, or else by its
-    /// placeholder text.</para>
+    /// placeholder text. A row's later input of a kind (the second end of a
+    /// range, the raw value beside a percentage) adds what sets it apart to
+    /// the row's label: the word between a range's two ends, and its own
+    /// tooltip when that is a short phrase (SetRowName).</para>
     ///
     /// <para>A list item whose data has no ToString of its own and whose
     /// content is not text would read a type name, since
@@ -44,7 +48,9 @@ namespace PadForge.Common
     /// <para>A button that is a part of a control's template and shows no
     /// text (a scroll bar's arrows, a number box's arrows, the title bar's
     /// buttons) is named for what it does, from strings kept for that
-    /// (NamePart).</para>
+    /// (NamePart). A glyph wpf-ui draws inside a button (a check box's
+    /// mark, a scroll bar's arrow) reads as the button does
+    /// (NameGlyphs).</para>
     ///
     /// <para>A name set in XAML or code is never replaced. A name set here is
     /// marked, so a control that shows again after being collapsed is named
@@ -74,17 +80,26 @@ namespace PadForge.Common
             // collapsed.
             var onInput = Sized(fe => NameInput(fe));
             // A CurveEditor takes the axis label above it as an input does.
-            foreach (Type type in new[] { typeof(TextBox), typeof(PasswordBox), typeof(ComboBox), typeof(Slider), typeof(RichTextBox), typeof(ListBox), typeof(CurveEditor) })
+            // A range slider takes its row's label, and its two thumbs read
+            // by it (RangeThumbPeer).
+            foreach (Type type in new[] { typeof(TextBox), typeof(PasswordBox), typeof(ComboBox), typeof(Slider), typeof(RangeSlider), typeof(RichTextBox), typeof(ListBox), typeof(CurveEditor) })
                 EventManager.RegisterClassHandler(type, FrameworkElement.SizeChangedEvent, onInput);
             // Button, RepeatButton and ToggleButton, so CheckBox and
             // RadioButton too.
             EventManager.RegisterClassHandler(typeof(ButtonBase), FrameworkElement.SizeChangedEvent,
                 Sized(fe => NameButton((ButtonBase)fe)));
             // A ListBox, ListView or ComboBox wraps each item in a
-            // ListBoxItem, a plain ItemsControl in a ContentPresenter.
-            var onItem = Sized(fe => NameItem(fe));
-            EventManager.RegisterClassHandler(typeof(ListBoxItem), FrameworkElement.SizeChangedEvent, onItem);
-            EventManager.RegisterClassHandler(typeof(ContentPresenter), FrameworkElement.SizeChangedEvent, onItem);
+            // ListBoxItem, a plain ItemsControl in a ContentPresenter. A
+            // plain list's item also reads its children again, now that
+            // its content is built (ListItemPeers).
+            EventManager.RegisterClassHandler(typeof(ListBoxItem), FrameworkElement.SizeChangedEvent,
+                Sized(fe => NameItem(fe)));
+            EventManager.RegisterClassHandler(typeof(ContentPresenter), FrameworkElement.SizeChangedEvent,
+                Sized(fe =>
+                {
+                    NameItem(fe);
+                    ListItemPeers.Refresh(fe);
+                }));
         }
 
         /// <summary>A SizeChanged handler that names an element when it grows
@@ -105,6 +120,7 @@ namespace PadForge.Common
         /// of a control's template is NamePart's.</summary>
         internal static void NameButton(ButtonBase button)
         {
+            NameGlyphs(button);
             if (HasOwnName(button))
                 return;
             if (IsTemplatePart(button))
@@ -162,6 +178,65 @@ namespace PadForge.Common
                 return copy;
             }
             return new Binding(nameof(TextBlock.Text)) { Source = tip, Mode = BindingMode.OneWay };
+        }
+
+        /// <summary>Names the glyphs a button's template or content draws
+        /// with a plain TextBlock, after the button. wpf-ui's SymbolIcon and
+        /// FontIcon build their TextBlock in code (FontIcon.InitializeChildren),
+        /// outside any template, so TextBlockAutomationPeer keeps it in the
+        /// control view and a screen reader read the glyph's private-use
+        /// character: the mark of a checked check box (CheckBox.xaml
+        /// ControlIcon) and a scroll bar's arrows (ScrollBar.xaml
+        /// UiScrollBarLineButton). A stock TextBlock cannot leave the control
+        /// view, so the glyph reads as its button does, as the text a button
+        /// shows reads as the button's name. PadForge's own glyphs are
+        /// GlyphText, which is out of the control view, and a button inside
+        /// this one names its own.</summary>
+        internal static void NameGlyphs(ButtonBase button)
+        {
+            var stack = new Stack<DependencyObject>();
+            for (int i = VisualTreeHelper.GetChildrenCount(button) - 1; i >= 0; i--)
+                stack.Push(VisualTreeHelper.GetChild(button, i));
+            while (stack.Count > 0)
+            {
+                DependencyObject d = stack.Pop();
+                if (d is ButtonBase)
+                    continue;
+                if (d is TextBlock text)
+                {
+                    if (text is not GlyphText && IsGlyphOnly(text.Text) && !HasOwnName(text)
+                        && (text.TemplatedParent == null || text.TemplatedParent is ContentPresenter))
+                    {
+                        var name = new MultiBinding { Converter = GlyphNameConverter.Instance };
+                        name.Bindings.Add(new Binding { Path = new PropertyPath(AutomationProperties.NameProperty), Source = button });
+                        name.Bindings.Add(new Binding(nameof(ContentControl.Content)) { Source = button });
+                        BindingOperations.SetBinding(text, AutomationProperties.NameProperty, name);
+                        text.SetValue(AutoProperty, true);
+                    }
+                    continue;
+                }
+                int count = d is Visual or System.Windows.Media.Media3D.Visual3D ? VisualTreeHelper.GetChildrenCount(d) : 0;
+                for (int i = count - 1; i >= 0; i--)
+                    stack.Push(VisualTreeHelper.GetChild(d, i));
+            }
+        }
+
+        /// <summary>A glyph's name from [0] its button's name and [1] its
+        /// button's content: the name, or else the text the button shows.
+        /// Empty when the button has neither, which leaves the glyph as it
+        /// was.</summary>
+        internal sealed class GlyphNameConverter : IMultiValueConverter
+        {
+            internal static readonly GlyphNameConverter Instance = new();
+
+            public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (values.Length > 0 && values[0] is string name && IsLabelText(name))
+                    return name;
+                return values.Length > 1 && values[1] is string shown && IsLabelText(shown) ? shown : string.Empty;
+            }
+
+            public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => null;
         }
 
         /// <summary>The Strings key that names a part of a control's template
@@ -284,7 +359,12 @@ namespace PadForge.Common
             ClearAuto(input);
             if (FindLabel(input) is object label)
             {
-                SetLabel(input, label);
+                FrameworkElement joiner = JoinerBefore(input);
+                bool later = FollowsOneOfItsKind(input);
+                if (joiner != null || later)
+                    SetRowName(input, label, joiner, later);
+                else
+                    SetLabel(input, label);
             }
             else
             {
@@ -339,6 +419,131 @@ namespace PadForge.Common
             else if (label is FrameworkElement element)
                 NameAfter(fe, element);
         }
+
+        /// <summary>Names an input that shares its row's label with an input
+        /// before it: the label, then the word between the two ends of a range
+        /// when the input is the second end, then the input's own tooltip when
+        /// it follows an input of its kind and the tooltip is a short phrase.
+        /// A trigger's Range row reads Range, then Range, to, then Range, Raw
+        /// axis value, then Range, to, Raw axis value. With the label alone the
+        /// boxes of a row read alike, and with the nearest text alone the
+        /// second end read "to" and every raw box of a card read by its
+        /// tooltip. Each part is bound, so the name follows a language
+        /// change.</summary>
+        private static void SetRowName(FrameworkElement input, object label, FrameworkElement joiner, bool withTip)
+        {
+            var name = new MultiBinding { Converter = RowNameConverter.Instance, ConverterParameter = withTip };
+            name.Bindings.Add(label is SettingResetButton reset
+                ? new Binding(nameof(SettingResetButton.SettingLabel)) { Source = reset }
+                : new Binding(label is TextBlock ? nameof(TextBlock.Text) : nameof(ContentControl.Content)) { Source = label, Mode = BindingMode.OneWay });
+            name.Bindings.Add(joiner != null
+                ? new Binding(nameof(TextBlock.Text)) { Source = joiner, Mode = BindingMode.OneWay }
+                : new Binding { Source = string.Empty });
+            name.Bindings.Add(new Binding(nameof(FrameworkElement.ToolTip)) { Source = input });
+            name.Bindings.Add(new Binding { Path = new PropertyPath(BidiText.ToolTipProperty), Source = input });
+            BindingOperations.SetBinding(input, AutomationProperties.NameProperty, name);
+            if (label is FrameworkElement element and not SettingResetButton)
+                AutomationProperties.SetLabeledBy(input, element);
+        }
+
+        /// <summary>A row input's name from [0] the row's label, [1] the word
+        /// before the input and [2] the input's ToolTip or [3] its
+        /// BidiText.ToolTip string, joined by a comma. The tooltip joins only
+        /// when the parameter is true and it is a phrase, not a sentence: a
+        /// sentence is help, and UI Automation reads it as the help
+        /// text.</summary>
+        internal sealed class RowNameConverter : IMultiValueConverter
+        {
+            internal static readonly RowNameConverter Instance = new();
+
+            public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+            {
+                var parts = new List<string>(3);
+                if (values.Length > 0 && values[0] is string label && IsLabelText(label))
+                    parts.Add(label);
+                if (values.Length > 1 && values[1] is string word && IsLabelText(word))
+                    parts.Add(word);
+                if (parameter is true)
+                {
+                    string tip = values.Length > 2 && values[2] is string own ? own
+                               : values.Length > 3 && values[3] is string bidi ? bidi : null;
+                    if (IsPhrase(tip))
+                        parts.Add(tip);
+                }
+                return string.Join(", ", parts);
+            }
+
+            public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => null;
+
+            /// <summary>Readable text of at most 48 characters with no
+            /// sentence end in it.</summary>
+            internal static bool IsPhrase(string text)
+                => text != null && IsLabelText(text) && text.Length <= 48 && text.IndexOfAny(SentenceEnds) < 0;
+
+            private static readonly char[] SentenceEnds = { '.', '!', '?', (char)0x3002, (char)0xFF01, (char)0xFF1F, (char)0x061F, (char)0x0964 };
+        }
+
+        /// <summary>The word right before an input that joins it to the input
+        /// before it, or null.</summary>
+        private static FrameworkElement JoinerBefore(FrameworkElement input)
+        {
+            if (LogicalTreeHelper.GetParent(input) is not DependencyObject parent)
+                return null;
+            FrameworkElement before = null;
+            bool grid = parent is Grid;
+            int row = Grid.GetRow(input);
+            foreach (object child in LogicalTreeHelper.GetChildren(parent))
+            {
+                if (ReferenceEquals(child, input))
+                    return before != null && IsJoiner(before) ? before : null;
+                if (child is FrameworkElement fe && (!grid || Grid.GetRow(fe) == row))
+                    before = fe;
+            }
+            return null;
+        }
+
+        /// <summary>Whether an input of the same kind comes before this one
+        /// in its row with nothing but inputs, separators, joining words and
+        /// reset buttons between: the two share the row's label.</summary>
+        private static bool FollowsOneOfItsKind(FrameworkElement input)
+        {
+            if (LogicalTreeHelper.GetParent(input) is not DependencyObject parent)
+                return false;
+            var siblings = new List<FrameworkElement>();
+            foreach (object child in LogicalTreeHelper.GetChildren(parent))
+                if (child is FrameworkElement fe)
+                    siblings.Add(fe);
+            bool grid = parent is Grid;
+            int row = Grid.GetRow(input);
+            for (int i = siblings.IndexOf(input) - 1; i >= 0; i--)
+            {
+                FrameworkElement s = siblings[i];
+                if (grid && Grid.GetRow(s) != row)
+                    continue;
+                if (IsInput(s))
+                {
+                    if (SameKind(s, input))
+                        return true;
+                    continue;
+                }
+                if (s is SettingResetButton || IsSeparator(s) || IsJoiner(s))
+                    continue;
+                return false;
+            }
+            return false;
+        }
+
+        /// <summary>Two inputs UI Automation gives one control type: two
+        /// boxes, two pickers or two sliders.</summary>
+        private static bool SameKind(FrameworkElement a, FrameworkElement b)
+            => (a is TextBox && b is TextBox) || (a is ComboBox && b is ComboBox) || (a is Slider && b is Slider)
+               || a.GetType() == b.GetType();
+
+        /// <summary>The word between a range's two ends (Common_To): it joins
+        /// two inputs and labels neither.</summary>
+        private static bool IsJoiner(FrameworkElement fe)
+            => fe is TextBlock && BindingOperations.GetBinding(fe, TextBlock.TextProperty) is Binding b
+               && ReferenceEquals(b.Source, Strings.Instance) && b.Path?.Path == nameof(Strings.Common_To);
 
         /// <summary>Names a control after a label element. The name is bound
         /// to the label's text, so it follows the label through a language
@@ -410,8 +615,9 @@ namespace PadForge.Common
         /// row, past the element's value box and any value it shows but not
         /// past another label, or one docked ahead of it (a DockPanel lists the
         /// right-docked button first). Next comes the nearest earlier sibling
-        /// that holds a label, with inputs, reset buttons and literal text
-        /// without a letter (a dash between two range boxes) passed over.
+        /// that holds a label, with inputs, reset buttons, literal text
+        /// without a letter (a dash between two range boxes) and the word
+        /// between a range's two ends passed over.
         /// Literal text right after an input is that input's unit (the Hz after
         /// a frequency box) and labels nothing. In a Grid, a row above the
         /// element's row that holds a label and no input labels it last. Open
@@ -451,7 +657,7 @@ namespace PadForge.Common
                         before = r;
                     continue;
                 }
-                if (IsSeparator(s))
+                if (IsSeparator(s) || IsJoiner(s))
                     continue;
                 open = false;
                 if (IsLiteral(s) && EarlierInRow(siblings, i, grid, row) is { } prior && IsInput(prior))
@@ -469,7 +675,7 @@ namespace PadForge.Common
                     continue;
                 if (s is SettingResetButton reset && !string.IsNullOrEmpty(reset.SettingLabel))
                     return reset;
-                if (IsInput(s))
+                if (IsInput(s) || IsJoiner(s))
                     continue;
                 // A label starts another control's row.
                 if (FirstStringsLabel(s) != null)
@@ -536,14 +742,27 @@ namespace PadForge.Common
         private static bool IsLiteral(FrameworkElement fe) => LiteralText(fe) != null;
 
         /// <summary>Text a TextBlock or Label is given in the XAML itself, not
-        /// through a binding. Null otherwise.</summary>
+        /// through a binding. Null otherwise. Text written on an element of a
+        /// DataTemplate or ControlTemplate is no local value: the template
+        /// gives it (BaseValueSource.ParentTemplate), and ReadLocalValue
+        /// answers unset for it. Read that way, the % after a value box inside
+        /// a card's template was no unit, the label search stopped at it, and
+        /// the box after it fell back to its tooltip.</summary>
         private static string LiteralText(FrameworkElement fe)
-            => fe switch
+        {
+            DependencyProperty property = fe switch
             {
-                TextBlock tb => tb.ReadLocalValue(TextBlock.TextProperty) as string,
-                Label lb => lb.ReadLocalValue(ContentControl.ContentProperty) as string,
+                TextBlock => TextBlock.TextProperty,
+                Label => ContentControl.ContentProperty,
                 _ => null,
             };
+            if (property == null)
+                return null;
+            ValueSource source = DependencyPropertyHelper.GetValueSource(fe, property);
+            if (source.IsExpression || source.BaseValueSource is not (BaseValueSource.Local or BaseValueSource.ParentTemplate))
+                return null;
+            return fe.GetValue(property) as string;
+        }
 
         /// <summary>The sibling before index in the same Grid row, or
         /// null.</summary>
@@ -581,7 +800,7 @@ namespace PadForge.Common
         {
             if (BindingOperations.GetBinding(d, property) is Binding b)
                 return ReferenceEquals(b.Source, Strings.Instance);
-            return d.ReadLocalValue(property) is string literal && HasLetter(literal);
+            return d is FrameworkElement fe && LiteralText(fe) is string literal && HasLetter(literal);
         }
 
         private static bool HasLetter(string text)
@@ -611,6 +830,29 @@ namespace PadForge.Common
                     stack.Push(VisualTreeHelper.GetChild(d, i));
             }
             return null;
+        }
+
+        /// <summary>Whether text is one or more icon glyphs and nothing
+        /// else: characters of the private-use range U+E000 to U+F8FF or of
+        /// the private-use planes from U+F0000 up, with any white space
+        /// between.</summary>
+        private static bool IsGlyphOnly(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return false;
+            bool any = false;
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (char.IsWhiteSpace(text[i]))
+                    continue;
+                int point = char.ConvertToUtf32(text, i);
+                if (char.IsHighSurrogate(text[i]))
+                    i++;
+                if (!((point >= 0xE000 && point <= 0xF8FF) || point >= 0xF0000))
+                    return false;
+                any = true;
+            }
+            return any;
         }
 
         /// <summary>Whether text holds a Segoe icon glyph, the private-use

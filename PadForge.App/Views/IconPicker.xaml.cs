@@ -40,8 +40,11 @@ namespace PadForge.Views
 
         public IconPicker()
         {
+            // The picker wears the dialogs' look (#574). It is a control in a
+            // popup and no dialog window, so it merges the dialogs' styles
+            // itself, before its markup names them.
+            Resources.MergedDictionaries.Add(DialogWindow.Looks);
             InitializeComponent();
-            EmojiCategoryBar.ItemsSource = ShiftActivatorDialog.EmojiCatalog;
         }
 
         /// <summary>One package's entries on the Images tab.</summary>
@@ -53,6 +56,10 @@ namespace PadForge.Views
 
         /// <summary>One emoji on the Emoji tab.</summary>
         public sealed record EmojiChoice(string Glyph, bool IsCurrent);
+
+        /// <summary>One category of the Emoji tab, and whether it is the one
+        /// the picker opens on.</summary>
+        internal sealed record CategoryChoice(ShiftActivatorDialog.EmojiCategory Category, bool IsCurrent);
 
         /// <summary>Fills the tabs and opens on the one that holds the current
         /// icon: Images for a picture, Emoji otherwise. A package named in
@@ -71,6 +78,7 @@ namespace PadForge.Views
 
             var catalog = ShiftActivatorDialog.EmojiCatalog;
             var category = catalog.FirstOrDefault(c => Array.IndexOf(c.Emojis, _current) >= 0) ?? catalog[0];
+            EmojiCategoryBar.ItemsSource = catalog.Select(c => new CategoryChoice(c, ReferenceEquals(c, category))).ToList();
             ShowCategory(category);
 
             bool images = showPackage != null || MenuIconResolver.IsImageReference(_current);
@@ -214,34 +222,22 @@ namespace PadForge.Views
         {
             EmojiPanel.Visibility = images ? Visibility.Collapsed : Visibility.Visible;
             ImagesPanel.Visibility = images ? Visibility.Visible : Visibility.Collapsed;
-            MarkTab(EmojiTabButton, !images);
-            MarkTab(ImagesTabButton, images);
+            // The switch shows the open tab. Setting a segment to the value it
+            // has raises nothing, so this and the two handlers cannot loop.
+            EmojiTabButton.IsChecked = !images;
+            ImagesTabButton.IsChecked = images;
         }
 
-        /// <summary>The active tile wears the segment's ember gradient and
-        /// light text, as the Dashboard's type segment does.</summary>
-        private static void MarkTab(Button tab, bool active)
+        // A segment is chosen with the arrow keys as well as a click, so the
+        // panels follow Checked.
+        private void EmojiTab_Checked(object sender, RoutedEventArgs e) => SetTab(false);
+
+        private void ImagesTab_Checked(object sender, RoutedEventArgs e) => SetTab(true);
+
+        private void EmojiCategory_Checked(object sender, RoutedEventArgs e)
         {
-            if (active)
-            {
-                tab.SetResourceReference(BackgroundProperty, "EmberSegGradient");
-                tab.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0xF3, 0xE8));
-            }
-            else
-            {
-                tab.ClearValue(BackgroundProperty);
-                tab.ClearValue(ForegroundProperty);
-            }
-        }
-
-        private void EmojiTab_Click(object sender, RoutedEventArgs e) => SetTab(false);
-
-        private void ImagesTab_Click(object sender, RoutedEventArgs e) => SetTab(true);
-
-        private void EmojiCategory_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button b && b.Tag is ShiftActivatorDialog.EmojiCategory cat)
-                ShowCategory(cat);
+            if (sender is RadioButton { Tag: ShiftActivatorDialog.EmojiCategory category })
+                ShowCategory(category);
         }
 
         private void Emoji_Click(object sender, RoutedEventArgs e)

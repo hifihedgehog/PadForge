@@ -22,6 +22,8 @@ namespace PadForge.Services
                 OverlayNumbers = () => _mainVm.Dashboard.ScreenOverlayNumbers(),
                 OverlaySize = number => _mainVm.Dashboard.FindScreenOverlay(number) is { } overlay
                     ? new System.Windows.Size(overlay.Width, overlay.Height) : System.Windows.Size.Empty,
+                // What an overlay shows is named on its card (#574).
+                ChoicesChanged = row => _mainVm.Dashboard.ScreenOverlayChoicesChanged(row),
             };
 
         /// <summary>Every UI tick while the engine runs, ungated by focus: a
@@ -282,6 +284,10 @@ namespace PadForge.Services
             string status = string.Empty;
             if (im != null && im.IsRunning && settings.KeyboardScreensEnabled && _keyboardScreens?.Running == true)
                 status = _keyboardScreens.SubsystemLines();
+            // A line means the service ran, so it is there to ask. Only no
+            // screen found warns (#574): a library's line for a kind that is
+            // absent while another screen is present is information.
+            settings.KeyboardScreensStatusIsWarning = status.Length > 0 && _keyboardScreens.FoundNoScreen;
             if (string.Equals(_keyboardScreensStatusLast, status, StringComparison.Ordinal)) return;
             _keyboardScreensStatusLast = status;
             settings.KeyboardScreensStatus = status;

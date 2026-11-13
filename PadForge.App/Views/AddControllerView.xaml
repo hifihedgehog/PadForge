@@ -1,0 +1,183 @@
+<UserControl x:Class="PadForge.Views.AddControllerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:vm="clr-namespace:PadForge.ViewModels"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:controls="clr-namespace:PadForge.Controls">
+    <UserControl.Resources>
+        <!-- A choice under Driven By: the device's name, then in the quiet
+             color how it is linked and its battery, a picture of its level
+             before the percentage. The runs sit on one line of markup, since
+             a line break between runs adds a space. The text reads to a
+             screen reader as its button does. -->
+        <DataTemplate x:Key="DrivenByChoiceTemplate" DataType="{x:Type vm:DrivenByChoice}">
+            <RadioButton GroupName="AddControllerDrivenBy" MinWidth="0" MinHeight="36" Padding="0"
+                         VerticalContentAlignment="Center"
+                         IsChecked="{Binding IsChecked, Mode=OneTime}" Checked="DrivenBy_Checked"
+                         AutomationProperties.AutomationId="{Binding AutomationId, Mode=OneTime}"
+                         AutomationProperties.Name="{Binding AccessibleName, Mode=OneTime, TargetNullValue='', FallbackValue=''}">
+                <TextBlock Margin="2,0,0,0" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource TextFillColorPrimaryBrush}" AutomationProperties.Name="{Binding AccessibleName, Mode=OneTime, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding Name, Mode=OneWay}"/><Run Text="{Binding LineLead, Mode=OneWay}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding BatteryGlyph, Mode=OneWay}" FontSize="13" FontFamily="Segoe UI, Segoe MDL2 Assets" BaselineAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding BatteryGap, Mode=OneWay}" FontSize="13"/><Run Text="{Binding LineBattery, Mode=OneWay}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding LineTail, Mode=OneWay}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
+            </RadioButton>
+        </DataTemplate>
+
+        <!-- A Common tile: the type's icon at 28, its name at 16 and its line,
+             6 apart inside 16 of padding, on the raised fill. A type that
+             cannot be made dims its icon and name, and its line says why. -->
+        <DataTemplate x:Key="CommonTypeTile" DataType="{x:Type vm:ControllerTypeChoice}">
+            <controls:AvailabilityButton Style="{StaticResource TypeTileButton}" Padding="16"
+                    Background="{DynamicResource SteelRaisedBrush}"
+                    IsAvailable="{Binding IsAvailable, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+                    AutomationProperties.AutomationId="{Binding AutomationId, Mode=OneTime}"
+                    AutomationProperties.Name="{Binding Name, Mode=OneTime, TargetNullValue='', FallbackValue=''}"
+                    AutomationProperties.HelpText="{Binding Line, Mode=OneTime, TargetNullValue='', FallbackValue=''}"
+                    Click="TypeTile_Click">
+                <StackPanel>
+                    <Grid x:Name="Icon" Width="28" Height="28" HorizontalAlignment="Left">
+                        <Path FlowDirection="LeftToRight" Data="{Binding Geometry, Mode=OneTime}" Stretch="Uniform"
+                              Fill="{DynamicResource EmberHotBrush}"/>
+                        <controls:GlyphText Text="{Binding Glyph, Mode=OneTime}" FontFamily="Segoe MDL2 Assets" FontSize="28"
+                                            Foreground="{DynamicResource EmberHotBrush}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Visibility="{Binding Glyph, Converter={StaticResource StringToVisibility}}"/>
+                    </Grid>
+                    <TextBlock x:Name="TypeName" Text="{Binding Name, Mode=OneTime}" Margin="0,6,0,0"
+                               FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" LineHeight="23.2" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <TextBlock Text="{Binding Line, Mode=OneTime}" Margin="0,6,0,0" FontSize="13" TextWrapping="Wrap" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+            </controls:AvailabilityButton>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                    <Setter TargetName="Icon" Property="Opacity" Value="0.45"/>
+                    <Setter TargetName="TypeName" Property="Opacity" Value="0.45"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- A More Outputs tile: the same, smaller. Icon 22, name 14, padding 14. -->
+        <DataTemplate x:Key="MoreTypeTile" DataType="{x:Type vm:ControllerTypeChoice}">
+            <controls:AvailabilityButton Style="{StaticResource TypeTileButton}" Padding="14"
+                    Background="{DynamicResource SteelRaisedBrush}"
+                    IsAvailable="{Binding IsAvailable, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+                    AutomationProperties.AutomationId="{Binding AutomationId, Mode=OneTime}"
+                    AutomationProperties.Name="{Binding Name, Mode=OneTime, TargetNullValue='', FallbackValue=''}"
+                    AutomationProperties.HelpText="{Binding Line, Mode=OneTime, TargetNullValue='', FallbackValue=''}"
+                    Click="TypeTile_Click">
+                <StackPanel>
+                    <Grid x:Name="Icon" Width="22" Height="22" HorizontalAlignment="Left">
+                        <Path FlowDirection="LeftToRight" Data="{Binding Geometry, Mode=OneTime}" Stretch="Uniform"
+                              Fill="{DynamicResource EmberHotBrush}"/>
+                        <controls:GlyphText Text="{Binding Glyph, Mode=OneTime}" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                            Foreground="{DynamicResource EmberHotBrush}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Visibility="{Binding Glyph, Converter={StaticResource StringToVisibility}}"/>
+                    </Grid>
+                    <TextBlock x:Name="TypeName" Text="{Binding Name, Mode=OneTime}" Margin="0,6,0,0"
+                               FontSize="14" FontWeight="SemiBold" TextWrapping="Wrap" LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <TextBlock Text="{Binding Line, Mode=OneTime}" Margin="0,6,0,0" FontSize="13" TextWrapping="Wrap" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                </StackPanel>
+            </controls:AvailabilityButton>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                    <Setter TargetName="Icon" Property="Opacity" Value="0.45"/>
+                    <Setter TargetName="TypeName" Property="Opacity" Value="0.45"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!-- Add a Controller (#574), top to bottom as its board draws it: the
+         title and what a click does, the controller that will drive the new
+         one, the three common types, the four others, and how to change the
+         type later. MainWindow hosts it in a ShellDialog over the page area
+         and answers its events. -->
+    <StackPanel>
+        <!-- Head: the title and what a click does, the full line when every
+             slot is taken, and the X. -->
+        <Grid Margin="24,22,24,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock x:Name="AddControllerTitle" AutomationProperties.HeadingLevel="Level1"
+                           Text="{Binding AddController_Title, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" LineHeight="29" LineStackingStrategy="BlockLineHeight"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <TextBlock Text="{Binding AddController_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,4,0,0" FontSize="14" TextWrapping="Wrap" LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <TextBlock x:Name="FullNotice" Text="{Binding FullNotice}" Margin="0,8,0,0" FontSize="14" TextWrapping="Wrap" LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           Visibility="{Binding IsFull, Converter={StaticResource BoolToVisibilityConverter}}"
+                           AutomationProperties.AutomationId="AddController_Full"/>
+            </StackPanel>
+            <ui:Button x:Name="CloseButton" Grid.Column="1" Style="{StaticResource QuietButton}"
+                       Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0" CornerRadius="6"
+                       Margin="16,0,0,0" VerticalAlignment="Top" Click="Close_Click"
+                       ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.AutomationId="AddController_Close">
+                <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="16" StrokeWidth="1.8"/>
+            </ui:Button>
+        </Grid>
+
+        <!-- Driven By: which connected controller drives the new one. -->
+        <StackPanel Margin="24,20,24,0" Visibility="{Binding ShowsDrivenBy, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock Style="{StaticResource SectionTitle}" HorizontalAlignment="Left" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                       Text="{Binding AddController_DrivenBy, Source={x:Static strings:Strings.Instance}}"/>
+            <ItemsControl x:Name="DrivenByList" Margin="0,8,0,0" ItemsSource="{Binding Devices}"
+                          ItemTemplate="{StaticResource DrivenByChoiceTemplate}"
+                          AutomationProperties.AutomationId="AddController_DrivenBy"
+                          AutomationProperties.Name="{Binding AddController_DrivenBy, Source={x:Static strings:Strings.Instance}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:FlexLinePanel Gap="24" LineGap="8"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+
+        <!-- Common: three columns at every width the window allows. -->
+        <StackPanel Margin="24,20,24,0">
+            <TextBlock Style="{StaticResource SectionTitle}" HorizontalAlignment="Left" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                       Text="{Binding AddController_Common, Source={x:Static strings:Strings.Instance}}"/>
+            <ItemsControl x:Name="CommonTiles" Margin="0,10,0,0" ItemsSource="{Binding Common}"
+                          ItemTemplate="{StaticResource CommonTypeTile}"
+                          KeyboardNavigation.DirectionalNavigation="Contained"
+                          AutomationProperties.AutomationId="AddController_Common"
+                          AutomationProperties.Name="{Binding AddController_Common, Source={x:Static strings:Strings.Instance}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:TileGridPanel MinItemWidth="150" Gap="12" MaxColumns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+
+        <!-- More Outputs: four columns at every width the window allows. -->
+        <StackPanel Margin="24,20,24,0">
+            <TextBlock Style="{StaticResource SectionTitle}" HorizontalAlignment="Left" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                       Text="{Binding AddController_MoreOutputs, Source={x:Static strings:Strings.Instance}}"/>
+            <ItemsControl x:Name="MoreTiles" Margin="0,10,0,0" ItemsSource="{Binding More}"
+                          ItemTemplate="{StaticResource MoreTypeTile}"
+                          KeyboardNavigation.DirectionalNavigation="Contained"
+                          AutomationProperties.AutomationId="AddController_More"
+                          AutomationProperties.Name="{Binding AddController_MoreOutputs, Source={x:Static strings:Strings.Instance}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:TileGridPanel MinItemWidth="120" Gap="12" MaxColumns="4"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+
+        <TextBlock Margin="24,18,24,22" FontSize="13" TextWrapping="Wrap" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                   Text="{Binding AddController_Foot, Source={x:Static strings:Strings.Instance}}"/>
+    </StackPanel>
+</UserControl>

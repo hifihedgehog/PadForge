@@ -2,25 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.ViewModels;
-using Wpf.Ui.Controls;
 
 namespace PadForge.Views
 {
     /// <summary>
-    /// Modal dialog for authoring or editing a single
-    /// <see cref="ShiftActivator"/>. Drives the full v1/v2/v3 field set
-    /// with proper controls (HSV color picker, layer-dropdown for Custom
-    /// jump target, checkbox list for Cycle membership).
+    /// The Shift Layer window (#574): makes or edits one
+    /// <see cref="ShiftActivator"/>. The name, the input and what the
+    /// layer's unmapped controls do show at once. The mode, the kind of
+    /// input, the timing and the color are under More.
     /// </summary>
-    public partial class ShiftActivatorDialog : FluentWindow
+    public partial class ShiftActivatorDialog : DialogWindow
     {
         public ShiftActivator Result { get; private set; }
+
+        /// <summary>Set when the dialog closed by its Delete Layer button.
+        /// <see cref="Result"/> is then null, and the caller asks before
+        /// it deletes the layer.</summary>
+        public bool DeleteRequested { get; private set; }
 
         private readonly HashSet<string> _existingLayerNames;
         private readonly HashSet<string> _existingLayerMasks;
@@ -97,20 +102,10 @@ namespace PadForge.Views
         public ShiftActivatorDialog(string baseName, string baseColor, string baseIcon)
         {
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             _baseMode = true;
             Title = Strings.Instance.Pad_Shift_BaseConfigTitle;
-            // Only name + icon + color show in this mode; shrink from the full
-            // 700px so the buttons aren't stranded above a dead gap.
-            Height = 580; // 520 content + the item-11 dialog head
+            Subtitle = Strings.Instance.Pad_Shift_BaseSubtitle;
 
             LayerNameBox.Text = baseName ?? "";
 
@@ -158,19 +153,16 @@ namespace PadForge.Views
             };
         }
 
-        /// <summary>Collapses every activator-specific row, leaving the name,
-        /// icon, and color sections for Base-appearance mode.</summary>
+        /// <summary>Base mode shows the name row and the color and nothing
+        /// else: Base has no input, no mode and no unmapped controls. The
+        /// color leaves More, which is hidden with every row it holds, and
+        /// stands under the name.</summary>
         private void CollapseForBaseMode()
         {
-            var hide = new System.Windows.UIElement[]
-            {
-                KindLabel, KindCombo, InputLabel, InputRow, ChordLabel, ChordSecondRow,
-                AxisThresholdLabel, AxisThresholdRow, ModeLabel, ModeCombo,
-                BehaviorChecksRow, CycleHeaderRow,
-                CycleLayersList, DelayRow, HintText,
-            };
-            foreach (var el in hide)
-                if (el != null) el.Visibility = Visibility.Collapsed;
+            foreach (var row in new UIElement[] { InputRow, ChordSecondRow, AxisThresholdRow, UnmappedRow, ShiftMore })
+                row.Visibility = Visibility.Collapsed;
+            MorePanel.Children.Remove(ColorBlock);
+            BodyPanel.Children.Add(ColorBlock);
         }
 
         public ShiftActivatorDialog(
@@ -304,7 +296,8 @@ namespace PadForge.Views
                 AxisThresholdSlider.Value = existing.AxisThreshold;
                 DelaySlider.Value = existing.DelayMs;
                 AutoCancelSlider.Value = existing.AutoCancelMs;
-                InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
+                // Fall Through to Base is the first choice, Do Nothing the second.
+                InheritUnmappedCombo.SelectedIndex = existing.InheritUnmapped ? 0 : 1;
                 PostponeMappingBox.IsChecked = existing.PostponeMapping;
                 FireOnReleaseBox.IsChecked = existing.FireOnRelease;
 
@@ -337,6 +330,7 @@ namespace PadForge.Views
                 ModeCombo.SelectedValue = "Hold";
                 AxisThresholdSlider.Value = 0.5;
                 DelaySlider.Value = 0;
+                InheritUnmappedCombo.SelectedIndex = 1;
                 CycleWrapBox.IsChecked = true;
                 CycleIncludeBaseBox.IsChecked = false;
                 // Honor the picker's initial color on first save. Without this
@@ -365,7 +359,17 @@ namespace PadForge.Views
             ApplyKindVisibility();
             ApplyModeVisibility();
             RefreshInputComboSources();
+            ShowInputPicks();
             InitEmojiPicker(existing?.Icon ?? "");
+
+            // A layer that exists can be deleted from here. Base never comes
+            // through this constructor, and a leftover entry that carries
+            // its mask is deleted from the layer bar, which words that
+            // confirm for what it does.
+            DeleteLayerButton.Visibility = existing != null
+                && !string.Equals(existing.LayerMask, "Base", StringComparison.Ordinal)
+                ? Visibility.Visible : Visibility.Collapsed;
+            ShiftMore.IsExpanded = UsesMore(existing);
 
             Loaded += (_, __) =>
             {
@@ -406,10 +410,14 @@ namespace PadForge.Views
             UpdateHexBoxFromPicker();
         }
 
+        /// <summary>The swatch and the hex field say the layer's color. A
+        /// layer with none shows an empty swatch and an empty field, which
+        /// reads None, and not the color the plate happens to stand at.</summary>
         private void UpdateHexBoxFromPicker()
         {
             if (ColorHexBox == null) return;
-            ColorHexBox.Text = $"{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}";
+            ColorHexBox.Text = _colorSet ? $"{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}" : string.Empty;
+            ColorPreviewFill.Visibility = _colorSet ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void ColorHexBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -438,6 +446,9 @@ namespace PadForge.Views
                 ColorPicker.Red = r;
                 ColorPicker.Green = g;
                 ColorPicker.Blue = b;
+                // A typed color is a color, the plate's own one included,
+                // which changes nothing on the plate.
+                _colorSet = true;
             }
 
             // Always reformat to canonical RRGGBB (echo back on success,
@@ -516,6 +527,42 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>Whether a layer uses a setting that More holds, so More
+        /// opens with it: a mode other than Hold, a kind other than one
+        /// button, a host layer, Fire on Release, the input's own mapping
+        /// kept, a delay, an auto-cancel, or a Cycle list. The color alone
+        /// does not open it, and a new layer starts with More closed.</summary>
+        internal static bool UsesMore(ShiftActivator existing)
+            => existing != null
+               && (!string.Equals(existing.Mode ?? "Hold", "Hold", StringComparison.Ordinal)
+                   || !string.Equals(existing.Kind ?? "Button", "Button", StringComparison.Ordinal)
+                   || !string.IsNullOrEmpty(existing.HostLayerMask)
+                   || existing.FireOnRelease
+                   || existing.PostponeMapping
+                   || existing.DelayMs != 0
+                   || existing.AutoCancelMs != 0
+                   || !string.IsNullOrEmpty(existing.CycleLayers));
+
+        /// <summary>An input picker says Choose an Input until it has a
+        /// pick, and its tooltip names the device the pick is on, or says
+        /// Unassigned with none.</summary>
+        private void InputPicker_SelectionChanged(object sender, SelectionChangedEventArgs e) => ShowInputPicks();
+
+        private void ShowInputPicks()
+        {
+            ShowInputPick(InputCombo, InputPlaceholder);
+            ShowInputPick(ChordSecondCombo, ChordSecondPlaceholder);
+        }
+
+        private static void ShowInputPick(ComboBox picker, TextBlock placeholder)
+        {
+            var pick = picker.SelectedItem as InputChoice;
+            placeholder.Visibility = pick == null ? Visibility.Visible : Visibility.Collapsed;
+            string device = pick == null ? Strings.Instance.Common_Unassigned : pick.DeviceLabel;
+            picker.ToolTip = string.IsNullOrEmpty(device) ? null : device;
+            AutomationProperties.SetHelpText(picker, device ?? string.Empty);
+        }
+
         private void RefreshInputComboSources()
         {
             string kind = KindCombo.SelectedValue as string ?? "Button";
@@ -549,14 +596,16 @@ namespace PadForge.Views
             ApplyModeVisibility();
         }
 
-        /// <summary>Two-line dropdown item — bold name + small description.
-        /// Mirrors the Mappings tab combine-mode picker shape so users get a
-        /// one-line explanation of each option without hunting tooltips.</summary>
+        /// <summary>A choice of the mode and kind pickers: its name, and a
+        /// line on what it does that the open list shows under the name. A
+        /// screen reader reads the choice by its name.</summary>
         private class ChoiceOption
         {
             public string Value { get; set; } = "";
             public string Name { get; set; } = "";
             public string Description { get; set; } = "";
+
+            public override string ToString() => Name;
         }
 
         private static System.Collections.Generic.IReadOnlyList<ChoiceOption> BuildKindOptions()
@@ -589,9 +638,7 @@ namespace PadForge.Views
             string kind = KindCombo.SelectedValue as string ?? "Button";
             bool isChord = kind == "Chord";
             bool isAxis = kind == "Axis";
-            ChordLabel.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
             ChordSecondRow.Visibility = isChord ? Visibility.Visible : Visibility.Collapsed;
-            AxisThresholdLabel.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
             AxisThresholdRow.Visibility = isAxis ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -646,14 +693,23 @@ namespace PadForge.Views
         private void SetPrimaryRecording(bool on)
         {
             _recordingPrimary = on;
-            // Swap the icon: Stop (E71A) while recording, Record (E7C8) idle.
-            InputRecordIcon.Text = on ? "" : "";
+            ShowRecording(InputRecordButton, on);
         }
 
         private void SetChordRecording(bool on)
         {
             _recordingChord = on;
-            ChordSecondRecordIcon.Text = on ? "" : "";
+            ShowRecording(ChordSecondRecordButton, on);
+        }
+
+        /// <summary>A record button's content is the glyph that says whether
+        /// it records, which its face reads: the square and Stop for E71A,
+        /// the dot and Record for E7C8. The glyph is not drawn, so the
+        /// button is named by the same word.</summary>
+        private static void ShowRecording(System.Windows.Controls.Button button, bool on)
+        {
+            button.Content = on ? "\uE71A" : "\uE7C8";
+            AutomationProperties.SetName(button, on ? Strings.Instance.Common_Stop : Strings.Instance.Common_Record);
         }
 
         /// <summary>Resolves the (deviceGuid, descriptor) tuple returned by
@@ -694,25 +750,32 @@ namespace PadForge.Views
             string mode = ModeCombo.SelectedValue as string ?? "Hold";
             bool isCycle = mode == "Cycle";
             bool isPassive = mode == "Passive";
-            CycleHeaderRow.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
-            CycleLayersList.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
+            var strings = Strings.Instance;
+            // The line under the title says what the chosen mode does.
+            Subtitle = mode switch
+            {
+                "Toggle" => strings.Pad_Shift_ModeToggle_Subtitle,
+                "Custom" => strings.Pad_Shift_ModeCustom_Subtitle,
+                "Cycle" => strings.Pad_Shift_ModeCycle_Subtitle,
+                "Sticky" => strings.Pad_Shift_ModeSticky_Subtitle,
+                "Passive" => strings.Pad_Shift_ModePassive_Subtitle,
+                _ => strings.Pad_Shift_ModeHold_Subtitle,
+            };
+            CycleBlock.Visibility = isCycle ? Visibility.Visible : Visibility.Collapsed;
 
             // Passive (No Button, #119) layers have no activator at all. They are
             // reached only by a Cycle queue or a Custom jump, so hide every input
             // row. Cycle hides the Kind selector (button-driven) and Delay (press-
             // to-step). The Postpone toggle only makes sense with an own input.
-            InputLabel.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
             InputRow.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
             // v9 host-layer condition: Passive has no input to gate.
             HostLayerRow.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
-            KindLabel.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
-            KindCombo.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
+            KindRow.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             DelayRow.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             // Auto-cancel (#206) is Toggle-only: auto-unlatching was
             // flagged as surprising by the requester, and Hold/Sticky
             // have their own release semantics.
             bool isToggle = mode == "Toggle";
-            AutoCancelLabel.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
             AutoCancelRow.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
             // Fire on Release is edge-mode only: Hold is level-driven (both
             // edges already have jobs) and Passive has no button at all.
@@ -722,26 +785,26 @@ namespace PadForge.Views
 
             if (isPassive)
             {
-                ChordLabel.Visibility = Visibility.Collapsed;
                 ChordSecondRow.Visibility = Visibility.Collapsed;
-                AxisThresholdLabel.Visibility = Visibility.Collapsed;
                 AxisThresholdRow.Visibility = Visibility.Collapsed;
                 return;
             }
 
+            // The input rows are labeled for what the input does in the
+            // mode: it is held for a Hold layer, pressed for a Toggle, a
+            // Latch or a Sticky one, and steps a Cycle layer on or back.
             if (isCycle)
             {
                 if (!string.Equals(KindCombo.SelectedValue as string, "Button", StringComparison.Ordinal))
                     KindCombo.SelectedValue = "Button";   // -> button-only combos
-                InputLabel.Text = Strings.Instance.Pad_Shift_CycleNextButton;
-                ChordLabel.Text = Strings.Instance.Pad_Shift_CyclePrevButton;
-                ChordLabel.Visibility = Visibility.Visible;
+                InputLabel.Text = strings.Pad_Shift_NextLayerWith;
+                ChordLabel.Text = strings.Pad_Shift_PreviousLayerWith;
                 ChordSecondRow.Visibility = Visibility.Visible;
             }
             else
             {
-                InputLabel.Text = Strings.Instance.Pad_Shift_ActivatorInput;
-                ChordLabel.Text = Strings.Instance.Pad_Shift_ChordSecondInput;
+                InputLabel.Text = mode == "Hold" ? strings.Pad_Shift_HeldWith : strings.Pad_Shift_PressedWith;
+                ChordLabel.Text = strings.Pad_Shift_AndWith;
                 ApplyKindVisibility();   // chord / axis rows revert to kind-driven
             }
         }
@@ -865,7 +928,7 @@ namespace PadForge.Views
                 Descriptor = input?.Descriptor ?? "",
                 Mode = mode,
                 Kind = kind,
-                InheritUnmapped = InheritUnmappedBox.IsChecked == true,
+                InheritUnmapped = InheritUnmappedCombo.SelectedIndex == 0,
                 ChordSecondDeviceGuid = isCycle ? "" : (chordSecond?.DeviceGuid ?? ""),
                 ChordSecondDescriptor = isCycle ? "" : (chordSecond?.Descriptor ?? ""),
                 AxisThreshold = AxisThresholdSlider.Value,
@@ -908,20 +971,26 @@ namespace PadForge.Views
             HintText.Visibility = Visibility.Visible;
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>Delete Layer closes the dialog with nothing to save.
+        /// The caller asks before it deletes, since the layer's rows go
+        /// with it.</summary>
+        private void DeleteLayerButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            DeleteRequested = true;
+            DialogResult = true;
         }
 
         /// <summary>Adapter so the existing list-population code can bind
         /// against simple "(LayerMask, DisplayName)" rows. Mirrors how
         /// InputChoice wraps the (DeviceGuid, Descriptor, DisplayName)
-        /// pair for the input picker.</summary>
+        /// pair for the input picker. A screen reader reads the row by
+        /// its name.</summary>
         private class LayerOption
         {
             public string LayerMask { get; set; } = "";
             public string DisplayName { get; set; } = "";
+
+            public override string ToString() => DisplayName;
         }
 
         // ─────────────────────────────────────────────

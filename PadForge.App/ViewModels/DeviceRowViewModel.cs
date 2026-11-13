@@ -27,6 +27,17 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TouchpadInputStatus));
             OnPropertyChanged(nameof(GunCalibrationStatus));
             OnPropertyChanged(nameof(GunCalibrateTooltip));
+            foreach (var badge in SlotBadges) badge.RaiseLabel();
+            OnPropertyChanged(nameof(LineLead));
+            OnPropertyChanged(nameof(LineFacts));
+            OnPropertyChanged(nameof(BatteryGlyph));
+            OnPropertyChanged(nameof(BatteryGap));
+            OnPropertyChanged(nameof(LineBattery));
+            OnPropertyChanged(nameof(LineTail));
+            OnPropertyChanged(nameof(BatteryLine));
+            OnPropertyChanged(nameof(RowLine));
+            OnPropertyChanged(nameof(RowStatus));
+            RaiseBoardWords();
         }
 
         // ─────────────────────────────────────────────
@@ -168,6 +179,7 @@ namespace PadForge.ViewModels
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    RaiseRowFacts();
                 }
             }
         }
@@ -192,6 +204,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasFlydigiServiceWarning));
                     OnPropertyChanged(nameof(FlydigiServiceWarning));
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    RaiseRowFacts();
                 }
             }
         }
@@ -225,6 +238,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(TabletInputStatus));
                     OnPropertyChanged(nameof(CanCalibrateGun));
+                    RaiseRowFacts();
                 }
             }
         }
@@ -254,6 +268,142 @@ namespace PadForge.ViewModels
                 if (_isOnline) return Strings.Instance.Common_Online;
                 return Strings.Instance.Common_Offline;
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  List facts (#574)
+        // ─────────────────────────────────────────────
+
+        private string _kindGlyph = "\uE7FC";
+
+        /// <summary>The device's kind as the app's MDL2 glyph
+        /// (Common.DeviceTypeGlyph.For), set by InputService.PopulateDeviceRow
+        /// from the device's CapType. The row's square shows it.</summary>
+        public string KindGlyph
+        {
+            get => _kindGlyph;
+            set => SetProperty(ref _kindGlyph, value ?? "\uE7FC");
+        }
+
+        /// <summary>A game controller's type, the six Home offers a
+        /// controller for (InputService.IsHomeOfferEligible).</summary>
+        public bool IsGameControllerType => DeviceTypeKey is "Gamepad" or "Joystick" or "Wheel" or "FlightStick"
+            or "FirstPerson" or "Supplemental";
+
+        /// <summary>A row the Devices page keeps under Other Inputs: a merged
+        /// row, a keyboard's or a remote's consumer-control collection, and
+        /// every row PadForge or an extra feeds (IsInternalVirtual), except
+        /// the three that stand for hardware a person plugs in: a MIDI
+        /// device, a Falcon and an analog keyboard.</summary>
+        public bool IsOtherInput => IsAggregate || DeviceTypeKey == "ConsumerControl"
+            || (IsInternalVirtual && !_devicePath.StartsWith("midi://", StringComparison.Ordinal)
+                && !_devicePath.StartsWith("falcon://", StringComparison.Ordinal)
+                && !_devicePath.StartsWith("analogkb://", StringComparison.Ordinal));
+
+        /// <summary>The list a row stands in, by whether it is connected and
+        /// whether it is an other input.</summary>
+        internal static DeviceListGroup GroupOf(bool online, bool otherInput)
+            => otherInput ? DeviceListGroup.Other : online ? DeviceListGroup.Connected : DeviceListGroup.NotConnected;
+
+        private DeviceListGroup _listGroup = DeviceListGroup.NotConnected;
+
+        /// <summary>Which of the page's three lists the row stands in. Raised
+        /// only when it changes: the lists regroup live on this name.</summary>
+        public DeviceListGroup ListGroup => _listGroup;
+
+        private void UpdateListGroup()
+        {
+            var group = GroupOf(_isOnline, IsOtherInput);
+            if (group == _listGroup) return;
+            _listGroup = group;
+            OnPropertyChanged(nameof(ListGroup));
+        }
+
+        /// <summary>Whether a virtual controller uses the device.</summary>
+        public bool IsAssigned => SlotBadges.Count > 0;
+
+        /// <summary>Whether the row offers Use It: a game controller that is
+        /// connected and that no virtual controller uses.</summary>
+        public bool OffersUse => _isOnline && !IsAssigned && IsGameControllerType;
+
+        /// <summary>The row's line, "Gamepad, Bluetooth, battery 82%", in three
+        /// parts so the charge draws in the mono face: what leads it, the
+        /// charge, and what follows the charge. A link is named only when it
+        /// is Bluetooth: a path that is not makes no claim
+        /// (DeviceTransport).</summary>
+        public string LineLead => Line().Lead;
+
+        /// <summary>The charge in the row's line, or nothing.</summary>
+        public string LineBattery => Line().Battery;
+
+        /// <summary>What follows the charge in the row's line.</summary>
+        public string LineTail => Line().Tail;
+
+        /// <summary>The row's whole line, its help text for a screen reader.</summary>
+        public string RowLine => LineLead + LineBattery + LineTail;
+
+        /// <summary>The pills' names, or Not in use: the row's item status
+        /// for a screen reader.</summary>
+        public string RowStatus
+        {
+            get
+            {
+                if (!IsAssigned) return Strings.Instance.Devices_NotInUse;
+                var names = new List<string>();
+                foreach (var badge in SlotBadges) names.Add(badge.Label);
+                return string.Join(", ", names);
+            }
+        }
+
+        /// <summary>The type, the link when it is Bluetooth and the battery
+        /// part, joined with commas as CapabilitiesSummary joins its parts.
+        /// The battery's format is split at its {0}: one with none reads
+        /// before the charge with a space.</summary>
+        private (string Lead, string Battery, string Tail) Line()
+        {
+            string lead = LineFacts;
+            if (!HasBattery) return (lead, string.Empty, string.Empty);
+            string format = _batteryCharging ? Strings.Instance.Devices_Line_BatteryCharging_Format : Strings.Instance.Devices_Line_Battery_Format;
+            int at = format.IndexOf("{0}", StringComparison.Ordinal);
+            string before = at < 0 ? format + " " : format.Substring(0, at);
+            string after = at < 0 ? string.Empty : format.Substring(at + 3);
+            return (lead + before, BatteryText, after);
+        }
+
+        /// <summary>The row's line as it is drawn, up to the battery: the
+        /// type and the link when it is Bluetooth, with one more comma when
+        /// a battery follows. The battery is then a picture of its level
+        /// and the percentage (BatteryGlyph, LineBattery, LineTail). The
+        /// battery's own word is in RowLine, for a screen reader.</summary>
+        public string LineFacts
+        {
+            get
+            {
+                string facts = DeviceType ?? string.Empty;
+                if (IsBluetoothLink)
+                    facts = facts.Length > 0 ? facts + ", " + Strings.Instance.Pad_Transport_Bluetooth : Strings.Instance.Pad_Transport_Bluetooth;
+                return HasBattery && facts.Length > 0 ? facts + ", " : facts;
+            }
+        }
+
+        /// <summary>Everything the row's line and its list follow, raised
+        /// when one of the facts they are made of changes.</summary>
+        private void RaiseRowFacts()
+        {
+            UpdateListGroup();
+            OnPropertyChanged(nameof(IsGameControllerType));
+            OnPropertyChanged(nameof(IsOtherInput));
+            OnPropertyChanged(nameof(IsAssigned));
+            OnPropertyChanged(nameof(OffersUse));
+            OnPropertyChanged(nameof(LineLead));
+            OnPropertyChanged(nameof(LineFacts));
+            OnPropertyChanged(nameof(BatteryGlyph));
+            OnPropertyChanged(nameof(BatteryGap));
+            OnPropertyChanged(nameof(LineBattery));
+            OnPropertyChanged(nameof(LineTail));
+            OnPropertyChanged(nameof(BatteryLine));
+            OnPropertyChanged(nameof(RowLine));
+            OnPropertyChanged(nameof(RowStatus));
         }
 
         // ─────────────────────────────────────────────
@@ -306,14 +456,9 @@ namespace PadForge.ViewModels
                     // the key was set.
                     OnPropertyChanged(nameof(ShowConsumeToggle));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
-                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
                     OnPropertyChanged(nameof(ShowRawInputState));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                     OnPropertyChanged(nameof(IsMidiDevice));
                     OnPropertyChanged(nameof(IsHeadsetMotionDevice));
-                    OnPropertyChanged(nameof(ShowTouchpadCapability));
-                    OnPropertyChanged(nameof(HasCapabilityIcons));
                     OnPropertyChanged(nameof(ShowSubmitMapping));
                     // Rows are constructed before the key is known, so a
                     // derived property missing from this list evaluates once
@@ -335,9 +480,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowTouchpadCaptureStatus));
                     OnPropertyChanged(nameof(ShowHidHideToggle));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
-                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
+                    RaiseRowFacts();
                 }
             }
         }
@@ -382,11 +525,7 @@ namespace PadForge.ViewModels
         public bool HasRumble
         {
             get => _hasRumble;
-            set
-            {
-                if (SetProperty(ref _hasRumble, value))
-                    OnPropertyChanged(nameof(HasCapabilityIcons));
-            }
+            set => SetProperty(ref _hasRumble, value);
         }
 
         private bool _hasGyro;
@@ -395,11 +534,7 @@ namespace PadForge.ViewModels
         public bool HasGyro
         {
             get => _hasGyro;
-            set
-            {
-                if (SetProperty(ref _hasGyro, value))
-                    OnPropertyChanged(nameof(HasCapabilityIcons));
-            }
+            set => SetProperty(ref _hasGyro, value);
         }
 
         private bool _hasAccel;
@@ -417,26 +552,8 @@ namespace PadForge.ViewModels
         public bool HasTouchpad
         {
             get => _hasTouchpad;
-            set
-            {
-                if (SetProperty(ref _hasTouchpad, value))
-                {
-                    OnPropertyChanged(nameof(ShowTouchpadCapability));
-                    OnPropertyChanged(nameof(HasCapabilityIcons));
-                }
-            }
+            set => SetProperty(ref _hasTouchpad, value);
         }
-
-        /// <summary>Touchpad chip gate for the dossier capability row,
-        /// mirroring CapabilitiesSummary: shown only when the touchpad is a
-        /// capability of a larger device, not the device's own type.</summary>
-        public bool ShowTouchpadCapability => _hasTouchpad && DeviceTypeKey != "Touchpad";
-
-        /// <summary>Whether the dossier capability row renders at all
-        /// (#175 item 7). Counts only capabilities with an established glyph
-        /// (rumble, gyro, touchpad). Accel has no established glyph anywhere
-        /// in the app and stays text-only in CapabilitiesSummary.</summary>
-        public bool HasCapabilityIcons => _hasRumble || _hasGyro || ShowTouchpadCapability;
 
         // ─────────────────────────────────────────────
         //  Slot assignment
@@ -465,42 +582,40 @@ namespace PadForge.ViewModels
         {
             _assignedSlots = slots ?? new();
             SlotBadges.Clear();
-            // Walk SlotOrders in type-group order (Xbox → PlayStation →
-            // Extended → KbM → MIDI) to compute the global slot number,
-            // matching the dashboard cards and the Pad page header.
-            // Iterating raw padIndex here mismatches the visual ordering
-            // when an Xbox slot is added after a PlayStation slot — the
-            // cards renumber to put Xbox at #1, but the badge would still
-            // show the PlayStation as #1 because it was created first.
-            var slotToGlobal = BuildSlotNumberLookup();
+            // Walk SlotOrders in type-group order to number each badge
+            // within its type, as the sidebar numbers the controllers.
+            // Iterating raw padIndex here would number the slots in the
+            // order they were made, not the order the sidebar shows.
+            var slotToType = BuildTypeNumberLookup();
             foreach (int slot in _assignedSlots)
             {
-                slotToGlobal.TryGetValue(slot, out var info);
-                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = info.Number, VcType = info.Type });
+                slotToType.TryGetValue(slot, out var info);
+                SlotBadges.Add(new SlotBadge { TypeNumber = info.TypeNumber, VcType = info.Type });
             }
             OnPropertyChanged(nameof(AssignedSlots));
+            RaiseRowFacts();
         }
 
-        /// <summary>Builds a slotIndex → (1-based global number, VC family)
-        /// map walking type-group order to match the dashboard / sidebar /
-        /// Pad page numbering. Created/active slots only; uncreated slots are
-        /// excluded so the global numbers don't skip. The family rides along
-        /// because the walk already knows it, and the badge's branded icon
-        /// needs it (#175 phase 2 item 12).</summary>
-        private static Dictionary<int, (int Number, Engine.VirtualControllerType Type)> BuildSlotNumberLookup()
+        /// <summary>Builds a slotIndex → (number within its type, VC family)
+        /// map walking type-group order, the count the sidebar's "#1" gives
+        /// each controller (MainViewModel.RefreshNavControllerItems): within
+        /// each type a count restarts and runs over the created slots in
+        /// their order. The family rides along because the walk already
+        /// knows it, and the pill's name and icon need it.</summary>
+        private static Dictionary<int, (int TypeNumber, Engine.VirtualControllerType Type)> BuildTypeNumberLookup()
         {
-            var map = new Dictionary<int, (int Number, Engine.VirtualControllerType Type)>();
-            int globalCount = 0;
+            var map = new Dictionary<int, (int TypeNumber, Engine.VirtualControllerType Type)>();
             foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
+                int count = 0;
                 foreach (int padIndex in Common.Input.SettingsManager.SlotOrders.GetOrderFor(groupType))
                 {
                     if (padIndex < 0 || padIndex >= Common.Input.SettingsManager.SlotCreated.Length)
                         continue;
                     if (!Common.Input.SettingsManager.SlotCreated[padIndex])
                         continue;
-                    globalCount++;
-                    map[padIndex] = (globalCount, groupType);
+                    count++;
+                    map[padIndex] = (count, groupType);
                 }
             }
             return map;
@@ -539,12 +654,8 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _forceRawJoystickMode, value))
                 {
                     // A row read raw shows the checkbox whatever its type
-                    // (ShowInputModeSection), and the dividers follow the
-                    // section.
+                    // (ShowInputModeSection).
                     OnPropertyChanged(nameof(ShowInputModeSection));
-                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -584,8 +695,6 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _showIdleDisconnect, value))
                 {
                     OnPropertyChanged(nameof(ShowPowerSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -608,8 +717,6 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _showQuickCharge, value))
                 {
                     OnPropertyChanged(nameof(ShowPowerSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -648,7 +755,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(HasBattery));
                     OnPropertyChanged(nameof(BatteryText));
-                    OnPropertyChanged(nameof(BatteryGlyph));
+                    RaiseRowFacts();
                 }
             }
         }
@@ -662,7 +769,7 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _batteryCharging, value))
-                    OnPropertyChanged(nameof(BatteryGlyph));
+                    RaiseRowFacts();
             }
         }
 
@@ -672,27 +779,19 @@ namespace PadForge.ViewModels
         /// <summary>"78%" for the row's metadata line.</summary>
         public string BatteryText => _batteryPercent >= 0 ? $"{_batteryPercent}%" : string.Empty;
 
-        /// <summary>Segoe MDL2 Assets battery glyph bucketed to the nearest
-        /// tenth: Battery0-Battery9 are U+E850-U+E859 with Battery10 at
-        /// U+E83F, and the charging variants are BatteryCharging0-8 at
-        /// U+E85A-U+E862, BatteryCharging9 at U+E83E, BatteryCharging10 at
-        /// U+EA93. Names per the Segoe MDL2 documentation table
-        /// (segoe-ui-symbol-font.md rows for E83E/E83F/EA93), all codepoints
-        /// verified against the installed font.</summary>
-        public string BatteryGlyph
-        {
-            get
-            {
-                if (_batteryPercent < 0) return string.Empty;
-                int tenth = Math.Clamp((_batteryPercent + 5) / 10, 0, 10);
-                int code;
-                if (_batteryCharging)
-                    code = tenth == 10 ? 0xEA93 : tenth == 9 ? 0xE83E : 0xE85A + tenth;
-                else
-                    code = tenth == 10 ? 0xE83F : 0xE850 + tenth;
-                return char.ConvertFromUtf32(code);
-            }
-        }
+        /// <summary>A picture of the battery's level, charging or not, which
+        /// stands before the percentage wherever the battery shows
+        /// (BatteryGlyphs), or nothing.</summary>
+        public string BatteryGlyph => Common.BatteryGlyphs.For(_batteryPercent, _batteryCharging);
+
+        /// <summary>The space between that picture and the percentage, or
+        /// nothing for a device with no battery.</summary>
+        public string BatteryGap => HasBattery ? " " : string.Empty;
+
+        /// <summary>The battery as the Details card reads it to a screen
+        /// reader: the percentage and what the row's line says after it
+        /// ("82%, charging"), or nothing.</summary>
+        public string BatteryLine => HasBattery ? BatteryText + LineTail : string.Empty;
 
         private bool _isHidHideAvailable;
 
@@ -801,8 +900,7 @@ namespace PadForge.ViewModels
              || _devicePath.StartsWith("nfc://", StringComparison.Ordinal)
              // Microphone rows are WASAPI endpoints, not HID devices, the
              // same non-applicability as PC/SC readers. Missing from this
-             // list, they rendered the Input Hiding section plus its
-             // separator, doubling the divider before Raw Input State.
+             // list, they rendered the Input Hiding section for nothing.
              || _devicePath.StartsWith("mic://", StringComparison.Ordinal)
              // The handheld hidden-buttons row and the machine's sensor row
              // (#343) are synthetic too: nothing for HidHide to cloak.
@@ -883,9 +981,6 @@ namespace PadForge.ViewModels
                 if (!SetProperty(ref _isTouchpadMouse, value)) return;
                 OnPropertyChanged(nameof(ShowHidHideToggle));
                 OnPropertyChanged(nameof(ShowInputHidingSection));
-                OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                OnPropertyChanged(nameof(ShowRawInputDivider));
-                OnPropertyChanged(nameof(ShowGunCalibrationDivider));
             }
         }
 
@@ -956,9 +1051,6 @@ namespace PadForge.ViewModels
             {
                 if (!SetProperty(ref _showsHidingDriverSwitch, value)) return;
                 OnPropertyChanged(nameof(ShowInputHidingSection));
-                OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                OnPropertyChanged(nameof(ShowRawInputDivider));
-                OnPropertyChanged(nameof(ShowGunCalibrationDivider));
             }
         }
 
@@ -971,9 +1063,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowHidHideToggle));
             OnPropertyChanged(nameof(ShowConsumeToggle));
             OnPropertyChanged(nameof(ShowInputHidingSection));
-            OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-            OnPropertyChanged(nameof(ShowRawInputDivider));
-            OnPropertyChanged(nameof(ShowGunCalibrationDivider));
         }
 
         public bool IsTabletDevice => DeviceTypeKey == "Tablet";
@@ -1002,36 +1091,6 @@ namespace PadForge.ViewModels
         /// was set), and this checkbox is the page's one control that turns it
         /// off.</summary>
         public bool ShowInputModeSection => _forceRawJoystickMode || (IsGamepad && !IsInternalVirtual);
-
-        /// <summary>True when either the Input Mode or Input Hiding section will
-        /// render. Gates the Separator that sits between Slot Assignment and those
-        /// sections so a virtual device doesn't leave a dangling divider.</summary>
-        public bool ShowInputModeOrHidingSection => ShowInputModeSection || ShowInputHidingSection;
-
-        /// <summary>Whether the divider immediately above Raw Input State
-        /// should draw.
-        ///
-        /// <para>There are two dividers in that stretch and the Power section
-        /// sits between them, so exactly one of them has to survive whatever
-        /// the device has. The lower one used to be unconditional, which drew
-        /// a second rule flush under the first on every device that has an
-        /// Input Mode or Hiding section but no Power section: a Navigation
-        /// controller showed two bars under "Hide from Games" with nothing in
-        /// between (owner-reported).</para>
-        ///
-        /// <para>It cannot simply follow the Power section either. A device
-        /// with neither Power nor the sections above it (an NFC reader, a
-        /// microphone) would then have no divider at all and the Raw Input
-        /// State header would sit flush against the assignment controls,
-        /// which is the defect the unconditional divider was introduced to
-        /// fix. So: draw when Power drew, or when nothing above it did.
-        /// Power drew when either of its controls did
-        /// (<see cref="ShowPowerSection"/>), so a wired-rebound Sony pad
-        /// showing only the Quick Charge checkbox still gets its rule. A row
-        /// with no Raw Input State section has no rule before it either
-        /// (<see cref="ShowRawInputState"/>).</para></summary>
-        public bool ShowRawInputDivider => ShowRawInputState
-            && (ShowPowerSection || ShowGunCalibration || !ShowInputModeOrHidingSection);
 
         /// <summary>Whether the Raw Input State section shows. A lighting or
         /// rumble row (#494) reads no input, so it has none.</summary>
@@ -1087,8 +1146,6 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _showGunCalibration, value))
                 {
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
                 }
             }
         }
@@ -1118,13 +1175,6 @@ namespace PadForge.ViewModels
         /// <summary>Whether the calibration screen can read the gun: it is
         /// connected to this PC and online.</summary>
         public bool CanCalibrateGun => GunConnectedHere && IsOnline;
-
-        /// <summary>The divider above the Light Gun section. The section sits
-        /// between Power and Raw Input State, so the rule above it draws when
-        /// Power drew right above it or when nothing above did, the same rule
-        /// <see cref="ShowRawInputDivider"/> follows.</summary>
-        public bool ShowGunCalibrationDivider =>
-            ShowGunCalibration && (ShowPowerSection || !ShowInputModeOrHidingSection);
 
         private bool _showReadAsICade;
 
@@ -1358,10 +1408,8 @@ namespace PadForge.ViewModels
                     // is path-derived, so it belongs in this refresh group
                     // with the other path-derived siblings.
                     OnPropertyChanged(nameof(ShowConsumeToggle));
-                    OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
-                    OnPropertyChanged(nameof(ShowRawInputDivider));
-                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    RaiseRowFacts();
                     // ShowRegisterNfcTag's controller branch now gates on
                     // IsBluetoothLink, which is path-derived, so a link
                     // change must refresh the button too. Same for the
@@ -1555,16 +1603,18 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>
-    /// Display item for a single slot assignment badge (icon + number).
+    /// A pill on a device's row on the Devices page (#574): a virtual
+    /// controller that uses the device, with its type's icon and its name,
+    /// the type and its number within the type ("Xbox #1").
     /// </summary>
-    public class SlotBadge
+    public class SlotBadge : ObservableObject
     {
-        public int SlotIndex { get; set; }
-        public int SlotNumber { get; set; }
-
         /// <summary>VC family of the slot, captured from the type-group walk
         /// that numbers the badge. Drives the branded icon (#175 item 12).</summary>
         public Engine.VirtualControllerType VcType { get; set; }
+
+        /// <summary>The slot's number within its type: Xbox #1, Xbox #2.</summary>
+        public int TypeNumber { get; set; }
 
         /// <summary>Branded path geometry for the pill, null for glyph types.</summary>
         public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(VcType);
@@ -1572,10 +1622,17 @@ namespace PadForge.ViewModels
         /// <summary>MDL2 glyph for the non-vector types, empty otherwise.</summary>
         public string TypeGlyph => SlotTypeIconMap.GlyphFor(VcType);
 
-        /// <summary>The badge's screen-reader name, "Slot 3": the badge is a
-        /// list item, and ItemAutomationPeer.GetNameCore falls back to the
-        /// item's ToString().</summary>
-        public override string ToString() => Common.AccessibleNames.SlotTitle(SlotNumber);
+        /// <summary>The pill's name, the type's name in the language and the
+        /// number within the type.</summary>
+        public string Label => SlotTypeIconMap.NameFor(VcType) + " #" + TypeNumber.ToString(System.Globalization.CultureInfo.CurrentCulture);
+
+        /// <summary>The language changed: the name reads again.</summary>
+        public void RaiseLabel() => OnPropertyChanged(nameof(Label));
+
+        /// <summary>A pill is a list item, and ItemAutomationPeer.GetNameCore
+        /// falls back to the item's ToString(), so a screen reader reads the
+        /// name the pill shows.</summary>
+        public override string ToString() => Label;
     }
 
     /// <summary>Branded VC-type icon lookup for the slot pills (#175 phase 2
@@ -1618,6 +1675,20 @@ namespace PadForge.ViewModels
             Engine.VirtualControllerType.KeyboardMouse => "\uE961",
             Engine.VirtualControllerType.Vr => "\uF119",
             _ => string.Empty
+        };
+
+        /// <summary>The type's name in the language, as the type bar and the
+        /// sidebar write it, so the names live once.</summary>
+        public static string NameFor(Engine.VirtualControllerType type) => type switch
+        {
+            Engine.VirtualControllerType.Xbox => Strings.Instance.ControllerType_Xbox,
+            Engine.VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
+            Engine.VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
+            Engine.VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
+            Engine.VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+            Engine.VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
+            Engine.VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
+            _ => type.ToString(),
         };
     }
 }

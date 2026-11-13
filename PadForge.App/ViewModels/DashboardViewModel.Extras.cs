@@ -84,6 +84,18 @@ namespace PadForge.ViewModels
                 ResetHeadTrackingOpenXrCommand.Execute(null);
             });
 
+        private RelayCommand _resetHeadTrackingRangesCommand;
+
+        /// <summary>The Range card's Reset All (#574): the rotation and
+        /// translation ranges back to their defaults. The per-axis ranges
+        /// under More keep their own resets.</summary>
+        public RelayCommand ResetHeadTrackingRangesCommand =>
+            _resetHeadTrackingRangesCommand ??= new RelayCommand(() =>
+            {
+                ResetHeadTrackingRotationRangeCommand.Execute(null);
+                ResetHeadTrackingTranslationRangeCommand.Execute(null);
+            });
+
         // ─────────────────────────────────────────────
         //  Overlays
         // ─────────────────────────────────────────────

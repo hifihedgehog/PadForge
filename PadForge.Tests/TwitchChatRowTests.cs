@@ -1619,6 +1619,10 @@ namespace PadForge.Tests
         public void ThePhonePagesSendTheViewersName()
         {
             Assert.Contains("viewerName", Web("index.html"));
+            // The home page keeps the name in this browser for the pages it opens.
+            string home = Web(Path.Combine("js", "home_client.js"));
+            Assert.Contains("var NAME_KEY = \"padforge_viewer_name\";", home);
+            Assert.Contains("localStorage.setItem(NAME_KEY, input.value.trim())", home);
             foreach (var page in new[] { "controller_client.js", "gamepad_client.js", "custom_client.js" })
                 Assert.Contains("\"&name=\" + encodeURIComponent(viewerName)", Web(Path.Combine("js", page)));
         }

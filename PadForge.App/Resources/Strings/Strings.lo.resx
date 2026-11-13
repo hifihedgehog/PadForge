@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>ເປີດ</value></data>
   <data name="Common_Off" xml:space="preserve"><value>ປິດ</value></data>
   <data name="Common_More" xml:space="preserve"><value>ເພີ່ມເຕີມ</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>ເບິ່ງທັງໝົດ</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ຕິດຕັ້ງແລ້ວ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ບໍ່ໄດ້ຕິດຕັ້ງ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ບໍ່ມີໃຫ້ໃຊ້ໃນ ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>ກຳລັງຢຸດ…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ກຳລັງຢຸດເອັນຈິນ…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>ກຳລັງເຮັດວຽກຢູ່ {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ ({0} ເຄື່ອງລູກຂ່າຍ)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ເຊື່ອມຕໍ່ແລ້ວ {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>ກຳລັງຟັງຢູ່ທີ່ :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ພອດ {0} ຖືກໃຊ້ຢູ່</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ຖືກປະຕິເສດການເຂົ້າເຖິງພອດ {0} (ໃຫ້ແລ່ນໃນຖານະຜູ້ເບິ່ງແຍງລະບົບ)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>ອອບລາຍ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>ບໍ່ຮູ້ຈັກ</value></data>
   <data name="Common_Default" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>ຊອກຫາ...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>ຊອກຫາ…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ດຳເນີນການຕໍ່</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>ຢຸດ</value></data>
   <data name="Common_Start" xml:space="preserve"><value>ເລີ່ມ</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ກຳລັງລ້າງຕົວຄວບຄຸມສະເໝືອນທີ່ຄ້າງຢູ່ຈາກເຊດຊັນກ່ອນ.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ອຸປະກອນ</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ເພີ່ມຕົວຄວບຄຸມ</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>ເພີ່ມຕົວຄວບຄຸມ</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>ເລືອກສິ່ງທີ່ເກມຄວນເຫັນ. ຕົວຄວບຄຸມຈະຖືກເພີ່ມທັນທີທີ່ທ່ານຄລິກ.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>ຂັບເຄື່ອນໂດຍ</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>ເລືອກພາຍຫຼັງ</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>ທີ່ໃຊ້ທົ່ວໄປ</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>ເອົາພຸດອື່ນໆ</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>ໂຄງຮ່າງທີ່ເກມ PC ສ່ວນໃຫຍ່ຄາດຫວັງ.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>ສຳລັບເກມທີ່ມີສັນຍາລັກປຸ່ມ PlayStation, ທັດແພດ ແລະ ແຖບໄຟ.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>ໂຄງຮ່າງປຸ່ມ Switch ສຳລັບເກມ ແລະ ອີມູເລເຕີທີ່ຕ້ອງການມັນ.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>ປຸ່ມ, ຕົວຊີ້ ແລະ ການເລື່ອນຈາກເກມແພດ.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>ພວງມາໄລ, ຈອຍບິນ ແລະ ໂຄງຮ່າງກຳນົດເອງ.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>ໂນດ ແລະ Control Change ສຳລັບຊອບແວດົນຕີ.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>ຕົວຄວບຄຸມ VR ສະເໝືອນຜ່ານ SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>ເພື່ອປ່ຽນປະເພດພາຍຫຼັງ, ຄລິກຊິບປະເພດຢູ່ເທິງຕົວຄວບຄຸມ. ໃຊ້ພຽງຄລິກດຽວ.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ບໍ່ຕອບສະໜອງ. ເບິ່ງບັດຂອງມັນໃນການຕັ້ງຄ່າ.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ຕ້ອງໃຊ້ SteamVR. ຕິດຕັ້ງມັນຈາກບັດຂອງມັນໃນການຕັ້ງຄ່າ.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>ມີຕົວຄວບຄຸມ VR ຢູ່ແລ້ວ. ໜຶ່ງຕົວຂັບເຄື່ອນທັງສອງມື.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ມີຕົວຄວບຄຸມ {0} ຕົວ, ເຊິ່ງເປັນຈຳນວນສູງສຸດທີ່ມັນເຮັດວຽກໄດ້. ລຶບອັນໜຶ່ງເພື່ອເພີ່ມອັນໃໝ່.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ໂປຣໄຟລ໌</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>ຄົ້ນຫາການຕັ້ງຄ່າ, ອຸປະກອນ ແລະ ໂປຣໄຟລ໌</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>ຄົ້ນຫາ</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>ຜົນລັບ</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>ຂຶ້ນ</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>ລົງ</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} ເພື່ອເລື່ອນ</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} ເພື່ອເປີດ</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} ຈາກທຸກບ່ອນ</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>ໜ້າ</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>ການກະທຳ</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>ເອກະສານ</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>ພາຍໃຕ້ ເພີ່ມເຕີມ</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>ໃນຕົວເລືອກຂອງແຖວ</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງໃນ PadForge ທີ່ກົງກັບ “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>ຄົ້ນຫາ “{0}” ໃນເອກະສານ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ລຶບຕົວຄວບຄຸມສະເໝືອນ</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ເຕັມຈໍ</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>ສະແດງ PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>ສ້າງໂປຣໄຟລ໌ “{0}” ແລ້ວ.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>ລຶບໂປຣໄຟລ໌ “{0}” ແລ້ວ.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>ອັບເດດໂປຣໄຟລ໌ “{0}” ແລ້ວ.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ “{0}” ຕອນນີ້ເກັບການຕັ້ງຄ່າປັດຈຸບັນແລ້ວ.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>ໂຫຼດໂປຣໄຟລ໌ແລ້ວ: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>ກັບຄືນໄປໃຊ້ໂປຣໄຟລ໌ ຄ່າເລີ່ມຕົ້ນ ແລ້ວ</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>ກຳນົດ “{0}” ໃຫ້ຕົວຄວບຄຸມສະເໝືອນ {1} ແລ້ວ.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ປ່ຽນໂປຣໄຟລ໌ແລ້ວ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>ປ່ຽນໂປຣໄຟລ໌ແລ້ວ: ຄ່າເລີ່ມຕົ້ນ</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>ທາງລັດໂປຣໄຟລ໌</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>ທາງລັດ</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>ກຳນົດຊຸດປຸ່ມເພື່ອປ່ຽນໂປຣໄຟລ໌ຈາກຕົວຄວບຄຸມໃດກໍໄດ້.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>ເພີ່ມທາງລັດ</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>ໂປຣໄຟລ໌ຖັດໄປ</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>ໂປຣໄຟລ໌ກ່ອນໜ້າ</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>ໂປຣໄຟລ໌ສະເພາະ</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ສະຫຼັບໜ້າຕ່າງ</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ສະຫຼັບການປິດໃຊ້ຕົວຄວບຄຸມສະເໝືອນ</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ສະແດງ ຫຼື ເຊື່ອງ PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ເປີດ ຫຼື ປິດຕົວຄວບຄຸມສະເໝືອນ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ອຸປະກອນໃດກໍໄດ້ທີ່ເຊື່ອມຕໍ່</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>ອັດ</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ກຳລັງອັດ...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>ບໍ່ໄດ້ເລືອກອຸປະກອນ.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>ໝາຍເລກຊ່ອງບໍ່ຖືກຕ້ອງ: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>ກຳນົດອຸປະກອນບໍ່ສຳເລັດ.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ເມື່ອ</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ໃນ</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>ກຳນົດ “{0}” ໃຫ້ຕົວຄວບຄຸມສະເໝືອນ {1} ແລ້ວ.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>ຍົກເລີກການກຳນົດ “{0}” ອອກຈາກຕົວຄວບຄຸມສະເໝືອນ {1} ແລ້ວ.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນແລ້ວ. (ກູ້ຄືນໄດ້ໃນໄຟລ໌ການຕັ້ງຄ່າ.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>ເອົາອຸປະກອນອອກແລ້ວ.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ລຶບຕົວຄວບຄຸມສະເໝືອນ {0} ແລ້ວ.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ໜ້າຫຼັກ</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ອຸປະກອນທີ່ເຊື່ອມຕໍ່: {0}. ຕົວຄວບຄຸມ: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>ເກມເຫັນທຸກຕົວຄວບຄຸມທີ່ກຳລັງເຮັດວຽກ.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>ເອັນຈິນເປີດຢູ່ ແລະ ບໍ່ມີຕົວຄວບຄຸມໃດກຳລັງເຮັດວຽກ.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>ເລີ່ມເອັນຈິນເພື່ອໃຫ້ຕົວຄວບຄຸມຂອງທ່ານກັບມາ.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນ</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>ຕົວຄວບຄຸມທີ່ເຮັດວຽກ</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>ອຸປະກອນທີ່ເຊື່ອມຕໍ່</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>ເປີດ ຫຼື ປິດຕົວຄວບຄຸມນີ້</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>ມັນຈະເລີ່ມເມື່ອເອັນຈິນເລີ່ມ.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ມັນຈະເລີ່ມເມື່ອອຸປະກອນນີ້ເຊື່ອມຕໍ່.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ມັນຈະເລີ່ມເມື່ອອຸປະກອນໃດໜຶ່ງເຫຼົ່ານີ້ເຊື່ອມຕໍ່.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>ບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>ກຳລັງສົ່ງອິນພຸດຢູ່</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}, ໃກ້ໝົດ</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}, ກຳລັງສາກ</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ຕົວຄວບຄຸມ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ສ່ວນເສີມທີ່ໃຊ້ຢູ່</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>ສະແດງ QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ເຊື່ອມຕໍ່ຢູ່ ແລະ ບໍ່ໄດ້ຖືກໃຊ້ງານ.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ໃຊ້ມັນ</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>ເກມຄວນເຫັນຫຍັງ?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ປ່ຽນຕົວຄວບຄຸມນີ້ໃຫ້ເປັນຕົວທີ່ເກມຂອງທ່ານຄາດຫວັງ. ເລືອກອັນໜຶ່ງເພື່ອເລີ່ມຕົ້ນ. ທ່ານສາມາດປ່ຽນມັນພາຍຫຼັງດ້ວຍຄລິກດຽວ.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ປ່ຽນຕົວຄວບຄຸມຂອງທ່ານໃຫ້ເປັນຕົວທີ່ເກມຂອງທ່ານຄາດຫວັງ. ເລືອກອັນໜຶ່ງເພື່ອເລີ່ມຕົ້ນ. ທ່ານສາມາດປ່ຽນມັນພາຍຫຼັງດ້ວຍຄລິກດຽວ.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>ຫຼິ້ນເກມແປ້ນພິມ ແລະ ເມົ້າດ້ວຍເກມແພດ.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>ປະເພດອື່ນໆ: [{0}, {1}, {2} ແລະ {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>ປຸ່ມ, ສະຕິກ ແລະ ທຣິກເກີຖືກແມັບແບບ 1:1 ທັນທີທີ່ສ້າງຕົວຄວບຄຸມ.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>ຈັບຄູ່ຕົວຄວບຄຸມ Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>ເລີ່ມຈາກໂປຣໄຟລ໌ສຳເລັດຮູບ</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, ແບັດເຕີຣີ {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>ບໍ່ມີຕົວຄວບຄຸມເຊື່ອມຕໍ່</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>ເຊື່ອມຕໍ່ດ້ວຍສາຍ ຫຼື ຜ່ານ Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> ແມັບແລ້ວ, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> ເຊື່ອມຕໍ່ແລ້ວ</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ເອັນຈິນກຳລັງເຮັດວຽກ. ຄລິກເພື່ອຢຸດ.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>ເອັນຈິນວ່າງຢູ່. ຄລິກເພື່ອຢຸດ.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>ເອັນຈິນຢຸດແລ້ວ. ຄລິກເພື່ອເລີ່ມ.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>ຕັ້ງຄ່າຕົວຄວບຄຸມນີ້</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>ຈູດເຕົາຫຼອມ</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມ, ເລືອກປະເພດເອົາພຸດ, ແລ້ວ PadForge ຈະຫຼອມອິນພຸດຂອງທ່ານເຂົ້າໄປໃນນັ້ນ. ການນຳທ່ຽວສັ້ນໆຈະພາທ່ານເບິ່ງວ່າທຸກຢ່າງຢູ່ໃສ.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>ເລີ່ມການນຳທ່ຽວ</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>ຂ້າມ</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>ຖັດໄປ</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>ສຳເລັດ</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>ຊ່ອງ</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>ຕົວຄວບຄຸມສະເໝືອນແຕ່ລະຕົວຢູ່ທີ່ນີ້. ແປວໄຟສະແດງວ່າຊ່ອງໃດກຳລັງຫຼອມຢູ່ຕອນນີ້.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>ເຕົາຫຼອມເອງ. ສະຫຼັບແປວໄຟເພື່ອເລີ່ມ ຫຼື ຢຸດການອ່ານອິນພຸດທັງໝົດ.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>ຕົວຄວບຄຸມສະເໝືອນ</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>ເລືອກປະເພດເອົາພຸດ, ປ້ອນອຸປະກອນໃຫ້ຊ່ອງ, ແລະ ຄລິກບັດເພື່ອປັບການແມັບຂອງມັນ.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>ຄຸນສົມບັດເສີມລໍຖ້າຢູ່ທີ່ນີ້: ຕົວຄວບຄຸມເວັບໃນໂທລະສັບ, ການເຊື່ອມຕໍ່ທາງໄກ, ເຊີບເວີການເຄື່ອນໄຫວ ແລະ ອື່ນໆ.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>ສະແດງການນຳທ່ຽວຕ້ອນຮັບ</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ຊ່ອງ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ອຸປະກອນ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ຂັບເຄື່ອນໂດຍ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ເພີ່ມອຸປະກອນ</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>ໃກ້ໝົດ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ຮູບພາບ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ລາຍການ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ເອົາພຸດ</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ການກົດທີ່ເກມເຫັນເມື່ອປຸ່ມແປ້ນພິມທັງສອງຂອງຄູ່ຖືກກົດຄ້າງ</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ຄ້າງການເບນສະຕິກເລັກນ້ອຍໄວ້ ເພື່ອໃຫ້ເກມສະແດງສັນຍາລັກປຸ່ມຂອງຕົວຄວບຄຸມຕໍ່ໄປ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ກຳລັງຫຼອມ</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>ເຮັດວຽກ: {0} ຈາກ {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ເລືອກມາໂຄຣໃນລາຍການ, ຫຼື ກົດ + ຂ້າງ “ມາໂຄຣ” ເພື່ອສ້າງໃໝ່.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ດິບ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ອອກ</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>ສະແດງຕົວຢ່າງ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>ສ່ວນເສີມ</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>ຄຸນສົມບັດເສີມ. ແຕ່ລະອັນຈະບໍ່ລົບກວນທ່ານຈົນກວ່າທ່ານຈະເປີດມັນ.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>ເປີດ {0} ຈາກ {1}</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>ວິທີຫຼິ້ນເພີ່ມເຕີມ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ສົ່ງໄປບ່ອນອື່ນ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>ເທິງໜ້າຈໍ</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ຫັນມຸມມອງໃນເກມດ້ວຍເຄື່ອງຕິດຕາມຫົວ ຫຼື ແວ່ນ VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ແມັບຄວາມໄວ, ແປ້ນຢຽບ ແລະ ເກຍຈາກເກມຂັບລົດ.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>ໃຫ້ຜູ້ຊົມກົດປຸ່ມໂດຍການພິມໃນແຊັດ.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ແບ່ງປັນຕົວຄວບຄຸມກັບ PadForge ໃນ PC ອື່ນ.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ຂັບເຄື່ອນຕົວຄວບຄຸມສະເໝືອນໃນ PC ອື່ນ.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>ສົ່ງຂໍ້ມູນການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມໄປຫາອີມູເລເຕີ.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ຮັບເອັບເຟັກທຣິກເກີ ແລະ ເອັບເຟັກໄຟຈາກມອດເກມ.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ສະແດງເມນູ, ຊັ້ນ ແລະ ການປ່ຽນໂປຣໄຟລ໌ໃນຂະນະທີ່ທ່ານຫຼິ້ນ.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທີ່ໃຊ້ທັດແພດ PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ຮູບພາບ, ຕົວຈັບເວລາ ຫຼື ໂມງ ຢູ່ເທິງໜ້າຕ່າງອື່ນ.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>ພອດ, ທີ່ຢູ່ HTTP ທຳມະດາ, ລະຫັດເຂົ້າເຖິງ</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ຄືນ, ພອດ, ການປ້ອງກັນຕົວຕົນ, ການເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>ຣັນໄທມ໌ OpenXR, ພອດ UDP, ຂອບເຂດແຕ່ລະແກນ</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ພອດ, HTTP ທຳມະດາ, ລະຫັດເຂົ້າເຖິງ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ຄືນອັດຕະໂນມັດ, ພອດ, ຕົວຕົນການຈັບຄູ່, ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ພອດ, DSX.exe ຕົວແທນ</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ພອດ, ຄວາມໄວເຕັມ, ຮູບແບບກຳນົດເອງ</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ພອດ, ຄວາມໄວເຕັມ (ກມ/ຊມ), ຮູບແບບກຳນົດເອງ</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ເບິ່ງໄປຮອບໆດ້ວຍຕົວຕິດຕາມຫົວ ຫຼື ແວ່ນ VR ໃນຂະນະທີ່ນິ້ວໂປ້ທັງສອງຍັງຢູ່ເທິງປຸ່ມ.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ແມັບຄວາມໄວ, ແປ້ນຢຽບ ແລະ ເກຍທີ່ເກມຂັບລົດສົ່ງມາ ຄືກັບອິນພຸດອື່ນໆ.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ສົ່ງການເຄື່ອນໄຫວຂອງຕົວຄວບຄຸມໄປຫາອີມູເລເຕີທີ່ອ່ານແຫຼ່ງການເຄື່ອນໄຫວ DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>ຮັບເອັບເຟັກທຣິກເກີປັບຕົວໄດ້ ແລະ ແສງໄຟຈາກມອດເກມທີ່ຂຽນສຳລັບ DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ເປີດການສົ່ງເທເລເມທຣີໃນເກມ ແລະ ຕັ້ງໃຫ້ສົ່ງມາຫາ PC ນີ້ ແລະ ພອດນີ້.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ໃນອີມູເລເຕີ, ເພີ່ມແຫຼ່ງການເຄື່ອນໄຫວທີ່ທີ່ຢູ່ຂອງ PC ນີ້ ແລະ ພອດນີ້.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ເອັບເຟັກຂອງມອດຈະໄປຮອດທຸກຕົວຄວບຄຸມທີ່ມີຮາດແວຮອງຮັບ.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ທ່າຂອງຫົວແມ່ນແຖວ ຕົວຕິດຕາມຫົວ ໃນໜ້າ [ອຸປະກອນ]. ແມັບການຫັນຫົວຊ້າຍຂວາໃສ່ແກນສະຕິກໃນສ່ວນ ປຸ່ມ ຂອງຕົວຄວບຄຸມ.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ຄ່າເຫຼົ່ານີ້ແມ່ນແຖວ ເທເລເມທຣີເກມ ໃນໜ້າ [ອຸປະກອນ]. ແມັບພວກມັນໃນສ່ວນ ປຸ່ມ ຂອງຕົວຄວບຄຸມ ຫຼື ໃຊ້ພວກມັນເພື່ອເປີດໃຊ້ມາໂຄຣ.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>ຕຳແໜ່ງ, ຂະໜາດ ແລະ ຄວາມທຶບຂອງເມນູແມ່ນຕັ້ງຢູ່ໃນເມນູເອງ, ໃນສ່ວນ [ມາໂຄຣ ແລະ ເມນູ] ຂອງຕົວຄວບຄຸມ.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ແຫຼ່ງທີ່ມາ</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ແລະ ທຸກໂປຣແກຣມທີ່ສົ່ງຮູບແບບ UDP ຂອງມັນ</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>ຂອບເຂດ</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>ຂອບເຂດແຕ່ລະແກນ. ຄ່າສູນຈະໃຊ້ຂອບເຂດດ້ານເທິງ.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ເກມທີ່ PadForge ບໍ່ຮູ້ຈັກ</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ສຳລັບມອດທີ່ຊອກຫາ DSX ທີ່ກຳລັງເຮັດວຽກກ່ອນຈະສົ່ງ</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ສິ່ງທີ່ສະແດງ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ວົງ, ຕາຕະລາງ ຫຼື ແຖບຂອງເມນູໃນຂະນະທີ່ມັນເປີດຢູ່</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນໃນຂະນະທີ່ກົດຄ້າງເພື່ອປ່ຽນຊັ້ນ</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ເມື່ອໂປຣໄຟລ໌ປ່ຽນ</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>ສຳເນົາທີ່ຢູ່</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ຕຳແໜ່ງເທິງໜ້າຈໍ</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ເຊື່ອມຕໍ່ໂທລະສັບ</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>ໃຫ້ໂທລະສັບຢູ່ໃນເຄືອຂ່າຍດຽວກັນກັບ PC ນີ້.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>ສະແກນລະຫັດດ້ວຍກ້ອງຂອງໂທລະສັບ.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>ເລືອກໂຄງຮ່າງຕົວຄວບຄຸມ.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>ໂທລະສັບ</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>ບໍ່ມີໂທລະສັບເຊື່ອມຕໍ່.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>ໂທລະສັບທີ່ເຊື່ອມຕໍ່ຈະສະແດງຢູ່ນີ້ ແລະ ໃນໜ້າ ອຸປະກອນ, ບ່ອນທີ່ທ່ານກຳນົດມັນໃຫ້ຕົວຄວບຄຸມ.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>ຊ່ອງຂອງທ່ານ</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>ຄຳທີ່ຜູ້ຊົມພິມໄດ້</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>ຜູ້ຊົມພິມຄຳເຊັ່ນ !a ແລ້ວ PadForge ຈະກົດສິ່ງທີ່ !a ແມັບໄວ້ໃນແຖວ ແຊັດ Twitch ຂອງໜ້າ ອຸປະກອນ. ກຳນົດແຖວນັ້ນໃຫ້ຕົວຄວບຄຸມຄືກັບອຸປະກອນອື່ນໆ.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>ຂະນະທີ່ທ່ານຖ່າຍທອດສົດ</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>ພາບສຳລັບການຖ່າຍທອດຂອງທ່ານ</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>ບໍ່ມີ PC ທີ່ຈັບຄູ່ແລ້ວ.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>ຈັບຄູ່ກັບ PC ອື່ນ</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>ບໍ່ມີ PC ທີ່ຍັງບໍ່ໄດ້ຈັບຄູ່ຢູ່ໃກ້ໆ.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>ເປີດ ການເຊື່ອມຕໍ່ທາງໄກ ໃນ PadForge ຢູ່ PC ອີກເຄື່ອງ. ມັນຈະສະແດງຢູ່ນີ້ ແລະ ທ່ານປຽບທຽບລະຫັດສັ້ນໆໃນທັງສອງໜ້າຈໍ.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>ລັກສະນະ ແລະ ຕຳແໜ່ງ</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>ລາກມັນດ້ວຍປຸ່ມຂວາຂອງເມົ້າ ຫຼື ສາມນິ້ວເພື່ອຍ້າຍມັນ.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ໂອເວີເລ {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>ສະແດງ</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ໃນຂະນະທີ່ໂປຣແກຣມອື່ນຢູ່ດ້ານໜ້າ, ການຄລິກຈະຜ່ານໂອເວີເລໄປ. ໃນຂະນະທີ່ PadForge ຢູ່ດ້ານໜ້າ, ລາກມັນດ້ວຍປຸ່ມຂວາຂອງເມົ້າ ແລະ ປັບຂະໜາດຈາກມຸມຂອງມັນ. ມາໂຄຣສາມາດສະແດງ ຫຼື ເຊື່ອງໂອເວີເລຕາມໝາຍເລກຂອງມັນ.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ເຊີບເວີການເຄື່ອນໄຫວ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ເຊີບເວີໂປຣໂຕຄອນ DSU/CemuHook Motion Provider ສຳລັບຂໍ້ມູນໄຈໂຣ ແລະ ເຊັນເຊີວັດຄວາມເລັ່ງ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>ເປີດໃຊ້ເຊີບເວີການເຄື່ອນໄຫວ DSU (ໂປຣໂຕຄອນ CemuHook Motion Provider)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>ບໍ່ມີຕົວຄວບຄຸມ</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>ປະເພດ {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>ຕົວຄວບຄຸມເວັບ</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ໃຫ້ບໍລິການໜ້າຈໍເກມແພດແກ່ບຣາວເຊີໃນເຄືອຂ່າຍທ້ອງຖິ່ນຂອງທ່ານ.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ໃຊ້ໂທລະສັບ ຫຼື ແທັບເລັດເປັນຕົວຄວບຄຸມ. ບໍ່ຕ້ອງຕິດຕັ້ງຫຍັງໃນໂທລະສັບ.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>ເປີດໃຊ້ເຊີບເວີຕົວຄວບຄຸມເວັບ</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຈາກບຣາວເຊີໃນໂທລະສັບ ຫຼື ແທັບເລັດ ເພື່ອໃຊ້ເປັນເກມແພດ.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>ສະແກນດ້ວຍກ້ອງໂທລະສັບ, ຫຼື ເປີດທີ່ຢູ່ນີ້ໃນບຣາວເຊີຂອງໂທລະສັບ:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>ທີ່ຢູ່ HTTP ທຳມະດາ</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>ທີ່ຢູ່ທີສອງທີ່ບໍ່ມີ HTTPS, ສຳລັບບຣາວເຊີທີ່ປະຕິເສດໃບຮັບຮອງຂອງ PadForge ແລະ ສຳລັບທັນເນວ ຫຼື ພຣັອກຊີແບບຍ້ອນກັບທີ່ມີໃບຮັບຮອງຂອງຕົນເອງ. ການເຄື່ອນໄຫວຂອງໂທລະສັບຕ້ອງໃຊ້ HTTPS, ສະນັ້ນຢູ່ທີ່ນີ້ມັນໃຊ້ໄດ້ສະເພາະຜ່ານທັນເນວ ຫຼື ພຣັອກຊີທີ່ໃຫ້ບໍລິການ HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>ໃຫ້ບໍລິການ HTTP ທຳມະດານຳ</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>ລະຫັດເຂົ້າເຖິງ</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>ທີ່ຢູ່ທຳມະດາເປີດໄດ້ສະເພາະດ້ວຍລະຫັດນີ້, ແລະ ລິ້ງດ້ານລຸ່ມມີລະຫັດນີ້ຢູ່ແລ້ວ. ລະຫັດໃໝ່ຈະຕັດການເຊື່ອມຕໍ່ທຸກຄົນທີ່ໃຊ້ທີ່ຢູ່ທຳມະດາ.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>ລະຫັດໃໝ່</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>ທີ່ຢູ່ໃນ PC ນີ້:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ສັ່ນ (ຄລິກເພື່ອລະບຸອຸປະກອນນີ້)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ສັ່ນອຸປະກອນນີ້ເພື່ອໃຫ້ທ່ານຮູ້ວ່າແມ່ນອັນໃດ.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ທາງໄກ</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>ແບ່ງປັນຕົວຄວບຄຸມກັບ PadForge ທີ່ຈັບຄູ່ໄວ້ໃນ PC ອື່ນ, ໃນເຄືອຂ່າຍຂອງທ່ານ ຫຼື ຜ່ານອິນເຕີເນັດ.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>ຂັບເຄື່ອນຕົວຄວບຄຸມສະເໝືອນໃນ PC ອື່ນ. ຫຼັງຈາກຈັບຄູ່ຄັ້ງດຽວ, PC ທີ່ເຊື່ອຖືໄດ້ຈະເຊື່ອມຕໍ່ຄືນເອງ.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>ເປີດໃຊ້ເຊີບເວີການເຊື່ອມຕໍ່ທາງໄກ</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>ຫຼັງຈາກຈັບຄູ່ຄັ້ງດຽວ, PC ທີ່ເຊື່ອຖືໄດ້ຈະເຊື່ອມຕໍ່ຄືນເອງ. PC ທີ່ຈັບຄູ່ແລ້ວສາມາດຄວບຄຸມເອົາພຸດເກມແພດຂອງເຄື່ອງນີ້ໄດ້, ແລະ ຖ້າທ່ານບໍ່ຈຳກັດ, ກໍຮວມທັງແປ້ນພິມ, ເມົ້າ ແລະ ມາໂຄຣນຳ.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ຫຼື ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່ (ຂັ້ນສູງ)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>PC ທີ່ຈັບຄູ່ແລ້ວສາມາດຄວບຄຸມເອົາພຸດເກມແພດຂອງເຄື່ອງນີ້ໄດ້, ແລະ ຖ້າທ່ານບໍ່ຈຳກັດ, ກໍຮວມທັງແປ້ນພິມ, ເມົ້າ ແລະ ມາໂຄຣນຳ.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>ຈັບຄູ່ / ເຊື່ອມຕໍ່</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>ຈັບຄູ່</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>ເຊື່ອມຕໍ່</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>ຈັບຄູ່ກັບ PC ທາງໄກ</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>ກວດໃຫ້ແນ່ໃຈວ່າລະຫັດນີ້ກົງກັນທັງສອງໜ້າຈໍ, ແລ້ວກົດ ຈັບຄູ່.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>ຈັບຄູ່ກັບ PC ອື່ນບໍ?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>ກວດວ່າທັງສອງໜ້າຈໍສະແດງລະຫັດດຽວກັນ.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>ຈັບຄູ່</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>ປະຕິເສດ</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ຈຳກັດ PC ນີ້ໃຫ້ຮັບສະເພາະອິນພຸດເກມແພດ</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ສະເພາະເກມແພດ</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>ຕົວຕົນ</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>PC ທີ່ຈັບຄູ່ແລ້ວສາມາດສົ່ງອິນພຸດແປ້ນພິມ, ເມົ້າ ແລະ ມາໂຄຣມາຫາເຄື່ອງນີ້ໄດ້ ເວັ້ນເສຍແຕ່ທ່ານຈຳກັດໃຫ້ເປັນສະເພາະເກມແພດ.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>PC ທີ່ຈັບຄູ່ແລ້ວສາມາດຄວບຄຸມເອົາພຸດເກມແພດຂອງ PC ນີ້ໄດ້, ແລະ ຖ້າທ່ານບໍ່ຈຳກັດ, ກໍຮວມທັງແປ້ນພິມ, ເມົ້າ ແລະ ມາໂຄຣນຳ.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>PC ທີ່ຈັບຄູ່ແລ້ວ</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC ທີ່ທ່ານຈັບຄູ່ໄວ້ສຳລັບການເຊື່ອມຕໍ່ທາງໄກ. ຖອນສິດເຄື່ອງໃດໜຶ່ງເພື່ອບໍ່ໃຫ້ມັນເຊື່ອມຕໍ່ອີກ. ມັນຈະຕ້ອງຈັບຄູ່ໃໝ່.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ຖອນສິດ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ຖອນສິດທັງໝົດ</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>ປ່ຽນຊື່</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ໂອເວີເລທັດແພດ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບຈຳລອງທັດແພດທີ່ເຂົ້າກັນໄດ້ກັບ PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation, ໃຊ້ກັບໜ້າຈໍສຳຜັດ ຫຼື ເມົ້າ.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ເປີດໃຊ້ໂອເວີເລທັດແພດ</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ຄວາມທຶບ</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ຄືນຄ່າຕຳແໜ່ງ</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>ການຕັ້ງຄ່າ</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>ທົ່ວໄປ</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>ອິນພຸດ</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>ຮາດແວ</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>ໄດຣເວີ</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>ຂໍ້ມູນ ແລະ ຄວາມເປັນສ່ວນຕົວ</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>ຄົ້ນຫາການຕັ້ງຄ່າ</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>ບໍ່ມີການຕັ້ງຄ່າທີ່ກົງກັບ “{0}”.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>ຮູບລັກສະນະ</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>ເລືອກທີມທີ່ທ່ານມັກ.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>ທີມ</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ມືດ</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ເອັນຈິນອິນພຸດ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ຕັ້ງຄ່າພຶດຕິກຳການອ່ານ ແລະ ການປະມວນຜົນໃນພື້ນຫຼັງ.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>ການຮອງຮັບຮາດແວ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ເລີ່ມເອັນຈິນອັດຕະໂນມັດເມື່ອເປີດໂປຣແກຣມ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ອ່ານຕໍ່ເມື່ອໜ້າຕ່າງບໍ່ຢູ່ໃນໂຟກັສ</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>ໄລຍະການອ່ານ (ເວັ້ນເສຍແຕ່ໂປຣໄຟລ໌ຈະກຳນົດແທນ)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ອັບເດດເປັນ {0} ແລ້ວ.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ເລີ່ມແບບຫຍໍ້ໄວ້</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ເລີ່ມເມື່ອເຂົ້າສູ່ລະບົບ</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>ໄດຣເວີ HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນຈິງຈາກເກມເພື່ອປ້ອງກັນອິນພຸດຊ້ຳສອງເທື່ອ.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນຈິງໄວ້ຈາກເກມ ເພື່ອບໍ່ໃຫ້ມີອິນພຸດຊ້ຳສອງເທື່ອ.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>ຕົວເລືອກ HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນຈາກເກມ, ເຊື່ອງອຸປະກອນໄວ້ລະຫວ່າງການເປີດແຕ່ລະຄັ້ງ, ແອັບພລິເຄຊັນທີ່ອະນຸຍາດ</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>ແອັບພລິເຄຊັນທີ່ອະນຸຍາດ</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>ແອັບພລິເຄຊັນເຫຼົ່ານີ້ຍັງເຫັນອຸປະກອນທີ່ຖືກເຊື່ອງໄດ້. PadForge ຖືກອະນຸຍາດອັດຕະໂນມັດສະເໝີ.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>ເພີ່ມ...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>ໄດຣເວີ HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ເອັນຈິນຕົວຄວບຄຸມ HID ສະເໝືອນໃນໂໝດຜູ້ໃຊ້. ຝັງຢູ່ໃນ PadForge.App. ຕິດຕັ້ງອັດຕະໂນມັດເມື່ອສ້າງຕົວຄວບຄຸມສະເໝືອນຄັ້ງທຳອິດ. ແທນທີ່ ViGEmBus ແລະ vJoy ໃນ v3.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ຕິດຕັ້ງໄດຣເວີນີ້ພ້ອມກັບຕົວຄວບຄຸມສະເໝືອນທຳອິດທີ່ທ່ານສ້າງ. ການຖອນການຕິດຕັ້ງຈະສະແດງລາຍການສິ່ງທີ່ HIDMaestro ປະໄວ້ໃນ PC ນີ້ກ່ອນຈະລຶບມັນ.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ສ້າງຕົວຄວບຄຸມສະເໝືອນ.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>ຖອນການຕິດຕັ້ງ HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>ການນີ້ຈະລຶບ HIDMaestro ອອກຈາກຄອມພິວເຕີເຄື່ອງນີ້: ຕົວຄວບຄຸມສະເໝືອນ, ໄດຣເວີ, ໃບຢັ້ງຢືນການລົງລາຍເຊັນ, ຄີຣີຈິສຕຣີ ແລະ ໄຟລ໌ຂອງມັນ. PadForge ຈະຢຸດເອັນຈິນຂອງຕົນກ່ອນ. ໂປຣແກຣມອື່ນທີ່ໃຊ້ HIDMaestro ຈະບໍ່ມີໄດຣເວີຂອງມັນຈົນກວ່າຈະເລີ່ມໃໝ່ເທື່ອຕໍ່ໄປ. PadForge ຈະຕິດຕັ້ງມັນຄືນໃນເທື່ອຕໍ່ໄປທີ່ເລີ່ມຕົວຄວບຄຸມສະເໝືອນ.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>ລຶບ usbip-win2 ທີ່ຕິດຕັ້ງດ້ວຍຕົວຕິດຕັ້ງຂອງມັນເອງອອກນຳ</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>ນີ້ແມ່ນສິ່ງທີ່ຈະຖືກລຶບອອກຈາກຄອມພິວເຕີເຄື່ອງນີ້. PadForge ຈະຕິດຕັ້ງ HIDMaestro ຄືນພ້ອມກັບຕົວຄວບຄຸມສະເໝືອນຕົວຖັດໄປ.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>ລຶບ usbip-win2 ອອກນຳ</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge ລຸ້ນເກົ່າຕິດຕັ້ງ usbip-win2 ດ້ວຍຕົວຕິດຕັ້ງຂອງ usbip-win2. ການນີ້ຈະລຶບການຕິດຕັ້ງນັ້ນອອກນຳ ລວມທັງຟິວເຕີ USB root hub ຂອງມັນ ເວັ້ນເສຍແຕ່ມີໂປຣແກຣມອື່ນໃຊ້ usbip-win2. ການລຶບຟິວເຕີອອກຈະເຮັດໃຫ້ USB 3 root hub ທຸກອັນເລີ່ມໃໝ່ ດັ່ງນັ້ນອຸປະກອນ USB ຈະຕັດການເຊື່ອມຕໍ່ຊົ່ວຄາວ.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>ກຳລັງອ່ານສິ່ງທີ່ HIDMaestro ປະໄວ້ໃນຄອມພິວເຕີເຄື່ອງນີ້…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>ບໍ່ມີຫຍັງຂອງ HIDMaestro ເຫຼືອຢູ່ໃນຄອມພິວເຕີເຄື່ອງນີ້ໃຫ້ລຶບ.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>ຍັງຄົງຢູ່: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>ອ່ານບໍ່ໄດ້: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>ບໍ່ໄດ້ລຶບ: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>ໄດຣເວີ Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>ລຶບແລ້ວ</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>ເກັບໄວ້</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>ອ່ານບໍ່ໄດ້</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ລຶບບໍ່ໄດ້</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>ໃຫ້ຕົວຄວບຄຸມ PlayStation 3, PlayStation Move ແລະ ຕົວຄວບຄຸມ Navigation ເຊື່ອມຕໍ່ຜ່ານ Bluetooth ໄດ້. ຝັງຢູ່ໃນ PadForge ແລະ ຕິດຕັ້ງເມື່ອຈັບຄູ່ຕົວຄວບຄຸມໃດໜຶ່ງເຫຼົ່ານີ້ຄັ້ງທຳອິດ.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມ PlayStation 3 ຜ່ານ Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>ຖອນການຕິດຕັ້ງ BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>ການນີ້ຈະລຶບ BthPS3 ອອກຈາກຄອມພິວເຕີເຄື່ອງນີ້: ໄດຣເວີຂອງມັນ, ຕົວກັ່ນຕອງທີ່ມັນເພີ່ມເຂົ້າໃນ Bluetooth ແລະ ໄດຣເວີ WinUSB ທີ່ PadForge ໃຫ້ຕົວຄວບຄຸມ PlayStation 3 ໃຊ້ສຳລັບການຈັບຄູ່. PadForge ຈະຢຸດເອັນຈິນຂອງຕົນກ່ອນ ແລະ Bluetooth ຈະປິດຊົ່ວຄາວໃນຂະນະທີ່ໄດຣເວີຖືກຖອດອອກ. ຫຼັງຈາກນັ້ນ ຕົວຄວບຄຸມ PlayStation 3, Move ແລະ Navigation ຈະໃຊ້ໄດ້ຜ່ານ USB ເທົ່ານັ້ນ. ການຈັບຄູ່ຕົວຄວບຄຸມໃດໜຶ່ງຈະຕິດຕັ້ງ BthPS3 ຄືນ.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>ນີ້ແມ່ນສິ່ງທີ່ຈະຖືກລຶບອອກຈາກຄອມພິວເຕີເຄື່ອງນີ້. ຫຼັງຈາກນັ້ນ ຕົວຄວບຄຸມ PlayStation 3, Move ແລະ Navigation ຈະໃຊ້ໄດ້ຜ່ານ USB ເທົ່ານັ້ນ ຈົນກວ່າການຈັບຄູ່ຕົວຄວບຄຸມໃດໜຶ່ງຈະຕິດຕັ້ງ BthPS3 ຄືນ.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>ກຳລັງອ່ານສິ່ງທີ່ BthPS3 ປະໄວ້ໃນຄອມພິວເຕີເຄື່ອງນີ້…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>ບໍ່ມີຫຍັງຂອງ BthPS3 ເຫຼືອຢູ່ໃນຄອມພິວເຕີເຄື່ອງນີ້ໃຫ້ລຶບ.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini ໃຊ້ໄດຣເວີເຫຼົ່ານີ້, ສະນັ້ນພວກມັນຈະຍັງຄົງຢູ່ຕາບໃດທີ່ DsHidMini ຍັງຕິດຕັ້ງຢູ່.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth ບໍ່ໄດ້ເປີດຄືນ. ເປີດມັນໃນການຕັ້ງຄ່າ Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>ພອດ MIDI ສະເໝືອນ ແລະ ອິນພຸດ MIDI. Windows 11 25H2 ມີ API ນີ້ມາຈາກອັບເດດທ້າຍເດືອນພະຈິກ 2026. PC ອື່ນໃຊ້ຣັນທາມ Windows MIDI Services, ເຊິ່ງ PadForge ສາມາດຕິດຕັ້ງໄດ້, ຫຼື MIDI API ແບບເກົ່າ.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>ພອດ MIDI ສະເໝືອນ ແລະ ອິນພຸດ MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>ມີມາໃນ Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>ຣັນທາມ App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>ບໍ່ມີໃຫ້ໃຊ້</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>ອັນນີ້ຈະລຶບຣັນທາມ ແລະ ເຄື່ອງມື Windows MIDI Services ຂອງ Microsoft, ພ້ອມກັບແອັບ MIDI Settings, ຄອນໂຊນ MIDI ແລະ ໂມດູນ PowerShell. Microsoft ບໍ່ໃຫ້ດາວໂຫຼດພວກມັນອີກແລ້ວ, ສະນັ້ນຈຶ່ງບໍ່ສາມາດຕິດຕັ້ງຄືນໄດ້.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>ຣັນທາມ VR ສຳລັບຕົວຄວບຄຸມ VR ສະເໝືອນ. ຕິດຕັ້ງຈາກເຊີບເວີຂອງ Valve ໂດຍບໍ່ຕ້ອງມີບັນຊີ Steam ຫຼື ໂປຣແກຣມ Steam (ຫຼາຍ GB).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>ຣັນທາມ VR ສຳລັບຕົວຄວບຄຸມ VR ສະເໝືອນ.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>ບ່ອນຕິດຕັ້ງ</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>ຖອນການຕິດຕັ້ງ SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>ອັນນີ້ຈະລຶບ SteamVR ແບບບໍ່ໃຊ້ Steam ທີ່ຕິດຕັ້ງຢູ່ {0} ແລະ ຄືນພື້ນທີ່ຫຼາຍ GB. ຕົວຄວບຄຸມສະເໝືອນ VR ຈະໃຊ້ບໍ່ໄດ້ຈົນກວ່າຈະຕິດຕັ້ງ SteamVR ຄືນໃໝ່.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>ການວິນິດໄສ</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>ຂໍ້ມູນເວີຊັນ, ພ້ອມກັບການບັນທຶກເຫດການຂອງເອັນຈິນເພື່ອແກ້ໄຂບັນຫາ.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>ເກັບບັນທຶກການວິນິດໄສ</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>ຂຽນເຫດການຂອງເອັນຈິນລົງ diagnostics.log ໃນໂຟນເດີທີ່ສະແດງຢູ່ດ້ານລຸ່ມຢ່າງຕໍ່ເນື່ອງ. ຍັງເປີດໃຊ້ຢູ່ຫຼັງຈາກເລີ່ມຄືນໃໝ່. ເມື່ອໄຟລ໌ຮອດ 8 MB ມັນຈະປ່ຽນໄປເປັນ diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>ຂຽນເຫດການຂອງເອັນຈິນລົງ diagnostics.log ໃນໂຟນເດີບັນທຶກຢ່າງຕໍ່ເນື່ອງ, ເຊິ່ງປຸ່ມ ເປີດໂຟນເດີບັນທຶກ ຈະເປີດໃຫ້. ຍັງເປີດໃຊ້ຢູ່ຫຼັງຈາກເລີ່ມຄືນໃໝ່. ເມື່ອໄຟລ໌ຮອດ 8 MB ມັນຈະປ່ຽນໄປເປັນ diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ບັນທຶກສະແນັບຊັອດ</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ບັນທຶກເຫດການຫຼ້າສຸດຂອງເອັນຈິນລົງໄຟລ໌ໃໝ່. ໃຊ້ໄດ້ເຖິງແມ່ນວ່າບັນທຶກການວິນິດໄສຈະປິດຢູ່.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ເປີດໂຟນເດີບັນທຶກ</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>ກ່ຽວກັບ</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>ເຄື່ອງມືແມັບຕົວຄວບຄຸມ</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>ເປັນລຸ້ນລ່າສຸດແລ້ວ.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>ເອກະສານ</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>ກວດຫາອັບເດດ</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>ສາຂາແຍກສະໄໝໃໝ່ຂອງ x360ce, ສ້າງຄືນໃໝ່ດ້ວຍ SDL3, WPF ແລະ .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge ປ່ຽນອຸປະກອນອິນພຸດໃດກໍໄດ້ເປັນຕົວຄວບຄຸມສະເໝືອນໃດກໍໄດ້. ເກມແພດ, ຈອຍສະຕິກ, ແປ້ນພິມ, ເມົ້າ ແລະ ໜ້າຈໍສຳຜັດ ຖືກແມັບໄປຫາຕົວຄວບຄຸມເກມສະເໝືອນ (Xbox, PlayStation, ຈອຍບິນ, ພວງມາໄລ, ເກມແພດຂອງບໍລິສັດອື່ນ) ຫຼື ເອົາພຸດແປ້ນພິມ+ເມົ້າ / MIDI ທີ່ເກມຖືວ່າເປັນຮາດແວຈິງ. ຂັບເຄື່ອນດ້ວຍ HIDMaestro ແລະ Windows MIDI Services. ມັນໃຊ້ SDL3 ສຳລັບອິນພຸດຕົວຄວບຄຸມ, Windows Raw Input ສຳລັບແປ້ນພິມ ແລະ ເມົ້າ, HidHide ສຳລັບການເຊື່ອງອຸປະກອນຕາມແຕ່ລະເກມ, ແລະ ມີໜ້າຕາແບບ Fluent Design ສະໄໝໃໝ່ສຳລັບການແມັບ, ເດດໂຊນ, ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແລະ ແຮງສະທ້ອນກັບ.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ພາບລວມ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>ສ້າງດ້ວຍ</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>ຄົ້ນຫາເຄຣດິດ</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>ສະແດງເຄຣດິດທັງໝົດ</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>ສະແດງເຄຣດິດໜ້ອຍລົງ</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>ບໍ່ມີເຄຣດິດທີ່ກົງກັບ “{0}”.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>ຣັນທາມ ແລະ ເຟຣມເວີກ WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>ຣັນທາມ ແລະ ເຟຣມເວີກ WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>ອິນພຸດ ແລະ ການລະບຸລາຍການຕົວຄວບຄຸມ. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>ອິນພຸດ ແລະ ການລະບຸລາຍການຕົວຄວບຄຸມ.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ອິນພຸດແປ້ນພິມ ແລະ ເມົ້າແຍກຕາມອຸປະກອນ</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>ເອົາພຸດອຸປະກອນ MIDI ສະເໝືອນ (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>ເອົາພຸດອຸປະກອນ MIDI ສະເໝືອນ (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>ການສະແດງພາບຕົວຄວບຄຸມແບບ 3D. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>ການສະແດງພາບຕົວຄວບຄຸມແບບ 3D.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>ລະບົບອອກແບບ Fluent 2 ສຳລັບ WPF. Wpf.Ui.dll ມີ VirtualizingWrapPanel, ຟອນ fluentui-system-icons ແລະ ໂຄດຈາກ WPF ແລະ microsoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>ລະບົບອອກແບບ Fluent 2 ສຳລັບ WPF. Wpf.Ui.dll ມີ VirtualizingWrapPanel, ຟອນ fluentui-system-icons ແລະ ໂຄດຈາກ WPF ແລະ microsoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>ຊຸດເຄື່ອງມື MVVM</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm ສຳລັບການຜູກຂໍ້ມູນ. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm ສຳລັບການຜູກຂໍ້ມູນ.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>ຊຸດໄອຄອນ Zacksly</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>ໄອຄອນສະຕິກ ແລະ ທຣິກເກີທີ່ດັດແປງມາຈາກ “Xbox Series Button Icons and Controls” ໂດຍ Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>ໄອຄອນສະຕິກ ແລະ ທຣິກເກີທີ່ດັດແປງມາຈາກ “Xbox Series Button Icons and Controls” ໂດຍ Zacksly</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>ຕົວຈັບຄູ່ແມ່ແບບຮູບຮ່າງຂອງທັດແພດ (ວົງມົນ / ສີ່ຫຼ່ຽມ / ສາມຫຼ່ຽມ / Z / ເຄື່ອງໝາຍຖືກ ແລະ ທ່າທາງທີ່ອັດເອງ). ຂຽນຄືນໃໝ່ເປັນ C# ຈາກຕົວອ້າງອີງ JavaScript ຂອງ Magrofuoco, Vatavu, Anthony ແລະ Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>ຕົວຈັບຄູ່ແມ່ແບບຮູບຮ່າງຂອງທັດແພດ (ວົງມົນ / ສີ່ຫຼ່ຽມ / ສາມຫຼ່ຽມ / Z / ເຄື່ອງໝາຍຖືກ ແລະ ທ່າທາງທີ່ອັດເອງ). ຂຽນຄືນໃໝ່ເປັນ C# ຈາກຕົວອ້າງອີງ JavaScript ຂອງ Magrofuoco, Vatavu, Anthony ແລະ Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>ຕຳແໜ່ງປຸ່ມ ແລະ ປຸ່ມຊັ້ນພື້ນຖານຂອງແປ້ນພິມທີ່ພາບຕົວຢ່າງ ແປ້ນພິມ + ເມົ້າ ແຕ້ມ, ສ້າງຈາກຂໍ້ມູນໂຄງຮ່າງຂອງ QMK ແລະ ສຳເນົາ QMK ຂອງ Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>ຕຳແໜ່ງປຸ່ມ ແລະ ປຸ່ມຊັ້ນພື້ນຖານຂອງແປ້ນພິມທີ່ພາບຕົວຢ່າງ ແປ້ນພິມ + ເມົ້າ ແຕ້ມ, ສ້າງຈາກຂໍ້ມູນໂຄງຮ່າງຂອງ QMK ແລະ ສຳເນົາ QMK ຂອງ Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>ວິທີໃຫ້ຄະແນນຕາມຂອບມຸມ ທີ່ເຮັດວຽກຄຽງຄູ່ກັບຕົວຈັບຄູ່ແບບກຸ່ມຈຸດ ສຳລັບຮູບຮ່າງທີ່ແຕ້ມດ້ວຍນິ້ວດຽວ. ນຳແນວຄິດການໃຫ້ຄະແນນຈາກ PointPatternAnalyzer ຂອງ GestureSign ມາຂຽນເປັນ C# ຕົ້ນສະບັບ. GPL-2.0, ໃຊ້ເປັນເອກະສານເທົ່ານັ້ນ.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>ວິທີໃຫ້ຄະແນນຕາມຂອບມຸມ ທີ່ເຮັດວຽກຄຽງຄູ່ກັບຕົວຈັບຄູ່ແບບກຸ່ມຈຸດ ສຳລັບຮູບຮ່າງທີ່ແຕ້ມດ້ວຍນິ້ວດຽວ. ນຳແນວຄິດການໃຫ້ຄະແນນຈາກ PointPatternAnalyzer ຂອງ GestureSign ມາຂຽນເປັນ C# ຕົ້ນສະບັບ. ໃຊ້ເປັນເອກະສານເທົ່ານັ້ນ.</value></data>
   <data name="About_License" xml:space="preserve"><value>ໃບອະນຸຍາດ</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>ຊອບແວນີ້ໄດ້ຮັບອະນຸຍາດພາຍໃຕ້ CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack ໂດຍ AL2009man (MIT) ສະໜອງຮູບຕົວຄວບຄຸມ 2D. GestureSign ໂດຍ TransposonY (GPL-2.0) ຖືກອ່ານເປັນເອກະສານສຳລັບ AngularMarginRecognizer, ແລະ ບໍ່ມີໂຄດຂອງມັນຖືກລວມມາ. Handheld Companion (CC BY-NC-SA 4.0) ສະໜອງໂມເດລ 3D ຂອງ Xbox 360 ແລະ Steam Deck ທີ່ PadForge ດັດແປງ. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services ແລະ WPF UI ໄດ້ຮັບອະນຸຍາດພາຍໃຕ້ MIT License. OpenXInput ມີພຽງຂໍ້ປະຕິເສດຄວາມຮັບຜິດຊອບດ້ານເຄື່ອງໝາຍການຄ້າຈາກຕົ້ນທາງ ແລະ ຖືກແຈກຢາຍຄືນຕາມສະພາບເດີມພາຍໃຕ້ເງື່ອນໄຂດຽວກັນ. $Q Recognizer ໂດຍ Magrofuoco, Vatavu, Anthony ແລະ Wobbrock (BSD 3-Clause) ເປັນຕົວອ້າງອີງສຳລັບ ShapeRecognizer ຂອງທັດແພດ, ເຊິ່ງຂຽນຄືນໃໝ່ເປັນ C#. SDL3 ໄດ້ຮັບອະນຸຍາດພາຍໃຕ້ zlib License. x360ce (LGPL-3.0-or-later) ເປັນໂຄດຕົ້ນສະບັບທີ່ PadForge ແຍກອອກມາ. Zergatul.Obs.InputOverlay ໂດຍ Igor Budzhak (MIT) ສະໜອງຮູບເມົ້າ.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (ຕົວໂຫຼດ SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>ແບບ BSD</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>ເງື່ອນໄຂໃບອະນຸຍາດ Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>ເງື່ອນໄຂ Corsair SDK</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ຂໍ້ປະຕິເສດເຄື່ອງໝາຍການຄ້າເທົ່ານັ້ນ</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>ບໍ່ໄດ້ລະບຸເງື່ອນໄຂ</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>ບໍ່ໄດ້ເຜີຍແຜ່</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>ຫຼາຍໃບອະນຸຍາດ</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ເອັນຈິນຕົວຄວບຄຸມ HID ສະເໝືອນໃນໂໝດຜູ້ໃຊ້ (ແທນທີ່ ViGEmBus ແລະ vJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ເອັນຈິນຕົວຄວບຄຸມ HID ສະເໝືອນໃນໂໝດຜູ້ໃຊ້ (ແທນທີ່ ViGEmBus ແລະ vJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>ຕົວແທນ XInput ທີ່ໃສ່ແທນໄດ້ທັນທີ. ກັ່ນຕອງຕົວຄວບຄຸມສະເໝືອນຂອງ PadForge ເອງອອກຈາກມຸມມອງຂອງມັນ. ມີຂໍ້ປະຕິເສດຄວາມຮັບຜິດຊອບດ້ານເຄື່ອງໝາຍການຄ້າຈາກຕົ້ນທາງ, ບໍ່ມີໃບອະນຸຍາດ OSS.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>ຕົວແທນ XInput ທີ່ໃສ່ແທນໄດ້ທັນທີ. ກັ່ນຕອງຕົວຄວບຄຸມສະເໝືອນຂອງ PadForge ເອງອອກຈາກມຸມມອງຂອງມັນ.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ໄດຣເວີເຄີເນວສຳລັບເຊື່ອງອຸປະກອນຈິງຈາກເກມ. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ໄດຣເວີເຄີເນວສຳລັບເຊື່ອງອຸປະກອນຈິງຈາກເກມ.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>ຄຳເຊື້ອເຊີນ</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“ແລະ ພວກເຮົາ ເວົ້າເຖິງພຣະຄຣິດ, ພວກເຮົາປິຕິຍິນດີໃນພຣະຄຣິດ, ພວກເຮົາສັ່ງສອນເລື່ອງພຣະຄຣິດ, ພວກເຮົາ ທຳນາຍເຖິງພຣະຄຣິດ, ແລະ ພວກເຮົາບັນທຶກຕາມຄຳທຳນາຍຂອງພວກເຮົາ ເພື່ອ ລູກຫລານຂອງພວກເຮົາ ຈະໄດ້ຮູ້ວ່າ ພວກເຂົາຈະຫລຽວຫາແຫລ່ງໃດເພື່ອ ການປົດບາບຂອງພວກເຂົາ.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 ນີໄຟ 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>ລັດສະໝີ, ກຽດຕິຍົດ ແລະ ຄຳສັນລະເສີນ ຈົ່ງມີແດ່ອົງພຣະເຢຊູຄຣິດເຈົ້າ, ຜູ້ເປັນແຫຼ່ງແຫ່ງຄວາມຈິງ ແລະ ຄວາມລອດທັງປວງ, ຕະຫຼອດໄປເປັນນິດ.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>ຂໍເຊີນທ່ານຢ່າງອົບອຸ່ນໃຫ້ເຂົ້າເບິ່ງ ComeUntoChrist.org ແລະ ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບພຣະອົງ ແລະ ສາດສະໜາຈັກຂອງພຣະເຢຊູຄຣິດແຫ່ງໄພ່ພົນຍຸກສຸດທ້າຍ.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>ການປະສົມສຽງຂ້າມຊ່ອງຈາກສະເຕຣິໂອເປັນແບບສອງຫູ ຂອງ Bauer ສຳລັບເອົາພຸດຫູຟັງ. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>ການປະສົມສຽງຂ້າມຊ່ອງຈາກສະເຕຣິໂອເປັນແບບສອງຫູ ຂອງ Bauer ສຳລັບເອົາພຸດຫູຟັງ.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>ຕົວເຂົ້າລະຫັດ Opus ທີ່ຂຽນດ້ວຍ C# ລ້ວນ ເຊິ່ງສົ່ງສຽງລຳໂພງຂອງ DualSense ຜ່ານ Bluetooth. ໂດຍ Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>ຕົວເຂົ້າລະຫັດ Opus ທີ່ຂຽນດ້ວຍ C# ລ້ວນ ເຊິ່ງສົ່ງສຽງລຳໂພງຂອງ DualSense ຜ່ານ Bluetooth. ໂດຍ Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>ການຄົ້ນຄວ້າສຽງ Bluetooth ຂອງ DualSense ໂດຍ egormanga: ການຂົນສົ່ງແພັກເກັດທີ່ສະຕຣີມລຳໂພງຂອງຕົວຄວບຄຸມໃຊ້. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>ການຄົ້ນຄວ້າສຽງ Bluetooth ຂອງ DualSense ໂດຍ egormanga: ການຂົນສົ່ງແພັກເກັດທີ່ສະຕຣີມລຳໂພງຂອງຕົວຄວບຄຸມໃຊ້. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>ວິທີສົ່ງສຽງລຳໂພງຜ່ານ Bluetooth ໂດຍ awalol: ການຈັດເຟຣມ Opus ແລະ ໂຄງສ້າງແພັກເກັດ. ຂອບໃຈ TechAntohere ສຳລັບການແບ່ງປັນຂໍ້ຄົ້ນພົບ ແລະ ການທົດສອບນຳ. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>ວິທີສົ່ງສຽງລຳໂພງຜ່ານ Bluetooth ໂດຍ awalol: ການຈັດເຟຣມ Opus ແລະ ໂຄງສ້າງແພັກເກັດ. ຂອບໃຈ TechAntohere ສຳລັບການແບ່ງປັນຂໍ້ຄົ້ນພົບ ແລະ ການທົດສອບນຳ.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>ຕົວຢ່າງອ້າງອີງສຳລັບການສົ່ງຜ່ານສຽງຂອງຕົວຄວບຄຸມທາງ USB. ໂດຍ WujekFoliarz.</value></data>
 
@@ -675,8 +821,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ໄລຍະຫ່າງຕົວອັກສອນ (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ມິນລິວິນາທີລະຫວ່າງແຕ່ລະຕົວອັກສອນທີ່ພິມ, ສູງສຸດ 1000. 0 ຈະພິມຂໍ້ຄວາມທັງໝົດໃນເທື່ອດຽວ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ຕັດການເຊື່ອມຕໍ່ເມື່ອບໍ່ໃຊ້ງານ</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>ພະລັງງານ</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>ແຟ້ມຂໍ້ມູນອຸປະກອນ</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>ລາຍລະອຽດ</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ນາທີ (0 = ບໍ່ຕັດເລີຍ)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ຕັດ Bluetooth ເມື່ອສຽບສາຍ USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ສາກໄວ. ເມື່ອຕົວຄວບຄຸມນີ້ລາຍງານວ່າກຳລັງສາກໄຟ ຂະນະເຊື່ອມຕໍ່ຜ່ານ Bluetooth, ການເຊື່ອມຕໍ່ Bluetooth ຈະຖືກຕັດ ເພື່ອໃຫ້ມັນສາກໄຟໂດຍບໍ່ຕ້ອງໃຊ້ພະລັງງານກັບວິທະຍຸ. ແຫຼ່ງໄຟ USB ໃດກໍໄດ້ ລວມທັງສາກຕິດຝາ. ຖ້າທ່ານເປີດ Bluetooth ຄືນ ຂະນະທີ່ສາຍຍັງສຽບຢູ່, ມັນຈະຖືກປະໄວ້ຈົນກວ່າຈະຖອດສາຍຄັ້ງຕໍ່ໄປ.</value></data>
@@ -700,10 +845,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>ຂໍທິດທາງຈາກແພດ PlayStation ນີ້ໂດຍກົງ ເພື່ອໃຫ້ຊ້າຍ ແລະ ຂວາ ຫຼື ຂຶ້ນ ແລະ ລົງ ຖືກຮັບຮູ້ພ້ອມກັນເທິງແຜ່ນເຕັ້ນຕັ້ງແຕ່ກ້າວທຳອິດ. ພວກມັນມາເປັນປຸ່ມລູກສອນ ຂຶ້ນ, ລົງ, ຊ້າຍ ແລະ ຂວາ ເຊິ່ງເຟີມແວ 3.34 ກໍສົ່ງເອງເຊັ່ນກັນ ເມື່ອມີການກົດທິດທາງກົງກັນຂ້າມແລ້ວ, ແລະ ຕອນນັ້ນ PadForge ຈະເຊົາຂໍ. ກ່ອນຈະເຖິງຕອນນັ້ນ ອະແດັບເຕີຈະຂ້າມການອ່ານແພດສ່ວນໃຫຍ່ຂອງມັນເອງ.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>ແຮງກົດ DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>ໝາຍເລກຜູ້ຫຼິ້ນ</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ອະແດັບເຕີຈະເກັບໝາຍເລກໄວ້ ແລະ ເຊື່ອມຕໍ່ຄືນໃໝ່ເປັນຜູ້ຫຼິ້ນຄົນນັ້ນ. ຈາກນັ້ນ Windows ຈະເຫັນເປັນອຸປະກອນໃໝ່, ສະນັ້ນໃຫ້ແມັບພອດຄືນໃໝ່ເມື່ອມັນກັບມາ.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ອະແດັບເຕີຈະເກັບໝາຍເລກໄວ້ ແລະ ເຊື່ອມຕໍ່ຄືນໃໝ່, ເຊິ່ງ Windows ຈະເຫັນເປັນອຸປະກອນໃໝ່.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>ຜູ້ຫຼິ້ນ</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>ຕັ້ງຜູ້ຫຼິ້ນ</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>ໜ້າຈໍ Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>ບໍ່ມີຫຍັງໄປຮອດພອດຈົນກວ່າທ່ານຈະບັນທຶກ.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>ສະແດງ</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>ຮູບຂອງອະແດັບເຕີ</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>ຊື່ໂປຣໄຟລ໌</value></data>
@@ -750,7 +896,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>ກຳລັງອ່ານ Namco USIO ເປັນກອງ Taiko ສອງໜ່ວຍ.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>ກຳລັງອ່ານ {0} ເປັນຕົວຄວບຄຸມ iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>ກຳລັງອ່ານ {0} ເປັນແປ້ນພິມອີກຄັ້ງ.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>ປືນແສງ</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>ຂອບເຂດການເລັງຄ່າເລີ່ມຕົ້ນ: X {0} ຫາ {1}, Y {2} ຫາ {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>ຂອບເຂດການເລັງທີ່ປັບທຽບແລ້ວ: X {0} ຫາ {1}, Y {2} ຫາ {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>ການປັບທຽບປືນ</value></data>
@@ -809,6 +954,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>ແປ້ນພິມທັງໝົດ (ລວມກັນ)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>ເມົ້າທັງໝົດ (ລວມກັນ)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>ອຸປະກອນ</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ຄົ້ນຫາອຸປະກອນ</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>ທັງໝົດ</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>ຕົວຄວບຄຸມ</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>ແປ້ນພິມ ແລະ ເມົ້າ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>ອ່ານ Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>ອ່ານ Chatpad ແລະ ແທັບເລັດ uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ອ່ານເກມແພດ</value></data>
@@ -829,28 +979,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} ກັບມາໃຊ້ໄດຣເວີ Windows ຂອງມັນແລ້ວ.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>ບໍ່ສາມາດກູ້ຄືນໄດຣເວີ Windows ສຳລັບ {0} ໄດ້.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ໄດ້ເອົາ {0} ກັບໄປໃຊ້ໄດຣເວີຂອງມັນເອງ. ເລືອກມັນໃນໜ້າອຸປະກອນເພື່ອປ່ຽນອີກຄັ້ງ.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> ອອນລາຍ / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> ທັງໝົດ</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>ລຶບອຸປະກອນນີ້ ແລະ ການຕັ້ງຄ່າຂອງມັນ</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>ລຶບອຸປະກອນ</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} ຈະຖືກລຶບອອກຈາກລາຍການອຸປະກອນ ແລະ ການຕັ້ງຄ່າທີ່ບັນທຶກໄວ້ຂອງມັນຈະຖືກລຶບ.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>ລາກອຸປະກອນໄປໃສ່ບັດຕົວຄວບຄຸມໃນແຖບດ້ານຂ້າງເພື່ອກຳນົດມັນ.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>ຜະລິດຕະພັນ: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>ລາກອຸປະກອນໄປໃສ່ຕົວຄວບຄຸມໃນແຖບດ້ານຂ້າງເພື່ອກຳນົດມັນ.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>ສົ່ງການແມັບອຸປະກອນ</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>ການກຳນົດຕົວຄວບຄຸມສະເໝືອນ</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>ສະຫຼັບການກຳນົດ</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>ຍັງບໍ່ມີຊ່ອງຕົວຄວບຄຸມສະເໝືອນ. ສ້າງຊ່ອງໜຶ່ງໃນໜ້າພາບລວມເພື່ອກຳນົດອຸປະກອນນີ້.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>ໂໝດການປ້ອນຂໍ້ມູນ</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>ກຳນົດອຸປະກອນນີ້ໃຫ້ຕົວຄວບຄຸມນີ້ ຫຼື ເອົາມັນອອກ.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>ບັງຄັບໂໝດຈອຍສະຕິກດິບ (ຂ້າມການແມັບເກມແພດ)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>ອ່ານດັດຊະນີ HID ດິບແທນການແມັບເກມແພດຂອງ SDL. ໃຊ້ເມື່ອ SDL ລະບຸໂຄງຮ່າງປຸ່ມ/ແກນຜິດ.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>ການເຊື່ອງການປ້ອນຂໍ້ມູນ</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>ເຊື່ອງຈາກເກມ (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນນີ້ຈາກແອັບພລິເຄຊັນອື່ນທັງໝົດຜ່ານໄດຣເວີ HidHide. ເມື່ອ PadForge ເຊື່ອງຕົວຄວບຄຸມ USB ທີ່ເຊື່ອມຕໍ່ຢູ່ແລ້ວ, ມັນຈະເຊື່ອມຕໍ່ຕົວຄວບຄຸມນັ້ນຄືນໃໝ່ໃນ Windows, ສະນັ້ນໂປຣແກຣມໃດທີ່ເປີດມັນຢູ່ຈະເສຍມັນໄປ. ຕົວຄວບຄຸມ Bluetooth ຫຼື ຕົວທີ່ໃຊ້ຕົວຮັບສັນຍານຮ່ວມກັບຕົວຄວບຄຸມອື່ນ ຈະຍັງຢູ່ກັບໂປຣແກຣມທີ່ເປີດມັນກ່ອນຖືກເຊື່ອງ ຈົນກວ່າມັນຈະເຊື່ອມຕໍ່ຄັ້ງຕໍ່ໄປ.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>ຕິດຕັ້ງໄດຣເວີ HidHide ເພື່ອເປີດໃຊ້ຕົວເລືອກນີ້</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>ສະກັດການປ້ອນຂໍ້ມູນທີ່ແມັບໄວ້ (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>ສະກັດສະເພາະປຸ່ມທີ່ແມັບໄວ້ ແລະ ປ່ອຍໃຫ້ການປ້ອນຂໍ້ມູນທີ່ບໍ່ໄດ້ແມັບຜ່ານໄປ</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>ສະຖານະການປ້ອນຂໍ້ມູນດິບ</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>ເລືອກອຸປະກອນເພື່ອກວດເບິ່ງການປ້ອນຂໍ້ມູນດິບຂອງມັນ.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>ທົດສອບອິນພຸດ</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>ເລືອກອຸປະກອນເພື່ອເບິ່ງການຕັ້ງຄ່າ ແລະ ທົດສອບອິນພຸດຂອງມັນ.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>ແກນ</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ປຸ່ມ</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>ແປ້ນພິມ</value></data>
@@ -1126,27 +1269,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ອຸປະກອນທີ່ເລືອກບໍ່ມີແກນ, ປຸ່ມ ຫຼື POV ໃຫ້ໂຄລນ.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ໂຄລນ {0} ໃສ່ຊ່ອງນີ້ເປັນການສົ່ງຜ່ານແບບ 1:1 ບໍ? ໂຄງຮ່າງຈະເປັນ {1} ແກນ, {2} ປຸ່ມ ແລະ {3} POV, ແລະ ແຖວຂອງອຸປະກອນນີ້ໃນຊ່ອງຈະຖືກແທນທີ່ດ້ວຍການປ້ອນຂໍ້ມູນຂອງມັນເອງ.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ອຸປະກອນນີ້ມີການປ້ອນຂໍ້ມູນຫຼາຍກວ່າທີ່ຕົວຄວບຄຸມ Extended ຮອງຮັບໄດ້. ແມັບແລ້ວ {0} ຈາກ {1} ແກນ, {2} ຈາກ {3} ປຸ່ມ ແລະ {4} ຈາກ {5} POV. ສ່ວນທີ່ເຫຼືອບໍ່ໄດ້ແມັບ.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ນຳເຂົ້າ</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>ໂປຣໄຟລ໌ HIDMaestro ທີ່ຜູ້ໃຊ້ນຳເຂົ້າ ຖືກເກັບໄວ້ໃນ PadForge.xml ແລະ ປາກົດໃນລາຍການໂປຣໄຟລ໌ຂອງທຸກຊ່ອງ Extended. ບັນທຶກອັນໃໝ່ຈາກອຸປະກອນທີ່ເຊື່ອມຕໍ່ດ້ານລຸ່ມ ຫຼື ສົ່ງອອກ / ລຶບອັນທີ່ມີຢູ່.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ທ່ານນຳເຂົ້າ ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>ອຸປະກອນທີ່ເຊື່ອມຕໍ່ທີ່ນຳເຂົ້າໄດ້</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>ພຣີເຊັດຕົວຄວບຄຸມ</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>ເພີ່ມພຣີເຊັດສຳລັບຕົວຄວບຄຸມທີ່ PadForge ບໍ່ມີມາໃຫ້, ຈາກໄຟລ໌ ຫຼື ຈາກຕົວຄວບຄຸມເອງ.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>ນຳເຂົ້າແລ້ວ</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>ນຳເຂົ້າຈາກອຸປະກອນທີ່ເຊື່ອມຕໍ່</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ສົ່ງອອກ…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ລຶບ</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>ປິດ</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ສົ່ງອອກ JSON ຂອງໂປຣໄຟລ໌</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ລຶບໂປຣໄຟລ໌ທີ່ນຳເຂົ້າບໍ?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>ລຶບ “{0}” ບໍ? ຊ່ອງໃດທີ່ກຳລັງໃຊ້ໂປຣໄຟລ໌ນີ້ຈະກັບໄປໃຊ້ລາຍການ Custom ທີ່ສ້າງຂຶ້ນແທນ.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ລຶບພຣີເຊັດບໍ?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>ຕົວຄວບຄຸມໃດກໍຕາມທີ່ໃຊ້ {0} ຈະກັບໄປໃຊ້ລາຍການ Custom. ບໍ່ສາມາດຍົກເລີກໄດ້.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>ສົ່ງອອກໄປທີ່ {0} ແລ້ວ</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ສົ່ງອອກບໍ່ສຳເລັດ: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>ລຶບ “{0}” ແລ້ວ.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ນຳເຂົ້າຈາກໄຟລ໌…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ເລືອກໄຟລ໌ເພື່ອນຳເຂົ້າ…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>ນຳເຂົ້າ JSON ຂອງໂປຣໄຟລ໌</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>ນຳເຂົ້າຈາກ {0} ແລ້ວ.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ອ່ານບໍ່ສຳເລັດ: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ປະຕິເສດໂປຣໄຟລ໌ນີ້ທີ່ {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ໂປຣໄຟລ໌ນີ້ບໍ່ມີ HID descriptor ຈຶ່ງບໍ່ສາມາດສ້າງຕົວຄວບຄຸມຈາກມັນໄດ້.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ບໍ່ມີຫຍັງຖືກນຳເຂົ້າ. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>ໂຫຼດຄືນ</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ນຳເຂົ້າ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ອຸປະກອນ HID ບໍ່ມີຊື່)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>ພົບອິນເຕີເຟດ HID {0} ອັນ.</value></data>
@@ -1431,6 +1572,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>ຈຸດກາງ</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ເດດໂຊນ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ຄ່າຊົດເຊີຍຈຸດກາງ, ຮູບຊົງເດດໂຊນ ແລະ ຄ່າແຕ່ລະແກນ, ເສັ້ນໂຄ້ງແຕ່ລະແກນ, ຂອບເຂດ, ການບັງຄັບລ້ຽວ</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>ຂອບເຂດເປັນຕົວເລກ, ຄ່າດິບ</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ຂອບເຂດ</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“ປັບທຽບຂອບ” ຈະວັດຂອບທີ່ສະຕິກໄປເຖິງໄດ້ ແລະ ປັບຮູບຂອບນັ້ນໃຫ້ເປັນວົງມົນເຕັມ. ແຖບເລື່ອນສີ່ອັນພຽງແຕ່ຈຳກັດແຕ່ລະທິດທາງ.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ກຳລັງເກັບຕົວຢ່າງ...</value></data>
@@ -1963,21 +2105,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>ຄືນຄ່າ ຄ່າເກນຄວາມກົງກັນຂອງຮູບຮ່າງ</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>ບັນທຶກທ່າທາງທັດແພດ</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>ແຕ້ມທ່າທາງເທິງພື້ນທີ່ດ້ານລຸ່ມ. ກ່ອງໂຕ້ຕອບຈະບັນທຶກທຸກນິ້ວທີ່ທ່ານວາງລົງ. ເມື່ອທ່ານຍົກນິ້ວທັງໝົດອອກຈາກພື້ນທີ່ ຕົວຢ່າງຈະຖືກບັນທຶກ. ການແຕ້ມດ້ວຍຈຳນວນນິ້ວທີ່ຕ່າງຈາກຕົວຢ່າງກ່ອນໜ້າຈະລ້າງຕົວຢ່າງທີ່ເກັບໄວ້.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>ກຳລັງລໍຖ້າການສຳຜັດຂອງນິ້ວເທິງພື້ນທີ່ແຕ້ມ</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>ບັນທຶກທ່າທາງ</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>ແຕ້ມຮູບຮ່າງເທິງທັດແພດຂອງຕົວຄວບຄຸມ. ມັນຈະກາຍເປັນອິນພຸດທີ່ທ່ານແມັບໄດ້.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>ແຕ້ມທ່າທາງທີ່ນີ້.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>ແຕ້ມເທິງທັດແພດ. ພື້ນທີ່ແຕ້ມຈະສະແດງຕາມແບບສົດ.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>ກຳລັງບັນທຶກຈາກ {0}, ທັດແພດ {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ທັດແພດນີ້</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ທັດແພດບໍ່ພ້ອມໃຊ້ງານ. ໃຊ້ພື້ນທີ່ແຕ້ມດ້ານລຸ່ມດ້ວຍເມົ້າ ຫຼື ການສຳຜັດ.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ທັດແພດບໍ່ພ້ອມໃຊ້ງານ. ແຕ້ມທີ່ນີ້ດ້ວຍເມົ້າ, ປາກກາ ຫຼື ນິ້ວມື.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>ກຳລັງແຕ້ມ…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>ບັນທຶກຕົວຢ່າງຄົບແລ້ວ. ຕັ້ງຊື່ທ່າທາງ ແລ້ວຄລິກ ບັນທຶກ.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ຕົວຢ່າງ {0} ຈາກ {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ຕົວຢ່າງ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ຈຳນວນຕົວຢ່າງທີ່ຈະບັນທຶກ</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ແມ່ນມາດຕະຖານ. ຕົວຢ່າງຫຼາຍຂຶ້ນ = ການທຽບທີ່ໝັ້ນຄົງກວ່າ, ໜ້ອຍລົງ = ການບັນທຶກທີ່ໄວກວ່າ.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>ຈຳນວນຕົວຢ່າງທີ່ຈະບັນທຶກ</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ແມ່ນມາດຕະຖານ. ຕົວຢ່າງຫຼາຍຂຶ້ນໃຫ້ການທຽບທີ່ແນ່ນອນກວ່າ ແລະ ໜ້ອຍລົງຈະບັນທຶກໄດ້ໄວກວ່າ.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>ລອງໃໝ່</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>ຕັ້ງຊື່ທ່າທາງນີ້</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>ຕ້ອງໃສ່ຊື່</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>ຊື່ຍາວເກີນໄປ (ສູງສຸດ 64 ຕົວອັກສອນ)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>ຊື່ມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ</value></data>
@@ -2294,41 +2437,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>ໂປຣໄຟລ໌</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>ການຈັດການໂປຣໄຟລ໌</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>ສ້າງໂປຣໄຟລ໌ຕົວຄວບຄຸມສຳລັບແຕ່ລະແອັບພລິເຄຊັນ ທີ່ສະຫຼັບອັດຕະໂນມັດຕາມເກມທີ່ກຳລັງໃຊ້ງານ.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ສະຫຼັບໂປຣໄຟລ໌ອັດຕະໂນມັດຕາມແອັບພລິເຄຊັນທີ່ຢູ່ໜ້າສຸດ</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>ໂປຣໄຟລ໌ແມ່ນການຕັ້ງຄ່າທັງໝົດ: ຕົວຄວບຄຸມ, ການແມັບ ແລະ ການປັບແຕ່ງຂອງມັນ.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>ໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>ໂປຣໄຟລ໌ສຳເລັດຮູບສຳລັບເກມທັງປະເພດ. ເລືອກໜຶ່ງອັນ, ກຳນົດຕົວຄວບຄຸມໃດກໍໄດ້ ແລ້ວຫຼິ້ນ.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ສະຫຼັບໂປຣໄຟລ໌ຕາມເກມ</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>ການສະຫຼັບອັດຕະໂນມັດ</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ບໍ່ມີໂປຣໄຟລ໌ຕັ້ງໄວ້ສຳລັບມັນ</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ເຊິ່ງໂຫຼດ {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ຢູ່ດ້ານໜ້າຕອນນີ້: {0}, ແລະ ຍັງບໍ່ມີໂປຣໄຟລ໌ໃດຕັ້ງເກມໄວ້</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>ອະນຸຍາດໃຫ້ຕົວເປີດເກມ ແລະ ສະຄຣິບຄວບຄຸມຈາກພາຍນອກ</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ເປີດທໍ່ສົ່ງຂໍ້ມູນ (named pipe) ພາຍໃນເຄື່ອງຊື່ PadForge.Control ເພື່ອໃຫ້ Playnite, LaunchBox ຫຼື ສະຄຣິບ ສາມາດເປີດໃຊ້ ແລະ ປິດໃຊ້ໂປຣໄຟລ໌ໄດ້. ໂປຣໄຟລ໌ທີ່ເປີດໃຊ້ດ້ວຍວິທີນີ້ຈະເຮັດວຽກຢູ່ຈົນກວ່າສະຄຣິບຈະປ່ອຍມັນ ຫຼື ທ່ານສະຫຼັບໂປຣໄຟລ໌ເອງ. ສະເພາະເຄື່ອງນີ້ເທົ່ານັ້ນ.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ການຄວບຄຸມຈາກພາຍນອກ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>ບໍ່ມີຊ່ອງ</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>ສະຫຼັບອັດຕະໂນມັດ: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>ບໍ່ມີຕົວຄວບຄຸມ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ວາງເພື່ອນຳເຂົ້າໂປຣໄຟລ໌</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>ໃໝ່</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>ວາງໄຟລ໌ໂປຣໄຟລ໌ທີ່ນີ້</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>ໂປຣໄຟລ໌ໃໝ່</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>ບັນທຶກເປັນ</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>ບັນທຶກການຕັ້ງຄ່າປັດຈຸບັນໄວ້ທີ່ນີ້</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>ແກ້ໄຂ</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ໂຫຼດ</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>ຍັງບໍ່ມີໂປຣໄຟລ໌ໃດມີໄຟລ໌ໂປຣແກຣມ</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ມີໃນຕົວ</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>ເລືອກໂປຣໄຟລ໌ກ່ອນ.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>ໂປຣໄຟລ໌ “ຄ່າເລີ່ມຕົ້ນ” ທີ່ມີມາໃນຕົວ ບໍ່ສາມາດແກ້ໄຂ ຫຼື ລຶບໄດ້.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>ລຶບໂປຣໄຟລ໌</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>ລຶບ "{0}" ບໍ? ຊ່ອງ ແລະ ການແມັບທີ່ບັນທຶກໄວ້ຂອງມັນຈະຖືກລຶບຖິ້ມ.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ບໍ່ໄດ້ຕັ້ງເກມ</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>ໂຫຼດສຳລັບ {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>ຕັ້ງໄວ້ສຳລັບ {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>ໃຊ້ຢູ່</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>ເພີ່ມເຕີມສຳລັບ {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>ລຶບ {0} ບໍ?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ໂປຣໄຟລ໌ ແລະ ກົດການສະຫຼັບອັດຕະໂນມັດຂອງມັນຈະຖືກລຶບ. ບໍ່ສາມາດຍົກເລີກໄດ້.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ໂປຣໄຟລ໌ຈະຖືກລຶບ. ບໍ່ສາມາດຍົກເລີກໄດ້.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>ແທນທີ່ການຕັ້ງຄ່າທີ່ບັນທຶກໄວ້ໃນ “{0}” ດ້ວຍການຕັ້ງຄ່າປັດຈຸບັນບໍ? ຊື່ ແລະ ເກມຂອງມັນຍັງຄົງຢູ່.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>ແທນທີ່</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>ບັນທຶກເປັນໂປຣໄຟລ໌</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>ແກ້ໄຂໂປຣໄຟລ໌</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>ຊື່ໂປຣໄຟລ໌:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>ໂປຣໄຟລ໌ໃໝ່</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>ຊື່</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>ໂປຣໄຟລ໌ໃໝ່</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>ໄຟລ໌ໂປຣແກຣມ (ກວດທຽບກັບໜ້າຕ່າງທີ່ຢູ່ໜ້າສຸດ):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>ເກມທີ່ໂຫຼດມັນ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ (ການຕັ້ງຄ່າທົ່ວໄປ)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ຖືກແທນທີ່ໃນຂະນະທີ່ໂປຣໄຟລ໌ “{0}” ເຮັດວຽກ: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ບັນທຶກການແມັບຂອງທຸກຊ່ອງ ແລະ ການຕັ້ງຄ່າແຍກຕາມອຸປະກອນໄວ້ໃນຊື່ດຽວ. ໄຟລ໌ໂປຣແກຣມທີ່ເຊື່ອມໂຍງໄວ້ຈະສະຫຼັບມາໃຊ້ມັນໂດຍອັດຕະໂນມັດ.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ປ່ຽນຊື່ໂປຣໄຟລ໌ ແລະ ອັບເດດໄຟລ໌ໂປຣແກຣມທີ່ເປີດໃຊ້ມັນ. ການແມັບ ແລະ ການຕັ້ງຄ່າທີ່ບັນທຶກໄວ້ບໍ່ປ່ຽນແປງ.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ບັນທຶກການແມັບ ແລະ ການຕັ້ງຄ່າຂອງທຸກຕົວຄວບຄຸມໄວ້ໃນຊື່ດຽວ. ມັນຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ໂປຣໄຟລ໌ຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ເລີ່ມຕົ້ນໂດຍບໍ່ມີຕົວຄວບຄຸມ. ມັນຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>ເພີ່ມເກມທີ່ກຳລັງເຮັດວຽກ</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ບໍ່ມີໂປຣແກຣມອື່ນທີ່ເປີດໜ້າຕ່າງຢູ່.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ເອົາ {0} ອອກ</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນໃນຂະນະທີ່ໂຫຼດໂປຣໄຟລ໌ນີ້</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>ສຳເນົາການຕັ້ງຄ່າຈາກ...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>ເລືອກອຸປະກອນທີ່ຈະສຳເນົາການຕັ້ງຄ່າມາ:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>ສຳເນົາຈາກ</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>ແທນທີ່ການແມັບ ແລະ ການປັບແຕ່ງແຍກຕາມອຸປະກອນຂອງ {0} ດ້ວຍຂອງຕົວຄວບຄຸມອື່ນ.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>ເພີ່ມມາໂຄຣຂອງຕົວຄວບຄຸມອື່ນໃສ່ {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>ບໍ່ໄດ້ກຳນົດ, ຮັກສາການແມັບເດີມໄວ້</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>ເລືອກແອັບພລິເຄຊັນທີ່ຈະເພີ່ມເຂົ້າລາຍຊື່ອະນຸຍາດ</value></data>
@@ -2370,6 +2534,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>ຂອບເຂດ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ແອນຕີເດດໂຊນ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ຄລິກສອງເທື່ອເພື່ອເພີ່ມຈຸດ. ຄລິກຂວາເພື່ອລຶບ. ລາກເພື່ອປັບ.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>ຕົວແກ້ໄຂເສັ້ນໂຄ້ງ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ແກນທຣິກເກີ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2717,8 +2882,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ພື້ນຖານ</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ຊັ້ນ Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ຕັ້ງຄ່າພື້ນຖານ</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ຊື່, ໄອຄອນ ແລະ ສີຂອງຊັ້ນພື້ນຖານໃນປ້າຍແຈ້ງການປ່ຽນຊັ້ນ ແລະ ໃນແຖວຂອງຊັ້ນ.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ຊື່ຊັ້ນ</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>ອິນພຸດຕົວເປີດໃຊ້</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ກົດຄ້າງດ້ວຍ</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>ກົດດ້ວຍ</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>ຊັ້ນຖັດໄປດ້ວຍ</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>ຊັ້ນກ່ອນໜ້າດ້ວຍ</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>ແລະ ດ້ວຍ</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>ເລືອກອິນພຸດ</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>ປຸ່ມທີ່ບໍ່ໄດ້ແມັບ</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ໃຊ້ຕາມຊັ້ນພື້ນຖານ</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ບໍ່ເຮັດຫຍັງ</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ໂໝດ, ປະເພດອິນພຸດ, ຈັງຫວະເວລາ ແລະ ສີ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ໂໝດ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ກົດຄ້າງ</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
@@ -2745,14 +2921,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>ເມື່ອໝາຍເລືອກ, ເປົ້າໝາຍຂອງຊັ້ນນີ້ຈະປິດຢູ່ ແທນທີ່ຈະໃຊ້ແຖວຂອງຊັ້ນພື້ນຖານ.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>ໜ່ວງເວລາ</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>ໄລຍະເວລາທີ່ອິນພຸດຕ້ອງຖືກກົດຄ້າງໄວ້ກ່ອນທີ່ຊັ້ນຈະຕອບສະໜອງ. ສຳລັບໂໝດກົດຄ້າງ ນີ້ແມ່ນການກັນສັນຍານເດັ້ງ. ສຳລັບ ສະຫຼັບ, ລັອກຄ້າງ ແລະ ຕິດຄ້າງ ມັນເຮັດໃຫ້ການສະຫຼັບກາຍເປັນການກົດຄ້າງດົນ: ຊັ້ນຈະປ່ຽນຄັ້ງດຽວເມື່ອການກົດຄ້າງເກີນເວລານີ້, ແລະ ການແຕະທີ່ສັ້ນກວ່າຈະບໍ່ເຮັດຫຍັງ. 0 ຕອບສະໜອງທັນທີ.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>ອິນພຸດທີສອງຂອງການກົດພ້ອມກັນ</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>ຄ່າເກນແກນ</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>ວົນຜ່ານຊັ້ນຕ່າງໆ</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>ສະເພາະເມື່ອຢູ່ໃນຊັ້ນ</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>ຊັ້ນໃດກໍໄດ້</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>ອິນພຸດຈະນັບສະເພາະເມື່ອຊັ້ນທີ່ເລືອກເປີດໃຊ້ຢູ່. ການກວດສອບເກີດຂຶ້ນຕອນອິນພຸດຖືກກົດລົງ ແລະ ມີຜົນຕະຫຼອດການກົດ. ຊັ້ນໃດກໍໄດ້ ໝາຍຄວາມວ່າອິນພຸດນັບສະເໝີ. ກຳນົດທາງອອກຂອງແຕ່ລະຊັ້ນໄວ້ໃນຊັ້ນນັ້ນ ດ້ວຍຕົວເປີດໃຊ້ອື່ນ ຫຼື ມາໂຄຣປ່ຽນຊັ້ນ.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>ປຸ່ມຖັດໄປ</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>ປຸ່ມກ່ອນໜ້າ</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>ວົນກັບ</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>ເມື່ອເປີດ, ການກ້າວຜ່ານຊັ້ນສຸດທ້າຍຈະກັບໄປຊັ້ນທຳອິດ ແລະ ການກ້າວຜ່ານຊັ້ນທຳອິດຈະກັບໄປຊັ້ນສຸດທ້າຍ. ເມື່ອປິດ, ຕຳແໜ່ງຈະຢຸດຢູ່ທີ່ປາຍທັງສອງ.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>ລວມຊັ້ນພື້ນຖານ</value></data>
@@ -2764,18 +2937,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>ການກົດປຸ່ມດຽວ (ຫຼື ທິດທາງ POV) ຈະເປີດໃຊ້ຊັ້ນ.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>ຕ້ອງກົດຄ້າງທັງສອງປຸ່ມພ້ອມກັນເພື່ອເປີດໃຊ້. ຮອງຮັບການກົດພ້ອມກັນຂ້າມອຸປະກອນ.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>ເປີດໃຊ້ໃນຂະນະທີ່ແກນອະນາລັອກເກີນຄ່າເກນ.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>ຊັ້ນຍັງເປີດໃຊ້ຢູ່ຂະນະທີ່ກົດຄ້າງຕົວເປີດໃຊ້. ປ່ອຍເມື່ອທ່ານປ່ອຍມື.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>ໃນຂະນະທີ່ກົດຄ້າງອິນພຸດຂອງມັນ, ການແມັບຂອງຊັ້ນນີ້ຈະແທນທີ່ການແມັບຂອງຊັ້ນພື້ນຖານ.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>ແຕະເພື່ອເປີດໃຊ້. ແຕະອີກຄັ້ງເພື່ອປ່ອຍ. ຊັ້ນຍັງຄົງຢູ່ຕະຫຼອດການກົດຫຼາຍຄັ້ງ.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>ກົດເພື່ອລັອກຊັ້ນນີ້ໃຫ້ເປີດຄ້າງໄວ້. ກົດອີກຄັ້ງເພື່ອປ່ອຍກັບໄປຊັ້ນພື້ນຖານ. ປຸ່ມລັອກຄ້າງອື່ນຈະສະຫຼັບໄປຊັ້ນຂອງມັນເອງ.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>ການກົດແຕ່ລະຄັ້ງຈະເລື່ອນໄປຕາມລາຍການຊັ້ນທີ່ຈັດລຳດັບໄວ້. ວົນກັບໄປຊັ້ນພື້ນຖານ.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>ແຕະຄັ້ງດຽວເພື່ອເປີດໃຊ້. ການກົດປຸ່ມທີ່ແມັບໄວ້ຄັ້ງຖັດໄປຈະເຮັດວຽກໃນຊັ້ນນີ້, ແລ້ວປ່ອຍອັດຕະໂນມັດ.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>ບໍ່ມີປຸ່ມຂອງຕົວເອງ. ເພີ່ມມັນເຂົ້າໃນຄິວຂອງການຄວບຄຸມແບບວົນ, ແລ້ວການວົນຈະມາຮອດມັນ.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>ສືບທອດເປົ້າໝາຍທີ່ບໍ່ໄດ້ແມັບຈາກຊັ້ນພື້ນຖານ</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>ເຮັດວຽກເມື່ອປ່ອຍ</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ລໍຖ້າຈົນກວ່າປຸ່ມຖືກປ່ອຍ ກ່ອນທີ່ຕົວເປີດໃຊ້ນີ້ຈະເຮັດວຽກ. ຖ້າຕັ້ງການໜ່ວງເວລາກົດຄ້າງໄວ້, ການກົດຕ້ອງດົນເທົ່ານັ້ນ ການປ່ອຍຈຶ່ງຈະນັບ.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ໃຫ້ການແມັບຂອງຕົວເປີດໃຊ້ເຮັດວຽກນຳ</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ເມື່ອໝາຍເລືອກ, ປຸ່ມຕົວເປີດໃຊ້ຍັງຂັບແຖວທີ່ໃຊ້ມັນເປັນແຫຼ່ງ. ການກົດຄັ້ງດຽວຈະທັງປ່ຽນຊັ້ນ ແລະ ເຮັດວຽກຕາມການແມັບຂອງປຸ່ມເອງ. ເມື່ອບໍ່ໝາຍເລືອກ (ຄ່າເລີ່ມຕົ້ນ), ການກົດຕົວເປີດໃຊ້ຈະໃຊ້ສຳລັບການປ່ຽນຊັ້ນເທົ່ານັ້ນ.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ເມື່ອໝາຍເລືອກ, ເປົ້າໝາຍທີ່ຊັ້ນນີ້ບໍ່ໄດ້ແມັບໄວ້ໂດຍກົງຈະໃຊ້ຄ່າຈາກຊັ້ນພື້ນຖານ. ເມື່ອບໍ່ໝາຍເລືອກ (ຄ່າເລີ່ມຕົ້ນ), ຊັ້ນຈະແທນທີ່ຊັ້ນພື້ນຖານທັງໝົດ ແລະ ເປົ້າໝາຍທີ່ບໍ່ໄດ້ແມັບຈະປິດຢູ່.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ເມື່ອເລືອກ ໃຊ້ຕາມຊັ້ນພື້ນຖານ, ປຸ່ມທີ່ຊັ້ນນີ້ບໍ່ໄດ້ແມັບຈະໃຊ້ການແມັບຂອງຊັ້ນພື້ນຖານ. ເມື່ອເລືອກ ບໍ່ເຮັດຫຍັງ, ຊັ້ນຈະແທນທີ່ຊັ້ນພື້ນຖານທັງໝົດ ແລະ ປຸ່ມເຫຼົ່ານັ້ນຈະປິດຢູ່.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ຂອບເຂດການໝຸນ</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ຕັ້ງຂອບເຂດການໝຸນ</value></data>
@@ -2978,15 +3150,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ອຸປະກອນທີ່ເລືອກບໍ່ມີລຳໂພງໃນຕົວ. ສຽງມາໂຄຣຂອງຕົວຄວບຄຸມນີ້ຈະຫຼິ້ນໃນຂາອອກຄ່າເລີ່ມຕົ້ນຂອງລະບົບ.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ຄືນຄ່າຂາອອກສຽງ</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>ຊຸດທົດສອບ DualSense ໃນບຣາວເຊີ ໂດຍ Xuezhou Dai (daidr): ເອກະສານອ້າງອີງສຳລັບໂຄງສ້າງ CRC ຂອງລາຍງານຟີເຈີຂອງ Sony ແລະ ຄຳສັ່ງທົດສອບເຟີມແວ ທີ່ PadForge ສົ່ງຕໍ່ຈາກຕົວຄວບຄຸມສະເໝືອນໄປຫາຕົວຄວບຄຸມຕົວຈິງ. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>ຊຸດທົດສອບ DualSense ໃນບຣາວເຊີ ໂດຍ Xuezhou Dai (daidr): ເອກະສານອ້າງອີງສຳລັບໂຄງສ້າງ CRC ຂອງລາຍງານຟີເຈີຂອງ Sony ແລະ ຄຳສັ່ງທົດສອບເຟີມແວ ທີ່ PadForge ສົ່ງຕໍ່ຈາກຕົວຄວບຄຸມສະເໝືອນໄປຫາຕົວຄວບຄຸມຕົວຈິງ.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>ເອກະສານອ້າງອີງສຽງ Bluetooth ຂອງ DualShock 4 ໂດຍ nefarius: ໂຄງສ້າງລາຍງານສຳລັບການສະຕຣີມລຳໂພງ DS4 ຂອງ PadForge. ຕົວເຂົ້າລະຫັດ SBC ເປັນການຂຽນ C# ຕົ້ນສະບັບຈາກຂໍ້ກຳນົດ Bluetooth A2DP. ພ້ອມເອກະສານໂປຣໂຕຄອນຈາກ ds4mac ຂອງ khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>ເອກະສານອ້າງອີງສຽງ Bluetooth ຂອງ DualShock 4 ໂດຍ nefarius: ໂຄງສ້າງລາຍງານສຳລັບການສະຕຣີມລຳໂພງ DS4 ຂອງ PadForge. ຕົວເຂົ້າລະຫັດ SBC ເປັນການຂຽນ C# ຕົ້ນສະບັບຈາກຂໍ້ກຳນົດ Bluetooth A2DP. ພ້ອມເອກະສານໂປຣໂຕຄອນຈາກ ds4mac ຂອງ khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>ສົ່ງອອກ…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>ນຳເຂົ້າ…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>ສົ່ງອອກໂປຣໄຟລ໌ “{0}” ແລ້ວ.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>ນຳເຂົ້າໂປຣໄຟລ໌ “{0}” ແລ້ວ (ລົງທະບຽນແພັກເກດສຽງ {1} ອັນ).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ໄຟລ໌ນີ້ບໍ່ແມ່ນໂປຣໄຟລ໌ PadForge ທີ່ອ່ານໄດ້.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>ເລືອກສຽງຈາກ {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ແພັກເກດສຽງ</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ໄຟລ໌ zip ຂອງສຽງສຳລັບມາໂຄຣສຽງ</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ແພັກເກດສຽງແມ່ນໄຟລ໌ zip ໜຶ່ງໄຟລ໌ທີ່ບັນຈຸສຽງ ແລະ ມີນາມສະກຸນ .pfsounds. ເພີ່ມມັນໄດ້ທີ່ນີ້ ແລ້ວເລືອກສຽງຂອງມັນໃນມາໂຄຣສຽງໃດກໍໄດ້. PadForge ອ່ານໂດຍກົງຈາກໄຟລ໌ ແລະ ບໍ່ເຄີຍແຕກໄຟລ໌ອອກ. ເກັບແພັກເກດໄວ້ຂ້າງ PadForge.exe ເພື່ອໃຫ້ພົກພາໄດ້.</value></data>
@@ -3030,20 +3201,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>ການປ້ອງກັນຕົວຕົນ</value>
+    <value>ຕົວຕົນການຈັບຄູ່</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>ວິທີເກັບຕົວຕົນການຈັບຄູ່ຂອງ PC ນີ້. ເລືອກໂໝດພົກພາ ເພື່ອນຳການຈັບຄູ່ຂອງທ່ານໄປນຳແຟລັດໄດຣຟ໌ລະຫວ່າງເຄື່ອງ.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>ຕັ້ງຊື່ PC ນີ້</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PC ໃກ້ຄຽງ (ຍັງບໍ່ໄດ້ຈັບຄູ່)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>ຄືນຄ່າ</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>ລະຫັດຜ່ານການເຊື່ອມຕໍ່ທາງໄກ</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>ທັດແພດ PadForge</value>
@@ -3075,9 +3239,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>PC ທີ່ຈັບຄູ່ແລ້ວ</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>ອອນລາຍ</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>ອອບລາຍ</value>
   </data>
@@ -3094,7 +3255,7 @@
     <value>ປົດລັອກຕົວຕົນປັດຈຸບັນ ກ່ອນປ່ຽນການປ້ອງກັນຂອງມັນ.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>ຕັ້ງລະຫັດຜ່ານເພື່ອປ້ອງກັນຕົວຕົນແບບພົກພາຂອງທ່ານ. ທ່ານຈະໃສ່ມັນເພື່ອປົດລັອກການເຊື່ອມຕໍ່ທາງໄກໃນແຕ່ລະ PC.</value>
+    <value>ລະຫັດຜ່ານປ້ອງກັນຕົວຕົນການຈັບຄູ່ຂອງ PC ນີ້.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>ອັບເດດການປ້ອງກັນຕົວຕົນແລ້ວ.</value>
@@ -3114,7 +3275,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>ກຳລັງເຊື່ອມຕໍ່ຫາ {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຄືນອັດຕະໂນມັດ</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ຄືນອັດຕະໂນມັດ</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>ກຳລັງຟັງຢູ່ທີ່ {0}</value>
   </data>
@@ -3133,65 +3294,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>ເຄື່ອງ {0} ເຊື່ອມຕໍ່ແລ້ວ, {1} ອຸປະກອນ</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>ເລືອກສຽງຈາກແພັກເກດທີ່ເພີ່ມໄວ້ ຫຼື ເລືອກເບິ່ງໄຟລ໌.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>ເລືອກເບິ່ງໄຟລ໌…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>ເລືອກສຽງ</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>ສຽງຈະຫຼິ້ນຜ່ານລຳໂພງຂອງຕົວຄວບຄຸມ ຫຼື ຂອງ PC ຖ້າຕົວຄວບຄຸມບໍ່ມີລຳໂພງ.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>ໃຊ້ສຽງນີ້</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>ຫຼິ້ນ {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>ການຈັບສຽງແບບ loopback ຂອງ WASAPI ສຳລັບການສະທ້ອນສຽງໄປຫາຕົວຄວບຄຸມ ແລະ ການສັ່ນທຣິກເກີຕາມສຽງເບສ. NAudio.Midi ເຊິ່ງ PadForge ບໍ່ໄດ້ແຈກຢາຍມານຳ ຍັງເປັນເອກະສານອ້າງອີງສຳລັບການປະກາດ WinMM ແລະ ລຳດັບພອດຂອງ API MIDI ແບບເກົ່າ, ສຳລັບກົດທີ່ວ່າ Note On ທີ່ມີ velocity 0 ຄື Note Off, ແລະ ສຳລັບຕົວຄວບຄຸມແບບເປີດ/ປິດ ເຊັ່ນ sustain. ໂດຍ Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>ການຈັບສຽງແບບ loopback ຂອງ WASAPI ສຳລັບການສະທ້ອນສຽງໄປຫາຕົວຄວບຄຸມ ແລະ ການສັ່ນທຣິກເກີຕາມສຽງເບສ. NAudio.Midi ເຊິ່ງ PadForge ບໍ່ໄດ້ແຈກຢາຍມານຳ ຍັງເປັນເອກະສານອ້າງອີງສຳລັບການປະກາດ WinMM ແລະ ລຳດັບພອດຂອງ API MIDI ແບບເກົ່າ, ສຳລັບກົດທີ່ວ່າ Note On ທີ່ມີ velocity 0 ຄື Note Off, ແລະ ສຳລັບຕົວຄວບຄຸມແບບເປີດ/ປິດ ເຊັ່ນ sustain. ໂດຍ Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>ຕົວຮັບຮູ້ສຽງເວົ້າແບບອອບລາຍທີ່ຟັງວະລີຂອງມາໂຄຣສຽງເວົ້າ. ໂດຍ Alpha Cephei. ໂມເດລມາພ້ອມຢູ່ໃນ PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>ຕົວຮັບຮູ້ສຽງເວົ້າແບບອອບລາຍທີ່ຟັງວະລີຂອງມາໂຄຣສຽງເວົ້າ. ໂດຍ Alpha Cephei. ໂມເດລມາພ້ອມຢູ່ໃນ PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>ການເຂົ້າລະຫັດສຳລັບການຈັບຄູ່ ແລະ ການຮັບສົ່ງຂໍ້ມູນຂອງການເຊື່ອມຕໍ່ທາງໄກ (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, ໃບອະນຸຍາດແບບ MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>ການເຂົ້າລະຫັດສຳລັບການຈັບຄູ່ ແລະ ການຮັບສົ່ງຂໍ້ມູນຂອງການເຊື່ອມຕໍ່ທາງໄກ (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>ໄດຣເວີໂປຣໄຟລ໌ Bluetooth ແລະ ໄດຣເວີກັ່ນຕອງ PSM ທີ່ມາພ້ອມ ໂດຍ nefarius ເຊິ່ງໃຫ້ DualShock 3 ເຊື່ອມຕໍ່ຜ່ານວິທະຍຸທີ່ໃຊ້ຮ່ວມກັນ. ຕິດຕັ້ງໃນແອັບຕອນຈັບຄູ່. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>ໄດຣເວີໂປຣໄຟລ໌ Bluetooth ແລະ ໄດຣເວີກັ່ນຕອງ PSM ທີ່ມາພ້ອມ ໂດຍ nefarius ເຊິ່ງໃຫ້ DualShock 3 ເຊື່ອມຕໍ່ຜ່ານວິທະຍຸທີ່ໃຊ້ຮ່ວມກັນ. ຕິດຕັ້ງໃນແອັບຕອນຈັບຄູ່.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>ເອກະສານອ້າງອີງໂປຣໂຕຄອນ DualShock 3 ໂດຍ Benjamin Höglinger-Stelzer: ລາຍງານຟີເຈີ sixpair, ແມ່ແບບລາຍງານຂາອອກ Bluetooth, ລຳດັບການເປີດໃຊ້, ຕາຕະລາງແບັດເຕີຣີ. ການຂຽນຂອງ PadForge ເປັນ C# ຕົ້ນສະບັບ. ຕົວຄວບຄຸມ DualShock 3 (SIXAXIS): Full ຂອງ HIDMaestro ໃຊ້ຕົວອະທິບາຍລາຍງານໂໝດ SXS ຂອງ DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>ເອກະສານອ້າງອີງໂປຣໂຕຄອນ DualShock 3 ໂດຍ Benjamin Höglinger-Stelzer: ລາຍງານຟີເຈີ sixpair, ແມ່ແບບລາຍງານຂາອອກ Bluetooth, ລຳດັບການເປີດໃຊ້, ຕາຕະລາງແບັດເຕີຣີ. ການຂຽນຂອງ PadForge ເປັນ C# ຕົ້ນສະບັບ. ຕົວຄວບຄຸມ DualShock 3 (SIXAXIS): Full ຂອງ HIDMaestro ໃຊ້ຕົວອະທິບາຍລາຍງານໂໝດ SXS ຂອງ DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>ການຕິດຕັ້ງເຂົ້າ driver store, ການລົງທະບຽນໄດຣເວີກັ່ນຕອງຄລາສ Bluetooth, ແລະ ການເລີ່ມພອດ USB ໃໝ່ ສຳລັບການຕັ້ງຄ່າ BthPS3 ໃນແອັບ ແລະ ສຳລັບການປ່ອຍຕົວຄວບຄຸມ USB ທີ່ຖືກເຊື່ອງ, ໂດຍ nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>ການຕິດຕັ້ງເຂົ້າ driver store, ການລົງທະບຽນໄດຣເວີກັ່ນຕອງຄລາສ Bluetooth, ແລະ ການເລີ່ມພອດ USB ໃໝ່ ສຳລັບການຕັ້ງຄ່າ BthPS3 ໃນແອັບ ແລະ ສຳລັບການປ່ອຍຕົວຄວບຄຸມ USB ທີ່ຖືກເຊື່ອງ, ໂດຍ nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>ການເຂົ້າເຖິງ USB ສຳລັບໄດຣເວີແບບມີສາຍຂອງ Switch 2 Pro ແລະ ຕົວຄວບຄຸມທີ່ PadForge ຜູກກັບ WinUSB, ແຈກຢາຍເປັນ libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>ການເຂົ້າເຖິງ USB ສຳລັບໄດຣເວີແບບມີສາຍຂອງ Switch 2 Pro ແລະ ຕົວຄວບຄຸມທີ່ PadForge ຜູກກັບ WinUSB, ແຈກຢາຍເປັນ libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>ຈອຍສະຕິກແບບສຳຜັດໃນຕົວຄວບຄຸມເວັບເທິງໂທລະສັບ, ໂດຍ Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>ຈອຍສະຕິກແບບສຳຜັດໃນຕົວຄວບຄຸມເວັບເທິງໂທລະສັບ, ໂດຍ Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>ຖານຂໍ້ມູນການແມັບເກມແພດຂອງຊຸມຊົນ ທີ່ການແມັບທີ່ມາພ້ອມ PadForge ຕໍ່ຍອດ. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>ຖານຂໍ້ມູນການແມັບເກມແພດຂອງຊຸມຊົນ ທີ່ການແມັບທີ່ມາພ້ອມ PadForge ຕໍ່ຍອດ.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>ການຄົ້ນຄວ້າໄຟ LED ຂອງປຸ່ມ Guide ຂອງ Xbox: ໂຄງສ້າງແພັກເກັດ XboxGIP ແລະ ລຳດັບການຄົ້ນຫາ, ໂດຍ Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>ການຄົ້ນຄວ້າໄຟ LED ຂອງປຸ່ມ Guide ຂອງ Xbox: ໂຄງສ້າງແພັກເກັດ XboxGIP ແລະ ລຳດັບການຄົ້ນຫາ, ໂດຍ Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>ຄະນິດສາດການບັງຄັບລ້ຽວແບບໝຸນສະສົມ ແລະ ການອຽງ, ໂດຍ JibbSmart ແລະ Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>ຄະນິດສາດການບັງຄັບລ້ຽວແບບໝຸນສະສົມ ແລະ ການອຽງ, ໂດຍ JibbSmart ແລະ Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ການແປງໄຈໂຣໃນພື້ນທີ່ຂອງຜູ້ຫຼິ້ນ ແລະ ພື້ນທີ່ໂລກ, ໂດຍ JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ການແປງໄຈໂຣໃນພື້ນທີ່ຂອງຜູ້ຫຼິ້ນ ແລະ ພື້ນທີ່ໂລກ, ໂດຍ JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານແຮັບຕິກຂອງ Steam Controller (2015) ແລະ ຄະນິດສາດຄາບຂອງໂນດ, ໂດຍ Pila ແລະ Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານແຮັບຕິກຂອງ Steam Controller (2015) ແລະ ຄະນິດສາດຄາບຂອງໂນດ, ໂດຍ Pila ແລະ Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງແຮັບຕິກແບບໂທນ LFO ຂອງ Steam Controller 2026 ແລະ Steam Deck, ໂດຍ Pila, Crazy ແລະ AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງແຮັບຕິກແບບໂທນ LFO ຂອງ Steam Controller 2026 ແລະ Steam Deck, ໂດຍ Pila, Crazy ແລະ AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>ຄວາມໝາຍຂອງການລ້າງ SOCD ສຳລັບໂໝດ Snap Tap, ໂດຍ valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>ຄວາມໝາຍຂອງການລ້າງ SOCD ສຳລັບໂໝດ Snap Tap, ໂດຍ valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>ໄຄລເອັນເຄືອຂ່າຍ Steam ທີ່ດຶງການຕັ້ງຄ່າຕົວຄວບຄຸມຈາກ Steam Workshop ຜ່ານເຊດຊັນທີ່ບໍ່ລະບຸຕົວຕົນ, ໂດຍ Ryan Stecker ແລະ SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>ຕົວແປງຂໍ້ມູນ Protocol Buffers ທີ່ SteamKit2 ໃຊ້ສຳລັບໂປຣໂຕຄອນຂອງ Steam, ໂດຍ Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>ຕົວແປງຂໍ້ມູນ Protocol Buffers ທີ່ SteamKit2 ໃຊ້ສຳລັບໂປຣໂຕຄອນຂອງ Steam, ໂດຍ Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ການຖອດການບີບອັດ Zstandard ທີ່ SteamKit2 ໃຊ້ສຳລັບກ້ອນຂໍ້ມູນ depot ຂອງ Steam, ເປັນການພອດ C# ຂອງໄລບຣາຣີ zstd ໂດຍ Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ການຖອດການບີບອັດ Zstandard ທີ່ SteamKit2 ໃຊ້ສຳລັບກ້ອນຂໍ້ມູນ depot ຂອງ Steam, ເປັນການພອດ C# ຂອງໄລບຣາຣີ zstd ໂດຍ Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>ເອກະສານສຳລັບຂັ້ນຕອນການຈັບຄູ່ Wii, ADPCM ຂອງລຳໂພງ, ທິດທາງຂອງ Wii Remote ແບບນອນ ແລະ ແບບຕັ້ງ, ແບບຈຳລອງຂອບສະຕິກ ແລະ ຮູບແບບການເກັບຂໍ້ມູນຂອງມັນ, ແລະ ຮູບແບບແກນໄຈໂຣ. GPL-2.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ແຈກຢາຍມານຳ.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>ເອກະສານສຳລັບຂັ້ນຕອນການຈັບຄູ່ Wii, ADPCM ຂອງລຳໂພງ, ທິດທາງຂອງ Wii Remote ແບບນອນ ແລະ ແບບຕັ້ງ, ແບບຈຳລອງຂອບສະຕິກ ແລະ ຮູບແບບການເກັບຂໍ້ມູນຂອງມັນ, ແລະ ຮູບແບບແກນໄຈໂຣ. ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ແຈກຢາຍມານຳ.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>ເອກະສານພຶດຕິກຳຂອງ DualShock: ການຕັດການເຊື່ອມຕໍ່ເມື່ອບໍ່ໄດ້ໃຊ້, ຂອບເຂດທັດແພດ, ການຖອດລະຫັດແບັດເຕີຣີ, IOCTL ຕັດການເຊື່ອມຕໍ່ Bluetooth, ບິດໂໝດການສັ່ນຂອງ DualSense, ເສັ້ນໂຄ້ງການສັ່ນລົບກວນຂອງໄຈໂຣ, ສະເກລສະຕິກເປັນເມົ້າ, ແລະ ຄ່າຕັ້ງຕົ້ນ CRC ຂອງລາຍງານຂາອອກ Bluetooth. ຕາຕະລາງປຸ່ມຂອງແປ້ນພິມສະເໝືອນຂອງມັນເປັນແນວທາງໃຫ້ຕາຕະລາງຂອງ PadForge. GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ແຈກຢາຍມານຳ.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>ເອກະສານພຶດຕິກຳຂອງ DualShock: ການຕັດການເຊື່ອມຕໍ່ເມື່ອບໍ່ໄດ້ໃຊ້, ຂອບເຂດທັດແພດ, ການຖອດລະຫັດແບັດເຕີຣີ, IOCTL ຕັດການເຊື່ອມຕໍ່ Bluetooth, ບິດໂໝດການສັ່ນຂອງ DualSense, ເສັ້ນໂຄ້ງການສັ່ນລົບກວນຂອງໄຈໂຣ, ສະເກລສະຕິກເປັນເມົ້າ, ແລະ ຄ່າຕັ້ງຕົ້ນ CRC ຂອງລາຍງານຂາອອກ Bluetooth. ຕາຕະລາງປຸ່ມຂອງແປ້ນພິມສະເໝືອນຂອງມັນເປັນແນວທາງໃຫ້ຕາຕະລາງຂອງ PadForge. ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ແຈກຢາຍມານຳ.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>ເອກະສານຄຳສັ່ງ LED ຂອງ GIP ທີ່ຢືນຢັນ xbledctl. GPL-2.0-or-later, ເອກະສານເທົ່ານັ້ນ.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>ເອກະສານຄຳສັ່ງ LED ຂອງ GIP ທີ່ຢືນຢັນ xbledctl. ເອກະສານເທົ່ານັ້ນ.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>ເອກະສານພຶດຕິກຳຂອງກ້ອງ IR ຂອງ Wii ແລະ Balance Board, ໂດຍ Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>ເອກະສານພຶດຕິກຳຂອງກ້ອງ IR ຂອງ Wii ແລະ Balance Board, ໂດຍ Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>ເອກະສານຮູບແບບຂໍ້ມູນການສັ່ນ HD ຂອງ Joy-Con, ໂດຍ Sergey004. ອ່ານເພື່ອຂໍ້ເທັດຈິງດ້ານໂປຣໂຕຄອນເທົ່ານັ້ນ.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>ຈັບຄູ່</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>ຈັບຄູ່ຕົວຄວບຄຸມ</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>ຈັບຄູ່ຕົວຄວບຄຸມ</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>ຈັບຄູ່ Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>ເປີດຝາປິດແບັດເຕີຣີ ແລະ ກົດປຸ່ມ SYNC ສີແດງ.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>ວາງຣີໂໝດໄວ້ໃກ້ PC ນີ້ໃນຂະນະທີ່ໄຟຂອງມັນກະພິບ.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>ຈັບຄູ່ DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>ຈັບຄູ່ຕົວຄວບຄຸມ Move ຫຼື Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>ເພີ່ມຕົວຄວບຄຸມພອດອະນຸກົມ</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>ເພີ່ມຣີໂໝດ DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>ຕະກູນຕົວຄວບຄຸມ</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>ເປີດຝາປິດແບັດເຕີຣີ ແລ້ວກົດປຸ່ມ SYNC ສີແດງ. ໃຫ້ PadForge ຊອກຫາຕໍ່ໄປຈົນກວ່າຕົວຄວບຄຸມຂອງທ່ານຈະປາກົດ.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>ຈັບຄູ່ຊົ່ວຄາວ (ກົດຄ້າງ 1 ແລະ 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>ຈັບຄູ່</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>ກຳລັງຊອກຫາ. ກົດປຸ່ມ SYNC ດຽວນີ້.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>ກຳລັງຊອກຫາຣີໂໝດ.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>ຕົວຄວບຄຸມທີ່ພົບ</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>ຍັງບໍ່ພົບຕົວຄວບຄຸມ. ກວດໃຫ້ແນ່ໃຈວ່າໄຟສີຟ້າກຳລັງກະພິບ.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>ຈັບຄູ່ {0} ແລ້ວ. ມັນຈະປາກົດໃນລາຍການອຸປະກອນຂອງທ່ານ.</value></data>
@@ -3201,7 +3367,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>ແລ້ວໆ</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>OpenVR API (BSD 3-Clause) ສຳລັບໄຄລເອັນຂອງ Valve: ແວ່ນ VR ແລະ ຕົວຄວບຄຸມການເຄື່ອນໄຫວເປັນແຫຼ່ງອິນພຸດ. ລັນທາມຖືກໂຫຼດຈາກການຕິດຕັ້ງ SteamVR ຂອງທ່ານເອງ.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>OpenVR API ສຳລັບໄຄລເອັນຂອງ Valve: ແວ່ນ VR ແລະ ຕົວຄວບຄຸມການເຄື່ອນໄຫວເປັນແຫຼ່ງອິນພຸດ. ລັນທາມຖືກໂຫຼດຈາກການຕິດຕັ້ງ SteamVR ຂອງທ່ານເອງ.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ໄດຣເວີເຊື່ອມຕໍ່ແລ້ວ</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>ກຳລັງເຮັດວຽກ, ຕົວຄວບຄຸມພ້ອມໃຊ້</value></data>
@@ -3239,13 +3405,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ການຈັບຄູ່ບໍ່ສຳເລັດ. ຂັ້ນຕອນທີ່ລົ້ມເຫຼວສະແດງຢູ່ດ້ານເທິງ.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>ປິດ</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>ແທັກ NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>ລົງທະບຽນແທັກ</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>ແຕະແທັກໃສ່ເຄື່ອງອ່ານເພື່ອອ່ານ UID ຂອງມັນ.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ກຳລັງລໍຖ້າ)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>ຊື່:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>ແຕະແທັກໃສ່ເຄື່ອງອ່ານ ແລະ ຕັ້ງຊື່ມັນ. ມັນຈະກາຍເປັນປຸ່ມທີ່ທ່ານແມັບໄດ້.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>ແຕະແທັກໃສ່ເຄື່ອງອ່ານ.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ຕັ້ງຊື່ແທັກນີ້</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>ລົງທະບຽນ</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ແທັກທີ່ລົງທະບຽນແລ້ວ</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ລົງທະບຽນແລ້ວ</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>ບໍ່ພົບເຄື່ອງອ່ານ NFC. ເຊື່ອມຕໍ່ເຄື່ອງອ່ານ PC/SC ແລ້ວເປີດໃໝ່.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ອ່ານແທັກແລ້ວ. ໃສ່ຊື່ ແລ້ວຄລິກ ລົງທະບຽນ. ແຕະແທັກອື່ນເພື່ອແທນທີ່ມັນ.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>ລົງທະບຽນ “{0}” ແລ້ວ. ແຕະແທັກອື່ນເພື່ອເພີ່ມອີກ.</value></data>
@@ -3323,22 +3488,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>ບໍ່ສາມາດເປີດໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack ໄດ້ເຊັ່ນກັນ.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>ຮຽນຮູ້ / ຈັດການປຸ່ມທີ່ເຊື່ອງຢູ່</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>ປຸ່ມທີ່ເຊື່ອງຢູ່</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>ຮຽນຮູ້ປຸ່ມ</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>ກົດປຸ່ມທີ່ເຊື່ອງຢູ່ໜຶ່ງເທື່ອເມື່ອຖືກຂໍ. PadForge ຈະເຝົ້າເບິ່ງແປ້ນພິມ, ເມົ້າ, ທຸກລາຍງານຂອງຜູ້ຜະລິດ ແລະ ທຸກເຫດການຂອງລະບົບໃນເຄື່ອງນີ້, ແລ້ວບັນທຶກອັນໃດກໍຕາມທີ່ປຸ່ມນັ້ນປ່ຽນ.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>ເຄື່ອງ:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>ເລີ່ມຮຽນຮູ້</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>ສອນ PadForge ໃຫ້ຮູ້ຈັກປຸ່ມທີ່ Windows ບໍ່ສະແດງເປັນຕົວຄວບຄຸມ. ກົດມັນເມື່ອຖືກຂໍ.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>ປ່ອຍມື. ກຳລັງອ່ານສະຖານະວ່າງ…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>ກົດປຸ່ມທີ່ເຊື່ອງຢູ່ດຽວນີ້, ແລ້ວປ່ອຍ…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ລໍຖ້າບຶດໜຶ່ງ…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>ບໍ່ພົບການປ່ຽນແປງ. ກົດປຸ່ມໃນຊ່ວງເວລາທີ່ເນັ້ນໄວ້ ແລ້ວລອງໃໝ່.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>ກົດປຸ່ມຄ້າງໄວ້ດຽວນີ້.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ປ່ອຍປຸ່ມ.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>ຂັ້ນຕອນ {0} ຈາກ {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>ບໍ່ພົບການປ່ຽນແປງ. ເລືອກ ເລີ່ມໃໝ່, ແລ້ວກົດປຸ່ມຄ້າງໄວ້ເມື່ອຖືກຂໍ.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>ໄດ້ເຝົ້າເບິ່ງ {0} ລາຍງານຂອງຜູ້ຜະລິດ ແລະ {1} ປະເພດເຫດການ. ໃນລະຫວ່າງການກົດ: {2} ລາຍງານ, {3} ເຫດການ.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ຈັບປຸ່ມໄດ້ແລ້ວ. ໃສ່ຊື່ ແລ້ວຄລິກ ລົງທະບຽນ.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ແຫຼ່ງ:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>ຊື່:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ແຫຼ່ງ</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>ຕັ້ງຊື່ປຸ່ມນີ້</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>ລົງທະບຽນ</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>ປຸ່ມທີ່ຮຽນຮູ້ແລ້ວ</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>ເລີ່ມໃໝ່</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>ຍັງບໍ່ມີປຸ່ມທີ່ຮຽນຮູ້.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>ລົງທະບຽນ “{0}” ແລ້ວ. ເລີ່ມໃໝ່ເພື່ອຮຽນຮູ້ປຸ່ມອື່ນ.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>ຮຽນຮູ້ໃນ {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>ລົງທະບຽນ “{0}” ແລ້ວ. ເລືອກ ເລີ່ມໃໝ່ ເພື່ອຮຽນຮູ້ປຸ່ມອື່ນ.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>ປຸ່ມ: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>ປຸ່ມທີ່ເຊື່ອງຢູ່ຖືກປິດ. ເປີດໃຊ້ ປຸ່ມ PC ແບບພົກພາ ໃນການຕັ້ງຄ່າກ່ອນ.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} ກຳລັງເຮັດວຽກຢູ່. ມັນຍັງຕອບສະໜອງຕໍ່ປຸ່ມເຫຼົ່ານີ້ຈົນກວ່າທ່ານຈະຢຸດມັນ.</value></data>
@@ -3486,6 +3651,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ທ່ອງເບິ່ງຄອນຟິກຕົວຄວບຄຸມ Steam Input ທີ່ຊຸມຊົນສ້າງ ແລະ ແປງພວກມັນເປັນໂປຣໄຟລ໌ PadForge. PadForge ເຊື່ອມຕໍ່ກັບເຊີບເວີຂອງ Steam ໂດຍກົງ ສະເພາະເມື່ອທ່ານຄົ້ນຫາ, ເປີດຄອນຟິກ ຫຼື ກວດຫາອັບເດດຂອງຄອນຟິກທີ່ນຳເຂົ້າແລ້ວ. ມັນສົ່ງຂໍ້ຄວາມຄົ້ນຫາຂອງທ່ານ, ໄອດີຂອງເກມ, ຄອນຟິກ ແລະ ຜູ້ສ້າງທີ່ກ່ຽວຂ້ອງ, ແລະ ເວີຊັນຂອງ PadForge. ການເຂົ້າສູ່ລະບົບ Steam ແບບບໍ່ລະບຸຕົວຕົນຍັງສົ່ງເວີຊັນ Windows ຂອງທ່ານ ແລະ ໄອດີເຄື່ອງທີ່ສ້າງຈາກແຮຊຂອງ ID ການຕິດຕັ້ງ Windows, ທີ່ຢູ່ຂອງອະແດັບເຕີເຄືອຂ່າຍ ແລະ ໝາຍເລກຊີຣຽວຂອງດິສບູດ. ບໍ່ມີການເກັບຂໍ້ມູນການໃຊ້ງານ, ບໍ່ມີບໍລິການຂອງບຸກຄົນທີສາມ, ບໍ່ຕ້ອງໃຊ້ບັນຊີ Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ເຊື່ອມຕໍ່ກັບເຊີບເວີຂອງ Steam ສະເພາະເມື່ອທ່ານຄົ້ນຫາ, ເປີດຄອນຟິກ ຫຼື ກວດຄອນຟິກທີ່ນຳເຂົ້າເພື່ອຫາອັບເດດ. ບໍ່ມີເທເລເມທຣີ, ບໍ່ຕ້ອງມີບັນຊີ Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>ສິ່ງທີ່ຖືກສົ່ງ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ເປີດໃຊ້ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ສະແດງຄອນຟິກເວີກຊັອບລຸ້ນເກົ່າ</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>ຄອນຟິກເກົ່າບາງອັນບໍ່ມີໄຟລ໌ໃຫ້ດາວໂຫຼດໃນ CDN ຂອງ Steam. PadForge ລາຍຊື່ພວກມັນພ້ອມປ້າຍ ລຸ້ນເກົ່າ ແລະ ອ່ານສຳເນົາທີ່ Steam ເກັບໄວ້ເມື່ອທ່ານສະໝັກຕິດຕາມ. ກ່ອນນັ້ນ, ມັນຈະສະເໜີໃຫ້ເປີດຄອນຟິກໃນເວີກຊັອບ Steam.</value></data>
@@ -3493,18 +3660,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>ກວດຫາອັບເດດຂອງໂປຣໄຟລ໌ທີ່ນຳເຂົ້າ</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>ລຶບແຄຊເວີກຊັອບແລ້ວ</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>ທ່ອງເບິ່ງຄອນຟິກຈາກຊຸມຊົນ</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>ທ່ອງເບິ່ງຄອນຟິກຈາກຊຸມຊົນ</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>ໂປຣໄຟລ໌ · ເວີກຊັອບ Steam</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>ຮັບໂປຣໄຟລ໌</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>ເລີ່ມຈາກໂປຣໄຟລ໌ສຳເລັດຮູບ, ຄອນຟິກຈາກຊຸມຊົນ ຫຼື ໄຟລ໌ຈາກເຄື່ອງມືອື່ນ.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>ເລີ່ມຕົ້ນ</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>ຊຸມຊົນ</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>ນຳເຂົ້າໄຟລ໌</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>ການບັນທຶກຈະເພີ່ມໂປຣໄຟລ໌ທຳມະດາທີ່ທ່ານແກ້ໄຂໄດ້.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>ເຕົາຫຼອມຍັງເຢັນ</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>ການທ່ອງເບິ່ງຄອນຟິກຈາກຊຸມຊົນຈະເຊື່ອມຕໍ່ PadForge ກັບ Steam ໂດຍກົງ ສະເພາະເມື່ອທ່ານຄົ້ນຫາ, ບໍ່ເຄີຍເຊື່ອມຕໍ່ຕອນເລີ່ມໂປຣແກຣມ.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>ເປີດໃຊ້ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ຄົ້ນຫາເກມ</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} ເກມ</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>ເກມ</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>ບໍ່ພົບເກມໃນຮ້ານ Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>ກຳລັງຄົ້ນຫາໃນ Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>ກຳລັງອ່ານຄອນຟິກຈາກ Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>ກຳລັງອ່ານຄອນຟິກຈາກ Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>ຮຽງຕາມຄະແນນ</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>ຮຽງຕາມ</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>ຄົ້ນຫາໃນຄອນຟິກເຫຼົ່ານີ້</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>ຄະແນນ</value></data>
@@ -3518,7 +3688,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>ພົບ {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>ສະແດງ {0} ຈາກ {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} ຄອນຟິກ</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>ຄອນຟິກຈາກຊຸມຊົນ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>ຮອງຮັບຕົວຄວບຄຸມເຕັມຮູບແບບ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>ຮອງຮັບຕົວຄວບຄຸມບາງສ່ວນ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ຄົ້ນຫາເກມ</value></data>
@@ -3537,8 +3706,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>ລອງໃໝ່</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>ຄອນຟິກຍຸກປີ 2016 ນີ້ມີກ່ອນ CDN ຄອນຟິກຂອງ Steam. ສະໝັກຕິດຕາມມັນໃນ Steam, ແລ້ວ PadForge ຈະອ່ານມັນຈາກໂຟລເດີ Steam ຂອງທ່ານ.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>ເປີດໃນເວີກຊັອບ Steam</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ເລືອກຄອນຟິກເພື່ອອ່ານລາຍການການແປງຂອງມັນ.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>ອ່ານ {0} ການຜູກແລ້ວ</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ເລືອກຄອນຟິກເພື່ອເບິ່ງສິ່ງທີ່ນຳເຂົ້າມາໄດ້.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ສິ່ງທີ່ນຳເຂົ້າມາໄດ້</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>ກາຍເປັນ</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>ເລືອກຕົວຄວບຄຸມສະເໝືອນທີ່ຈະຮັບປຸ່ມ ແລະ ສະຕິກຂອງຄອນຟິກ. ປຸ່ມແປ້ນພິມ ແລະ ເມົ້າຂອງມັນໄປຫາຕົວຄວບຄຸມ ແປ້ນພິມ + ເມົ້າ ສະເໝີ.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>ຊັ້ນ</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>ສົມບູນ</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>ບາງສ່ວນ</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>ຂ້າມແລ້ວ</value></data>
@@ -3603,7 +3775,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>ກຳລັງກວດຫາອັບເດດໃນເວີກຊັອບ Steam…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ນຳເຂົ້າເປັນລຸ້ນລ່າສຸດແລ້ວ (ກວດ {0} ອັນ)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>ອັບເດດເວີກຊັອບ</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ນຳເຂົ້າເຫຼົ່ານີ້ມີເວີຊັນໃໝ່ກວ່າໃນເວີກຊັອບ Steam. ນຳເຂົ້າພວກມັນໃໝ່ຈາກ ທ່ອງເບິ່ງຄອນຟິກຈາກຊຸມຊົນ ເພື່ອຮັບການປ່ຽນແປງ.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ໂປຣໄຟລ໌ທີ່ນຳເຂົ້າເຫຼົ່ານີ້ມີເວີຊັນໃໝ່ກວ່າໃນເວີກຊັອບ Steam. ນຳເຂົ້າພວກມັນອີກຄັ້ງຈາກ ຮັບໂປຣໄຟລ໌ ເພື່ອຮັບການປ່ຽນແປງ.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>ເມື່ອກົດຄ້າງດົນ</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>ເມື່ອກົດສັ້ນ</value></data>
@@ -3751,7 +3923,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>ເມນູ {0} ເຊວ {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>ໂອເວີເລເມນູ</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>ໂອເວີເລ</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ຕົວບົ່ງຊີ້ເທິງໜ້າຈໍທີ່ PadForge ສະແດງໃນຂະນະທີ່ທ່ານຫຼິ້ນ. ການປິດອັນໃດອັນໜຶ່ງບໍ່ປ່ຽນການເຮັດວຽກ, ພຽງແຕ່ບໍ່ສະແດງການແຈ້ງເທົ່ານັ້ນ.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ຕົວບົ່ງຊີ້ເທິງໜ້າຈໍທີ່ PadForge ສະແດງໃນຂະນະທີ່ທ່ານຫຼິ້ນ. ການປິດອັນໃດອັນໜຶ່ງບໍ່ປ່ຽນການເຮັດວຽກ, ພຽງແຕ່ບໍ່ສະແດງມັນເທົ່ານັ້ນ.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ປ້າຍແຈ້ງການປ່ຽນຊັ້ນ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ໂອເວີເລການປ່ຽນໂປຣໄຟລ໌</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ສະແດງວົງ ຫຼື ຕາຕະລາງເທິງໜ້າຈໍ ໃນຂະນະທີ່ເມນູວົງມົນ ຫຼື ເມນູສຳຜັດກຳລັງເຮັດວຽກ. ເມນູຍັງທຳງານເຖິງວ່າຈະປິດໂອເວີເລ.</value></data>
@@ -3801,6 +3973,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ຄວາມຖີ່ຂອງສຽງໂທນສຳລັບຊ່ອງນີ້, 20 ຫາ 120 Hz. ເປີດການກວາດຄວາມຖີ່ເພື່ອຊອກຫາບ່ອນທີ່ເຊກເກີຂອງທ່ານຕອບສະໜອງແຮງທີ່ສຸດ.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ຄວາມດັງຂອງຊ່ອງສຽງນີ້ກ່ອນອັດຕາຂະຫຍາຍຫຼັກ</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍ</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>ຄວາມຖີ່</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>ທົດສອບ</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>ຫຼິ້ນສຽງຂອງຊ່ອງສຽງນີ້ 1.5 ວິນາທີ ຕາມອັດຕາຂະຫຍາຍທີ່ຕັ້ງໄວ້</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>ຄືນຄ່າມໍເຕີຕ່ຳ</value></data>
@@ -3843,16 +4016,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>ເສັ້ນໂຄ້ງການເລັ່ງຕົວຊີ້ແບບແທຣັກແພດ ສຳລັບການສົ່ງອອກຈາກທັດແພດເປັນເມົ້າ ພອດເປັນ C# ຈາກໂປຣໄຟລ໌ການເລັ່ງທັດແພດຂອງ libinput MIT</value>
+    <value>ເສັ້ນໂຄ້ງການເລັ່ງຕົວຊີ້ແບບແທຣັກແພດ ສຳລັບການສົ່ງອອກຈາກທັດແພດເປັນເມົ້າ ພອດເປັນ C# ຈາກໂປຣໄຟລ໌ການເລັ່ງທັດແພດຂອງ libinput</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>ໂມເດລ 3D ຂອງຕົວຄວບຄຸມ (Xbox 360, Steam Deck) ແລະ ໂຄດໂມເດລ ແລະ ອະນິເມຊັນຂອງມຸມມອງ 3D ໂດຍ CasperH2O, Lesueur Benjamin, trippyone ຍັງເປັນແຫຼ່ງອ້າງອີງສຳລັບການຖອດລະຫັດລາຍງານ ແລະ ແຮັບຕິກຂອງ Steam Deck, ລາຍງານປິດເຄື່ອງຂອງ Steam Controller (2015), ລາຍຊື່ daemon ທີ່ຕ້ອງຕິດຕາມຂອງເຄື່ອງພົກພາ, ຈັງຫວະການກວດອັບເດດ ແລະ ການປິດເປີດພອດຂອງ hub ທີ່ຫ່າງກັນ 500 ms ເຊິ່ງເຊື່ອມຕໍ່ຕົວຄວບຄຸມ USB ທີ່ຖືກເຊື່ອງຄືນໃໝ່ ເພື່ອໃຫ້ໂປຣແກຣມທີ່ເປີດມັນກ່ອນເສຍມັນໄປ CC BY-NC-SA 4.0</value>
+    <value>ໂມເດລ 3D ຂອງຕົວຄວບຄຸມ (Xbox 360, Steam Deck) ແລະ ໂຄດໂມເດລ ແລະ ອະນິເມຊັນຂອງມຸມມອງ 3D ໂດຍ CasperH2O, Lesueur Benjamin, trippyone ຍັງເປັນແຫຼ່ງອ້າງອີງສຳລັບການຖອດລະຫັດລາຍງານ ແລະ ແຮັບຕິກຂອງ Steam Deck, ລາຍງານປິດເຄື່ອງຂອງ Steam Controller (2015), ລາຍຊື່ daemon ທີ່ຕ້ອງຕິດຕາມຂອງເຄື່ອງພົກພາ, ຈັງຫວະການກວດອັບເດດ ແລະ ການປິດເປີດພອດຂອງ hub ທີ່ຫ່າງກັນ 500 ms ເຊິ່ງເຊື່ອມຕໍ່ຕົວຄວບຄຸມ USB ທີ່ຖືກເຊື່ອງຄືນໃໝ່ ເພື່ອໃຫ້ໂປຣແກຣມທີ່ເປີດມັນກ່ອນເສຍມັນໄປ</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>ແຜນຜັງຕົວຄວບຄຸມ 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) ໂດຍ AL2009man MIT</value>
+    <value>ແຜນຜັງຕົວຄວບຄຸມ 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) ໂດຍ AL2009man</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>ເອກະສານໂປຣໂຕຄອນສຽງຂອງ DualShock 4: ພາລາມິເຕີ SBC ແລະ ໂຄງສ້າງແພັກເກັດ ໂດຍ khallmark GPL-2.0, ເປັນເອກະສານເທົ່ານັ້ນ</value>
+    <value>ເອກະສານໂປຣໂຕຄອນສຽງຂອງ DualShock 4: ພາລາມິເຕີ SBC ແລະ ໂຄງສ້າງແພັກເກັດ ໂດຍ khallmark ເປັນເອກະສານເທົ່ານັ້ນ</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>ເດັສທັອບ</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>ໃຊ້ Windows ຈາກໂຊຟາ ຕົວຊີ້, ການເລື່ອນ ແລະ ການຄລິກຢູ່ທີ່ທຣິກເກີ</value></data>
@@ -3866,10 +4039,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>ຮູບແບບຫົກປຸ່ມ ພ້ອມການລ້າງ SOCD ຕາມກົດການແຂ່ງຂັນເທິງທັງສອງແກນ</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>ແປ້ນພິມ + ເມົ້າ</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ເກມແພດ</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>ເບິ່ງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>ໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>ໂປຣໄຟລ໌ສຳເລັດຮູບສຳລັບເກມທັງປະເພດ ເລືອກໜຶ່ງອັນ, ກຳນົດຕົວຄວບຄຸມໃດກໍໄດ້ ແລ້ວຫຼິ້ນ ການບັນທຶກຈະເພີ່ມໂປຣໄຟລ໌ທຳມະດາທີ່ທ່ານແກ້ໄຂໄດ້</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>ບັນທຶກໂປຣໄຟລ໌</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>ເພີ່ມໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “{0}” ແລ້ວ</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>ຊີ້ ແລະ ຄລິກ</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>ເກມຜະຈົນໄພ ແລະ ທຸກເກມທີ່ຫຼິ້ນດ້ວຍຕົວຊີ້ ແລະ ຄຳສັ່ງສອງຢ່າງ</value></data>
@@ -3969,13 +4138,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>ຄືນຄ່າເສັ້ນທາງສົ່ງສຽງອອກ</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>ຕາມແຈັກຫູຟັງ</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>ແຜນທີ່ໄບຕ໌ຂອງລາຍງານສົ່ງອອກ DualSense ແລະ ຄວາມໝາຍ scePad ຂອງ Sony ໂດຍ WujekFoliarz ເປັນພື້ນຖານໃຫ້ຕົວຂຽນເອັບເຟັກ ແລະ ສຽງຂອງ PadForge MIT</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>ແຜນທີ່ໄບຕ໌ຂອງລາຍງານສົ່ງອອກ DualSense ແລະ ຄວາມໝາຍ scePad ຂອງ Sony ໂດຍ WujekFoliarz ເປັນພື້ນຖານໃຫ້ຕົວຂຽນເອັບເຟັກ ແລະ ສຽງຂອງ PadForge</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ຮູບແບບການກຳນົດເສັ້ນທາງສຽງຕາມການກວດແຈັກ ໂດຍ SundayMoments ເປັນແຫຼ່ງອ້າງອີງຂອງ “ຕາມແຈັກຫູຟັງ” ອ່ານເປັນເອກະສານ, AGPL-3.0</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ຮູບແບບການກຳນົດເສັ້ນທາງສຽງຕາມການກວດແຈັກ ໂດຍ SundayMoments ເປັນແຫຼ່ງອ້າງອີງຂອງ “ຕາມແຈັກຫູຟັງ” ອ່ານເປັນເອກະສານ</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ຕົວເຂົ້າລະຫັດ QR ແບບໄບຕ໌ ສຳລັບທີ່ຢູ່ຂອງຕົວຄວບຄຸມເວັບ ພອດມາຈາກການອ້າງອີງຂອງ Nayuki MIT</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ຕົວເຂົ້າລະຫັດ QR ແບບໄບຕ໌ ສຳລັບທີ່ຢູ່ຂອງຕົວຄວບຄຸມເວັບ ພອດມາຈາກການອ້າງອີງຂອງ Nayuki</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>ຮູບເມົ້າໃນການສະແດງຜົນ ແປ້ນພິມ + ເມົ້າ ໂດຍ Igor Budzhak MIT</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>ຮູບເມົ້າໃນການສະແດງຜົນ ແປ້ນພິມ + ເມົ້າ ໂດຍ Igor Budzhak</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>ອັດຕາຕາມແຮງກົດ</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>ອັດຕາການເຮັດຊ້ຳປ່ຽນຕາມແຮງກົດຂອງແຫຼ່ງອະນາລັອກທີ່ເລືອກ ກົດເບົາຈະເຮັດຊ້ຳຕາມ “ໄລຍະຫ່າງຊ້າ” ກົດເຕັມຈະຕາມ “ໄລຍະຫ່າງ” ດ້ານເທິງ ແລະ ລະຫວ່າງນັ້ນຈະປ່ຽນຢ່າງລຽບນຽນ</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>ໄລຍະຫ່າງຊ້າ</value></data>
@@ -3990,7 +4159,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>ກຳລັງເຊື່ອມຕໍ່ດ້ວຍລະຫັດ…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຫາອີກຝ່າຍໂດຍກົງບໍ່ໄດ້ ລອງ “ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່” ຜ່ານ VPN</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>ລະຫັດຂອງ PC ນີ້</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>ແລກລະຫັດກັບອີກຝ່າຍ: ວາງລະຫັດຂອງເຂົາໃສ່ກ່ອງ “ເຊື່ອມຕໍ່” ຂອງທ່ານ ໃນຂະນະທີ່ເຂົາວາງລະຫັດຂອງທ່ານ ແລ້ວທັງສອງຄລິກ “ເຊື່ອມຕໍ່” ວິທີນີ້ເປີດເສັ້ນທາງໂດຍກົງຜ່ານອິນເຕີເນັດ ໂດຍບໍ່ຕ້ອງໃຊ້ VPN ລະຫັດຈະປ່ຽນໃໝ່ໃນຂະນະທີ່ການເຊື່ອມຕໍ່ທາງໄກກຳລັງເຮັດວຽກ</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>ແລກລະຫັດກັບອີກຝ່າຍ: ວາງລະຫັດຂອງເຂົາໃສ່ “ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່” ພາຍໃຕ້ ເພີ່ມເຕີມ ໃນຂະນະທີ່ເຂົາວາງລະຫັດຂອງທ່ານ ແລ້ວທັງສອງຄລິກ “ຈັບຄູ່ / ເຊື່ອມຕໍ່”. ວິທີນີ້ເປີດເສັ້ນທາງໂດຍກົງຜ່ານອິນເຕີເນັດ ໂດຍບໍ່ຕ້ອງໃຊ້ VPN. ລະຫັດຈະປ່ຽນໃໝ່ໃນຂະນະທີ່ການເຊື່ອມຕໍ່ທາງໄກກຳລັງເຮັດວຽກ.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>ເຄືອຂ່າຍນີ້ເຊື່ອມຕໍ່ໂດຍກົງບໍ່ໄດ້ (ເບິ່ງຄືເປັນຮັອດສະປອດມືຖື ຫຼື NAT ລະດັບຜູ້ໃຫ້ບໍລິການ) ໃຊ້ VPN ເຊັ່ນ Tailscale ຫຼື ເຊື່ອມຕໍ່ຈາກອິນເຕີເນັດບ້ານ</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>ຊອກຫາທີ່ຢູ່ສາທາລະນະຂອງ PC ນີ້ບໍ່ພົບ (ເຄືອຂ່າຍອາດບລັອກການຮັບສົ່ງຂໍ້ມູນທີ່ຈຳເປັນ) ການເຊື່ອມຕໍ່ໂດຍກົງຈະໃຊ້ບໍ່ໄດ້ຢູ່ນີ້ ໃຊ້ VPN ຫຼື “ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່” ໃນເຄືອຂ່າຍດຽວກັນ</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>ແບັດເຕີຣີຕົວຄວບຄຸມໃກ້ໝົດ</value></data>
@@ -4001,6 +4170,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>ແຈ້ງເຕືອນເມື່ອເທົ່າກັບ ຫຼື ຕ່ຳກວ່າ</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ສັ່ນຕົວຄວບຄຸມນຳ</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>ທົດສອບການແຈ້ງເຕືອນ</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>ກວດເບິ່ງການແຈ້ງເຕືອນ</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ການສະເໜີກຳນົດອຸປະກອນ</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ເມື່ອອຸປະກອນເຊື່ອມຕໍ່ໃນຂະນະທີ່ໜ້າຂອງຕົວຄວບຄຸມສະເໝືອນເປີດຢູ່ PadForge ສາມາດສະເໜີໃຫ້ກຳນົດມັນໃສ່ບ່ອນນັ້ນ ແລະ ໜ້າຫຼັກສາມາດສະເໜີຕົວຄວບຄຸມສະເໝືອນຂອງມັນເອງໃຫ້ອຸປະກອນໃໝ່ ຈະບໍ່ມີຫຍັງຖືກກຳນົດຈົນກວ່າທ່ານຈະຍອມຮັບການສະເໜີ ແປ້ນພິມ, ເມົ້າ, ທັດແພດ ແລະ ປຸ່ມມີເດຍຈະບໍ່ຖືກສະເໜີ</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ສະເໜີອຸປະກອນໃໝ່ໃຫ້ຕົວຄວບຄຸມສະເໝືອນທີ່ເປີດຢູ່</value></data>
@@ -4014,23 +4184,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ບໍ່ແມ່ນຕອນນີ້</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>ວະລີໃດກໍໄດ້</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>ມາໂຄຣສຽງ</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>ເວົ້າວະລີ ແລ້ວມັນຈະກົດປຸ່ມທີ່ທ່ານແມັບໄດ້. ທຸກໄມໂຄຣໂຟນທີ່ PadForge ເຂົ້າເຖິງໄດ້ຈະຟັງຢູ່.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>ຈັດການມາໂຄຣສຽງ</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>ເປີດໃຊ້ມາໂຄຣສຽງ</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>ເປີດການຟັງ ເມື່ອເປີດໃຊ້ ວະລີທີ່ລົງທະບຽນແຕ່ລະອັນຈະເປັນປຸ່ມທີ່ເຮັດວຽກເມື່ອທ່ານເວົ້າມັນ ໂມເດລຮັບຮູ້ສຽງມາພ້ອມກັບ PadForge ແລະ ເຮັດວຽກແບບອອບລາຍທັງໝົດ</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>ການຟັງ</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>“ຕະຫຼອດ” ຈະເປີດໄມໂຄຣໂຟນໄວ້ສະເໝີ “ກົດເພື່ອເວົ້າ” ຈະຟັງສະເພາະຕອນກົດຄ້າງມາໂຄຣ “ຟັງສຽງ” ທີ່ຜູກໄວ້</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>ເປີດ ຫຼື ປິດການຟັງ, ໂໝດ, ຄວາມໝັ້ນໃຈ</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>ຕະຫຼອດ</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>ກົດເພື່ອເວົ້າ</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>ຄວາມໝັ້ນໃຈຂັ້ນຕ່ຳ</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>ຕົວຮັບຮູ້ສຽງຕ້ອງໝັ້ນໃຈຫຼາຍປານໃດກ່ອນວະລີຈະເຮັດວຽກ ເພີ່ມຂຶ້ນຖ້າຄຳເວົ້າທົ່ວໄປໄປກະຕຸ້ນມາໂຄຣ ຫຼຸດລົງຖ້າວະລີຂອງທ່ານບໍ່ຖືກຮັບຮູ້</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>ກຳລັງລໍຖ້າສຽງເວົ້າ ຜົນການຮັບຮູ້ຈະສະແດງຢູ່ນີ້ພ້ອມຄວາມໝັ້ນໃຈ</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>ໄດ້ຍິນ “{0}” ({1:F2}) ເຮັດວຽກແລ້ວ</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>ໄດ້ຍິນ “{0}” ({1:F2}) ຕ່ຳກວ່າເກນຄວາມໝັ້ນໃຈ ຫຼື ບໍ່ໄດ້ກົດປຸ່ມເວົ້າ</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>ການຟັງປິດຢູ່. ເປີດມັນພາຍໃຕ້ ເພີ່ມເຕີມ.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>ໄດ້ຍິນ {0} ຈາກ {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>ໄດ້ຍິນ {0} ຈາກ {1}. ມັນຕ່ຳກວ່າເກນຄວາມໝັ້ນໃຈ ຫຼື ບໍ່ໄດ້ກົດປຸ່ມເວົ້າ.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>ວະລີ</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>ວະລີທີ່ຈະເວົ້າ</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>ຊື່ປຸ່ມ</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>ລົງທະບຽນ</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ວະລີທີ່ລົງທະບຽນແລ້ວ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>ລົງທະບຽນ “{0}” ແລ້ວ ເວົ້າມັນເພື່ອໃຫ້ປຸ່ມຂອງມັນເຮັດວຽກ ແລະ ຜູກມາໂຄຣໃສ່ມັນໃນໜ້າຕົວຄວບຄຸມ</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ວະລີ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>ລົງທະບຽນ “{0}” ແລ້ວ. ເວົ້າມັນເພື່ອໃຫ້ປຸ່ມຂອງມັນເຮັດວຽກ ແລະ ແມັບມັນໃນໜ້າຂອງຕົວຄວບຄຸມ.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>ຟັງສຽງ (ຂະນະກົດຄ້າງ)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>ກົດເພື່ອເວົ້າສຳລັບມາໂຄຣສຽງ: ຂະນະກົດຄ້າງມາໂຄຣນີ້ ຕົວຮັບຮູ້ສຽງຈະຟັງ ຕັ້ງ “ການຟັງ” ເປັນ “ກົດເພື່ອເວົ້າ” ໃນ “ຈັດການມາໂຄຣສຽງ”</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>ໄມໂຄຣໂຟນ</value></data>
@@ -4038,12 +4213,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ເອນຈິນແຮັບຕິກ ແລະ ຜູ້ໃຫ້ບໍລິການ Razer ທີ່ຢູ່ເບື້ອງຫຼັງການສັ່ນຂອງແຖວ Razer Sensa HAR.dll ແລະ Interhaptics.RazerProvider.dll ມາພ້ອມກັບ PadForge ໂດຍບໍ່ໄດ້ດັດແປງຈາກ Core SDK ສາທາລະນະ ໂດຍ Wyvrn Wyvrn EULA</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ເອນຈິນແຮັບຕິກ ແລະ ຜູ້ໃຫ້ບໍລິການ Razer ທີ່ຢູ່ເບື້ອງຫຼັງການສັ່ນຂອງແຖວ Razer Sensa HAR.dll ແລະ Interhaptics.RazerProvider.dll ມາພ້ອມກັບ PadForge ໂດຍບໍ່ໄດ້ດັດແປງຈາກ Core SDK ສາທາລະນະ ໂດຍ Wyvrn</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>ໂມເດລ 3D ຂອງ Steam Controller (2015) ແລະ Steam Controller (2026) ສ້າງເມຊຈາກໄຟລ໌ STEP ທີ່ Valve ເຜີຍແຜ່ ລິຂະສິດ Valve Corporation CC BY-NC-SA 4.0 PadForge ບໍ່ມີສ່ວນກ່ຽວຂ້ອງກັບ Valve ແລະ ບໍ່ໄດ້ຮັບການຮັບຮອງຈາກ Valve</value>
+    <value>ໂມເດລ 3D ຂອງ Steam Controller (2015) ແລະ Steam Controller (2026) ສ້າງເມຊຈາກໄຟລ໌ STEP ທີ່ Valve ເຜີຍແຜ່ ລິຂະສິດ Valve Corporation PadForge ບໍ່ມີສ່ວນກ່ຽວຂ້ອງກັບ Valve ແລະ ບໍ່ໄດ້ຮັບການຮັບຮອງຈາກ Valve</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>ຣັນທາມ MinGW-w64</value>
@@ -4060,7 +4235,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>ການຢືນຢັນໂຄງສ້າງ REST API ຂອງ Razer Chroma ສຳລັບແສງໄຟ Razer ໂດຍ Adam Hellberg ແລະ Brandon Scott MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>ການຢືນຢັນໂຄງສ້າງ REST API ຂອງ Razer Chroma ສຳລັບແສງໄຟ Razer ໂດຍ Adam Hellberg ແລະ Brandon Scott ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>ແຫຼ່ງອ້າງອີງ Logitech LED SDK</value>
   </data>
@@ -4069,19 +4244,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>ດາຕາແກຣມຂອງຕົວຕິດຕາມ UDP ແລະ ໂຄງສ້າງໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack 2.0 ສຳລັບການຕິດຕາມຫົວ ISC ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value>
+    <value>ດາຕາແກຣມຂອງຕົວຕິດຕາມ UDP ແລະ ໂຄງສ້າງໜ່ວຍຄວາມຈຳຮ່ວມຂອງ FreeTrack 2.0 ສຳລັບການຕິດຕາມຫົວ ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>ຄລາສເຫດການ utility ຂອງ Lenovo WMI ທີ່ຕົວຮຽນຮູ້ປຸ່ມເຊື່ອງຂອງເຄື່ອງພົກພາສະໝັກຮັບ ແລະ ຮູບແບບເຊີບເວີ IPC ສິດສູງທີ່ຢູ່ເບື້ອງຫຼັງການຄວບຄຸມໂປຣໄຟລ໌ຈາກພາຍນອກ GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value>
+    <value>ຄລາສເຫດການ utility ຂອງ Lenovo WMI ທີ່ຕົວຮຽນຮູ້ປຸ່ມເຊື່ອງຂອງເຄື່ອງພົກພາສະໝັກຮັບ ແລະ ຮູບແບບເຊີບເວີ IPC ສິດສູງທີ່ຢູ່ເບື້ອງຫຼັງການຄວບຄຸມໂປຣໄຟລ໌ຈາກພາຍນອກ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>ສະຕຣິງລະບຸຕົວຕົນຂອງ PC ພົກພາ ແລະ ບັນທຶກລາຍງານຂອງຜູ້ຜະລິດ ທີ່ກວດທຽບສຳລັບຕົວຮຽນຮູ້ປຸ່ມເຊື່ອງ GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value>
+    <value>ສະຕຣິງລະບຸຕົວຕົນຂອງ PC ພົກພາ ແລະ ບັນທຶກລາຍງານຂອງຜູ້ຜະລິດ ທີ່ກວດທຽບສຳລັບຕົວຮຽນຮູ້ປຸ່ມເຊື່ອງ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook ແລະ WiimoteHook</value>
@@ -4096,13 +4271,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>ລຳດັບການເອີ້ນ WinMM ທີ່ຢູ່ເບື້ອງຫຼັງ MIDI API ແບບເກົ່າ: ການເປີດພອດ, ການສົ່ງຂໍ້ມູນໄປຫາມັນ ແລະ ການປິດມັນ ອ້າງອີງຈາກ PortMidi (MIT, ໂດຍ Ross Bencina, Phil Burk ແລະ Roger B. Dannenberg) ແລະ RtMidi (ໃບອະນຸຍາດ RtMidi ແບບ MIT, ໂດຍ Gary P. Scavone) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>ໂຄງສ້າງຂອງ event word ທີ່ຢູ່ເບື້ອງຫຼັງອິນພຸດ G-key ມາຈາກ LogitechGkeyLib.h ໃນ SDK ລຳດັບການຄົ້ນຫາຫ້ອງສະໝຸດ ແລະ ການປິດ ເຮັດຕາມ GKey.cpp ຂອງ Mumble (BSD 3-Clause) PadForge ໂຫຼດຫ້ອງສະໝຸດສະບັບໃດກໍຕາມທີ່ມີຢູ່ໃນເຄື່ອງ ແລະ ບໍ່ໄດ້ລວມໂຄດ Logitech ໃດໆ</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>ໂຄງສ້າງຂອງ event word ທີ່ຢູ່ເບື້ອງຫຼັງອິນພຸດ G-key ມາຈາກ LogitechGkeyLib.h ໃນ SDK ລຳດັບການຄົ້ນຫາຫ້ອງສະໝຸດ ແລະ ການປິດ ເຮັດຕາມ GKey.cpp ຂອງ Mumble PadForge ໂຫຼດຫ້ອງສະໝຸດສະບັບໃດກໍຕາມທີ່ມີຢູ່ໃນເຄື່ອງ ແລະ ບໍ່ໄດ້ລວມໂຄດ Logitech ໃດໆ</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup ແລະ AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>ອິນພຸດແປ້ນພິມອະນາລັອກ ພອດເສັ້ນທາງແປ້ນພິມ, ຕາຕະລາງປຸ່ມ ແລະ ລາຍການລຸ້ນຂອງ HallJoy ມາເປັນ C# (AGPL-3.0, PashOK7) ແລະ ເຮັດຕາມ Soup ແລະ AnalogSense JavaScript SDK (MIT, Calamity, Inc.) ໂດຍກວດທຽບກັບ Wooting Analog SDK (MPL-2.0) ແປ້ນພິມອື່ນໆເຮັດຕາມ AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk ແລະ hmkconf (GPL-3.0-or-later, peppapighs) ແລະ fork ຂອງ Soup ຈາກ DenkiSuki, LeiterConsulting ແລະ paysdelest (MIT) ຮູບແບບລາຍງານ ແລະ ຕາຕະລາງປຸ່ມຍັງມາຈາກຕົວຕັ້ງຄ່າ Synapse Web ຂອງ Razer ແລະ NuPhyIO ຂອງ NuPhy, OpenRazer (GPL-2.0-or-later), razer-analog-keyboard ຂອງ Abbytech, TinyUSB (MIT) ແລະ ບັນທຶກການດັກຈັບຂອງ Sainan</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API ທີ່ຢູ່ເບື້ອງຫຼັງ “ອ່ານອະແດັບເຕີ Bliss-Box” ອ້າງອີງຈາກ API Tool ຂອງ Bliss-Box LLC (ແບບ BSD, ແຈກຢາຍຕໍ່ໄດ້ໂດຍບໍ່ເສຍຄ່າ) ແລະ DeviceBuddy (ເປີດໃຫ້ເບິ່ງຊອດ, Bliss-Box LLC) ພ້ອມຊື່ປຸ່ມຈາກໄຟລ໌ Bliss-Box ໃນ fork retroarch-joypad-autoconfig ຂອງ SteveFox1620, checksum ຂອງ Controller Pak ທີ່ກວດທຽບກັບ libdragon (Unlicense) ແລະ ການຕອບກັບຂອງແພດ PlayStation ຈາກ psx-spx ແລະ ໄດຣເວີ psxpad-spi ຂອງ Linux (GPL-2.0-or-later) ຊື່ຕົວຄວບຄຸມ ແລະ ບັນທຶກການຮອງຮັບຍັງມາຈາກລາຍການຄວາມເຂົ້າກັນໄດ້ຂອງ Bliss-Box LLC ແລະ ພຶດຕິກຳຂອງອະແດັບເຕີໄດ້ຖືກກວດທຽບກັບເຟີມແວຂອງມັນ ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ການຮັບສົ່ງ USB ໂດຍ Vadym Hrynchyshyn ສຳລັບຕົວຄວບຄຸມ USB ແບບຄອມໂພສິດຂອງ HIDMaestro ໄດຣເວີຕົວຄວບຄຸມໂຮສທີ່ລົງລາຍເຊັນແລ້ວຂອງມັນມາພ້ອມ HIDMaestro ແລະ HIDMaestro ຕິດຕັ້ງມັນໃນຄັ້ງທຳອິດທີ່ສ້າງຕົວຄວບຄຸມແບບຄອມໂພສິດ BSD 2-Clause</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ການຮັບສົ່ງ USB ໂດຍ Vadym Hrynchyshyn ສຳລັບຕົວຄວບຄຸມ USB ແບບຄອມໂພສິດຂອງ HIDMaestro ໄດຣເວີຕົວຄວບຄຸມໂຮສທີ່ລົງລາຍເຊັນແລ້ວຂອງມັນມາພ້ອມ HIDMaestro ແລະ HIDMaestro ຕິດຕັ້ງມັນໃນຄັ້ງທຳອິດທີ່ສ້າງຕົວຄວບຄຸມແບບຄອມໂພສິດ</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>ເລືອກວ່າເຄິ່ງໃດຂອງຊ່ອງນີ້ເຮັດວຽກ ການປິດເຄິ່ງໜຶ່ງຈະເຊື່ອງແຖວຂອງມັນ ແລະ ຢຸດບໍ່ໃຫ້ມັນສົ່ງ ແຕ່ຍັງເກັບການແມັບໄວ້ ເມື່ອເປີດຄືນຈະກູ້ຄືນມາ</value>
   </data>
@@ -4170,13 +4345,15 @@
     <value>ກຳນົດອຸປະກອນທີ່ແບ່ງປັນ</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>ການກຳນົດໃນ {0}</value>
+    <value>ອຸປະກອນທີ່ແບ່ງປັນກັບ {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>ເລືອກອຸປະກອນທີ່ PC ນີ້ແບ່ງປັນ ແລ້ວເລືອກຕົວຄວບຄຸມສະເໝືອນຂອງມັນໃນ PC ອີກເຄື່ອງ</value>
+    <value>ເລືອກອຸປະກອນ ແລ້ວເລືອກຕົວຄວບຄຸມໃນ PC ນັ້ນທີ່ມັນຄວນຂັບເຄື່ອນ.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>ແບ່ງປັນຈາກ PC ນີ້</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>ຕົວຄວບຄຸມໃນ {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>ໂປຣໄຟລ໌: {0}</value>
+    <value>ໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>ໃນ PC ອີກເຄື່ອງ ໃຫ້ອະນຸຍາດການປ່ຽນການກຳນົດຈາກທາງໄກສຳລັບ PC ນີ້ ທີ່ ການເຊື່ອມຕໍ່ທາງໄກ &gt; PC ທີ່ຈັບຄູ່ແລ້ວ</value>
@@ -4267,60 +4444,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS ແລະ CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>ຕົວຖອດລະຫັດສຽງເວົ້າ, ຫ້ອງສະໝຸດ transducer ແລະ ພຶດຊະຄະນິດເສັ້ນ ພາຍໃນ libvosk.dll Kaldi ແລະ OpenFst: Apache-2.0 OpenBLAS ແລະ CLAPACK: BSD 3-Clause ພ້ອມປະກາດແຍກຕ່າງຫາກສຳລັບ GotoBLAS2 ພາຍໃນ OpenBLAS ແລະ ສຳລັບຣັນທາມ f2c</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ໂຄງຮ່າງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ກົນລະຍຸດ” ແລະ “ເດັສທັອບ” ແລະ ພຶດຕິກຳເທີໂບທີ່ເທີໂບຕາມແຮງກົດຫຼີກລ່ຽງ GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ໂຄງຮ່າງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ກົນລະຍຸດ” ແລະ “ເດັສທັອບ” ແລະ ພຶດຕິກຳເທີໂບທີ່ເທີໂບຕາມແຮງກົດຫຼີກລ່ຽງ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂດຍ Antoine Aflalo ສຳລັບໂຄງສ້າງຂອງອິນເຕີເຟດ IPolicyConfig ທີ່ບໍ່ມີເອກະສານຂອງ Windows ເຊິ່ງ PadForge ໃຊ້ເພື່ອເປີດໃຊ້ endpoint ສຽງຂອງຕົວຄວບຄຸມຄືນ MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂດຍ Antoine Aflalo ສຳລັບໂຄງສ້າງຂອງອິນເຕີເຟດ IPolicyConfig ທີ່ບໍ່ມີເອກະສານຂອງ Windows ເຊິ່ງ PadForge ໃຊ້ເພື່ອເປີດໃຊ້ endpoint ສຽງຂອງຕົວຄວບຄຸມຄືນ ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ຮູບແບບໂປຣໄຟລ໌ EQ ແບບພາຣາເມຕຣິກທີ່ “EQ ແບບພາຣາເມຕຣິກ” ຂອງຕົວຄວບຄຸມນຳເຂົ້າ, ໂດຍ Jaakko Pasanen. MIT. ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>ຮູບແບບໂປຣໄຟລ໌ EQ ແບບພາຣາເມຕຣິກທີ່ “EQ ແບບພາຣາເມຕຣິກ” ຂອງຕົວຄວບຄຸມນຳເຂົ້າ, ໂດຍ Jaakko Pasanen. ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>ເທັກນິກ SendInput ທີ່ຢູ່ເບື້ອງຫຼັງມາໂຄຣບລັອກຂໍ້ຄວາມ ແລະ hook ຂອງຄອດແປ້ນພິມ: ການພິມ Unicode, ຂີດຈຳກັດຂອງຊຸດ, ປຸ່ມປິດບັງ Win ແລະ ອິນພຸດທີ່ສີດເຂົ້າແບບມີແທັກ GPL-2.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>ເທັກນິກ SendInput ທີ່ຢູ່ເບື້ອງຫຼັງມາໂຄຣບລັອກຂໍ້ຄວາມ ແລະ hook ຂອງຄອດແປ້ນພິມ: ການພິມ Unicode, ຂີດຈຳກັດຂອງຊຸດ, ປຸ່ມປິດບັງ Win ແລະ ອິນພຸດທີ່ສີດເຂົ້າແບບມີແທັກ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂປຣໂຕຄອນ DSU ທີ່ຢູ່ເບື້ອງຫຼັງເຊີບເວີການເຄື່ອນໄຫວ ໂດຍ v1993 Unlicense</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂປຣໂຕຄອນ DSU ທີ່ຢູ່ເບື້ອງຫຼັງເຊີບເວີການເຄື່ອນໄຫວ ໂດຍ v1993</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>ໂຄງສ້າງເຟຣມລາຍງານສົ່ງອອກ Bluetooth ຂອງ DualShock 4 ໂດຍ Christopher Rosell MIT</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>ໂຄງສ້າງເຟຣມລາຍງານສົ່ງອອກ Bluetooth ຂອງ DualShock 4 ໂດຍ Christopher Rosell</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>ຊ່ວງແບັດເຕີຣີຂອງ DualShock 4, ຈັງຫວະ ແລະ ຂັ້ນຄວາມແຮງຂອງພັລສ໌ແຮັບຕິກທັດແພດ ແລະ ພຶດຕິກຳການປັດແຮງຂອງທັດແພດ GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>ຊ່ວງແບັດເຕີຣີຂອງ DualShock 4, ຈັງຫວະ ແລະ ຂັ້ນຄວາມແຮງຂອງພັລສ໌ແຮັບຕິກທັດແພດ ແລະ ພຶດຕິກຳການປັດແຮງຂອງທັດແພດ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton fork)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>ຊ່ວງລະດັບສຽງຂອງ DualSense, ຕົວຢ່າງແຮັບຕິກ 8 ບິດແບບມີເຄື່ອງໝາຍ ແລະ ໂຄງສ້າງການຮັບສົ່ງ Bluetooth ແບບລວມ GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>ຊ່ວງລະດັບສຽງຂອງ DualSense, ຕົວຢ່າງແຮັບຕິກ 8 ບິດແບບມີເຄື່ອງໝາຍ ແລະ ໂຄງສ້າງການຮັບສົ່ງ Bluetooth ແບບລວມ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ ແລະ ຄ່າຕ່ຳສຸດຂອງຄວາມຍາວບັບເຟີສຽງ Bluetooth ຂອງ DualSense ໂດຍ awalol MIT</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ ແລະ ຄ່າຕ່ຳສຸດຂອງຄວາມຍາວບັບເຟີສຽງ Bluetooth ຂອງ DualSense ໂດຍ awalol</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>ຄ່າພຣີເຊັດທຣິກເກີປັບຕົວໄດ້ແບບ GameCube ໂດຍ Mxater ອ່ານເພື່ອເອົາຂໍ້ເທັດຈິງເທົ່ານັ້ນ</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>ເຄື່ອງໝາຍບວກລົບຂອງແກນການເຄື່ອນໄຫວ DSU ທີ່ກວດທຽບກັບຕົວຖອດລະຫັດ UDP ຂອງມັນ GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>ເຄື່ອງໝາຍບວກລົບຂອງແກນການເຄື່ອນໄຫວ DSU ທີ່ກວດທຽບກັບຕົວຖອດລະຫັດ UDP ຂອງມັນ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ພຣີເຊັດຄ່າເລີ່ມຕົ້ນຂອງ Elite Dangerous ທີ່ຢູ່ເບື້ອງຫຼັງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ຈຳລອງອະວະກາດ” ໂດຍ Richard Buckle MIT</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ພຣີເຊັດຄ່າເລີ່ມຕົ້ນຂອງ Elite Dangerous ທີ່ຢູ່ເບື້ອງຫຼັງໂປຣໄຟລ໌ເລີ່ມຕົ້ນ “ຈຳລອງອະວະກາດ” ໂດຍ Richard Buckle</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>ລຳດັບນິບເບິລ ADPCM ຂອງລຳໂພງ Wii Remote ແລະ ຕົວຖອດລະຫັດ SBC ທີ່ໃຊ້ກວດຕົວເຂົ້າລະຫັດ DualShock 4 LGPL-2.1-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ LGPL ຖືກລວມມາ</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>ລຳດັບນິບເບິລ ADPCM ຂອງລຳໂພງ Wii Remote ແລະ ຕົວຖອດລະຫັດ SBC ທີ່ໃຊ້ກວດຕົວເຂົ້າລະຫັດ DualShock 4 ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ LGPL ຖືກລວມມາ</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>ທິດທາງເຂັມທິດທີ່ຊົດເຊີຍການອຽງ ສຳລັບການຫັນຊ້າຍຂວາແບບເຂັມທິດ ພອດເປັນ C# ໂດຍ x-io Technologies MIT</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>ທິດທາງເຂັມທິດທີ່ຊົດເຊີຍການອຽງ ສຳລັບການຫັນຊ້າຍຂວາແບບເຂັມທິດ ພອດເປັນ C# ໂດຍ x-io Technologies</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ກົດການແຈ້ງເຕືອນແບັດເຕີຣີຕ່ຳ ແລະ ຮູບແບບການສັ່ນ “ລະບຸຕົວ” ໂດຍ Lukas Frühstück MIT</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ກົດການແຈ້ງເຕືອນແບັດເຕີຣີຕ່ຳ ແລະ ຮູບແບບການສັ່ນ “ລະບຸຕົວ” ໂດຍ Lukas Frühstück</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>ໂມເດລ 3D ຂອງ DualShock 4, DualSense, DualSense Edge, Xbox Series ແລະ Switch 2 Pro Controller ທີ່ຊື້ຈາກ CGTrader CGTrader Royalty Free License</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>ໂມເດລ 3D ຂອງ DualShock 4, DualSense, DualSense Edge, Xbox Series ແລະ Switch 2 Pro Controller ທີ່ຊື້ຈາກ CGTrader</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>ໂມເດລ 3D ຂອງ DualShock 3 ທີ່ຊື້ຈາກ CGTrader ແລະ ແຍກເປັນເມຊແຕ່ລະຊິ້ນສ່ວນ CGTrader Royalty Free License</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>ໂມເດລ 3D ຂອງ DualShock 3 ທີ່ຊື້ຈາກ CGTrader ແລະ ແຍກເປັນເມຊແຕ່ລະຊິ້ນສ່ວນ</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>ຊັ້ນ HID ທີ່ຄອມພາຍລ໌ເຂົ້າໃນ SDL3.dll ທີ່ມາພ້ອມ ໂດຍ Alan Ott, Signal 11 Software ໃບອະນຸຍາດແບບ BSD</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>ຊັ້ນ HID ທີ່ຄອມພາຍລ໌ເຂົ້າໃນ SDL3.dll ທີ່ມາພ້ອມ ໂດຍ Alan Ott, Signal 11 Software</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ແຫຼ່ງໄອຄອນ</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>ສັນຍາລັກແປວໄຟຈາກ Material Design Icons (Pictogrammers, Apache-2.0), ໄອຄອນເກມແພດທົ່ວໄປຈາກ Ionicons (Ionic, MIT), ຈອຍສະຕິກ Extended ຈາກ Jam Icons (Michael Amprimo, MIT) ແລະ ໄອຄອນ Xbox ແລະ PlayStation ຈາກ SVG Repo ພາຍໃຕ້ໃບອະນຸຍາດໃນໜ້າຂອງແຕ່ລະໄອຄອນ</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>ໂປຣໂຕຄອນຣີເລທີ່ຢູ່ເບື້ອງຫຼັງເສັ້ນທາງສຳຮອງຂອງການເຊື່ອມຕໍ່ທາງໄກ ສື່ສານກັບຣີເລສາທາລະນະຟຣີຂອງ n0.computer ແບບດຽວກັບທີ່ FlexInput ເຮັດ iroh: MIT OR Apache-2.0 FlexInput: MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>ຕົວນັບເມົ້າແບບອອບຕິຄອລຂອງ Joy-Con 2 ແລະ ຄ່າຜົນຕ່າງແບບວົນຮອບ ທີ່ຢູ່ເບື້ອງຫຼັງການເຄື່ອນທີ່ເມົ້າ X ແລະ Y ໂດຍ coffincolors, Frano ແລະ moutella MIT ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>ຕົວນັບເມົ້າແບບອອບຕິຄອລຂອງ Joy-Con 2 ແລະ ຄ່າຜົນຕ່າງແບບວົນຮອບ ທີ່ຢູ່ເບື້ອງຫຼັງການເຄື່ອນທີ່ເມົ້າ X ແລະ Y ໂດຍ coffincolors, Frano ແລະ moutella ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>ໄດຣເວີ Linux kernel</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>ຂໍ້ເທັດຈິງໂປຣໂຕຄອນຂອງ DualShock 3, Move, DualSense, Steam Deck ແລະ ແຮງສະທ້ອນກັບ PID ແລະ ໂຄງສ້າງບລັອກ ACPI WMI PadForge ອ່ານຕົວອະທິບາຍຂອງແປ້ນພິມ ແລະ ເມົ້າ ຕາມກົດເກນຂອງ hid-core GPL-2.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>ຂໍ້ເທັດຈິງໂປຣໂຕຄອນຂອງ DualShock 3, Move, DualSense, Steam Deck ແລະ ແຮງສະທ້ອນກັບ PID ແລະ ໂຄງສ້າງບລັອກ ACPI WMI PadForge ອ່ານຕົວອະທິບາຍຂອງແປ້ນພິມ ແລະ ເມົ້າ ຕາມກົດເກນຂອງ hid-core ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>ອິນພຸດຕົວຄວບຄຸມຂອງ Windows ລວມທັງແພດເດິລຂອງ Xbox Elite ຕົວໂຫຼດ SDK ຖືກລິງເຂົ້າໃນ SDL MIT (ຕົວໂຫຼດ SDK)</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>ອິນພຸດຕົວຄວບຄຸມຂອງ Windows ລວມທັງແພດເດິລຂອງ Xbox Elite ຕົວໂຫຼດ SDK ຖືກລິງເຂົ້າໃນ SDL</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>ຣັນທາມ C++ ທີ່ SDL3.dll ຕ້ອງການ (msvcp140.dll, vcruntime140.dll ແລະ ໃນບິວ x64 ມີ vcruntime140_1.dll) ມາພ້ອມ PadForge ໂດຍບໍ່ໄດ້ດັດແປງ ເງື່ອນໄຂໃບອະນຸຍາດ Microsoft Visual Studio</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>ຣັນທາມ C++ ທີ່ SDL3.dll ຕ້ອງການ (msvcp140.dll, vcruntime140.dll ແລະ ໃນບິວ x64 ມີ vcruntime140_1.dll) ມາພ້ອມ PadForge ໂດຍບໍ່ໄດ້ດັດແປງ</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>ບັນທຶກ HID, ການສັ່ນ HD ແລະ LED ປຸ່ມ Home ຂອງ Joy-Con ແລະ Pro Controller ໂດຍ dekuNukem ພ້ອມ switch2_controller_research ຂອງ ndeadly ສຳລັບ Switch 2 ອ່ານເພື່ອເອົາຂໍ້ເທັດຈິງໂປຣໂຕຄອນເທົ່ານັ້ນ</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ຮູບແບບ update-verb ແບບສິດສູງທີ່ຢູ່ເບື້ອງຫຼັງຕົວຊ່ວຍຂອງຕົວອັບເດດໃນແອັບ LGPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ LGPL ຖືກລວມມາ</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ຮູບແບບ update-verb ແບບສິດສູງທີ່ຢູ່ເບື້ອງຫຼັງຕົວຊ່ວຍຂອງຕົວອັບເດດໃນແອັບ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ LGPL ຖືກລວມມາ</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>ລາຍເຊັນຟັງຊັນ WinSCard ແລະ ລຳດັບການເອີ້ນເພື່ອຕິດຕາມເຄື່ອງອ່ານ ທີ່ຢູ່ເບື້ອງຫຼັງອິນພຸດແທັກ NFC ໂດຍ Daniel Mueller BSD 2-Clause</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>ລາຍເຊັນຟັງຊັນ WinSCard ແລະ ລຳດັບການເອີ້ນເພື່ອຕິດຕາມເຄື່ອງອ່ານ ທີ່ຢູ່ເບື້ອງຫຼັງອິນພຸດແທັກ NFC ໂດຍ Daniel Mueller</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານ PlayStation Move, ການປັບທຽບເຊັນເຊີ ແລະ ການຈັບມືຂອງອຸປະກອນເສີມ EXT ໂດຍ Thomas Perl ກວດທຽບກັບວິກິ moveonpc ການຈັດຕັ້ງປະຕິບັດຂອງ PadForge ເປັນ C# ທີ່ຂຽນຂຶ້ນເອງ BSD 2-Clause</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ telemetry ຂອງເກມແຂ່ງລົດ</value></data>
@@ -4328,23 +4505,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>ເອກະສານການຈັບຄູ່ Bluetooth ແລະ ລາຍງານຂອງ DualShock 3 GPL-2.0 ແລະ GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>ໂຄງສ້າງຂໍ້ຄວາມ STUN ແລະ ການຖອດລະຫັດ XOR-MAPPED-ADDRESS ທີ່ຢູ່ເບື້ອງຫຼັງການຂ້າມ NAT ຂອງການເຊື່ອມຕໍ່ທາງໄກ ນຳເຂົ້າຈາກຊອດ C# ຂອງມັນ ໂດຍ Aaron Clauson BSD 3-Clause ພ້ອມຂໍ້ຈຳກັດການໃຊ້ງານໃນພາກທີ 2 ຂອງໃບອະນຸຍາດ</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>ໂຄງສ້າງຂໍ້ຄວາມ STUN ແລະ ການຖອດລະຫັດ XOR-MAPPED-ADDRESS ທີ່ຢູ່ເບື້ອງຫຼັງການຂ້າມ NAT ຂອງການເຊື່ອມຕໍ່ທາງໄກ ນຳເຂົ້າຈາກຊອດ C# ຂອງມັນ ໂດຍ Aaron Clauson. ໃບອະນຸຍາດຂອງມັນເພີ່ມຂໍ້ຈຳກັດການໃຊ້ງານໃນພາກທີ 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານ, ຕາຕະລາງອຸປະກອນ ແລະ ສະເກວແກນຂອງ 3Dconnexion ອ້າງອີງຈາກ hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse ໂດຍ AndunHH (CC BY-NC-SA 4.0) ແລະ spacenavd (GPL-3.0-or-later) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>ການຕັດລິງ Bluetooth ດ້ວຍ IOCTL ຂອງໂຮສ, ອໍດິນອລທີ່ເຊື່ອງໄວ້ຂອງ XInput ສຳລັບການປິດເຄື່ອງ ແລະ ຄວາມສາມາດ ແລະ ຄ່າເລີ່ມຕົ້ນການສັ່ນຂອງທຣິກເກີ DualSense GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>ການຕັດລິງ Bluetooth ດ້ວຍ IOCTL ຂອງໂຮສ, ອໍດິນອລທີ່ເຊື່ອງໄວ້ຂອງ XInput ສຳລັບການປິດເຄື່ອງ ແລະ ຄວາມສາມາດ ແລະ ຄ່າເລີ່ມຕົ້ນການສັ່ນຂອງທຣິກເກີ DualSense ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂປຣໂຕຄອນ Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>ຈັງຫວະແຮັບຕິກຂອງການປັດ, ບິດປຸ່ມຂອງລາຍງານ 0x42, ຄຳສັ່ງປິດເຄື່ອງ ແລະ ການສົ່ງຕໍ່ຜ່ານດອງເກິລ ອ້າງອີງຈາກ OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) ແລະ SteamlessController (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຫຼື AGPL ຖືກລວມມາ</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>ຮູບຮ່າງເດດໂຊນທັງຫົກແບບ ໂດຍ Minimuino GFDL-1.3-or-later ແລະ GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>ພຶດຕິກຳຕົວຊີ້ IR ຂອງ Wii Remote: ຈຸດກາງຂອງຄູ່ຈຸດ, ຂອບ, ການຊົດເຊີຍແຖບເຊັນເຊີ, ການເຮັດໃຫ້ລຽບ ແລະ ເສັ້ນໂຄ້ງ FPS Mouse ພ້ອມ fork ຂອງ Ryochan7, Suegrini ແລະ Trihy GPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>ພຶດຕິກຳຕົວຊີ້ IR ຂອງ Wii Remote: ຈຸດກາງຂອງຄູ່ຈຸດ, ຂອບ, ການຊົດເຊີຍແຖບເຊັນເຊີ, ການເຮັດໃຫ້ລຽບ ແລະ ເສັ້ນໂຄ້ງ FPS Mouse ພ້ອມ fork ຂອງ Ryochan7, Suegrini ແລະ Trihy ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>ໂຄງສ້າງເອັບເຟັກທຣິກເກີປັບຕົວໄດ້ຂອງ DualSense ແລະ ການບັນຈຸໂຊນ ສ້າງຄືນໃນ C# ໂດຍ John "Nielk1" Klein MIT</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>ໂຄງສ້າງເອັບເຟັກທຣິກເກີປັບຕົວໄດ້ຂອງ DualSense ແລະ ການບັນຈຸໂຊນ ສ້າງຄືນໃນ C# ໂດຍ John "Nielk1" Klein</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>ໂຄງສ້າງ DS4_REPORT_EX ທີ່ຢູ່ເບື້ອງຫຼັງລາຍງານອິນພຸດຂອງ DualShock 4 ສະເໝືອນ ໂດຍ Benjamin Höglinger-Stelzer MIT</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>ໂຄງສ້າງ DS4_REPORT_EX ທີ່ຢູ່ເບື້ອງຫຼັງລາຍງານອິນພຸດຂອງ DualShock 4 ສະເໝືອນ ໂດຍ Benjamin Höglinger-Stelzer</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton fork)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ຊ່ວງການຫຼຸດທອນ 48 dB ຂອງໄມໂຄຣໂຟນ DualSense ສະເໝືອນ GPL-3.0-or-later, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ຊ່ວງການຫຼຸດທອນ 48 dB ຂອງໄມໂຄຣໂຟນ DualSense ສະເໝືອນ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງໂປຣໂຕຄອນພວງມາໄລ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ລາຍງານແຮງສະທ້ອນກັບແບບເນທີຟ ແລະ ໄຟ LED ປ່ຽນເກຍຕາມ RPM ສຳລັບພວງມາໄລ Fanatec, Thrustmaster ແລະ Logitech ອ້າງອີງຈາກ hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) ແລະ thrustmaster-led-linux (GPL-3.0) ແລະ ກວດທຽບກັບປລັກອິນ SimHub LED ໂດຍ prodigal.knight (MIT) ແລະ tm-bt-led (MIT) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ GPL ຖືກລວມມາ</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງ I/O ອາເຄດ</value></data>
@@ -4374,19 +4551,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>ແຫຼ່ງອ້າງອີງຕົວຄວບຄຸມ Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>ໂປຣໂຕຄອນທີ່ຢູ່ເບື້ອງຫຼັງໄດຣເວີ Xbox ຮຸ່ນທຳອິດ, Steel Battalion, chatpad ຂອງ Xbox 360 ແລະ uDraw ຂອງ Xbox 360 ໃນ fork SDL ແລະ ຕົວຮັບສັນຍານ Xbox 360 ທີ່ PadForge ຜູກເຂົ້າກັບໄດຣເວີຂອງ Windows ເອງ ອ້າງອີງຈາກ brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp ໂດຍ ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) ແລະ xemu (LGPL-2.0-or-later) ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>ການຫຸ້ມຫໍ່ແບບໜຶ່ງ INF ຕໍ່ອຸປະກອນ ແລະ ການລາຍຊື່ອຸປະກອນ ທີ່ຢູ່ເບື້ອງຫຼັງການຜູກ WinUSB ອັດຕະໂນມັດ ໂດຍ Pete Batard ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ LGPL-3.0-or-later</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>ການຫຸ້ມຫໍ່ແບບໜຶ່ງ INF ຕໍ່ອຸປະກອນ ແລະ ການລາຍຊື່ອຸປະກອນ ທີ່ຢູ່ເບື້ອງຫຼັງການຜູກ WinUSB ອັດຕະໂນມັດ ໂດຍ Pete Batard ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>ຄຳຮ້ອງຂໍ feature report ຂອງ Bluetooth HID ທີ່ PadForge ສົ່ງເພື່ອລະບຸອຸປະກອນເສີມ PS Move ໂດຍ Ricardo Quesada ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ Apache-2.0</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>ຄຳຮ້ອງຂໍ feature report ຂອງ Bluetooth HID ທີ່ PadForge ສົ່ງເພື່ອລະບຸອຸປະກອນເສີມ PS Move ໂດຍ Ricardo Quesada ເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດໃດຖືກລວມມາ</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>ຄີການຕັ້ງຄ່າ Windows Mixed Reality ໃນ fork SDL ມາຈາກ Monado ລິຂະສິດ 2021 Jan Schmidt ມາພ້ອມໃນ SDL3.dll BSL-1.0</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>ຄີການຕັ້ງຄ່າ Windows Mixed Reality ໃນ fork SDL ມາຈາກ Monado ລິຂະສິດ 2021 Jan Schmidt ມາພ້ອມໃນ SDL3.dll</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>ການລວມຂໍ້ມູນເຊັນເຊີຂອງ Rift DK1 ໃນ fork SDL ພອດມາຈາກຂອງ OpenHMD ລິຂະສິດ 2013 Fredrik Hultin, Jakob Bornecrantz ມາພ້ອມໃນ SDL3.dll BSL-1.0</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>ການລວມຂໍ້ມູນເຊັນເຊີຂອງ Rift DK1 ໃນ fork SDL ພອດມາຈາກຂອງ OpenHMD ລິຂະສິດ 2013 Fredrik Hultin, Jakob Bornecrantz ມາພ້ອມໃນ SDL3.dll</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>ເອກະສານໂປຣໂຕຄອນລຳໂພງ ແລະ ການປັບທຽບ IR ຂອງ Wii Remote ອ່ານເພື່ອເອົາຂໍ້ເທັດຈິງໂປຣໂຕຄອນເທົ່ານັ້ນ</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>ລາຍງານ 9 ໄບຕ໌ຂອງທຣິກເກີ impulse ຂອງ Xbox ແລະ ເສັ້ນທາງການຂຽນຂອງມັນ ໂດຍ araghon007 MIT</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>ລາຍງານ 9 ໄບຕ໌ຂອງທຣິກເກີ impulse ຂອງ Xbox ແລະ ເສັ້ນທາງການຂຽນຂອງມັນ ໂດຍ araghon007</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>ຮູບແບບ PCM ແຮັບຕິກຂອງ PS5 ແບບ 16 ບິດມີເຄື່ອງໝາຍທີ່ 3 kHz ເຊິ່ງໄດ້ຢືນຢັນການເຂົ້າລະຫັດແຮັບຕິກ Bluetooth ແບບ 8 ບິດມີເຄື່ອງໝາຍ AGPL-3.0, ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ AGPL ຖືກລວມມາ</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>ຮູບແບບ PCM ແຮັບຕິກຂອງ PS5 ແບບ 16 ບິດມີເຄື່ອງໝາຍທີ່ 3 kHz ເຊິ່ງໄດ້ຢືນຢັນການເຂົ້າລະຫັດແຮັບຕິກ Bluetooth ແບບ 8 ບິດມີເຄື່ອງໝາຍ ອ່ານເປັນເອກະສານເທົ່ານັ້ນ, ບໍ່ມີໂຄດ AGPL ຖືກລວມມາ</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>ໜ້າຈໍແປ້ນພິມ</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>ແຕ້ມລົງເທິງໜ້າຈໍທີ່ມີໃນແປ້ນພິມ GamePanel ຂອງ Logitech ແລະ Mad Catz S.T.R.I.K.E. 7, ແລະ ເທິງໂທລະສັບຜ່ານ Logitech Arx Control: ໂປຣໄຟລ໌, ໂມງ, ເວລາຫຼິ້ນ, ໂມງຈັບເວລາ, ຮູບ, ຫຼື ສີແຖບໄຟຂອງ DualShock 4 ຫຼື DualSense. ແຕ່ລະໜ້າຈໍມີແຖວຂອງມັນເອງໃນໜ້າ ອຸປະກອນ, ບ່ອນທີ່ທ່ານກຳນົດສິ່ງທີ່ມັນສະແດງ. ປຸ່ມທີ່ຢູ່ຂ້າງໜ້າຈໍແມ່ນປຸ່ມຂອງແຖວນັ້ນ.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>ຄວບຄຸມໜ້າຈໍແປ້ນພິມ</value></data>
@@ -4454,6 +4631,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>ເລື່ອນ</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>ເລື່ອນ X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>ເລື່ອນ Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>ເລືອກສິ່ງທີ່ມັນສະແດງ. ບໍ່ມີຫຍັງປ່ຽນຈົນກວ່າທ່ານຈະບັນທຶກ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>ຕັ້ງ {0} ເປັນ {1} ແລ້ວ.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>ກຳລັງດາວໂຫຼດ SDK S.T.R.I.K.E. 7 ຂອງ Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>ດຽວນີ້ S.T.R.I.K.E. 7 ໂຫຼດ {0}.</value></data>
@@ -4593,8 +4771,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>ກຳລັງອ່ານ {0} ຈາກໜ່ວຍຄວາມຈຳຮ່ວມ.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>ກຳລັງລໍຖ້າ Assetto Corsa ຫຼື Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>ກຳລັງສົ່ງຕໍ່ໄປຍັງພອດ {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>ຮູບແບບເທເລເມທຣີກຳນົດເອງ</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ອະທິບາຍແພັກເກັດທີ່ເກມສົ່ງມາ ເທື່ອລະຟີລດ໌ ແລ້ວ PadForge ຈະອ່ານເກມນັ້ນໄດ້ນຳ. ແຕ່ລະຕົວແປຈະກາຍເປັນແກນໜຶ່ງໃນແຖວ ເທເລເມທຣີເກມ ແລະ ເປັນຊ່ອງສັນຍານສຳລັບການເປີດໃຊ້ດ້ວຍ ສູດກຳນົດເອງ. ເລືອກຮູບແບບຕາມຊື່ໃນລາຍການ ເກມ ຫຼື ກຳນົດຄວາມຍາວ ຫຼື ຄີໃຫ້ມັນ ເພື່ອໃຫ້ ກວດຫາອັດຕະໂນມັດ ຊອກພົບມັນ.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>ຮູບແບບກຳນົດເອງ</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ອະທິບາຍແພັກເກັດເທເລເມທຣີຂອງເກມທີ່ PadForge ບໍ່ຮູ້ຈັກ.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>ເພີ່ມຮູບແບບ</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>ຮູບແບບ {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>ຊື່</value></data>
@@ -4605,12 +4783,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>ຮູບແບບນີ້ອ່ານສະເພາະແພັກເກັດທີ່ມີຂະໜາດເທົ່ານີ້ໄບຕ໌ພໍດີ. ຖ້າເປັນ 0, ຈະອ່ານທຸກແພັກເກັດ ແລະ ກວດຫາອັດຕະໂນມັດ ຈະບໍ່ເລືອກຮູບແບບນີ້ ສະນັ້ນໃຫ້ເລືອກມັນຕາມຊື່.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>ຄີທີ່ຕ້ອງມີ</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>ຮູບແບບນີ້ອ່ານສະເພາະແພັກເກັດ JSON ທີ່ມີຄີນີ້. ຖ້າປະວ່າງໄວ້, ຈະອ່ານທຸກແພັກເກັດ ແລະ ກວດຫາອັດຕະໂນມັດ ຈະບໍ່ເລືອກຮູບແບບນີ້ ສະນັ້ນໃຫ້ເລືອກມັນຕາມຊື່.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>ລຳດັບໄບຕ໌</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>ລິດເທິນເອັນດຽນ ເອົາໄບຕ໌ທີ່ມີຄ່າຕ່ຳສຸດຂອງແຕ່ລະຕົວເລກໄວ້ກ່ອນ, ຄືກັບທີ່ເກມໃນ PC ເກືອບທັງໝົດເຮັດ. ບິກເອັນດຽນ ເອົາໄບຕ໌ທີ່ມີຄ່າສູງສຸດໄວ້ກ່ອນ.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>ລິດເທິນເອັນດຽນ</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>ບິກເອັນດຽນ</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>ແພັກເກັດຂຽນແຕ່ລະຕົວເລກໂດຍເອົາໄບຕ໌ທີ່ມີຄ່າສູງສຸດໄວ້ກ່ອນ. ເກມໃນ PC ເກືອບທັງໝົດຂຽນໄບຕ໌ທີ່ມີຄ່າຕ່ຳສຸດໄວ້ກ່ອນ.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>ຄ່າເກຍ</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>ຟີລດ໌ເກຍມີຕົວເລກຂອງຕົນເອງສຳລັບເກຍຖອຍຫຼັງ ແລະ ເກຍວ່າງ ເຊັ່ນ 0 ແລະ 11 ຂອງ Forza. ເມື່ອປິດໄວ້, ເກຍທີ່ເປັນຄ່າລົບແມ່ນເກຍຖອຍຫຼັງ ແລະ 0 ແມ່ນເກຍວ່າງ.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>ເກຍຖອຍຫຼັງ</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>ເກຍວ່າງ</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>ຄີທີ່ຕ້ອງມີສຳລັບແພັກເກັດ JSON, ຄ່າເກຍ</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>ຟີລດ໌</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>ແຕ່ລະຟີລດ໌ອ່ານຕົວເລກທີ່ອອບເຊັດຂອງມັນ ຫຼື ພາຍໃຕ້ຄີຂອງມັນໃນ JSON (ຈຸດໃຊ້ເພື່ອເຂົ້າໄປໃນອອບເຈັກທີ່ຊ້ອນກັນ) ແລ້ວຄູນດ້ວຍມາດຕາສ່ວນ. ຫຼັງຈາກໃຊ້ມາດຕາສ່ວນແລ້ວ, ຄວາມໄວເປັນ ກມ/ຊມ, ແປ້ນຢຽບມີຄ່າຈາກ 0 ຫາ 1, ແລະ ການລ້ຽວຈາກ -1 ເມື່ອລ້ຽວຊ້າຍສຸດ ຫາ 1 ເມື່ອລ້ຽວຂວາສຸດ. ແກນຂອງຕົວແປມີຄ່າຈາກ ຕ່ຳສຸດ ເມື່ອຢູ່ນິ່ງ ຫາ ສູງສຸດ ເມື່ອເຕັມ.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>ອ່ານເຂົ້າ</value></data>
@@ -4694,4 +4875,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ທີ່ {1} ຈົນກວ່າຈະຖືກຢຸດ</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>ຢຸດເອັບເຟັກທຣິກເກີທີ່ {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ຄວບຄຸມແສງໄຟຂອງອຸປະກອນນີ້, ລະດັບການຄວບຄຸມແສງໄຟ</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ອິນພຸດອື່ນໆ</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>ບໍ່ມີອຸປະກອນທີ່ກົງກັນ.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>ບໍ່ໄດ້ໃຊ້ງານ</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}, ກຳລັງສາກ</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>ໃຊ້ໂດຍ</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>ຕົວຄວບຄຸມໃໝ່</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>ການຕັ້ງຄ່າ</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>ທຸກແກນ, ປຸ່ມ ແລະ ເຊັນເຊີ</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>ກົດຢູ່: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, ເສັ້ນທາງ, ຄວາມສາມາດ, ບັງຄັບໂໝດຈອຍສະຕິກດິບ</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, ເສັ້ນທາງ, ຄວາມສາມາດ</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>ສຳເນົາລາຍລະອຽດ</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>ຜະລິດຕະພັນ</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>ປະເພດ</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>ຄວາມສາມາດ</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>ການເຊື່ອມຕໍ່</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>ແບັດເຕີຣີ</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>ເສັ້ນທາງ</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>ເລກຊີຣຽວ</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ເຟີມແວ</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>ລຸ້ນປັບປຸງ</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>ສັ່ນຕົວຄວບຄຸມນຳ, ແຈ້ງເຕືອນຊ້ຳທຸກໆ, ແຈ້ງເຕືອນເມື່ອສາກເຕັມ</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>ຕ້ອງກວດເບິ່ງ</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>ນຳເຂົ້າຄົບຖ້ວນ</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>ຕັ້ງລະຫັດຜ່ານ</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>ປົດລັອກການເຊື່ອມຕໍ່ທາງໄກ</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ລະຫັດຜ່ານ</value></data>
 </root>

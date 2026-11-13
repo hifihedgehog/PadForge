@@ -144,6 +144,28 @@ namespace PadForge.Tests
             return Assert.Single(ruler.Keys.Lights).Key;
         }
 
+        /// <summary>The dialog draws the progress line's two numbers in a
+        /// face of their own, so the line comes in five parts that make the
+        /// sentence, and the parts follow each name learned (#574).</summary>
+        [Fact]
+        public void TheProgressLineComesInPartsAroundItsNumbers()
+        {
+            using var vm = Dialog();
+            // One of the four key lights has a name, Esc.
+            Assert.Equal("1", vm.ProgressFirst);
+            Assert.Equal("4", vm.ProgressSecond);
+            Assert.Equal(vm.Progress, vm.ProgressLead + vm.ProgressFirst + vm.ProgressMiddle + vm.ProgressSecond + vm.ProgressTail);
+
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.Start();
+            vm.Name(0x04);
+            Assert.Equal("2", vm.ProgressFirst);
+            Assert.Equal(vm.Progress, vm.ProgressLead + vm.ProgressFirst + vm.ProgressMiddle + vm.ProgressSecond + vm.ProgressTail);
+            foreach (string part in new[] { nameof(vm.Progress), nameof(vm.ProgressLead), nameof(vm.ProgressFirst), nameof(vm.ProgressMiddle), nameof(vm.ProgressSecond), nameof(vm.ProgressTail) })
+                Assert.Contains(part, raised);
+        }
+
         [Fact]
         public void TheWalkLightsEachUnnamedKey_AndAPressNamesIt()
         {

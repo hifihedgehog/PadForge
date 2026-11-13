@@ -509,7 +509,7 @@ namespace PadForge.Tests
                 Assert.Contains("/js/fullscreen.js", html);
                 Assert.Contains("id=\"fsMount\"", html);
             }
-            Assert.Contains("href=\"/gamepad.html\"", Asset("index.html"));
+            Assert.Contains("data-key=\"gamepad\" data-href=\"/gamepad.html\"", Asset("index.html"));
             Assert.Contains("/js/gamepad_client.js", Asset("gamepad.html"));
             string fs = Asset("js", "fullscreen.js");
             Assert.Contains("fullscreenEnabled", fs);

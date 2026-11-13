@@ -1,55 +1,80 @@
 using System.Windows;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    /// <summary>Shared destructive-verb confirm (#175 phase 2). Same
-    /// FluentWindow chrome as the other dialogs: ember tick + display-face
-    /// title, body description with an optional mono fact line, and a footer
-    /// where Cancel holds both the default and the initial focus. Esc
-    /// cancels. Enter can never fire the destructive action unless the user
-    /// tabs onto it deliberately.</summary>
-    public partial class ConfirmDialog : Wpf.Ui.Controls.FluentWindow
+    /// <summary>What a confirm's action is: a removal, in the danger look,
+    /// or a step forward, in the ember look.</summary>
+    public enum ConfirmKind { Destructive, Primary }
+
+    /// <summary>The shared confirm (#574) on the dialog frame: the question
+    /// as the title, what happens as the line under it, an optional fact in
+    /// the code face, and a foot where Cancel holds the default, the cancel
+    /// and the first focus. Esc cancels, and Enter never fires the action
+    /// unless the user tabs onto it. <see cref="Notice"/> is the same window
+    /// with nothing to decide.</summary>
+    public partial class ConfirmDialog : DialogWindow
     {
         private bool _confirmed;
 
-        private ConfirmDialog(string title, string message, string actionText, string detail)
+        /// <summary>A null <paramref name="actionText"/> makes a notice: the
+        /// action is gone and the one button reads Close, or
+        /// <paramref name="cancelText"/>.</summary>
+        private ConfirmDialog(string title, string message, string actionText, string detail, ConfirmKind kind, string cancelText)
         {
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
-
             Title = title;
-            TitleText.Text = title;
-            MessageText.Text = message;
-            ActionButton.Content = actionText;
+            Subtitle = message;
             if (!string.IsNullOrEmpty(detail))
             {
                 DetailText.Text = detail;
                 DetailText.Visibility = Visibility.Visible;
             }
+            if (actionText == null)
+            {
+                ActionButton.Visibility = Visibility.Collapsed;
+                CancelButton.Content = cancelText ?? Strings.Instance.Common_Close;
+            }
+            else
+            {
+                ActionButton.Content = actionText;
+                if (kind == ConfirmKind.Primary)
+                    ActionButton.SetResourceReference(StyleProperty, "DialogPrimaryButton");
+                if (cancelText != null) CancelButton.Content = cancelText;
+            }
             Loaded += (_, _) => CancelButton.Focus();
         }
 
-        /// <summary>Modal confirm, centered on <paramref name="owner"/> (screen
-        /// when null). Returns true only when the user clicked the destructive
-        /// action button. Callers pass their own localized verb strings;
-        /// <paramref name="detail"/> (optional) renders as the mono cold line
-        /// naming the thing at stake.</summary>
-        public static bool Show(Window owner, string title, string message, string actionText, string detail = null)
+        /// <summary>Modal confirm, centered on <paramref name="owner"/> (the
+        /// screen when null). True only when the user chose the action.
+        /// Callers pass their own words. <paramref name="detail"/> names the
+        /// thing at stake in the code face, <paramref name="kind"/> picks the
+        /// action's look, and <paramref name="cancelText"/> replaces Cancel's
+        /// word.</summary>
+        public static bool Show(Window owner, string title, string message, string actionText, string detail = null,
+            ConfirmKind kind = ConfirmKind.Destructive, string cancelText = null)
         {
-            var dlg = new ConfirmDialog(title, message, actionText, detail);
+            var dlg = new ConfirmDialog(title, message, actionText ?? string.Empty, detail, kind, cancelText);
+            Place(dlg, owner);
+            dlg.ShowDialog();
+            return dlg._confirmed;
+        }
+
+        /// <summary>A notice with nothing to decide: one button, Close unless
+        /// the caller names another word.</summary>
+        public static void Notice(Window owner, string title, string message, string detail = null, string closeText = null)
+        {
+            var dlg = new ConfirmDialog(title, message, null, detail, ConfirmKind.Destructive, closeText);
+            Place(dlg, owner);
+            dlg.ShowDialog();
+        }
+
+        private static void Place(ConfirmDialog dlg, Window owner)
+        {
             if (owner != null)
                 dlg.Owner = owner;
             else
                 dlg.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            dlg.ShowDialog();
-            return dlg._confirmed;
         }
 
         private void ActionButton_Click(object sender, RoutedEventArgs e)

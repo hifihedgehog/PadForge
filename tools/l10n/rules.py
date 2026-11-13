@@ -33,6 +33,14 @@ SENTENCE_END = set(".!?。।॥۔։။።។؟")
 CREDITED = {"Dolphin", "new-lg4ff", "OpenLogi", "t19xx_usb", "ttyT1941", "hmkconf", "android-bluez-ime", "Linux",
             "zeemoted", "dji-firmware-tools", "NintendoExtensionCtrl", "spacenavd", "chmfp", "fortius_1942", "x360ce"}
 LICENSE_TAG = re.compile(r"(\S+) \(([^()]*)\)")
+# The About page's license chips that are a license's identifier or name, which AboutPageTests holds to the
+# English in every language.
+LEGAL_CHIPS = ("About_License_Mit", "About_License_Apache2", "About_License_Bsd3", "About_License_Bsd2",
+               "About_License_Bsl1", "About_License_Isc", "About_License_Mpl2", "About_License_Unlicense",
+               "About_License_Zlib", "About_License_Gpl2", "About_License_Gpl2OrLater", "About_License_Gpl3",
+               "About_License_Gpl3OrLater", "About_License_Agpl3", "About_License_Lgpl21OrLater", "About_License_Lgpl3",
+               "About_License_Lgpl3OrLater", "About_License_CcByNcSa4", "About_License_CcBy3", "About_License_CgTrader",
+               "About_License_BouncyCastle", "About_License_WyvrnEula")
 PURE_LICENSE = re.compile(r"^(?:[A-Z0-9][\w.+/-]*|and)(?: (?:[A-Z0-9][\w.+/-]*|and))*$")
 
 
@@ -169,8 +177,13 @@ def check(english, translated, script):
     def agree(key, message):
         problems.append(("AGREE", key, message))
 
-    if shown("Profile_Default") not in shown("Profiles_DefaultLockedHint"):
-        agree("Profiles_DefaultLockedHint", "must contain the exact text of Profile_Default")
+    if shown("GetProfiles_Title") not in shown("Workshop_UpdatesBody"):
+        agree("Workshop_UpdatesBody", "must contain the exact text of GetProfiles_Title")
+    if shown("ControllerType_KeyboardMouse") not in shown("Workshop_Becomes_Tip"):
+        agree("Workshop_Becomes_Tip", "must name the type with the exact text of ControllerType_KeyboardMouse")
+    for name in ("PadForge", "reWASD", "DS4Windows"):
+        if name not in shown("Profiles_DropTileFormats"):
+            agree("Profiles_DropTileFormats", "must keep " + name + " as written")
     for option in ("Pad_Lighting_ClaimLevel_Colors", "Pad_Lighting_ClaimLevel_Power"):
         if shown(option) not in shown("Pad_Lighting_ClaimLevel_Tooltip"):
             agree("Pad_Lighting_ClaimLevel_Tooltip", "must contain the exact text of " + option)
@@ -194,4 +207,7 @@ def check(english, translated, script):
         agree("About_SpecialtyUsbRefsDesc", "must name ttyT1941 (GPL-3.0) right after t19xx_usb (GPL-3.0)")
     if shown("About_PeripheralOutputRefsDesc").count("OpenLogi") != 2:
         agree("About_PeripheralOutputRefsDesc", "must name OpenLogi twice, the project and its docs")
+    for key in LEGAL_CHIPS:
+        if key in english and shown(key) != english[key]:
+            agree(key, "names a license: write it exactly as the English does")
     return problems

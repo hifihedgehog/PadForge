@@ -198,7 +198,7 @@ namespace PadForge.Views
             // single-file publish (the #175 lightbar lesson).
             var bmp = EmbeddedBitmaps.Load(resourcePath);
             if (bmp == null) return null;
-            var img = new Image { Source = bmp, Width = w, Height = h, Stretch = Stretch.Fill };
+            var img = new PadForge.Controls.DecorativeImage { Source = bmp, Width = w, Height = h, Stretch = Stretch.Fill };
             Canvas.SetLeft(img, x);
             Canvas.SetTop(img, y);
             return img;

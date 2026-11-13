@@ -27,6 +27,7 @@ namespace PadForge.ViewModels
             // Keep the per-item IsActive flame flag (#175) current when the
             // profile list is rebuilt or items are added/removed.
             ProfileItems.CollectionChanged += (_, _) => OnProfileItemsChanged();
+            RaiseForegroundText();
         }
 
         // ─────────────────────────────────────────────
@@ -102,19 +103,24 @@ namespace PadForge.ViewModels
             // kept the previous language until something else re-read them.
             OnPropertyChanged(nameof(IdentityProtectionModes));
             OnPropertyChanged(nameof(IdentityProtectionHint));
+            // A paired PC's state line and its fingerprint's gamepad-only
+            // word are built from the string table on every read.
+            foreach (var peer in TrustedPeers) peer.RefreshText();
             // Built from Strings.Instance on every read (#457).
             OnPropertyChanged(nameof(UpdateStatusText));
+            OnPropertyChanged(nameof(AboutSubLine));
 
             // Refresh the default profile's display name in the list.
             var defaultItem = ProfileItems.FirstOrDefault(p => p.IsDefault);
             if (defaultItem != null)
                 defaultItem.Name = Strings.Instance.Profile_Default;
 
-            // And every item's localized rule summary, which the line above
-            // does not cover: it renames one item, while the auto-switch chip
-            // text is culture-dependent on all of them.
+            // And every card's game line and type chips, which the line above
+            // does not cover: it renames one item, while those words are
+            // culture-dependent on all of them.
             foreach (var item in ProfileItems)
                 item?.RaiseCultureDependentText();
+            RaiseForegroundText();
 
             // Refresh the active profile header when the default profile is active.
             if (string.IsNullOrEmpty(SettingsManager.ActiveProfileId))
@@ -168,6 +174,31 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  The page's groups and its search (#574)
+        // ─────────────────────────────────────────────
+
+        private SettingsGroup _selectedSettingsGroup = SettingsGroup.General;
+
+        /// <summary>The group the Settings page shows while its search box is
+        /// empty. For this run only: the page opens on General.</summary>
+        public SettingsGroup SelectedSettingsGroup
+        {
+            get => _selectedSettingsGroup;
+            set => SetProperty(ref _selectedSettingsGroup, value);
+        }
+
+        private string _settingsSearchText = string.Empty;
+
+        /// <summary>What the Settings page's search box holds. While it holds a
+        /// word the page shows the matching rows of every group. Not saved, and
+        /// emptied when the page is left.</summary>
+        public string SettingsSearchText
+        {
+            get => _settingsSearchText;
+            set => SetProperty(ref _settingsSearchText, value ?? string.Empty);
+        }
+
+        // ─────────────────────────────────────────────
         //  HidHide driver
         // ─────────────────────────────────────────────
 
@@ -210,7 +241,8 @@ namespace PadForge.ViewModels
         private string _hidMaestroVersion = GetEmbeddedHidMaestroVersion();
 
         /// <summary>HIDMaestro SDK version string, read from the embedded
-        /// HIDMaestro.Core assembly at startup.</summary>
+        /// HIDMaestro.Core assembly at startup. Bare, with no "v" before
+        /// it, as every version the Settings page shows.</summary>
         public string HIDMaestroVersion
         {
             get => _hidMaestroVersion;
@@ -223,7 +255,7 @@ namespace PadForge.ViewModels
             {
                 var asm = typeof(HIDMaestro.HMContext).Assembly;
                 var v = asm.GetName().Version;
-                return v != null ? $"v{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
+                return v != null ? $"{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
             }
             catch { return string.Empty; }
         }
@@ -268,7 +300,7 @@ namespace PadForge.ViewModels
             try
             {
                 var v = Services.Ds3DriverInstaller.BundledBthPs3Version();
-                return v != null ? $"v{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
+                return v != null ? $"{v.Major}.{v.Minor}.{v.Build}" : string.Empty;
             }
             catch { return string.Empty; }
         }
@@ -1030,7 +1062,7 @@ namespace PadForge.ViewModels
 
         private RelayCommand _resetCloseToTrayCommand;
         public RelayCommand ResetCloseToTrayCommand =>
-            _resetCloseToTrayCommand ??= new RelayCommand(() => CloseToTray = false);
+            _resetCloseToTrayCommand ??= new RelayCommand(() => ResetSetting(nameof(CloseToTray)));
 
         /// <summary>Whether closing the window keeps PadForge running in the system tray.</summary>
         public bool CloseToTray
@@ -1080,13 +1112,50 @@ namespace PadForge.ViewModels
         /// language change reaches it (OnCultureChanged raises it).</summary>
         public string UpdateStatusText => _updateStatus?.Invoke() ?? string.Empty;
 
-        /// <summary>Sets what the status line says. The function reads
-        /// Strings.Instance itself and captures only fixed values (a version,
-        /// a percentage, an error message). Null clears the line.</summary>
-        internal void SetUpdateStatus(Func<string> text)
+        /// <summary>Sets what the status line says, and whether it says this
+        /// build is the newest. The function reads Strings.Instance itself
+        /// and captures only fixed values (a version, a percentage, an error
+        /// message). Null clears the line.</summary>
+        internal void SetUpdateStatus(Func<string> text, bool upToDate = false)
         {
             _updateStatus = text;
+            IsUpToDate = upToDate;
             OnPropertyChanged(nameof(UpdateStatusText));
+            OnPropertyChanged(nameof(AboutSubLine));
+        }
+
+        private bool _isUpToDate;
+        /// <summary>The last check found this build the newest (#574).</summary>
+        public bool IsUpToDate
+        {
+            get => _isUpToDate;
+            private set => SetProperty(ref _isUpToDate, value);
+        }
+
+        private string _versionNumber = string.Empty;
+        /// <summary>The version alone, "6.0.0", which the About page shows
+        /// beside PadForge's name (#574). ApplicationVersion is the full
+        /// build line.</summary>
+        public string VersionNumber
+        {
+            get => _versionNumber;
+            set => SetProperty(ref _versionNumber, value ?? string.Empty);
+        }
+
+        /// <summary>The About page's line under PadForge's name (#574): the
+        /// subtitle, then "Up to date." once a check found the newest build,
+        /// or the Updates card's own sentence while a check runs, has failed
+        /// or has found an update. Before any check, the subtitle alone.</summary>
+        public string AboutSubLine
+        {
+            get
+            {
+                var s = Strings.Instance;
+                string state = IsUpToDate ? s.About_UpToDate : UpdateStatusText;
+                return string.IsNullOrEmpty(state)
+                    ? s.About_Subtitle
+                    : string.Format(CultureInfo.CurrentCulture, s.About_SubtitleState_Format, s.About_Subtitle, state);
+            }
         }
 
         private bool _isUpdateAvailable;
@@ -1415,6 +1484,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gKeysStatus, value);
         }
 
+        private bool _gKeysStatusIsWarning;
+
+        /// <summary>The G-keys line says something is wrong, which draws it in
+        /// the warning color (#574). Running with keys arriving does not.</summary>
+        public bool GKeysStatusIsWarning
+        {
+            get => _gKeysStatusIsWarning;
+            set => SetProperty(ref _gKeysStatusIsWarning, value);
+        }
+
         private bool _analogKeyboardsEnabled;
 
         /// <summary>Analog keyboards read over their vendor HID interface
@@ -1507,6 +1586,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _keyboardScreensStatus, value);
         }
 
+        private bool _keyboardScreensStatusIsWarning;
+
+        /// <summary>The keyboard screens' lines include that no screen was
+        /// found, which draws them in the warning color (#574). A library's
+        /// line beside a screen that is present is information.</summary>
+        public bool KeyboardScreensStatusIsWarning
+        {
+            get => _keyboardScreensStatusIsWarning;
+            set => SetProperty(ref _keyboardScreensStatusIsWarning, value);
+        }
+
         /// <summary>Each keyboard screen's choices (#519), kept by the
         /// screen's row. Changed on the UI thread only.</summary>
         public List<PadForge.Services.KeyboardScreenData> KeyboardScreens { get; set; } = new();
@@ -1572,6 +1662,17 @@ namespace PadForge.ViewModels
         {
             get => _falconStatus;
             set => SetProperty(ref _falconStatus, value);
+        }
+
+        private bool _falconStatusIsWarning;
+
+        /// <summary>The Falcon's lines say something is wrong, which draws
+        /// them in the warning color (#574): a library that did not load, a
+        /// picked copy that was not used, or no Falcon open.</summary>
+        public bool FalconStatusIsWarning
+        {
+            get => _falconStatusIsWarning;
+            set => SetProperty(ref _falconStatusIsWarning, value);
         }
 
         private bool _falconCanInstallDriver;
@@ -1671,35 +1772,27 @@ namespace PadForge.ViewModels
             _checkWorkshopUpdatesCommand ??= new RelayCommand(
                 () => CheckWorkshopUpdatesRequested?.Invoke(this, EventArgs.Empty));
 
-        private RelayCommand _browseCommunityConfigsCommand;
+        private RelayCommand<string> _getProfilesCommand;
 
-        /// <summary>Command to open the Browse Community Configs dialog. Always
-        /// enabled: with the opt-in off, the dialog opens on its cold-forge
-        /// state and offers the enable action itself.</summary>
-        public RelayCommand BrowseCommunityConfigsCommand =>
-            _browseCommunityConfigsCommand ??= new RelayCommand(
-                () => BrowseCommunityConfigsRequested?.Invoke(this, EventArgs.Empty));
+        /// <summary>Opens Get Profiles (#574) on a tab: "Starters" (also for
+        /// anything it does not know), "Community" or "File". The page's button
+        /// opens Starters and its drop tile Import a File. Always enabled: the
+        /// starters ship in the box, and with the community opt-in off the
+        /// Community tab opens on its cold state and offers the enable action
+        /// itself.</summary>
+        public RelayCommand<string> GetProfilesCommand =>
+            _getProfilesCommand ??= new RelayCommand<string>(tab =>
+                GetProfilesRequested?.Invoke(this,
+                    Enum.TryParse(tab, out GetProfilesTab t) && Enum.IsDefined(t) ? t : GetProfilesTab.Starters));
 
-        private RelayCommand _browseStarterProfilesCommand;
-
-        /// <summary>Command to open the starter-profile gallery (#256). Always
-        /// enabled: the catalog ships in the box, so there is no opt-in, no
-        /// network, and nothing to be unavailable.</summary>
-        public RelayCommand BrowseStarterProfilesCommand =>
-            _browseStarterProfilesCommand ??= new RelayCommand(
-                () => BrowseStarterProfilesRequested?.Invoke(this, EventArgs.Empty));
-
-        /// <summary>Raised when the user opens the starter-profile gallery.</summary>
-        public event EventHandler BrowseStarterProfilesRequested;
+        /// <summary>Raised when Get Profiles is asked for, with its tab.</summary>
+        public event EventHandler<GetProfilesTab> GetProfilesRequested;
 
         /// <summary>Raised when the user asks to purge the Workshop cache.</summary>
         public event EventHandler ClearWorkshopCacheRequested;
 
         /// <summary>Raised when the user asks to re-check imported profiles (Phase D).</summary>
         public event EventHandler CheckWorkshopUpdatesRequested;
-
-        /// <summary>Raised when the user opens the Browse Community Configs dialog.</summary>
-        public event EventHandler BrowseCommunityConfigsRequested;
 
         // ─────────────────────────────────────────────
         //  Settings file
@@ -1800,11 +1893,18 @@ namespace PadForge.ViewModels
 
         private bool _enableAutoProfileSwitching;
 
-        /// <summary>Whether auto-profile switching is enabled.</summary>
+        /// <summary>Whether auto-profile switching is enabled. Each card's
+        /// game line says Loads for while it is on and Set for while it is
+        /// off (#574).</summary>
         public bool EnableAutoProfileSwitching
         {
             get => _enableAutoProfileSwitching;
-            set => SetProperty(ref _enableAutoProfileSwitching, value);
+            set
+            {
+                if (!SetProperty(ref _enableAutoProfileSwitching, value)) return;
+                foreach (var item in ProfileItems)
+                    item.SwitchesByGame = value;
+            }
         }
 
         private bool _enableExternalControl;
@@ -1836,7 +1936,53 @@ namespace PadForge.ViewModels
         public bool IsForegroundMatched
         {
             get => _isForegroundMatched;
-            set => SetProperty(ref _isForegroundMatched, value);
+            set { if (SetProperty(ref _isForegroundMatched, value)) RaiseForegroundText(); }
+        }
+
+        private string _foregroundProfileName = string.Empty;
+
+        /// <summary>The name of the profile the program in front loads, empty
+        /// when none (#574). Runtime only, fed at 1 Hz with
+        /// ForegroundExeName.</summary>
+        public string ForegroundProfileName
+        {
+            get => _foregroundProfileName;
+            set { if (SetProperty(ref _foregroundProfileName, value ?? string.Empty)) RaiseForegroundText(); }
+        }
+
+        /// <summary>The In front now line around the program's name: what the
+        /// language puts before it and after it. A match comes first, then no
+        /// profile with a game, then neither.</summary>
+        public string ForegroundLead { get; private set; } = string.Empty;
+
+        /// <summary>What the In front now line puts after the program's name.</summary>
+        public string ForegroundTail { get; private set; } = string.Empty;
+
+        private void RaiseForegroundText()
+        {
+            var s = Strings.Instance;
+            string format = IsForegroundMatched ? s.Profiles_InFront_Match_Format
+                : NoProfileHasExecutables ? s.Profiles_InFront_NoGames_Format
+                : s.Profiles_InFront_None_Format;
+            (ForegroundLead, ForegroundTail) = SplitAroundPlace(format, ForegroundProfileName);
+            OnPropertyChanged(nameof(ForegroundLead));
+            OnPropertyChanged(nameof(ForegroundTail));
+        }
+
+        /// <summary>A sentence in two parts around its {0}, the program's or
+        /// the games' place, with {1} filled by <paramref name="name"/> in
+        /// both, so the page sets the {0} value apart in a run of its own and
+        /// a language may put {1} before {0}. The split comes first, so a name
+        /// that holds "{0}" cannot move it. A format with no {0} is all
+        /// lead.</summary>
+        internal static (string Lead, string Tail) SplitAroundPlace(string format, string name)
+        {
+            format ??= string.Empty;
+            name ??= string.Empty;
+            int at = format.IndexOf("{0}", StringComparison.Ordinal);
+            string lead = at < 0 ? format : format.Substring(0, at);
+            string tail = at < 0 ? string.Empty : format.Substring(at + 3);
+            return (lead.Replace("{1}", name, StringComparison.Ordinal), tail.Replace("{1}", name, StringComparison.Ordinal));
         }
 
         private bool _use2DControllerView;
@@ -1853,10 +1999,6 @@ namespace PadForge.ViewModels
         /// user. Persists across launches so the dialog only appears once.
         /// </summary>
         public bool LegacyDriverCleanupOffered { get; set; }
-
-        /// <summary>True once the first-run welcome tour has been completed
-        /// or skipped (replaces the pre-v4 beside-exe marker file).</summary>
-        public bool FirstRunTourCompleted { get; set; }
 
         // ─────────────────────────────────────────────
         //  Main window position/size (profile-independent)
@@ -1877,20 +2019,13 @@ namespace PadForge.ViewModels
 
         private ProfileListItem _selectedProfile;
 
-        /// <summary>Currently selected profile in the list.</summary>
+        /// <summary>The profile the last card command acted on (#574). A card's
+        /// command sets it before raising its event, and MainWindow's handlers
+        /// read it.</summary>
         public ProfileListItem SelectedProfile
         {
             get => _selectedProfile;
-            set
-            {
-                if (SetProperty(ref _selectedProfile, value))
-                {
-                    _deleteProfileCommand?.NotifyCanExecuteChanged();
-                    _editProfileCommand?.NotifyCanExecuteChanged();
-                    _loadProfileCommand?.NotifyCanExecuteChanged();
-                    _exportProfileCommand?.NotifyCanExecuteChanged();
-                }
-            }
+            set => SetProperty(ref _selectedProfile, value);
         }
 
         private string _activeProfileInfo = Strings.Instance.Common_Default;
@@ -1914,8 +2049,8 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Recomputes each profile row's IsActive flag against
         /// SettingsManager.ActiveProfileId. Empty/null id means the built-in
-        /// Default profile is active. Also repairs a missing list selection
-        /// onto the active row.
+        /// Default profile is active. The card commands whose answer turns on
+        /// which profile is active ask again.
         /// </summary>
         private void UpdateActiveProfileFlags()
         {
@@ -1926,23 +2061,9 @@ namespace PadForge.ViewModels
                     ? item.IsDefault
                     : item.Id == activeId;
             }
-
-            // Selection repair (user report 2026-07-06): the selection aura
-            // binds ListBoxItem.IsSelected, and at startup nothing was
-            // selected even though a profile was ACTIVE, so the engaged row
-            // rendered auraless until a click. Whenever no live selection
-            // exists (null, or the selected row left the list), select the
-            // active row. Every population and active-switch path funnels
-            // through this method (OnProfileItemsChanged, the
-            // ActiveProfileInfo setter), so the load, reset, and switch
-            // sites all self-heal here. A live user selection is never
-            // overridden.
-            if (_selectedProfile == null || !ProfileItems.Contains(_selectedProfile))
-            {
-                var active = ProfileItems.FirstOrDefault(i => i.IsActive);
-                if (active != null)
-                    SelectedProfile = active;
-            }
+            _loadProfileCommand?.NotifyCanExecuteChanged();
+            _saveAsProfileCommand?.NotifyCanExecuteChanged();
+            _saveSetupHereCommand?.NotifyCanExecuteChanged();
         }
 
         /// <summary>Rows whose PropertyChanged is currently hooked for the
@@ -1964,24 +2085,27 @@ namespace PadForge.ViewModels
             _hookedProfileItems.Clear();
             foreach (var item in ProfileItems)
             {
+                item.SwitchesByGame = EnableAutoProfileSwitching;
                 item.PropertyChanged += ProfileItem_PropertyChanged;
                 _hookedProfileItems.Add(item);
             }
             OnPropertyChanged(nameof(NoProfileHasExecutables));
+            RaiseForegroundText();
         }
 
         /// <summary>Edit mutates rows in place (Executables raises
         /// HasExecutables), so per-row changes feed the aggregate too.</summary>
         private void ProfileItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ProfileListItem.HasExecutables))
-                OnPropertyChanged(nameof(NoProfileHasExecutables));
+            if (e.PropertyName != nameof(ProfileListItem.HasExecutables)) return;
+            OnPropertyChanged(nameof(NoProfileHasExecutables));
+            RaiseForegroundText();
         }
 
         /// <summary>True while no profile carries an executable match rule
         /// (#175 item 8): with auto-switching on the monitor can never fire,
-        /// so the FOREGROUND readout shows a cold hint instead of a silent
-        /// no-op. Derived; notified from OnProfileItemsChanged and
+        /// so the In front now line says no profile has a game set. Derived,
+        /// and notified from OnProfileItemsChanged and
         /// ProfileItem_PropertyChanged.</summary>
         public bool NoProfileHasExecutables => ProfileItems.All(i => !i.HasExecutables);
 
@@ -1993,6 +2117,10 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user requests saving current settings as a new profile.</summary>
         public event EventHandler SaveAsProfileRequested;
+
+        /// <summary>Raised when the user asks for the current setup to replace
+        /// what a stored profile holds (#574, Save Current Setup Here).</summary>
+        public event EventHandler SaveSetupHereRequested;
 
         /// <summary>Raised when the user requests deleting the selected profile.</summary>
         public event EventHandler DeleteProfileRequested;
@@ -2007,8 +2135,15 @@ namespace PadForge.ViewModels
         /// profile to a shareable .pfprofile file (issue #83 follow-up).</summary>
         public event EventHandler ExportProfileRequested;
 
-        /// <summary>Raised when the user requests importing a .pfprofile file.</summary>
-        public event EventHandler ImportProfileRequested;
+        /// <summary>A card's command acts on its own profile (#574). The
+        /// profile becomes SelectedProfile, which MainWindow's handlers read,
+        /// before the event.</summary>
+        private bool Acts(ProfileListItem p)
+        {
+            if (p == null) return false;
+            SelectedProfile = p;
+            return true;
+        }
 
         private RelayCommand _newProfileCommand;
 
@@ -2017,59 +2152,85 @@ namespace PadForge.ViewModels
             _newProfileCommand ??= new RelayCommand(
                 () => NewProfileRequested?.Invoke(this, EventArgs.Empty));
 
-        private RelayCommand _saveAsProfileCommand;
+        private RelayCommand<ProfileListItem> _loadProfileCommand;
 
-        /// <summary>Command to save current settings as a new profile.</summary>
-        public RelayCommand SaveAsProfileCommand =>
-            _saveAsProfileCommand ??= new RelayCommand(
-                () => SaveAsProfileRequested?.Invoke(this, EventArgs.Empty));
+        /// <summary>Loads a card's profile. Default loads through the revert
+        /// path, as it always has. The active profile has nothing to load.</summary>
+        public RelayCommand<ProfileListItem> LoadProfileCommand =>
+            _loadProfileCommand ??= new RelayCommand<ProfileListItem>(p =>
+            {
+                if (!Acts(p)) return;
+                if (p.IsDefault) RevertToDefaultRequested?.Invoke(this, EventArgs.Empty);
+                else LoadProfileRequested?.Invoke(this, EventArgs.Empty);
+            }, p => p != null && !p.IsActive);
 
-        private RelayCommand _deleteProfileCommand;
+        private RelayCommand<ProfileListItem> _saveAsProfileCommand;
 
-        /// <summary>Command to delete the selected profile.</summary>
-        public RelayCommand DeleteProfileCommand =>
-            _deleteProfileCommand ??= new RelayCommand(
-                () => DeleteProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null && !_selectedProfile.IsDefault);
+        /// <summary>Saves the live setup as a new profile, from the active
+        /// card's menu: the active profile is what the live setup holds.</summary>
+        public RelayCommand<ProfileListItem> SaveAsProfileCommand =>
+            _saveAsProfileCommand ??= new RelayCommand<ProfileListItem>(
+                p => { if (Acts(p)) SaveAsProfileRequested?.Invoke(this, EventArgs.Empty); },
+                p => p?.IsActive == true);
 
-        private RelayCommand _exportProfileCommand;
+        private RelayCommand<ProfileListItem> _saveSetupHereCommand;
 
-        /// <summary>Command to export the selected profile as a .pfprofile.
-        /// The Default entry exports a snapshot of the current settings.</summary>
-        public RelayCommand ExportProfileCommand =>
-            _exportProfileCommand ??= new RelayCommand(
-                () => ExportProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null);
+        /// <summary>Puts the live setup into another stored profile. Default is
+        /// never overwritten, and the active profile is the live setup already.</summary>
+        public RelayCommand<ProfileListItem> SaveSetupHereCommand =>
+            _saveSetupHereCommand ??= new RelayCommand<ProfileListItem>(
+                p => { if (Acts(p)) SaveSetupHereRequested?.Invoke(this, EventArgs.Empty); },
+                p => p != null && !p.IsDefault && !p.IsActive);
 
-        private RelayCommand _importProfileCommand;
+        private RelayCommand<ProfileListItem> _editProfileCommand;
 
-        /// <summary>Command to import a .pfprofile.</summary>
-        public RelayCommand ImportProfileCommand =>
-            _importProfileCommand ??= new RelayCommand(
-                () => ImportProfileRequested?.Invoke(this, EventArgs.Empty));
+        /// <summary>Edits a card's name, games and polling override. Default
+        /// has none of its own to edit.</summary>
+        public RelayCommand<ProfileListItem> EditProfileCommand =>
+            _editProfileCommand ??= new RelayCommand<ProfileListItem>(
+                p => { if (Acts(p)) EditProfileRequested?.Invoke(this, EventArgs.Empty); },
+                p => p != null && !p.IsDefault);
 
-        private RelayCommand _editProfileCommand;
+        private RelayCommand<ProfileListItem> _exportProfileCommand;
 
-        /// <summary>Command to edit the selected profile's name and executables.</summary>
-        public RelayCommand EditProfileCommand =>
-            _editProfileCommand ??= new RelayCommand(
-                () => EditProfileRequested?.Invoke(this, EventArgs.Empty),
-                () => _selectedProfile != null && !_selectedProfile.IsDefault);
+        /// <summary>Exports a card's profile as a .pfprofile. The Default
+        /// card exports its own stored state.</summary>
+        public RelayCommand<ProfileListItem> ExportProfileCommand =>
+            _exportProfileCommand ??= new RelayCommand<ProfileListItem>(
+                p => { if (Acts(p)) ExportProfileRequested?.Invoke(this, EventArgs.Empty); },
+                p => p != null);
 
-        private RelayCommand _loadProfileCommand;
+        private RelayCommand<ProfileListItem> _deleteProfileCommand;
 
-        /// <summary>Command to load the selected profile's settings into the editor.</summary>
-        public RelayCommand LoadProfileCommand =>
-            _loadProfileCommand ??= new RelayCommand(
-                () =>
+        /// <summary>Deletes a card's profile. Default is never deleted.</summary>
+        public RelayCommand<ProfileListItem> DeleteProfileCommand =>
+            _deleteProfileCommand ??= new RelayCommand<ProfileListItem>(
+                p => { if (Acts(p)) DeleteProfileRequested?.Invoke(this, EventArgs.Empty); },
+                p => p != null && !p.IsDefault);
+
+        private RelayCommand _resetShortcutsCommand;
+
+        /// <summary>Reset All on the Shortcuts card (#574): each shortcut's
+        /// action, profile and device go back to their defaults through the
+        /// row's own resets, which save when a value changes. The rows and
+        /// their recorded buttons stay.</summary>
+        public RelayCommand ResetShortcutsCommand =>
+            _resetShortcutsCommand ??= new RelayCommand(() =>
+            {
+                foreach (var s in ProfileShortcuts.ToList())
                 {
-                    if (_selectedProfile?.IsDefault == true)
-                        RevertToDefaultRequested?.Invoke(this, EventArgs.Empty);
-                    else
-                        LoadProfileRequested?.Invoke(this, EventArgs.Empty);
-                },
-                () => _selectedProfile != null);
+                    s.ResetSettingCommand.Execute(nameof(ProfileShortcutViewModel.SwitchMode));
+                    s.ResetSettingCommand.Execute(nameof(ProfileShortcutViewModel.TargetProfileId));
+                    s.ResetSettingCommand.Execute(nameof(ProfileShortcutViewModel.TriggerDeviceGuid));
+                }
+            });
     }
+
+    /// <summary>The Settings page's groups (#574), in their order.</summary>
+    public enum SettingsGroup { General, Input, Hardware, Drivers, Data }
+
+    /// <summary>The tabs of Get Profiles (#574), in their order.</summary>
+    public enum GetProfilesTab { Starters, Community, File }
 
     /// <summary>
     /// Display item for a profile in the Settings page list.
@@ -2086,18 +2247,44 @@ namespace PadForge.ViewModels
         public string Id
         {
             get => _id;
-            set => SetProperty(ref _id, value);
+            set
+            {
+                if (!SetProperty(ref _id, value)) return;
+                OnPropertyChanged(nameof(IsDefault));
+                OnPropertyChanged(nameof(CanEdit));
+                OnPropertyChanged(nameof(ShowsSaveHere));
+            }
         }
 
         private bool _isActive;
 
-        /// <summary>Whether this profile is the currently active one.
-        /// Drives the lit flame in the Profiles list (#175).</summary>
+        /// <summary>Whether this profile is the currently active one: its
+        /// card shows Active with the flame and an ember edge (#574).</summary>
         public bool IsActive
         {
             get => _isActive;
-            set => SetProperty(ref _isActive, value);
+            set
+            {
+                if (!SetProperty(ref _isActive, value)) return;
+                OnPropertyChanged(nameof(ShowsLoad));
+                OnPropertyChanged(nameof(ShowsSaveAs));
+                OnPropertyChanged(nameof(ShowsSaveHere));
+            }
         }
+
+        /// <summary>The card's menu offers Edit and Delete: Default has no
+        /// name or games of its own and is never deleted.</summary>
+        public bool CanEdit => !IsDefault;
+
+        /// <summary>The card shows Load where the active card shows Active.</summary>
+        public bool ShowsLoad => !IsActive;
+
+        /// <summary>The active card's menu offers Save As.</summary>
+        public bool ShowsSaveAs => IsActive;
+
+        /// <summary>Save Current Setup Here, on every card but Default's and
+        /// the active one's.</summary>
+        public bool ShowsSaveHere => !IsActive && !IsDefault;
 
         private string _name;
         public string Name
@@ -2112,16 +2299,16 @@ namespace PadForge.ViewModels
         public override string ToString() => Name ?? string.Empty;
 
         private string _executables;
+
+        /// <summary>The profile's games as file names, "a.exe, b.exe": the
+        /// card's game line's tooltip.</summary>
         public string Executables
         {
             get => _executables;
             set
             {
                 if (SetProperty(ref _executables, value))
-                {
                     OnPropertyChanged(nameof(HasExecutables));
-                    OnPropertyChanged(nameof(AutoSwitchRuleSummary));
-                }
             }
         }
 
@@ -2130,159 +2317,167 @@ namespace PadForge.ViewModels
         /// <summary>Pipe-separated full executable paths as stored on the
         /// profile (the ForegroundMonitorService match source). Executables
         /// above is the display form (file names only). Feeds the card's
-        /// exe icon and mono exe line (#175).</summary>
+        /// game line (#574).</summary>
         public string ExecutablePaths
         {
             get => _executablePaths;
             set
             {
                 if (SetProperty(ref _executablePaths, value))
-                {
-                    OnPropertyChanged(nameof(FirstExecutablePath));
-                    OnPropertyChanged(nameof(FirstExecutableName));
-                    OnPropertyChanged(nameof(SecondExecutableName));
-                    OnPropertyChanged(nameof(ExtraExecutablesSuffix));
-                }
+                    RaiseGameLine();
             }
         }
 
-        /// <summary>Full path of the first executable, or null when none.
-        /// The card's icon converter File.Exists-gates this path.</summary>
-        public string FirstExecutablePath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_executablePaths)) return null;
-                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                return parts.Length > 0 ? parts[0] : null;
-            }
-        }
-
-        /// <summary>File name of the first executable for the card's mono
-        /// exe line, or null when the profile has none. The tooltip carries
-        /// the full list via Executables.</summary>
-        public string FirstExecutableName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_executablePaths)) return null;
-                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                return parts.Length > 0 ? System.IO.Path.GetFileName(parts[0]) : null;
-            }
-        }
-
-        /// <summary>File name of the second executable, or null. The card
-        /// face shows up to two names before collapsing to the +N marker
-        /// (maintainer request 2026-07-05).</summary>
-        public string SecondExecutableName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_executablePaths)) return null;
-                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                return parts.Length > 1 ? System.IO.Path.GetFileName(parts[1]) : null;
-            }
-        }
-
-        /// <summary>Locale-neutral "+N" marker for rules beyond the two
-        /// names the card face shows. Its own property, rendered by a
-        /// separate non-trimming element, so a long name that ellipsizes
-        /// cannot swallow the multi-exe cue.</summary>
-        public string ExtraExecutablesSuffix
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_executablePaths)) return null;
-                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                return parts.Length > 2 ? "+" + (parts.Length - 2) : null;
-            }
-        }
-
-        /// <summary>Whether the profile carries any executable match rule.
-        /// Half of the auto-switch chip gate (#175). The other half is the
-        /// global EnableAutoProfileSwitching toggle, bound in XAML.</summary>
+        /// <summary>Whether the profile carries any executable match rule:
+        /// its card says which games load it, else No game set.</summary>
         public bool HasExecutables => !string.IsNullOrEmpty(_executables);
 
-        /// <summary>Exe-match rule summary for the cold auto-switch chip
-        /// (#175): the display exe list under the localized prefix.</summary>
-        public string AutoSwitchRuleSummary => string.IsNullOrEmpty(_executables)
-            ? string.Empty
-            : string.Format(Strings.Instance.Profiles_AutoSwitchRule_Format, _executables);
+        private bool _switchesByGame;
 
-        /// <summary>Re-raises this item's culture-dependent text. The summary
-        /// above formats through Strings.Instance, so a language switch changes
-        /// its value with nothing to announce it: the chips kept the old
-        /// language until the list was rebuilt for some other reason. The
-        /// owning ViewModel calls this for every item from OnCultureChanged.</summary>
+        /// <summary>Set by the owner from Switch Profiles by Game. The card says
+        /// Loads for while it is on and Set for while it is off, since the
+        /// game then loads nothing by itself.</summary>
+        public bool SwitchesByGame
+        {
+            get => _switchesByGame;
+            set { if (SetProperty(ref _switchesByGame, value)) RaiseGameLine(); }
+        }
+
+        /// <summary>The first two games' file names, "a.exe, b.exe".</summary>
+        public string GameNames { get; private set; } = string.Empty;
+
+        /// <summary>"+N" for the games past two, empty otherwise. Drawn in a cell
+        /// of its own so a long name never cuts it off (maintainer request
+        /// 2026-07-05).</summary>
+        public string GameExtra { get; private set; } = string.Empty;
+
+        /// <summary>What Loads for or Set for puts before the names.</summary>
+        public string GameLead { get; private set; } = string.Empty;
+
+        /// <summary>What Loads for or Set for puts after the names.</summary>
+        public string GameTail { get; private set; } = string.Empty;
+
+        /// <summary>One chip per controller type, in the order of the profile's
+        /// slots, each with how many slots are of that type.</summary>
+        public IReadOnlyList<ProfileTypeChip> TypeChips { get; private set; } = Array.Empty<ProfileTypeChip>();
+
+        /// <summary>The profile has no controllers: its card shows the No
+        /// Controllers chip. An item never given a topology has none, as
+        /// Reset to Defaults adds Default.</summary>
+        public bool HasNoSlots => TypeChips.Count == 0;
+
+        private bool[] _slotCreated;
+        private int[] _slotTypes;
+
+        /// <summary>The profile's slots, which the type chips count.</summary>
+        internal void SetTopology(bool[] slotCreated, int[] slotControllerTypes)
+        {
+            _slotCreated = (bool[])slotCreated?.Clone();
+            _slotTypes = (int[])slotControllerTypes?.Clone();
+            TypeChips = ProfileTypeChip.Build(_slotCreated, _slotTypes);
+            OnPropertyChanged(nameof(TypeChips));
+            OnPropertyChanged(nameof(HasNoSlots));
+        }
+
+        /// <summary>The game line from the profile's games: two file names, the
+        /// count of the rest, and the words Loads for or Set for put around
+        /// them, split at the names' place.</summary>
+        private void RaiseGameLine()
+        {
+            var names = string.IsNullOrEmpty(_executablePaths)
+                ? Array.Empty<string>()
+                : _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Select(System.IO.Path.GetFileName).ToArray();
+            GameNames = string.Join(", ", names.Take(2));
+            GameExtra = names.Length > 2
+                ? "+" + (names.Length - 2).ToString(System.Globalization.CultureInfo.InvariantCulture)
+                : string.Empty;
+            string format = SwitchesByGame ? Strings.Instance.Profiles_Card_LoadsFor_Format : Strings.Instance.Profiles_Card_SetFor_Format;
+            (GameLead, GameTail) = SettingsViewModel.SplitAroundPlace(format, null);
+            OnPropertyChanged(nameof(GameNames));
+            OnPropertyChanged(nameof(GameExtra));
+            OnPropertyChanged(nameof(GameLead));
+            OnPropertyChanged(nameof(GameTail));
+        }
+
+        /// <summary>Re-raises this item's culture-dependent text: the game
+        /// line's words and the chips' type names. A language switch changes
+        /// them with nothing else to announce it. The owning ViewModel calls
+        /// this for every item from OnCultureChanged.</summary>
         internal void RaiseCultureDependentText()
-            => OnPropertyChanged(nameof(AutoSwitchRuleSummary));
-
-        private string _topologyLabel;
-        public string TopologyLabel
         {
-            get => _topologyLabel;
-            set { if (SetProperty(ref _topologyLabel, value)) OnPropertyChanged(nameof(HasNoSlots)); }
+            TypeChips = ProfileTypeChip.Build(_slotCreated, _slotTypes);
+            OnPropertyChanged(nameof(TypeChips));
+            OnPropertyChanged(nameof(HasNoSlots));
+            RaiseGameLine();
+        }
+    }
+
+    /// <summary>A controller type on a profile's card, with how many of the
+    /// profile's slots are of it (#574). The icon is the type's own symbol
+    /// from SlotTypeIconMap, as Home's cards and the sidebar's pills draw
+    /// it.</summary>
+    public sealed class ProfileTypeChip
+    {
+        internal ProfileTypeChip(Engine.VirtualControllerType type, int count)
+        {
+            Type = type;
+            Count = count;
+            TypeName = NameOf(type);
+            SpokenName = string.Format(Strings.Instance.Profiles_TypeCount_Format, TypeName, count);
         }
 
-        public bool HasNoSlots => XboxCount == 0 && PlayStationCount == 0 && ExtendedCount == 0 && MidiCount == 0 && KbmCount == 0 && NintendoCount == 0 && VrCount == 0;
+        public Engine.VirtualControllerType Type { get; }
 
-        private int _xboxCount;
-        public int XboxCount
+        public int Count { get; }
+
+        /// <summary>The type's vector symbol, or null for the types drawn with a glyph.</summary>
+        public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(Type);
+
+        /// <summary>The type's glyph, or empty for the types drawn with a vector symbol.</summary>
+        public string TypeGlyph => SlotTypeIconMap.GlyphFor(Type);
+
+        /// <summary>The type's name, the chip's tooltip.</summary>
+        public string TypeName { get; }
+
+        /// <summary>What a screen reader reads for the chip: the type and its count.</summary>
+        public string SpokenName { get; }
+
+        /// <summary>The chips of a topology: created slots only, each type at its
+        /// first slot. A created slot with no type entry, or a value outside the
+        /// enum, counts as Xbox, as the old counter did. No slots, or no array,
+        /// gives no chips.</summary>
+        internal static IReadOnlyList<ProfileTypeChip> Build(bool[] slotCreated, int[] slotControllerTypes)
         {
-            get => _xboxCount;
-            set => SetProperty(ref _xboxCount, value);
+            if (slotCreated == null) return Array.Empty<ProfileTypeChip>();
+            var order = new List<Engine.VirtualControllerType>();
+            var counts = new Dictionary<Engine.VirtualControllerType, int>();
+            for (int i = 0; i < slotCreated.Length; i++)
+            {
+                if (!slotCreated[i]) continue;
+                int raw = slotControllerTypes != null && i < slotControllerTypes.Length ? slotControllerTypes[i] : 0;
+                var type = Enum.IsDefined(typeof(Engine.VirtualControllerType), raw)
+                    ? (Engine.VirtualControllerType)raw
+                    : Engine.VirtualControllerType.Xbox;
+                if (counts.TryGetValue(type, out int n)) counts[type] = n + 1;
+                else
+                {
+                    counts[type] = 1;
+                    order.Add(type);
+                }
+            }
+            return order.Select(t => new ProfileTypeChip(t, counts[t])).ToArray();
         }
 
-        private int _playstationCount;
-        public int PlayStationCount
+        private static string NameOf(Engine.VirtualControllerType type) => type switch
         {
-            get => _playstationCount;
-            set => SetProperty(ref _playstationCount, value);
-        }
-
-        private int _extendedCount;
-        public int ExtendedCount
-        {
-            get => _extendedCount;
-            set => SetProperty(ref _extendedCount, value);
-        }
-
-        private int _midiCount;
-        public int MidiCount
-        {
-            get => _midiCount;
-            set => SetProperty(ref _midiCount, value);
-        }
-
-        private int _kbmCount;
-        public int KbmCount
-        {
-            get => _kbmCount;
-            set => SetProperty(ref _kbmCount, value);
-        }
-
-        /// <summary>Nintendo slot count. The topology counter always produced
-        /// it, but UpdateTopologyCounts discarded it with `out _` while setting
-        /// the other five, so a profile whose slots are Nintendo showed an
-        /// empty chip strip and, with no other type present, the "no slots"
-        /// fallback badge.</summary>
-        private int _nintendoCount;
-        public int NintendoCount
-        {
-            get => _nintendoCount;
-            set => SetProperty(ref _nintendoCount, value);
-        }
-
-        /// <summary>VR slot count. Third time this shape has bitten: the
-        /// topology switch enumerates VirtualControllerType by case, and a
-        /// member nobody added a case for falls to `default`, which is Xbox.
-        /// Nintendo hit it in round 34, VR hit it when the type was added, and
-        /// both showed a profile as Xbox that was nothing of the kind.</summary>
-        private int _vrCount;
-        public int VrCount
-        {
-            get => _vrCount;
-            set => SetProperty(ref _vrCount, value);
-        }
+            Engine.VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
+            Engine.VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
+            Engine.VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
+            Engine.VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+            Engine.VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
+            Engine.VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
+            _ => Strings.Instance.ControllerType_Xbox,
+        };
     }
 }

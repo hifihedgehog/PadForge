@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Automation;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using PadForge.Common;
 using PadForge.Common.ConfigImport;
 using PadForge.Resources.Strings;
 using PadForge.Services;
@@ -20,8 +22,14 @@ namespace PadForge.Views
         public string Target { get; init; }
         public string Arrow => string.IsNullOrEmpty(Target) ? string.Empty : "→";
         public string Reason { get; init; }
-        public Brush DotBrush { get; init; }
-        public Visibility ReasonVisibility => string.IsNullOrEmpty(Reason) ? Visibility.Collapsed : Visibility.Visible;
+
+        /// <summary>How the binding came across.</summary>
+        public TranslationStatus Status { get; init; }
+
+        /// <summary>The line under a binding that needs a look: Skipped or
+        /// Partial, then the reason when there is one. Null for a binding
+        /// that came across as it was.</summary>
+        public string Detail { get; init; }
     }
 
     /// <summary>
@@ -33,7 +41,7 @@ namespace PadForge.Views
     /// accepts, and the notes name every program its buttons or its load
     /// will start.
     /// </summary>
-    public partial class ImportConfigDialog
+    public partial class ImportConfigDialog : DialogWindow
     {
         private readonly ForeignImportResult _result;
 
@@ -49,18 +57,22 @@ namespace PadForge.Views
             InitializeComponent();
             _result = result ?? throw new ArgumentNullException(nameof(result));
 
-            // ExtendsContentIntoTitleBar leaves no non-client area, so without
-            // this the dialog cannot be moved. Same wiring as its siblings.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
-
-            SourceText.Text = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_Source_Format,
-                Path.GetFileName(path), result.ToolName);
-            ProfileNameText.Text = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ProfileName_Format,
+            // The line under the title: the file, set apart in the code
+            // face, the tool it is from, and the profile it becomes.
+            string file = Path.GetFileName(path);
+            var (before, after) = FormatRuns.Split(Strings.Instance.Import_Source_Format, result.ToolName);
+            string becomes = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ProfileName_Format,
                 PreviewName(result));
+            var name = new Run(file) { FontSize = 13 };
+            name.SetResourceReference(TextElement.FontFamilyProperty, "TelemetryFontFamily");
+            SourceText.Inlines.Add(new Run(before));
+            SourceText.Inlines.Add(name);
+            SourceText.Inlines.Add(new Run(after + " " + becomes));
+            AutomationProperties.SetName(SourceText, before + file + after + " " + becomes);
 
-            StatCleanNum.Text = result.Report.CleanCount.ToString(CultureInfo.CurrentCulture);
-            StatPartialNum.Text = result.Report.PartialCount.ToString(CultureInfo.CurrentCulture);
-            StatSkippedNum.Text = result.Report.SkippedCount.ToString(CultureInfo.CurrentCulture);
+            SetTile(StatCleanTile, StatCleanNum, StatCleanLabel, result.Report.CleanCount, problem: false);
+            SetTile(StatPartialTile, StatPartialNum, StatPartialLabel, result.Report.PartialCount, problem: true);
+            SetTile(StatSkippedTile, StatSkippedNum, StatSkippedLabel, result.Report.SkippedCount, problem: true);
 
             var notes = new List<string>();
             if (!result.HasSlots) notes.Add(Strings.Instance.Import_NothingToImport);
@@ -80,9 +92,36 @@ namespace PadForge.Views
             }
             NoteText.Text = string.Join(" ", notes);
             NoteText.Visibility = notes.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            // With no note the body ends on the last list, which keeps room
+            // over the foot.
+            BodyPanel.Margin = new Thickness(0, 0, 0, notes.Count > 0 ? 0 : 12);
 
             ImportButton.IsEnabled = result.HasSlots;
-            ReportList.ItemsSource = BuildRows(result.Report);
+
+            var rows = BuildRows(result.Report);
+            var look = rows.Where(r => r.Status != TranslationStatus.Clean).ToList();
+            var clean = rows.Where(r => r.Status == TranslationStatus.Clean).ToList();
+            NeedsLookList.ItemsSource = look;
+            CleanList.ItemsSource = clean;
+            NeedsLookBlock.Visibility = look.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            CleanBlock.Visibility = clean.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            // Import takes the focus when there is something to import, and
+            // Cancel when there is not.
+            Loaded += (_, _) => { if (ImportButton.IsEnabled) ImportButton.Focus(); else CancelButton.Focus(); };
+        }
+
+        /// <summary>A count's tile, as the board draws the three: a zero in
+        /// the quiet color, and a count above zero of bindings that did not
+        /// come across whole in the wait look.</summary>
+        private static void SetTile(Border tile, TextBlock number, TextBlock label, int count, bool problem)
+        {
+            number.Text = count.ToString(CultureInfo.CurrentCulture);
+            bool wait = problem && count > 0;
+            tile.SetResourceReference(StyleProperty, wait ? "DialogStatTileWait" : "DialogStatTile");
+            number.SetResourceReference(TextBlock.ForegroundProperty,
+                wait ? "WaitBrush" : count == 0 ? "TextFillColorTertiaryBrush" : "TextFillColorPrimaryBrush");
+            if (wait) label.SetResourceReference(TextBlock.ForegroundProperty, "WaitMutedBrush");
         }
 
         /// <summary>The report's lines, the ones with something to say first,
@@ -96,19 +135,33 @@ namespace PadForge.Views
                     TranslationStatus.Partial => 1,
                     _ => 2,
                 })
-                .Select(e => new ImportReportRow
+                .Select(e =>
                 {
-                    Source = e.SourcePath,
-                    Target = e.Binding,
-                    Reason = ReasonText(e),
-                    DotBrush = e.Status switch
+                    string reason = ReasonText(e);
+                    return new ImportReportRow
                     {
-                        TranslationStatus.Clean => WorkshopManifestRowItem.CleanBrush,
-                        TranslationStatus.Partial => WorkshopManifestRowItem.PartialBrush,
-                        _ => WorkshopManifestRowItem.SkippedBrush,
-                    },
+                        Source = e.SourcePath,
+                        Target = e.Binding,
+                        Reason = reason,
+                        Status = e.Status,
+                        Detail = DetailText(e.Status, reason),
+                    };
                 })
                 .ToList();
+        }
+
+        /// <summary>What a binding that needs a look says under its name:
+        /// Skipped or Partial, and after it the reason when the report
+        /// gives one. Null for a clean binding.</summary>
+        internal static string DetailText(TranslationStatus status, string reason)
+        {
+            if (status == TranslationStatus.Clean) return null;
+            string word = status == TranslationStatus.Skipped
+                ? Strings.Instance.Workshop_StatSkipped
+                : Strings.Instance.Workshop_StatPartial;
+            return string.IsNullOrEmpty(reason)
+                ? word
+                : string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_Detail_Format, word, reason);
         }
 
         /// <summary>The name the profile will land under: the sink renames a
@@ -141,9 +194,5 @@ namespace PadForge.Views
             ImportedProfileName = ImportSink(_result.Profile, false);
             DialogResult = true;
         }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
-
-        private void HeaderClose_Click(object sender, RoutedEventArgs e) => DialogResult = false;
     }
 }

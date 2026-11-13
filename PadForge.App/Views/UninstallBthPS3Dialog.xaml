@@ -1,95 +1,60 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.UninstallBthPS3Dialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.UninstallBthPS3Dialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        Width="560" SizeToContent="Height"
-        MinHeight="200"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-        ShowInTaskbar="False">
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:views="clr-namespace:PadForge.Views"
+        BodyPadding="22,14,22,18"
+        Title="{Binding BthPS3Uninstall_Title, Source={x:Static strings:Strings.Instance}}"
+        Subtitle="{Binding BthPS3Uninstall_Message, Source={x:Static strings:Strings.Instance}}">
 
-    <!-- The removal of BthPS3 from the PC, in the chrome of the HIDMaestro
-         removal it mirrors: ember tick and display-face title, the body,
-         then a footer where Cancel holds the default and the initial focus.
-         In front of the footer, what the preview found. -->
-    <Grid Margin="20,18,20,18">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-            <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                       Fill="{DynamicResource EmberBrush}"
-                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBlock x:Name="TitleText"
-                       Text="{Binding BthPS3Uninstall_Title, Source={x:Static strings:Strings.Instance}}"
-                       FontFamily="{StaticResource DisplayFontFamily}"
-                       FontWeight="SemiBold" FontSize="15"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                       VerticalAlignment="Center"/>
-        </StackPanel>
-
-        <TextBlock Grid.Row="1" x:Name="MessageText" TextWrapping="Wrap"
-                   Text="{Binding BthPS3Uninstall_Message, Source={x:Static strings:Strings.Instance}}"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-        <StackPanel Grid.Row="2" x:Name="BusyPanel" Orientation="Horizontal" Margin="0,14,0,0">
-            <ui:ProgressRing IsIndeterminate="True" Width="16" Height="16" Margin="0,0,8,0"/>
-            <TextBlock Text="{Binding BthPS3Uninstall_Reading, Source={x:Static strings:Strings.Instance}}"
-                       VerticalAlignment="Center"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-        </StackPanel>
-
-        <!-- Nothing to remove, what holds the removal, or a preview that
-             failed. -->
-        <TextBlock Grid.Row="3" x:Name="NoteText" TextWrapping="Wrap" Margin="0,14,0,0" Visibility="Collapsed"/>
-
-        <!-- Each item the preview found: what it is, where it is, and, for
-             one that stays or failed, why. -->
-        <ListBox Grid.Row="4" x:Name="EntryList" MaxHeight="300" Margin="0,8,0,0"
-                 Visibility="Collapsed"
-                 ItemContainerStyle="{StaticResource EmberSelectListItem}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="4,2">
-                        <TextBlock Text="{Binding Location}" TextWrapping="Wrap" FontSize="12"
-                                   FontFamily="{StaticResource TelemetryFontFamily}"/>
-                        <TextBlock Text="{Binding Kind}" FontSize="11"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Text="{Binding Detail}" TextWrapping="Wrap" FontSize="11"
-                                   Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                                   Visibility="{Binding Detail, Converter={StaticResource StringToVisibility}}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-        <Grid Grid.Row="5" Margin="0,18,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="RefreshButton" MinWidth="90"
+    <!-- The removal of BthPS3 from the PC, the HIDMaestro removal's window
+         without the usbip-win2 choice: what the preview found, item by item,
+         over a foot where Cancel holds the default and the first focus. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="RefreshButton" Style="{StaticResource DialogQuietButton}"
                     Content="{Binding Common_Refresh, Source={x:Static strings:Strings.Instance}}"
                     Click="RefreshButton_Click"/>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button x:Name="CancelButton" MinWidth="90" Margin="0,0,8,0"
-                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                        IsCancel="True" IsDefault="True"/>
-                <Button x:Name="ActionButton" MinWidth="90" IsEnabled="False"
-                        Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
-                        Style="{StaticResource EmberDestructiveButton}"
-                        Click="ActionButton_Click"/>
+            <Button x:Name="CancelButton" Style="{StaticResource DialogButton}"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                    IsCancel="True" IsDefault="True"/>
+            <Button x:Name="ActionButton" Style="{StaticResource DialogDangerButton}" IsEnabled="False"
+                    Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
+                    Click="ActionButton_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <StackPanel>
+        <!-- While the preview reads the PC. -->
+        <Border x:Name="BusyPanel" Style="{StaticResource DialogLiveBox}">
+            <StackPanel Orientation="Horizontal">
+                <ui:ProgressRing IsIndeterminate="True" Width="16" Height="16" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding BthPS3Uninstall_Reading, Source={x:Static strings:Strings.Instance}}"
+                           VerticalAlignment="Center" common:LiveText.Polite="True"/>
             </StackPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+        </Border>
+
+        <!-- What holds the removal, or a preview that failed: the boards'
+             wait box. -->
+        <Border x:Name="NotePanel" Style="{StaticResource DialogWaitBox}" Margin="0,0,0,10" Visibility="Collapsed">
+            <TextBlock x:Name="NoteText" TextWrapping="Wrap" common:LiveText.Polite="True"/>
+        </Border>
+        <!-- Nothing to remove, or why BthPS3 stays: a plain line, with no
+             box. -->
+        <TextBlock x:Name="PlainNoteText" Margin="0,0,0,10" Visibility="Collapsed" TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" common:LiveText.Polite="True"/>
+
+        <!-- Each item the preview found: what it is over where it is, with
+             why one stays or failed, and what becomes of it at the row's
+             end. -->
+        <Border x:Name="EntryFrame" Style="{StaticResource DialogList}" Visibility="Collapsed">
+            <ListBox x:Name="EntryList" Style="{StaticResource DialogListBox}" MaxHeight="300"
+                     ItemContainerStyle="{StaticResource DialogListItemTall}"
+                     ItemTemplate="{StaticResource DialogRemovalRow}"
+                     AutomationProperties.Name="{Binding BthPS3Uninstall_Title, Source={x:Static strings:Strings.Instance}}"/>
+        </Border>
+    </StackPanel>
+</views:DialogWindow>

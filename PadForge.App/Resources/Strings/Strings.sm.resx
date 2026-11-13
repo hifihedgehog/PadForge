@@ -107,12 +107,11 @@
   <data name="Status_BthPS3RemovalFailed" xml:space="preserve"><value>Ua aveʻesea se vaega o le BthPS3. O loʻo faʻaalia i le lisi mea na tumau ma le mafuaʻaga.</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Ua faʻaleaogā le puʻeina.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Mea sese: {0}</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Puʻe</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>O loʻo puʻe...</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>pe a</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>i</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Next" xml:space="preserve"><value>Le isi</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Ua uma</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod o taʻaloga</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Talia mod o taʻaloga mo DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port o mod o taʻaloga</value></data>
@@ -133,10 +132,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Tumau: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Ua le mafai ona faitau: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ua le aveʻesea: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Ua aveʻese</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ua teu</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Le faitauina</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Le aveʻesea</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E mafai ai e controller PlayStation 3, le PlayStation Move ma le Navigation controller ona fesoʻotaʻi e ala i le Bluetooth. O loʻo i totonu o le PadForge ma e faʻapipiʻi i le taimi muamua e pair ai se tasi o i latou.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Faʻafesoʻotaʻi controller PlayStation 3 e ala i le Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Aveʻese le BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>E aveʻese ai le BthPS3 mai lenei PC: ona driver, le filter e faʻaopoopo i le Bluetooth, ma le driver WinUSB na tuʻuina atu e le PadForge i controller PlayStation 3 mo le pair. E taofi muamua e le PadForge lana engine, ma e tape le Bluetooth mo sina taimi aʻo aveʻese driver. Ona galulue ai lea o controller PlayStation 3, Move ma Navigation na o le USB. O le pair o se tasi e toe faʻapipiʻi ai le BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>O mea nei o le a aveʻese mai lenei PC. Ona galulue ai lea o controller PlayStation 3, Move ma Navigation na o le USB, seʻia toe faʻapipiʻi le BthPS3 e le pair o se tasi.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>O loʻo faitau mea na tuʻu e le BthPS3 i lenei PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>E leai se mea na tuʻu e le BthPS3 i lenei PC e aveʻese.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>E faʻaaogā e le DsHidMini nei driver, o lea e tumau ai aʻo faʻapipiʻi pea le DsHidMini.</value></data>
@@ -304,11 +308,9 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Faʻaopoopo se lanu</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Faʻamau</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Tapeʻese</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Tapuni</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Ua tapeʻese "{0}".</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Na teena e le HIDMaestro lenei profile i {1}: {0}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>E leai se mea na faʻaulufale mai. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Faʻafou</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Leai</value></data>
@@ -460,7 +462,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>le touchpad lenei</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Igoa</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Toe taumafai</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Faʻaigoa lenei taga</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>E manaʻomia se igoa</value></data>
 
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Pitch o le gyro</value></data>
@@ -515,8 +517,7 @@
   <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_New" xml:space="preserve"><value>Fou</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Filifili muamua se profile.</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profile Fou</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profile fou</value></data>
@@ -693,8 +694,6 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Tapeʻese le layer</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Faʻatuai</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Soʻo se layer</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Faʻamau e sosoʻo ai</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Faʻamau muamua</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Faʻamau</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Aveʻese le siaki e tuʻu ai le range i le foeuli ma lana lava polokalame. E lē auina atu e PadForge se range i le foeuli.</value></data>
 
@@ -747,7 +746,6 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Faʻaigoa lenei PC</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Toe setiina</value>
   </data>
@@ -786,8 +784,14 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Pair</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Pair se controller</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Pair se controller</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Pair se Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Tatala le ufi o le maa ma oʻomi le faʻamau mumu SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Tuʻu le remote latalata i lenei PC aʻo emoemo ona moli.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair se DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Pair se Move po o se Navigation Controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Faʻaopoopo se Controller Serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Faʻaopoopo se DJI Remote</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Pair</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Ua uma</value></data>
@@ -798,9 +802,8 @@
   <data name="SerialPair_Controller" xml:space="preserve"><value>Controller</value></data>
   <data name="DjiPair_Address" xml:space="preserve"><value>Tuatusi</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tapuni</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(o loʻo faʻatali)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Igoa:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Igoa</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Faʻaigoa lenei tag</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head tracker</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-Keys</value></data>
   <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Haptics</value></data>
@@ -828,13 +831,13 @@
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>O loʻo faʻaaogā le port UDP {0} e se isi polokalame.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Faʻamau natia</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Aʻoaʻo se faʻamau</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Masini:</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>ʻOʻomi le faʻamau natia nei, ona tuʻu lea…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Faʻatali sina taimi…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Igoa:</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Faʻamau ua aʻoaʻoina</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>ʻOʻomi ma taofi le faʻamau nei.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Tuʻu le faʻamau.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Laasaga {0} o le {1}</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Igoa</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Faʻaigoa lenei faʻamau</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>E leʻi aʻoaʻoina ni faʻamau.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Aʻoaʻoina i le {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ki: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Taga o le mouse</value></data>
@@ -866,7 +869,7 @@
     <value>Toe setiina pe a tuʻu</value>
   </data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Suʻe taʻaloga</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} taʻaloga</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Taʻaloga</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Leai ni taʻaloga na maua i le faleoloa Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>O loʻo suʻe Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Sili ona fou</value></data>
@@ -928,8 +931,6 @@
     <value>ds4mac</value>
   </data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Keyboard + mouse</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Starter profile</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Faʻasao le profile</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Tuʻuga</value></data>
   <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Tape</value></data>
   <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Maualalo</value></data>
@@ -954,7 +955,9 @@
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Faʻalogologo</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>I taimi uma</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Fuaitau</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Fuaitau e fai</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Igoa</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Igoa o le faʻamau</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Resitala</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (e leai se macro faʻapea)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
@@ -1000,7 +1003,7 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profile: {0}</value>
+    <value>Profile o loʻo galue: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>O loʻo faʻatali mo le isi PC...</value>
@@ -1174,4 +1177,76 @@
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>E leʻi faʻapipiʻiina le SteamVR</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Agavale</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Taumatau</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Ave aafiaga o trigger fetuutuunaʻi ma moli mai mod o taʻaloga na tusia mo DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Faʻaola le telemetry output i le taʻaloga ma faʻasino atu i lenei PC ma le port.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>O le tulaga o le ulu o le laina Head Tracker i [Masini]. Faʻafesoʻotaʻi le yaw o le ulu i se axis o le stick i le vaega Buttons a se controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>O tau o le laina Game Telemetry i [Masini]. Faʻafesoʻotaʻi i le vaega Buttons a se controller pe faʻaaogā e faʻaosofia ai macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>O le nofoaga, le lapoʻa ma le manino o se menu e seti i luga o le menu, i le vaega [Macro ma Menu] a se controller.</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mea e Faʻaali</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Le li, le grid po o le pa o se menu aʻo tatala</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopi le tuatusi</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>O se telefoni e fesoʻotaʻi e faʻaali iinei ma i le itulau Masini, lea e te tuʻuina atu ai i se controller.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Suʻe masini</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Uma</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Fesoʻotaʻi</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Leai ni masini e fetaui.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>maa {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>maa {0}, o loʻo faʻatumu</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis uma, faʻamau ma sensor</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopi faʻamatalaga</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Fesoʻotaʻiga</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Maa</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ala</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numera Serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Toe iloiloga</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Isi mea mo {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sui</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Aumai Profile</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Amataga</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>O le faʻasaoina e faʻaopoopo ai se profile masani e mafai ona e suia.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Avea ma</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Faʻamaumauga ma le Faalilolilo</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Suʻe seti</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Also Vibrate the Controller, Repeat the Notice Every, Notify When Fully Charged</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hide Devices from Games, Keep Devices Cloaked Between Launches, Whitelisted Applications</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Suʻe faʻafetai</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Leai se faʻafetai e fetaui ma “{0}”.</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Filifili Mulimuli Ane</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Masani</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Le faatulagaga e faʻamoemoe i ai le tele o taʻaloga PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Mo taʻaloga e iai faʻailoga PlayStation, touchpad ma lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Faatulagaga o faʻamau Switch, mo taʻaloga ma emulator e faʻamoemoe i ai.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Note ma control change mo polokalame musika.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller VR faʻatagata e ala i le SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Ina ia sui le ituaiga mulimuli ane, kiliki le chip o le ituaiga i luga o le controller. E tasi lava le kiliki.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E manaʻomia le SteamVR. Faʻapipiʻi mai lona kata i Seti.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ua iai se controller VR. E tasi e faʻagaioia lima uma e lua.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Pair se controller Bluetooth</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Suʻe seti, masini ma profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Suʻe</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Iʻuga</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} e gaoioi ai</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} e tatala ai</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} mai so o se mea</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Itulau</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Gaioiga</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Leai se mea i PadForge e fetaui ma “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Suʻe le documentation mo “{0}”</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Tapeʻese {0}?</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Faʻaaogā le Leo</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Aveʻese {0}</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Fai se fuaitau ona oʻomi ai lea o se faʻamau e mafai ona e faʻafesoʻotaʻi. E faʻalogo microphone uma e mafai ona oʻo i ai PadForge.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Faʻalogo ola pe tape, mode, mautinoa</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Ua tape le faʻalogo. Faʻaola i lalo o More.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Toe Amata</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Filifili mea e faʻaali. E leai se mea e suia seʻia e faʻasaoina.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>E leai se mea e oʻo i le port seʻia e faʻasaoina.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ola: {0} o le {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Starter profile</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o le {1} ola</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>O nei profile na faʻaulufale mai e iai ni lomiga fou i le Steam Workshop. Toe faʻaulufale mai Aumai Profile e maua ai suiga.</value></data>
 </root>

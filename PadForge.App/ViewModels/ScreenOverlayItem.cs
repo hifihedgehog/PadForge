@@ -31,8 +31,12 @@ namespace PadForge.ViewModels
 
         public int Number { get; }
 
-        /// <summary>The group's title.</summary>
-        public string Title => KeyboardScreenService.OverlayName(Number);
+        /// <summary>The card's title on the Screen Overlay page (#574), "Overlay
+        /// 2": the page's own title names the feature. Macros, the dialog's
+        /// title and the status line keep the full name
+        /// (KeyboardScreenService.OverlayName), where the page is not in
+        /// sight.</summary>
+        public string Title => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_ScreenOverlay_Number_Format, Number);
 
         /// <summary>One overlay needs no title or Remove button of its own.</summary>
         public bool OneOfSeveral => _owner.ScreenOverlays.Count > 1;
@@ -153,12 +157,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>What the overlay shows now, in the keyboard screens' words
+        /// (Clock, Lightbar Color).</summary>
+        public string ShowsText => KeyboardScreenService.ModeName(_owner.ScreenOverlayModeOf?.Invoke(Number) ?? KeyboardScreenData.DefaultMode);
+
+        internal void RefreshShows() => OnPropertyChanged(nameof(ShowsText));
+
         // Named by their number, so a script can tell two overlays' controls apart.
         public string EnableId => "ScreenOverlay_Enable_" + Number;
         public string OpacityId => "ScreenOverlay_Opacity_" + Number;
         public string ChooseId => "ScreenOverlay_Choose_" + Number;
         public string ResetPositionId => "ScreenOverlay_ResetPosition_" + Number;
         public string RemoveId => "ScreenOverlay_Remove_" + Number;
+        public string ResetAllId => "ScreenOverlay_ResetAll_" + Number;
 
         private RelayCommand _resetEnabledCommand;
         public RelayCommand ResetEnabledCommand => _resetEnabledCommand ??= new RelayCommand(() => Enabled = false);
@@ -174,6 +185,17 @@ namespace PadForge.ViewModels
 
         private RelayCommand _removeCommand;
         public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() => _owner.RemoveScreenOverlay(this));
+
+        private RelayCommand _resetAllCommand;
+        /// <summary>Reset All on the overlay's card (#574): off, what it shows,
+        /// its opacity and its place, each to its default.</summary>
+        public RelayCommand ResetAllCommand => _resetAllCommand ??= new RelayCommand(() =>
+        {
+            Enabled = false;
+            Opacity = DefaultOpacity;
+            _owner.RequestScreenOverlayResetPosition(this);
+            _owner.RequestScreenOverlayResetChoices(this);
+        });
 
         /// <summary>The settings file's copy.</summary>
         internal ScreenOverlayData ToData() => new()
@@ -204,6 +226,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(Title));
             OnPropertyChanged(nameof(Status));
+            OnPropertyChanged(nameof(ShowsText));
         }
 
         internal void RefreshOneOfSeveral() => OnPropertyChanged(nameof(OneOfSeveral));

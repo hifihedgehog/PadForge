@@ -200,6 +200,38 @@ namespace PadForge.Tests
             Assert.Equal(2, count.Changes);
         });
 
+        /// <summary>The Settings page's search opens a part whose rows match
+        /// and closes it after (#574). Neither is the user's doing, so neither
+        /// is stored, and the end of the search puts back what was.</summary>
+        [Fact]
+        public void FoldPart_ShowForSearch_StoresNothing() => RunSta(() =>
+        {
+            using var count = new ChangeCount();
+            CardFoldState.Load(new[] { "stored" });
+            var stored = new FoldCard { StateKey = "stored" };
+            var loose = new MoreRow { StateKey = "loose" };
+            var keyless = new MoreRow();
+            Assert.True(stored.IsExpanded);
+
+            loose.ShowForSearch(true);
+            keyless.ShowForSearch(true);
+            stored.ShowForSearch(false);
+            Assert.True(loose.IsExpanded);
+            Assert.True(keyless.IsExpanded);
+            Assert.False(stored.IsExpanded);
+            Assert.False(CardFoldState.IsOpen("loose"));
+            Assert.True(CardFoldState.IsOpen("stored"));
+            Assert.Equal(0, count.Changes);
+
+            loose.EndSearch();
+            keyless.EndSearch();
+            stored.EndSearch();
+            Assert.False(loose.IsExpanded);
+            Assert.False(keyless.IsExpanded);
+            Assert.True(stored.IsExpanded);
+            Assert.Equal(0, count.Changes);
+        });
+
         [Fact]
         public void APartOnScreen_FollowsAReplacedSet() => RunSta(() =>
         {
@@ -359,18 +391,21 @@ namespace PadForge.Tests
 
         /// <summary>Both parts are Expanders whose header button is bound to
         /// IsExpanded both ways, with the content collapsed until the part
-        /// is open.</summary>
+        /// is open. The More card of the Extras pages (MoreCardRow) is a More
+        /// row drawn as a card of its own, so it holds the same.</summary>
         [Theory]
-        [InlineData("FoldCard")]
-        [InlineData("MoreRow")]
-        public void APartsHeader_OpensAndClosesIt(string part)
+        [InlineData("FoldCard", null)]
+        [InlineData("MoreRow", null)]
+        [InlineData("MoreRow", "MoreCardRow")]
+        public void APartsHeader_OpensAndClosesIt(string part, string key)
         {
             Assert.True(typeof(System.Windows.Controls.Expander).IsAssignableFrom(
                 typeof(FoldPart).Assembly.GetType("PadForge.Controls." + part)));
 
             var styles = XDocument.Parse(RepoText("PadForge.App", "Resources", "ControllerIcons.xaml"));
             var style = Assert.Single(styles.Descendants(),
-                e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "{x:Type controls:" + part + "}");
+                e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "{x:Type controls:" + part + "}"
+                    && (string)e.Attribute(Xaml + "Key") == key);
             var header = Assert.Single(style.Descendants(), e => (string)e.Attribute(Xaml + "Name") == "HeaderSite");
             Assert.Equal("ToggleButton", header.Name.LocalName);
             Assert.Equal("{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}",
@@ -386,9 +421,66 @@ namespace PadForge.Tests
             // The part hands the page's text color to what it holds. A
             // control's Foreground starts at the system's black, so a title
             // inside with no color of its own (the Head Tracking page's
-            // Per-Axis Range, 2026-11-10) drew black on the dark card.
+            // Per-Axis Range, 2026-11-10) drew black on the dark card. The
+            // More card takes it from the More row's style it is based on.
+            if (key != null)
+            {
+                Assert.Equal("{StaticResource {x:Type controls:" + part + "}}", (string)style.Attribute("BasedOn"));
+                Assert.DoesNotContain(style.Elements(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "Foreground");
+                return;
+            }
             var color = Assert.Single(style.Elements(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "Foreground");
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", (string)color.Attribute("Value"));
+        }
+
+        /// <summary>The More card of the Extras pages, built from its shipped
+        /// style: a card of its own in a FoldList, so it takes back no card
+        /// padding, its line is 48 tall with no hairline over it, the rest
+        /// opens under a hairline with the board's padding, and opening it
+        /// is stored under its key like any More row.</summary>
+        [Fact]
+        public void TheMoreCard_BuildsFromItsShippedStyle() => RunSta(() =>
+        {
+            using var count = new ChangeCount();
+            var styles = ShippedStyles();
+            var more = new MoreRow { Header = "More", Hint = "Port", StateKey = "test.morecard", Resources = styles };
+            more.Content = new System.Windows.Controls.TextBlock { Text = "the rest" };
+            more.Style = (System.Windows.Style)styles["MoreCardRow"];
+            Assert.True(more.ApplyTemplate(), "the More card has no template");
+            Assert.Equal(new System.Windows.Thickness(0), more.Margin);
+
+            var header = Assert.IsType<System.Windows.Controls.Primitives.ToggleButton>(more.Template.FindName("HeaderSite", more));
+            Assert.Equal(48, header.MinHeight);
+            Assert.Equal(new System.Windows.Thickness(20, 0, 20, 0), header.Padding);
+            Assert.Same(styles["FoldHeaderToggle"], header.Style);
+            var site = Assert.IsType<System.Windows.Controls.Border>(more.Template.FindName("ExpandSite", more));
+            Assert.Equal(new System.Windows.Thickness(0, 1, 0, 0), site.BorderThickness);
+            Assert.Equal(new System.Windows.Thickness(20, 6, 12, 12), site.Padding);
+            Assert.Equal(System.Windows.Visibility.Collapsed, site.Visibility);
+
+            header.IsChecked = true;
+            Assert.True(more.IsExpanded);
+            Assert.Equal(System.Windows.Visibility.Visible, site.Visibility);
+            Assert.True(CardFoldState.IsOpen("test.morecard"));
+            Assert.Equal(1, count.Changes);
+            more.IsExpanded = false;
+            Assert.False(CardFoldState.IsOpen("test.morecard"));
+        });
+
+        /// <summary>A folded part's value takes the part's SummaryForeground,
+        /// which the style sets to the secondary text color: every fold keeps
+        /// its look, and a list that writes a count there (the Devices page's
+        /// folds) sets the tertiary one.</summary>
+        [Fact]
+        public void AFoldsValue_TakesItsPartsColor()
+        {
+            var styles = XDocument.Parse(RepoText("PadForge.App", "Resources", "ControllerIcons.xaml"));
+            var style = Assert.Single(styles.Descendants(),
+                e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "{x:Type controls:FoldCard}");
+            var setter = Assert.Single(style.Elements(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "SummaryForeground");
+            Assert.Equal("{DynamicResource TextFillColorSecondaryBrush}", (string)setter.Attribute("Value"));
+            var value = Assert.Single(style.Descendants(), e => (string)e.Attribute(Xaml + "Name") == "SummaryText");
+            Assert.Equal("{TemplateBinding SummaryForeground}", (string)value.Attribute("Foreground"));
         }
 
         /// <summary>A quiet button has no fill and no edge, and none while
@@ -473,7 +565,10 @@ namespace PadForge.Tests
             Assert.Equal("{StaticResource QuietResetButton}", (string)Style(app, "SettingResetButton").Attribute("BasedOn"));
             var pad = XDocument.Parse(RepoText("PadForge.App", "Views", "PadPage.xaml"));
             Assert.Equal("{StaticResource QuietResetButton}", (string)Style(pad, "ResetButton").Attribute("BasedOn"));
-            Assert.Equal("{StaticResource QuietResetButton}", (string)Style(pad, "ResetAllButton").Attribute("BasedOn"));
+            // Reset All is shared by the controller page, the Extras pages
+            // and the Devices page, so it lives in App.xaml.
+            Assert.Equal("{StaticResource QuietResetButton}", (string)Style(app, "ResetAllButton").Attribute("BasedOn"));
+            Assert.DoesNotContain(pad.Descendants(), e => (string)e.Attribute(Xaml + "Key") == "ResetAllButton");
             Assert.Equal("{StaticResource ResetButton}", (string)Style(pad, "ResetButtonTight").Attribute("BasedOn"));
         }
 

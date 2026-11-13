@@ -39,7 +39,7 @@ namespace PadForge.Tests
             var dialog = (KeyboardScreenDialog)ctor.Invoke(new object[]
             {
                 new KeyboardScreenService(new SettingsViewModel(), null), KeyboardScreenInfo.Overlay(1), current,
-                "A Game", null, null, (Size?)new Size(100, 100),
+                "A Game", null, (Size?)new Size(100, 100),
             });
             dialog.ShowInTaskbar = false;
             new WindowInteropHelper(dialog).EnsureHandle();

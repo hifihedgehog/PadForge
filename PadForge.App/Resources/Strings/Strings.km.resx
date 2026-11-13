@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>បើក</value></data>
   <data name="Common_Off" xml:space="preserve"><value>បិទ</value></data>
   <data name="Common_More" xml:space="preserve"><value>ច្រើនទៀត</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>មើលទាំងអស់</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>បានដំឡើង</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>មិនទាន់ដំឡើង</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>មិនមានលើ ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>កំពុងបញ្ឈប់…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>កំពុងបញ្ឈប់ម៉ាស៊ីន…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>កំពុងដំណើរការលើ {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>កំពុងដំណើរការ ({0} ម៉ាស៊ីនភ្ញៀវ)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>កំពុងដំណើរការ បានភ្ជាប់៖ {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>កំពុងស្ដាប់នៅ :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ច្រក {0} កំពុងត្រូវបានប្រើ</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ការចូលប្រើច្រក {0} ត្រូវបានបដិសេធ (ដំណើរការជាអ្នកគ្រប់គ្រង)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>ក្រៅបណ្ដាញ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>មិនស្គាល់</value></data>
   <data name="Common_Default" xml:space="preserve"><value>លំនាំដើម</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>រកមើល...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>រកមើល…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>បន្ត</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>បញ្ឈប់</value></data>
   <data name="Common_Start" xml:space="preserve"><value>ចាប់ផ្ដើម</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>កំពុងសម្អាតឧបករណ៍បញ្ជានិម្មិតដែលនៅសល់ពីវគ្គមុន។</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ឧបករណ៍</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជា</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជា</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>ជ្រើសអ្វីដែលហ្គេមគួរឃើញ។ ឧបករណ៍បញ្ជាត្រូវបានបន្ថែមភ្លាមៗពេលអ្នកចុច។</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>បញ្ចូលពី</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>ជ្រើសនៅពេលក្រោយ</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>ទូទៅ</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>លទ្ធផលច្រើនទៀត</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>ប្លង់ដែលហ្គេមកុំព្យូទ័រភាគច្រើនរំពឹង។</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>សម្រាប់ហ្គេមដែលមាននិមិត្តសញ្ញា PlayStation ផ្ទាំងប៉ះ និងរបារភ្លើង។</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>ប្លង់ប៊ូតុង Switch សម្រាប់ហ្គេម និងកម្មវិធីត្រាប់តាមដែលរំពឹងវា។</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>គ្រាប់ចុច ទស្សន៍ទ្រនិច និងការរំកិល ពីហ្គេមផេត។</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>ចង្កូត ដងបញ្ជាហោះហើរ និងប្លង់ផ្ទាល់ខ្លួន។</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>ណោត និងការផ្លាស់ប្ដូរការគ្រប់គ្រង (CC) សម្រាប់កម្មវិធីតន្ត្រី។</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>ឧបករណ៍បញ្ជា VR និម្មិតតាមរយៈ SteamVR។</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>ដើម្បីប្ដូរប្រភេទនៅពេលក្រោយ ចុចបន្ទះប្រភេទនៅលើឧបករណ៍បញ្ជា។ វាត្រូវការតែមួយចុច។</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services មិនឆ្លើយតប។ សូមមើលកាតរបស់វាក្នុងការកំណត់។</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>ត្រូវការ SteamVR។ ដំឡើងវាពីកាតរបស់វាក្នុងការកំណត់។</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>មានឧបករណ៍បញ្ជា VR រួចហើយ។ មួយគ្រប់គ្រងដៃទាំងពីរ។</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge មានឧបករណ៍បញ្ជា {0} ដែលជាចំនួនច្រើនបំផុតដែលវាអាចដំណើរការ។ លុបមួយ ដើម្បីបន្ថែមមួយទៀត។</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ប្រូហ្វាល់</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>ស្វែងរកការកំណត់ ឧបករណ៍ និងប្រូហ្វាល់</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>ស្វែងរក</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>លទ្ធផល</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>ឡើង</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>ចុះ</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} ដើម្បីផ្លាស់ទី</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} ដើម្បីបើក</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} ពីគ្រប់ទីកន្លែង</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>ទំព័រ</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>សកម្មភាព</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>ឯកសារណែនាំ</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>នៅក្រោម ច្រើនទៀត</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>នៅក្នុងជម្រើសរបស់ជួរ</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>គ្មានអ្វីនៅក្នុង PadForge ត្រូវនឹង «{0}» ទេ។</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>ស្វែងរក «{0}» ក្នុងឯកសារណែនាំ</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>លុបឧបករណ៍បញ្ជានិម្មិត</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ពេញអេក្រង់</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>បង្ហាញ PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» ត្រូវបានបង្កើត។</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» ត្រូវបានលុប។</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» ត្រូវបានធ្វើបច្ចុប្បន្នភាព។</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» ឥឡូវផ្ទុកការរៀបចំបច្ចុប្បន្ន។</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>បានផ្ទុកប្រូហ្វាល់៖ {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>ប្រូហ្វាល់បានត្រឡប់ទៅ «លំនាំដើម» វិញ</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>បានចាត់តាំង «{0}» ទៅឧបករណ៍បញ្ជានិម្មិត {1}។</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>បានប្ដូរប្រូហ្វាល់៖ {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>បានប្ដូរប្រូហ្វាល់៖ លំនាំដើម</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>លំនាំដើម</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>ផ្លូវកាត់ប្រូហ្វាល់</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>ផ្លូវកាត់</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>កំណត់បន្សំប៊ូតុង ដើម្បីប្ដូរប្រូហ្វាល់ពីឧបករណ៍បញ្ជាណាមួយ។</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>បន្ថែមផ្លូវកាត់</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>ប្រូហ្វាល់បន្ទាប់</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>ប្រូហ្វាល់មុន</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>ប្រូហ្វាល់ជាក់លាក់</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>បិទ/បើកបង្អួច</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>បិទ/បើក «ឧបករណ៍បញ្ជានិម្មិតបានបិទ»</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>បង្ហាញ ឬលាក់ PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>បើក ឬបិទឧបករណ៍បញ្ជានិម្មិត</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ឧបករណ៍ដែលបានភ្ជាប់ណាមួយ</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>ថត</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>កំពុងថត...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>មិនបានជ្រើសឧបករណ៍ទេ។</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>លេខរៀងរន្ធមិនត្រឹមត្រូវ៖ {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>ចាត់តាំងឧបករណ៍មិនបាន។</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>នៅពេល</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>នៅលើ</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>បានចាត់តាំង «{0}» ទៅឧបករណ៍បញ្ជានិម្មិត {1}។</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>បានដក «{0}» ចេញពីឧបករណ៍បញ្ជានិម្មិត {1}។</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>ឧបករណ៍ត្រូវបានលាក់។ (អាចស្ដារវិញបានក្នុងឯកសារការកំណត់។)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>ឧបករណ៍ត្រូវបានដកចេញ។</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត {0} ត្រូវបានលុប។</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ទំព័រដើម</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>ឧបករណ៍ដែលបានភ្ជាប់៖ {0}។ ឧបករណ៍បញ្ជា៖ {1}។</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>ហ្គេមឃើញឧបករណ៍បញ្ជាគ្រប់ឧបករណ៍ដែលកំពុងដំណើរការ។</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>ម៉ាស៊ីនបើក ហើយគ្មានឧបករណ៍បញ្ជាណាកំពុងដំណើរការទេ។</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>ចាប់ផ្ដើមម៉ាស៊ីន ដើម្បីនាំឧបករណ៍បញ្ជារបស់អ្នកមកវិញ។</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>អត្រាស្ទង់</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>ឧបករណ៍បញ្ជាកំពុងដំណើរការ</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>ឧបករណ៍បានភ្ជាប់</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>បើក ឬបិទឧបករណ៍បញ្ជានេះ</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>វាចាប់ផ្ដើមនៅពេលម៉ាស៊ីនចាប់ផ្ដើម។</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>វាចាប់ផ្ដើមនៅពេលឧបករណ៍នេះភ្ជាប់។</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>វាចាប់ផ្ដើមនៅពេលឧបករណ៍មួយក្នុងចំណោមឧបករណ៍ទាំងនេះភ្ជាប់។</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>មិនបានភ្ជាប់</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>កំពុងផ្ញើការបញ្ចូលឥឡូវនេះ</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ថ្ម {0} ខ្សោយ</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ថ្ម {0} កំពុងសាក</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជា</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>មុខងារបន្ថែមដែលកំពុងប្រើ</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>បង្ហាញ QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} បានភ្ជាប់ ហើយមិនកំពុងប្រើទេ។</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>ប្រើវា</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>តើហ្គេមគួរឃើញអ្វី?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ប្រែក្លាយឧបករណ៍បញ្ជានេះទៅជាឧបករណ៍ដែលហ្គេមរបស់អ្នករំពឹង។ ជ្រើសមួយដើម្បីចាប់ផ្ដើម។ អ្នកអាចប្ដូរវានៅពេលក្រោយដោយចុចតែម្ដង។</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ប្រែក្លាយឧបករណ៍បញ្ជារបស់អ្នកទៅជាឧបករណ៍ដែលហ្គេមរបស់អ្នករំពឹង។ ជ្រើសមួយដើម្បីចាប់ផ្ដើម។ អ្នកអាចប្ដូរវានៅពេលក្រោយដោយចុចតែម្ដង។</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>លេងហ្គេមក្ដារចុច និងកណ្ដុរ ដោយប្រើហ្គេមផេត។</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>ប្រភេទច្រើនទៀត៖ [{0} {1} {2} និង {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>ប៊ូតុង ដងបញ្ជា និងទ្រីហ្គឺ ត្រូវបានម៉ាប 1:1 ពេលឧបករណ៍បញ្ជាត្រូវបានបង្កើត។</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>ផ្គូផ្គងឧបករណ៍បញ្ជា Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>ចាប់ផ្ដើមពីប្រូហ្វាល់ដែលរៀបចំរួច</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>បានភ្ជាប់</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth ថ្ម {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>ថ្ម {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>មិនមានឧបករណ៍បញ្ជាភ្ជាប់</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>ភ្ជាប់មួយដោយខ្សែ ឬតាម Bluetooth។</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> បានម៉ាប, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> បានភ្ជាប់</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ម៉ាស៊ីនកំពុងដំណើរការ។ ចុចដើម្បីបញ្ឈប់។</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>ម៉ាស៊ីនទំនេរ។ ចុចដើម្បីបញ្ឈប់។</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>ម៉ាស៊ីនបានឈប់។ ចុចដើម្បីចាប់ផ្ដើម។</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>កំណត់រចនាសម្ព័ន្ធឧបករណ៍បញ្ជានេះ</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>បញ្ឆេះឡដែក</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជា ជ្រើសប្រភេទលទ្ធផល ហើយ PadForge នឹងបញ្ជូនការបញ្ចូលរបស់អ្នកទៅវា។ ដំណើរទស្សនាខ្លីមួយបង្ហាញអ្នកពីទីតាំងនៃអ្វីៗទាំងអស់។</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>ចាប់ផ្ដើមដំណើរទស្សនា</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>រំលង</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>បន្ទាប់</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>រួចរាល់</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>រន្ធ</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិតនីមួយៗស្ថិតនៅទីនេះ។ អណ្ដាតភ្លើងបង្ហាញថារន្ធណាខ្លះកំពុងដំណើរការឥឡូវនេះ។</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>ឡដែកខ្លួនឯង។ ចុចអណ្ដាតភ្លើងដើម្បីចាប់ផ្ដើម ឬបញ្ឈប់ការស្ទង់ការបញ្ចូលទាំងអស់។</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>ជ្រើសប្រភេទលទ្ធផល ផ្ដល់ឧបករណ៍ឲ្យរន្ធ ហើយចុចកាតមួយដើម្បីកែតម្រូវការម៉ាបរបស់វា។</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>មុខងារជម្រើសរង់ចាំនៅទីនេះ៖ ឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ តំណពីចម្ងាយ ម៉ាស៊ីនមេចលនា និងច្រើនទៀត។</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>បង្ហាញដំណើរទស្សនាស្វាគមន៍</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>រន្ធ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ឧបករណ៍</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>បញ្ចូលពី</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>បន្ថែមឧបករណ៍</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>ខ្សោយ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>រូបភាព</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>បញ្ជី</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>លទ្ធផល {0}</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>ការចុចដែលហ្គេមឃើញ ពេលសង្កត់គ្រាប់ចុចទាំងពីរនៃគូមួយ</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>រក្សាកម្រិតរុញដងបញ្ជាតិចតួច ដើម្បីឱ្យហ្គេមបន្តបង្ហាញប៊ូតុងរបស់ឧបករណ៍បញ្ជា</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>កំពុងដំណើរការ</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>ដំណើរការ៖ {0} នៃ {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ជ្រើសម៉ាក្រូក្នុងបញ្ជី ឬចុច + នៅក្បែរ «ម៉ាក្រូ» ដើម្បីបង្កើតមួយ។</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ដើម</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ចេញ</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>មើលជាមុន</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>មុខងារបន្ថែម</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>មុខងារជម្រើស។ មុខងារនីមួយៗមិនរំខានអ្នកទេ រហូតដល់អ្នកបើកវា។</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>បើក {0} នៃ {1}</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>វិធីលេងច្រើនទៀត</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>បញ្ជូនទៅកន្លែងផ្សេង</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>លើអេក្រង់</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាស VR។</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខពីហ្គេមបើកបរ។</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>អនុញ្ញាតឱ្យអ្នកទស្សនាចុចប៊ូតុងដោយវាយក្នុងការជជែក។</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>ចែករំលែកឧបករណ៍បញ្ជាជាមួយ PadForge នៅលើកុំព្យូទ័រផ្សេង។</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>បញ្ជាឧបករណ៍បញ្ជានិម្មិតនៅលើកុំព្យូទ័រផ្សេង។</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>បញ្ជូនចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាម។</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ទទួលបែបផែនទ្រីហ្គឺ និងភ្លើងពីម៉ូដហ្គេម។</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>បង្ហាញម៉ឺនុយ ស្រទាប់ និងការប្ដូរប្រូហ្វាល់ខណៈអ្នកលេង។</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation។</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមផ្ទាំងប៉ះ PlayStation។</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>រូបភាព កម្មវិធីកំណត់ម៉ោង ឬនាឡិកា នៅពីលើបង្អួចផ្សេងទៀត។</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>ច្រក អាសយដ្ឋាន HTTP ធម្មតា លេខកូដចូលប្រើ</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ការភ្ជាប់ឡើងវិញ ច្រក ការការពារអត្តសញ្ញាណ ការភ្ជាប់តាមអាសយដ្ឋាន</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR ច្រក UDP ជួរតាមអ័ក្សនីមួយៗ</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ច្រក, HTTP ធម្មតា, លេខកូដចូលប្រើ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញស្វ័យប្រវត្តិ, ច្រក, អត្តសញ្ញាណផ្គូផ្គង, ភ្ជាប់តាមអាសយដ្ឋាន</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ច្រក កម្មវិធីជំនួស DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ច្រក ល្បឿនពេញ ទម្រង់ផ្ទាល់ខ្លួន</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ច្រក, ល្បឿនពេញ, ទម្រង់ផ្ទាល់ខ្លួន</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>មើលជុំវិញដោយប្រើឧបករណ៍តាមដានក្បាល ឬកាសពាក់ក្បាល VR ខណៈមេដៃទាំងពីរនៅលើប៊ូតុង។</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ម៉ាបល្បឿន ឈ្នាន់ និងលេខប្រអប់លេខដែលហ្គេមបើកបរផ្ញើ ដូចការបញ្ចូលផ្សេងទៀត។</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>ផ្ញើចលនាឧបករណ៍បញ្ជាទៅកម្មវិធីត្រាប់តាមដែលអានប្រភពចលនា DSU។</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>ទទួលយកបែបផែនទ្រីហ្គឺបន្សាំ និងភ្លើង ពីម៉ូដហ្គេមដែលបង្កើតសម្រាប់ DSX។</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>បើកលទ្ធផលតេឡេម៉ែត្រនៅក្នុងហ្គេម ហើយតម្រង់វាទៅកុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>នៅក្នុងកម្មវិធីត្រាប់តាម បន្ថែមប្រភពចលនាមួយនៅអាសយដ្ឋានរបស់កុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>បែបផែនរបស់ម៉ូដទៅដល់ឧបករណ៍បញ្ជាគ្រប់ឧបករណ៍ដែលមានផ្នែករឹងសម្រាប់វា។</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ទីតាំងក្បាលគឺជាជួរឧបករណ៍តាមដានក្បាលនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបការងាកក្បាលទៅអ័ក្សដងបញ្ជា នៅក្នុងផ្នែកប៊ូតុងរបស់ឧបករណ៍បញ្ជា។</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>តម្លៃទាំងនេះគឺជាជួរតេឡេម៉ែត្រហ្គេមនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបវានៅក្នុងផ្នែកប៊ូតុងរបស់ឧបករណ៍បញ្ជា ឬប្រើវាដើម្បីចាប់ផ្ដើមម៉ាក្រូ។</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>ទីតាំង ទំហំ និងភាពស្រអាប់ផ្ទាល់របស់ម៉ឺនុយ ត្រូវកំណត់នៅលើម៉ឺនុយ ក្នុងផ្នែក [ម៉ាក្រូ និងម៉ឺនុយ] របស់ឧបករណ៍បញ្ជា។</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ប្រភព</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack និងកម្មវិធីណាដែលផ្ញើទម្រង់ UDP របស់វា</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>វិសាលភាព</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>ជួរតាមអ័ក្សនីមួយៗ។ សូន្យប្រើជួរខាងលើ។</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ហ្គេមដែល PadForge មិនស្គាល់</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>សម្រាប់ម៉ូដដែលស្វែងរក DSX ដែលកំពុងដំណើរការ មុនពេលវាផ្ញើ</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>អ្វីដែលបង្ហាញ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>រង្វង់ ក្រឡា ឬរបាររបស់ម៉ឺនុយ ខណៈវាកំពុងបើក</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ ខណៈកំពុងសង្កត់ស្រទាប់ប្ដូរ</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់ នៅពេលប្រូហ្វាល់ផ្លាស់ប្ដូរ</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>ចម្លងអាសយដ្ឋាន</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ទីតាំងលើអេក្រង់</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ភ្ជាប់ទូរសព្ទ</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>ដាក់ទូរសព្ទនៅលើបណ្ដាញដូចគ្នានឹងកុំព្យូទ័រនេះ។</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>ស្កេនកូដដោយប្រើកាមេរ៉ារបស់ទូរសព្ទ។</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>ជ្រើសប្លង់ឧបករណ៍បញ្ជាមួយ។</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>ទូរសព្ទ</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>មិនមានទូរសព្ទភ្ជាប់ទេ។</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>ទូរសព្ទដែលភ្ជាប់ បង្ហាញនៅទីនេះ និងនៅលើទំព័រឧបករណ៍ ដែលអ្នកកំណត់វាទៅឧបករណ៍បញ្ជា។</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>ឆានែលរបស់អ្នក</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>ពាក្យដែលអ្នកទស្សនាអាចវាយ</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>អ្នកទស្សនាវាយពាក្យដូចជា !a ហើយ PadForge ចុចអ្វីដែល !a ត្រូវបានម៉ាប នៅលើជួរការជជែក Twitch នៃទំព័រឧបករណ៍។ កំណត់ជួរនោះទៅឧបករណ៍បញ្ជា ដូចឧបករណ៍ផ្សេងទៀត។</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>ខណៈអ្នកកំពុងផ្សាយផ្ទាល់</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>រូបភាពសម្រាប់ការផ្សាយរបស់អ្នក</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>មិនមានកុំព្យូទ័របានផ្គូផ្គងទេ។</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>ផ្គូផ្គងកុំព្យូទ័រផ្សេងទៀត</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>មិនមានកុំព្យូទ័រមិនទាន់ផ្គូផ្គងនៅជិតនេះទេ។</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>បើកតំណពីចម្ងាយនៅក្នុង PadForge លើកុំព្យូទ័រម្ខាងទៀត។ វាបង្ហាញនៅទីនេះ ហើយអ្នកប្រៀបធៀបលេខកូដខ្លីមួយនៅលើអេក្រង់ទាំងពីរ។</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>រូបរាង និងទីតាំង</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>អូសវាដោយប៊ូតុងកណ្ដុរខាងស្ដាំ ឬម្រាមដៃបី ដើម្បីផ្លាស់ទីវា។</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ផ្ទាំងត្រួត {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>បង្ហាញ</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ខណៈកម្មវិធីផ្សេងនៅខាងមុខ ការចុចឆ្លងកាត់ផ្ទាំងត្រួត។ ខណៈ PadForge នៅខាងមុខ អូសវាដោយប៊ូតុងកណ្ដុរខាងស្ដាំ ហើយប្ដូរទំហំវាពីជ្រុងរបស់វា។ ម៉ាក្រូអាចបង្ហាញ ឬលាក់ផ្ទាំងត្រួតតាមលេខរបស់វា។</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ម៉ាស៊ីនមេចលនា</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ម៉ាស៊ីនមេពិធីការ DSU/CemuHook Motion Provider សម្រាប់ទិន្នន័យហ្ស៊ីរ៉ូ និងឧបករណ៍វាស់សំទុះ។</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>បើកម៉ាស៊ីនមេចលនា DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>គ្មានឧបករណ៍បញ្ជា</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>ប្រភេទ {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>ឧបករណ៍បញ្ជាតាមវេប</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ផ្ដល់ផ្ទាំងហ្គេមផេដទៅកម្មវិធីរុករកនៅលើបណ្ដាញមូលដ្ឋានរបស់អ្នក។</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ប្រើទូរសព្ទ ឬថេប្លេតជាឧបករណ៍បញ្ជា។ មិនចាំបាច់ដំឡើងអ្វីនៅលើទូរសព្ទទេ។</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>បើកម៉ាស៊ីនមេឧបករណ៍បញ្ជាតាមវេប</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>ភ្ជាប់ពីកម្មវិធីរុករកលើទូរសព្ទ ឬថេប្លេត ដើម្បីប្រើជាហ្គេមផេដ។</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>ស្កេនដោយកាមេរ៉ាទូរសព្ទ ឬបើកអាសយដ្ឋាននេះក្នុងកម្មវិធីរុករករបស់វា៖</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>អាសយដ្ឋាន HTTP ធម្មតា</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>អាសយដ្ឋានទីពីរដែលគ្មាន HTTPS សម្រាប់កម្មវិធីរុករកដែលបដិសេធវិញ្ញាបនបត្ររបស់ PadForge និងសម្រាប់ធូណែល ឬប្រូកស៊ីបញ្ច្រាសដែលមានវិញ្ញាបនបត្រផ្ទាល់ខ្លួន។ ចលនាទូរសព្ទត្រូវការ HTTPS ដូច្នេះនៅទីនេះវាដំណើរការតែតាមរយៈធូណែល ឬប្រូកស៊ីដែលផ្ដល់ HTTPS ប៉ុណ្ណោះ។</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>ផ្ដល់ HTTP ធម្មតាផងដែរ</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>លេខកូដចូលប្រើ</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>អាសយដ្ឋានធម្មតាបើកបានតែជាមួយលេខកូដនេះ ហើយតំណខាងក្រោមមានលេខកូដនេះរួចហើយ។ លេខកូដថ្មីផ្ដាច់អ្នកទាំងអស់ដែលនៅលើអាសយដ្ឋានធម្មតា។</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>លេខកូដថ្មី</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>អាសយដ្ឋាននៅលើកុំព្យូទ័រនេះ៖</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ញ័រ (ចុចដើម្បីសម្គាល់ឧបករណ៍នេះ)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ញ័រឧបករណ៍នេះ ដើម្បីឱ្យអ្នកដឹងថាវាជាឧបករណ៍មួយណា។</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>តំណពីចម្ងាយ</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>ចែករំលែកឧបករណ៍បញ្ជាជាមួយ PadForge ដែលបានផ្គូផ្គងនៅលើកុំព្យូទ័រផ្សេង តាមបណ្ដាញរបស់អ្នក ឬឆ្លងកាត់អ៊ីនធឺណិត។</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>បញ្ជាឧបករណ៍បញ្ជានិម្មិតនៅលើកុំព្យូទ័រផ្សេង។ បន្ទាប់ពីការផ្គូផ្គងតែម្ដង កុំព្យូទ័រដែលទុកចិត្តនឹងភ្ជាប់ឡើងវិញដោយស្វ័យប្រវត្តិ។</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>បើកម៉ាស៊ីនមេតំណពីចម្ងាយ</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>បន្ទាប់ពីការផ្គូផ្គងតែម្ដង កុំព្យូទ័រដែលទុកចិត្តនឹងភ្ជាប់ឡើងវិញដោយស្វ័យប្រវត្តិ។ កុំព្យូទ័រដែលបានផ្គូផ្គងអាចបញ្ជាលទ្ធផលហ្គេមផេដរបស់កុំព្យូទ័រនេះ ហើយលើកលែងតែអ្នកដាក់កម្រិត វាក៏អាចបញ្ជាក្ដារចុច កណ្ដុរ និងម៉ាក្រូរបស់វាផងដែរ។</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ឬភ្ជាប់តាមអាសយដ្ឋាន (កម្រិតខ្ពស់)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>កុំព្យូទ័រដែលបានផ្គូផ្គងអាចបញ្ជាលទ្ធផលហ្គេមផេដរបស់កុំព្យូទ័រនេះ ហើយលើកលែងតែអ្នកដាក់កម្រិត វាក៏អាចបញ្ជាក្ដារចុច កណ្ដុរ និងម៉ាក្រូរបស់វាផងដែរ។</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ភ្ជាប់តាមអាសយដ្ឋាន</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>ផ្គូផ្គង / ភ្ជាប់</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>ផ្គូផ្គង</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>ភ្ជាប់</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>បានភ្ជាប់</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>ផ្គូផ្គងជាមួយកុំព្យូទ័រពីចម្ងាយ</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>បញ្ជាក់ថាលេខកូដនេះដូចគ្នានៅលើអេក្រង់ទាំងពីរ រួចចុច «ផ្គូផ្គង»។</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>ផ្គូផ្គងជាមួយកុំព្យូទ័រផ្សេងឬ?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>ពិនិត្យថាអេក្រង់ទាំងពីរបង្ហាញលេខកូដដូចគ្នា។</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>ផ្គូផ្គង</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>បដិសេធ</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ដាក់កម្រិតកុំព្យូទ័រនេះឲ្យប្រើតែការបញ្ចូលហ្គេមផេដប៉ុណ្ណោះ</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>តែហ្គេមផេដប៉ុណ្ណោះ</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>អត្តសញ្ញាណ</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>កុំព្យូទ័រដែលបានផ្គូផ្គងអាចផ្ញើការបញ្ចូលក្ដារចុច កណ្ដុរ និងម៉ាក្រូមកកុំព្យូទ័រនេះ លើកលែងតែអ្នកដាក់កម្រិតវាឲ្យប្រើតែហ្គេមផេដ។</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>កុំព្យូទ័រដែលបានផ្គូផ្គងអាចបញ្ជាលទ្ធផលហ្គេមផេដរបស់កុំព្យូទ័រនេះ ហើយលើកលែងតែអ្នកដាក់កម្រិត វាក៏អាចបញ្ជាក្ដារចុច កណ្ដុរ និងម៉ាក្រូរបស់វាផងដែរ។</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>កុំព្យូទ័រដែលបានផ្គូផ្គង</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>កុំព្យូទ័រដែលអ្នកបានផ្គូផ្គងសម្រាប់តំណពីចម្ងាយ។ ដកសិទ្ធិកុំព្យូទ័រមួយ ដើម្បីឈប់ឲ្យវាភ្ជាប់។ វានឹងត្រូវផ្គូផ្គងម្ដងទៀត។</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ដកសិទ្ធិ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ដកសិទ្ធិទាំងអស់</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>ប្ដូរឈ្មោះ</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ការត្រាប់តាមផ្ទាំងប៉ះដែលត្រូវគ្នានឹង PlayStation។</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation សម្រាប់អេក្រង់ប៉ះ ឬកណ្ដុរ។</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>បើកផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>ភាពស្រអាប់</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>កំណត់ទីតាំងឡើងវិញ</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>ការកំណត់</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>ទូទៅ</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>ការបញ្ចូល</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>ផ្នែករឹង</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>កម្មវិធីបញ្ជា</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>ទិន្នន័យ និងឯកជនភាព</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>ស្វែងរកការកំណត់</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>គ្មានការកំណត់ណាត្រូវនឹង «{0}» ទេ។</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>រូបរាង</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>ជ្រើសរចនាប័ទ្មដែលអ្នកចូលចិត្ត។</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>រចនាប័ទ្ម</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ងងឹត</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ម៉ាស៊ីនបញ្ចូល</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>កំណត់រចនាសម្ព័ន្ធឥរិយាបថស្ទង់ និងដំណើរការនៅផ្ទៃខាងក្រោយ។</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>ការគាំទ្រផ្នែករឹង</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ចាប់ផ្ដើមម៉ាស៊ីនដោយស្វ័យប្រវត្តិពេលបើកកម្មវិធី</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>បន្តស្ទង់ពេលបង្អួចបាត់ការផ្ដោត</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>ចន្លោះពេលស្ទង់ (លើកលែងតែប្រូហ្វាល់កំណត់ផ្សេង)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ត្រូវបានធ្វើបច្ចុប្បន្នភាពទៅ {0}។</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ចាប់ផ្ដើមដោយបង្រួម</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ចាប់ផ្ដើមពេលចូលគណនី</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>ដ្រាយវ័រ HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>លាក់ឧបករណ៍រូបវន្តពីហ្គេម ដើម្បីការពារការបញ្ចូលទ្វេដង។</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>វាលាក់ឧបករណ៍រូបវន្តពីហ្គេម ដើម្បីការពារការបញ្ចូលទ្វេដង។</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>ជម្រើស HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>លាក់ឧបករណ៍ពីហ្គេម, រក្សាឧបករណ៍ឲ្យលាក់រវាងការបើកកម្មវិធី, កម្មវិធីក្នុងបញ្ជីអនុញ្ញាត</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>កម្មវិធីក្នុងបញ្ជីអនុញ្ញាត</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>កម្មវិធីទាំងនេះនៅតែអាចមើលឃើញឧបករណ៍ដែលលាក់។ PadForge តែងតែស្ថិតក្នុងបញ្ជីអនុញ្ញាតដោយស្វ័យប្រវត្តិ។</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>បន្ថែម...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>ដ្រាយវ័រ HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ម៉ាស៊ីនឧបករណ៍បញ្ជា HID និម្មិតក្នុងរបៀបអ្នកប្រើ។ បង្កប់ក្នុង PadForge.App។ ដំឡើងដោយស្វ័យប្រវត្តិ នៅពេលបង្កើតឧបករណ៍បញ្ជានិម្មិតលើកដំបូង។ ជំនួស ViGEmBus និង vJoy ក្នុង v3។</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ដំឡើងកម្មវិធីបញ្ជានេះ ជាមួយឧបករណ៍បញ្ជានិម្មិតដំបូងដែលអ្នកបង្កើត។ ការលុបការដំឡើង រាយបញ្ជីអ្វីដែល HIDMaestro បានទុកនៅលើកុំព្យូទ័រនេះ មុនពេលវាដកវាចេញ។</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>បង្កើតឧបករណ៍បញ្ជានិម្មិត។</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>លុបការដំឡើង HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>សកម្មភាពនេះលុប HIDMaestro ចេញពីកុំព្យូទ័រនេះ៖ ឧបករណ៍បញ្ជានិម្មិត ដ្រាយវ័រ វិញ្ញាបនបត្រចុះហត្ថលេខា កូនសោបញ្ជីឈ្មោះ និងឯកសាររបស់វា។ PadForge បញ្ឈប់ម៉ាស៊ីនរបស់វាជាមុនសិន។ កម្មវិធីផ្សេងទៀតដែលប្រើ HIDMaestro នឹងបាត់ដ្រាយវ័ររបស់វា រហូតដល់ពួកវាចាប់ផ្ដើមលើកក្រោយ។ PadForge ដំឡើងវាម្ដងទៀតនៅពេលវាចាប់ផ្ដើមឧបករណ៍បញ្ជានិម្មិតលើកក្រោយ។</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>លុប usbip-win2 ដែលបានដំឡើងដោយកម្មវិធីដំឡើងរបស់វាផងដែរ</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>នេះជាអ្វីដែលនឹងត្រូវដកចេញពីកុំព្យូទ័រនេះ។ PadForge ដំឡើង HIDMaestro ម្ដងទៀត ជាមួយឧបករណ៍បញ្ជានិម្មិតបន្ទាប់របស់វា។</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>លុប usbip-win2 ផងដែរ</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>កំណែ PadForge ចាស់ៗបានដំឡើង usbip-win2 ដោយប្រើកម្មវិធីដំឡើងរបស់ usbip-win2។ សកម្មភាពនេះលុបការដំឡើងនោះផងដែរ រួមទាំងតម្រងរបស់វានៅលើ USB root hub លុះត្រាតែមានកម្មវិធីផ្សេងទៀតប្រើ usbip-win2។ ការលុបតម្រងនេះធ្វើឱ្យ USB 3 root hub ទាំងអស់ចាប់ផ្ដើមឡើងវិញ ដូច្នេះឧបករណ៍ USB នឹងផ្ដាច់មួយភ្លែត។</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>កំពុងអានអ្វីដែល HIDMaestro បានទុកនៅលើកុំព្យូទ័រនេះ…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro មិនបានទុកអ្វីនៅលើកុំព្យូទ័រនេះដែលត្រូវលុបទេ។</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>នៅដដែល៖ {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>មិនអាចអានបាន៖ {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>មិនបានលុប៖ {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>ដ្រាយវ័រ Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>បានដកចេញ</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>បានរក្សាទុក</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>មិនបានអាន</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>មិនបានដកចេញ</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>អនុញ្ញាតឱ្យឧបករណ៍បញ្ជា PlayStation 3 ឧបករណ៍ PlayStation Move និងឧបករណ៍បញ្ជា Navigation ភ្ជាប់តាម Bluetooth។ បង្កប់ក្នុង PadForge ហើយដំឡើងនៅពេលឧបករណ៍មួយក្នុងចំណោមពួកវាត្រូវបានផ្គូផ្គងលើកដំបូង។</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជា PlayStation 3 តាម Bluetooth។</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>លុបការដំឡើង BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>សកម្មភាពនេះលុប BthPS3 ចេញពីកុំព្យូទ័រនេះ៖ ដ្រាយវ័ររបស់វា តម្រងដែលវាបន្ថែមទៅ Bluetooth និងដ្រាយវ័រ WinUSB ដែល PadForge បានផ្ដល់ឱ្យឧបករណ៍បញ្ជា PlayStation 3 សម្រាប់ការផ្គូផ្គង។ PadForge បញ្ឈប់ម៉ាស៊ីនរបស់វាជាមុនសិន ហើយ Bluetooth បិទមួយភ្លែត ខណៈពេលដែលដ្រាយវ័រត្រូវបានដកចេញ។ បន្ទាប់មក ឧបករណ៍បញ្ជា PlayStation 3 Move និង Navigation ដំណើរការតាម USB តែប៉ុណ្ណោះ។ ការផ្គូផ្គងឧបករណ៍មួយនឹងដំឡើង BthPS3 ម្ដងទៀត។</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>នេះជាអ្វីដែលនឹងត្រូវដកចេញពីកុំព្យូទ័រនេះ។ បន្ទាប់មក ឧបករណ៍បញ្ជា PlayStation 3 Move និង Navigation ដំណើរការតាម USB តែប៉ុណ្ណោះ រហូតដល់ការផ្គូផ្គងឧបករណ៍មួយដំឡើង BthPS3 ម្ដងទៀត។</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>កំពុងអានអ្វីដែល BthPS3 បានទុកនៅលើកុំព្យូទ័រនេះ…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 មិនបានទុកអ្វីនៅលើកុំព្យូទ័រនេះដែលត្រូវលុបទេ។</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini ប្រើដ្រាយវ័រទាំងនេះ ដូច្នេះពួកវានៅដដែល ខណៈពេលដែល DsHidMini នៅតែបានដំឡើង។</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth មិនបានបើកវិញទេ។ សូមបើកវានៅក្នុងការកំណត់របស់ Windows។</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>ច្រក MIDI និម្មិត និងការបញ្ចូល MIDI។ Windows 11 25H2 មាន API នេះ ចាប់ពីបច្ចុប្បន្នភាពចុងខែវិច្ឆិកា 2026។ កុំព្យូទ័រផ្សេងទៀតប្រើកម្មវិធីដំណើរការ Windows MIDI Services ដែល PadForge អាចដំឡើងបាន ឬ API MIDI ចាស់។</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>ច្រក MIDI និម្មិត និងការបញ្ចូល MIDI។</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>បង្កប់ក្នុង Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>កម្មវិធីដំណើរការ App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>មិនមាន</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>សកម្មភាពនេះលុប Windows MIDI Services Runtime and Tools របស់ Microsoft រួមទាំងកម្មវិធី MIDI Settings កុងសូល MIDI និងម៉ូឌុល PowerShell។ Microsoft លែងផ្ដល់ឲ្យទាញយកទៀតហើយ ដូច្នេះពួកវាមិនអាចដំឡើងម្ដងទៀតបានទេ។</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>កម្មវិធីដំណើរការ VR សម្រាប់ឧបករណ៍បញ្ជា VR និម្មិត។ ដំឡើងពីម៉ាស៊ីនមេរបស់ Valve ដោយមិនត្រូវការគណនី Steam ឬកម្មវិធី Steam (ច្រើន GB)។</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>កម្មវិធីដំណើរការ VR សម្រាប់ឧបករណ៍បញ្ជា VR និម្មិត។</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>ទីតាំងដំឡើង</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>លុបការដំឡើង SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>សកម្មភាពនេះលុបការដំឡើង SteamVR ដែលគ្មាន Steam នៅ {0} ហើយបង្កើនទំហំទំនេរច្រើន GB។ ឧបករណ៍បញ្ជានិម្មិត VR នឹងមិនដំណើរការទេ រហូតដល់ SteamVR ត្រូវបានដំឡើងម្ដងទៀត។</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>ការធ្វើរោគវិនិច្ឆ័យ</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>ព័ត៌មានកំណែ និងការកត់ត្រាព្រឹត្តិការណ៍ម៉ាស៊ីន សម្រាប់ដោះស្រាយបញ្ហា។</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>រក្សាកំណត់ហេតុរោគវិនិច្ឆ័យ</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>សរសេរព្រឹត្តិការណ៍ម៉ាស៊ីនជាបន្តបន្ទាប់ទៅ diagnostics.log ក្នុងថតដែលបង្ហាញខាងក្រោម។ នៅតែបើកឆ្លងការចាប់ផ្ដើមឡើងវិញ។ ពេលឯកសារដល់ 8 MB វានឹងប្ដូរទៅ diagnostics.log.old។</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>សរសេរព្រឹត្តិការណ៍ម៉ាស៊ីនជាបន្តបន្ទាប់ទៅ diagnostics.log ក្នុងថតកំណត់ហេតុ ដែលប៊ូតុង «បើកថតកំណត់ហេតុ» បើក។ នៅតែបើកឆ្លងការចាប់ផ្ដើមឡើងវិញ។ ពេលឯកសារដល់ 8 MB វានឹងប្ដូរទៅ diagnostics.log.old។</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>រក្សាទុករូបថតស្ថានភាព</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>រក្សាទុកព្រឹត្តិការណ៍ម៉ាស៊ីនថ្មីៗបំផុតទៅឯកសារថ្មីមួយ។ ដំណើរការ សូម្បីតែពេលកំណត់ហេតុរោគវិនិច្ឆ័យបិទ។</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>បើកថតកំណត់ហេតុ</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>អំពី</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>កម្មវិធីម៉ាបឧបករណ៍បញ្ជា</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>ទាន់សម័យ។</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}។ {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>ឯកសារណែនាំ</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>ពិនិត្យរកបច្ចុប្បន្នភាព</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>កំណែបំបែកទំនើបនៃ x360ce ដែលសាងសង់ឡើងវិញជាមួយ SDL3, WPF និង .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge បម្លែងឧបករណ៍បញ្ចូលណាមួយទៅជាឧបករណ៍បញ្ជានិម្មិតណាមួយ។ ហ្គេមផេដ យ៉យស្ទីក ក្ដារចុច កណ្ដុរ និងអេក្រង់ប៉ះ ត្រូវបានម៉ាបទៅឧបករណ៍បញ្ជាហ្គេមនិម្មិត (Xbox, PlayStation, ដងបញ្ជាហោះហើរ ចង្កូត ហ្គេមផេដភាគីទីបី) ឬលទ្ធផលក្ដារចុច+កណ្ដុរ / MIDI ដែលហ្គេមចាត់ទុកជាផ្នែករឹងពិត។ ដំណើរការដោយ HIDMaestro និង Windows MIDI Services។ វាប្រើ SDL3 សម្រាប់ការបញ្ចូលឧបករណ៍បញ្ជា Windows Raw Input សម្រាប់ក្ដារចុច និងកណ្ដុរ HidHide សម្រាប់ការលាក់ឧបករណ៍តាមហ្គេមនីមួយៗ ហើយផ្ដល់ចំណុចប្រទាក់ Fluent Design ទំនើបសម្រាប់ការម៉ាប តំបន់ងាប់ ខ្សែកោងភាពរសើប និងកម្លាំងតប។</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ទិដ្ឋភាពទូទៅ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>បង្កើតឡើងដោយប្រើ</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>ស្វែងរកការទទួលស្គាល់</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>បង្ហាញការទទួលស្គាល់ទាំងអស់</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>បង្ហាញការទទួលស្គាល់តិចជាងនេះ</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>គ្មានការទទួលស្គាល់ណាត្រូវនឹង «{0}» ទេ។</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>កម្មវិធីដំណើរការ និងក្របខ័ណ្ឌ WPF។ MIT។</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>កម្មវិធីដំណើរការ និងក្របខ័ណ្ឌ WPF។</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>ការបញ្ចូល និងការរាប់បញ្ចូលឧបករណ៍បញ្ជា។ zlib។</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>ការបញ្ចូល និងការរាប់បញ្ចូលឧបករណ៍បញ្ជា។</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ការបញ្ចូលក្ដារចុច និងកណ្ដុរតាមឧបករណ៍នីមួយៗ</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>លទ្ធផលឧបករណ៍ MIDI និម្មិត (Windows MIDI Services)។ MIT។</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>លទ្ធផលឧបករណ៍ MIDI និម្មិត (Windows MIDI Services)។</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>ការបង្ហាញឧបករណ៍បញ្ជាជា 3D។ MIT។</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>ការបង្ហាញឧបករណ៍បញ្ជាជា 3D។</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>ប្រព័ន្ធរចនា Fluent 2 សម្រាប់ WPF។ Wpf.Ui.dll មាន VirtualizingWrapPanel ពុម្ពអក្សរ fluentui-system-icons និងកូដពី WPF និង microsoft-ui-xaml។ MIT។</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>ប្រព័ន្ធរចនា Fluent 2 សម្រាប់ WPF។ Wpf.Ui.dll មាន VirtualizingWrapPanel ពុម្ពអក្សរ fluentui-system-icons និងកូដពី WPF និង microsoft-ui-xaml។</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm សម្រាប់ការភ្ជាប់ទិន្នន័យ។ MIT។</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm សម្រាប់ការភ្ជាប់ទិន្នន័យ។</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>កញ្ចប់រូបតំណាង Zacksly</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>រូបតំណាងដងបញ្ជា និងទ្រីហ្គឺ ដែលដកស្រង់ពី «Xbox Series Button Icons and Controls» ដោយ Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>រូបតំណាងដងបញ្ជា និងទ្រីហ្គឺ ដែលដកស្រង់ពី «Xbox Series Button Icons and Controls» ដោយ Zacksly។</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>កម្មវិធីផ្គូផ្គងគំរូរាងលើផ្ទាំងប៉ះ (រង្វង់ / ការ៉េ / ត្រីកោណ / Z / សញ្ញាធីក និងកាយវិការដែលអ្នកថតខ្លួនឯង)។ ការដកស្រាយឡើងវិញជា C# នៃឯកសារយោង JavaScript ដោយ Magrofuoco, Vatavu, Anthony និង Wobbrock។ BSD 3-Clause។</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>កម្មវិធីផ្គូផ្គងគំរូរាងលើផ្ទាំងប៉ះ (រង្វង់ / ការ៉េ / ត្រីកោណ / Z / សញ្ញាធីក និងកាយវិការដែលអ្នកថតខ្លួនឯង)។ ការដកស្រាយឡើងវិញជា C# នៃឯកសារយោង JavaScript ដោយ Magrofuoco, Vatavu, Anthony និង Wobbrock។</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>ទីតាំងគ្រាប់ចុច និងគ្រាប់ចុចស្រទាប់មូលដ្ឋាន នៃក្ដារចុចដែលការមើលជាមុន ក្ដារចុច + កណ្ដុរ គូរបង្ហាញ បង្កើតចេញពីទិន្នន័យប្លង់របស់ QMK និងច្បាប់ចម្លង QMK របស់ Keychron។ GPL-2.0-or-later។</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>ទីតាំងគ្រាប់ចុច និងគ្រាប់ចុចស្រទាប់មូលដ្ឋាន នៃក្ដារចុចដែលការមើលជាមុន ក្ដារចុច + កណ្ដុរ គូរបង្ហាញ បង្កើតចេញពីទិន្នន័យប្លង់របស់ QMK និងច្បាប់ចម្លង QMK របស់ Keychron។</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>វិធីដាក់ពិន្ទុតាមរឹមមុំ ដែលដំណើរការរួមជាមួយកម្មវិធីផ្គូផ្គងពពកចំណុច លើរាងម្រាមដៃតែមួយ។ អនុវត្តគំនិតដាក់ពិន្ទុពី PointPatternAnalyzer របស់ GestureSign ជាកូដ C# ដើម។ GPL-2.0 ប្រើជាឯកសារយោងតែប៉ុណ្ណោះ។</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>វិធីដាក់ពិន្ទុតាមរឹមមុំ ដែលដំណើរការរួមជាមួយកម្មវិធីផ្គូផ្គងពពកចំណុច លើរាងម្រាមដៃតែមួយ។ អនុវត្តគំនិតដាក់ពិន្ទុពី PointPatternAnalyzer របស់ GestureSign ជាកូដ C# ដើម។ ប្រើជាឯកសារយោងតែប៉ុណ្ណោះ។</value></data>
   <data name="About_License" xml:space="preserve"><value>អាជ្ញាប័ណ្ណ</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>កម្មវិធីនេះស្ថិតក្រោមអាជ្ញាប័ណ្ណ CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International)។ Gamepad-Asset-Pack ដោយ AL2009man (MIT) ផ្ដល់ធនធានឧបករណ៍បញ្ជា 2D។ GestureSign ដោយ TransposonY (GPL-2.0) ត្រូវបានអានជាឯកសារយោងសម្រាប់ AngularMarginRecognizer ហើយគ្មានកូដណាមួយរបស់វាត្រូវបានចែកចាយទេ។ Handheld Companion (CC BY-NC-SA 4.0) ផ្ដល់ម៉ូដែល 3D របស់ Xbox 360 និង Steam Deck ដែល PadForge កែសម្រួល។ HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services និង WPF UI ស្ថិតក្រោមអាជ្ញាប័ណ្ណ MIT License។ OpenXInput មានតែសេចក្ដីប្រកាសបដិសេធពាណិជ្ជសញ្ញាពីប្រភពដើម ហើយត្រូវបានចែកចាយឡើងវិញដដែលក្រោមលក្ខខណ្ឌដូចគ្នា។ $Q Recognizer ដោយ Magrofuoco, Vatavu, Anthony និង Wobbrock (BSD 3-Clause) ជាឯកសារយោងសម្រាប់ ShapeRecognizer នៃផ្ទាំងប៉ះ ដែលជាការដកស្រាយឡើងវិញជា C#។ SDL3 ស្ថិតក្រោមអាជ្ញាប័ណ្ណ zlib License។ x360ce (LGPL-3.0-or-later) ជាមូលដ្ឋានកូដដើមដែល PadForge បានបំបែកចេញមក។ Zergatul.Obs.InputOverlay ដោយ Igor Budzhak (MIT) ផ្ដល់រូបភាពកណ្ដុរ។</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (កម្មវិធីផ្ទុក SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>បែប BSD</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>លក្ខខណ្ឌអាជ្ញាប័ណ្ណ Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>លក្ខខណ្ឌ Corsair SDK</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>តែសេចក្ដីបដិសេធពាណិជ្ជសញ្ញា</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>មិនបានដាក់ឈ្មោះលក្ខខណ្ឌ</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>មិនបានបោះពុម្ពផ្សាយ</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>អាជ្ញាប័ណ្ណច្រើន</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ម៉ាស៊ីនឧបករណ៍បញ្ជា HID និម្មិតក្នុងរបៀបអ្នកប្រើ (ជំនួស ViGEmBus និង vJoy)។ MIT។</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ម៉ាស៊ីនឧបករណ៍បញ្ជា HID និម្មិតក្នុងរបៀបអ្នកប្រើ (ជំនួស ViGEmBus និង vJoy)។</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>ការជំនួស XInput ដោយផ្ទាល់។ ច្រោះឧបករណ៍បញ្ជានិម្មិតរបស់ PadForge ចេញពីការមើលឃើញរបស់ PadForge ផ្ទាល់។ សេចក្ដីប្រកាសបដិសេធពាណិជ្ជសញ្ញាពីប្រភពដើម គ្មានអាជ្ញាប័ណ្ណប្រភពបើកចំហ។</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>ការជំនួស XInput ដោយផ្ទាល់។ ច្រោះឧបករណ៍បញ្ជានិម្មិតរបស់ PadForge ចេញពីការមើលឃើញរបស់ PadForge ផ្ទាល់។</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ដ្រាយវ័រខឺណែលសម្រាប់លាក់ឧបករណ៍រូបវន្តពីហ្គេម។ MIT។</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ដ្រាយវ័រខឺណែលសម្រាប់លាក់ឧបករណ៍រូបវន្តពីហ្គេម។</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>ការអញ្ជើញ</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“ហើយយើងនិយាយអំពីព្រះគ្រីស្ទ យើងអររីករាយក្នុងព្រះគ្រីស្ទ យើងផ្សាយអំពីព្រះគ្រីស្ទ យើងព្យាករអំពីព្រះគ្រីស្ទ ហើយយើងសរសេរ ស្របតាមពាក្យព្យាករណ៍ទាំងឡាយរបស់យើង ដើម្បីឲ្យកូនចៅយើងអាចដឹងថា តើត្រូវស្វែងរកប្រភពទឹកទឹកណាមួយ ដើម្បីឲ្យបានផ្ដាច់បាបរបស់ពួកគេ។”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>នីហ្វៃ ទី 2 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>សិរីល្អ កិត្តិយស និងការសរសើរ ដល់ព្រះអម្ចាស់យេស៊ូវគ្រីស្ទ ជាប្រភពនៃសេចក្ដីពិត និងសេចក្ដីសង្គ្រោះទាំងអស់ អស់កល្បជានិច្ចរៀងរហូត។</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>អ្នកត្រូវបានអញ្ជើញយ៉ាងកក់ក្ដៅ ឲ្យចូលមើល ComeUntoChrist.org ហើយស្វែងយល់បន្ថែមអំពីទ្រង់ និងសាសនាចក្ររបស់ព្រះយេស៊ូវគ្រីស្ទនៃពួកបរិសុទ្ធថ្ងៃចុងក្រោយ។</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>ការឆ្លងសំឡេងពីស្តេរ៉េអូទៅប៊ីណូរ៉ាល់របស់ Bauer សម្រាប់លទ្ធផលកាសស្ដាប់។ MIT។</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>ការឆ្លងសំឡេងពីស្តេរ៉េអូទៅប៊ីណូរ៉ាល់របស់ Bauer សម្រាប់លទ្ធផលកាសស្ដាប់។</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ Opus ជា C# សុទ្ធ ដែលបញ្ជូនសំឡេងទៅឧបករណ៍បំពងសំឡេង DualSense តាម Bluetooth។ ដោយ Logan Stromberg។ BSD 3-Clause។</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ Opus ជា C# សុទ្ធ ដែលបញ្ជូនសំឡេងទៅឧបករណ៍បំពងសំឡេង DualSense តាម Bluetooth។ ដោយ Logan Stromberg។</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>ការស្រាវជ្រាវសំឡេង Bluetooth របស់ DualSense ដោយ egormanga៖ ការដឹកជញ្ជូនកញ្ចប់ដែលស្ទ្រីមឧបករណ៍បំពងសំឡេងរបស់ឧបករណ៍បញ្ជាប្រើ។ apps.sdore.me/SAxense។ MPL-2.0។</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>ការស្រាវជ្រាវសំឡេង Bluetooth របស់ DualSense ដោយ egormanga៖ ការដឹកជញ្ជូនកញ្ចប់ដែលស្ទ្រីមឧបករណ៍បំពងសំឡេងរបស់ឧបករណ៍បញ្ជាប្រើ។ apps.sdore.me/SAxense។</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>រូបមន្តឧបករណ៍បំពងសំឡេង Bluetooth ដោយ awalol៖ ការរៀបចំស៊ុម Opus និងប្លង់កញ្ចប់។ សូមអរគុណផងដែរដល់ TechAntohere សម្រាប់ការរកឃើញដែលបានចែករំលែក និងការសាកល្បង។ MIT។</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>រូបមន្តឧបករណ៍បំពងសំឡេង Bluetooth ដោយ awalol៖ ការរៀបចំស៊ុម Opus និងប្លង់កញ្ចប់។ សូមអរគុណផងដែរដល់ TechAntohere សម្រាប់ការរកឃើញដែលបានចែករំលែក និងការសាកល្បង។</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>ការអនុវត្តយោងសម្រាប់ការបញ្ជូនសំឡេងផ្ទាល់របស់ឧបករណ៍បញ្ជា USB។ ដោយ WujekFoliarz។</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ពន្យារពេលតួអក្សរ (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>មីលីវិនាទីរវាងតួអក្សរដែលបានវាយ រហូតដល់ 1000។ 0 វាយអត្ថបទទាំងមូលក្នុងពេលតែមួយ។</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ផ្ដាច់ពេលទំនេរ</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>ថាមពល</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>ឯកសារព័ត៌មានឧបករណ៍</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>ព័ត៌មានលម្អិត</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>នាទី (0 = មិនដែល)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ផ្ដាច់ Bluetooth ពេលដោតតាម USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>សាកថ្មរហ័ស។ នៅពេលឧបករណ៍បញ្ជានេះរាយការណ៍ថាកំពុងសាកថ្ម ខណៈភ្ជាប់តាម Bluetooth តំណ Bluetooth ត្រូវបានផ្ដាច់ ដើម្បីឱ្យវាសាកថ្មដោយមិនផ្គត់ផ្គង់ថាមពលដល់វិទ្យុ។ ប្រភពថាមពល USB ណាមួយក៏រាប់ដែរ រួមទាំងឆ្នាំងសាកដោតជញ្ជាំង។ បើអ្នកបើក Bluetooth វិញខណៈខ្សែនៅដោត វានឹងមិនត្រូវប៉ះពាល់ទេ រហូតដល់ការដកខ្សែលើកក្រោយ។</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>សួរឧបករណ៍បញ្ជា PlayStation នេះរកទិសដៅរបស់វាដោយផ្ទាល់ ដូច្នេះឆ្វេងនិងស្ដាំ ឬឡើងនិងចុះ ត្រូវបានទទួលស្គាល់ព្រមគ្នាលើកម្រាលរាំតាំងពីជំហានដំបូង។ ពួកវាមកដល់ជាប៊ូតុងព្រួញឡើង ចុះ ឆ្វេង និងស្ដាំ ដែលហ្វឺមវែរ 3.34 ក៏ផ្ញើដោយខ្លួនឯងដែរ នៅពេលទិសផ្ទុយគ្នាត្រូវបានចុចម្ដង ហើយពេលនោះ PadForge ឈប់សួរ។ រហូតដល់ពេលនោះ អាដាប់ទ័ររំលងការអានឧបករណ៍បញ្ជាភាគច្រើនរបស់ខ្លួន។</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>សម្ពាធ DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>លេខអ្នកលេង</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>អាដាប់ទ័ររក្សាទុកលេខនេះ ហើយភ្ជាប់ឡើងវិញជាអ្នកលេងនោះ។ បន្ទាប់មក Windows ឃើញឧបករណ៍ថ្មី ដូច្នេះសូមម៉ាបច្រកនេះម្ដងទៀត នៅពេលវាត្រឡប់មកវិញ។</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>អាដាប់ទ័ររក្សាទុកលេខនេះ ហើយភ្ជាប់ឡើងវិញ ដែល Windows ឃើញជាឧបករណ៍ថ្មី។</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>អ្នកលេង</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>កំណត់អ្នកលេង</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>អេក្រង់ Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>គ្មានអ្វីទៅដល់ច្រករហូតដល់អ្នករក្សាទុក។</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>បង្ហាញ</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>រូបភាពរបស់អាដាប់ទ័រ</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>កំពុងអាន Namco USIO ជាស្គរ Taiko ពីរ។</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>កំពុងអាន {0} ជាឧបករណ៍បញ្ជា iCade។</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>កំពុងអាន {0} ជាក្ដារចុចវិញ។</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>កាំភ្លើងពន្លឺ</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>ជួរតម្រង់លំនាំដើម៖ X {0} ដល់ {1}, Y {2} ដល់ {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>ជួរតម្រង់ដែលបានក្រិត៖ X {0} ដល់ {1}, Y {2} ដល់ {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>ការក្រិតកាំភ្លើង</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>ក្ដារចុចទាំងអស់ (បញ្ចូលគ្នា)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>កណ្ដុរទាំងអស់ (បញ្ចូលគ្នា)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>ឧបករណ៍</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>បានភ្ជាប់៖ {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ស្វែងរកឧបករណ៍</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>ទាំងអស់</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជា</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>ក្ដារចុច និងកណ្ដុរ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>អាន Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>អាន Chatpad និងបន្ទះ uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>អានឧបករណ៍បញ្ជាហ្គេម</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} បានត្រឡប់ទៅដ្រាយវ័រ Windows របស់វាវិញ។</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>មិនអាចស្ដារដ្រាយវ័រ Windows សម្រាប់ {0} បានទេ។</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows បានដាក់ {0} ត្រឡប់ទៅដ្រាយវ័រផ្ទាល់របស់វាវិញ។ ជ្រើសវានៅលើទំព័រឧបករណ៍ ដើម្បីប្ដូរវាម្ដងទៀត។</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> អនឡាញ / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> សរុប</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>លុបឧបករណ៍នេះ និងការកំណត់របស់វា</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>លុបឧបករណ៍</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} នឹងត្រូវលុបចេញពីបញ្ជីឧបករណ៍ ហើយការកំណត់ដែលបានរក្សាទុករបស់វានឹងត្រូវបំភ្លេចចោល។</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>អូសឧបករណ៍មួយទៅលើកាតឧបករណ៍បញ្ជានៅរបារចំហៀង ដើម្បីកំណត់វា។</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>ផលិតផល៖ </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>អូសឧបករណ៍មួយទៅលើឧបករណ៍បញ្ជានៅរបារចំហៀង ដើម្បីកំណត់វា។</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>ដាក់ស្នើការម៉ាបឧបករណ៍</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>ការកំណត់ឧបករណ៍បញ្ជានិម្មិត</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>បិទ/បើកការកំណត់</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>មិនទាន់មានរន្ធឧបករណ៍បញ្ជានិម្មិតនៅឡើយទេ។ បង្កើតមួយនៅលើផ្ទាំងគ្រប់គ្រង ដើម្បីកំណត់ឧបករណ៍នេះ។</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>របៀបបញ្ចូល</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>កំណត់ឧបករណ៍នេះទៅឧបករណ៍បញ្ជានេះ ឬដកវាចេញ។</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>បង្ខំរបៀបយ៉យស្ទីកដើម (រំលងការម៉ាបហ្គេមផេតឡើងវិញ)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>អានលិបិក្រម HID ដើម ជំនួសឱ្យការម៉ាបហ្គេមផេតរបស់ SDL។ ប្រើនៅពេល SDL កំណត់ប្លង់ប៊ូតុង/អ័ក្សខុស។</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>ការលាក់ការបញ្ចូល</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>លាក់ពីហ្គេម (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>លាក់ឧបករណ៍នេះទាំងស្រុងពីកម្មវិធីផ្សេងទៀត តាមរយៈដ្រាយវ័រ HidHide។ នៅពេល PadForge លាក់ឧបករណ៍បញ្ជា USB ដែលបានភ្ជាប់រួចហើយ វាភ្ជាប់វាឡើងវិញក្នុង Windows ដូច្នេះកម្មវិធីណាដែលបានបើកវា នឹងបាត់វា។ ឧបករណ៍បញ្ជា Bluetooth ឬឧបករណ៍បញ្ជាដែលប្រើឧបករណ៍ទទួលរួមជាមួយឧបករណ៍បញ្ជាផ្សេងទៀត នៅតែជាប់ជាមួយកម្មវិធីណាដែលបានបើកវាមុនពេលវាត្រូវបានលាក់ រហូតដល់វាភ្ជាប់លើកក្រោយ។</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>ដំឡើងដ្រាយវ័រ HidHide ដើម្បីបើកជម្រើសនេះ</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>ទប់ការបញ្ចូលដែលបានម៉ាប (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>រារាំងតែគ្រាប់ចុច/ប៊ូតុងជាក់លាក់ដែលបានម៉ាប ហើយឱ្យការបញ្ចូលដែលមិនបានម៉ាបឆ្លងកាត់</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>ស្ថានភាពការបញ្ចូលដើម</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>ជ្រើសឧបករណ៍មួយ ដើម្បីពិនិត្យការបញ្ចូលដើមរបស់វា។</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>សាកល្បងការបញ្ចូល</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>ជ្រើសឧបករណ៍មួយ ដើម្បីមើលការកំណត់របស់វា និងសាកល្បងការបញ្ចូលរបស់វា។</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>អ័ក្ស</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ប៊ូតុង</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>ក្ដារចុច</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>ឧបករណ៍ដែលបានជ្រើស មិនមានអ័ក្ស ប៊ូតុង ឬប៊ូតុង POV សម្រាប់ក្លូនទេ។</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>ក្លូន {0} ទៅលើរន្ធនេះជាការបញ្ជូនផ្ទាល់ 1:1 ឬ? ប្លង់នឹងក្លាយជា {1} អ័ក្ស {2} ប៊ូតុង និង {3} POV ហើយជួររបស់ឧបករណ៍នេះនៅលើរន្ធ ត្រូវបានជំនួសដោយការបញ្ចូលផ្ទាល់របស់វា។</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ឧបករណ៍នេះមានការបញ្ចូលច្រើនជាងឧបករណ៍បញ្ជា Extended អាចផ្ទុកបាន។ បានម៉ាប {0} ក្នុងចំណោម {1} អ័ក្ស {2} ក្នុងចំណោម {3} ប៊ូតុង និង {4} ក្នុងចំណោម {5} POV។ ការបញ្ចូលដែលនៅសល់ មិនត្រូវបានម៉ាបទេ។</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>ប្រូហ្វាល់ដែលបាននាំចូល</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>ប្រូហ្វាល់ HIDMaestro ដែលអ្នកប្រើបាននាំចូល ត្រូវបានរក្សាទុកក្នុង PadForge.xml ហើយបង្ហាញក្នុងបញ្ជីទម្លាក់ចុះប្រូហ្វាល់ នៃរន្ធ Extended នីមួយៗ។ ចាប់យកប្រូហ្វាល់ថ្មីពីឧបករណ៍ដែលបានភ្ជាប់ខាងក្រោម ឬនាំចេញ / លុបប្រូហ្វាល់ដែលមានស្រាប់។</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>ប្រូហ្វាល់ដែលអ្នកបាននាំចូល ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>ឧបករណ៍ដែលបានភ្ជាប់ ដែលអាចនាំចូលបាន</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>ការកំណត់ស្រាប់ឧបករណ៍បញ្ជា</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>បន្ថែមការកំណត់ស្រាប់សម្រាប់ឧបករណ៍បញ្ជាដែល PadForge មិនមានភ្ជាប់មកជាមួយ ពីឯកសារ ឬពីឧបករណ៍បញ្ជាខ្លួនវា។</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>បាននាំចូល</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>នាំចូលពីឧបករណ៍ដែលបានភ្ជាប់</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>នាំចេញ…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>លុប</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>បិទ</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>នាំចេញ JSON ប្រូហ្វាល់</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>លុបប្រូហ្វាល់ដែលបាននាំចូលឬ?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>លុប «{0}» ឬ? រន្ធណាដែលកំពុងប្រើប្រូហ្វាល់នេះ នឹងត្រឡប់ទៅធាតុ Custom សំយោគវិញ។</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>លុបការកំណត់ស្រាប់ឬ?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជាណាដែលប្រើ {0} នឹងត្រឡប់ទៅធាតុ Custom វិញ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>បាននាំចេញទៅ {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ការនាំចេញបរាជ័យ៖ {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>បានលុប «{0}»។</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>នាំចូលពីឯកសារ…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>នាំចូលពីឯកសារមួយ…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>នាំចូល JSON ប្រូហ្វាល់</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>បាននាំចូលពី {0}។</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ការអានបរាជ័យ៖ {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro បានបដិសេធប្រូហ្វាល់នេះនៅ {1}៖ {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ប្រូហ្វាល់នេះគ្មាន HID descriptor ទេ ដូច្នេះមិនអាចបង្កើតឧបករណ៍បញ្ជាពីវាបានទេ។</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>គ្មានអ្វីត្រូវបាននាំចូលទេ។ {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>ផ្ទុកឡើងវិញ</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>នាំចូល</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ឧបករណ៍ HID គ្មានឈ្មោះ)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>បានរកឃើញចំណុចប្រទាក់ HID {0}។</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>កណ្ដាល</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>តំបន់ងាប់</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ការរំកិលកណ្ដាល, រាងតំបន់ងាប់ និងតម្លៃតាមអ័ក្ស, ខ្សែកោងសម្រាប់អ័ក្សនីមួយៗ, ជួរ, ការបត់ចង្កូត</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>ជួរជាលេខ, តម្លៃដើម</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ជួរ</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«ក្រិតព្រំដែន» វាស់គែមដែលដងបញ្ជាអាចទៅដល់ ហើយកែរាងវាឱ្យទៅជារង្វង់ពេញ។ របាររំកិលទាំងបួនគ្រាន់តែដាក់កម្រិតលើទិសនីមួយៗប៉ុណ្ណោះ។</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>កំពុងយកគំរូ...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>កំណត់កម្រិតត្រូវគ្នានៃរាងឡើងវិញ</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>ថតកាយវិការផ្ទាំងប៉ះ</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>គូរកាយវិការលើផ្ទៃខាងក្រោម។ ប្រអប់នេះចាប់យកម្រាមដៃគ្រប់ម្រាមដែលអ្នកដាក់។ ពេលអ្នកលើកម្រាមដៃទាំងអស់ចេញពីផ្ទៃ គំរូនឹងត្រូវបានថត។ ការគូរដោយចំនួនម្រាមដៃខុសពីគំរូមុនៗ នឹងសម្អាតគំរូដែលបានថតទាំងអស់។</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>កំពុងរង់ចាំម្រាមដៃប៉ះលើផ្ទាំងគូរ</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>ថតកាយវិការ</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>គូររាងនៅលើផ្ទាំងប៉ះរបស់ឧបករណ៍បញ្ជា។ វាក្លាយជាការបញ្ចូលដែលអ្នកអាចម៉ាប។</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>គូរកាយវិការនៅទីនេះ។</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>គូរលើផ្ទាំងប៉ះ។ ផ្ទាំងគូរបង្ហាញវាផ្ទាល់។</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>កំពុងថតពី {0} ផ្ទាំងប៉ះ {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ផ្ទាំងប៉ះនេះ</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>មិនអាចប្រើផ្ទាំងប៉ះបានទេ។ ប្រើផ្ទាំងគូរខាងក្រោមដោយកណ្ដុរ ឬការប៉ះ។</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>មិនអាចប្រើផ្ទាំងប៉ះបានទេ។ គូរនៅទីនេះដោយកណ្ដុរ ប៊ិច ឬម្រាមដៃ។</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>កំពុងគូរ…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>បានចាប់យកគំរូទាំងអស់ហើយ។ ដាក់ឈ្មោះកាយវិការ ហើយចុច «រក្សាទុក»។</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>គំរូទី {0} នៃ {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} គំរូ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ចំនួនគំរូដែលត្រូវថត</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ជាចំនួនស្តង់ដារ។ គំរូច្រើនជាង = ការស្គាល់ត្រឹមត្រូវជាង តិចជាង = ការថតលឿនជាង។</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>គំរូដែលត្រូវចាប់យក</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ជាចំនួនស្តង់ដារ។ គំរូច្រើនជាងផ្ដល់ការស្គាល់ត្រឹមត្រូវជាង ហើយគំរូតិចជាងថតបានលឿនជាង។</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>សាកម្ដងទៀត</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>ដាក់ឈ្មោះកាយវិការនេះ</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>ត្រូវការឈ្មោះ</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>ឈ្មោះវែងពេក (អតិបរមា 64 តួអក្សរ)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>ឈ្មោះមានតួអក្សរមិនត្រឹមត្រូវ</value></data>
@@ -2298,41 +2441,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>ប្រូហ្វាល់</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>ការគ្រប់គ្រងប្រូហ្វាល់</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>បង្កើតប្រូហ្វាល់ឧបករណ៍បញ្ជាសម្រាប់កម្មវិធីនីមួយៗ ដែលប្ដូរដោយស្វ័យប្រវត្តិតាមហ្គេមដែលកំពុងសកម្ម។</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ប្ដូរប្រូហ្វាល់ដោយស្វ័យប្រវត្តិតាមកម្មវិធីនៅផ្ទៃខាងមុខ</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>ប្រូហ្វាល់គឺជាការរៀបចំពេញលេញ៖ ឧបករណ៍បញ្ជា ការម៉ាប និងការលៃតម្រូវរបស់វា។</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>ប្រូហ្វាល់ចាប់ផ្ដើម</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>ប្រូហ្វាល់ដែលរៀបចំរួចសម្រាប់ប្រភេទហ្គេមទាំងមូល។ ជ្រើសរើសមួយ ចាត់តាំងឧបករណ៍បញ្ជាណាមួយ ហើយលេង។</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ប្ដូរប្រូហ្វាល់តាមហ្គេម</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>ការប្ដូរដោយស្វ័យប្រវត្តិ</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} មិនមានប្រូហ្វាល់កំណត់សម្រាប់វាទេ</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} ដែលផ្ទុក {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>នៅខាងមុខឥឡូវ៖ {0} ហើយមិនទាន់មានប្រូហ្វាល់ណាកំណត់ហ្គេមនៅឡើយទេ</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>អនុញ្ញាតឱ្យកម្មវិធីបើកហ្គេម និងស្គ្រីប គ្រប់គ្រងពីខាងក្រៅ</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>បើកបំពង់មានឈ្មោះក្នុងម៉ាស៊ីន PadForge.Control ដើម្បីឱ្យ Playnite, LaunchBox ឬស្គ្រីប អាចបើក និងបិទប្រូហ្វាល់។ ប្រូហ្វាល់ដែលបើកតាមវិធីនេះ នៅតែសកម្មរហូតដល់ស្គ្រីបលែងវា ឬអ្នកប្ដូរប្រូហ្វាល់ដោយខ្លួនឯង។ សម្រាប់តែម៉ាស៊ីននេះប៉ុណ្ណោះ។</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>ការគ្រប់គ្រងពីខាងក្រៅ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ប្រូហ្វាល់សកម្ម៖</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>គ្មានរន្ធ</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>ប្ដូរស្វ័យប្រវត្តិ៖ {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>គ្មានឧបករណ៍បញ្ជា</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ទម្លាក់ដើម្បីនាំចូលប្រូហ្វាល់</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>ថ្មី</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>ទម្លាក់ឯកសារប្រូហ្វាល់នៅទីនេះ</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>ប្រូហ្វាល់ថ្មី</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>រក្សាទុកជា</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>រក្សាទុកការរៀបចំបច្ចុប្បន្ននៅទីនេះ</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>កែសម្រួល</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ផ្ទុក</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>មិនទាន់មានប្រូហ្វាល់ណាមានឯកសារប្រតិបត្តិនៅឡើយទេ</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>សូមជ្រើសរើសប្រូហ្វាល់ជាមុនសិន។</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>ប្រូហ្វាល់ «លំនាំដើម» ដែលភ្ជាប់មកជាមួយ មិនអាចកែ ឬលុបបានទេ។</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>លុបប្រូហ្វាល់</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>លុប “{0}”? រន្ធ និងរូបថតការម៉ាបដែលបានរក្សាទុករបស់វា នឹងត្រូវលុបចោល។</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>មិនបានកំណត់ហ្គេម</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>ផ្ទុកសម្រាប់ {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>កំណត់សម្រាប់ {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>សកម្ម</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>ច្រើនទៀតសម្រាប់ {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}៖ {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>លុប {0} ឬ?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ប្រូហ្វាល់ និងច្បាប់ប្ដូរស្វ័យប្រវត្តិរបស់វានឹងត្រូវដកចេញ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ប្រូហ្វាល់នឹងត្រូវដកចេញ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>ជំនួសការរៀបចំដែលបានរក្សាទុកក្នុង «{0}» ដោយការរៀបចំបច្ចុប្បន្នឬ? ឈ្មោះ និងហ្គេមរបស់វានៅដដែល។</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>ជំនួស</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>រក្សាទុកជាប្រូហ្វាល់</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>កែសម្រួលប្រូហ្វាល់</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់៖</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>ប្រូហ្វាល់ថ្មី</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>ឈ្មោះ</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>ប្រូហ្វាល់ថ្មី</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>ឯកសារប្រតិបត្តិ (ផ្ទៀងផ្ទាត់នឹងផ្ទាំងវិនដូនៅខាងមុខ)៖</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>ហ្គេមដែលផ្ទុកវា</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>អត្រាអានទិន្នន័យ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>លំនាំដើម (ការកំណត់សកល)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ត្រូវបានជំនួស ខណៈពេលប្រូហ្វាល់ “{0}” សកម្ម៖ {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ថតទុកការម៉ាបរបស់រន្ធនីមួយៗ និងការកំណត់តាមឧបករណ៍ ក្រោមឈ្មោះតែមួយ។ ឯកសារប្រតិបត្តិដែលបានភ្ជាប់ នឹងប្ដូរទៅវាដោយស្វ័យប្រវត្តិ។</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ប្ដូរឈ្មោះប្រូហ្វាល់ និងធ្វើបច្ចុប្បន្នភាពឯកសារប្រតិបត្តិដែលបើកវា។ ការម៉ាប និងការកំណត់ដែលបានរក្សាទុក មិនផ្លាស់ប្ដូរទេ។</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>រក្សាទុកការម៉ាប និងការកំណត់របស់ឧបករណ៍បញ្ជានីមួយៗ ក្រោមឈ្មោះតែមួយ។ វាផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ប្រូហ្វាល់ផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ចាប់ផ្ដើមដោយគ្មានឧបករណ៍បញ្ជា។ វាផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>បន្ថែមហ្គេមដែលកំពុងដំណើរការ</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>គ្មានកម្មវិធីផ្សេងបើកផ្ទាំងវីនដូទេ។</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ដកចេញ {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>អត្រាស្ទង់ ខណៈប្រូហ្វាល់នេះត្រូវបានផ្ទុក</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>ចម្លងការកំណត់ពី...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>ជ្រើសរើសឧបករណ៍ដើម្បីចម្លងការកំណត់របស់វា៖</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>ចម្លងពី</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>ជំនួសការម៉ាប និងការលៃតម្រូវតាមឧបករណ៍នីមួយៗរបស់ {0} ដោយរបស់ឧបករណ៍បញ្ជាផ្សេង។</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>បន្ថែមម៉ាក្រូរបស់ឧបករណ៍បញ្ជាផ្សេងទៅ {0}។</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>មិនបានកំណត់ រក្សាការម៉ាបពីមុន</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>ជ្រើសរើសកម្មវិធីដើម្បីដាក់ក្នុងបញ្ជីអនុញ្ញាត</value></data>
@@ -2374,6 +2538,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>ជួរ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>តំបន់ប្រឆាំងតំបន់ងាប់</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ចុចពីរដងដើម្បីបន្ថែមចំណុច។ ចុចស្ដាំដើម្បីលុប។ អូសដើម្បីកែតម្រូវ។</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>កម្មវិធីកែខ្សែកោង</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>អ័ក្សទ្រីហ្គឺ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2731,8 +2896,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>មូលដ្ឋាន</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ស្រទាប់ប្ដូរ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>កំណត់រចនាសម្ព័ន្ធមូលដ្ឋាន</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ឈ្មោះ រូបតំណាង និងពណ៌របស់ស្រទាប់មូលដ្ឋាន នៅលើផ្ទាំងលេចឡើងស្រទាប់ប្ដូរ និងក្នុងជួរស្រទាប់។</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ឈ្មោះស្រទាប់</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>ការបញ្ចូលបើក</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>សង្កត់ជាប់ដោយ</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>ចុចដោយ</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>ស្រទាប់បន្ទាប់ដោយ</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>ស្រទាប់មុនដោយ</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>និងដោយ</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>ជ្រើសការបញ្ចូល</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>ការគ្រប់គ្រងមិនបានម៉ាប</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ធ្លាក់ទៅមូលដ្ឋាន</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>មិនធ្វើអ្វី</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>របៀប, ប្រភេទការបញ្ចូល, ពេលវេលា និងពណ៌</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>របៀប</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>សង្កត់ជាប់</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>បិទ/បើក</value></data>
@@ -2759,14 +2935,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>ពេលធីក គោលដៅរបស់ស្រទាប់នេះនៅតែបិទ ជំនួសឱ្យការធ្លាក់ទៅជួរដេកមូលដ្ឋាន។</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>ការពន្យារពេល</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>រយៈពេលដែលការបញ្ចូលត្រូវសង្កត់ជាប់ មុនពេលស្រទាប់ឆ្លើយតប។ សម្រាប់របៀបសង្កត់ជាប់ នេះជាការការពារសញ្ញាលោត។ សម្រាប់ បិទ/បើក ចាក់សោ និងស្អិត វាធ្វើឱ្យការប្ដូរក្លាយជាការចុចយូរ៖ ស្រទាប់ប្ដូរម្ដង ពេលការសង្កត់ឆ្លងកាត់រយៈពេលនេះ ហើយការប៉ះខ្លីជាងនេះមិនធ្វើអ្វីទេ។ 0 ឆ្លើយតបភ្លាមៗ។</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>ការបញ្ចូលបន្សំទីពីរ</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>កម្រិតចាប់ផ្ដើមអ័ក្ស</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>វិលជុំតាមស្រទាប់</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>តែពេលនៅក្នុងស្រទាប់</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>ស្រទាប់ណាមួយ</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>ការបញ្ចូលរាប់តែពេលស្រទាប់ដែលបានជ្រើសកំពុងសកម្មប៉ុណ្ណោះ។ ការពិនិត្យកើតឡើងពេលការបញ្ចូលត្រូវបានចុច ហើយមានសុពលភាពពេញមួយការចុច។ ស្រទាប់ណាមួយ មានន័យថាការបញ្ចូលតែងតែរាប់។ កំណត់ផ្លូវចេញរបស់ស្រទាប់នីមួយៗនៅលើស្រទាប់នោះ ដោយប្រើការបញ្ចូលបើកមួយទៀត ឬម៉ាក្រូប្ដូរស្រទាប់។</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>ប៊ូតុងបន្ទាប់</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>ប៊ូតុងមុន</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>វិលត្រឡប់</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>ពេលបើក ការរំកិលហួសស្រទាប់ចុងក្រោយនឹងត្រឡប់ទៅស្រទាប់ដំបូង ហើយហួសស្រទាប់ដំបូងនឹងត្រឡប់ទៅស្រទាប់ចុងក្រោយ។ ពេលបិទ ទីតាំងឈប់នៅចុងទាំងពីរ។</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>រួមបញ្ចូលមូលដ្ឋាន</value></data>
@@ -2778,18 +2951,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>ការចុចប៊ូតុងតែមួយ (ឬទិសដៅ POV) ធ្វើឱ្យស្រទាប់សកម្ម។</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>ប៊ូតុងទាំងពីរត្រូវសង្កត់ជាប់ក្នុងពេលតែមួយ ដើម្បីធ្វើឱ្យសកម្ម។ គាំទ្របន្សំឆ្លងឧបករណ៍។</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>សកម្មពេលអ័ក្សអាណាឡូកហួសតម្លៃកម្រិតចាប់ផ្ដើម។</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>ស្រទាប់នៅតែសកម្មពេលការបញ្ចូលបើកត្រូវបានសង្កត់ជាប់។ ឈប់សកម្មពេលអ្នកលែង។</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>ខណៈការបញ្ចូលរបស់វាត្រូវបានសង្កត់ជាប់ ការម៉ាបរបស់ស្រទាប់នេះជំនួសការម៉ាបមូលដ្ឋាន។</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>ប៉ះដើម្បីធ្វើឱ្យសកម្ម។ ប៉ះម្ដងទៀតដើម្បីឈប់។ ស្រទាប់នៅតែសកម្មឆ្លងកាត់ការចុចជាច្រើន។</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>ចុចដើម្បីចាក់សោស្រទាប់នេះឱ្យសកម្ម ហើយរក្សាវាទុក។ ចុចម្ដងទៀតដើម្បីត្រឡប់ទៅមូលដ្ឋានវិញ។ ប៊ូតុងចាក់សោផ្សេងទៀតប្ដូរទៅស្រទាប់របស់វាផ្ទាល់។</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>ការចុចនីមួយៗឆ្ពោះទៅមុខតាមបញ្ជីស្រទាប់តាមលំដាប់។ វិលត្រឡប់ទៅមូលដ្ឋានវិញ។</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>ប៉ះម្ដងដើម្បីធ្វើឱ្យសកម្ម។ ការចុចប៊ូតុងដែលបានម៉ាបបន្ទាប់នឹងដំណើរការលើស្រទាប់ ហើយបន្ទាប់មកឈប់សកម្មដោយស្វ័យប្រវត្តិ។</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>គ្មានប៊ូតុងផ្ទាល់ខ្លួនទេ។ បន្ថែមវាទៅក្នុងជួររង់ចាំនៃការគ្រប់គ្រងវិលជុំ ហើយការវិលជុំនឹងទៅដល់វា។</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>ទទួលបន្តគោលដៅដែលមិនបានម៉ាបពីមូលដ្ឋាន</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>ដំណើរការពេលលែង</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>រង់ចាំរហូតដល់ប៊ូតុងត្រូវបានលែង មុនពេលការបញ្ចូលបើកនេះដំណើរការ។ បើបានកំណត់ការពន្យារពេលសង្កត់ ការចុចត្រូវតែមានរយៈពេលយ៉ាងហោចណាស់ប៉ុណ្ណោះ ទើបការលែងត្រូវបានរាប់។</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ដំណើរការការម៉ាបរបស់ការបញ្ចូលបើកផ្ទាល់ផងដែរ</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ពេលធីក ប៊ូតុងបញ្ចូលបើកនៅតែបញ្ជាជួរដេកណាមួយដែលប្រើវាជាប្រភព។ ការចុចតែម្ដង ទាំងប្ដូរស្រទាប់ និងដំណើរការការម៉ាបរបស់ប៊ូតុងផ្ទាល់។ ពេលមិនធីក (លំនាំដើម) ការចុចបញ្ចូលបើកត្រូវបានប្រើសម្រាប់តែការប្ដូរស្រទាប់ប៉ុណ្ណោះ។</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ពេលធីក គោលដៅដែលស្រទាប់នេះមិនបានម៉ាបច្បាស់លាស់ នឹងធ្លាក់ទៅស្រទាប់មូលដ្ឋាន។ ពេលមិនធីក (លំនាំដើម) ស្រទាប់ជំនួសមូលដ្ឋានទាំងស្រុង ហើយគោលដៅដែលមិនបានម៉ាបនៅតែបិទ។</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ជាមួយ ធ្លាក់ទៅមូលដ្ឋាន ការគ្រប់គ្រងដែលស្រទាប់នេះមិនបានម៉ាប រក្សាការម៉ាបមូលដ្ឋានរបស់វា។ ជាមួយ មិនធ្វើអ្វី ស្រទាប់ជំនួសមូលដ្ឋានទាំងស្រុង ហើយការគ្រប់គ្រងទាំងនោះនៅតែបិទ។</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ជួរបង្វិល</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>កំណត់ជួរបង្វិល</value></data>
@@ -2992,15 +3164,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ឧបករណ៍ដែលបានជ្រើសគ្មានឧបករណ៍បំពងសំឡេងភ្ជាប់មកជាមួយទេ។ សំឡេងម៉ាក្រូសម្រាប់ឧបករណ៍បញ្ជានេះចាក់នៅលើលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធ។</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>កំណត់លទ្ធផលសំឡេងឡើងវិញ</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>ឈុតសាកល្បង DualSense លើកម្មវិធីរុករក ដោយ Xuezhou Dai (daidr)៖ ឯកសារយោងសម្រាប់ការរៀបស៊ុម CRC នៃរបាយការណ៍មុខងាររបស់ Sony និងពាក្យបញ្ជាសាកល្បងហ្វឺមវែរ ដែល PadForge បញ្ជូនបន្តពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជារូបវន្ត។ MIT។</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>ឈុតសាកល្បង DualSense លើកម្មវិធីរុករក ដោយ Xuezhou Dai (daidr)៖ ឯកសារយោងសម្រាប់ការរៀបស៊ុម CRC នៃរបាយការណ៍មុខងាររបស់ Sony និងពាក្យបញ្ជាសាកល្បងហ្វឺមវែរ ដែល PadForge បញ្ជូនបន្តពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជារូបវន្ត។</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>ឯកសារយោងសំឡេង Bluetooth សម្រាប់ DualShock 4 ដោយ nefarius៖ ការរៀបស៊ុមរបាយការណ៍សម្រាប់ការបញ្ជូនសំឡេងទៅឧបករណ៍បំពងសំឡេង DS4 របស់ PadForge។ កម្មវិធីអ៊ិនកូដ SBC គឺជាការអនុវត្ត C# ដើម ដែលផ្អែកលើលក្ខណៈបច្ចេកទេស Bluetooth A2DP។ មានឯកសារពិធីការពី ds4mac របស់ khallmark។ MIT។</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>ឯកសារយោងសំឡេង Bluetooth សម្រាប់ DualShock 4 ដោយ nefarius៖ ការរៀបស៊ុមរបាយការណ៍សម្រាប់ការបញ្ជូនសំឡេងទៅឧបករណ៍បំពងសំឡេង DS4 របស់ PadForge។ កម្មវិធីអ៊ិនកូដ SBC គឺជាការអនុវត្ត C# ដើម ដែលផ្អែកលើលក្ខណៈបច្ចេកទេស Bluetooth A2DP។ មានឯកសារពិធីការពី ds4mac របស់ khallmark។</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>នាំចេញ…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>នាំចូល…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>បាននាំចេញប្រូហ្វាល់ «{0}»។</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>បាននាំចូលប្រូហ្វាល់ «{0}» (បានចុះឈ្មោះកញ្ចប់សំឡេង {1})។</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ឯកសារនេះមិនមែនជាប្រូហ្វាល់ PadForge ដែលអាចអានបានទេ។</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>ជ្រើសរើសសំឡេងពី {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>កញ្ចប់សំឡេង</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ឯកសារ zip នៃសំឡេងសម្រាប់ម៉ាក្រូសំឡេង</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>កញ្ចប់សំឡេងគឺជាឯកសារ zip មួយដែលមានសំឡេង ជាមួយកន្ទុយ .pfsounds។ បន្ថែមមួយនៅទីនេះ បន្ទាប់មកជ្រើសរើសសំឡេងរបស់វានៅក្នុងម៉ាក្រូសំឡេងណាមួយ។ PadForge អានដោយផ្ទាល់ពីឯកសារ ហើយមិនដែលពន្លាវាទេ។ ទុកកញ្ចប់នៅជាប់ PadForge.exe ដើម្បីឱ្យនៅតែចល័តបាន។</value></data>
@@ -3045,20 +3216,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>ការការពារអត្តសញ្ញាណ</value>
+    <value>អត្តសញ្ញាណផ្គូផ្គង</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>របៀបដែលអត្តសញ្ញាណផ្គូផ្គងរបស់កុំព្យូទ័រនេះត្រូវបានរក្សាទុក។ ជ្រើសរើសរបៀបចល័ត ដើម្បីយកការផ្គូផ្គងរបស់អ្នកតាមដ្រាយ USB ទៅម៉ាស៊ីនផ្សេងៗ។</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>ដាក់ឈ្មោះកុំព្យូទ័រនេះ</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>កុំព្យូទ័រនៅក្បែរ (មិនទាន់ផ្គូផ្គង)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>កំណត់ឡើងវិញ</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>ពាក្យសម្ងាត់តំណពីចម្ងាយ</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>ផ្ទាំងប៉ះ PadForge</value>
@@ -3090,9 +3254,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>កុំព្យូទ័រដែលបានផ្គូផ្គង</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>អនឡាញ</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>អហ្វឡាញ</value>
   </data>
@@ -3109,7 +3270,7 @@
     <value>ដោះសោអត្តសញ្ញាណបច្ចុប្បន្ន មុនពេលប្ដូរការការពាររបស់វា។</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>កំណត់ពាក្យសម្ងាត់ដើម្បីការពារអត្តសញ្ញាណចល័តរបស់អ្នក។ អ្នកនឹងបញ្ចូលវា ដើម្បីដោះសោតំណពីចម្ងាយលើកុំព្យូទ័រនីមួយៗ។</value>
+    <value>ពាក្យសម្ងាត់ការពារអត្តសញ្ញាណផ្គូផ្គងរបស់កុំព្យូទ័រនេះ។</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>បានធ្វើបច្ចុប្បន្នភាពការការពារអត្តសញ្ញាណ។</value>
@@ -3129,7 +3290,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>កំពុងភ្ជាប់ទៅ {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញដោយស្វ័យប្រវត្តិ</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញស្វ័យប្រវត្តិ</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>កំពុងស្ដាប់នៅលើ {0}</value>
   </data>
@@ -3148,65 +3309,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>កុំព្យូទ័រដៃគូ {0} បានភ្ជាប់ ឧបករណ៍ {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>ជ្រើសរើសសំឡេងពីកញ្ចប់ដែលបានបន្ថែម ឬរកមើលឯកសារ។</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>រកមើលឯកសារ…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>ជ្រើសរើសសំឡេង</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>សំឡេងលេងតាមឧបករណ៍បំពងសំឡេងរបស់ឧបករណ៍បញ្ជា ឬរបស់កុំព្យូទ័រ នៅពេលវាគ្មាន។</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>ប្រើសំឡេង</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>លេង {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>ការចាប់យកសំឡេងវិលត្រឡប់ WASAPI សម្រាប់ការចម្លងសំឡេងទៅឧបករណ៍បញ្ជា និងការញ័រទ្រីហ្គឺតាមសំឡេងបាស។ NAudio.Midi ដែល PadForge មិនបញ្ចូលមកជាមួយ ក៏ជាឯកសារយោងសម្រាប់ការប្រកាស WinMM និងលំដាប់ច្រករបស់ MIDI API ចាស់ សម្រាប់ច្បាប់ដែល Note On ដែលមាន velocity 0 គឺជា Note Off និងសម្រាប់ឧបករណ៍បញ្ជាបិទ/បើក ដូចជា sustain។ ដោយ Mark Heath។ MIT។</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>ការចាប់យកសំឡេងវិលត្រឡប់ WASAPI សម្រាប់ការចម្លងសំឡេងទៅឧបករណ៍បញ្ជា និងការញ័រទ្រីហ្គឺតាមសំឡេងបាស។ NAudio.Midi ដែល PadForge មិនបញ្ចូលមកជាមួយ ក៏ជាឯកសារយោងសម្រាប់ការប្រកាស WinMM និងលំដាប់ច្រករបស់ MIDI API ចាស់ សម្រាប់ច្បាប់ដែល Note On ដែលមាន velocity 0 គឺជា Note Off និងសម្រាប់ឧបករណ៍បញ្ជាបិទ/បើក ដូចជា sustain។ ដោយ Mark Heath។</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>កម្មវិធីស្គាល់ការនិយាយក្រៅបណ្ដាញ ដែលស្ដាប់ឃ្លាម៉ាក្រូសំឡេង។ ដោយ Alpha Cephei។ ម៉ូដែលត្រូវបានបញ្ចូលក្នុង PadForge។ Apache-2.0។</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>កម្មវិធីស្គាល់ការនិយាយក្រៅបណ្ដាញ ដែលស្ដាប់ឃ្លាម៉ាក្រូសំឡេង។ ដោយ Alpha Cephei។ ម៉ូដែលត្រូវបានបញ្ចូលក្នុង PadForge។</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>គ្រីបតូក្រាហ្វីសម្រាប់ការផ្គូផ្គង និងការបញ្ជូនរបស់តំណពីចម្ងាយ (X25519, Ed25519, ChaCha20-Poly1305)។ Bouncy Castle Licence ដែលជាអាជ្ញាប័ណ្ណបែប MIT។</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>គ្រីបតូក្រាហ្វីសម្រាប់ការផ្គូផ្គង និងការបញ្ជូនរបស់តំណពីចម្ងាយ (X25519, Ed25519, ChaCha20-Poly1305)។</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>ដ្រាយវ័រប្រវត្តិរូប Bluetooth និងដ្រាយវ័រតម្រង PSM ដែលភ្ជាប់មកជាមួយ ដោយ nefarius ដែលអនុញ្ញាតឱ្យ DualShock 3 ភ្ជាប់តាមវិទ្យុរួម។ ដំឡើងក្នុងកម្មវិធីពេលផ្គូផ្គង។ BSD 3-Clause។</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>ដ្រាយវ័រប្រវត្តិរូប Bluetooth និងដ្រាយវ័រតម្រង PSM ដែលភ្ជាប់មកជាមួយ ដោយ nefarius ដែលអនុញ្ញាតឱ្យ DualShock 3 ភ្ជាប់តាមវិទ្យុរួម។ ដំឡើងក្នុងកម្មវិធីពេលផ្គូផ្គង។</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>ឯកសារយោងពិធីការ DualShock 3 ដោយ Benjamin Höglinger-Stelzer៖ របាយការណ៍មុខងារ sixpair គំរូរបាយការណ៍លទ្ធផល Bluetooth លំដាប់បើកដំណើរការ ផែនទីថ្ម។ ការអនុវត្តរបស់ PadForge គឺជា C# ដើម។ ឧបករណ៍បញ្ជា DualShock 3 (SIXAXIS): Full របស់ HIDMaestro ប្រើការពិពណ៌នារបាយការណ៍របៀប SXS របស់ DsHidMini។ BSD 3-Clause។</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>ឯកសារយោងពិធីការ DualShock 3 ដោយ Benjamin Höglinger-Stelzer៖ របាយការណ៍មុខងារ sixpair គំរូរបាយការណ៍លទ្ធផល Bluetooth លំដាប់បើកដំណើរការ ផែនទីថ្ម។ ការអនុវត្តរបស់ PadForge គឺជា C# ដើម។ ឧបករណ៍បញ្ជា DualShock 3 (SIXAXIS): Full របស់ HIDMaestro ប្រើការពិពណ៌នារបាយការណ៍របៀប SXS របស់ DsHidMini។</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>ការដំឡើងទៅក្នុងឃ្លាំងដ្រាយវ័រ ការចុះឈ្មោះតម្រងថ្នាក់ Bluetooth និងការបិទបើកច្រក USB ឡើងវិញ សម្រាប់ការរៀបចំ BthPS3 ក្នុងកម្មវិធី និងសម្រាប់ការដោះលែងឧបករណ៍បញ្ជា USB ដែលត្រូវបានលាក់ ដោយ nefarius។ MIT។</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>ការដំឡើងទៅក្នុងឃ្លាំងដ្រាយវ័រ ការចុះឈ្មោះតម្រងថ្នាក់ Bluetooth និងការបិទបើកច្រក USB ឡើងវិញ សម្រាប់ការរៀបចំ BthPS3 ក្នុងកម្មវិធី និងសម្រាប់ការដោះលែងឧបករណ៍បញ្ជា USB ដែលត្រូវបានលាក់ ដោយ nefarius។</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>ការចូលប្រើ USB សម្រាប់ដ្រាយវ័រខ្សែរបស់ Switch 2 Pro និងឧបករណ៍បញ្ជាដែល PadForge ភ្ជាប់ទៅ WinUSB ដែលបញ្ចូលមកជា libusb-1.0.dll។ LGPL-2.1-or-later។</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>ការចូលប្រើ USB សម្រាប់ដ្រាយវ័រខ្សែរបស់ Switch 2 Pro និងឧបករណ៍បញ្ជាដែល PadForge ភ្ជាប់ទៅ WinUSB ដែលបញ្ចូលមកជា libusb-1.0.dll។</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>ដងបញ្ជាប៉ះក្នុងឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ ដោយ Yoann Moinet។ MIT។</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>ដងបញ្ជាប៉ះក្នុងឧបករណ៍បញ្ជាតាមវេបលើទូរសព្ទ ដោយ Yoann Moinet។</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>មូលដ្ឋានទិន្នន័យការម៉ាបហ្គេមផេតរបស់សហគមន៍ ដែលការម៉ាបភ្ជាប់មកជាមួយរបស់ PadForge ពង្រីក។ zlib។</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>មូលដ្ឋានទិន្នន័យការម៉ាបហ្គេមផេតរបស់សហគមន៍ ដែលការម៉ាបភ្ជាប់មកជាមួយរបស់ PadForge ពង្រីក។</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>ការស្រាវជ្រាវ LED ប៊ូតុង Guide របស់ Xbox៖ ប្លង់កញ្ចប់ XboxGIP និងលំដាប់ស្វែងរក ដោយ Leclowndu93150។ MIT។</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>ការស្រាវជ្រាវ LED ប៊ូតុង Guide របស់ Xbox៖ ប្លង់កញ្ចប់ XboxGIP និងលំដាប់ស្វែងរក ដោយ Leclowndu93150។</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>គណិតវិទ្យាបត់ចង្កូតតាមមុំរុំ និងការផ្អៀង ដោយ JibbSmart និង Electronicks។ MIT។</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>គណិតវិទ្យាបត់ចង្កូតតាមមុំរុំ និងការផ្អៀង ដោយ JibbSmart និង Electronicks។</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ការបំប្លែងហ្ស៊ីរ៉ូក្នុងលំហអ្នកលេង និងលំហពិភពលោក ដោយ JibbSmart។ MIT។</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ការបំប្លែងហ្ស៊ីរ៉ូក្នុងលំហអ្នកលេង និងលំហពិភពលោក ដោយ JibbSmart។</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ការញ័រលម្អិតរបស់ Steam Controller (2015) និងគណិតវិទ្យារយៈពេលណោត ដោយ Pila និង Roboron3042។ BSD 3-Clause។</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ការញ័រលម្អិតរបស់ Steam Controller (2015) និងគណិតវិទ្យារយៈពេលណោត ដោយ Pila និង Roboron3042។</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ប្លង់ការញ័រលម្អិតសំឡេង LFO របស់ Steam Controller 2026 និង Steam Deck ដោយ Pila, Crazy និង AAGaming។ BSD 3-Clause។</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ប្លង់ការញ័រលម្អិតសំឡេង LFO របស់ Steam Controller 2026 និង Steam Deck ដោយ Pila, Crazy និង AAGaming។</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>អត្ថន័យនៃការសម្អាត SOCD សម្រាប់របៀប Snap Tap ដោយ valignatev។ MIT។</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>អត្ថន័យនៃការសម្អាត SOCD សម្រាប់របៀប Snap Tap ដោយ valignatev។</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>កម្មវិធីភ្ញៀវបណ្ដាញ Steam ដែលទាញយកការកំណត់ឧបករណ៍បញ្ជាពីវើកស៊ប Steam តាមវគ្គអនាមិក ដោយ Ryan Stecker និងក្រុម SteamRE។ LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet)។</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>កម្មវិធីសៀរៀល Protocol Buffers ដែល SteamKit2 ប្រើសម្រាប់ពិធីការបណ្ដាញរបស់ Steam ដោយ Marc Gravell។ Apache-2.0។</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>កម្មវិធីសៀរៀល Protocol Buffers ដែល SteamKit2 ប្រើសម្រាប់ពិធីការបណ្ដាញរបស់ Steam ដោយ Marc Gravell។</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ការពន្លា Zstandard ដែល SteamKit2 ប្រើសម្រាប់ផ្នែកឃ្លាំង Steam ជាកំណែ C# នៃបណ្ណាល័យ zstd ដោយ Oleg Stepanischev។ MIT។</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>ការពន្លា Zstandard ដែល SteamKit2 ប្រើសម្រាប់ផ្នែកឃ្លាំង Steam ជាកំណែ C# នៃបណ្ណាល័យ zstd ដោយ Oleg Stepanischev។</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>ឯកសារសម្រាប់ពិធីផ្គូផ្គង Wii សំឡេង ADPCM នៃឧបករណ៍បំពងសំឡេង ទិសផ្ដេក និងបញ្ឈររបស់ Wii Remote គំរូរបាំងដងបញ្ជា និងទម្រង់ផ្ទុករបស់វា និងអនុសញ្ញាអ័ក្សហ្ស៊ីរ៉ូ។ GPL-2.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ គ្មានកូដ GPL ត្រូវបានបញ្ចូលទេ។</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>ឯកសារសម្រាប់ពិធីផ្គូផ្គង Wii សំឡេង ADPCM នៃឧបករណ៍បំពងសំឡេង ទិសផ្ដេក និងបញ្ឈររបស់ Wii Remote គំរូរបាំងដងបញ្ជា និងទម្រង់ផ្ទុករបស់វា និងអនុសញ្ញាអ័ក្សហ្ស៊ីរ៉ូ។ អានជាឯកសារតែប៉ុណ្ណោះ គ្មានកូដ GPL ត្រូវបានបញ្ចូលទេ។</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>ឯកសារឥរិយាបថ DualShock៖ ការផ្ដាច់ពេលទំនេរ ព្រំដែនផ្ទាំងប៉ះ ការឌិកូដថ្ម IOCTL ផ្ដាច់ Bluetooth ប៊ីតរបៀបញ័ររបស់ DualSense ខ្សែកោងការរង្គើហ្ស៊ីរ៉ូ មាត្រដ្ឋានដងបញ្ជាជាកណ្ដុរ និងតម្លៃចាប់ផ្ដើម CRC នៃរបាយការណ៍លទ្ធផល Bluetooth។ តារាងគ្រាប់ចុចនៃក្ដារចុចនិម្មិតរបស់វាបានណែនាំតារាងរបស់ PadForge។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ គ្មានកូដ GPL ត្រូវបានបញ្ចូលទេ។</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>ឯកសារឥរិយាបថ DualShock៖ ការផ្ដាច់ពេលទំនេរ ព្រំដែនផ្ទាំងប៉ះ ការឌិកូដថ្ម IOCTL ផ្ដាច់ Bluetooth ប៊ីតរបៀបញ័ររបស់ DualSense ខ្សែកោងការរង្គើហ្ស៊ីរ៉ូ មាត្រដ្ឋានដងបញ្ជាជាកណ្ដុរ និងតម្លៃចាប់ផ្ដើម CRC នៃរបាយការណ៍លទ្ធផល Bluetooth។ តារាងគ្រាប់ចុចនៃក្ដារចុចនិម្មិតរបស់វាបានណែនាំតារាងរបស់ PadForge។ អានជាឯកសារតែប៉ុណ្ណោះ គ្មានកូដ GPL ត្រូវបានបញ្ចូលទេ។</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>ឯកសារពាក្យបញ្ជា LED របស់ GIP ដែលបញ្ជាក់ xbledctl។ GPL-2.0-or-later ឯកសារតែប៉ុណ្ណោះ។</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>ឯកសារពាក្យបញ្ជា LED របស់ GIP ដែលបញ្ជាក់ xbledctl។ ឯកសារតែប៉ុណ្ណោះ។</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>ឯកសារឥរិយាបថកាមេរ៉ា IR របស់ Wii និង Balance Board ដោយ Brian Peek។ MIT។</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>ឯកសារឥរិយាបថកាមេរ៉ា IR របស់ Wii និង Balance Board ដោយ Brian Peek។</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>ឯកសារទម្រង់ទិន្នន័យការញ័រ HD របស់ Joy-Con ដោយ Sergey004។ អានសម្រាប់តែព័ត៌មានពិធីការប៉ុណ្ណោះ។</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>ផ្គូផ្គង</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>ផ្គូផ្គងឧបករណ៍បញ្ជា</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>ផ្គូផ្គងឧបករណ៍បញ្ជា</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>ផ្គូផ្គង Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>បើកគម្របថ្ម ហើយចុចប៊ូតុង SYNC ពណ៌ក្រហម។</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>ទុកឧបករណ៍បញ្ជាពីចម្ងាយនៅជិតកុំព្យូទ័រនេះ ខណៈភ្លើងរបស់វាភ្លឹបភ្លែត។</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>ផ្គូផ្គង DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>ផ្គូផ្គងឧបករណ៍បញ្ជា Move ឬ Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជាស៊េរី</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជាពីចម្ងាយ DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>គ្រួសារឧបករណ៍បញ្ជា</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>បើកគម្របថ្ម ហើយចុចប៊ូតុង SYNC ពណ៌ក្រហម។ ទុកឱ្យ PadForge បន្តស្វែងរក រហូតដល់ឧបករណ៍បញ្ជារបស់អ្នកលេចឡើង។</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>ការផ្គូផ្គងបណ្ដោះអាសន្ន (សង្កត់ 1 និង 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>ផ្គូផ្គង</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>កំពុងស្វែងរក។ ចុចប៊ូតុង SYNC ឥឡូវនេះ។</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>កំពុងស្វែងរកឧបករណ៍បញ្ជាពីចម្ងាយ។</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>ឧបករណ៍បញ្ជាដែលបានរកឃើញ</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>មិនទាន់រកឃើញឧបករណ៍បញ្ជានៅឡើយទេ។ ត្រូវប្រាកដថាភ្លើងពណ៌ខៀវកំពុងភ្លឹបភ្លែត។</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>បានផ្គូផ្គង {0}។ វានឹងបង្ហាញក្នុងបញ្ជីឧបករណ៍របស់អ្នក។</value></data>
@@ -3216,7 +3382,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>រួចរាល់</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>API ភ្ញៀវ OpenVR របស់ Valve (BSD 3-Clause)៖ កាសពាក់ក្បាល VR និងឧបករណ៍បញ្ជាចលនា ជាប្រភពការបញ្ចូល។ កម្មវិធីដំណើរការដើមត្រូវបានផ្ទុកពីការដំឡើង SteamVR របស់អ្នកផ្ទាល់។</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API ភ្ញៀវ OpenVR របស់ Valve៖ កាសពាក់ក្បាល VR និងឧបករណ៍បញ្ជាចលនា ជាប្រភពការបញ្ចូល។ កម្មវិធីដំណើរការដើមត្រូវបានផ្ទុកពីការដំឡើង SteamVR របស់អ្នកផ្ទាល់។</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>កំពុងដំណើរការ</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>កំពុងដំណើរការ ដ្រាយវ័របានភ្ជាប់</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>កំពុងដំណើរការ ឧបករណ៍បញ្ជាសកម្ម</value></data>
@@ -3254,13 +3420,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ការផ្គូផ្គងមិនបានបញ្ចប់ទេ។ ជំហានដែលបរាជ័យត្រូវបានបង្ហាញខាងលើ។</value></data>
   <data name="Common_Close" xml:space="preserve"><value>បិទ</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>ស្លាក NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>ចុះឈ្មោះស្លាក</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>ប៉ះស្លាកលើឧបករណ៍អាន ដើម្បីចាប់យក UID របស់វា។</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID៖</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(កំពុងរង់ចាំ)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>ឈ្មោះ៖</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>ប៉ះស្លាកមួយលើឧបករណ៍អាន ហើយដាក់ឈ្មោះវា។ វាក្លាយជាប៊ូតុងដែលអ្នកអាចម៉ាប។</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>ប៉ះស្លាកលើឧបករណ៍អាន។</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ដាក់ឈ្មោះស្លាកនេះ</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>ចុះឈ្មោះ</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ស្លាកដែលបានចុះឈ្មោះ</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>បានចុះឈ្មោះ</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>រកមិនឃើញឧបករណ៍អាន NFC ទេ។ ភ្ជាប់ឧបករណ៍អាន PC/SC ហើយបើកឡើងវិញ។</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>បានចាប់យកស្លាក។ បញ្ចូលឈ្មោះ ហើយចុច ចុះឈ្មោះ។ ប៉ះស្លាកផ្សេងដើម្បីជំនួសវា។</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ ប៉ះស្លាកផ្សេងទៀតដើម្បីបន្ថែម។</value></data>
@@ -3338,22 +3503,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>មិនអាចបើកអង្គចងចាំរួម FreeTrack បានដែរ។</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>រៀន / គ្រប់គ្រងប៊ូតុងលាក់</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>ប៊ូតុងលាក់</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>រៀនប៊ូតុង</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>ចុចប៊ូតុងលាក់ម្ដងនៅពេលត្រូវបានស្នើ។ PadForge តាមដានក្ដារចុច កណ្ដុរ របាយការណ៍ពីក្រុមហ៊ុនផលិតទាំងអស់ និងព្រឹត្តិការណ៍ប្រព័ន្ធទាំងអស់នៅលើម៉ាស៊ីននេះ ហើយកត់ត្រាអ្វីដែលប៊ូតុងនោះផ្លាស់ប្ដូរ។</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>ម៉ាស៊ីន៖</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>ចាប់ផ្ដើមរៀន</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>បង្រៀន PadForge នូវប៊ូតុងដែល Windows មិនបង្ហាញជាឧបករណ៍បញ្ជា។ ចុចវានៅពេលត្រូវបានស្នើ។</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>កុំប៉ះ។ កំពុងអានស្ថានភាពទំនេរ…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>ចុចប៊ូតុងលាក់ឥឡូវនេះ រួចលែងវិញ…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>សូមរង់ចាំបន្តិច…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>មិនឃើញការផ្លាស់ប្ដូរទេ។ ចុចប៊ូតុងក្នុងអំឡុងពេលដែលបានបន្លិច ហើយព្យាយាមម្ដងទៀត។</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>ចុចប៊ូតុងឱ្យជាប់ឥឡូវនេះ។</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>លែងប៊ូតុង។</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>ជំហាន {0} នៃ {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>មិនឃើញការផ្លាស់ប្ដូរទេ។ ជ្រើស ចាប់ផ្ដើមម្ដងទៀត រួចចុចប៊ូតុងឱ្យជាប់នៅពេលត្រូវបានស្នើ។</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>បានតាមដានរបាយការណ៍ក្រុមហ៊ុនផលិត {0} និងថ្នាក់ព្រឹត្តិការណ៍ {1}។ ក្នុងអំឡុងពេលចុច៖ របាយការណ៍ {2} ព្រឹត្តិការណ៍ {3}។</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>បានចាប់យកប៊ូតុង។ បញ្ចូលឈ្មោះ ហើយចុច «ចុះឈ្មោះ»។</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ប្រភព៖</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>ឈ្មោះ៖</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ប្រភព</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>ដាក់ឈ្មោះប៊ូតុងនេះ</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>ចុះឈ្មោះ</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>ប៊ូតុងដែលបានរៀន</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>ចាប់ផ្ដើមម្ដងទៀត</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>មិនទាន់មានប៊ូតុងដែលបានរៀនទេ។</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ ចាប់ផ្ដើមម្ដងទៀតដើម្បីរៀនប៊ូតុងផ្សេង។</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>បានរៀននៅលើ {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ ជ្រើស ចាប់ផ្ដើមម្ដងទៀត ដើម្បីរៀនប៊ូតុងផ្សេង។</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>គ្រាប់ចុច៖ {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>ប៊ូតុងលាក់ត្រូវបានបិទ។ សូមបើក «ប៊ូតុង PC កាន់ដៃ» នៅក្នុងការកំណត់ជាមុនសិន។</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} កំពុងដំណើរការ។ វានៅតែឆ្លើយតបនឹងប៊ូតុងទាំងនេះ រហូតដល់អ្នកបញ្ឈប់វា។</value></data>
@@ -3501,6 +3666,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>រុករកការកំណត់រចនាសម្ព័ន្ធឧបករណ៍បញ្ជា Steam Input ដែលសហគមន៍បង្កើត ហើយបកប្រែពួកវាទៅជាប្រូហ្វាល់ PadForge។ PadForge ភ្ជាប់ដោយផ្ទាល់ទៅម៉ាស៊ីនមេរបស់ Steam តែនៅពេលអ្នកស្វែងរក បើកការកំណត់រចនាសម្ព័ន្ធ ឬពិនិត្យការកំណត់រចនាសម្ព័ន្ធដែលបាននាំចូលរកកំណែថ្មីប៉ុណ្ណោះ។ វាផ្ញើអត្ថបទស្វែងរករបស់អ្នក លេខសម្គាល់នៃហ្គេម ការកំណត់រចនាសម្ព័ន្ធ និងអ្នកបង្កើតដែលពាក់ព័ន្ធ និងកំណែរបស់ PadForge។ ការចូល Steam ជាអនាមិកក៏ផ្ញើកំណែ Windows របស់អ្នក និងលេខសម្គាល់ម៉ាស៊ីនដែលបង្កើតពីតម្លៃ hash នៃ Installation ID របស់ Windows អាសយដ្ឋានអាដាប់ទ័របណ្ដាញ និងលេខស៊េរីថាសចាប់ផ្ដើម។ គ្មានការប្រមូលទិន្នន័យតេឡេម៉ែត្រ គ្មានសេវាភាគីទីបី គ្មានគណនី Steam។</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ភ្ជាប់ទៅម៉ាស៊ីនមេរបស់ Steam តែនៅពេលអ្នកស្វែងរក បើកការកំណត់រចនាសម្ព័ន្ធ ឬពិនិត្យការកំណត់រចនាសម្ព័ន្ធដែលបាននាំចូលរកកំណែថ្មីប៉ុណ្ណោះ។ គ្មានការប្រមូលទិន្នន័យតេឡេម៉ែត្រ គ្មានគណនី Steam។</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>អ្វីដែលត្រូវបានផ្ញើ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>បើកការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>បង្ហាញការកំណត់រចនាសម្ព័ន្ធវើកស៊បចាស់ៗ</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធចាស់ៗខ្លះគ្មានឯកសារដែលអាចទាញយកបាននៅលើ CDN របស់ Steam ទេ។ PadForge បង្ហាញពួកវាជាមួយស្លាក «ចាស់» ហើយអានច្បាប់ចម្លងដែល Steam រក្សាទុកនៅពេលអ្នកជាវ។ មុនពេលនោះ វាផ្ដល់ជម្រើសបើកការកំណត់រចនាសម្ព័ន្ធនៅលើ Steam វើកស៊ប។</value></data>
@@ -3508,18 +3675,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>ពិនិត្យប្រូហ្វាល់ដែលបាននាំចូលរកកំណែថ្មី</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>បានសម្អាតឃ្លាំងសម្ងាត់វើកស៊ប</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>រុករកការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>រុករកការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>ប្រូហ្វាល់ · Steam វើកស៊ប</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>យកប្រូហ្វាល់</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>ចាប់ផ្ដើមពីប្រូហ្វាល់ដែលរៀបចំរួច ការកំណត់រចនាសម្ព័ន្ធសហគមន៍ ឬឯកសារពីកម្មវិធីផ្សេង។</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>ប្រូហ្វាល់ចាប់ផ្ដើម</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>សហគមន៍</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>នាំចូលឯកសារ</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>ការរក្សាទុកបន្ថែមប្រូហ្វាល់ធម្មតាមួយដែលអ្នកអាចកែសម្រួលបាន។</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>ឡជាងដែកនៅត្រជាក់</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>ការរុករកការកំណត់រចនាសម្ព័ន្ធសហគមន៍ភ្ជាប់ PadForge ដោយផ្ទាល់ទៅ Steam តែនៅពេលអ្នកស្វែងរកប៉ុណ្ណោះ មិនដែលភ្ជាប់ពេលចាប់ផ្ដើមកម្មវិធីទេ។</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>បើកការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ស្វែងរកហ្គេម</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>ហ្គេម {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>ហ្គេម</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>រកមិនឃើញហ្គេមនៅលើហាង Steam ទេ។</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>កំពុងស្វែងរកក្នុង Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>កំពុងអានការកំណត់រចនាសម្ព័ន្ធពី Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>កំពុងអានការកំណត់រចនាសម្ព័ន្ធពី Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>តម្រៀបតាមការវាយតម្លៃ</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>តម្រៀបតាម</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>ស្វែងរកក្នុងការកំណត់រចនាសម្ព័ន្ធទាំងនេះ</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>ការវាយតម្លៃ</value></data>
@@ -3533,7 +3703,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>រកឃើញ {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>កំពុងបង្ហាញ {0} ក្នុងចំណោម {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធ {0}</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធសហគមន៍</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>គាំទ្រឧបករណ៍បញ្ជាពេញលេញ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>គាំទ្រឧបករណ៍បញ្ជាមួយផ្នែក</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ស្វែងរកហ្គេម</value></data>
@@ -3552,8 +3721,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>ព្យាយាមម្ដងទៀត</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធពីសម័យឆ្នាំ 2016 នេះមានមុន CDN ការកំណត់រចនាសម្ព័ន្ធរបស់ Steam។ ជាវវានៅក្នុង Steam ហើយ PadForge នឹងអានវាពីថត Steam របស់អ្នក។</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>បើកនៅក្នុង Steam វើកស៊ប</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ជ្រើសការកំណត់រចនាសម្ព័ន្ធមួយ ដើម្បីអានបញ្ជីលទ្ធផលបកប្រែរបស់វា។</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>បានអានការភ្ជាប់ {0}</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ជ្រើសការកំណត់រចនាសម្ព័ន្ធមួយ ដើម្បីមើលអ្វីដែលនាំចូលមក។</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>អ្វីដែលនាំចូលមក</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>ក្លាយជា</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>ជ្រើសឧបករណ៍បញ្ជានិម្មិតដែលទទួលប៊ូតុង និងដងបញ្ជារបស់ការកំណត់រចនាសម្ព័ន្ធ។ គ្រាប់ចុច និងកណ្ដុររបស់វាតែងតែទៅឧបករណ៍បញ្ជា ក្ដារចុច + កណ្ដុរ។</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>ស្រទាប់</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>ស្អាត</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>មួយផ្នែក</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>បានរំលង</value></data>
@@ -3618,7 +3790,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>កំពុងពិនិត្យ Steam វើកស៊បរកកំណែថ្មី…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>ប្រូហ្វាល់ដែលបាននាំចូលទាន់សម័យ (បានពិនិត្យ {0})</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>កំណែថ្មីវើកស៊ប</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ប្រូហ្វាល់ដែលបាននាំចូលទាំងនេះមានកំណែថ្មីជាងនៅលើ Steam វើកស៊ប។ នាំចូលពួកវាម្ដងទៀតពី «រុករកការកំណត់រចនាសម្ព័ន្ធសហគមន៍» ដើម្បីទទួលបានការផ្លាស់ប្ដូរ។</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ប្រូហ្វាល់ដែលបាននាំចូលទាំងនេះមានកំណែថ្មីជាងនៅលើ Steam វើកស៊ប។ នាំចូលពួកវាម្ដងទៀតពី «យកប្រូហ្វាល់» ដើម្បីទទួលបានការផ្លាស់ប្ដូរ។</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>ពេលចុចយូរ</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>ពេលចុចខ្លី</value></data>
@@ -3766,7 +3938,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>ម៉ឺនុយ {0} ក្រឡា {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតម៉ឺនុយ</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>ផ្ទាំងត្រួត</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>សូចនាករលើអេក្រង់ដែល PadForge បង្ហាញខណៈអ្នកលេង។ ការបិទមួយមិនដែលផ្លាស់ប្ដូរឥរិយាបថទេ គ្រាន់តែថាតើវាត្រូវបានប្រកាសឬអត់ប៉ុណ្ណោះ។</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>សូចនាករលើអេក្រង់ដែល PadForge បង្ហាញខណៈអ្នកលេង។ ការបិទមួយមិនដែលផ្លាស់ប្ដូរឥរិយាបថទេ គ្រាន់តែថាតើវាត្រូវបានបង្ហាញឬអត់ប៉ុណ្ណោះ។</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ផ្ទាំងលេចឡើងស្រទាប់ប្ដូរ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតការប្ដូរប្រូហ្វាល់</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>បង្ហាញរង្វង់ ឬក្រឡាចត្រង្គលើអេក្រង់ ខណៈម៉ឺនុយរង្វង់ ឬម៉ឺនុយប៉ះកំពុងសកម្ម។ ម៉ឺនុយនៅតែដំណើរការពេលបិទផ្ទាំងត្រួត។</value></data>
@@ -3816,6 +3988,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ប្រេកង់សំឡេងសម្រាប់ឆានែលនេះ ពី 20 ដល់ 120 Hz។ ដំណើរការការស្កេនប្រេកង់ ដើម្បីរកកន្លែងដែលឧបករណ៍រំញ័ររបស់អ្នកឆ្លើយតបខ្លាំងបំផុត។</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>កម្រិតខ្លាំងនៃឆានែលនេះ មុនកម្រិតពង្រីកមេ។</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>កម្រិតពង្រីក</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>ប្រេកង់</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>សាកល្បង</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>ចាក់សំឡេងសាកល្បងនៃឆានែលនេះរយៈពេល 1.5 វិនាទី តាមកម្រិតពង្រីកដែលបានកំណត់។</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>កំណត់ម៉ូទ័រទាបឡើងវិញ</value></data>
@@ -3858,16 +4031,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>ខ្សែកោងសំទុះទ្រនិចផ្ទាំងប៉ះ សម្រាប់លទ្ធផលពីផ្ទាំងប៉ះទៅកណ្ដុរ។ ការផ្ទេរទៅ C# នៃប្រូហ្វាល់សំទុះផ្ទាំងប៉ះរបស់ libinput។ MIT។</value>
+    <value>ខ្សែកោងសំទុះទ្រនិចផ្ទាំងប៉ះ សម្រាប់លទ្ធផលពីផ្ទាំងប៉ះទៅកណ្ដុរ។ ការផ្ទេរទៅ C# នៃប្រូហ្វាល់សំទុះផ្ទាំងប៉ះរបស់ libinput។</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>ម៉ូដែល 3D នៃឧបករណ៍បញ្ជា (Xbox 360, Steam Deck) និងកូដម៉ូដែល និងចលនានៃទិដ្ឋភាព 3D ដោយ CasperH2O, Lesueur Benjamin, trippyone។ ក៏ជាឯកសារយោងសម្រាប់ការឌិកូដរបាយការណ៍ និងការញ័រលម្អិតរបស់ Steam Deck, របាយការណ៍បិទថាមពលរបស់ Steam Controller (2015), បញ្ជីតាមដានដេមិនឧបករណ៍យួរដៃ, ពេលវេលាពិនិត្យបច្ចុប្បន្នភាព និងការបិទបើកច្រកហាប់ឡើងវិញ ដែលឃ្លាតគ្នា 500 ms ដើម្បីភ្ជាប់ឧបករណ៍បញ្ជា USB ដែលបានលាក់ឡើងវិញ ដូច្នេះកម្មវិធីដែលបានបើកវាមុនបាត់បង់វា។ CC BY-NC-SA 4.0។</value>
+    <value>ម៉ូដែល 3D នៃឧបករណ៍បញ្ជា (Xbox 360, Steam Deck) និងកូដម៉ូដែល និងចលនានៃទិដ្ឋភាព 3D ដោយ CasperH2O, Lesueur Benjamin, trippyone។ ក៏ជាឯកសារយោងសម្រាប់ការឌិកូដរបាយការណ៍ និងការញ័រលម្អិតរបស់ Steam Deck, របាយការណ៍បិទថាមពលរបស់ Steam Controller (2015), បញ្ជីតាមដានដេមិនឧបករណ៍យួរដៃ, ពេលវេលាពិនិត្យបច្ចុប្បន្នភាព និងការបិទបើកច្រកហាប់ឡើងវិញ ដែលឃ្លាតគ្នា 500 ms ដើម្បីភ្ជាប់ឧបករណ៍បញ្ជា USB ដែលបានលាក់ឡើងវិញ ដូច្នេះកម្មវិធីដែលបានបើកវាមុនបាត់បង់វា។</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>គំនូសតាង 2D នៃឧបករណ៍បញ្ជា (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) ដោយ AL2009man។ MIT។</value>
+    <value>គំនូសតាង 2D នៃឧបករណ៍បញ្ជា (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) ដោយ AL2009man។</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>ឯកសារពិធីការសំឡេង DualShock 4៖ ប៉ារ៉ាម៉ែត្រ SBC និងប្លង់កញ្ចប់ទិន្នន័យ ដោយ khallmark។ GPL-2.0 សម្រាប់តែឯកសារប៉ុណ្ណោះ។</value>
+    <value>ឯកសារពិធីការសំឡេង DualShock 4៖ ប៉ារ៉ាម៉ែត្រ SBC និងប្លង់កញ្ចប់ទិន្នន័យ ដោយ khallmark។ សម្រាប់តែឯកសារប៉ុណ្ណោះ។</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>ផ្ទៃតុ</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>ប្រើ Windows ពីលើសាឡុង។ ទ្រនិចកណ្ដុរ ការរំកិល និងការចុចលើទ្រីហ្គឺ។</value></data>
@@ -3881,10 +4054,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>ប្លង់ប៊ូតុងប្រាំមួយ ជាមួយការសម្អាត SOCD ដែលស្របតាមច្បាប់ការប្រកួត លើអ័ក្សទាំងពីរ។</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>ក្ដារចុច + កណ្ដុរ</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ហ្គេមផេត</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>រកមើលប្រូហ្វាល់ចាប់ផ្ដើម</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>ប្រូហ្វាល់ចាប់ផ្ដើម</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>ប្រូហ្វាល់ដែលរៀបចំរួចសម្រាប់ប្រភេទហ្គេមទាំងមូល។ ជ្រើសរើសមួយ ចាត់តាំងឧបករណ៍បញ្ជាណាមួយ ហើយលេង។ ការរក្សាទុកនឹងបន្ថែមប្រូហ្វាល់ធម្មតាមួយដែលអ្នកអាចកែសម្រួលបាន។</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>រក្សាទុកប្រូហ្វាល់</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>បានបន្ថែមប្រូហ្វាល់ចាប់ផ្ដើម «{0}»។</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>ចង្អុល និងចុច</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>ហ្គេមផ្សងព្រេង និងអ្វីៗដែលលេងដោយទ្រនិចកណ្ដុរ និងសកម្មភាពពីរ។</value></data>
@@ -3983,13 +4152,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>កំណត់ផ្លូវចេញសំឡេងឡើងវិញ</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>តាមរន្ធកាស</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>ផែនទីបៃនៃរបាយការណ៍លទ្ធផល DualSense និងអត្ថន័យ scePad របស់ Sony ដោយ WujekFoliarz ដែលជាមូលដ្ឋានសម្រាប់ផ្នែកសរសេរបែបផែន និងសំឡេងរបស់ PadForge។ MIT។</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>ផែនទីបៃនៃរបាយការណ៍លទ្ធផល DualSense និងអត្ថន័យ scePad របស់ Sony ដោយ WujekFoliarz ដែលជាមូលដ្ឋានសម្រាប់ផ្នែកសរសេរបែបផែន និងសំឡេងរបស់ PadForge។</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>លំនាំផ្លូវបញ្ជូនសំឡេងតាមការចាប់រន្ធកាស ដោយ SundayMoments ដែលជាឯកសារយោងនៅពីក្រោយ «តាមរន្ធកាស»។ អានជាឯកសារ។ AGPL-3.0។</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>លំនាំផ្លូវបញ្ជូនសំឡេងតាមការចាប់រន្ធកាស ដោយ SundayMoments ដែលជាឯកសារយោងនៅពីក្រោយ «តាមរន្ធកាស»។ អានជាឯកសារ។</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ QR របៀបបៃ សម្រាប់អាសយដ្ឋាននៃឧបករណ៍បញ្ជាតាមវេប ដែលផ្ទេរពីការអនុវត្តយោងរបស់ Nayuki។ MIT។</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>កម្មវិធីអ៊ិនកូដ QR របៀបបៃ សម្រាប់អាសយដ្ឋាននៃឧបករណ៍បញ្ជាតាមវេប ដែលផ្ទេរពីការអនុវត្តយោងរបស់ Nayuki។</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>រូបភាពកណ្ដុរក្នុងការបង្ហាញ «ក្ដារចុច + កណ្ដុរ» ដោយ Igor Budzhak។ MIT។</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>រូបភាពកណ្ដុរក្នុងការបង្ហាញ «ក្ដារចុច + កណ្ដុរ» ដោយ Igor Budzhak។</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>អត្រាតាមសម្ពាធ</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>អត្រាធ្វើឡើងវិញធ្វើតាមកម្លាំងដែលប្រភពអាណាឡូកដែលបានជ្រើសត្រូវបានចុច។ ការចុចស្រាលធ្វើឡើងវិញតាម «ចន្លោះពេលយឺត» ការចុចពេញតាម «ចន្លោះពេល» ខាងលើ ហើយអ្វីៗនៅចន្លោះនោះលាយបញ្ចូលគ្នាដោយរលូន។</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>ចន្លោះពេលយឺត</value></data>
@@ -4004,7 +4173,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>កំពុងភ្ជាប់តាមកូដ…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>មិនអាចទៅដល់ដៃគូដោយផ្ទាល់បានទេ។ សាកល្បង «ភ្ជាប់តាមអាសយដ្ឋាន» តាម VPN។</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>កូដរបស់ PC នេះ</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>ប្ដូរកូដជាមួយអ្នកម្ខាងទៀត៖ បិទភ្ជាប់កូដរបស់គេទៅក្នុងប្រអប់ភ្ជាប់របស់អ្នក ខណៈគេបិទភ្ជាប់កូដរបស់អ្នក រួចអ្នកទាំងពីរចុច «ភ្ជាប់»។ ការនេះបើកផ្លូវផ្ទាល់តាមអ៊ីនធឺណិត ដោយមិនចាំបាច់មាន VPN។ កូដនឹងផ្លាស់ប្ដូរថ្មី ខណៈតំណពីចម្ងាយកំពុងដំណើរការ។</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>ប្ដូរកូដជាមួយអ្នកម្ខាងទៀត៖ បិទភ្ជាប់កូដរបស់គេទៅក្នុង «ភ្ជាប់តាមអាសយដ្ឋាន» នៅក្រោម ច្រើនទៀត ខណៈគេបិទភ្ជាប់កូដរបស់អ្នក រួចអ្នកទាំងពីរចុច «ផ្គូផ្គង / ភ្ជាប់»។ ការនេះបើកផ្លូវផ្ទាល់តាមអ៊ីនធឺណិត ដោយមិនចាំបាច់មាន VPN។ កូដនឹងផ្លាស់ប្ដូរថ្មី ខណៈតំណពីចម្ងាយកំពុងដំណើរការ។</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>បណ្ដាញនេះមិនអាចធ្វើការតភ្ជាប់ផ្ទាល់បានទេ (វាហាក់ដូចជាហតស្ប៉តទូរស័ព្ទ ឬ NAT កម្រិតក្រុមហ៊ុនបណ្ដាញ)។ ប្រើ VPN ដូចជា Tailscale ឬភ្ជាប់ពីអ៊ីនធឺណិតនៅផ្ទះ។</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>មិនអាចរកអាសយដ្ឋានសាធារណៈរបស់ PC នេះបានទេ (បណ្ដាញអាចរារាំងចរាចរណ៍ដែលត្រូវការ)។ ការតភ្ជាប់ផ្ទាល់នឹងមិនដំណើរការនៅទីនេះទេ។ ប្រើ VPN ឬ «ភ្ជាប់តាមអាសយដ្ឋាន» នៅលើបណ្ដាញតែមួយ។</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>ថ្មឧបករណ៍បញ្ជាខ្សោយ</value></data>
@@ -4015,6 +4184,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>ជូនដំណឹងនៅ ឬក្រោម</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ញ័រឧបករណ៍បញ្ជាផងដែរ</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>សាកល្បងការជូនដំណឹង</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>ពិនិត្យការជូនដំណឹង</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>ការស្នើចាត់តាំង</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>ពេលឧបករណ៍មួយភ្ជាប់ ខណៈទំព័ររបស់ឧបករណ៍បញ្ជានិម្មិតកំពុងបើក PadForge អាចស្នើឱ្យចាត់តាំងវានៅទីនោះ ហើយទំព័រដើមអាចស្នើឧបករណ៍បញ្ជានិម្មិតផ្ទាល់ខ្លួនមួយដល់ឧបករណ៍ថ្មី។ គ្មានអ្វីត្រូវបានចាត់តាំងទេ រហូតដល់អ្នកទទួលយកការស្នើ។ ក្ដារចុច កណ្ដុរ ផ្ទាំងប៉ះ និងគ្រាប់ចុចមេឌៀ មិនត្រូវបានស្នើទេ។</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ស្នើឧបករណ៍ថ្មីទៅឧបករណ៍បញ្ជានិម្មិតដែលកំពុងបើក</value></data>
@@ -4028,23 +4198,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>មិនមែនឥឡូវនេះ</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>ឃ្លាណាមួយ</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>ម៉ាក្រូសំឡេង</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>និយាយឃ្លាមួយ ហើយវាចុចប៊ូតុងដែលអ្នកអាចម៉ាប។ មីក្រូហ្វូនគ្រប់គ្រឿងដែល PadForge អាចប្រើបាន ស្ដាប់។</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>គ្រប់គ្រងម៉ាក្រូសំឡេង</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>បើកម៉ាក្រូសំឡេង</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>បើកការស្ដាប់។ ពេលបើក ឃ្លាដែលបានចុះឈ្មោះនីមួយៗជាប៊ូតុងមួយ ដែលដំណើរការពេលអ្នកនិយាយវា។ ម៉ូដែលសម្គាល់សំឡេងមកជាមួយ PadForge ហើយដំណើរការដោយគ្មានអ៊ីនធឺណិតទាំងស្រុង។</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>ការស្ដាប់</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>«ជានិច្ច» បើកមីក្រូហ្វូនជានិច្ច។ «ចុចដើម្បីនិយាយ» ស្ដាប់តែពេលម៉ាក្រូ «ស្ដាប់សំឡេង» ដែលបានភ្ជាប់ត្រូវបានសង្កត់ជាប់ប៉ុណ្ណោះ។</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>បើក ឬបិទការស្ដាប់, របៀប, កម្រិតជឿជាក់</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>ជានិច្ច</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>ចុចដើម្បីនិយាយ</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>ភាពជឿជាក់អប្បបរមា</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>កម្រិតដែលកម្មវិធីសម្គាល់ត្រូវប្រាកដ មុនពេលឃ្លាមួយដំណើរការ។ បង្កើនវា បើការនិយាយចៃដន្យធ្វើឱ្យម៉ាក្រូដំណើរការ បន្ថយវា បើឃ្លារបស់អ្នកត្រូវបានរំលង។</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>កំពុងរង់ចាំការនិយាយ។ អ្វីដែលសម្គាល់បាននឹងបង្ហាញនៅទីនេះ ជាមួយភាពជឿជាក់របស់វា។</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>បានឮ «{0}» ({1:F2})។ បានដំណើរការ។</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>បានឮ «{0}» ({1:F2})។ ទាបជាងកម្រិតភាពជឿជាក់ ឬគ្រាប់ចុចនិយាយមិនត្រូវបានចុច។</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>ការស្ដាប់ត្រូវបានបិទ។ បើកវានៅក្រោម ច្រើនទៀត។</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>បានឮ {0} នៅលើ {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>បានឮ {0} នៅលើ {1}។ វាទាបជាងកម្រិតភាពជឿជាក់ ឬគ្រាប់ចុចនិយាយមិនត្រូវបានចុច។</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>ឃ្លា</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>ឃ្លាដែលត្រូវនិយាយ</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>ឈ្មោះប៊ូតុង</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>ចុះឈ្មោះ</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ឃ្លាដែលបានចុះឈ្មោះ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ និយាយវាដើម្បីដំណើរការប៊ូតុងរបស់វា ហើយភ្ជាប់ម៉ាក្រូទៅវានៅលើទំព័រឧបករណ៍បញ្ជា។</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ឃ្លា</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ និយាយវាដើម្បីដំណើរការប៊ូតុងរបស់វា ហើយម៉ាបវានៅលើទំព័រឧបករណ៍បញ្ជា។</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>ស្ដាប់សំឡេង (ពេលសង្កត់ជាប់)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>ចុចដើម្បីនិយាយសម្រាប់ម៉ាក្រូសំឡេង៖ ខណៈម៉ាក្រូនេះត្រូវបានសង្កត់ជាប់ កម្មវិធីសម្គាល់នឹងស្ដាប់។ កំណត់ «ការស្ដាប់» ទៅ «ចុចដើម្បីនិយាយ» ក្នុង «គ្រប់គ្រងម៉ាក្រូសំឡេង»។</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>មីក្រូហ្វូន</value></data>
@@ -4052,12 +4227,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ម៉ាស៊ីនការញ័រលម្អិត និងកម្មវិធីផ្ដល់ Razer នៅពីក្រោយការញ័ររបស់ជួរ Razer Sensa។ HAR.dll និង Interhaptics.RazerProvider.dll មកជាមួយ PadForge ដោយមិនបានកែប្រែពី Core SDK សាធារណៈ។ ដោយ Wyvrn។ Wyvrn EULA។</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ម៉ាស៊ីនការញ័រលម្អិត និងកម្មវិធីផ្ដល់ Razer នៅពីក្រោយការញ័ររបស់ជួរ Razer Sensa។ HAR.dll និង Interhaptics.RazerProvider.dll មកជាមួយ PadForge ដោយមិនបានកែប្រែពី Core SDK សាធារណៈ។ ដោយ Wyvrn។</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>ម៉ូដែល 3D នៃ Steam Controller (2015) និង Steam Controller (2026) ដែលបង្កើតជាសំណាញ់ពីឯកសារ STEP ដែល Valve បានផ្សព្វផ្សាយ។ រក្សាសិទ្ធិ Valve Corporation។ CC BY-NC-SA 4.0។ PadForge មិនមានទំនាក់ទំនងជាមួយ ឬទទួលការគាំទ្រពី Valve ទេ។</value>
+    <value>ម៉ូដែល 3D នៃ Steam Controller (2015) និង Steam Controller (2026) ដែលបង្កើតជាសំណាញ់ពីឯកសារ STEP ដែល Valve បានផ្សព្វផ្សាយ។ រក្សាសិទ្ធិ Valve Corporation។ PadForge មិនមានទំនាក់ទំនងជាមួយ ឬទទួលការគាំទ្រពី Valve ទេ។</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>បណ្ណាល័យដំណើរការ MinGW-w64</value>
@@ -4074,7 +4249,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>ការផ្ទៀងផ្ទាត់ទម្រង់ REST API របស់ Razer Chroma សម្រាប់ពន្លឺ Razer ដោយ Adam Hellberg និង Brandon Scott។ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>ការផ្ទៀងផ្ទាត់ទម្រង់ REST API របស់ Razer Chroma សម្រាប់ពន្លឺ Razer ដោយ Adam Hellberg និង Brandon Scott។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>ឯកសារយោង Logitech LED SDK</value>
   </data>
@@ -4083,19 +4258,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>ទម្រង់ datagram កម្មវិធីតាមដាន UDP និងប្លង់អង្គចងចាំរួម FreeTrack 2.0 សម្រាប់ការតាមដានក្បាល។ ISC។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
+    <value>ទម្រង់ datagram កម្មវិធីតាមដាន UDP និងប្លង់អង្គចងចាំរួម FreeTrack 2.0 សម្រាប់ការតាមដានក្បាល។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>ថ្នាក់ព្រឹត្តិការណ៍ឧបករណ៍ប្រើប្រាស់ WMI របស់ Lenovo ដែលកម្មវិធីរៀនប៊ូតុងលាក់នៃឧបករណ៍យួរដៃជាវ និងលំនាំម៉ាស៊ីនមេ IPC ដែលមានសិទ្ធិខ្ពស់ នៅពីក្រោយការគ្រប់គ្រងប្រូហ្វាល់ពីខាងក្រៅ។ GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
+    <value>ថ្នាក់ព្រឹត្តិការណ៍ឧបករណ៍ប្រើប្រាស់ WMI របស់ Lenovo ដែលកម្មវិធីរៀនប៊ូតុងលាក់នៃឧបករណ៍យួរដៃជាវ និងលំនាំម៉ាស៊ីនមេ IPC ដែលមានសិទ្ធិខ្ពស់ នៅពីក្រោយការគ្រប់គ្រងប្រូហ្វាល់ពីខាងក្រៅ។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>ខ្សែអក្សរអត្តសញ្ញាណ PC យួរដៃ និងកំណត់ចំណាំរបាយការណ៍អ្នកលក់ ដែលបានផ្ទៀងផ្ទាត់សម្រាប់កម្មវិធីរៀនប៊ូតុងលាក់។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
+    <value>ខ្សែអក្សរអត្តសញ្ញាណ PC យួរដៃ និងកំណត់ចំណាំរបាយការណ៍អ្នកលក់ ដែលបានផ្ទៀងផ្ទាត់សម្រាប់កម្មវិធីរៀនប៊ូតុងលាក់។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook និង WiimoteHook</value>
@@ -4110,13 +4285,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>លំដាប់ការហៅ WinMM នៅពីក្រោយ MIDI API ចាស់៖ ការបើកច្រក ការផ្ញើទៅវា និងការបិទវា។ អានពី PortMidi (MIT, ដោយ Ross Bencina, Phil Burk និង Roger B. Dannenberg) និង RtMidi (អាជ្ញាប័ណ្ណ RtMidi បែប MIT, ដោយ Gary P. Scavone)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>ឯកសារយោង Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>ប្លង់ពាក្យព្រឹត្តិការណ៍នៅពីក្រោយការបញ្ចូល G-key មកពី LogitechGkeyLib.h ក្នុង SDK។ លំដាប់ស្វែងរកបណ្ណាល័យ និងការបិទ ធ្វើតាម GKey.cpp របស់ Mumble (BSD 3-Clause)។ PadForge ផ្ទុកច្បាប់ចម្លងបណ្ណាល័យណាដែលមាននៅលើម៉ាស៊ីន ហើយមិនដាក់បញ្ចូលកូដ Logitech ណាមួយទេ។</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>ប្លង់ពាក្យព្រឹត្តិការណ៍នៅពីក្រោយការបញ្ចូល G-key មកពី LogitechGkeyLib.h ក្នុង SDK។ លំដាប់ស្វែងរកបណ្ណាល័យ និងការបិទ ធ្វើតាម GKey.cpp របស់ Mumble។ PadForge ផ្ទុកច្បាប់ចម្លងបណ្ណាល័យណាដែលមាននៅលើម៉ាស៊ីន ហើយមិនដាក់បញ្ចូលកូដ Logitech ណាមួយទេ។</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup និង AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>ការបញ្ចូលក្ដារចុចអាណាឡូក ផ្ទេរផ្លូវក្ដារចុច តារាងគ្រាប់ចុច និងកាតាឡុកម៉ូដែលរបស់ HallJoy ទៅ C# (AGPL-3.0, PashOK7) ហើយធ្វើតាម Soup និង AnalogSense JavaScript SDK (MIT, Calamity, Inc.) ដោយផ្ទៀងផ្ទាត់ជាមួយ Wooting Analog SDK (MPL-2.0)។ ក្ដារចុចផ្សេងទៀតធ្វើតាម AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk និង hmkconf (GPL-3.0-or-later, peppapighs) និងកំណែបំបែក Soup របស់ DenkiSuki, LeiterConsulting និង paysdelest (MIT)។ ទម្រង់របាយការណ៍ និងតារាងគ្រាប់ចុចក៏មកពីកម្មវិធីកំណត់រចនាសម្ព័ន្ធ Synapse Web របស់ Razer និង NuPhyIO របស់ NuPhy, OpenRazer (GPL-2.0-or-later), razer-analog-keyboard របស់ Abbytech, TinyUSB (MIT) និងកំណត់ចំណាំចាប់យករបស់ Sainan។</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>ឯកសារយោង Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API នៅពីក្រោយ «អានអាដាប់ទ័រ Bliss-Box» ដែលអានពី API Tool របស់ Bliss-Box LLC (បែប BSD ចែកចាយឡើងវិញដោយឥតគិតថ្លៃ) និង DeviceBuddy (មានកូដប្រភព, Bliss-Box LLC) ជាមួយឈ្មោះប៊ូតុងពីឯកសារ Bliss-Box ក្នុងកំណែបំបែក retroarch-joypad-autoconfig របស់ SteveFox1620, checksum Controller Pak ដែលផ្ទៀងផ្ទាត់ជាមួយ libdragon (Unlicense) និងការឆ្លើយតបរបស់ហ្គេមផេត PlayStation ពី psx-spx និងដ្រាយវ័រ psxpad-spi របស់ Linux (GPL-2.0-or-later)។ ឈ្មោះឧបករណ៍បញ្ជា និងកំណត់ចំណាំការគាំទ្រក៏មកពីបញ្ជីភាពត្រូវគ្នារបស់ Bliss-Box LLC ហើយឥរិយាបថរបស់អាដាប់ទ័រត្រូវបានផ្ទៀងផ្ទាត់ជាមួយហ្វឺមវែររបស់វា។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ការដឹកជញ្ជូន USB ដោយ Vadym Hrynchyshyn សម្រាប់ឧបករណ៍បញ្ជា USB សមាសធាតុរបស់ HIDMaestro។ HIDMaestro មានភ្ជាប់មកជាមួយនូវដ្រាយវ័រឧបករណ៍បញ្ជាម៉ាស៊ីនមេដែលមានហត្ថលេខារបស់វា ហើយដំឡើងវានៅលើកដំបូងដែលឧបករណ៍បញ្ជាសមាសធាតុត្រូវបានបង្កើត។ BSD 2-Clause។</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ការដឹកជញ្ជូន USB ដោយ Vadym Hrynchyshyn សម្រាប់ឧបករណ៍បញ្ជា USB សមាសធាតុរបស់ HIDMaestro។ HIDMaestro មានភ្ជាប់មកជាមួយនូវដ្រាយវ័រឧបករណ៍បញ្ជាម៉ាស៊ីនមេដែលមានហត្ថលេខារបស់វា ហើយដំឡើងវានៅលើកដំបូងដែលឧបករណ៍បញ្ជាសមាសធាតុត្រូវបានបង្កើត។</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>ជ្រើសរើសពាក់កណ្ដាលនៃរន្ធនេះដែលដំណើរការ។ ការបិទពាក់កណ្ដាលមួយ លាក់ជួររបស់វា ហើយបញ្ឈប់វាពីការផ្ញើ ប៉ុន្តែរក្សាការម៉ាបរបស់វា ដូច្នេះការបើកវាវិញនឹងស្ដារពួកវាឡើងវិញ។</value>
   </data>
@@ -4184,13 +4359,15 @@
     <value>ចាត់តាំងឧបករណ៍ចែករំលែក</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>ការចាត់តាំងនៅលើ {0}</value>
+    <value>ឧបករណ៍ដែលចែករំលែកជាមួយ {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>ជ្រើសរើសឧបករណ៍ដែលចែករំលែកដោយ PC នេះ រួចជ្រើសរើសឧបករណ៍បញ្ជានិម្មិតរបស់វានៅលើ PC ម្ខាងទៀត។</value>
+    <value>ជ្រើសឧបករណ៍មួយ រួចជ្រើសឧបករណ៍បញ្ជានៅលើកុំព្យូទ័រនោះដែលវាគួរបញ្ជា។</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>ចែករំលែកពីកុំព្យូទ័រនេះ</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជានៅលើ {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>ប្រូហ្វាល់៖ {0}</value>
+    <value>ប្រូហ្វាល់សកម្ម៖ {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>នៅលើ PC ម្ខាងទៀត សូមអនុញ្ញាតការផ្លាស់ប្ដូរការចាត់តាំងពីចម្ងាយសម្រាប់ PC នេះ នៅក្រោម តំណពីចម្ងាយ &gt; PC ដែលបានផ្គូផ្គង។</value>
@@ -4282,60 +4459,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS និង CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>កម្មវិធីឌិកូដការនិយាយ បណ្ណាល័យ transducer និងពិជគណិតលីនេអ៊ែរនៅក្នុង libvosk.dll។ Kaldi និង OpenFst៖ Apache-2.0។ OpenBLAS និង CLAPACK៖ BSD 3-Clause ជាមួយសេចក្ដីជូនដំណឹងដាច់ដោយឡែកសម្រាប់ GotoBLAS2 នៅក្នុង OpenBLAS និងសម្រាប់កម្មវិធីដំណើរការ f2c។</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ប្លង់ប្រូហ្វាល់ចាប់ផ្ដើម «យុទ្ធសាស្ត្រ» និង «ផ្ទៃតុ» និងឥរិយាបថតួបូដែលតួបូតាមសម្ពាធជៀសវាង។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ប្លង់ប្រូហ្វាល់ចាប់ផ្ដើម «យុទ្ធសាស្ត្រ» និង «ផ្ទៃតុ» និងឥរិយាបថតួបូដែលតួបូតាមសម្ពាធជៀសវាង។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ឯកសារយោងដោយ Antoine Aflalo សម្រាប់ប្លង់នៃចំណុចប្រទាក់ IPolicyConfig ដែលគ្មានឯកសាររបស់ Windows ដែល PadForge ប្រើដើម្បីបើកចំណុចបញ្ចប់សំឡេងរបស់ឧបករណ៍បញ្ជាឡើងវិញ។ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>ឯកសារយោងដោយ Antoine Aflalo សម្រាប់ប្លង់នៃចំណុចប្រទាក់ IPolicyConfig ដែលគ្មានឯកសាររបស់ Windows ដែល PadForge ប្រើដើម្បីបើកចំណុចបញ្ចប់សំឡេងរបស់ឧបករណ៍បញ្ជាឡើងវិញ។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>ទម្រង់ប្រូហ្វាល់ EQ ប៉ារ៉ាម៉ែត្រដែល «EQ ប៉ារ៉ាម៉ែត្រ» របស់ឧបករណ៍បញ្ជានាំចូល ដោយ Jaakko Pasanen។ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>ទម្រង់ប្រូហ្វាល់ EQ ប៉ារ៉ាម៉ែត្រដែល «EQ ប៉ារ៉ាម៉ែត្រ» របស់ឧបករណ៍បញ្ជានាំចូល ដោយ Jaakko Pasanen។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>បច្ចេកទេស SendInput នៅពីក្រោយម៉ាក្រូ «ប្លុកអត្ថបទ» និងការចាប់គ្រាប់ចុចផ្សំនៃក្ដារចុច៖ ការវាយ Unicode ដែនកំណត់បាច់ គ្រាប់ចុចបិទបាំងសម្រាប់គ្រាប់ចុច Win និងការបញ្ចូលដែលបានចាក់បញ្ចូលដោយមានស្លាក។ GPL-2.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>បច្ចេកទេស SendInput នៅពីក្រោយម៉ាក្រូ «ប្លុកអត្ថបទ» និងការចាប់គ្រាប់ចុចផ្សំនៃក្ដារចុច៖ ការវាយ Unicode ដែនកំណត់បាច់ គ្រាប់ចុចបិទបាំងសម្រាប់គ្រាប់ចុច Win និងការបញ្ចូលដែលបានចាក់បញ្ចូលដោយមានស្លាក។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>ឯកសារយោងពិធីការ DSU នៅពីក្រោយម៉ាស៊ីនមេចលនា ដោយ v1993។ Unlicense។</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>ឯកសារយោងពិធីការ DSU នៅពីក្រោយម៉ាស៊ីនមេចលនា ដោយ v1993។</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>ការរៀបចំស៊ុមរបាយការណ៍លទ្ធផល Bluetooth របស់ DualShock 4 ដោយ Christopher Rosell។ MIT។</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>ការរៀបចំស៊ុមរបាយការណ៍លទ្ធផល Bluetooth របស់ DualShock 4 ដោយ Christopher Rosell។</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>ជួរថ្ម DualShock 4 ពេលវេលា និងកម្រិតកម្លាំងនៃជីពចរការញ័រលម្អិតផ្ទាំងប៉ះ និងឥរិយាបថគប់លើផ្ទាំងប៉ះ។ GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>ជួរថ្ម DualShock 4 ពេលវេលា និងកម្រិតកម្លាំងនៃជីពចរការញ័រលម្អិតផ្ទាំងប៉ះ និងឥរិយាបថគប់លើផ្ទាំងប៉ះ។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (កំណែបំបែក hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>ជួរកម្រិតសំឡេង DualSense គំរូការញ័រលម្អិត 8 ប៊ីតមានសញ្ញា និងប្លង់ការដឹកជញ្ជូន Bluetooth រួមបញ្ចូលគ្នា។ GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>ជួរកម្រិតសំឡេង DualSense គំរូការញ័រលម្អិត 8 ប៊ីតមានសញ្ញា និងប្លង់ការដឹកជញ្ជូន Bluetooth រួមបញ្ចូលគ្នា។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>តម្លៃលំនាំដើម និងអប្បបរមានៃប្រវែងបណ្ដោះអាសន្នសំឡេង Bluetooth របស់ DualSense ដោយ awalol។ MIT។</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>តម្លៃលំនាំដើម និងអប្បបរមានៃប្រវែងបណ្ដោះអាសន្នសំឡេង Bluetooth របស់ DualSense ដោយ awalol។</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>តម្លៃការកំណត់ស្រាប់ទ្រីហ្គឺបត់បែន GameCube ដោយ Mxater។ អានសម្រាប់តែការពិតប៉ុណ្ណោះ។</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>សញ្ញាអ័ក្សចលនា DSU ដែលផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីឌិកូដ UDP របស់វា។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>សញ្ញាអ័ក្សចលនា DSU ដែលផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីឌិកូដ UDP របស់វា។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ការកំណត់ស្រាប់លំនាំដើមរបស់ Elite Dangerous នៅពីក្រោយប្រូហ្វាល់ចាប់ផ្ដើម «ការក្លែងធ្វើអវកាស» ដោយ Richard Buckle។ MIT។</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>ការកំណត់ស្រាប់លំនាំដើមរបស់ Elite Dangerous នៅពីក្រោយប្រូហ្វាល់ចាប់ផ្ដើម «ការក្លែងធ្វើអវកាស» ដោយ Richard Buckle។</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>លំដាប់ nibble ADPCM របស់ឧបករណ៍បំពងសំឡេង Wii Remote និងកម្មវិធីឌិកូដ SBC ដែលបានពិនិត្យកម្មវិធីអ៊ិនកូដ DualShock 4។ LGPL-2.1-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>លំដាប់ nibble ADPCM របស់ឧបករណ៍បំពងសំឡេង Wii Remote និងកម្មវិធីឌិកូដ SBC ដែលបានពិនិត្យកម្មវិធីអ៊ិនកូដ DualShock 4។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>ទិសត្រីវិស័យដែលទូទាត់ការផ្អៀង សម្រាប់ការងាកឆ្វេងស្ដាំតាមត្រីវិស័យ ផ្ទេរទៅ C# ដោយ x-io Technologies។ MIT។</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>ទិសត្រីវិស័យដែលទូទាត់ការផ្អៀង សម្រាប់ការងាកឆ្វេងស្ដាំតាមត្រីវិស័យ ផ្ទេរទៅ C# ដោយ x-io Technologies។</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ច្បាប់ជូនដំណឹងថ្មខ្សោយ និងលំនាំការញ័រ «សម្គាល់» ដោយ Lukas Frühstück។ MIT។</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ច្បាប់ជូនដំណឹងថ្មខ្សោយ និងលំនាំការញ័រ «សម្គាល់» ដោយ Lukas Frühstück។</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>ម៉ូដែល 3D នៃ DualShock 4, DualSense, DualSense Edge, Xbox Series និង Switch 2 Pro Controller ដែលបានទិញនៅលើ CGTrader។ CGTrader Royalty Free License។</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>ម៉ូដែល 3D នៃ DualShock 4, DualSense, DualSense Edge, Xbox Series និង Switch 2 Pro Controller ដែលបានទិញនៅលើ CGTrader។</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>ម៉ូដែល 3D នៃ DualShock 3 ដែលបានទិញនៅលើ CGTrader ហើយបំបែកជាសំណាញ់តាមផ្នែកនីមួយៗ។ CGTrader Royalty Free License។</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>ម៉ូដែល 3D នៃ DualShock 3 ដែលបានទិញនៅលើ CGTrader ហើយបំបែកជាសំណាញ់តាមផ្នែកនីមួយៗ។</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>ស្រទាប់ HID ដែលបានចងក្រងចូលក្នុង SDL3.dll ដែលភ្ជាប់មកជាមួយ ដោយ Alan Ott, Signal 11 Software។ អាជ្ញាប័ណ្ណបែប BSD។</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>ស្រទាប់ HID ដែលបានចងក្រងចូលក្នុង SDL3.dll ដែលភ្ជាប់មកជាមួយ ដោយ Alan Ott, Signal 11 Software។</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ប្រភពរូបតំណាង</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>រូបអណ្ដាតភ្លើងពី Material Design Icons (Pictogrammers, Apache-2.0) រូបតំណាងហ្គេមផេតទូទៅពី Ionicons (Ionic, MIT) រូបយ៉យស្ទីក Extended ពី Jam Icons (Michael Amprimo, MIT) និងរូបតំណាង Xbox និង PlayStation ពី SVG Repo ក្រោមអាជ្ញាប័ណ្ណនៅលើទំព័ររបស់រូបតំណាងនីមួយៗ។</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>ពិធីការបញ្ជូនបន្តនៅពីក្រោយផ្លូវបម្រុងរបស់តំណពីចម្ងាយ ដែលទាក់ទងទៅម៉ាស៊ីនបញ្ជូនបន្តសាធារណៈឥតគិតថ្លៃរបស់ n0.computer តាមរបៀបដែល FlexInput ធ្វើ។ iroh៖ MIT OR Apache-2.0។ FlexInput៖ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>ឧបករណ៍រាប់កណ្ដុរអុបទិក Joy-Con 2 និងតម្លៃប្រែប្រួលពេលវិលជុំ នៅពីក្រោយ «ចលនាកណ្ដុរ X» និង Y ដោយ coffincolors, Frano និង moutella។ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>ឧបករណ៍រាប់កណ្ដុរអុបទិក Joy-Con 2 និងតម្លៃប្រែប្រួលពេលវិលជុំ នៅពីក្រោយ «ចលនាកណ្ដុរ X» និង Y ដោយ coffincolors, Frano និង moutella។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>ដ្រាយវ័រខឺណែល Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>ការពិតពិធីការរបស់ DualShock 3, Move, DualSense, Steam Deck និងកម្លាំងតប PID និងប្លង់ប្លុក ACPI WMI។ PadForge អានទិន្នន័យពិពណ៌នារបស់ក្ដារចុច និងកណ្ដុរ តាមច្បាប់របស់ hid-core។ GPL-2.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>ការពិតពិធីការរបស់ DualShock 3, Move, DualSense, Steam Deck និងកម្លាំងតប PID និងប្លង់ប្លុក ACPI WMI។ PadForge អានទិន្នន័យពិពណ៌នារបស់ក្ដារចុច និងកណ្ដុរ តាមច្បាប់របស់ hid-core។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>ការបញ្ចូលឧបករណ៍បញ្ជា Windows រួមទាំងប៉ាដល់ Xbox Elite។ កម្មវិធីផ្ទុក SDK ត្រូវបានភ្ជាប់ចូលក្នុង SDL។ MIT (កម្មវិធីផ្ទុក SDK)។</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>ការបញ្ចូលឧបករណ៍បញ្ជា Windows រួមទាំងប៉ាដល់ Xbox Elite។ កម្មវិធីផ្ទុក SDK ត្រូវបានភ្ជាប់ចូលក្នុង SDL។</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>កម្មវិធីដំណើរការ C++ ដែល SDL3.dll ត្រូវការ (msvcp140.dll, vcruntime140.dll និងក្នុងកំណែ x64 គឺ vcruntime140_1.dll) មកជាមួយ PadForge ដោយមិនបានកែប្រែ។ លក្ខខណ្ឌអាជ្ញាប័ណ្ណ Microsoft Visual Studio។</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>កម្មវិធីដំណើរការ C++ ដែល SDL3.dll ត្រូវការ (msvcp140.dll, vcruntime140.dll និងក្នុងកំណែ x64 គឺ vcruntime140_1.dll) មកជាមួយ PadForge ដោយមិនបានកែប្រែ។</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>កំណត់ចំណាំអំពី HID, ការញ័រ HD និង LED ប៊ូតុង home របស់ Joy-Con និង Pro Controller ដោយ dekuNukem ជាមួយ switch2_controller_research របស់ ndeadly សម្រាប់ Switch 2។ អានសម្រាប់តែការពិតពិធីការប៉ុណ្ណោះ។</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>លំនាំពាក្យបញ្ជាធ្វើបច្ចុប្បន្នភាពដែលមានសិទ្ធិខ្ពស់ នៅពីក្រោយកម្មវិធីជំនួយរបស់កម្មវិធីធ្វើបច្ចុប្បន្នភាពក្នុងកម្មវិធី។ LGPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>លំនាំពាក្យបញ្ជាធ្វើបច្ចុប្បន្នភាពដែលមានសិទ្ធិខ្ពស់ នៅពីក្រោយកម្មវិធីជំនួយរបស់កម្មវិធីធ្វើបច្ចុប្បន្នភាពក្នុងកម្មវិធី។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ LGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>ហត្ថលេខា WinSCard និងលំដាប់ការហៅតាមដានកម្មវិធីអាន នៅពីក្រោយការបញ្ចូលស្លាក NFC ដោយ Daniel Mueller។ BSD 2-Clause។</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>ហត្ថលេខា WinSCard និងលំដាប់ការហៅតាមដានកម្មវិធីអាន នៅពីក្រោយការបញ្ចូលស្លាក NFC ដោយ Daniel Mueller។</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ PlayStation Move ការក្រិតឧបករណ៍ចាប់សញ្ញា និងការចាប់ដៃគ្នានៃគ្រឿងបន្ថែម EXT ដោយ Thomas Perl ដែលផ្ទៀងផ្ទាត់ជាមួយវិគី moveonpc។ ការអនុវត្តរបស់ PadForge ជា C# ដើម។ BSD 2-Clause។</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>ឯកសារយោងតេឡេម៉ែត្រការប្រណាំង</value></data>
@@ -4343,23 +4520,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>ឯកសារការផ្គូផ្គង និងរបាយការណ៍ Bluetooth របស់ DualShock 3។ GPL-2.0 និង GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>ប្លង់សារ STUN និងការឌិកូដ XOR-MAPPED-ADDRESS នៅពីក្រោយការឆ្លងកាត់ NAT របស់តំណពីចម្ងាយ ដែលដាក់បញ្ចូលពីកូដប្រភព C# របស់វា ដោយ Aaron Clauson។ BSD 3-Clause ជាមួយការដាក់កម្រិតការប្រើប្រាស់ក្នុងផ្នែកទី 2 នៃអាជ្ញាប័ណ្ណរបស់វា។</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>ប្លង់សារ STUN និងការឌិកូដ XOR-MAPPED-ADDRESS នៅពីក្រោយការឆ្លងកាត់ NAT របស់តំណពីចម្ងាយ ដែលដាក់បញ្ចូលពីកូដប្រភព C# របស់វា ដោយ Aaron Clauson។ អាជ្ញាប័ណ្ណរបស់វាបន្ថែមការដាក់កម្រិតការប្រើប្រាស់ក្នុងផ្នែកទី 2។</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>ឯកសារយោង SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ 3Dconnexion តារាងឧបករណ៍ និងមាត្រដ្ឋានអ័ក្ស ដែលអានពី hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse ដោយ AndunHH (CC BY-NC-SA 4.0) និង spacenavd (GPL-3.0-or-later)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>ការផ្ដាច់តំណ Bluetooth ដោយ IOCTL របស់ម៉ាស៊ីន លេខលំដាប់មុខងារបិទថាមពល និងសមត្ថភាព XInput ដែលលាក់ និងតម្លៃលំនាំដើមការញ័រទ្រីហ្គឺ DualSense។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>ការផ្ដាច់តំណ Bluetooth ដោយ IOCTL របស់ម៉ាស៊ីន លេខលំដាប់មុខងារបិទថាមពល និងសមត្ថភាព XInput ដែលលាក់ និងតម្លៃលំនាំដើមការញ័រទ្រីហ្គឺ DualSense។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>ឯកសារយោងពិធីការ Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>ការញ័រតិចៗពេលអូស ប៊ីតប៊ូតុងរបាយការណ៍ 0x42 ពាក្យបញ្ជាបិទថាមពល និងការបញ្ជូនបន្តតាម dongle ដែលអានពី OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) និង SteamlessController (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ឬ AGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>រាងតំបន់ងាប់ទាំងប្រាំមួយ ដោយ Minimuino។ GFDL-1.3-or-later និង GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>ឥរិយាបថទ្រនិច IR របស់ Wii Remote៖ ចំណុចកណ្ដាលនៃគូចំណុច រឹម គម្លាតរបារចាប់សញ្ញា ការធ្វើឱ្យរលូន និងខ្សែកោង FPS Mouse ជាមួយកំណែបំបែក Ryochan7, Suegrini និង Trihy។ GPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>ឥរិយាបថទ្រនិច IR របស់ Wii Remote៖ ចំណុចកណ្ដាលនៃគូចំណុច រឹម គម្លាតរបារចាប់សញ្ញា ការធ្វើឱ្យរលូន និងខ្សែកោង FPS Mouse ជាមួយកំណែបំបែក Ryochan7, Suegrini និង Trihy។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>ប្លង់បែបផែនទ្រីហ្គឺបត់បែន DualSense និងការវេចខ្ចប់តំបន់ ដែលបង្កើតឡើងវិញជា C# ដោយ John «Nielk1» Klein។ MIT។</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>ប្លង់បែបផែនទ្រីហ្គឺបត់បែន DualSense និងការវេចខ្ចប់តំបន់ ដែលបង្កើតឡើងវិញជា C# ដោយ John «Nielk1» Klein។</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>ប្លង់ DS4_REPORT_EX នៅពីក្រោយរបាយការណ៍បញ្ចូល DualShock 4 និម្មិត ដោយ Benjamin Höglinger-Stelzer។ MIT។</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>ប្លង់ DS4_REPORT_EX នៅពីក្រោយរបាយការណ៍បញ្ចូល DualShock 4 និម្មិត ដោយ Benjamin Höglinger-Stelzer។</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (កំណែបំបែក hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ជួរការបន្ថយ 48 dB របស់មីក្រូហ្វូន DualSense និម្មិត។ GPL-3.0-or-later អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ជួរការបន្ថយ 48 dB របស់មីក្រូហ្វូន DualSense និម្មិត។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ឯកសារយោងពិធីការចង្កូត</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>របាយការណ៍កម្លាំងតបដើម និង LED ប្ដូរលេខ RPM សម្រាប់ចង្កូត Fanatec, Thrustmaster និង Logitech ដែលអានពី hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) និង thrustmaster-led-linux (GPL-3.0) ហើយផ្ទៀងផ្ទាត់ជាមួយកម្មវិធីជំនួយ LED របស់ SimHub ដោយ prodigal.knight (MIT) និង tm-bt-led (MIT)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ GPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ឯកសារយោង I/O អាខេដ</value></data>
@@ -4389,19 +4566,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>ឯកសារយោងឧបករណ៍បញ្ជា Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>ពិធីការនៅពីក្រោយដ្រាយវ័រ Xbox ដើម, Steel Battalion, chatpad Xbox 360 និង uDraw Xbox 360 របស់កំណែបំបែក SDL និងឧបករណ៍ទទួល Xbox 360 ដែល PadForge ភ្ជាប់ទៅដ្រាយវ័រផ្ទាល់របស់ Windows ដែលអានពី brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp ដោយ ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) និង xemu (LGPL-2.0-or-later)។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>ការវេចខ្ចប់ INF មួយសម្រាប់ឧបករណ៍នីមួយៗ និងការរាយឧបករណ៍ នៅពីក្រោយការភ្ជាប់ WinUSB ដោយស្វ័យប្រវត្តិ ដោយ Pete Batard។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។ LGPL-3.0-or-later។</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>ការវេចខ្ចប់ INF មួយសម្រាប់ឧបករណ៍នីមួយៗ និងការរាយឧបករណ៍ នៅពីក្រោយការភ្ជាប់ WinUSB ដោយស្វ័យប្រវត្តិ ដោយ Pete Batard។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>សំណើរបាយការណ៍លក្ខណៈ HID តាម Bluetooth ដែល PadForge ផ្ញើដើម្បីសម្គាល់គ្រឿងបន្ថែម PS Move ដោយ Ricardo Quesada។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។ Apache-2.0។</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>សំណើរបាយការណ៍លក្ខណៈ HID តាម Bluetooth ដែល PadForge ផ្ញើដើម្បីសម្គាល់គ្រឿងបន្ថែម PS Move ដោយ Ricardo Quesada។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>គន្លឹះការកំណត់រចនាសម្ព័ន្ធ Windows Mixed Reality ក្នុងកំណែបំបែក SDL មកពី Monado។ រក្សាសិទ្ធិ 2021 Jan Schmidt។ មកជាមួយ SDL3.dll។ BSL-1.0។</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>គន្លឹះការកំណត់រចនាសម្ព័ន្ធ Windows Mixed Reality ក្នុងកំណែបំបែក SDL មកពី Monado។ រក្សាសិទ្ធិ 2021 Jan Schmidt។ មកជាមួយ SDL3.dll។</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>ការរួមបញ្ចូលទិន្នន័យឧបករណ៍ចាប់សញ្ញា Rift DK1 ក្នុងកំណែបំបែក SDL គឺជាការផ្ទេរពី OpenHMD។ រក្សាសិទ្ធិ 2013 Fredrik Hultin, Jakob Bornecrantz។ មកជាមួយ SDL3.dll។ BSL-1.0។</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>ការរួមបញ្ចូលទិន្នន័យឧបករណ៍ចាប់សញ្ញា Rift DK1 ក្នុងកំណែបំបែក SDL គឺជាការផ្ទេរពី OpenHMD។ រក្សាសិទ្ធិ 2013 Fredrik Hultin, Jakob Bornecrantz។ មកជាមួយ SDL3.dll។</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>ឯកសារពិធីការឧបករណ៍បំពងសំឡេង Wii Remote និងការក្រិត IR។ អានសម្រាប់តែការពិតពិធីការប៉ុណ្ណោះ។</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>របាយការណ៍ 9 បៃនៃទ្រីហ្គឺញ័រ Xbox និងផ្លូវសរសេររបស់វា ដោយ araghon007។ MIT។</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>របាយការណ៍ 9 បៃនៃទ្រីហ្គឺញ័រ Xbox និងផ្លូវសរសេររបស់វា ដោយ araghon007។</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>ទម្រង់ PCM ការញ័រលម្អិត PS5 ដែលជា 16 ប៊ីតមានសញ្ញា នៅ 3 kHz ដែលបានដោះស្រាយការអ៊ិនកូដការញ័រលម្អិត Bluetooth 8 ប៊ីតមានសញ្ញា។ AGPL-3.0 អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ AGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>ទម្រង់ PCM ការញ័រលម្អិត PS5 ដែលជា 16 ប៊ីតមានសញ្ញា នៅ 3 kHz ដែលបានដោះស្រាយការអ៊ិនកូដការញ័រលម្អិត Bluetooth 8 ប៊ីតមានសញ្ញា។ អានជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដ AGPL ណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>អេក្រង់ក្ដារចុច</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>បង្ហាញលើអេក្រង់ដែលភ្ជាប់មកជាមួយក្ដារចុច GamePanel របស់ Logitech និង Mad Catz S.T.R.I.K.E. 7 ហើយលើទូរស័ព្ទតាមរយៈ Logitech Arx Control៖ ប្រូហ្វាល់ នាឡិកា រយៈពេលលេង នាឡិកាវាស់ពេល រូបភាព ឬពណ៌របារភ្លើងរបស់ DualShock 4 ឬ DualSense។ អេក្រង់នីមួយៗមានជួរផ្ទាល់ខ្លួននៅលើទំព័រ «ឧបករណ៍» ដែលអ្នកកំណត់អ្វីដែលវាបង្ហាញ។ គ្រាប់ចុចនៅក្បែរអេក្រង់មួយ គឺជាប៊ូតុងនៃជួររបស់អេក្រង់នោះ។</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>បញ្ជាអេក្រង់ក្ដារចុច</value></data>
@@ -4469,6 +4646,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>រំកិល</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>រំកិល X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>រំកិល Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>ជ្រើសអ្វីដែលវាបង្ហាញ។ គ្មានអ្វីផ្លាស់ប្ដូររហូតដល់អ្នករក្សាទុក។</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>បានកំណត់ {0} ទៅ {1}។</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>កំពុងទាញយក SDK S.T.R.I.K.E. 7 របស់ Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>ឥឡូវនេះ S.T.R.I.K.E. 7 ផ្ទុក {0}។</value></data>
@@ -4608,8 +4786,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>កំពុងអាន {0} ពីអង្គចងចាំរួម។</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>កំពុងរង់ចាំ Assetto Corsa ឬ Assetto Corsa Competizione។</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>កំពុងបញ្ជូនបន្តទៅច្រក {0}។</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>ទម្រង់តេឡេម៉ែត្រផ្ទាល់ខ្លួន</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ពិពណ៌នាកញ្ចប់ទិន្នន័យដែលហ្គេមផ្ញើ តាមវាលនីមួយៗ ហើយ PadForge ក៏អានហ្គេមនោះដែរ។ អថេរនីមួយៗក្លាយជាអ័ក្សមួយនៅលើជួរដេកតេឡេម៉ែត្រហ្គេម និងជាឆានែលមួយសម្រាប់ការចាប់ផ្ដើមម៉ាក្រូដោយកន្សោមផ្ទាល់ខ្លួន។ ជ្រើសរើសទម្រង់តាមឈ្មោះនៅក្នុងបញ្ជីហ្គេម ឬផ្ដល់ប្រវែង ឬកូនសោមួយឱ្យវា ដើម្បីឱ្យ «រកឃើញស្វ័យប្រវត្តិ» រកឃើញវា។</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>ទម្រង់ផ្ទាល់ខ្លួន</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ពិពណ៌នាកញ្ចប់ទិន្នន័យតេឡេម៉ែត្ររបស់ហ្គេមដែល PadForge មិនស្គាល់។</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>បន្ថែមទម្រង់</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>ទម្រង់ {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>ឈ្មោះ</value></data>
@@ -4620,11 +4798,14 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>មានតែកញ្ចប់ទិន្នន័យដែលមានចំនួនបៃនេះពិតប្រាកដប៉ុណ្ណោះ ដែលត្រូវបានអានដោយទម្រង់នេះ។ ជាមួយ 0 កញ្ចប់ណាមួយក៏ត្រូវបានអានដែរ ហើយ «រកឃើញស្វ័យប្រវត្តិ» មិនប្រើទម្រង់នេះទេ ដូច្នេះត្រូវជ្រើសរើសវាតាមឈ្មោះ។</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>កូនសោដែលត្រូវការ</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>មានតែកញ្ចប់ JSON ដែលមានកូនសោនេះប៉ុណ្ណោះ ដែលត្រូវបានអានដោយទម្រង់នេះ។ បើទុកទទេ កញ្ចប់ណាមួយក៏ត្រូវបានអានដែរ ហើយ «រកឃើញស្វ័យប្រវត្តិ» មិនប្រើទម្រង់នេះទេ ដូច្នេះត្រូវជ្រើសរើសវាតាមឈ្មោះ។</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>កញ្ចប់ទិន្នន័យសរសេរលេខនីមួយៗដោយបៃសំខាន់បំផុតមុនគេ។ ហ្គេមនៅលើ PC ស្ទើរតែតែងតែសរសេរបៃសំខាន់តិចបំផុតមុនគេ។</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>លំដាប់បៃ</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little Endian ដាក់បៃដែលមានតម្លៃតិចបំផុតនៃលេខនីមួយៗមុនគេ ដូចដែលហ្គេមលើកុំព្យូទ័រស្ទើរតែទាំងអស់ធ្វើ។ Big Endian ដាក់បៃដែលមានតម្លៃច្រើនបំផុតមុនគេ។</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little Endian</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>តម្លៃលេខប្រអប់លេខ</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>វាលលេខប្រអប់លេខមានលេខផ្ទាល់ខ្លួនសម្រាប់លេខថយក្រោយ និងលេខសូន្យ ដូចជា 0 និង 11 របស់ Forza។ ពេលការកំណត់នេះបិទ លេខអវិជ្ជមានគឺលេខថយក្រោយ ហើយ 0 គឺលេខសូន្យ។</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>ថយក្រោយ</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>លេខសូន្យ</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>កូនសោដែលត្រូវការសម្រាប់កញ្ចប់ JSON, តម្លៃលេខប្រអប់លេខ</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>វាល</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>វាលនីមួយៗអានលេខមួយនៅគម្លាតរបស់វា ឬនៅក្រោមកូនសោរបស់វាក្នុង JSON (ចំណុចចូលទៅក្នុងវត្ថុដែលនៅខាងក្នុង) ហើយគុណវានឹងមាត្រដ្ឋាន។ បន្ទាប់ពីមាត្រដ្ឋាន ល្បឿនគិតជា គ.ម/ម៉ោង ឈ្នាន់មានតម្លៃពី 0 ដល់ 1 ហើយចង្កូតពី -1 នៅឆ្វេងបំផុត ដល់ 1 នៅស្ដាំបំផុត។ អ័ក្សរបស់អថេរមានតម្លៃពីអប្បបរមារបស់វានៅពេលសម្រាក ដល់អតិបរមារបស់វានៅពេលពេញ។</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>អានចូល</value></data>
@@ -4708,4 +4889,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} លើ {1} រហូតដល់ត្រូវបានបញ្ឈប់</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>បញ្ឈប់បែបផែនទ្រីហ្គឺលើ {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>គ្រប់គ្រងពន្លឺរបស់ឧបករណ៍នេះ, ការកាន់កាប់ពន្លឺ</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>បានភ្ជាប់</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>មិនបានភ្ជាប់</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ការបញ្ចូលផ្សេងទៀត</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>គ្មានឧបករណ៍ត្រូវគ្នាទេ។</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>មិនកំពុងប្រើ</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ថ្ម {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>ថ្ម {0} កំពុងសាក</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>ប្រើដោយ</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>ឧបករណ៍បញ្ជាថ្មី</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>ការកំណត់</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>គ្រប់អ័ក្ស, ប៊ូតុង និងឧបករណ៍ចាប់សញ្ញា</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>បានចុច៖ {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>លេខសម្គាល់, ផ្លូវ, សមត្ថភាព, បង្ខំរបៀបយ៉យស្ទីកដើម</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>លេខសម្គាល់, ផ្លូវ, សមត្ថភាព</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>ចម្លងព័ត៌មានលម្អិត</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>ផលិតផល</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>ប្រភេទ</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>សមត្ថភាព</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>ការតភ្ជាប់</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>ថ្ម</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>ផ្លូវ</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>លេខស៊េរី</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>កម្មវិធីបង្កប់</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>កំណែកែប្រែ</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>ញ័រឧបករណ៍បញ្ជាផងដែរ, ជូនដំណឹងម្ដងទៀតរៀងរាល់, ជូនដំណឹងពេលសាកពេញ</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>ត្រូវការពិនិត្យ</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>នាំចូលដោយស្អាត</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}។ {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>កំណត់ពាក្យសម្ងាត់</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>ដោះសោតំណពីចម្ងាយ</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ពាក្យសម្ងាត់</value></data>
 </root>

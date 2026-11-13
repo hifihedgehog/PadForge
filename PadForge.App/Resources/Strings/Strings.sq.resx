@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Joaktiv</value></data>
   <data name="Common_More" xml:space="preserve"><value>Më shumë</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Shih të gjitha</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instaluar</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Jo i instaluar</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Nuk disponohet në ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Po ndalet…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Po ndalet motori…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Në punë te {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Në punë ({0} klientë)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Në punë, të lidhura: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Dëgjon te :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Porta {0} është në përdorim</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Qasja u refuzua për portën {0} (ekzekuto si administrator)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Jashtë linje</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>I panjohur</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Parazgjedhje</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Shfleto...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Shfleto…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Vazhdo</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Ndalo</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Nise</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Po pastrohen kontrolluesit virtualë të mbetur nga seanca e mëparshme.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> pajisje</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Shto kontrollues</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Shto një kontrollues</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Zgjidh çfarë duhet të shohin lojërat. Kontrolluesi shtohet sapo të klikosh.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Drejtuar nga</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Zgjidh më vonë</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Të zakonshme</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Më shumë dalje</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Paraqitja që presin shumica e lojërave në PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Për lojëra me simbole PlayStation, touchpad dhe shirit drite.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Paraqitja e butonave Switch, për lojëra dhe emulatorë që e presin.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Taste, kursor dhe rrotullim nga një kontrollues.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Timona, leva fluturimi dhe paraqitje të personalizuara.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota dhe ndryshime kontrolli për softuerin e muzikës.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontrollues virtualë VR përmes SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Për ta ndryshuar llojin më vonë, kliko çipin e llojit te kontrolluesi. Duhet vetëm një klikim.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services nuk përgjigjet. Shih kartën e tij te Cilësimet.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kërkon SteamVR. Instaloje nga karta e tij te Cilësimet.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ka tashmë një kontrollues VR. Një drejton të dyja duart.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ka {0} kontrollues, maksimumin që mund të ekzekutojë. Fshi një për të shtuar një tjetër.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profili</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Kërko cilësime, pajisje dhe profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Kërko</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Rezultatet</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Lart</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Poshtë</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} për të lëvizur</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} për të hapur</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} nga kudo</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Faqet</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Veprimet</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Dokumentacioni</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>nën Më shumë</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>te opsionet e rreshtit</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Asgjë në PadForge nuk përputhet me „{0}“.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Kërko në dokumentacion për „{0}“</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Fshi kontrolluesin virtual</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Ekran i plotë</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Shfaq PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profili "{0}" u krijua.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profili "{0}" u fshi.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profili "{0}" u përditësua.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profili „{0}“ tani mban konfigurimin aktual.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profili u ngarkua: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profili u kthye te Parazgjedhje</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" iu caktua kontrolluesit virtual {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profili u ndërrua: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profili u ndërrua: Parazgjedhje</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Parazgjedhje</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Shkurtoret e profilit</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Shkurtoret</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Cakto kombinime butonash për të ndërruar profilet nga çdo kontrollues.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Shto shkurtore</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profili tjetër</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profili i mëparshëm</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profil i veçantë</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Shfaq ose fshih dritaren</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ndërro kontrolluesit virtualë të çaktivizuar</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Shfaq ose fshih PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ndiz ose fik kontrolluesit virtualë</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Çdo pajisje e lidhur</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Regjistro</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Po regjistron...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nuk është zgjedhur asnjë pajisje.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Indeks i pavlefshëm i slotit: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Caktimi i pajisjes dështoi.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kur</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>në</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" iu caktua kontrolluesit virtual {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" u hoq nga kontrolluesi virtual {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Pajisja u fsheh. (Mund të rikthehet te skedari i cilësimeve.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Pajisja u hoq.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontrolluesi virtual {0} u fshi.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Kreu</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Pajisje të lidhura: {0}. Kontrollues: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Lojërat shohin çdo kontrollues që është aktiv.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Motori është i ndezur dhe asnjë kontrollues nuk është aktiv.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Nise motorin për t'i sjellë kontrolluesit e tu përsëri.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Frekuenca e leximit</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Kontrollues aktivë</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Pajisje të lidhura</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Ndiz ose fik këtë kontrollues</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Niset kur niset motori.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Niset kur lidhet kjo pajisje.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Niset kur lidhet një nga këto pajisje.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>E palidhur</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Po dërgon hyrje tani</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, e ulët</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, po ngarkohet</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motori i hyrjes</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolluesit</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Shtesa në përdorim</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Shfaq QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} është i lidhur dhe nuk përdoret.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Përdore</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Çfarë duhet të shohin lojërat?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge e kthen këtë kontrollues në atë që presin lojërat e tua. Zgjidh një për të nisur. Mund ta ndryshosh më vonë me një klikim.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge e kthen kontrolluesin tënd në atë që presin lojërat e tua. Zgjidh një për të nisur. Mund ta ndryshosh më vonë me një klikim.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Luaj lojëra me tastierë dhe maus me një kontrollues.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Lloje të tjera: [{0}, {1}, {2} dhe {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Butonat, levat dhe këmbëzat hartëzohen 1:1 ndërsa krijohet kontrolluesi.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Çifto një kontrollues Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Fillo nga një profil i gatshëm</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>I lidhur</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bateria {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bateria {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Asnjë kontrollues i lidhur</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Lidhe një me kabllo ose përmes Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> të hartëzuar, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> të lidhur</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motori është në punë. Kliko për ta ndalur.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Motori është joaktiv. Kliko për ta ndalur.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Motori u ndal. Kliko për ta nisur.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Konfiguro këtë kontrollues</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Ndiz farkëtarinë</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Lidh një kontrollues, zgjidh një lloj dalje dhe PadForge i farkëton hyrjet e tua në të. Një tur i shkurtër të tregon ku ndodhet çdo gjë.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Fillo turin</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Kapërce</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Tjetra</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>U krye</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slotet</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Çdo kontrollues virtual jeton këtu. Flaka tregon cilat slote po farkëtojnë tani.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Motori i hyrjes</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Vetë farkëtaria. Ndërro flakën për të nisur ose ndaluar sondazhin e të gjitha hyrjeve.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Kontrollues virtualë</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Zgjidh një lloj dalje, ushqe slotin me pajisje dhe kliko një kartë për të formësuar hartëzimet e saj.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Veçoritë opsionale janë këtu: kontrolluesi në web i telefonit, Lidhja në distancë, serveri i lëvizjes dhe më shumë.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Shfaq turin e mirëseardhjes</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pajisje</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Drejtuar nga</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Shto pajisje</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>E ulët</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imazh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listë</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} dalje</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Cilën shtypje e sheh loja kur mbahen të dy tastet e një çifti</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mban një devijim të vogël të levës që lojërat të shfaqin treguesit e kontrolluesit</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Po farkëton</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Aktivë: {0} nga {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Zgjidh një makro në listë ose shtyp + pranë titullit Makrot për të krijuar një.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pamje paraprake</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Shtesa</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Veçori opsionale. Secila rri mënjanë derisa ta aktivizosh.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} nga {1} të ndezura</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Më shumë mënyra për të luajtur</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Dërgoje diku tjetër</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Në ekran</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet nga lojërat e drejtimit.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Lejo shikuesit të shtypin butona duke shkruar në bisedë.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ndaj kontrollues me PadForge në një PC tjetër.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Drejto kontrolluesit virtualë në një PC tjetër.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Merr efekte këmbëzash dhe drite nga modet e lojërave.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Shfaq menytë, shtresat dhe ndërrimet e profilit ndërsa luan.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra që përdorin touchpadin e PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra me touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Një figurë, kohëmatës ose orë mbi dritaret e tjera.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, adresa HTTP e thjeshtë, kodi i qasjes</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja, porta, mbrojtja e identitetit, lidhja me adresë</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, porta UDP, diapazoni për çdo bosht</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP e thjeshtë, kodi i qasjes</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja automatike, porta, identiteti i çiftimit, lidhja me adresë</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, shpejtësia e plotë, formate të personalizuara</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, Shpejtësia e plotë, Formate të personalizuara</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR ndërsa të dy gishtat e mëdhenj qëndrojnë te butonat.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet që dërgon një lojë me makina, si çdo hyrje tjetër.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët që lexojnë një burim lëvizjeje DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Merr efekte të këmbëzave adaptive dhe të dritave nga modet e lojërave të shkruara për DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ndize daljen e telemetrisë në lojë dhe drejtoje te ky kompjuter dhe kjo portë.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Në emulator, shto një burim lëvizjeje me adresën e këtij kompjuteri dhe këtë portë.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efektet e një modi arrijnë çdo kontrollues që ka harduerin për to.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozicioni i kokës është rreshti Gjurmues koke te [Pajisjet]. Hartëzo kthimin e kokës në një bosht leve te seksioni Butonat i kontrolluesit.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vlerat janë rreshti Telemetria e lojës te [Pajisjet]. Hartëzoji te seksioni Butonat i kontrolluesit ose përdori për të nxitur makro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Vendi, madhësia dhe patejdukshmëria e një menuje caktohen te vetë menuja, në seksionin [Makrot dhe menytë] të kontrolluesit.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Burimet</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack dhe çdo gjë që dërgon formatin e tij UDP</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Diapazoni</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Diapazoni për çdo bosht. Zero ndjek diapazonin më sipër.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Lojërat që PadForge nuk i njeh</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Për modet që kërkojnë një DSX në punë para se të dërgojnë</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Çfarë shfaqet</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Unaza, rrjeta ose shiriti i një menuje ndërsa është e hapur</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës ndërsa mbahet një shtresë ndërrimi</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Emri i profilit kur ndryshon profili</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopjo adresën</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vendi në ekran</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Lidh një telefon</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Vendose telefonin në të njëjtin rrjet me këtë kompjuter.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Skano kodin me kamerën e tij.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Zgjidh një paraqitje kontrolluesi.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Telefonat</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Nuk ka telefona të lidhur.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Një telefon që lidhet shfaqet këtu dhe te faqja Pajisjet, ku e cakton te një kontrollues.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Kanali yt</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Fjalët që mund të shkruajnë shikuesit</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Një shikues shkruan një fjalë si !a dhe PadForge shtyp atë që !a është hartëzuar te rreshti Twitch Chat i faqes Pajisjet. Cakto atë rresht te një kontrollues si çdo pajisje.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Ndërsa je live</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Pamja për transmetimin tënd</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Nuk ka PC të çiftuara.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Çifto një PC tjetër</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Nuk ka PC të paçiftuara pranë.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Ndize Lidhjen në distancë në PadForge në kompjuterin tjetër. Ajo shfaqet këtu dhe ti krahason një kod të shkurtër në të dy ekranet.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Pamja dhe vendi</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Tërhiqe me butonin e djathtë të mausit ose me tre gishta për ta lëvizur.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Mbivendosja {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Shfaq</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kur një program tjetër është përpara, klikimet kalojnë përmes mbivendosjes. Kur PadForge është përpara, tërhiqe me butonin e djathtë të mausit dhe ndrysho madhësinë nga këndi. Një makro mund ta shfaqë ose fshehë një mbivendosje me numrin e saj.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serveri i lëvizjes</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server i protokollit DSU/CemuHook Motion Provider për të dhënat e xhiros dhe akselerometrit.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivizo serverin e lëvizjes DSU (protokolli CemuHook Motion Provider)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>pa kontrollues</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Lloji {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Kontrolluesi në web</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Shërbe një ndërfaqe gamepad-i për shfletuesit në rrjetin tënd lokal.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Përdor një telefon ose tablet si kontrollues. Nuk duhet të instalosh asgjë në telefon.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Aktivizo serverin e kontrolluesit në web</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Lidhu nga shfletuesi i një telefoni ose tableti për ta përdorur si gamepad.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Skano me kamerën e telefonit ose hap këtë adresë në shfletuesin e tij:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Adresa HTTP e thjeshtë</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>Një adresë e dytë pa HTTPS, për shfletuesit që refuzojnë certifikatën e PadForge dhe për një tunel ose reverse proxy që sjell të vetin. Lëvizja e telefonit kërkon HTTPS, ndaj këtu funksionon vetëm përmes një tuneli ose proxy që ofron HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Shërbe edhe HTTP të thjeshtë</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Kodi i qasjes</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Adresa e thjeshtë hapet vetëm me këtë kod dhe lidhja më poshtë e përfshin atë. Një kod i ri shkëput të gjithë në adresën e thjeshtë.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Kod i ri</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Adresa në këtë PC:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Dridhje (kliko për të identifikuar këtë pajisje)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>E bën këtë pajisje të dridhet që të dallosh cila është.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Lidhja në distancë</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Ndaj kontrollues me një PadForge të çiftuar në një PC tjetër, në rrjetin tënd ose nëpër internet.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Drejto kontrolluesit virtualë në një PC tjetër. Pas një çiftimi të vetëm, një PC i besuar rilidhet automatikisht.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Aktivizo serverin e lidhjes në distancë</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Pas një çiftimi të vetëm, një PC i besuar rilidhet automatikisht. Një PC i çiftuar mund të drejtojë daljen e gamepad-it të këtij, dhe nëse nuk e kufizon, edhe tastierën, mausin dhe makrot e tij.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Ose lidhu me adresë (e avancuar)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Një PC i çiftuar mund të drejtojë daljen e gamepad-it të këtij, dhe nëse nuk e kufizon, edhe tastierën, mausin dhe makrot e tij.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Lidhu me adresë</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Çifto / Lidhu</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Çifto</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lidhu</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>I lidhur</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Çiftim me PC-në në distancë</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Konfirmo që ky kod përputhet në të dy ekranet, pastaj shtyp Çifto.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Të çiftohet me një PC tjetër?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Kontrollo që të dy ekranet shfaqin të njëjtin kod.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Çifto</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Refuzo</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Kufizo këtë PC vetëm te hyrja e gamepad-it</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Vetëm gamepad</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Identiteti</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Një PC i çiftuar mund t'i dërgojë këtij hyrje tastiere, maus dhe makro, përveç nëse e kufizon vetëm te gamepad-i.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Një PC i çiftuar mund të drejtojë daljen e gamepad-it të këtij kompjuteri, dhe nëse nuk e kufizon, edhe tastierën, mausin dhe makrot e tij.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>PC-të e çiftuara</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC-të me të cilat je çiftuar për Lidhjen në distancë. Revoko një për ta ndaluar të lidhet. Do të duhej të çiftohej përsëri.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoko</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoko të gjitha</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Riemërto</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Mbivendosja e touchpad-it</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Sipërfaqe prekëse në ekran për emulimin e touchpad-it të përputhshëm me PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra me touchpad PlayStation, për një ekran me prekje ose për mausin.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Aktivizo mbivendosjen e touchpad-it</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Patejdukshmëria</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Rivendos pozicionin</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Cilësimet</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Të përgjithshme</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Hyrja</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Harduer</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Drajverët</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Të dhëna dhe privatësia</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Kërko cilësimet</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Asnjë cilësim nuk përputhet me „{0}“.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Pamja</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Zgjidh temën vizuale që parapëlqen.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>E errët</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motori i hyrjes</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfiguro sjelljen e sondazhit dhe përpunimin në sfond.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Mbështetja e harduerit</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Nise motorin automatikisht gjatë hapjes</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Vazhdo sondazhin kur dritarja humb fokusin</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervali i sondazhit (përveç nëse e mbivendos një profil)</value></data>
@@ -502,16 +599,19 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge u përditësua në {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Nise i minimizuar</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Nise me hyrjen në Windows</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>Drajveri HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Fshih pajisjet fizike nga lojërat për të shmangur hyrjen e dyfishtë.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Fsheh pajisjet fizike nga lojërat për të shmangur hyrjen e dyfishtë.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Opsionet e HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Fshih pajisjet nga lojërat, Mbaji pajisjet të fshehura mes hapjeve, Aplikacionet në listën e bardhë</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplikacionet në listën e bardhë</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Këto aplikacione mund t'i shohin ende pajisjet e fshehura. PadForge është gjithmonë në listën e bardhë automatikisht.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Shto...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Drajveri HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Motor kontrolluesish virtualë HID në modalitetin e përdoruesit. I ngulitur në PadForge.App. Instalohet automatikisht me krijimin e kontrolluesit të parë virtual. Zëvendëson ViGEmBus dhe vJoy në v3.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge e instalon këtë drajver me kontrolluesin e parë virtual që krijon. Çinstalimi liston çfarë la HIDMaestro në këtë PC para se ta heqë.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Krijon kontrolluesit virtualë.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Çinstalo HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kjo heq HIDMaestro nga ky PC: kontrolluesit e tij virtualë, drajverin, certifikatën e nënshkrimit, çelësat e regjistrit dhe skedarët. PadForge ndalon fillimisht motorin e vet. Programet e tjera që përdorin HIDMaestro e humbasin drajverin e tij deri sa të niset secili sërish. PadForge e instalon përsëri herën tjetër që nis një kontrollues virtual.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Hiq edhe usbip-win2 të vendosur nga instaluesi i tij</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kjo është ajo që do të hiqet nga ky PC. PadForge e instalon HIDMaestro përsëri me kontrolluesin e tij të ardhshëm virtual.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Hiq edhe usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Versionet e vjetra të PadForge e vendosnin usbip-win2 me instaluesin e vet. Kjo e heq edhe atë instalim, përfshirë filtrin e tij të USB root hub, përveç nëse një program tjetër përdor usbip-win2. Heqja e filtrit rinis çdo USB 3 root hub, ndaj pajisjet USB shkëputen për një moment.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Po lexohet çfarë la HIDMaestro në këtë PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro nuk la asgjë për t'u hequr në këtë PC.</value></data>
@@ -520,10 +620,15 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Mbetet: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Nuk u lexua: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Nuk u hoq: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Drajveri Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Hequr</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Mbajtur</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Nuk u lexua</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Nuk u hoq</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Lejon kontrolluesit PlayStation 3, PlayStation Move dhe kontrolluesin Navigation të lidhen përmes Bluetooth. I ngulitur në PadForge dhe instalohet herën e parë që çiftohet një prej tyre.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Lidh kontrolluesit PlayStation 3 përmes Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Çinstalo BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Kjo heq BthPS3 nga ky PC: drajverët e tij, filtrin që shton te Bluetooth dhe drajverin WinUSB që PadForge u dha kontrolluesve PlayStation 3 për çiftim. PadForge ndalon fillimisht motorin e vet dhe Bluetooth fiket për një çast ndërsa drajverët shkarkohen. Kontrolluesit PlayStation 3, Move dhe Navigation pastaj punojnë vetëm përmes USB. Çiftimi i njërit e instalon përsëri BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Kjo është ajo që do të hiqet nga ky PC. Kontrolluesit PlayStation 3, Move dhe Navigation pastaj punojnë vetëm përmes USB, deri sa çiftimi i njërit e instalon përsëri BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Po lexohet çfarë la BthPS3 në këtë PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 nuk la asgjë për t'u hequr në këtë PC.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini i përdor këta drajverë, kështu që mbeten sa kohë është i instaluar.</value></data>
@@ -542,6 +647,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth nuk u ndez sërish. Ndize te Cilësimet e Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Porta virtuale MIDI dhe hyrja MIDI. Windows 11 25H2 e përfshin API-n nga përditësimi i fundit të nëntorit 2026. PC-të e tjera përdorin runtime-in Windows MIDI Services, që PadForge mund ta instalojë, ose API-n e vjetër MIDI.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Porta virtuale MIDI dhe hyrja MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>E integruar në Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Runtime i App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Jo i disponueshëm</value></data>
@@ -559,6 +665,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Kjo heq Windows MIDI Services Runtime and Tools të Microsoft, me aplikacionin MIDI Settings, konsolën MIDI dhe modulin PowerShell. Microsoft nuk i ofron më për shkarkim, ndaj nuk mund të instalohen përsëri.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Runtime VR për kontrollues virtualë VR. Instalohet nga serverët e Valve pa nevojën e llogarisë Steam ose të klientit Steam (disa GB).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Runtime VR për kontrollues virtualë VR.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Vendndodhja e instalimit</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Çinstalo SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Kjo heq instalimin e SteamVR pa Steam te {0} dhe liron disa GB. Kontrolluesit virtualë VR nuk do të funksionojnë derisa SteamVR të instalohet përsëri.</value></data>
@@ -571,7 +678,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostikimi</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informacioni i versionit, plus regjistrimi i ngjarjeve të motorit për zgjidhjen e problemeve.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Mbaj regjistër diagnostikimi</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Shkruan vazhdimisht ngjarjet e motorit te diagnostics.log në dosjen e treguar më poshtë. Mbetet aktiv pas rinisjeve. Kur skedari arrin 8 MB, kalon te diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Shkruan vazhdimisht ngjarjet e motorit te diagnostics.log në dosjen e regjistrit, që e hap Hap dosjen e regjistrit. Mbetet aktiv pas rinisjeve. Kur skedari arrin 8 MB, kalon te diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Ruaj pamjen e çastit</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Ruan ngjarjet më të fundit të motorit në një skedar të ri. Funksionon edhe kur regjistri i diagnostikimit është çaktivizuar.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Hap dosjen e regjistrit</value></data>
@@ -584,53 +691,92 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Rreth</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Mjet hartëzimi kontrolluesish</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>I përditësuar.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Dokumentacioni</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Kontrollo për përditësime</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork i ri i x360ce, rindërtuar me SDL3, WPF dhe .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge e kthen çdo pajisje hyrjeje në çdo kontrollues virtual. Gamepad-et, joystick-et, tastierat, mausat dhe ekranet me prekje hartëzohen te kontrollues virtualë lojërash (Xbox, PlayStation, flight stick-e, timona, gamepad-e të palëve të treta) ose te dalja tastierë+maus / MIDI që lojërat e trajtojnë si hardware të vërtetë. Mundësohet nga HIDMaestro dhe Windows MIDI Services. Përdor SDL3 për hyrjen e kontrolluesve, Windows Raw Input për tastierën dhe mausin, HidHide për maskimin e pajisjeve sipas lojës, dhe ofron një ndërfaqe Fluent Design për hartëzim, zona të vdekura, kurba ndjeshmërie dhe force feedback.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Përmbledhje</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Ndërtuar me</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Kërko te kreditet</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Shfaq të gjitha kreditet</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Shfaq më pak kredite</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Asnjë kredit nuk përputhet me „{0}“.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime dhe framework WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime dhe framework WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Hyrja dhe numërimi i kontrolluesve. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Hyrja dhe numërimi i kontrolluesve.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Hyrje tastiere dhe mausi sipas pajisjes</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Dalje virtuale pajisjesh MIDI (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Dalje virtuale pajisjesh MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Vizualizim 3D i kontrolluesit. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Vizualizim 3D i kontrolluesit.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistem dizajni Fluent 2 për WPF. Wpf.Ui.dll përmban VirtualizingWrapPanel, shkronjat fluentui-system-icons dhe kod nga WPF dhe microsoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistem dizajni Fluent 2 për WPF. Wpf.Ui.dll përmban VirtualizingWrapPanel, shkronjat fluentui-system-icons dhe kod nga WPF dhe microsoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm për lidhjen e të dhënave. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm për lidhjen e të dhënave.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikona levash dhe këmbëzash të marra nga "Xbox Series Button Icons and Controls" nga Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikona levash dhe këmbëzash të marra nga "Xbox Series Button Icons and Controls" nga Zacksly.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Përputhës shabllonesh formash për touchpad (rreth / katror / trekëndësh / Z / shenjë kontrolli dhe gjeste të regjistruara me porosi). Rizbatim në C# i referencës JavaScript nga Magrofuoco, Vatavu, Anthony dhe Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Përputhës shabllonesh formash për touchpad (rreth / katror / trekëndësh / Z / shenjë kontrolli dhe gjeste të regjistruara me porosi). Rizbatim në C# i referencës JavaScript nga Magrofuoco, Vatavu, Anthony dhe Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Pozicionet e tasteve dhe tastet e shtresës bazë të tastierave që pamja paraprake e Tastierë + maus i vizaton, të gjeneruara nga të dhënat e planimetrisë së QMK dhe nga fork-u i QMK i Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Pozicionet e tasteve dhe tastet e shtresës bazë të tastierave që pamja paraprake e Tastierë + maus i vizaton, të gjeneruara nga të dhënat e planimetrisë së QMK dhe nga fork-u i QMK i Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Qasje vlerësimi me margjinë këndore që punon krahas përputhësit të reve pikash për forma me një gisht. Zbaton idenë e vlerësimit nga PointPatternAnalyzer i GestureSign në C# origjinal. GPL-2.0, vetëm dokumentacion.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Qasje vlerësimi me margjinë këndore që punon krahas përputhësit të reve pikash për forma me një gisht. Zbaton idenë e vlerësimit nga PointPatternAnalyzer i GestureSign në C# origjinal. Vetëm dokumentacion.</value></data>
   <data name="About_License" xml:space="preserve"><value>Licenca</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Ky softuer licencohet nën CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack nga AL2009man (MIT) ofron asetet 2D të kontrolluesve. GestureSign nga TransposonY (GPL-2.0) u lexua si dokumentacion për AngularMarginRecognizer dhe asnjë kod i tij nuk dërgohet. Handheld Companion (CC BY-NC-SA 4.0) ofron modelet 3D të Xbox 360 dhe Steam Deck që PadForge i përshtat. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services dhe WPF UI licencohen nën Licencën MIT. OpenXInput dërgon vetëm një mohim të markës nga upstream dhe rishpërndahet siç është nën të njëjtat kushte. $Q Recognizer nga Magrofuoco, Vatavu, Anthony dhe Wobbrock (BSD 3-Clause) është reference për ShapeRecognizer të touchpad-it, një rizbatim në C#. SDL3 licencohet nën Licencën zlib. x360ce (LGPL-3.0-or-later) është baza e kodit origjinal nga e cila u fork PadForge. Zergatul.Obs.InputOverlay nga Igor Budzhak (MIT) ofron grafikën e mausit.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (ngarkuesi i SDK-së)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>Stili BSD</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Kushtet e licencës Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Kushtet e Corsair SDK</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Vetëm mohim i markës tregtare</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Pa kushte të emërtuara</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Asnjë e botuar</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Disa licenca</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor kontrolluesish virtualë HID në modalitetin e përdoruesit (zëvendëson ViGEmBus dhe vJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor kontrolluesish virtualë HID në modalitetin e përdoruesit (zëvendëson ViGEmBus dhe vJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Zëvendësues XInput me instalim të drejtpërdrejtë. Filtron kontrolluesit virtualë të vetë PadForge nga pamja e tij. Mohim i markës nga upstream, pa licencë OSS.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Zëvendësues XInput me instalim të drejtpërdrejtë. Filtron kontrolluesit virtualë të vetë PadForge nga pamja e tij.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Drajver kernel për fshehjen e pajisjeve fizike nga lojërat. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Drajver kernel për fshehjen e pajisjeve fizike nga lojërat.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Një ftesë</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>«Dhe, ne flasim për Krishtin, ne gëzohemi në Krishtin, ne predikojmë për Krishtin, ne profetizojmë mbi Krishtin dhe shkruajmë sipas profecive tona, që fëmijët tanë të mund të dinë se cilit burim t’i drejtohen për heqjen e mëkateve të tyre.»</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Nefi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Lavdi, nder dhe lëvdim Zotit Jezu Krisht, burimit të çdo të vërtete dhe shpëtimi, përgjithmonë e përgjithmonë.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Je ftuar përzemërsisht të vizitosh ComeUntoChrist.org dhe të mësosh më shumë për Të dhe për Kishën e Jezu Krishtit të Shenjtorëve të Ditëve të Mëvonshme.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed stereofonik-në-binaural i Bauer për daljen e kufjeve. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed stereofonik-në-binaural i Bauer për daljen e kufjeve.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Kodues Opus në C# i pastër që drejton audion e altoparlantit të DualSense përmes Bluetooth. Nga Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Kodues Opus në C# i pastër që drejton audion e altoparlantit të DualSense përmes Bluetooth. Nga Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>Kërkim mbi audion Bluetooth të DualSense nga egormanga: transporti i paketave mbi të cilin udhëton transmetimi i altoparlantit të kontrolluesit. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Kërkim mbi audion Bluetooth të DualSense nga egormanga: transporti i paketave mbi të cilin udhëton transmetimi i altoparlantit të kontrolluesit. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Recetë altoparlanti Bluetooth nga awalol: kornizimi Opus dhe struktura e paketave. Faleminderit edhe TechAntohere për gjetjet e ndara dhe testimin. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Recetë altoparlanti Bluetooth nga awalol: kornizimi Opus dhe struktura e paketave. Faleminderit edhe TechAntohere për gjetjet e ndara dhe testimin.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Zbatim reference për kalimin e audios së kontrolluesit përmes USB. Nga WujekFoliarz.</value></data>
 
@@ -675,8 +821,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Vonesa e karakterit (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekonda ndërmjet karaktereve të shkruara, deri në 1000. Me 0 i gjithë teksti shkruhet menjëherë.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Shkëputje pas joaktivitetit</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Energjia</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Dosja e pajisjes</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Detajet</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuta (0 = asnjëherë)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Shkëput Bluetooth kur lidhet me USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karikim i shpejtë. Kur ky kontrollues raporton se po karikohet ndërsa është i lidhur me Bluetooth, lidhja Bluetooth ndërpritet që të karikohet pa e ndezur radion. Çdo burim energjie USB llogaritet, përfshirë karikuesit e murit. Nëse e ndizni përsëri Bluetooth ndërsa kablloja mbetet e futur, ai lihet në paqe deri në shkëputjen tjetër.</value></data>
@@ -700,10 +845,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>I kërkon këtij pad PlayStation drejtimet drejtpërdrejt, që majtas dhe djathtas, ose lart dhe poshtë, të regjistrohen bashkë në një tapet vallëzimi që nga hapi i parë. Vijnë si butonat shigjetë Lart, Poshtë, Majtas dhe Djathtas, që firmueri 3.34 i dërgon edhe vetë pasi janë shtypur drejtime të kundërta, dhe PadForge pushon së kërkuari atëherë. Deri atëherë përshtatësi kalon shumicën e leximeve të veta të pad-it.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Trysnia e DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Numri i lojtarit</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Përshtatësi e ruan numrin dhe rilidhet si ai lojtar. Pastaj Windows sheh një pajisje të re, ndaj hartëzojeni portën përsëri kur të kthehet.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Përshtatësi e ruan numrin dhe rilidhet, gjë që Windows e sheh si një pajisje të re.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Lojtari</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Cakto lojtarin</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Ekrani Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Asgjë nuk arrin te porta derisa të ruash.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Shfaq</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Imazhi i përshtatësit</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Emri i profilit</value></data>
@@ -750,7 +896,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO po lexohet si dy daulle Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} po lexohet si kontrollues iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} po lexohet përsëri si tastierë.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Pistoletë drite</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Diapazoni i synimit parazgjedhje: X {0} deri {1}, Y {2} deri {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Diapazoni i synimit i kalibruar: X {0} deri {1}, Y {2} deri {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Kalibrimi i pistoletës</value></data>
@@ -809,6 +954,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Të gjitha tastierat (të bashkuara)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Të gjithë mausat (të bashkuar)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Pajisjet</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>të lidhura: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kërko pajisje</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Të gjitha</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Kontrolluesit</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Tastiera &amp; mausa</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Lexo Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Lexo Chatpad dhe tabletat uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Lexo kontrolluesit</value></data>
@@ -829,28 +979,21 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} është përsëri te drajveri i tij i Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Drajveri i Windows për {0} nuk mundi të rikthehej.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows e ktheu {0} te drajveri i vet. Zgjidheni në faqen Pajisjet për ta ndryshuar përsëri.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> të lidhura / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> gjithsej</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Hiq këtë pajisje dhe cilësimet e saj</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Hiq pajisjen</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} do të hiqet nga lista e pajisjeve dhe cilësimet e ruajtura të saj do të harrohen.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Tërhiqeni një pajisje mbi një kartë kontrolluesi në shiritin anësor për ta caktuar.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Produkti: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Tërhiqe një pajisje mbi një kontrollues në shiritin anësor për ta caktuar.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Dërgo hartëzimin e pajisjes</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Caktimi i kontrolluesit virtual</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Ndërro caktimin</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Ende nuk ka slot-e kontrolluesi virtual. Krijoni një në Panel për ta caktuar këtë pajisje.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Mënyra e hyrjes</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>E cakton këtë pajisje te ky kontrollues, ose e heq.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Detyro modalitetin e papërpunuar të xhojstikut (anashkalo hartëzimin e gamepad-it)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Lexo indekset e papërpunuara HID në vend të hartëzimit të gamepad-it të SDL. Përdoreni kur SDL e identifikon gabim paraqitjen e butonave/boshteve.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Fshehja e hyrjes</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Fshih nga lojërat (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>E fsheh plotësisht këtë pajisje nga aplikacionet e tjera përmes drajverit HidHide. Kur PadForge fsheh një kontrollues USB që ishte lidhur tashmë, e rilidh në Windows, kështu që çdo gjë që e kishte të hapur e humb. Një kontrollues Bluetooth, ose një që ndan marrës me një kontrollues tjetër, mbetet te çdo gjë që e hapi para se të fshihej deri sa të lidhet përsëri.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instaloni drajverin HidHide për ta aktivizuar këtë opsion</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Konsumo hyrjet e hartëzuara (grepa)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Shtyp vetëm tastet/butonat e veçantë që janë hartëzuar, duke lënë hyrjet e pahartëzuara të kalojnë</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Gjendja e papërpunuar e hyrjes</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Zgjidhni një pajisje për të inspektuar hyrjen e saj të papërpunuar.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Provo hyrjet</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Zgjidh një pajisje për të parë cilësimet e saj dhe për të provuar hyrjet e saj.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Boshtet</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Butonat</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Tastiera</value></data>
@@ -1126,27 +1269,25 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Pajisja e zgjedhur nuk ka boshte, butona ose POV për klonim.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Të klonohet {0} në këtë slot si kalim i drejtpërdrejtë 1:1? Paraqitja bëhet {1} boshte, {2} butona dhe {3} POV, dhe rreshtat e kësaj pajisjeje në slot zëvendësohen me hyrjet e saj.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kjo pajisje ka më shumë hyrje nga sa mund të mbajë një kontrollues i zgjeruar. U hartëzuan {0} nga {1} boshte, {2} nga {3} butona dhe {4} nga {5} POV. Pjesa tjetër mbeti e pahartëzuar.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Profilet e importuara</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Profilet HIDMaestro të importuara nga përdoruesi ruhen brenda PadForge.xml dhe shfaqen në listën e profileve të çdo slot-i të zgjeruar. Kapni një të ri nga një pajisje e lidhur më poshtë, ose eksportoni / fshini një ekzistues.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Profilet tuaja të importuara ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Pajisjet e lidhura të disponueshme për import</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Paravendosjet e kontrolluesit</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Shto një paravendosje për një kontrollues që PadForge nuk e përfshin, nga një skedar ose nga vetë kontrolluesi.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Të importuara</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importo nga një pajisje e lidhur</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksporto…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Fshi</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Mbyll</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksporto JSON të profilit</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Të fshihet profili i importuar?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Të fshihet "{0}"? Çdo slot që e përdor këtë profil do të kthehet te hyrja sintetike Custom.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Të fshihet paravendosja?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Çdo kontrollues që përdor {0} kthehet te hyrja Custom. Kjo nuk mund të zhbëhet.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>U eksportua te {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportimi dështoi: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>U fshi "{0}."</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importo nga skedari…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importo nga një skedar…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importo JSON të profilit</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>U importua nga {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Leximi dështoi: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e refuzoi këtë profil te {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Ky profil nuk ka përshkrues HID, ndaj nuk mund të krijohet kontrollues prej tij.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Asgjë nuk u importua. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Rifresko</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importo</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(pajisje HID pa emër)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>U gjetën {0} ndërfaqe HID.</value></data>
@@ -1431,6 +1572,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Qendra</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona e vdekur</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Zhvendosjet e qendrës, forma e zonës së vdekur dhe vlerat për çdo bosht, një kurbë për çdo bosht, diapazoni, drejtimi</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Diapazoni në numra, vlerat e papërpunuara</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Diapazoni</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Kalibro kufirin“ mat skajin që leva mund të arrijë dhe e kthen në një rreth të plotë. Katër rrëshqitësit vetëm kufizojnë çdo drejtim.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Po mostrohet...</value></data>
@@ -1963,21 +2105,22 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Rivendos pragun e përputhjes së formës</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Regjistro gjest touchpad-i</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Vizatoni gjestin në sipërfaqen më poshtë. Dialogu kap çdo gisht që vendosni. Kur i hiqni të gjithë gishtat nga sipërfaqja, kampioni regjistrohet. Vizatimi me numër tjetër gishtash nga kampionët e mëparshëm e rivendos grumbullin.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Po pritet kontakti i gishtit në kanavacë</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Regjistro një gjest</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Vizato formën në touchpad-in e kontrolluesit. Bëhet një hyrje që mund ta hartëzosh.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Vizato gjestin këtu.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Vizatoni në touchpad. Kanavaca e pasqyron drejtpërdrejt.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Po regjistrohet nga {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ky touchpad</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad-i nuk është i disponueshëm. Përdorni kanavacën më poshtë me maus ose me prekje.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad-i nuk është i disponueshëm. Vizato këtu me maus, stilolaps ose gisht.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Po vizatohet…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Të gjithë kampionët u kapën. Emërtoni gjestin dhe klikoni Ruaj.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Kampioni {0} nga {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} kampionë</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Kampionë për t'u kapur</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 është standardi. Më shumë kampionë = përputhje më e fortë, më pak = regjistrim më i shpejtë.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Kampionë për t'u kapur</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 është standardi. Më shumë kampionë japin një përputhje më të sigurt, dhe më pak regjistrohen më shpejt.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Emri</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Provo përsëri</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Emërtoje këtë gjest</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Emri është i detyrueshëm</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Emri është shumë i gjatë (maks. 64 shenja)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Emri përmban shenja të pavlefshme</value></data>
@@ -2289,41 +2432,62 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profilet</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Menaxhimi i profileve</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Krijo profile kontrolluesi për çdo aplikacion që ndërrohen automatikisht sipas lojës aktive.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Ndërro automatikisht profilet sipas aplikacionit në plan të parë</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Një profil është një konfigurim i plotë: kontrolluesit, hartëzimet dhe rregullimet e tij.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Profilet fillestare</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Profile të gatshme për një zhanër të tërë. Zgjidh një, cakto çdo kontrollues dhe luaj.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Ndërro profilet sipas lojës</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Ndërrimi automatik</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Përpara tani: {0}, nuk ka profil për të</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Përpara tani: {0}, që ngarkon {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Përpara tani: {0}, dhe asnjë profil nuk ka ende një lojë</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Lejo kontrollin e jashtëm nga nisësit dhe skriptet</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Ofron një pipe të emërtuar lokale, PadForge.Control, që Playnite, LaunchBox ose një skript të mund të aktivizojnë dhe çaktivizojnë profile. Një profil i aktivizuar në këtë mënyrë mbetet aktiv derisa skripti ta lëshojë ose ti të ndërrosh vetë profilin. Vetëm në kompjuterin lokal.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kontrolli i jashtëm</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profili aktiv:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Pa slote</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Ndërrim automatik: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Pa kontrollues</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Lësho për të importuar profilin</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>I ri</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Lësho një skedar profili këtu</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profil i ri</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Ruaj si</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Ruaj konfigurimin aktual këtu</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Ndrysho</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Ngarko</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Asnjë profil nuk ka ende skedar ekzekutues</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>I integruar</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Zgjidh së pari një profil.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Profili i integruar Parazgjedhje nuk mund të redaktohet ose fshihet.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Fshi profilin</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Të fshihet "{0}"? Pamja e ruajtur e sloteve dhe e hartëzimeve të tij do të shkatërrohet.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Pa lojë të caktuar</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Ngarkohet për {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Caktuar për {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Më shumë për {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Të fshihet {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profili dhe rregulli i tij i ndërrimit automatik hiqen. Kjo nuk mund të zhbëhet.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profili hiqet. Kjo nuk mund të zhbëhet.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Të zëvendësohet konfigurimi i ruajtur në „{0}“ me atë aktual? Emri dhe lojërat e tij mbeten.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Zëvendëso</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Ruaj si profil</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Ndrysho profilin</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Emri i profilit:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profil i ri</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Emri</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profil i ri</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Skedarë ekzekutues (krahasohen me dritaren në plan të parë):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Lojërat që e ngarkojnë</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Frekuenca e leximit</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Parazgjedhje (cilësim global)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Mbishkruar ndërsa profili “{0}” është aktiv: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ruan hartëzimet e çdo sloti dhe cilësimet e çdo pajisjeje nën një emër. Skedarët ekzekutues të lidhur ndërrojnë automatikisht te ai.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Riemërton profilin dhe përditëson skedarët ekzekutues që e aktivizojnë. Hartëzimet dhe cilësimet e ruajtura nuk ndryshojnë.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ruan hartëzimet dhe cilësimet e çdo kontrolluesi nën një emër. Ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Një profil ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Fillon pa kontrollues. Ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Shto një lojë në punë</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Asnjë program tjetër nuk ka dritare të hapur.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Hiq {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Frekuenca e leximit ndërsa ngarkohet ky profil</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopjo cilësimet nga...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Zgjidh një pajisje për të kopjuar cilësimet e saj:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopjo nga</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Zëvendëso hartëzimet dhe rregullimet për çdo pajisje të {0} me ato të një kontrolluesi tjetër.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Shto makrot e një kontrolluesi tjetër te {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Pa caktim, mban hartëzimet e mëparshme</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Zgjidh aplikacionin për listën e lejuar</value></data>
@@ -2365,6 +2529,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Range" xml:space="preserve"><value>Diapazoni</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona e vdekur</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Kliko dy herë për të shtuar një pikë. Kliko djathtas për ta hequr. Zvarrit për ta rregulluar.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>redaktues kurbe</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Boshti i këmbëzës</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2680,8 +2845,19 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Baza</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shtresa Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfiguro bazën</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Emri, ikona dhe ngjyra e shtresës Baza te Dalja e shtresës së ndërrimit dhe në rreshtin e shtresave.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Emri i shtresës</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Hyrja aktivizuese</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Emri</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mbahet me</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Shtypet me</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Shtresa tjetër me</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Shtresa e mëparshme me</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Dhe me</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Zgjidh një hyrje</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Kontrollet e pahartëzuara</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Kalo te Baza</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Mos bëj asgjë</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modaliteti, lloji i hyrjes, koha dhe ngjyra</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mënyra</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mbaj shtypur</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ndërro</value></data>
@@ -2708,14 +2884,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Kur është zgjedhur, objektivi i kësaj shtrese mbetet i fikur në vend që të kalojë te rreshti Bazë.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vonesa</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Sa kohë duhet të mbahet shtypur hyrja para se shtresa të reagojë. Për mënyrën Mbaj shtypur kjo është një filtër kundër kërcimit. Për Ndërro, Kyçje dhe E ngjitur e kthen ndërrimin në shtypje të gjatë: shtresa ndërrohet një herë kur mbajtja kalon këtë kohë, dhe një prekje më e shkurtër nuk bën asgjë. 0 reagon menjëherë.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Hyrja e dytë e kombinimit</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Pragu i boshtit</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Kalo nëpër shtresa në cikël</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Vetëm brenda shtresës</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Çdo shtresë</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Hyrja llogaritet vetëm kur shtresa e zgjedhur është aktive. Kontrolli bëhet kur hyrja shtypet dhe vlen për gjithë shtypjen. "Çdo shtresë" do të thotë që hyrja llogaritet gjithmonë. Përcakto daljet e secilës shtresë në atë shtresë, me një aktivizues tjetër ose me një makro Ndërro shtresën.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Butoni tjetër</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Butoni i mëparshëm</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Kthim në fillim</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Kur është aktiv, kalimi përtej shtresës së fundit kthen te e para, dhe përtej së parës kthen te e fundit. Kur është joaktiv, kursori ndalon te skajet.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Përfshi Bazën</value></data>
@@ -2727,18 +2900,17 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Një shtypje e vetme e një butoni (ose e një drejtimi POV) aktivizon shtresën.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Të dy butonat duhet të mbahen shtypur njëkohësisht për ta aktivizuar. Mbështetet akordi mes pajisjesh.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Aktivizohet sa kohë një bosht analog është përtej vlerës së pragut.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Shtresa mbetet aktive sa kohë aktivizuesi mbahet shtypur. Lëshohet kur e lëshon.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Sa kohë mbahet hyrja e saj, hartëzimet e kësaj shtrese zëvendësojnë ato të Bazës.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Prek për ta aktivizuar. Prek sërish për ta lëshuar. Shtresa vazhdon përmes shumë shtypjeve.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Shtyp për ta kyçur këtë shtresë aktive dhe për ta mbajtur. Shtyp sërish për t'u kthyer te Baza. Një buton tjetër Kyçje kalon te shtresa e vet.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Çdo shtypje ecën përmes një liste të renditur shtresash. Kthehet te Baza.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Prek një herë për ta aktivizuar. Shtypja e ardhshme e një butoni të hartëzuar aktivizohet në shtresë, pastaj lëshohet vetë.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Pa buton të vetin. Shtoje në radhën e një kontrolli Cikël dhe cikli e arrin.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Trashëgo objektivat e pahartëzuar nga Baza</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Aktivizo në lëshim</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Pret derisa butoni të lëshohet para se ky aktivizues të veprojë. Nëse është caktuar vonesë mbajtjeje, shtypja duhet të zgjasë aq sa të numërohet lëshimi.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Aktivizo edhe hartëzimin e vetë aktivizuesit</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kur është zgjedhur, butoni aktivizues vazhdon të drejtojë çdo rresht që e ka si burim. Një shtypje ndryshon shtresën dhe aktivizon hartëzimin e vetë butonit. Kur nuk është zgjedhur (parazgjedhja), shtypja e aktivizuesit përdoret vetëm për ndryshimin e shtresës.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Kur është zgjedhur, objektivat që kjo shtresë nuk i hartëzon shprehimisht kalojnë te shtresa Bazë. Kur nuk është zgjedhur (parazgjedhja), shtresa zëvendëson plotësisht Bazën dhe objektivat e pahartëzuar mbeten të fikur.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Me Kalo te Baza, kontrollet që kjo shtresë nuk i hartëzon mbajnë hartëzimet e Bazës. Me Mos bëj asgjë, shtresa zëvendëson plotësisht Bazën dhe ato kontrolle mbeten të fikura.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Diapazoni i rrotullimit</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Cakto diapazonin e rrotullimit</value></data>
@@ -2941,15 +3113,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Pajisja e zgjedhur nuk ka altoparlant të integruar. Tingujt e makrove për këtë kontrollues luhen në daljen e parazgjedhur të sistemit.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Rivendos daljen e zërit</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Paketë testimi DualSense në shfletues nga Xuezhou Dai (daidr): referencë për kuadrimin CRC të feature report-eve të Sony dhe komandat e testimit të firmuerit që PadForge i përcjell nga kontrolluesit virtualë te ato fizikë. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Paketë testimi DualSense në shfletues nga Xuezhou Dai (daidr): referencë për kuadrimin CRC të feature report-eve të Sony dhe komandat e testimit të firmuerit që PadForge i përcjell nga kontrolluesit virtualë te ato fizikë.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Referencë audio Bluetooth për DualShock 4 nga nefarius: kuadrimi i raporteve për rrjedhën e altoparlantit DS4 të PadForge. Kodifikuesi SBC është një implementim origjinal C# nga specifikimi Bluetooth A2DP. Me dokumentim të protokollit nga ds4mac i khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Referencë audio Bluetooth për DualShock 4 nga nefarius: kuadrimi i raporteve për rrjedhën e altoparlantit DS4 të PadForge. Kodifikuesi SBC është një implementim origjinal C# nga specifikimi Bluetooth A2DP. Me dokumentim të protokollit nga ds4mac i khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Eksporto…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Importo…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profili "{0}" u eksportua.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profili "{0}" u importua ({1} paketë(a) tingujsh u regjistruan).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Skedari nuk është profil i lexueshëm i PadForge.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Zgjidh një tingull nga {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Paketat e tingujve</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Skedarë zip me tinguj për makrot e tingullit</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Një paketë tingujsh është një skedar zip me tinguj me shtesën .pfsounds. Shtoje një këtu, pastaj zgjidh tingujt e saj në çdo makro tingulli. PadForge lexon drejtpërdrejt nga skedari dhe nuk e shpaketon kurrë. Mbaji paketat pranë PadForge.exe që të mbeten portabël.</value></data>
@@ -2994,20 +3165,13 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Mbrojtja e identitetit</value>
+    <value>Identiteti i çiftimit</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Si ruhet identiteti i çiftimit të këtij PC. Zgjidh një mënyrë portabël për t'i bartur çiftimet në një memorie USB mes makinave.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Emërtoje këtë PC</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PC pranë (të paçiftuar)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Rivendos</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Fjalëkalimi i Lidhjes në distancë</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpadi i PadForge</value>
@@ -3039,9 +3203,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>PC i çiftuar</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Në linjë</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Jashtë linje</value>
   </data>
@@ -3058,7 +3219,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
     <value>Shkyçe identitetin aktual para se të ndryshosh mbrojtjen e tij.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Cakto një fjalëkalim për të mbrojtur identitetin tënd portabël. Do ta shkruash për të shkyçur Lidhjen në distancë në çdo PC.</value>
+    <value>Fjalëkalimi mbron identitetin e çiftimit të këtij kompjuteri.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Mbrojtja e identitetit u përditësua.</value>
@@ -3078,7 +3239,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Po lidhet me {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Rilidhu automatikisht</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Rilidhja automatike</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Po dëgjon në {0}</value>
   </data>
@@ -3097,65 +3258,70 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Partneri {0} u lidh, {1} pajisje</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Zgjidh një tingull nga një paketë e shtuar, ose shfleto për një skedar.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Shfleto skedarët…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Zgjidh një tingull</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Tingulli luhet përmes altoparlantit të kontrolluesit, ose të kompjuterit kur ai nuk ka.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Përdor tingullin</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Luaj {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Kapje loopback WASAPI për pasqyrën e audios së kontrolluesit dhe dridhjen e këmbëzës nga baset e audios. NAudio.Midi, që PadForge nuk e shpërndan, është gjithashtu referenca për deklarimet WinMM të API-t MIDI të vjetër dhe sekuencat e porteve, për rregullin që një Note On me shpejtësi 0 është Note Off, dhe për kontrollet on/off si sustain. Nga Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Kapje loopback WASAPI për pasqyrën e audios së kontrolluesit dhe dridhjen e këmbëzës nga baset e audios. NAudio.Midi, që PadForge nuk e shpërndan, është gjithashtu referenca për deklarimet WinMM të API-t MIDI të vjetër dhe sekuencat e porteve, për rregullin që një Note On me shpejtësi 0 është Note Off, dhe për kontrollet on/off si sustain. Nga Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Njohës i të folurit jashtë linje që dëgjon frazat e makrove me zë. Nga Alpha Cephei. Modeli përfshihet brenda PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Njohës i të folurit jashtë linje që dëgjon frazat e makrove me zë. Nga Alpha Cephei. Modeli përfshihet brenda PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografi për çiftimin dhe transportin e Lidhjes në distancë (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, një licencë e llojit MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografi për çiftimin dhe transportin e Lidhjes në distancë (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>Drajverë të përfshirë të profilit Bluetooth dhe të filtrit PSM nga nefarius, që lejojnë një DualShock 3 të lidhet përmes radios së përbashkët. Instalohen brenda aplikacionit gjatë çiftimit. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Drajverë të përfshirë të profilit Bluetooth dhe të filtrit PSM nga nefarius, që lejojnë një DualShock 3 të lidhet përmes radios së përbashkët. Instalohen brenda aplikacionit gjatë çiftimit.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Referencë e protokollit të DualShock 3 nga Benjamin Höglinger-Stelzer: feature report-et sixpair, shablloni i output report Bluetooth, renditja e aktivizimit, harta e baterisë. Implementimi i PadForge është C# origjinal. DualShock 3 (SIXAXIS): Full controller i HIDMaestro përdor përshkruesin e raportit në mënyrën SXS të DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Referencë e protokollit të DualShock 3 nga Benjamin Höglinger-Stelzer: feature report-et sixpair, shablloni i output report Bluetooth, renditja e aktivizimit, harta e baterisë. Implementimi i PadForge është C# origjinal. DualShock 3 (SIXAXIS): Full controller i HIDMaestro përdor përshkruesin e raportit në mënyrën SXS të DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Instalimi në depon e drajverëve, regjistrimi i filtrit të klasës Bluetooth dhe cikli i porteve USB për konfigurimin BthPS3 brenda aplikacionit dhe për lëshimin e një kontrolluesi USB të fshehur, nga nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Instalimi në depon e drajverëve, regjistrimi i filtrit të klasës Bluetooth dhe cikli i porteve USB për konfigurimin BthPS3 brenda aplikacionit dhe për lëshimin e një kontrolluesi USB të fshehur, nga nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Qasje USB për drajverin me kabllo të Switch 2 Pro dhe kontrolluesit që PadForge i lidh me WinUSB, e dërguar si libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Qasje USB për drajverin me kabllo të Switch 2 Pro dhe kontrolluesit që PadForge i lidh me WinUSB, e dërguar si libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Joystick me prekje në kontrolluesin në web të telefonit, nga Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Joystick me prekje në kontrolluesin në web të telefonit, nga Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Bazë të dhënash e komunitetit për hartëzimet e gamepad-it, që hartëzimet e përfshira të PadForge e zgjerojnë. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Bazë të dhënash e komunitetit për hartëzimet e gamepad-it, që hartëzimet e përfshira të PadForge e zgjerojnë.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Kërkim mbi LED-in e butonit Xbox Guide: struktura e paketës XboxGIP dhe sekuenca e zbulimit, nga Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Kërkim mbi LED-in e butonit Xbox Guide: struktura e paketës XboxGIP dhe sekuenca e zbulimit, nga Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematika e drejtimit me kënd mbështjelljeje dhe pjerrjes, nga JibbSmart dhe Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematika e drejtimit me kënd mbështjelljeje dhe pjerrjes, nga JibbSmart dhe Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Konvertimi i xhiros në hapësirën e lojtarit dhe të botës, nga JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Konvertimi i xhiros në hapësirën e lojtarit dhe të botës, nga JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Struktura e raportit haptik të Steam Controller (2015) dhe matematika e periudhës së notës, nga Pila dhe Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Struktura e raportit haptik të Steam Controller (2015) dhe matematika e periudhës së notës, nga Pila dhe Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Struktura haptike me ton LFO për Steam Controller 2026 dhe Steam Deck, nga Pila, Crazy dhe AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Struktura haptike me ton LFO për Steam Controller 2026 dhe Steam Deck, nga Pila, Crazy dhe AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika e pastrimit SOCD për mënyrat Snap Tap, nga valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika e pastrimit SOCD për mënyrat Snap Tap, nga valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Klient i rrjetit Steam që merr konfigurimet e kontrolluesve të Steam Workshop përmes një sesioni anonim, nga Ryan Stecker dhe SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializues Protocol Buffers që SteamKit2 e përdor për protokollin e Steam, nga Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializues Protocol Buffers që SteamKit2 e përdor për protokollin e Steam, nga Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompresim Zstandard që SteamKit2 e përdor për pjesët e depove Steam, port C# i bibliotekës zstd nga Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Dekompresim Zstandard që SteamKit2 e përdor për pjesët e depove Steam, port C# i bibliotekës zstd nga Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentim për ceremoninë e çiftimit të Wii, ADPCM e altoparlantit, orientimin anash dhe në këmbë të Wii Remote, modelin e portës së levës dhe formatin e ruajtjes së tij, dhe konventën e boshteve të xhiros. GPL-2.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentim për ceremoninë e çiftimit të Wii, ADPCM e altoparlantit, orientimin anash dhe në këmbë të Wii Remote, modelin e portës së levës dhe formatin e ruajtjes së tij, dhe konventën e boshteve të xhiros. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Dokumentim i sjelljes së DualShock: shkëputja në mungesë veprimi, kufijtë e touchpad-it, dekodimi i baterisë, IOCTL i shkëputjes Bluetooth, bitet e mënyrës së dridhjes së DualSense, kurba e dridhjes së xhiros, shkalla e levës-si-maus dhe fara CRC e output report Bluetooth. Tabela e kodeve të tasteve të tastierës së tij virtuale ka udhëzuar tabelën e PadForge. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Dokumentim i sjelljes së DualShock: shkëputja në mungesë veprimi, kufijtë e touchpad-it, dekodimi i baterisë, IOCTL i shkëputjes Bluetooth, bitet e mënyrës së dridhjes së DualSense, kurba e dridhjes së xhiros, shkalla e levës-si-maus dhe fara CRC e output report Bluetooth. Tabela e kodeve të tasteve të tastierës së tij virtuale ka udhëzuar tabelën e PadForge. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentim i komandës LED GIP që përforcon xbledctl. GPL-2.0-or-later, vetëm dokumentim.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentim i komandës LED GIP që përforcon xbledctl. Vetëm dokumentim.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentim i kamerës IR dhe i sjelljes së Balance Board të Wii, nga Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentim i kamerës IR dhe i sjelljes së Balance Board të Wii, nga Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Dokumentim i formatit të dridhjes HD të Joy-Con, nga Sergey004. Lexuar vetëm për fakte protokolli.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Çifto</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Çifto një kontrollues</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Çifto një kontrollues</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Çifto një Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Hap kapakun e baterisë dhe shtyp butonin e kuq SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Mbaje telekomandën pranë këtij kompjuteri ndërsa dritat pulsojnë.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Çifto një DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Çifto një kontrollues Move ose Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Shto një kontrollues serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Shto një telekomandë DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Familja e kontrolluesit</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Hap kapakun e baterisë dhe shtyp butonin e kuq SYNC. Lëre PadForge të kërkojë derisa të shfaqet kontrolluesi yt.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Çiftim i përkohshëm (mbaj 1 dhe 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Çifto</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Po kërkon. Shtyp tani butonin SYNC.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Po kërkon një telekomandë.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Kontrollues të gjetur</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Ende nuk u gjet asnjë kontrollues. Sigurohu që dritat blu po pulsojnë.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>U çiftua {0}. Do të shfaqet në listën e pajisjeve.</value></data>
@@ -3165,7 +3331,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="WiiPair_Done" xml:space="preserve"><value>U krye</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>API-ja OpenVR e Valve (BSD 3-Clause): kufjet VR dhe kontrolluesit e lëvizjes si burime hyrjeje. Runtime-i vendas ngarkohet nga instalimi yt i SteamVR.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API-ja OpenVR e Valve: kufjet VR dhe kontrolluesit e lëvizjes si burime hyrjeje. Runtime-i vendas ngarkohet nga instalimi yt i SteamVR.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Në punë</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Në punë, drajveri i lidhur</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Në punë, kontrolluesit aktivë</value></data>
@@ -3203,13 +3369,12 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Çiftimi nuk u krye. Hapi që dështoi shfaqet sipër.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Mbyll</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Etiketat NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Regjistro një etiketë</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Prek një etiketë në lexues për të kapur UID-në e saj.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(në pritje)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Emri:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Prek një etiketë në lexues dhe emërtoje. Bëhet një buton që mund ta hartëzosh.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Prek një etiketë në lexues.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Emri</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Emërtoje këtë etiketë</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Regjistro</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Etiketat e regjistruara</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Të regjistruara</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Nuk u zbulua lexues NFC. Lidh një lexues PC/SC dhe hape sërish.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etiketa u kap. Fut një emër dhe kliko Regjistro. Prek një etiketë tjetër për ta zëvendësuar.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>U regjistrua "{0}." Prek një etiketë tjetër për të shtuar më shumë.</value></data>
@@ -3287,22 +3452,22 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Memoria e përbashkët FreeTrack nuk mund të hapej as ajo.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Mëso / Menaxho butonat e fshehur</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Butonat e fshehur</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Mëso një buton</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Shtyp një herë butonin e fshehur kur të kërkohet. PadForge vëzhgon tastierën, mausin, çdo raport të prodhuesit dhe çdo ngjarje të sistemit në këtë makinë, dhe regjistron atë që ndryshon butoni.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Makina:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Nis mësimin</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Mëso PadForge një buton që Windows nuk e shfaq si kontrollues. Shtype kur të kërkohet.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Mos prek asgjë. Po lexohet gjendja në pushim…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Shtyp tani butonin e fshehur, pastaj lëshoje…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Një çast…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Nuk u pa asnjë ndryshim. Shtyp butonin gjatë dritares së theksuar dhe provo përsëri.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Shtyp dhe mbaje butonin tani.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lëshoje butonin.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Hapi {0} nga {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Nuk u pa asnjë ndryshim. Zgjidh Fillo nga e para, pastaj shtyp dhe mbaje butonin kur të kërkohet.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>U vëzhguan {0} raporte të prodhuesit dhe {1} klasa ngjarjesh. Gjatë shtypjes: {2} raporte, {3} ngjarje.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Butoni u kap. Shkruaj një emër dhe kliko Regjistro.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Burimi:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Emri:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Burimi</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Emri</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Emërtoje këtë buton</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Regjistro</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Butonat e mësuar</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Fillo nga e para</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Ende nuk është mësuar asnjë buton.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>U regjistrua „{0}“. Nise përsëri për të mësuar një tjetër.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Mësuar në {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>U regjistrua „{0}“. Zgjidh Fillo nga e para për të mësuar një tjetër.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Tastet: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Butonat e fshehur janë çaktivizuar. Së pari aktivizo Butonat e PC-së portative te Cilësimet.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} po ekzekutohet. Ai ende reagon ndaj këtyre butonave derisa ta ndalosh.</value></data>
@@ -3451,6 +3616,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurimet e komunitetit</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Shfleto konfigurimet e kontrolluesve Steam Input të bëra nga komuniteti dhe përktheji në profile PadForge. PadForge lidhet drejtpërdrejt me serverët e Steam vetëm kur kërkon, hap një konfigurim ose kontrollon konfigurimet e importuara për përditësime. Dërgon tekstin e kërkimit, ID-të e lojërave, konfigurimeve dhe krijuesve të përfshirë, dhe versionin e PadForge. Hyrja anonime në Steam dërgon gjithashtu versionin e Windows dhe një ID makine të bërë nga hash-e të ID-së së instalimit të Windows, adresave të përshtatësve të rrjetit dhe serialit të diskut të nisjes. Pa telemetri, pa shërbim të palës së tretë, pa llogari Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge lidhet me serverët e Steam vetëm kur kërkon, hap një konfigurim ose kontrollon konfigurimet e importuara për përditësime. Pa telemetri, pa llogari Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Çfarë dërgohet</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktivizo konfigurimet e komunitetit</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Shfaq konfigurimet e vjetra të Workshop</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Disa konfigurime më të vjetra nuk kanë skedar të shkarkueshëm në CDN-në e Steam. PadForge i liston me shenjën „Legacy“ dhe lexon kopjen që Steam ruan pasi të abonoheni. Deri atëherë, ofron ta hapë konfigurimin në Steam Workshop.</value></data>
@@ -3458,18 +3625,21 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Kontrollo profilet e importuara për përditësime</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Cache-i i Workshop u pastrua</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Shfleto konfigurimet e komunitetit</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Shfleto konfigurimet e komunitetit</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profilet · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Merr profile</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Fillo nga një profil i gatshëm, një konfigurim i komunitetit ose një skedar nga një mjet tjetër.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Fillestare</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Komuniteti</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Importo një skedar</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ruajtja shton një profil të zakonshëm që mund ta ndryshosh.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Farkëtimorja është e ftohtë</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Shfletimi i konfigurimeve të komunitetit e lidh PadForge drejtpërdrejt me Steam, vetëm kur kërkon, kurrë gjatë nisjes.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Aktivizo konfigurimet e komunitetit</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Kërko lojëra</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} lojëra</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Lojërat</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Nuk u gjet asnjë lojë në dyqanin Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Po kërkohet në Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Po lexohen konfigurimet nga Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Po lexohet konfigurimi nga Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>renditur sipas vlerësimit</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Renditur sipas</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Kërko në këto konfigurime</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Vlerësimi</value></data>
@@ -3483,7 +3653,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} u gjetën</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Po shfaqen {0} nga {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurime</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>konfigurime të komunitetit</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>mbështetje e plotë për kontrollues</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>mbështetje e pjesshme për kontrollues</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Kërko lojëra</value></data>
@@ -3502,8 +3671,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Retry" xml:space="preserve"><value>Provo përsëri</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Ky konfigurim i vitit 2016 është më i vjetër se CDN-ja e konfigurimeve të Steam. Abonohuni në të në Steam dhe PadForge e lexon nga dosja juaj e Steam.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Hap në Steam Workshop</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Zgjidh një konfigurim për të lexuar manifestin e tij të përkthimit.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} lidhje u lexuan</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Zgjidh një konfigurim për të parë çfarë kalon.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Çfarë kalon</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Bëhet</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Zgjedh kontrolluesin virtual që merr butonat dhe levat e konfigurimit. Tastet dhe mausi i tij shkojnë gjithmonë te një kontrollues Tastierë + maus.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Shtresat</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Të pastra</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Të pjesshme</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Të anashkaluara</value></data>
@@ -3568,7 +3740,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Po kontrollohet Steam Workshop për përditësime…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Profilet e importuara janë të përditësuara ({0} të kontrolluara)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Përditësimet e Workshop</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Këto profile të importuara kanë versione më të reja në Steam Workshop. Importoji përsëri nga Shfleto konfigurimet e komunitetit për të marrë ndryshimet.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Këto profile të importuara kanë versione më të reja në Steam Workshop. Importoji përsëri nga Merr profile për të marrë ndryshimet.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Në shtypje të gjatë</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Në shtypje të shkurtër</value></data>
@@ -3716,7 +3888,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menyja {0} qeliza {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Mbivendosja e menysë</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Mbivendosjet</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Treguesit në ekran që PadForge shfaq ndërsa luani. Fikja e njërit prej tyre nuk e ndryshon kurrë sjelljen, vetëm nëse ajo njoftohet.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Treguesit në ekran që PadForge shfaq ndërsa luani. Fikja e njërit prej tyre nuk e ndryshon kurrë sjelljen, vetëm nëse ajo shfaqet.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Dalja e shtresës së ndërrimit</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Mbivendosja e ndërrimit të profilit</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Shfaq unazën ose rrjetën në ekran ndërsa një meny radiale ose me prekje është e aktivizuar. Menytë nisin edhe kur mbivendosja është e fikur.</value></data>
@@ -3766,6 +3938,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekuenca e tonit për këtë kanal, 20 deri në 120 Hz. Ekzekutoni kalimin e frekuencave për të gjetur ku reagon më fort shaker-i juaj.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volumi i këtij kanali përpara fitimit kryesor.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Përforcimi</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frekuenca</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Provo</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Luan tonin e këtij kanali për 1.5 sekonda me fitimin e caktuar.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Rivendos motorin e ulët</value></data>
@@ -3808,16 +3981,16 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Kurba e përshpejtimit të kursorit të trackpad-it për daljen touchpad-në-maus. Port në C# i profilit të përshpejtimit të touchpad-it të libinput. MIT.</value>
+    <value>Kurba e përshpejtimit të kursorit të trackpad-it për daljen touchpad-në-maus. Port në C# i profilit të përshpejtimit të touchpad-it të libinput.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Modele 3D të kontrolluesve (Xbox 360, Steam Deck) dhe kodi i modelit dhe animacionit të pamjes 3D, nga CasperH2O, Lesueur Benjamin, trippyone. Gjithashtu referenca për raportin e Steam Deck dhe dekodimin e haptikës, raportin e fikjes së Steam Controller (2015), listën e vëzhgimit të daemon-it handheld, kohën e kontrollit të përditësimit dhe ciklin e portës së hub-it, 500 ms larg njëri-tjetrit, që rilidh një kontrollues USB të fshehur në mënyrë që programet që e hapën të parët ta humbasin atë. CC BY-NC-SA 4.0.</value>
+    <value>Modele 3D të kontrolluesve (Xbox 360, Steam Deck) dhe kodi i modelit dhe animacionit të pamjes 3D, nga CasperH2O, Lesueur Benjamin, trippyone. Gjithashtu referenca për raportin e Steam Deck dhe dekodimin e haptikës, raportin e fikjes së Steam Controller (2015), listën e vëzhgimit të daemon-it handheld, kohën e kontrollit të përditësimit dhe ciklin e portës së hub-it, 500 ms larg njëri-tjetrit, që rilidh një kontrollues USB të fshehur në mënyrë që programet që e hapën të parët ta humbasin atë.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>Skema 2D të kontrolluesve (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), nga AL2009man. MIT.</value>
+    <value>Skema 2D të kontrolluesve (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), nga AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>Dokumentim i protokollit audio të DualShock 4: parametrat SBC dhe strukturat e paketave, nga khallmark. GPL-2.0, vetëm dokumentim.</value>
+    <value>Dokumentim i protokollit audio të DualShock 4: parametrat SBC dhe strukturat e paketave, nga khallmark. Vetëm dokumentim.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Përdorni Windows nga divani. Kursori, rrotullimi dhe klikimet në këmbëzat.</value></data>
@@ -3831,10 +4004,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Skemë me gjashtë butona me pastrim SOCD sipas rregullave të turneve në të dy boshtet.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Tastierë + maus</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Shfleto profilet fillestare</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Profilet fillestare</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Profile të gatshme për një zhanër të tërë. Zgjidhni një, caktoni çdo kontrollues dhe luani. Ruajtja shton një profil të zakonshëm që mund ta modifikoni.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Ruaj profilin</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>U shtua profili fillestar «{0}».</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Point and Click</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Lojëra aventure dhe çdo gjë që drejtohet nga një kursor dhe dy folje.</value></data>
@@ -3934,13 +4103,13 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Rivendos rrugën e daljes</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Ndiq prizën e kufjeve</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>Harta e baytave të raportit të daljes së DualSense dhe semantika scePad e Sony nga WujekFoliarz, mbështetje për shkruesit e efekteve dhe të audios së PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Harta e baytave të raportit të daljes së DualSense dhe semantika scePad e Sony nga WujekFoliarz, mbështetje për shkruesit e efekteve dhe të audios së PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modeli i drejtimit të audios me zbulim prize nga SundayMoments, reference pas Ndiq prizën e kufjeve. Lexuar si dokumentim; AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modeli i drejtimit të audios me zbulim prize nga SundayMoments, reference pas Ndiq prizën e kufjeve. Lexuar si dokumentim.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koduesi QR në modalitet bajtesh për adresat e kontrolluesit në web, i portuar nga implementimi referues i Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Koduesi QR në modalitet bajtesh për adresat e kontrolluesit në web, i portuar nga implementimi referues i Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika e mausit në vizualizimin Tastierë + maus, nga Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Grafika e mausit në vizualizimin Tastierë + maus, nga Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Ritëm i shkallëzuar me presion</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Ritmi i përsëritjes ndjek sa fort shtypet burimi analog i zgjedhur. Një shtypje e lehtë përsëritet me Intervalin e ngadaltë, një shtypje e plotë me Intervalin më sipër, dhe çdo gjë mes tyre përzihet butësisht.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervali i ngadaltë</value></data>
@@ -3955,7 +4124,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Po lidhet me kod…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Nuk u arrit dot pika tjetër drejtpërdrejt. Provoni Lidhu me adresë përmes një VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Kodi i këtij kompjuteri</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Shkëmbeni kodet me personin tjetër: ngjitni kodin e tij te kutia juaj Lidhu ndërsa ai ngjit tuajin, pastaj të dy klikoni Lidhu. Kjo hap një rrugë të drejtpërdrejtë nëpër internet, pa nevojë për VPN. Kodi rifreskohet ndërsa Lidhja në distancë është aktive.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Shkëmbeni kodet me personin tjetër: ngjitni kodin e tij te Lidhu me adresë, nën Më shumë, ndërsa ai ngjit tuajin, pastaj të dy klikoni Çifto / Lidhu. Kjo hap një rrugë të drejtpërdrejtë nëpër internet, pa nevojë për VPN. Kodi rifreskohet ndërsa Lidhja në distancë është aktive.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Ky rrjet nuk mund të bëjë lidhje të drejtpërdrejta (duket si hotspot celular ose NAT i nivelit të operatorit). Përdorni një VPN si Tailscale, ose lidhuni nga internet shtëpie.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Nuk u gjet adresa publike e këtij kompjuteri (rrjeti mund ta bllokojë trafikun e nevojshëm). Lidhjet e drejtpërdrejta nuk do të funksionojnë këtu. Përdorni një VPN, ose Lidhu me adresë në të njëjtin rrjet.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bateria e kontrolluesit është e ulët</value></data>
@@ -3966,6 +4135,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Njofto në ose nën</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Dridhe edhe kontrolluesin</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Njoftim provë</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Provo njoftimin</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Kërkesat e caktimit</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kur një pajisje lidhet ndërsa faqja e një kontrolluesi virtual është e hapur, PadForge mund të ofrojë ta caktojë atje, dhe Kreu mund t'i ofrojë një pajisjeje të re një kontrollues virtual të vetin. Asgjë nuk caktohet derisa të pranoni një ofertë. Tastierat, mausat, touchpad-et dhe tastet e medias nuk ofrohen kurrë.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofro pajisje të reja për kontrolluesin virtual të hapur</value></data>
@@ -3979,23 +4149,28 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Jo tani</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Çdo frazë</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Makrot zanore</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Thuaj një frazë dhe shtyp një buton që mund ta hartëzosh. Çdo mikrofon që PadForge mund të arrijë dëgjon.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Menaxho makrot zanore</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Aktivizo makrot zanore</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Ndez dëgjimin. Kur është aktiv, çdo frazë e regjistruar është një buton që aktivizohet kur e thoni. Modeli i njohjes vjen brenda PadForge dhe punon plotësisht jashtë linje.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Dëgjimi</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Gjithmonë e mban mikrofonin hapur. Push to Talk dëgjon vetëm ndërsa mbahet shtypur një makro e lidhur Dëgjim zanor.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Dëgjimi aktiv ose joaktiv, modaliteti, besueshmëria</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Gjithmonë</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Push to Talk</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Besueshmëria minimale</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Sa i sigurt duhet të jetë njohësi përpara se të aktivizohet një frazë. Rritni nëse të folurit e rastësishëm aktivizon makro, ulni nëse frazat tuaja humbasin.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Po pritet të folurit. Njohjet shfaqen këtu me besueshmërinë e tyre.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>U dëgjua «{0}» ({1:F2}). U aktivizua.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>U dëgjua «{0}» ({1:F2}). Nën pragun e besueshmërisë ose tasti i të folurit është lëshuar.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Dëgjimi është joaktiv. Ndize te Më shumë.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>U dëgjua {0} në {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>U dëgjua {0} në {1}. Ishte nën pragun e besueshmërisë, ose tasti i të folurit ishte lëshuar.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Fraza</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Fraza për të thënë</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Emri</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Emri i butonit</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Regjistro</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frazat e regjistruara</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>U regjistrua «{0}». Thoni atë për të aktivizuar butonin e saj, dhe lidhni makro me të në faqen Pad.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frazat</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>U regjistrua „{0}“. Thuaje për të aktivizuar butonin e saj, dhe hartëzoje në faqen e një kontrolluesi.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Dëgjim zanor (me mbajtje)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push to talk për makrot zanore: ndërsa mbahet kjo makro, njohësi dëgjon. Caktoni Dëgjimi në Push to Talk te Menaxho makrot zanore.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikrofon</value></data>
@@ -4003,12 +4178,12 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Motori haptik dhe ofruesi Razer pas dridhjes së rreshtit Razer Sensa. HAR.dll dhe Interhaptics.RazerProvider.dll vijnë brenda PadForge, të pandryshuara nga Core SDK publik. Nga Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Motori haptik dhe ofruesi Razer pas dridhjes së rreshtit Razer Sensa. HAR.dll dhe Interhaptics.RazerProvider.dll vijnë brenda PadForge, të pandryshuara nga Core SDK publik. Nga Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Modelet 3D të Steam Controller (2015) dhe Steam Controller (2026), të rrjetëzuara nga skedarët STEP të publikuar nga Valve. Copyright Valve Corporation. CC BY-NC-SA 4.0. PadForge nuk lidhet me Valve dhe nuk miratohet prej saj.</value>
+    <value>Modelet 3D të Steam Controller (2015) dhe Steam Controller (2026), të rrjetëzuara nga skedarët STEP të publikuar nga Valve. Copyright Valve Corporation. PadForge nuk lidhet me Valve dhe nuk miratohet prej saj.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 runtime</value>
@@ -4025,7 +4200,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Konfirmim i strukturës së Razer Chroma REST API për ndriçimin Razer, nga Adam Hellberg dhe Brandon Scott. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Konfirmim i strukturës së Razer Chroma REST API për ndriçimin Razer, nga Adam Hellberg dhe Brandon Scott. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Referencat e Logitech LED SDK</value>
   </data>
@@ -4034,19 +4209,19 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Datagrami UDP i gjurmuesit dhe struktura e memories së përbashkët FreeTrack 2.0 për gjurmimin e kokës. ISC. Vetëm dokumentim, nuk përfshihet kod.</value>
+    <value>Datagrami UDP i gjurmuesit dhe struktura e memories së përbashkët FreeTrack 2.0 për gjurmimin e kokës. Vetëm dokumentim, nuk përfshihet kod.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Klasa e ngjarjeve utilitare Lenovo WMI në të cilën abonohet mësuesi i butonit të fshehur të handheld-it, dhe modeli i serverit IPC me privilegje që qëndron pas kontrollit të jashtëm të profilit. GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value>
+    <value>Klasa e ngjarjeve utilitare Lenovo WMI në të cilën abonohet mësuesi i butonit të fshehur të handheld-it, dhe modeli i serverit IPC me privilegje që qëndron pas kontrollit të jashtëm të profilit. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Vargjet e identitetit të PC-ve handheld dhe shënimet e raporteve të prodhuesit, kryqkontrolluar për mësuesin e butonit të fshehur. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value>
+    <value>Vargjet e identitetit të PC-ve handheld dhe shënimet e raporteve të prodhuesit, kryqkontrolluar për mësuesin e butonit të fshehur. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook dhe WiimoteHook</value>
@@ -4061,13 +4236,13 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Sekuencat e thirrjeve WinMM pas API-t të vjetër MIDI: hapja e një porte, dërgimi te ajo dhe mbyllja. Lexuar nga PortMidi (MIT, nga Ross Bencina, Phil Burk dhe Roger B. Dannenberg) dhe RtMidi (licenca RtMidi e llojit MIT, nga Gary P. Scavone). Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referencat e Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Struktura e fjalës së ngjarjes pas hyrjes G-key vjen nga LogitechGkeyLib.h në SDK. Rendi i kërkimit të bibliotekës dhe mbyllja ndjekin GKey.cpp të Mumble (BSD 3-Clause). PadForge ngarkon cilindo kopje të bibliotekës që ndodhet në makinë dhe nuk përfshin kod Logitech.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Struktura e fjalës së ngjarjes pas hyrjes G-key vjen nga LogitechGkeyLib.h në SDK. Rendi i kërkimit të bibliotekës dhe mbyllja ndjekin GKey.cpp të Mumble. PadForge ngarkon cilindo kopje të bibliotekës që ndodhet në makinë dhe nuk përfshin kod Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup dhe AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Hyrja e tastierës analoge porton në C# rrugët e tastierës, tabelat e tasteve dhe katalogët e modeleve të HallJoy (AGPL-3.0, PashOK7) dhe ndjek Soup dhe SDK-në JavaScript të AnalogSense (MIT, Calamity, Inc.), kontrolluar me Wooting Analog SDK (MPL-2.0). Tastierat e tjera ndjekin AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk dhe hmkconf (GPL-3.0-or-later, peppapighs), dhe forket Soup të DenkiSuki, LeiterConsulting dhe paysdelest (MIT). Formatet e raporteve dhe tabelat e tasteve vijnë gjithashtu nga konfiguruesit Synapse Web të Razer dhe NuPhyIO të NuPhy, OpenRazer (GPL-2.0-or-later), razer-analog-keyboard i Abbytech, TinyUSB (MIT) dhe shënimet e kapjes së Sainan.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Referencat Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API-ja Bliss-Box pas «Read Bliss-Box Adapters», lexuar nga API Tool i Bliss-Box LLC (e llojit BSD, shpërndarje pa pagesë) dhe DeviceBuddy (burim i disponueshëm, Bliss-Box LLC), me emrat e butonave nga skedarët Bliss-Box në forkun retroarch-joypad-autoconfig të SteveFox1620, kontrollet e Controller Pak të kontrolluara me libdragon (Unlicense), dhe përgjigjja e padit PlayStation nga psx-spx dhe drajveri psxpad-spi i Linux (GPL-2.0-or-later). Emrat e kontrolluesve dhe shënimet e mbështetjes vijnë gjithashtu nga lista e përputhshmërisë e Bliss-Box LLC, dhe sjellja e përshtatësve u kontrollua me firmuerin e tyre. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transporti USB nga Vadym Hrynchyshyn për kontrolluesit e përbërë USB të HIDMaestro. HIDMaestro mbart drajverin e nënshkruar të kontrolluesit pritës dhe e instalon herën e parë që krijohet një kontrollues i përbërë. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transporti USB nga Vadym Hrynchyshyn për kontrolluesit e përbërë USB të HIDMaestro. HIDMaestro mbart drajverin e nënshkruar të kontrolluesit pritës dhe e instalon herën e parë që krijohet një kontrollues i përbërë.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Zgjidhni cilat gjysma të këtij slot-i janë aktive. Fikja e një gjysme fsheh rreshtat e saj dhe ndalon dërgimin, dhe i ruan hartëzimet e saj, ndaj rindezja i rikthen ato.</value>
   </data>
@@ -4135,13 +4310,15 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
     <value>Cakto pajisjet e ndara</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Caktimet në {0}</value>
+    <value>Pajisjet e ndara me {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Zgjidhni një pajisje të ndarë nga ky kompjuter, pastaj zgjidhni kontrolluesit e saj virtualë në kompjuterin tjetër.</value>
+    <value>Zgjidh një pajisje, pastaj kontrolluesit në atë kompjuter që duhet të drejtojë.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Ndarë nga ky kompjuter</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Kontrolluesit në {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profili: {0}</value>
+    <value>Profili aktiv: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Në kompjuterin tjetër, lejoni ndryshimet e caktimeve në distancë për këtë kompjuter te Lidhja në distancë &gt; Kompjuterët e çiftuar.</value>
@@ -4233,60 +4410,60 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS dhe CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Dekoduesi i të folurit, biblioteka e transduktorëve dhe algjebra lineare brenda libvosk.dll. Kaldi dhe OpenFst: Apache-2.0. OpenBLAS dhe CLAPACK: BSD 3-Clause, me njoftime të veçanta për GotoBLAS2 brenda OpenBLAS dhe për runtime-in f2c.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Skemat e profileve fillestare Strategji dhe Desktop, dhe sjellja turbo që shmang turbo-ja e shkallëzuar me presion. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Skemat e profileve fillestare Strategji dhe Desktop, dhe sjellja turbo që shmang turbo-ja e shkallëzuar me presion. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referencë nga Antoine Aflalo për strukturën e ndërfaqes së padokumentuar IPolicyConfig të Windows, që PadForge e përdor për të riaktivizuar pikën fundore audio të një kontrolluesi. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Referencë nga Antoine Aflalo për strukturën e ndërfaqes së padokumentuar IPolicyConfig të Windows, që PadForge e përdor për të riaktivizuar pikën fundore audio të një kontrolluesi. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formati i profilit EQ parametrik që importon „EQ parametrik“ i një kontrolluesi, nga Jaakko Pasanen. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Formati i profilit EQ parametrik që importon „EQ parametrik“ i një kontrolluesi, nga Jaakko Pasanen. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknikat SendInput pas makrove Text Block dhe grepit të akordit të tastierës: shkrimi Unicode, kufijtë e grupeve, tasti maskues Win dhe hyrja e injektuar me etiketë. GPL-2.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknikat SendInput pas makrove Text Block dhe grepit të akordit të tastierës: shkrimi Unicode, kufijtë e grupeve, tasti maskues Win dhe hyrja e injektuar me etiketë. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Referenca e protokollit DSU pas serverit të lëvizjes, nga v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Referenca e protokollit DSU pas serverit të lëvizjes, nga v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Strukturimi i raportit të daljes Bluetooth të DualShock 4, nga Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Strukturimi i raportit të daljes Bluetooth të DualShock 4, nga Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Diapazonet e baterisë së DualShock 4, koha dhe hapat e intensitetit të pulsit haptik të touchpad-it, dhe sjellja e fling-ut të touchpad-it. GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Diapazonet e baterisë së DualShock 4, koha dhe hapat e intensitetit të pulsit haptik të touchpad-it, dhe sjellja e fling-ut të touchpad-it. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (fork i hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Diapazonet e volumit audio të DualSense, mostrat haptike 8-bit me shenjë dhe struktura e kombinuar e transportit Bluetooth. GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Diapazonet e volumit audio të DualSense, mostrat haptike 8-bit me shenjë dhe struktura e kombinuar e transportit Bluetooth. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Parazgjedhja dhe pragu i gjatësisë së buferit audio Bluetooth të DualSense, nga awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Parazgjedhja dhe pragu i gjatësisë së buferit audio Bluetooth të DualSense, nga awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Vlerat e paravendosjeve të këmbëzës adaptive GameCube, nga Mxater. Lexuar vetëm për fakte.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Shenjat e boshteve të lëvizjes DSU, kontrolluar me dekoduesin e saj UDP. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Shenjat e boshteve të lëvizjes DSU, kontrolluar me dekoduesin e saj UDP. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Paravendosjet parazgjedhëse të Elite Dangerous pas profilit fillestar Simulim hapësinor, nga Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Paravendosjet parazgjedhëse të Elite Dangerous pas profilit fillestar Simulim hapësinor, nga Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Rendi i nibble-ve ADPCM të altoparlantit të Wii Remote, dhe dekoduesi SBC që kontrolloi koduesin e DualShock 4. LGPL-2.1-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod LGPL.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Rendi i nibble-ve ADPCM të altoparlantit të Wii Remote, dhe dekoduesi SBC që kontrolloi koduesin e DualShock 4. Lexuar vetëm si dokumentim, nuk përfshihet kod LGPL.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Drejtimi i busullës me kompensim të animit për kthimin me busull, i portuar në C#, nga x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Drejtimi i busullës me kompensim të animit për kthimin me busull, i portuar në C#, nga x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Rregulli i njoftimit për bateri të ulët dhe modeli i dridhjes Identify, nga Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Rregulli i njoftimit për bateri të ulët dhe modeli i dridhjes Identify, nga Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>Modele 3D të DualShock 4, DualSense, DualSense Edge, Xbox Series dhe Switch 2 Pro Controller, të blera në CGTrader. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>Modele 3D të DualShock 4, DualSense, DualSense Edge, Xbox Series dhe Switch 2 Pro Controller, të blera në CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>Model 3D i DualShock 3, i blerë në CGTrader dhe i ndarë në rrjeta sipas pjesëve. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>Model 3D i DualShock 3, i blerë në CGTrader dhe i ndarë në rrjeta sipas pjesëve.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Shtresa HID e përpiluar në SDL3.dll të përfshirë, nga Alan Ott, Signal 11 Software. Licencë e llojit BSD.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Shtresa HID e përpiluar në SDL3.dll të përfshirë, nga Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Burimet e ikonave</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Simboli i flakës nga Material Design Icons (Pictogrammers, Apache-2.0), ikona e përgjithshme e gamepad-it nga Ionicons (Ionic, MIT), joystick-u Extended nga Jam Icons (Michael Amprimo, MIT), dhe ikonat Xbox dhe PlayStation nga SVG Repo, sipas licencës në faqen e secilës ikonë.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokolli i rele-së pas korsisë rezervë të Lidhjes në distancë, i folur me reletë publike falas të n0.computer ashtu siç e bën FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Numëruesit dhe deltat e mbështjella të mausit optik të Joy-Con 2 pas Lëvizjes së mausit X dhe Y, nga coffincolors, Frano dhe moutella. MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Numëruesit dhe deltat e mbështjella të mausit optik të Joy-Con 2 pas Lëvizjes së mausit X dhe Y, nga coffincolors, Frano dhe moutella. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Drajverët e kernelit Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Faktet e protokollit të DualShock 3, Move, DualSense, Steam Deck dhe PID force-feedback, dhe struktura e bllokut ACPI WMI. PadForge i lexon përshkruesit e tastierave dhe të mausave sipas rregullave të hid-core. GPL-2.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Faktet e protokollit të DualShock 3, Move, DualSense, Steam Deck dhe PID force-feedback, dhe struktura e bllokut ACPI WMI. PadForge i lexon përshkruesit e tastierave dhe të mausave sipas rregullave të hid-core. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Hyrja e kontrolluesve në Windows, përfshirë paddle-t e Xbox Elite. Ngarkuesi i SDK-së është i lidhur në SDL. MIT (ngarkuesi i SDK-së).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Hyrja e kontrolluesve në Windows, përfshirë paddle-t e Xbox Elite. Ngarkuesi i SDK-së është i lidhur në SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Runtime-i C++ që kërkon SDL3.dll (msvcp140.dll, vcruntime140.dll dhe, në build-in x64, vcruntime140_1.dll), i përfshirë i pandryshuar brenda PadForge. Kushtet e licencës Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Runtime-i C++ që kërkon SDL3.dll (msvcp140.dll, vcruntime140.dll dhe, në build-in x64, vcruntime140_1.dll), i përfshirë i pandryshuar brenda PadForge.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Shënime për Joy-Con dhe Pro Controller HID, dridhjen HD dhe LED-in home, nga dekuNukem, me switch2_controller_research të ndeadly për Switch 2. Lexuar vetëm për fakte protokolli.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Modeli i foljes së përditësimit me privilegje pas ndihmësit të përditësuesit brenda aplikacionit. LGPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod LGPL.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Modeli i foljes së përditësimit me privilegje pas ndihmësit të përditësuesit brenda aplikacionit. Lexuar vetëm si dokumentim, nuk përfshihet kod LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Nënshkrimet WinSCard dhe sekuenca e thirrjeve të monitorimit të lexuesit pas hyrjes së etiketave NFC, nga Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Nënshkrimet WinSCard dhe sekuenca e thirrjeve të monitorimit të lexuesit pas hyrjes së etiketave NFC, nga Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Strukturat e raporteve të PlayStation Move, kalibrimi i sensorit dhe shtrëngimi i duarve i aksesorit EXT, nga Thomas Perl, kryqkontrolluar me wiki-n moveonpc. Implementimi i PadForge është C# origjinal. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Referencat e telemetrisë së garave</value></data>
@@ -4294,23 +4471,23 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentim për çiftimin Bluetooth dhe raportet e DualShock 3. GPL-2.0 dhe GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Struktura e mesazhit STUN dhe dekodimi XOR-MAPPED-ADDRESS pas kalimit NAT të Lidhjes në distancë, i marrë nga burimi i saj C#, nga Aaron Clauson. BSD 3-Clause, me kufizimin e përdorimit në seksionin 2 të licencës së saj.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Struktura e mesazhit STUN dhe dekodimi XOR-MAPPED-ADDRESS pas kalimit NAT të Lidhjes në distancë, i marrë nga burimi i saj C#, nga Aaron Clauson. Licenca e saj shton një kufizim përdorimi në seksionin 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Referencat SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>Struktura e raportit 3Dconnexion, tabela e pajisjeve dhe shkalla e boshteve, lexuar nga hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse nga AndunHH (CC BY-NC-SA 4.0) dhe spacenavd (GPL-3.0-or-later). Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Ndërprerja e lidhjes Bluetooth me IOCTL të hostit, ordinalet e fshehura XInput për fikje dhe aftësi, dhe vlerat parazgjedhëse të dridhjes së këmbëzës së DualSense. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Ndërprerja e lidhjes Bluetooth me IOCTL të hostit, ordinalet e fshehura XInput për fikje dhe aftësi, dhe vlerat parazgjedhëse të dridhjes së këmbëzës së DualSense. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Referencat e protokollit të Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Pulset haptike të rrëshqitjes, bitet e butonave të raportit 0x42, komanda e fikjes dhe rele-ja e dongle-it, lexuar nga OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) dhe SteamlessController (MIT). Vetëm dokumentim, nuk përfshihet kod GPL ose AGPL.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Zonat e vdekura të levave</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Gjashtë format e zonës së vdekur, nga Minimuino. GFDL-1.3-or-later dhe GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Sjellja e treguesit IR të Wii Remote: pika e mesit të çiftit të pikave, kufijtë, zhvendosja e shiritit të sensorit, zbutja dhe kurba FPS Mouse, me forket e Ryochan7, Suegrini dhe Trihy. GPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Sjellja e treguesit IR të Wii Remote: pika e mesit të çiftit të pikave, kufijtë, zhvendosja e shiritit të sensorit, zbutja dhe kurba FPS Mouse, me forket e Ryochan7, Suegrini dhe Trihy. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Strukturat e efekteve të këmbëzës adaptive të DualSense dhe paketimi i zonave, riprodhuar në C#, nga John «Nielk1» Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Strukturat e efekteve të këmbëzës adaptive të DualSense dhe paketimi i zonave, riprodhuar në C#, nga John «Nielk1» Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Struktura DS4_REPORT_EX pas raportit të hyrjes së DualShock 4 virtual, nga Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Struktura DS4_REPORT_EX pas raportit të hyrjes së DualShock 4 virtual, nga Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (fork i hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Diapazoni i zbutjes 48 dB i mikrofonit virtual të DualSense. GPL-3.0-or-later, lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Diapazoni i zbutjes 48 dB i mikrofonit virtual të DualSense. Lexuar vetëm si dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Referencat e protokollit të timonit</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Raportet e native force feedback dhe të LED-ve të ndërrimit të RPM-së për timonat Fanatec, Thrustmaster dhe Logitech, lexuar nga hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) dhe thrustmaster-led-linux (GPL-3.0), dhe kryqkontrolluar me shtojcën SimHub LED nga prodigal.knight (MIT) dhe tm-bt-led (MIT). Vetëm dokumentim, nuk përfshihet kod GPL.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Referencat Arcade I/O</value></data>
@@ -4340,19 +4517,19 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Referencat e kontrolluesve Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>Protokollet pas drajverëve të fork-ut SDL për Xbox-in origjinal, Steel Battalion, chatpad-in Xbox 360 dhe uDraw Xbox 360, dhe marrësit Xbox 360 që PadForge i lidh me drajverin e vetë të Windows, lexuar nga brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp nga ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) dhe xemu (LGPL-2.0-or-later). Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Paketimi me një INF për pajisje dhe lista e pajisjeve pas lidhjes automatike WinUSB, nga Pete Batard. Vetëm dokumentim, nuk përfshihet kod. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Paketimi me një INF për pajisje dhe lista e pajisjeve pas lidhjes automatike WinUSB, nga Pete Batard. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Kërkesa e raportit të veçorisë Bluetooth HID që dërgon PadForge për të identifikuar një aksesor PS Move, nga Ricardo Quesada. Vetëm dokumentim, nuk përfshihet kod. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Kërkesa e raportit të veçorisë Bluetooth HID që dërgon PadForge për të identifikuar një aksesor PS Move, nga Ricardo Quesada. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Çelësi i konfigurimit Windows Mixed Reality në fork-un SDL vjen nga Monado. Copyright 2021 Jan Schmidt. Vjen brenda SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Çelësi i konfigurimit Windows Mixed Reality në fork-un SDL vjen nga Monado. Copyright 2021 Jan Schmidt. Vjen brenda SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Bashkimi i sensorëve Rift DK1 në fork-un SDL është port i atij të OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Vjen brenda SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Bashkimi i sensorëve Rift DK1 në fork-un SDL është port i atij të OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Vjen brenda SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Dokumentim i protokollit të altoparlantit të Wii Remote dhe i kalibrimit IR. Lexuar vetëm për fakte protokolli.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Raporti 9-bajtësh i këmbëzave impulsive të Xbox dhe rruga e shkrimit të tij, nga araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Raporti 9-bajtësh i këmbëzave impulsive të Xbox dhe rruga e shkrimit të tij, nga araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Formati PCM haptik i PS5, 16-bit me shenjë në 3 kHz, që vendosi kodimin haptik Bluetooth 8-bit me shenjë. AGPL-3.0, lexuar vetëm si dokumentim, nuk përfshihet kod AGPL.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Formati PCM haptik i PS5, 16-bit me shenjë në 3 kHz, që vendosi kodimin haptik Bluetooth 8-bit me shenjë. Lexuar vetëm si dokumentim, nuk përfshihet kod AGPL.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Ekranet e tastierës</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Vizaton në ekranet e integruara në tastierat GamePanel të Logitech dhe në Mad Catz S.T.R.I.K.E. 7, si dhe në një telefon përmes Logitech Arx Control: profilin, orën, kohën e lojës, një kronometër, një imazh ose ngjyrën e shiritit të dritës të një kontrolluesi DualShock 4 ose DualSense. Çdo ekran ka rreshtin e vet në faqen Pajisjet, ku caktoni çfarë shfaq. Tastet pranë një ekrani janë butonat e rreshtit të tij.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Drejto ekranet e tastierës</value></data>
@@ -4420,6 +4597,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Lëviz</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Lëviz X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Lëviz Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Zgjidh çfarë shfaq. Asgjë nuk ndryshon derisa të ruash.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} u caktua në {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Po shkarkohet SDK-ja e S.T.R.I.K.E. 7 e Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 tani ngarkon {0}.</value></data>
@@ -4559,8 +4737,8 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Po lexohet {0} nga memoria e përbashkët.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Në pritje të Assetto Corsa ose Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Përcjell te porta {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Formatet e personalizuara të telemetrisë</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Përshkruaj paketat që dërgon një lojë, fushë pas fushe, dhe PadForge e lexon edhe atë lojë. Çdo variabël bëhet bosht në rreshtin Telemetria e lojës dhe kanal për nxitësit e shprehjes së personalizuar. Zgjidh një format sipas emrit te lista Loja, ose jepi një gjatësi ose një çelës që ta gjejë Zbulim automatik.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Formate të personalizuara</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Përshkruaj paketat e telemetrisë së një loje që PadForge nuk e njeh.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Shto format</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Formati {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Emri</value></data>
@@ -4571,12 +4749,15 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Me këtë format lexohen vetëm paketat me saktësisht kaq bajte. Me 0, lexohet çdo paketë dhe Zbulim automatik e lë formatin anash, ndaj zgjidhe sipas emrit.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Çelësi i kërkuar</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Me këtë format lexohen vetëm paketat JSON që mbajnë këtë çelës. Kur lihet bosh, lexohet çdo paketë dhe Zbulim automatik e lë formatin anash, ndaj zgjidhe sipas emrit.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Radha e baytave</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian vendos baytin më pak domethënës të çdo numri së pari, siç bëjnë pothuajse gjithmonë lojërat në PC. Big-Endian vendos baytin më domethënës së pari.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Big-Endian</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Paketa e shkruan çdo numër me bajtin më të rëndësishëm së pari. Lojërat në PC pothuajse gjithmonë e shkruajnë me bajtin më pak të rëndësishëm së pari.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Vlerat e marshit</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Fusha e marshit ka numrat e vet për mbrapa dhe neutralin, si 0 dhe 11 në Forza. Kur kjo është çaktivizuar, një marsh negativ është mbrapa dhe 0 është neutral.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Mbrapa</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Çelësi i kërkuar për paketat JSON, vlerat e marsheve</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Fushat</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Çdo fushë lexon një numër te zhvendosja e vet, ose nën çelësin e vet në JSON (pikat arrijnë brenda objekteve të futura), dhe e shumëzon me shkallën. Pas shkallës, shpejtësia është në km/h, pedalet shkojnë nga 0 në 1, dhe drejtimi nga -1 krejt majtas në 1 krejt djathtas. Boshti i një variabli shkon nga Min në prehje deri te Max në plotësi.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Lexohet te</value></data>
@@ -4657,4 +4838,35 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} në {1} deri sa të ndalohet</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Ndalo efektin e këmbëzës në {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrollo ndriçimin e kësaj pajisjeje, Mbajtja e ndriçimit</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Të lidhura</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Të palidhura</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Hyrje të tjera</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Asnjë pajisje nuk përputhet.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Nuk përdoret</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateria {0}, po ngarkohet</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Përdorur nga</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Kontrollues i ri</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Cilësimet</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Çdo bosht, buton dhe sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Të shtypura: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID-të, shtegu, aftësitë, Detyro modalitetin e papërpunuar të xhojstikut</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID-të, shtegu, aftësitë</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopjo detajet</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkti</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Lloji</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Aftësitë</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Lidhja</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Shtegu</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numri serik</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmueri</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rishikimi</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Dridhe edhe kontrolluesin, Përsërit njoftimin çdo, Njofto kur të ngarkohet plotësisht</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Kërkon një vështrim</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Importuar pastër</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Cakto një fjalëkalim</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Shkyç Lidhjen në distancë</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Fjalëkalimi</value></data>
 </root>

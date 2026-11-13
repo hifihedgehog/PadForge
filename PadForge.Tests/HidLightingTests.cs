@@ -1773,11 +1773,10 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AnOutputOnlyRow_ShowsNoRawInputState_AndNoRuleBeforeIt()
+        public void AnOutputOnlyRow_ShowsNoTestInputs()
         {
             var lighting = new DeviceRowViewModel { DeviceTypeKey = "PeripheralLighting" };
             Assert.False(lighting.ShowRawInputState);
-            Assert.False(lighting.ShowRawInputDivider);
             var haptics = new DeviceRowViewModel { DeviceTypeKey = "PeripheralHaptics" };
             Assert.False(haptics.ShowRawInputState);
             var keyboard = new DeviceRowViewModel { DeviceTypeKey = "Keyboard" };

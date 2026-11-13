@@ -41,7 +41,9 @@ namespace PadForge.Controls
     /// One entry of the sidebar, to UI Automation. An entry is its own
     /// item: the window adds NavigationViewItems to the list. An item that
     /// is no entry (the Controllers label) or an entry with no tag offers
-    /// neither pattern.
+    /// neither pattern, reads as text, and has no place among the entries:
+    /// counted as an item it made Slot 1 the sixth of seven where the list
+    /// shows it fifth of six.
     /// </summary>
     internal sealed class NavItemAutomationPeer : ItemAutomationPeer, IInvokeProvider, ISelectionItemProvider
     {
@@ -49,9 +51,44 @@ namespace PadForge.Controls
 
         private NavigationViewItem Entry => Item is NavigationViewItem entry && entry.Tag != null ? entry : null;
 
-        protected override AutomationControlType GetAutomationControlTypeCore() => AutomationControlType.ListItem;
+        protected override AutomationControlType GetAutomationControlTypeCore()
+            => Entry != null ? AutomationControlType.ListItem : AutomationControlType.Text;
 
         protected override string GetClassNameCore() => "NavigationItem";
+
+        protected override int GetPositionInSetCore() => Place(out _);
+
+        protected override int GetSizeOfSetCore()
+        {
+            Place(out int size);
+            return size;
+        }
+
+        /// <summary>What UI Automation reads as no place and no size
+        /// (AutomationProperties' own default for both).</summary>
+        private const int NoPlace = -1;
+
+        /// <summary>This entry's place among the list's entries, from 1, and
+        /// how many entries the list holds. An item that is no entry has no
+        /// place, and the size it reports is the default.</summary>
+        private int Place(out int size)
+        {
+            size = NoPlace;
+            NavigationViewItem entry = Entry;
+            if (entry == null || ItemsControlAutomationPeer?.Owner is not ItemsControl list)
+                return NoPlace;
+            int place = 0, count = 0;
+            foreach (object item in list.Items)
+            {
+                if (item is not NavigationViewItem { Tag: not null })
+                    continue;
+                count++;
+                if (ReferenceEquals(item, entry))
+                    place = count;
+            }
+            size = count;
+            return place > 0 ? place : NoPlace;
+        }
 
         public override object GetPattern(PatternInterface patternInterface)
         {

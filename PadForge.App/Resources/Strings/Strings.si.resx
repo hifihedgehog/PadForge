@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
   <data name="Common_Off" xml:space="preserve"><value>ක්‍රියාවිරහිතයි</value></data>
   <data name="Common_More" xml:space="preserve"><value>තවත්</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>සියල්ල බලන්න</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ස්ථාපිතයි</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ස්ථාපනය කර නැත</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 මත ලබා ගත නොහැක</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>නවත්වමින්…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>එන්ජිම නවත්වමින්…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} මත ධාවනය වෙමින්</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ධාවනය වෙමින් (සේවාලාභීන් {0})</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ධාවනය වෙමින්, සම්බන්ධිත: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} හි සවන් දෙමින්</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>තොට {0} භාවිතයේ ඇත</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>තොට {0} සඳහා ප්‍රවේශය ප්‍රතික්ෂේප විය (පරිපාලක ලෙස ධාවනය කරන්න)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>නොබැඳි</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>නොදන්නා</value></data>
   <data name="Common_Default" xml:space="preserve"><value>පෙරනිමි</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>පිරික්සන්න...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>පිරික්සන්න…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>ඉදිරියට යන්න</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>නවත්වන්න</value></data>
   <data name="Common_Start" xml:space="preserve"><value>ආරම්භ කරන්න</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>පෙර සැසියකින් ඉතිරි වූ අතථ්‍ය පාලක පිරිසිදු කරමින්.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> උපාංග</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>පාලකයක් එක් කරන්න</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>පාලකයක් එක් කරන්න</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>ක්‍රීඩාවලට පෙනිය යුතු දේ තෝරන්න. ඔබ ක්ලික් කළ සැණින් පාලකය එක් වේ.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>ආදාන මූලාශ්‍රය</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>පසුව තෝරන්න</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>සුලභ</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>තවත් ප්‍රතිදාන</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>බොහෝ PC ක්‍රීඩා බලාපොරොත්තු වන පිරිසැලසුම.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>PlayStation බොත්තම් සංකේත, ටච්පෑඩ් සහ ලයිට්බාර් සහිත ක්‍රීඩා සඳහා.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch බොත්තම් පිරිසැලසුම, එය බලාපොරොත්තු වන ක්‍රීඩා සහ ඉමියුලේටර සඳහා.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>පෑඩ් එකකින් යතුරු, කර්සරය සහ අනුචලනය.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>සුක්කානම්, ගුවන් ස්ටික් සහ අභිරුචි පිරිසැලසුම්.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>සංගීත මෘදුකාංග සඳහා ස්වර සහ පාලන වෙනස්කම් (CC).</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR හරහා අතථ්‍ය VR පාලක.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>පසුව වර්ගය වෙනස් කිරීමට, පාලකය මත ඇති වර්ග චිපය ක්ලික් කරන්න. එයට එක් ක්ලික් එකක් පමණක් ගතවේ.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ප්‍රතිචාර නොදක්වයි. සැකසීම් හි එහි කාඩ්පත බලන්න.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR අවශ්‍යයි. සැකසීම් හි එහි කාඩ්පතෙන් එය ස්ථාපනය කරන්න.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR පාලකයක් දැනටමත් ඇත. එකක් අත් දෙකම පාලනය කරයි.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge සතුව පාලක {0}ක් ඇත, එය ධාවනය කළ හැකි උපරිමයයි. තවත් එකක් එක් කිරීමට එකක් මකන්න.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>පැතිකඩ</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>සැකසීම්, උපාංග සහ පැතිකඩ සොයන්න</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>සෙවීම</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>ප්‍රතිඵල</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>ඉහළ</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>පහළ</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>ගමන් කිරීමට {0} {1}</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>විවෘත කිරීමට {0}</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>ඕනෑම තැනක සිට {0}</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>පිටු</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>ක්‍රියා</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>ලේඛන</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>තවත් යටතේ</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>පේළියක විකල්පවල</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge හි කිසිවක් “{0}” සමඟ නොගැළපේ.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>ලේඛනවල “{0}” සොයන්න</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>අතථ්‍ය පාලකය මකන්න</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>සම්පූර්ණ තිරය</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge පෙන්වන්න</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>"{0}" පැතිකඩ සාදන ලදී.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>"{0}" පැතිකඩ මකන ලදී.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>"{0}" පැතිකඩ යාවත්කාලීන කරන ලදී.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>“{0}” පැතිකඩෙහි දැන් වත්මන් සැකසුම ඇත.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>පැතිකඩ පූරණය කරන ලදී: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>පැතිකඩ පෙරනිමි වෙත ප්‍රතිවර්තනය කරන ලදී</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" අතථ්‍ය පාලකය {1} වෙත පවරන ලදී.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>පැතිකඩ මාරු විය: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>පැතිකඩ මාරු විය: පෙරනිමි</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>පෙරනිමි</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>පැතිකඩ කෙටිමං</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>කෙටිමං</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>ඕනෑම පාලකයකින් පැතිකඩ මාරු කිරීමට බොත්තම් සංයෝජන පවරන්න.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>කෙටිමඟක් එක් කරන්න</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>ඊළඟ පැතිකඩ</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>පෙර පැතිකඩ</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>නිශ්චිත පැතිකඩ</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>කවුළුව ටොගල් කරන්න</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>අතථ්‍ය පාලක අබල කිරීම ටොගල් කරන්න</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge පෙන්වන්න හෝ සඟවන්න</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>අතථ්‍ය පාලක ක්‍රියාත්මක හෝ ක්‍රියාවිරහිත කරන්න</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ඕනෑම සම්බන්ධිත උපාංගයක්</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>පටිගත කරන්න</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>පටිගත කරමින්...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>උපාංගයක් තෝරා නැත.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>වලංගු නොවන ස්ලොට් දර්ශකය: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>උපාංගය පැවරීමට අසමත් විය.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>විට</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>මත</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" අතථ්‍ය පාලකය {1} වෙත පවරන ලදී.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {1} වෙතින් "{0}" හි පැවරුම ඉවත් කරන ලදී.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>උපාංගය සඟවන ලදී. (සැකසීම් ගොනුවෙන් ප්‍රතිසාධනය කළ හැක.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>උපාංගය ඉවත් කරන ලදී.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>අතථ්‍ය පාලකය {0} මකන ලදී.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>මුල් පිටුව</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>සම්බන්ධිත උපාංග: {0}. පාලක: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>සජීවී සෑම පාලකයක්ම ක්‍රීඩාවලට පෙනේ.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>එන්ජිම ක්‍රියාත්මකයි, සජීවී පාලකයක් නැත.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>ඔබේ පාලක නැවත ලබා ගැනීමට එන්ජිම ආරම්භ කරන්න.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>විමසීම් අනුපාතය</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>සජීවී පාලක</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>සම්බන්ධිත උපාංග</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>මෙම පාලකය ක්‍රියාත්මක හෝ ක්‍රියාවිරහිත කරන්න</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>එන්ජිම ආරම්භ වන විට එය ආරම්භ වේ.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>මෙම උපාංගය සම්බන්ධ වන විට එය ආරම්භ වේ.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>මෙම උපාංගවලින් එකක් සම්බන්ධ වන විට එය ආරම්භ වේ.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>සම්බන්ධ වී නැත</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>දැන් ආදානය යවමින්</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>බැටරිය {0}, අඩුයි</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>බැටරිය {0}, ආරෝපණය වෙමින්</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>පාලක</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>භාවිතයේ ඇති අමතර</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR පෙන්වන්න</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} සම්බන්ධ වී ඇති නමුත් භාවිතයේ නැත.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>එය භාවිත කරන්න</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>ක්‍රීඩාවලට පෙනිය යුත්තේ කුමක්ද?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge මෙම පාලකය ඔබේ ක්‍රීඩා බලාපොරොත්තු වන පාලකය බවට පත් කරයි. ආරම්භ කිරීමට එකක් තෝරන්න. ඔබට පසුව එක් ක්ලික් එකකින් එය වෙනස් කළ හැක.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ඔබේ පාලකය ඔබේ ක්‍රීඩා බලාපොරොත්තු වන පාලකය බවට පත් කරයි. ආරම්භ කිරීමට එකක් තෝරන්න. ඔබට පසුව එක් ක්ලික් එකකින් එය වෙනස් කළ හැක.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>යතුරුපුවරු සහ මූසික ක්‍රීඩා පෑඩ් එකකින් ක්‍රීඩා කරන්න.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>තවත් වර්ග: [{0}, {1}, {2} සහ {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>පාලකය සාදන විටම බොත්තම්, ස්ටික් සහ ට්‍රිගර 1:1 ලෙස සිතියම්ගත වේ.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth පාලකයක් යුගල කරන්න</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>සූදානම් කළ පැතිකඩකින් ආරම්භ කරන්න</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>සම්බන්ධිතයි</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, බැටරිය {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>බැටරිය {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>පාලකයක් සම්බන්ධ වී නැත</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>කේබලයකින් හෝ Bluetooth හරහා එකක් සම්බන්ධ කරන්න.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> සිතියම්ගත, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> සම්බන්ධිතයි</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>එන්ජිම ධාවනය වෙමින්. නැවැත්වීමට ක්ලික් කරන්න.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>එන්ජිම නිෂ්ක්‍රීයයි. නැවැත්වීමට ක්ලික් කරන්න.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>එන්ජිම නවතා ඇත. ආරම්භ කිරීමට ක්ලික් කරන්න.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>මෙම පාලකය වින්‍යාස කරන්න</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>කම්මල දල්වන්න</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>පාලකයක් සම්බන්ධ කර ප්‍රතිදාන වර්ගයක් තෝරන්න, PadForge ඔබේ ආදාන එයට ගළපයි. කෙටි චාරිකාවක් සියල්ල පිහිටා ඇති තැන් ඔබට පෙන්වයි.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>චාරිකාව අරඹන්න</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>මඟ හරින්න</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>ඊළඟ</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>නිමයි</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>ස්ලොට්</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>සෑම අතථ්‍ය පාලකයක්ම මෙහි පවතී. දැනට ක්‍රියාත්මක ස්ලොට් මොනවාදැයි ගින්න පෙන්වයි.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>කම්මලම මෙයයි. සියලු ආදාන විමසීම ආරම්භ කිරීමට හෝ නැවැත්වීමට ගින්න ටොගල් කරන්න.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>අතථ්‍ය පාලක</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>ප්‍රතිදාන වර්ගයක් තෝරන්න, ස්ලොට් එකට උපාංග ලබා දෙන්න, සහ එහි සිතියම්ගත කිරීම් සැකසීමට කාඩ්පතක් ක්ලික් කරන්න.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>විකල්ප විශේෂාංග මෙහි ඇත: දුරකථන වෙබ් පාලකය, දුරස්ථ සබැඳිය, චලන සේවාදායකය සහ තවත් දේ.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>සාදර චාරිකාව පෙන්වන්න</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>ස්ලොට්</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>උපාංගය</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ආදාන මූලාශ්‍රය</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>උපාංගයක් එක් කරන්න</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>අඩුයි</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>රූපය</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ලැයිස්තුව</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ප්‍රතිදාන: {0}</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>යුගලයක යතුරු දෙකම ඔබා ඇති විට ක්‍රීඩා දකින එබීම</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ක්‍රීඩා පාලක ඉඟි දිගටම පෙන්වන ලෙස කුඩා ස්ටික් අපගමනයක් රඳවයි</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ක්‍රියාත්මකයි</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>සජීවී: {0}/{1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ලැයිස්තුවෙන් මැක්‍රෝවක් තෝරන්න, නැතහොත් එකක් සෑදීමට මැක්‍රෝ අසල ඇති + ඔබන්න.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>අමු</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ප්‍රතිදාන</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>පෙරදසුන</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>අමතර</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>විකල්ප විශේෂාංග. ඔබ ක්‍රියාත්මක කරන තුරු සෑම එකක්ම බාධාවකින් තොරව පසෙක පවතී.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{1} න් {0}ක් ක්‍රියාත්මකයි</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>ක්‍රීඩා කිරීමට තවත් ක්‍රම</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>වෙනත් තැනකට යවන්න</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>තිරය මත</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>හිස් ලුහුබැඳීමේ උපකරණයකින් හෝ VR හෙඩ්සෙට් එකකින් වටපිට බලන්න.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>රිය පැදවීමේ ක්‍රීඩාවලින් වේගය, පැඩල සහ ගියර සිතියම්ගත කරන්න.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>චැට් එකේ ටයිප් කිරීමෙන් බොත්තම් එබීමට නරඹන්නන්ට ඉඩ දෙන්න.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>වෙනත් පරිගණකයක ඇති PadForge සමඟ පාලක බෙදා ගන්න.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>වෙනත් පරිගණකයක ඇති අතථ්‍ය පාලක හසුරුවන්න.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>පාලක චලනය ඉමියුලේටරවලට යවන්න.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ක්‍රීඩා මොඩ්වලින් ට්‍රිගර සහ ආලෝක ප්‍රයෝග ලබා ගන්න.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර මෙනු, ස්ථර සහ පැතිකඩ මාරු කිරීම් පෙන්වන්න.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ටච්පෑඩ් භාවිත කරන ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින් පින්තූරයක්, ටයිමරයක් හෝ ඔරලෝසුවක්.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>තොට, සරල HTTP ලිපිනය, ප්‍රවේශ කේතය</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>නැවත සම්බන්ධ වීම, තොට, අනන්‍යතා ආරක්ෂණය, ලිපිනයෙන් සම්බන්ධ වීම</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR රන්ටයිම්, UDP තොට, අක්ෂය අනුව පරාසය</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>තොට, සරල HTTP, ප්‍රවේශ කේතය</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ස්වයංක්‍රීය නැවත සම්බන්ධ වීම, තොට, යුගල කිරීමේ අනන්‍යතාව, ලිපිනයෙන් සම්බන්ධ වන්න</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>තොට, DSX.exe ආදේශකය</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>තොටවල්, සම්පූර්ණ වේගය, අභිරුචි ආකෘති</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>තොටවල්, සම්පූර්ණ වේගය (km/h), අභිරුචි ආකෘති</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>මාපට ඇඟිලි දෙකම බොත්තම් මත තබාගෙන, හිස් ට්‍රැකරයකින් හෝ VR හෙඩ්සෙට් එකකින් වටපිට බලන්න.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ධාවන ක්‍රීඩාවක් යවන වේගය, පැඩල සහ ගියර ඕනෑම ආදානයක් මෙන් සිතියම්ගත කරන්න.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU චලන මූලාශ්‍රයක් කියවන ඉමියුලේටර වෙත පාලක චලනය යවන්න.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX සඳහා ලියූ ක්‍රීඩා මොඩ් වලින් අනුවර්තී ට්‍රිගර සහ ආලෝක ප්‍රයෝග ලබා ගන්න.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ක්‍රීඩාවේ ටෙලිමෙට්‍රි ප්‍රතිදානය ක්‍රියාත්මක කර එය මෙම පරිගණකයට සහ තොටට යොමු කරන්න.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ඉමියුලේටරය තුළ, මෙම පරිගණකයේ ලිපිනයෙන් සහ මෙම තොටෙන් චලන මූලාශ්‍රයක් එක් කරන්න.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>මොඩ් එකක ප්‍රයෝග, ඒ සඳහා දෘඪාංග ඇති සෑම පාලකයකටම ළඟා වේ.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>හිස් ඉරියව්ව [උපාංග] පිටුවේ ඇති හිස් ට්‍රැකර පේළියයි. පාලකයක බොත්තම් කොටසේදී හිස් යෝ අගය ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>අගයන් [උපාංග] පිටුවේ ඇති ක්‍රීඩා ටෙලිමෙට්‍රි පේළියයි. පාලකයක බොත්තම් කොටසේදී ඒවා සිතියම්ගත කරන්න, නැතහොත් මැක්‍රෝ ක්‍රියාත්මක කිරීමට ඒවා භාවිත කරන්න.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>මෙනුවක ස්ථානය, ප්‍රමාණය සහ පාරාන්ධතාව සකසන්නේ එම මෙනුවේමය, පාලකයක [මැක්‍රෝ සහ මෙනු] කොටසේදී.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>මූලාශ්‍ර</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack සහ එහි UDP ආකෘතිය යවන ඕනෑම දෙයක්</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>පරාසය</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>අක්ෂය අනුව පරාසය. ශුන්‍ය අගය ඉහත පරාසය අනුගමනය කරයි.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge නොදන්නා ක්‍රීඩා</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>යැවීමට පෙර ධාවනය වන DSX එකක් සොයන මොඩ් සඳහා</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>පෙන්වන දේ</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>මෙනුවක් විවෘතව ඇති අතරතුර එහි වළල්ල, ජාලකය හෝ තීරුව</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ඔබාගෙන සිටින අතරතුර එම ස්ථරයේ නම</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>පැතිකඩ මාරු වන විට පැතිකඩෙහි නම</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>ලිපිනය පිටපත් කරන්න</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>තිරය මත ස්ථානය</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>දුරකථනයක් සම්බන්ධ කරන්න</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>දුරකථනය මෙම පරිගණකය ඇති ජාලයටම සම්බන්ධ කරන්න.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>එහි කැමරාවෙන් කේතය ස්කෑන් කරන්න.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>පාලක පිරිසැලසුමක් තෝරන්න.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>දුරකථන</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>කිසිදු දුරකථනයක් සම්බන්ධ වී නැත.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>සම්බන්ධ වන දුරකථනයක් මෙහි සහ උපාංග පිටුවේ පෙන්වයි, එහිදී ඔබ එය පාලකයකට පවරයි.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>ඔබේ නාලිකාව</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>නරඹන්නන්ට ටයිප් කළ හැකි වචන</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>නරඹන්නෙක් !a වැනි වචනයක් ටයිප් කරයි, එවිට උපාංග පිටුවේ Twitch චැට් පේළියේ !a සිතියම්ගත කර ඇති දේ PadForge ඔබයි. ඕනෑම උපාංගයක් මෙන් එම පේළිය පාලකයකට පවරන්න.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>ඔබ සජීවීව සිටින අතරතුර</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>ඔබේ විකාශනය සඳහා රූපය</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>යුගල කළ පරිගණක නැත.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>තවත් පරිගණකයක් යුගල කරන්න</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>අසල යුගල නොකළ පරිගණක නැත.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>අනෙක් පරිගණකයේ PadForge තුළ දුරස්ථ සබැඳිය ක්‍රියාත්මක කරන්න. එය මෙහි පෙන්වයි, එවිට ඔබ තිර දෙකෙහිම කෙටි කේතයක් සසඳයි.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>පෙනුම සහ ස්ථානය</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>එය ගෙන යාමට දකුණු මූසික බොත්තමෙන් හෝ ඇඟිලි තුනකින් අදින්න.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ඕවර්ලේ {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>පෙන්වයි</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>වෙනත් වැඩසටහනක් ඉදිරියෙන් ඇති විට, ක්ලික් ඕවර්ලේ හරහා යයි. PadForge ඉදිරියෙන් ඇති විට, එය දකුණු මූසික බොත්තමෙන් අදින්න, සහ එහි කෙළවරින් ප්‍රමාණය වෙනස් කරන්න. මැක්‍රෝවකට ඕවර්ලේ එකක් එහි අංකයෙන් පෙන්වීමට හෝ සැඟවීමට හැක.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>චලන සේවාදායකය</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ගයිරෝ සහ ත්වරණමාන දත්ත සඳහා DSU/CemuHook Motion Provider ප්‍රොටෝකෝල සේවාදායකය.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU චලන සේවාදායකය සබල කරන්න (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>පාලකයක් නැත</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>වර්ගය {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>වෙබ් පාලකය</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ඔබේ ස්ථානීය ජාලයේ බ්‍රවුසරවලට ගේම්පෑඩ් අතුරු මුහුණතක් සපයන්න.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>දුරකථනයක් හෝ ටැබ්ලටයක් පාලකයක් ලෙස භාවිත කරන්න. දුරකථනයේ කිසිවක් ස්ථාපනය කිරීමට අවශ්‍ය නැත.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>වෙබ් පාලක සේවාදායකය සබල කරන්න</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>ගේම්පෑඩ් එකක් ලෙස භාවිත කිරීමට දුරකථනයක හෝ ටැබ්ලටයක බ්‍රවුසරයකින් සම්බන්ධ වන්න.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>දුරකථන කැමරාවකින් ස්කෑන් කරන්න, නැතහොත් එහි බ්‍රවුසරයේ මෙම ලිපිනය විවෘත කරන්න:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>සරල HTTP ලිපිනය</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>PadForge හි සහතිකය ප්‍රතික්ෂේප කරන බ්‍රවුසර සඳහා සහ තමන්ගේම සහතිකයක් ගෙන එන උමගක් හෝ ප්‍රතිලෝම ප්‍රොක්සියක් සඳහා HTTPS නොමැති දෙවන ලිපිනයක්. දුරකථන චලනයට HTTPS අවශ්‍ය බැවින්, මෙහි එය ක්‍රියා කරන්නේ HTTPS සපයන උමගක් හෝ ප්‍රොක්සියක් හරහා පමණි.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>සරල HTTP ද සපයන්න</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>ප්‍රවේශ කේතය</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>සරල ලිපිනය විවෘත වන්නේ මෙම කේතය සමඟ පමණක් වන අතර, පහත සබැඳියට එය ඇතුළත් වේ. නව කේතයක් සරල ලිපිනයේ සිටින සැමදෙනාම විසන්ධි කරයි.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>නව කේතය</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>මෙම පරිගණකයේ ලිපිනය:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>කම්පනය (මෙම උපාංගය හඳුනා ගැනීමට ක්ලික් කරන්න)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>මෙම උපාංගය කුමක්දැයි හඳුනා ගැනීමට එය කම්පනය කරයි.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>දුරස්ථ සබැඳිය</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>ඔබේ ජාලයේ හෝ අන්තර්ජාලය හරහා, වෙනත් පරිගණකයක යුගල කළ PadForge සමඟ පාලක බෙදා ගන්න.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>වෙනත් පරිගණකයක ඇති අතථ්‍ය පාලක හසුරුවන්න. එක් වරක් යුගල කිරීමෙන් පසු, විශ්වාසදායී පරිගණකයක් ස්වයංක්‍රීයව නැවත සම්බන්ධ වේ.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>දුරස්ථ සබැඳි සේවාදායකය සබල කරන්න</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>එක් වරක් යුගල කිරීමෙන් පසු, විශ්වාසදායී පරිගණකයක් ස්වයංක්‍රීයව නැවත සම්බන්ධ වේ. යුගල කළ පරිගණකයකට මෙම පරිගණකයේ ගේම්පෑඩ් ප්‍රතිදානය පාලනය කළ හැකි අතර, ඔබ එය සීමා නොකරන්නේ නම්, එහි යතුරුපුවරුව, මූසිකය සහ මැක්‍රෝ ද පාලනය කළ හැක.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>නැතහොත් ලිපිනයෙන් සම්බන්ධ වන්න (උසස්)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>යුගල කළ පරිගණකයකට මෙම පරිගණකයේ ගේම්පෑඩ් ප්‍රතිදානය පාලනය කළ හැකි අතර, ඔබ එය සීමා නොකරන්නේ නම්, එහි යතුරුපුවරුව, මූසිකය සහ මැක්‍රෝ ද පාලනය කළ හැක.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ලිපිනයෙන් සම්බන්ධ වන්න</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>යුගල කරන්න / සම්බන්ධ වන්න</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>යුගල කරන්න</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>සම්බන්ධ වන්න</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>සම්බන්ධයි</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>දුරස්ථ පරිගණකය සමඟ යුගල කරන්න</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>මෙම කේතය තිර දෙකෙහිම ගැළපෙන බව තහවුරු කර, පසුව යුගල කරන්න.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>වෙනත් පරිගණකයක් සමඟ යුගල කරන්නද?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>තිර දෙකෙහිම එකම කේතය පෙන්වන බව පරීක්ෂා කරන්න.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>යුගල කරන්න</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>ප්‍රතික්ෂේප කරන්න</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>මෙම පරිගණකය ගේම්පෑඩ් ආදානයට පමණක් සීමා කරන්න</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ගේම්පෑඩ් පමණි</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>අනන්‍යතාව</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>ඔබ එය ගේම්පෑඩ් පමණක් ලෙස සීමා නොකරන්නේ නම්, යුගල කළ පරිගණකයකට මෙම පරිගණකයට යතුරුපුවරු, මූසික සහ මැක්‍රෝ ආදාන යැවිය හැක.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>යුගල කළ පරිගණකයකට මෙම පරිගණකයේ ගේම්පෑඩ් ප්‍රතිදානය පාලනය කළ හැකි අතර, ඔබ එය සීමා නොකරන්නේ නම්, එහි යතුරුපුවරුව, මූසිකය සහ මැක්‍රෝ ද පාලනය කළ හැක.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>යුගල කළ පරිගණක</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>ඔබ දුරස්ථ සබැඳිය සඳහා යුගල කළ පරිගණක. එකක් සම්බන්ධ වීම නැවැත්වීමට එය අහෝසි කරන්න. එවිට එය නැවත යුගල කිරීමට සිදු වේ.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>අහෝසි කරන්න</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>සියල්ල අහෝසි කරන්න</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>නැවත නම් කරන්න</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation අනුකූල ටච්පෑඩ් අනුකරණය සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ස්පර්ශ තිරයක් හෝ මූසිකය සමඟ භාවිත කිරීමට, PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ සබල කරන්න</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>පාරාන්ධතාව</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>ස්ථානය යළි සකසන්න</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>සැකසීම්</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>සාමාන්‍ය</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>ආදානය</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>දෘඪාංග</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>ධාවක</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>දත්ත සහ පෞද්ගලිකත්වය</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>සැකසීම් සොයන්න</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>“{0}” සමඟ කිසිදු සැකසීමක් නොගැළපේ.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>පෙනුම</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>ඔබ කැමති දෘශ්‍ය තේමාව තෝරන්න.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>තේමාව</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>අඳුරු</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ආදාන එන්ජිම</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>විමසීම් හැසිරීම සහ පසුබිම් සැකසීම වින්‍යාස කරන්න.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>දෘඪාංග සහාය</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>දියත් කරන විට එන්ජිම ස්වයංක්‍රීයව අරඹන්න</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>කවුළුවේ නාභිගත බව නැති වූ විට විමසීම දිගටම කරන්න</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>විමසීම් අන්තරය (පැතිකඩක් එය අභිබවා නොයන්නේ නම්)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} වෙත යාවත්කාලීන කරන ලදී.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>අවම කර ආරම්භ කරන්න</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>පුරනය වන විට ආරම්භ කරන්න</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide ධාවකය</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ද්විත්ව ආදාන වැළැක්වීමට ක්‍රීඩාවලින් භෞතික උපාංග සඟවන්න.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ද්විත්ව ආදාන වැළැක්වීමට ක්‍රීඩාවලින් භෞතික උපාංග සඟවයි.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide විකල්ප</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ක්‍රීඩාවලින් උපාංග සඟවන්න, දියත් කිරීම් අතර උපාංග සඟවා තබන්න, සුදු ලැයිස්තුගත යෙදුම්</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>සුදු ලැයිස්තුගත යෙදුම්</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>මෙම යෙදුම්වලට තවමත් සඟවා ඇති උපාංග දැකිය හැක. PadForge සැමවිටම ස්වයංක්‍රීයව සුදු ලැයිස්තුගත වේ.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>එක් කරන්න...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro ධාවකය</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>පරිශීලක ප්‍රකාරයේ අතථ්‍ය HID පාලක එන්ජිම. PadForge.App තුළ කාවද්දා ඇත. පළමු අතථ්‍ය පාලකය සාදන විට ස්වයංක්‍රීයව ස්ථාපනය වේ. v3 හි ViGEmBus සහ vJoy ප්‍රතිස්ථාපනය කරයි.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ඔබ සාදන පළමු අතථ්‍ය පාලකය සමඟ PadForge මෙම ධාවකය ස්ථාපනය කරයි. අස්ථාපනය කරන්න, HIDMaestro මෙම පරිගණකයේ ඉතිරි කළ දේ ඉවත් කිරීමට පෙර ලැයිස්තුගත කරයි.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>අතථ්‍ය පාලක නිර්මාණය කරයි.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro අස්ථාපනය කරන්න</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>මෙය මෙම පරිගණකයෙන් HIDMaestro ඉවත් කරයි: එහි අතථ්‍ය පාලක, ධාවකය, අත්සන් කිරීමේ සහතිකය, රෙජිස්ට්‍රි යතුරු සහ ගොනු. PadForge පළමුව එහි එන්ජිම නවත්වයි. HIDMaestro භාවිත කරන වෙනත් වැඩසටහන්වලට ඒවා ඊළඟ වතාවේ ආරම්භ වන තෙක් එහි ධාවකය අහිමි වේ. PadForge ඊළඟ වතාවේ අතථ්‍ය පාලකයක් ආරම්භ කරන විට එය නැවත ස්ථාපනය කරයි.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>එහිම ස්ථාපකයෙන් ස්ථාපනය කළ usbip-win2 ද ඉවත් කරන්න</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>මෙම පරිගණකයෙන් ඉවත් කෙරෙන්නේ මෙයයි. PadForge ඊළඟ අතථ්‍ය පාලකය සමඟ HIDMaestro නැවත ස්ථාපනය කරයි.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 ද ඉවත් කරන්න</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>පැරණි PadForge අනුවාද usbip-win2 හි ස්ථාපකයෙන් usbip-win2 ස්ථාපනය කළේය. වෙනත් වැඩසටහනක් usbip-win2 භාවිත නොකරන්නේ නම්, මෙය එහි USB මූල හබ් පෙරහනද ඇතුළුව එම ස්ථාපනයද ඉවත් කරයි. පෙරහන ඉවත් කිරීමෙන් සෑම USB 3 මූල හබ් එකක්ම නැවත ආරම්භ වන බැවින්, USB උපාංග මොහොතකට විසන්ධි වේ.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>HIDMaestro මෙම පරිගණකයේ ඉතිරි කළ දේ කියවමින්…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro මෙම පරිගණකයේ ඉවත් කිරීමට කිසිවක් ඉතිරි කර නැත.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>ඉතිරි වේ: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>කියවිය නොහැකි විය: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>ඉවත් කර නැත: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth ධාවකය</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>ඉවත් කෙරිණි</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>රඳවා ගැනිණි</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>කියවිය නොහැකි විය</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ඉවත් නොකෙරිණි</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 පාලකවලට, PlayStation Move සහ Navigation පාලකයට Bluetooth හරහා සම්බන්ධ වීමට ඉඩ දෙයි. PadForge තුළ කාවද්දා ඇති අතර, ඒවායින් එකක් පළමු වරට යුගල කරන විට ස්ථාපනය වේ.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 පාලක Bluetooth හරහා සම්බන්ධ කරයි.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3 අස්ථාපනය කරන්න</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>මෙය මෙම පරිගණකයෙන් BthPS3 ඉවත් කරයි: එහි ධාවක, එය Bluetooth වෙත එක් කරන පෙරහන, සහ යුගල කිරීම සඳහා PadForge විසින් PlayStation 3 පාලකවලට ලබා දුන් WinUSB ධාවකය. PadForge පළමුව එහි එන්ජිම නවත්වන අතර, ධාවක ඉවත් කෙරෙන අතරතුර Bluetooth මොහොතකට ක්‍රියාවිරහිත වේ. ඉන්පසු PlayStation 3, Move සහ Navigation පාලක ක්‍රියා කරන්නේ USB හරහා පමණි. එකක් යුගල කිරීමෙන් BthPS3 නැවත ස්ථාපනය වේ.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>මෙම පරිගණකයෙන් ඉවත් කෙරෙන්නේ මෙයයි. ඉන්පසු, එකක් යුගල කිරීමෙන් BthPS3 නැවත ස්ථාපනය වන තෙක්, PlayStation 3, Move සහ Navigation පාලක ක්‍රියා කරන්නේ USB හරහා පමණි.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>BthPS3 මෙම පරිගණකයේ ඉතිරි කළ දේ කියවමින්…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 මෙම පරිගණකයේ ඉවත් කිරීමට කිසිවක් ඉතිරි කර නැත.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini මෙම ධාවක භාවිත කරයි, එබැවින් එය ස්ථාපිතව ඇති තාක් කල් ඒවා ඉතිරි වේ.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth නැවත ක්‍රියාත්මක නොවීය. Windows සැකසීම් තුළ එය ක්‍රියාත්මක කරන්න.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>අතථ්‍ය MIDI තොට සහ MIDI ආදානය. Windows 11 25H2 හි 2026 නොවැම්බර් අගභාගයේ යාවත්කාලීනයේ සිට API ඇතුළත් වේ. අනෙකුත් පරිගණක PadForge හට ස්ථාපනය කළ හැකි Windows MIDI Services ධාවන කාලය හෝ පැරණි MIDI API භාවිත කරයි.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>අතථ්‍ය MIDI තොට සහ MIDI ආදානය.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows තුළ ගොඩනංවා ඇත</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK ධාවන කාලය</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>ලබා ගත නොහැක</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>මෙය MIDI Settings යෙදුම, MIDI කොන්සෝලය සහ PowerShell මොඩියුලය සමඟ Microsoft හි Windows MIDI Services ධාවන කාලය සහ මෙවලම් ඉවත් කරයි. Microsoft තවදුරටත් ඒවා බාගැනීමට ලබා නොදෙන බැවින්, ඒවා නැවත ස්ථාපනය කළ නොහැක.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>අතථ්‍ය VR පාලක සඳහා VR ධාවන කාලය. Steam ගිණුමක් හෝ Steam සේවාලාභියක් අවශ්‍ය නොවී Valve හි සේවාදායකවලින් ස්ථාපනය වේ (GB කිහිපයක්).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>අතථ්‍ය VR පාලක සඳහා VR ධාවන කාලය.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>ස්ථාපන ස්ථානය</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR අස්ථාපනය කරන්න</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>මෙය {0} හි ඇති Steam රහිත SteamVR ස්ථාපනය ඉවත් කර GB කිහිපයක් නිදහස් කරයි. SteamVR නැවත ස්ථාපනය කරන තුරු VR අතථ්‍ය පාලක ක්‍රියා නොකරයි.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>දෝෂ නිර්ණය</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>අනුවාද තොරතුරු, සහ දෝෂ නිරාකරණය සඳහා එන්ජින් සිදුවීම් ලොග් කිරීම.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>දෝෂ නිර්ණය ලොගයක් තබා ගන්න</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>පහත පෙන්වා ඇති ෆෝල්ඩරයේ diagnostics.log වෙත එන්ජින් සිදුවීම් අඛණ්ඩව ලියයි. නැවත ආරම්භ කිරීම් හරහා සබලව පවතී. ගොනුව 8 MB වෙත ළඟා වූ විට එය diagnostics.log.old වෙත මාරු වේ.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>“ලොග් ෆෝල්ඩරය විවෘත කරන්න” මඟින් විවෘත කරන ලොග් ෆෝල්ඩරයේ diagnostics.log වෙත එන්ජින් සිදුවීම් අඛණ්ඩව ලියයි. නැවත ආරම්භ කිරීම් හරහා සබලව පවතී. ගොනුව 8 MB වෙත ළඟා වූ විට එය diagnostics.log.old වෙත මාරු වේ.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ස්නැප්ෂොට් සුරකින්න</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>නවතම එන්ජින් සිදුවීම් නව ගොනුවකට සුරකියි. දෝෂ නිර්ණය ලොගය අක්‍රිය විට පවා ක්‍රියා කරයි.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ලොග් ෆෝල්ඩරය විවෘත කරන්න</value></data>
@@ -584,52 +691,91 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>පිළිබඳ</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>පාලක සිතියම්ගත කිරීමේ උපයෝගිතාව</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>යාවත්කාලීනයි.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>ලේඛන</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>යාවත්කාලීන පරීක්ෂා කරන්න</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce හි නවීන ශාඛාවක්, SDL3, WPF සහ .NET 10 සමඟ නැවත ගොඩනගා ඇත</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge ඕනෑම ආදාන උපාංගයක් ඕනෑම අතථ්‍ය පාලකයක් බවට පත් කරයි. ගේම්පෑඩ්, ජොයිස්ටික්, යතුරුපුවරු, මූසික සහ ස්පර්ශ තිර, ක්‍රීඩා සැබෑ දෘඩාංග ලෙස සලකන අතථ්‍ය ක්‍රීඩා පාලක (Xbox, PlayStation, ගුවන් ස්ටික්, සුක්කානම්, තෙවන පාර්ශ්ව ගේම්පෑඩ්) හෝ යතුරුපුවරු+මූසික / MIDI ප්‍රතිදානය වෙත සිතියම්ගත කෙරේ. HIDMaestro සහ Windows MIDI Services මඟින් බලගැන්වේ. එය පාලක ආදානය සඳහා SDL3, යතුරුපුවරුව සහ මූසිකය සඳහා Windows Raw Input, ක්‍රීඩාවකට අනුව උපාංග සැඟවීම සඳහා HidHide භාවිත කරන අතර, සිතියම්ගත කිරීම, ඩෙඩ්සෝන්, සංවේදීතා වක්‍ර සහ බල ප්‍රතිපෝෂණය සඳහා නවීන Fluent Design අතුරු මුහුණතක් සපයයි.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>දළ විශ්ලේෂණය</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>ගොඩනැගීමට භාවිත කළේ</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>ස්තුති සොයන්න</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>සියලු ස්තුති පෙන්වන්න</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>ස්තුති අඩුවෙන් පෙන්වන්න</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}” සමඟ කිසිදු ස්තුතියක් නොගැළපේ.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>ධාවන කාලය සහ WPF රාමුව. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>ධාවන කාලය සහ WPF රාමුව.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>පාලක ආදානය සහ ගණනය කිරීම. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>පාලක ආදානය සහ ගණනය කිරීම.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>උපාංගයකට අනුව යතුරුපුවරු සහ මූසික ආදානය</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>අතථ්‍ය MIDI උපාංග ප්‍රතිදානය (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>අතථ්‍ය MIDI උපාංග ප්‍රතිදානය (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D පාලක දෘශ්‍යකරණය. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D පාලක දෘශ්‍යකරණය.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF සඳහා Fluent 2 නිර්මාණ පද්ධතිය. Wpf.Ui.dll හි VirtualizingWrapPanel, fluentui-system-icons අකුරු සහ WPF සහ microsoft-ui-xaml වෙතින් කේතය අඩංගු වේ. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF සඳහා Fluent 2 නිර්මාණ පද්ධතිය. Wpf.Ui.dll හි VirtualizingWrapPanel, fluentui-system-icons අකුරු සහ WPF සහ microsoft-ui-xaml වෙතින් කේතය අඩංගු වේ.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>දත්ත බැඳීම සඳහා CommunityToolkit.Mvvm. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>දත්ත බැඳීම සඳහා CommunityToolkit.Mvvm.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly (CC BY 3.0) විසින් රචිත "Xbox Series Button Icons and Controls" වෙතින් ව්‍යුත්පන්න කළ ස්ටික් සහ ට්‍රිගර නිරූපක</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly විසින් රචිත "Xbox Series Button Icons and Controls" වෙතින් ව්‍යුත්පන්න කළ ස්ටික් සහ ට්‍රිගර නිරූපක.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>ටච්පෑඩ් හැඩ-අච්චු ගැළපුම්කාරකය (කවය / සමචතුරස්‍රය / ත්‍රිකෝණය / Z / හරි ලකුණ සහ අභිරුචි ලෙස පටිගත කළ අභින). Magrofuoco, Vatavu, Anthony සහ Wobbrock විසින් රචිත JavaScript යොමු ක්‍රියාත්මක කිරීමේ C# නැවත ව්‍යුත්පන්නයකි. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>ටච්පෑඩ් හැඩ-අච්චු ගැළපුම්කාරකය (කවය / සමචතුරස්‍රය / ත්‍රිකෝණය / Z / හරි ලකුණ සහ අභිරුචි ලෙස පටිගත කළ අභින). Magrofuoco, Vatavu, Anthony සහ Wobbrock විසින් රචිත JavaScript යොමු ක්‍රියාත්මක කිරීමේ C# නැවත ව්‍යුත්පන්නයකි.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය පෙරදසුන අඳින යතුරුපුවරුවල යතුරු පිහිටීම් සහ මූලික ස්ථරයේ යතුරු, QMK හි පිරිසැලසුම් දත්ත සහ Keychron හි QMK ෆෝක් එකෙන් ජනනය කර ඇත. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය පෙරදසුන අඳින යතුරුපුවරුවල යතුරු පිහිටීම් සහ මූලික ස්ථරයේ යතුරු, QMK හි පිරිසැලසුම් දත්ත සහ Keychron හි QMK ෆෝක් එකෙන් ජනනය කර ඇත.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>තනි ඇඟිලි හැඩ මත ලක්ෂ්‍ය-වලාකුළු ගැළපුම්කාරකය සමඟ ධාවනය වන කෝණික-මායිම් ලකුණු කිරීමේ ප්‍රවේශය. GestureSign හි PointPatternAnalyzer වෙතින් ලකුණු කිරීමේ අදහස මුල් C# කේතයෙන් ක්‍රියාත්මක කරයි. GPL-2.0, ලේඛනයක් ලෙස පමණි.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>තනි ඇඟිලි හැඩ මත ලක්ෂ්‍ය-වලාකුළු ගැළපුම්කාරකය සමඟ ධාවනය වන කෝණික-මායිම් ලකුණු කිරීමේ ප්‍රවේශය. GestureSign හි PointPatternAnalyzer වෙතින් ලකුණු කිරීමේ අදහස මුල් C# කේතයෙන් ක්‍රියාත්මක කරයි. ලේඛනයක් ලෙස පමණි.</value></data>
   <data name="About_License" xml:space="preserve"><value>බලපත්‍රය</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>මෙම මෘදුකාංගය CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) යටතේ බලපත්‍ර ලබා ඇත. AL2009man (MIT) විසින් රචිත Gamepad-Asset-Pack 2D පාලක වත්කම් සපයයි. TransposonY (GPL-2.0) විසින් රචිත GestureSign, AngularMarginRecognizer සඳහා ලේඛනයක් ලෙස කියවන ලද අතර, එහි කිසිදු කේතයක් ඇතුළත් නොවේ. Handheld Companion (CC BY-NC-SA 4.0) මඟින් PadForge අනුවර්තනය කරන Xbox 360 සහ Steam Deck 3D ආකෘති සපයයි. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services සහ WPF UI, MIT බලපත්‍රය යටතේ බලපත්‍ර ලබා ඇත. OpenXInput සමඟ ඇත්තේ මූලාශ්‍ර ව්‍යාපෘතියේ වෙළඳ ලකුණු වියාචනයක් පමණක් වන අතර, එය එම නියමයන් යටතේම පවතින ආකාරයෙන්ම නැවත බෙදා හරිනු ලැබේ. Magrofuoco, Vatavu, Anthony සහ Wobbrock (BSD 3-Clause) විසින් රචිත $Q Recognizer, ටච්පෑඩ් ShapeRecognizer සඳහා යොමුව වන අතර, එය C# නැවත ව්‍යුත්පන්නයකි. SDL3, zlib බලපත්‍රය යටතේ බලපත්‍ර ලබා ඇත. x360ce (LGPL-3.0-or-later) යනු PadForge ශාඛා කරගත් මුල් කේත පදනමයි. Igor Budzhak (MIT) විසින් රචිත Zergatul.Obs.InputOverlay මූසික කලා කෘති සපයයි.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK පූරකය)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD ආකාරයේ</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio බලපත්‍ර නියම</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK නියම</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>වෙළඳ ලකුණු වියාචනය පමණි</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>නියම සඳහන් කර නැත</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>කිසිවක් ප්‍රකාශිත නැත</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>බලපත්‍ර කිහිපයක්</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>පරිශීලක ප්‍රකාරයේ අතථ්‍ය HID පාලක එන්ජිම (ViGEmBus සහ vJoy ප්‍රතිස්ථාපනය කරයි). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>පරිශීලක ප්‍රකාරයේ අතථ්‍ය HID පාලක එන්ජිම (ViGEmBus සහ vJoy ප්‍රතිස්ථාපනය කරයි).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput සඳහා සෘජු ආදේශකයක්. PadForge හි අතථ්‍ය පාලක PadForge හටම නොපෙනෙන ලෙස පෙරහන් කරයි. මූලාශ්‍ර ව්‍යාපෘතියේ වෙළඳ ලකුණු වියාචනය, OSS බලපත්‍රයක් නැත.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput සඳහා සෘජු ආදේශකයක්. PadForge හි අතථ්‍ය පාලක PadForge හටම නොපෙනෙන ලෙස පෙරහන් කරයි.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ක්‍රීඩාවලින් භෞතික උපාංග සැඟවීම සඳහා කර්නල් ධාවකය. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ක්‍රීඩාවලින් භෞතික උපාංග සැඟවීම සඳහා කර්නල් ධාවකය.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>ආරාධනයක්</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“තවද අප ක්‍රිස්තුස්වහන්සේ පිළිබඳ කථා කරන්නෙමු, අප ක්‍රිස්තුස්වහන්සේ තුළ ප්‍රීති වන්නෙමු, අප ක්‍රිස්තුස්වහන්සේ පිළිබඳ දේශනා කරන්නෙමු, තවද අපගේ අනාවැකිවල ආකාරයට අප ලියන්නෙමු, එනම් අපගේ දරුවන් ඔවුන්ගේ පාපයන් උදෙසා පව්කමාව ලබා ගැනීමට කුමක් දෙස බැලිය යුතුදැයි ඔවුන් දැන ගන්නා පිණිසය.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 නීෆායි 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>සියලු සත්‍යයේ සහ ගැලවීමේ උල්පත වන ස්වාමීන් යේසුස් ක්‍රිස්තුස් වහන්සේට සදහටම මහිමය, ගෞරවය සහ ප්‍රශංසාව වේවා.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>හෙඩ්ෆෝන් ප්‍රතිදානය සඳහා Bauer ස්ටීරියෝ-සිට-බයිනෝරල් ක්‍රොස්ෆීඩ්. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>හෙඩ්ෆෝන් ප්‍රතිදානය සඳහා Bauer ස්ටීරියෝ-සිට-බයිනෝරල් ක්‍රොස්ෆීඩ්.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth හරහා DualSense ස්පීකර ශ්‍රව්‍ය ධාවනය කරන පිරිසිදු C# Opus කේතකය. Logan Stromberg විසින්. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth හරහා DualSense ස්පීකර ශ්‍රව්‍ය ධාවනය කරන පිරිසිදු C# Opus කේතකය. Logan Stromberg විසින්.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga විසින් කළ DualSense Bluetooth ශ්‍රව්‍ය පර්යේෂණය: පාලක ස්පීකර ප්‍රවාහය ගමන් කරන පැකට් ප්‍රවාහනය. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga විසින් කළ DualSense Bluetooth ශ්‍රව්‍ය පර්යේෂණය: පාලක ස්පීකර ප්‍රවාහය ගමන් කරන පැකට් ප්‍රවාහනය. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol විසින් Bluetooth ස්පීකර ක්‍රමය: Opus රාමුකරණය සහ පැකට් පිරිසැලසුම. හවුල් කළ සොයාගැනීම් සහ පරීක්ෂාව සඳහා TechAntohere ටද ස්තුතියි. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol විසින් Bluetooth ස්පීකර ක්‍රමය: Opus රාමුකරණය සහ පැකට් පිරිසැලසුම. හවුල් කළ සොයාගැනීම් සහ පරීක්ෂාව සඳහා TechAntohere ටද ස්තුතියි.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB පාලක ශ්‍රව්‍ය පාස්ත්‍රූ සඳහා යොමු ක්‍රියාත්මක කිරීම. WujekFoliarz විසින්.</value></data>
 
@@ -675,8 +821,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>අක්ෂර ප්‍රමාදය (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ටයිප් කරන අක්ෂර අතර මිලිතත්පර, 1000 දක්වා. 0 නම් මුළු පෙළම එකවර ටයිප් කරයි.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>අක්‍රිය විට විසන්ධි කිරීම</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>බලය</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>උපාංග විස්තර පත්‍රිකාව</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>විස්තර</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>මිනිත්තු (0 = කිසි විටෙක නැත)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB හරහා සම්බන්ධ කළ විට Bluetooth විසන්ධි කරන්න</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ඉක්මන් ආරෝපණය. Bluetooth හරහා සම්බන්ධව සිටියදී මෙම පාලකය ආරෝපණය වන බව වාර්තා කළ විට, Bluetooth සබැඳිය විසන්ධි කරනු ලැබේ, එවිට රේඩියෝව බලගන්වන්නේ නැතිව එය ආරෝපණය වේ. බිත්ති චාජර් ඇතුළු ඕනෑම USB බල ප්‍රභවයක් ගණන් ගැනේ. කේබලය සම්බන්ධව තිබියදී ඔබ Bluetooth නැවත ක්‍රියාත්මක කළහොත්, ඊළඟ වතාවේ ගලවන තෙක් එය එසේම තබනු ලැබේ.</value></data>
@@ -700,10 +845,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>මෙම PlayStation පෑඩයෙන් එහි දිශා සෘජුවම විමසයි, එවිට නර්තන පැදුරක පළමු පියවරේ සිටම වම සහ දකුණ, හෝ ඉහළ සහ පහළ, එකවර ලියාපදිංචි වේ. ඒවා ඉහළ, පහළ, වම් සහ දකුණු ඊතල බොත්තම් ලෙස පැමිණේ. ප්‍රතිවිරුද්ධ දිශා එබූ පසු ස්ථිරාංග 3.34 ද ඒවා තනිවම යවන අතර, එවිට PadForge විමසීම නවත්වයි. එතෙක් ඇඩැප්ටරය පෑඩයේ තමන්ගේම කියවීම් බොහොමයක් මඟ හරියි.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 පීඩනය</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>ක්‍රීඩක අංකය</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ඇඩැප්ටරය අංකය ගබඩා කර එම ක්‍රීඩකයා ලෙස නැවත සම්බන්ධ වේ. එවිට Windows නව උපාංගයක් දකින බැවින්, තොට නැවත පැමිණි පසු එය නැවත සිතියම්ගත කරන්න.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ඇඩැප්ටරය අංකය ගබඩා කර නැවත සම්බන්ධ වේ, එය Windows නව උපාංගයක් ලෙස දකී.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>ක්‍රීඩකයා</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>ක්‍රීඩකයා සකසන්න</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast තිරය</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>ඔබ සුරකින තෙක් තොටට කිසිවක් නොයයි.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>පෙන්වන්න</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>ඇඩැප්ටරයේ පින්තූරය</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>පැතිකඩ නම</value></data>
@@ -750,7 +896,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO එක Taiko බෙර දෙකක් ලෙස කියවමින්.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} iCade පාලකයක් ලෙස කියවමින්.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} නැවතත් යතුරුපුවරුවක් ලෙස කියවමින්.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>ලයිට් ගන්</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>පෙරනිමි ඉලක්ක පරාසය: X {0} සිට {1} දක්වා, Y {2} සිට {3} දක්වා</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>ක්‍රමාංකනය කළ ඉලක්ක පරාසය: X {0} සිට {1} දක්වා, Y {2} සිට {3} දක්වා</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>තුවක්කු ක්‍රමාංකනය</value></data>
@@ -809,6 +954,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>සියලු යතුරුපුවරු (ඒකාබද්ධ)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>සියලු මූසික (ඒකාබද්ධ)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>උපාංග</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>සම්බන්ධිත: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>උපාංග සොයන්න</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>සියල්ල</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>පාලක</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>යතුරුපුවරු සහ මූසික</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad එක කියවන්න</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad සහ uDraw ටැබ්ලට් කියවන්න</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ගේම්පෑඩ් කියවන්න</value></data>
@@ -829,28 +979,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} නැවත එහි Windows ධාවකය මත ඇත.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} සඳහා Windows ධාවකය ප්‍රතිසාධනය කළ නොහැකි විය.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows විසින් {0} නැවත එහිම ධාවකය මත තබන ලදී. එය නැවත මාරු කිරීමට උපාංග පිටුවේ එය තෝරන්න.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> සබැඳිව / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> මුළු</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>මෙම උපාංගය සහ එහි සැකසීම් ඉවත් කරන්න</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>උපාංගය ඉවත් කරන්න</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} උපාංග ලැයිස්තුවෙන් ඉවත් කරනු ලබන අතර එහි සුරැකි සැකසීම් අමතක කරනු ලැබේ.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>උපාංගයක් පැවරීමට එය පැති තීරුවේ පාලක කාඩ්පතක් මතට අදින්න.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>නිෂ්පාදනය: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>උපාංගයක් පැවරීමට එය පැති තීරුවේ පාලකයක් මතට අදින්න.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>උපාංග සිතියම්ගත කිරීම ඉදිරිපත් කරන්න</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>අතථ්‍ය පාලක පැවරීම</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>පැවරීම ටොගල් කරන්න</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>තවමත් අතථ්‍ය පාලක ස්ලොට් නැත. මෙම උපාංගය පැවරීමට උපකරණ පුවරුවේ එකක් සාදන්න.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>ආදාන ප්‍රකාරය</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>මෙම උපාංගය මෙම පාලකයට පවරයි, නැතහොත් එයින් ඉවත් කරයි.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>අමු ජොයිස්ටික් ප්‍රකාරය බල කරන්න (ගේම්පෑඩ් නැවත සිතියම්ගත කිරීම මඟ හරින්න)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL හි ගේම්පෑඩ් සිතියම්ගත කිරීම වෙනුවට අමු HID දර්ශක කියවන්න. SDL බොත්තම්/අක්ෂ පිරිසැලසුම වැරදියට හඳුනාගන්නා විට භාවිත කරන්න.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>ආදානය සැඟවීම</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>ක්‍රීඩාවලින් සඟවන්න (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ධාවකය හරහා මෙම උපාංගය අනෙකුත් යෙදුම්වලින් සම්පූර්ණයෙන්ම සඟවයි. දැනටමත් සම්බන්ධ කර තිබූ USB පාලකයක් PadForge සඟවන විට, එය Windows තුළ නැවත සම්බන්ධ කරයි, එබැවින් එය විවෘත කර තිබූ ඕනෑම දෙයකට එය අහිමි වේ. Bluetooth පාලකයක්, හෝ වෙනත් පාලකයක් සමඟ ග්‍රාහකයක් බෙදා ගන්නා පාලකයක්, සැඟවීමට පෙර එය විවෘත කළ ඕනෑම දෙයක් සමඟ ඊළඟ වතාවේ සම්බන්ධ වන තෙක් පවතී.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>මෙම විකල්පය සක්‍රිය කිරීමට HidHide ධාවකය ස්ථාපනය කරන්න</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>සිතියම්ගත ආදාන අවශෝෂණය කරන්න (හුක්ස්)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>සිතියම්ගත කර ඇති යතුරු/බොත්තම් පමණක් යටපත් කරයි. සිතියම්ගත නොකළ ආදාන හරහා යයි.</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>අමු ආදාන තත්ත්වය</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>අමු ආදානය පරීක්ෂා කිරීමට උපාංගයක් තෝරන්න.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>ආදාන පරීක්ෂා කරන්න</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>උපාංගයක සැකසීම් බැලීමට සහ එහි ආදාන පරීක්ෂා කිරීමට එය තෝරන්න.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>අක්ෂ</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>බොත්තම්</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>යතුරුපුවරුව</value></data>
@@ -1126,27 +1269,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>තෝරාගත් උපාංගය ක්ලෝන කිරීමට අක්ෂ, බොත්තම් හෝ හැට් කිසිවක් ලබා නොදෙයි.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} මෙම ස්ලොට් එකට 1:1 පාස්ත්‍රූ එකක් ලෙස ක්ලෝන කරන්නද? පිරිසැලසුම අක්ෂ {1}, බොත්තම් {2}, සහ POV {3} බවට පත් වන අතර, ස්ලොට් එකේ මෙම උපාංගයේ පේළි එහිම ආදානවලින් ප්‍රතිස්ථාපනය වේ.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>විස්තෘත පාලකයකට දැරිය හැකි ප්‍රමාණයට වඩා ආදාන මෙම උපාංගයට ඇත. අක්ෂ {1}න් {0}ක්, බොත්තම් {3}න් {2}ක්, සහ POV {5}න් {4}ක් සිතියම්ගත කරන ලදී. ඉතිරිය සිතියම්ගත නොකර තබන ලදී.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>ආයාත කළ පැතිකඩ</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>පරිශීලකයා ආයාත කළ HIDMaestro පැතිකඩ PadForge.xml තුළ ගබඩා කර ඇති අතර සෑම විස්තෘත ස්ලොට් එකකම පැතිකඩ පතන ලැයිස්තුවේ දිස් වේ. පහතින් සම්බන්ධිත උපාංගයකින් නව එකක් ග්‍රහණය කරන්න, නැතහොත් පවතින එකක් අපනයනය / මකා දමන්න.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>ඔබ ආයාත කළ පැතිකඩ ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>ආයාත කිරීමට ඇති සම්බන්ධිත උපාංග</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>පාලක පෙරසැකසුම්</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge සමඟ නොඑන පාලකයක් සඳහා, ගොනුවකින් හෝ පාලකයෙන්ම පෙරසැකසුමක් එක් කරන්න.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>ආනයනය කළ</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>සම්බන්ධිත උපාංගයකින් ආනයනය කරන්න</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>අපනයනය කරන්න…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>මකන්න</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>වසන්න</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>පැතිකඩ JSON අපනයනය කරන්න</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ආයාත කළ පැතිකඩ මකන්නද?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" මකන්නද? දැනට මෙම පැතිකඩ භාවිත කරන ඕනෑම ස්ලොට් එකක් කෘත්‍රිම අභිරුචි ඇතුළත් කිරීමට ආපසු යයි.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>පෙරසැකසුම මකන්නද?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} භාවිත කරන ඕනෑම පාලකයක් අභිරුචි ඇතුළත් කිරීමට ආපසු යයි. මෙය අහෝසි කළ නොහැක.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} වෙත අපනයනය කරන ලදී</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>අපනයනය අසාර්ථක විය: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" මකා දමන ලදී.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ගොනුවෙන් ආයාත කරන්න…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ගොනුවකින් ආයාත කරන්න…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>පැතිකඩ JSON ආයාත කරන්න</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} වෙතින් ආයාත කරන ලදී.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>කියවීම අසාර්ථක විය: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro මෙම පැතිකඩ {1} හිදී ප්‍රතික්ෂේප කළේය: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>මෙම පැතිකඩෙහි HID විස්තරකයක් නැත, එබැවින් එයින් කිසිදු පාලකයක් සෑදිය නොහැක.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>කිසිවක් ආයාත නොකෙරිණි. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>නැවුම් කරන්න</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ආයාත කරන්න</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(නම් නොකළ HID උපාංගය)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>HID අතුරුමුහුණත් {0}ක් හමු විය.</value></data>
@@ -1431,6 +1572,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>මධ්‍යය</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ඩෙඩ්සෝන්</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>මධ්‍ය ලක්ෂ්‍ය සීරුමාරු, ඩෙඩ්සෝන් හැඩය සහ අක්ෂ අගයන්, එක් එක් අක්ෂයට වක්‍රයක්, පරාසය, සුක්කානම් හැසිරවීම</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>සංඛ්‍යා ලෙස පරාසය, අමු අගයන්</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>පරාසය</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“මායිම ක්‍රමාංකනය කරන්න” ස්ටික් එකට ළඟා විය හැකි මායිම මැන, එය සම්පූර්ණ වෘත්තයකට නැවත හැඩගස්වයි. ස්ලයිඩර හතර කරන්නේ එක් එක් දිශාව සීමා කිරීම පමණි.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>නියැදි ගනිමින්...</value></data>
@@ -1963,21 +2105,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>හැඩ ගැළපීමේ සීමා අගය යළි සකසන්න</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>ටච්පෑඩ් අභිනය පටිගත කරන්න</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>පහත පෘෂ්ඨය මත අභිනය අඳින්න. ඔබ තබන සෑම ඇඟිල්ලක්ම සංවාද කොටුව ග්‍රහණය කරයි. ඔබ සියලු ඇඟිලි පෘෂ්ඨයෙන් ඉවත් කළ විට නියැදිය පටිගත වේ. පෙර නියැදිවලට වඩා වෙනස් ඇඟිලි ගණනකින් ඇඳීම නියැදි තොගය යළි සකසයි.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>කැන්වසය මත ඇඟිලි ස්පර්ශය සඳහා රැඳී සිටී</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>අභිනයක් පටිගත කරන්න</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>පාලකයේ ටච්පෑඩය මත හැඩය අඳින්න. එය ඔබට සිතියම්ගත කළ හැකි ආදානයක් බවට පත්වේ.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>අභිනය මෙහි අඳින්න.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>ටච්පෑඩය මත අඳින්න. කැන්වසය එය සජීවීව පිළිබිඹු කරයි.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0} වෙතින් පටිගත කරමින්, ටච්පෑඩ් {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>මෙම ටච්පෑඩය</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ටච්පෑඩය ලබා ගත නොහැක. මූසිකය හෝ ස්පර්ශය සමඟ පහත කැන්වසය භාවිත කරන්න.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ටච්පෑඩය ලබා ගත නොහැක. මූසිකයෙන්, පෑනකින් හෝ ඇඟිල්ලකින් මෙහි අඳින්න.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>අඳිමින්…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>සියලු නියැදි ග්‍රහණය කරන ලදී. අභිනයට නමක් දී සුරකින්න ක්ලික් කරන්න.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>නියැදිය {1} න් {0}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>නියැදි {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>ග්‍රහණය කළ යුතු නියැදි</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 සම්මත අගයයි. වැඩි නියැදි = ශක්තිමත් ගැළපීමක්, අඩු නියැදි = වේගවත් පටිගත කිරීමක්.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>ග්‍රහණය කළ යුතු නියැදි</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 සම්මත අගයයි. වැඩි නියැදි වඩා ස්ථිර ගැළපීමක් දෙන අතර, අඩු නියැදි පටිගත කිරීමට ඉක්මන්ය.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>නම</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>නැවත උත්සාහ කරන්න</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>මෙම අභිනයට නමක් දෙන්න</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>නම අවශ්‍යයි</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>නම දිග වැඩියි (උපරිම අක්ෂර 64)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>නමෙහි වලංගු නොවන අක්ෂර ඇත</value></data>
@@ -2296,41 +2439,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>පැතිකඩ</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>පැතිකඩ කළමනාකරණය</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>සක්‍රිය ක්‍රීඩාව අනුව ස්වයංක්‍රීයව මාරු වන, එක් එක් යෙදුමට වෙන් වූ පාලක පැතිකඩ සාදන්න.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>පෙරබිම් යෙදුම අනුව පැතිකඩ ස්වයංක්‍රීයව මාරු කරන්න</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>පැතිකඩක් යනු සම්පූර්ණ සැකසුමකි: එහි පාලක, සිතියම්ගත කිරීම් සහ සුසර කිරීම්.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>ආරම්භක පැතිකඩ</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>සම්පූර්ණ ක්‍රීඩා ප්‍රභේදයක් සඳහා සූදානම් කළ පැතිකඩ. එකක් තෝරා, ඕනෑම පාලකයක් පවරා, ක්‍රීඩා කරන්න.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ක්‍රීඩාව අනුව පැතිකඩ මාරු කරන්න</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>ස්වයංක්‍රීය මාරු කිරීම</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, ඒ සඳහා පැතිකඩක් සකසා නැත</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, එය {1} පූරණය කරයි</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>දැන් ඉදිරියෙන්: {0}, තවම කිසිදු පැතිකඩකට ක්‍රීඩාවක් සකසා නැත</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>දියත්කරන සහ ස්ක්‍රිප්ට් මගින් බාහිර පාලනයට ඉඩ දෙන්න</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control නම් දේශීය නාමික පයිප්පයක් සපයයි, එවිට Playnite, LaunchBox, හෝ ස්ක්‍රිප්ට් එකකට පැතිකඩ සක්‍රිය සහ අක්‍රිය කළ හැක. මේ ආකාරයෙන් සක්‍රිය කළ පැතිකඩක් ස්ක්‍රිප්ට් එක එය මුදා හරින තුරු හෝ ඔබ විසින්ම පැතිකඩ මාරු කරන තුරු සක්‍රියව පවතී. දේශීය පරිගණකයට පමණි.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>බාහිර පාලනය</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>සක්‍රිය පැතිකඩ:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>ස්ලොට් නැත</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>ස්වයං-මාරුව: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>පාලක නැත</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>පැතිකඩ ආයාත කිරීමට මෙහි දමන්න</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>නව</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>පැතිකඩ ගොනුවක් මෙහි දමන්න</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>නව පැතිකඩ</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>ලෙස සුරකින්න</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>වත්මන් සැකසුම මෙහි සුරකින්න</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>සංස්කරණය කරන්න</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>පූරණය කරන්න</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>කිසිදු පැතිකඩකට තවම ක්‍රියාත්මක ගොනුවක් නැත</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>අන්තර්ගත</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>පළමුව පැතිකඩක් තෝරන්න.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>ගොඩනංවා ඇති "පෙරනිමි" පැතිකඩ සංස්කරණය කිරීමට හෝ මැකීමට නොහැක.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>පැතිකඩ මකන්න</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" මකන්නද? එහි සුරකින ලද ස්ලොට් සහ සිතියම්ගත කිරීම් ස්නැප්ෂොට් එක විනාශ වනු ඇත.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ක්‍රීඩාවක් සකසා නැත</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} සඳහා පූරණය වේ</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} සඳහා සකසා ඇත</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>සක්‍රිය</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} සඳහා තවත්</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} මකන්නද?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>පැතිකඩ සහ එහි ස්වයංක්‍රීය මාරු කිරීමේ නීතිය ඉවත් කෙරේ. මෙය අහෝසි කළ නොහැක.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>පැතිකඩ ඉවත් කෙරේ. මෙය අහෝසි කළ නොහැක.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>“{0}” හි සුරකින ලද සැකසුම වත්මන් එකෙන් ප්‍රතිස්ථාපනය කරන්නද? එහි නම සහ ක්‍රීඩා එලෙසම පවතී.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>ප්‍රතිස්ථාපනය කරන්න</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>පැතිකඩක් ලෙස සුරකින්න</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>පැතිකඩ සංස්කරණය කරන්න</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>පැතිකඩ නම:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>නව පැතිකඩ</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>නම</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>නව පැතිකඩ</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>ක්‍රියාත්මක ගොනු (පෙරබිම් කවුළුවට ගලපනු ලැබේ):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>එය පූරණය කරන ක්‍රීඩා</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>විමසුම් අනුපාතය</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>පෙරනිමි (ගෝලීය සැකසුම)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” පැතිකඩ සක්‍රියව ඇති අතරතුර අභිබවා ඇත: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>සෑම ස්ලොට් එකකම සිතියම්ගත කිරීම් සහ උපාංග අනුව සැකසීම් එක් නමක් යටතේ ස්නැප්ෂොට් කරයි. සම්බන්ධිත ක්‍රියාත්මක ගොනු ස්වයංක්‍රීයව එයට මාරු වේ.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>පැතිකඩ නැවත නම් කර, එය සක්‍රිය කරන ක්‍රියාත්මක ගොනු යාවත්කාලීන කරයි. ගබඩා කළ සිතියම්ගත කිරීම් සහ සැකසීම් වෙනස් නොවේ.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>සෑම පාලකයකම සිතියම්ගත කිරීම් සහ සැකසීම් එක් නමක් යටතේ සුරකියි. එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට එය ස්වයංක්‍රීයව පූරණය වේ.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>පැතිකඩක් එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට ස්වයංක්‍රීයව පූරණය වේ.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>පාලක නොමැතිව ආරම්භ වේ. එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට එය ස්වයංක්‍රීයව පූරණය වේ.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>ධාවනය වන ක්‍රීඩාවක් එක් කරන්න</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>වෙනත් කිසිදු වැඩසටහනක කවුළුවක් විවෘතව නැත.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ඉවත් කරන්න</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>මෙම පැතිකඩ පූරණය කර ඇති අතරතුර විමසීම් අනුපාතය</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>සැකසීම් පිටපත් කරන්න...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>සැකසීම් පිටපත් කිරීමට උපාංගයක් තෝරන්න:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>වෙතින් පිටපත් කරන්න</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>{0} හි සිතියම්ගත කිරීම් සහ උපාංග අනුව සුසර කිරීම් වෙනත් පාලකයක ඒවායෙන් ප්‍රතිස්ථාපනය කරන්න.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>වෙනත් පාලකයක මැක්‍රෝ {0} වෙත එක් කරන්න.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>පවරා නැත, පෙර සිතියම්ගත කිරීම් රඳවා ගනී</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>අවසර ලැයිස්තුවට එක් කිරීමට යෙදුම තෝරන්න</value></data>
@@ -2372,6 +2536,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>පරාසය</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ප්‍රති-ඩෙඩ්සෝන්</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ලක්ෂ්‍යයක් එක් කිරීමට දෙවරක් ක්ලික් කරන්න. ඉවත් කිරීමට දකුණු-ක්ලික් කරන්න. සීරුමාරු කිරීමට අදින්න.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>වක්‍ර සංස්කාරකය</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ට්‍රිගර අක්ෂය</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2694,8 +2859,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>මූලික</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>මාරු ස්ථරය</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>මූලික වින්‍යාස කරන්න</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>මාරු ස්ථර උත්පතනයේ සහ ස්ථර පේළියේ මූලික ස්ථරයේ නම, නිරූපකය සහ වර්ණය.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ස්ථරයේ නම</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>සක්‍රියකාරක ආදානය</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>නම</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ඔබාගෙන සිටින්නේ</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>ඔබන්නේ</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>ඊළඟ ස්ථරය සඳහා</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>පෙර ස්ථරය සඳහා</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>සහ</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>ආදානයක් තෝරන්න</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>සිතියම්ගත නොකළ පාලන</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>මූලිකයට යොමු කරන්න</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>කිසිවක් නොකරන්න</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ප්‍රකාරය, ආදාන වර්ගය, කාල නිර්ණය සහ වර්ණය</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ප්‍රකාරය</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ඔබාගෙන සිටීම</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ටොගල්</value></data>
@@ -2722,14 +2898,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, මෙම ස්ථරයේ ඉලක්කය මූලික පේළියට යොමු නොවී අක්‍රියව පවතී.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>ප්‍රමාදය</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>ස්ථරය ප්‍රතිචාර දැක්වීමට පෙර ආදානය කොපමණ වේලාවක් ඔබාගෙන සිටිය යුතුද යන්න. ඔබාගෙන සිටීමේ ප්‍රකාරයේදී මෙය ඩිබවුන්ස් එකකි. ටොගල්, ලැච් සහ ස්ටිකි සඳහා එය මාරුව දිගු එබීමක් බවට පත් කරයි: ඔබාගෙන සිටීම මෙම කාලය ඉක්මවූ විට ස්ථරය එක් වරක් මාරු වන අතර, ඊට වඩා කෙටි තට්ටු කිරීමක් කිසිවක් නොකරයි. 0 වහාම ප්‍රතිචාර දක්වයි.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>දෙවන කෝඩ් ආදානය</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>අක්ෂ සීමා අගය</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>ස්ථර හරහා චක්‍රීයව යන්න</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>ස්ථරයේ සිටින විට පමණි</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>ඕනෑම ස්ථරයක්</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>තෝරාගත් ස්ථරය සක්‍රියව ඇති විට පමණක් ආදානය ගණන් ගැනේ. පරීක්ෂාව සිදු වන්නේ ආදානය පහළට යන විට වන අතර, එය සම්පූර්ණ එබීම පුරාම වලංගු වේ. ඕනෑම ස්ථරයක් යනු ආදානය සැමවිටම ගණන් ගැනෙන බවයි. එක් එක් ස්ථරයෙන් පිටවීම් එම ස්ථරය මතම, වෙනත් සක්‍රියකාරකයක් හෝ ස්ථරය මාරු කිරීමේ මැක්‍රෝවක් මගින් සකසන්න.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>ඊළඟ බොත්තම</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>පෙර බොත්තම</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>මුල සිට නැවත</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>ක්‍රියාත්මක විට, අවසාන ස්ථරය පසු කිරීමෙන් පළමු ස්ථරයට ද, පළමු ස්ථරය පසු කිරීමෙන් අවසාන ස්ථරයට ද ආපසු පැමිණේ. අක්‍රිය විට, කර්සරය අන්තවලදී නතර වේ.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>මූලිකය ඇතුළත් කරන්න</value></data>
@@ -2741,18 +2914,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>තනි බොත්තමක (හෝ POV දිශාවක) එබීමක් ස්ථරය සක්‍රිය කරයි.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>සක්‍රිය කිරීමට බොත්තම් දෙකම එකවර ඔබාගෙන සිටිය යුතුය. උපාංග අතර කෝඩ් සඳහා සහාය දක්වයි.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>ඇනලොග් අක්ෂයක් සීමා අගය ඉක්මවා ඇති තාක් සක්‍රිය වේ.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>සක්‍රියකාරකය ඔබාගෙන සිටින තාක් ස්ථරය සක්‍රියව පවතී. ඔබ අත හළ විට මුදා හැරේ.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>එහි ආදානය ඔබාගෙන සිටින අතරතුර, මෙම ස්ථරයේ සිතියම්ගත කිරීම් මූලික ඒවා ප්‍රතිස්ථාපනය කරයි.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>සක්‍රිය කිරීමට තට්ටු කරන්න. මුදා හැරීමට නැවත තට්ටු කරන්න. ස්ථරය බොහෝ එබීම් පුරා පවතී.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>මෙම ස්ථරය අගුළු දමා රඳවා තබා ගැනීමට ඔබන්න. මූලිකයට ආපසු මුදා හැරීමට නැවත ඔබන්න. වෙනත් ලැච් බොත්තමක් එහිම ස්ථරයට මාරු වේ.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>සෑම එබීමක්ම පිළිවෙළට සකස් කළ ස්ථර ලැයිස්තුවක් හරහා ඉදිරියට යයි. අවසානයේ නැවත මූලිකයට පැමිණේ.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>සක්‍රිය කිරීමට එක් වරක් තට්ටු කරන්න. ඊළඟ සිතියම්ගත බොත්තම් එබීම ස්ථරය මත ක්‍රියාත්මක වී, පසුව ස්වයංක්‍රීයව මුදා හැරේ.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>එයටම අයත් බොත්තමක් නැත. එය චක්‍ර පාලනයක පෝලිමට එක් කරන්න, එවිට චක්‍රය එයට ළඟා වේ.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>සිතියම්ගත නොකළ ඉලක්ක මූලිකයෙන් උරුම කරගන්න</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>මුදා හැරීමේදී ක්‍රියාත්මක කරන්න</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>බොත්තම අත හරින තෙක් රැඳී සිට මෙම සක්‍රියකාරකය ක්‍රියාත්මක වේ. ඔබාගෙන සිටීමේ ප්‍රමාදයක් සකසා ඇත්නම්, මුදා හැරීම ගණන් ගැනීමට එබීම එතරම් කාලයක් පැවතිය යුතුය.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>සක්‍රියකාරකයේම සිතියම්ගත කිරීමද ක්‍රියාත්මක කරන්න</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, සක්‍රියකාරක බොත්තම එය ප්‍රභවයක් ලෙස භාවිත කරන ඕනෑම පේළියක් තවමත් ධාවනය කරයි. එක් එබීමකින් ස්ථරය වෙනස් වන අතර බොත්තමේම සිතියම්ගත කිරීමද ක්‍රියාත්මක වේ. සලකුණු නොකළ විට (පෙරනිමි), සක්‍රියකාරක එබීම භාවිත වන්නේ ස්ථරය වෙනස් කිරීමට පමණි.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, මෙම ස්ථරය පැහැදිලිව සිතියම්ගත නොකරන ඉලක්ක මූලික ස්ථරයට යොමු වේ. සලකුණු නොකළ විට (පෙරනිමි), ස්ථරය මූලිකය සම්පූර්ණයෙන්ම ප්‍රතිස්ථාපනය කරන අතර සිතියම්ගත නොකළ ඉලක්ක අක්‍රියව පවතී.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>“මූලිකයට යොමු කරන්න” සමඟ, මෙම ස්ථරය සිතියම්ගත නොකරන පාලන ඒවායේ මූලික සිතියම්ගත කිරීම් රඳවා ගනී. “කිසිවක් නොකරන්න” සමඟ, ස්ථරය මූලිකය සම්පූර්ණයෙන්ම ප්‍රතිස්ථාපනය කරන අතර එම පාලන අක්‍රියව පවතී.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>භ්‍රමණ පරාසය</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>භ්‍රමණ පරාසය සකසන්න</value></data>
@@ -2955,15 +3127,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>තෝරාගත් උපාංගයේ ඇතුළත් ස්පීකරයක් නැත. මෙම පෑඩය සඳහා මැක්‍රෝ ශබ්ද පද්ධති පෙරනිමි ප්‍රතිදානයේ වාදනය වේ.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ශබ්ද ප්‍රතිදානය යළි සකසන්න</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) විසින් සාදන ලද බ්‍රවුසර DualSense පරීක්ෂණ කට්ටලය: PadForge අතථ්‍ය පෑඩවලින් භෞතික පෑඩවලට යොමු කරන Sony feature-report CRC රාමුකරණය සහ ස්ථිරාංග පරීක්ෂණ විධාන සඳහා යොමුව. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) විසින් සාදන ලද බ්‍රවුසර DualSense පරීක්ෂණ කට්ටලය: PadForge අතථ්‍ය පෑඩවලින් භෞතික පෑඩවලට යොමු කරන Sony feature-report CRC රාමුකරණය සහ ස්ථිරාංග පරීක්ෂණ විධාන සඳහා යොමුව.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius විසින් සාදන ලද DualShock 4 Bluetooth ශ්‍රව්‍ය යොමුව: PadForge හි DS4 ස්පීකර ප්‍රවාහය සඳහා වාර්තා රාමුකරණය. SBC එන්කෝඩරය Bluetooth A2DP පිරිවිතරයෙන් සාදන ලද මුල් C# ක්‍රියාත්මක කිරීමකි. khallmark ගේ ds4mac වෙතින් ලැබුණු ප්‍රොටෝකෝල ලේඛන ද සමඟින්. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius විසින් සාදන ලද DualShock 4 Bluetooth ශ්‍රව්‍ය යොමුව: PadForge හි DS4 ස්පීකර ප්‍රවාහය සඳහා වාර්තා රාමුකරණය. SBC එන්කෝඩරය Bluetooth A2DP පිරිවිතරයෙන් සාදන ලද මුල් C# ක්‍රියාත්මක කිරීමකි. khallmark ගේ ds4mac වෙතින් ලැබුණු ප්‍රොටෝකෝල ලේඛන ද සමඟින්.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>අපනයනය කරන්න…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>ආනයනය කරන්න…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>පැතිකඩ "{0}" අපනයනය කරන ලදී.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>පැතිකඩ "{0}" ආනයනය කරන ලදී (ශබ්ද පැකේජ {1} ක් ලියාපදිංචි කරන ලදී).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ගොනුව කියවිය හැකි PadForge පැතිකඩක් නොවේ.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} වෙතින් ශබ්දයක් තෝරන්න</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ශබ්ද පැකේජ</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ශබ්ද මැක්‍රෝ සඳහා ශබ්ද zip ගොනු</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ශබ්ද පැකේජයක් යනු .pfsounds දිගුව සහිත, ශබ්ද අඩංගු එක් zip ගොනුවකි. මෙහි එකක් එක් කර, ඕනෑම ශබ්ද මැක්‍රෝවක එහි ශබ්ද තෝරන්න. PadForge ගොනුවෙන් කෙලින්ම කියවන අතර එය කිසි විටෙක දිගහරින්නේ නැත. අතේ ගෙන යා හැකිව තබා ගැනීමට පැකේජ PadForge.exe අසල තබන්න.</value></data>
@@ -3008,20 +3179,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>අනන්‍යතා ආරක්ෂණය</value>
+    <value>යුගල කිරීමේ අනන්‍යතාව</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>මෙම පරිගණකයේ යුගල කිරීමේ අනන්‍යතාව ගබඩා කර ඇති ආකාරය. ඔබේ යුගල කිරීම් පෙන් ඩ්‍රයිව් එකක පරිගණක අතර රැගෙන යාමට, අතේ ගෙන යා හැකි ප්‍රකාරයක් තෝරන්න.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>මෙම පරිගණකය නම් කරන්න</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>අසල ඇති පරිගණක (යුගල කර නැත)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>යළි සකසන්න</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>දුරස්ථ සබැඳි මුරපදය</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge ටච්පෑඩ්</value>
@@ -3053,9 +3217,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>යුගල කළ පරිගණකය</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>මාර්ගගත</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>නොබැඳි</value>
   </data>
@@ -3072,7 +3233,7 @@
     <value>ආරක්ෂණය වෙනස් කිරීමට පෙර වත්මන් අනන්‍යතාවේ අගුළු අරින්න.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>ඔබේ අතේ ගෙන යා හැකි අනන්‍යතාව ආරක්ෂා කිරීමට මුරපදයක් සකසන්න. එක් එක් පරිගණකයේ දුරස්ථ සබැඳිය අගුළු ඇරීමට ඔබ එය ඇතුළත් කරනු ඇත.</value>
+    <value>මුරපදය මෙම පරිගණකයේ යුගල කිරීමේ අනන්‍යතාව ආරක්ෂා කරයි.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>අනන්‍යතා ආරක්ෂණය යාවත්කාලීන කරන ලදී.</value>
@@ -3092,7 +3253,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>{0}:{1} වෙත සම්බන්ධ වෙමින්…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ස්වයංක්‍රීයව නැවත සම්බන්ධ වන්න</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ස්වයංක්‍රීය නැවත සම්බන්ධ වීම</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>{0} මත සවන් දෙමින්</value>
   </data>
@@ -3111,65 +3272,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>සගය {0} සම්බන්ධ විය, උපාංග {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>එක් කළ පැකේජයකින් ශබ්දයක් තෝරන්න, නැතහොත් ගොනුවක් සඳහා පිරික්සන්න.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>ගොනු පිරික්සන්න…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>ශබ්දයක් තෝරන්න</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>ශබ්දය පාලකයේ ස්පීකරයෙන් වාදනය වේ, එයට ස්පීකරයක් නොමැති නම් පරිගණකයේ ස්පීකරයෙන්.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>ශබ්දය භාවිත කරන්න</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>{0} වාදනය කරන්න</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>පාලක-ශ්‍රව්‍ය පිළිබිඹුව සහ ශ්‍රව්‍ය-බාස් ට්‍රිගර කම්පනය සඳහා WASAPI ලූප්බැක් ග්‍රහණය. PadForge සමඟ නොයවන NAudio.Midi, පැරණි MIDI API හි WinMM ප්‍රකාශන සහ තොට අනුපිළිවෙළ සඳහා, ප්‍රවේගය 0 සහිත Note On එකක් Note Off එකක් වන නීතිය සඳහා, සහ sustain වැනි on/off පාලක සඳහා ද යොමුවයි. Mark Heath විසිනි. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>පාලක-ශ්‍රව්‍ය පිළිබිඹුව සහ ශ්‍රව්‍ය-බාස් ට්‍රිගර කම්පනය සඳහා WASAPI ලූප්බැක් ග්‍රහණය. PadForge සමඟ නොයවන NAudio.Midi, පැරණි MIDI API හි WinMM ප්‍රකාශන සහ තොට අනුපිළිවෙළ සඳහා, ප්‍රවේගය 0 සහිත Note On එකක් Note Off එකක් වන නීතිය සඳහා, සහ sustain වැනි on/off පාලක සඳහා ද යොමුවයි. Mark Heath විසිනි.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>හඬ මැක්‍රෝ වාක්‍ය ඛණ්ඩ හඳුනාගන්නා නොබැඳි කථන හඳුනාගැනීමේ මෙවලම. Alpha Cephei විසිනි. ආකෘතිය PadForge තුළම ඇතුළත්ව එයි. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>හඬ මැක්‍රෝ වාක්‍ය ඛණ්ඩ හඳුනාගන්නා නොබැඳි කථන හඳුනාගැනීමේ මෙවලම. Alpha Cephei විසිනි. ආකෘතිය PadForge තුළම ඇතුළත්ව එයි.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>දුරස්ථ සබැඳි යුගල කිරීම සහ ප්‍රවාහනය සඳහා ගුප්තකේතනය (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, MIT ආකාරයේ බලපත්‍රයකි.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>දුරස්ථ සබැඳි යුගල කිරීම සහ ප්‍රවාහනය සඳහා ගුප්තකේතනය (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>හවුල් රේඩියෝව හරහා DualShock 3 එකකට සම්බන්ධ වීමට ඉඩ දෙන, nefarius විසින් සාදන ලද, ඇතුළත් Bluetooth පැතිකඩ සහ PSM පෙරහන් ධාවක. යුගල කරන අවස්ථාවේදී යෙදුම තුළම ස්ථාපනය වේ. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>හවුල් රේඩියෝව හරහා DualShock 3 එකකට සම්බන්ධ වීමට ඉඩ දෙන, nefarius විසින් සාදන ලද, ඇතුළත් Bluetooth පැතිකඩ සහ PSM පෙරහන් ධාවක. යුගල කරන අවස්ථාවේදී යෙදුම තුළම ස්ථාපනය වේ.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer විසින් සාදන ලද DualShock 3 ප්‍රොටෝකෝල යොමුව: sixpair feature reports, Bluetooth ප්‍රතිදාන-වාර්තා අච්චුව, සක්‍රිය කිරීමේ අනුපිළිවෙළ, බැටරි සිතියම. PadForge හි ක්‍රියාත්මක කිරීම මුල් C# වේ. HIDMaestro හි DualShock 3 (SIXAXIS): Full පාලකය DsHidMini හි SXS-mode වාර්තා විස්තරකය භාවිත කරයි. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer විසින් සාදන ලද DualShock 3 ප්‍රොටෝකෝල යොමුව: sixpair feature reports, Bluetooth ප්‍රතිදාන-වාර්තා අච්චුව, සක්‍රිය කිරීමේ අනුපිළිවෙළ, බැටරි සිතියම. PadForge හි ක්‍රියාත්මක කිරීම මුල් C# වේ. HIDMaestro හි DualShock 3 (SIXAXIS): Full පාලකය DsHidMini හි SXS-mode වාර්තා විස්තරකය භාවිත කරයි.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>යෙදුම තුළ BthPS3 සැකසුම සඳහා සහ සඟවා ඇති USB පාලකයක් නිදහස් කිරීම සඳහා ධාවක-ගබඩා ස්ථාපනය, Bluetooth පන්ති පෙරහන් ලියාපදිංචිය සහ USB තොට නැවත ආරම්භ කිරීම, nefarius විසිනි. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>යෙදුම තුළ BthPS3 සැකසුම සඳහා සහ සඟවා ඇති USB පාලකයක් නිදහස් කිරීම සඳහා ධාවක-ගබඩා ස්ථාපනය, Bluetooth පන්ති පෙරහන් ලියාපදිංචිය සහ USB තොට නැවත ආරම්භ කිරීම, nefarius විසිනි.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro රැහැන්ගත ධාවකය සහ PadForge WinUSB වෙත බැඳින පාලක සඳහා USB ප්‍රවේශය, libusb-1.0.dll ලෙස ඇතුළත් කෙරේ. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro රැහැන්ගත ධාවකය සහ PadForge WinUSB වෙත බැඳින පාලක සඳහා USB ප්‍රවේශය, libusb-1.0.dll ලෙස ඇතුළත් කෙරේ.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>දුරකථන වෙබ් පාලකයේ ස්පර්ශ ජොයිස්ටික්, Yoann Moinet විසිනි. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>දුරකථන වෙබ් පාලකයේ ස්පර්ශ ජොයිස්ටික්, Yoann Moinet විසිනි.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge හි ඇතුළත් සිතියම්ගත කිරීම් දිගු කරන ප්‍රජා ගේම්පෑඩ් සිතියම්ගත කිරීමේ දත්ත ගබඩාව. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge හි ඇතුළත් සිතියම්ගත කිරීම් දිගු කරන ප්‍රජා ගේම්පෑඩ් සිතියම්ගත කිරීමේ දත්ත ගබඩාව.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide බොත්තම් LED පර්යේෂණය: XboxGIP පැකට් පිරිසැලසුම සහ සොයාගැනීමේ අනුපිළිවෙළ, Leclowndu93150 විසිනි. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide බොත්තම් LED පර්යේෂණය: XboxGIP පැකට් පිරිසැලසුම සහ සොයාගැනීමේ අනුපිළිවෙළ, Leclowndu93150 විසිනි.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>එතීමේ-කෝණ සුක්කානම් හැසිරවීම සහ ඇලවීමේ ගණිතය, JibbSmart සහ Electronicks විසිනි. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>එතීමේ-කෝණ සුක්කානම් හැසිරවීම සහ ඇලවීමේ ගණිතය, JibbSmart සහ Electronicks විසිනි.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ක්‍රීඩක-අවකාශ සහ ලෝක-අවකාශ ගයිරෝ පරිවර්තනය, JibbSmart විසිනි. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>ක්‍රීඩක-අවකාශ සහ ලෝක-අවකාශ ගයිරෝ පරිවර්තනය, JibbSmart විසිනි.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) හැප්ටික් වාර්තා පිරිසැලසුම සහ ස්වර-කාල ගණිතය, Pila සහ Roboron3042 විසිනි. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) හැප්ටික් වාර්තා පිරිසැලසුම සහ ස්වර-කාල ගණිතය, Pila සහ Roboron3042 විසිනි.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 සහ Steam Deck LFO-නාද හැප්ටික් පිරිසැලසුම, Pila, Crazy සහ AAGaming විසිනි. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 සහ Steam Deck LFO-නාද හැප්ටික් පිරිසැලසුම, Pila, Crazy සහ AAGaming විසිනි.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap ප්‍රකාර සඳහා SOCD පිරිසිදු කිරීමේ අර්ථ නිරූපණය, valignatev විසිනි. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap ප්‍රකාර සඳහා SOCD පිරිසිදු කිරීමේ අර්ථ නිරූපණය, valignatev විසිනි.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>නිර්නාමික සැසියක් හරහා Steam Workshop පාලක වින්‍යාස ලබා ගන්නා Steam ජාල සේවාදායකයා, Ryan Stecker සහ SteamRE Team විසිනි. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam ජාල ප්‍රොටෝකෝලය සඳහා භාවිත කරන Protocol Buffers අනුක්‍රමිකකරණය, Marc Gravell විසිනි. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam ජාල ප්‍රොටෝකෝලය සඳහා භාවිත කරන Protocol Buffers අනුක්‍රමිකකරණය, Marc Gravell විසිනි.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot කුට්ටි සඳහා භාවිත කරන Zstandard විසංකෝචනය. zstd පුස්තකාලයේ C# අනුවාදයකි, Oleg Stepanischev විසිනි. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot කුට්ටි සඳහා භාවිත කරන Zstandard විසංකෝචනය. zstd පුස්තකාලයේ C# අනුවාදයකි, Oleg Stepanischev විසිනි.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii යුගල කිරීමේ ක්‍රියාවලිය, ස්පීකර ADPCM, පැත්තට සහ සෘජුව තබන Wii Remote දිශානතිය, ස්ටික්-ගේට් ආකෘතිය සහ එහි ගබඩා ආකෘතිය, සහ ගයිරෝ අක්ෂ සම්මුතිය සඳහා ලේඛන. GPL-2.0-or-later, ලේඛන ලෙස පමණක් කියවා ඇත, GPL කේත කිසිවක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii යුගල කිරීමේ ක්‍රියාවලිය, ස්පීකර ADPCM, පැත්තට සහ සෘජුව තබන Wii Remote දිශානතිය, ස්ටික්-ගේට් ආකෘතිය සහ එහි ගබඩා ආකෘතිය, සහ ගයිරෝ අක්ෂ සම්මුතිය සඳහා ලේඛන. ලේඛන ලෙස පමණක් කියවා ඇත, GPL කේත කිසිවක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock හැසිරීම් ලේඛන: අක්‍රිය කාලයේ විසන්ධි කිරීම, ටච්පෑඩ් මායිම්, බැටරි විකේතනය, Bluetooth විසන්ධි කිරීමේ IOCTL, DualSense කම්පන-ප්‍රකාර බිටු, ගයිරෝ ජිටර් වක්‍රය, ස්ටික්-මූසිකයක්-ලෙස පරිමාණය, සහ Bluetooth ප්‍රතිදාන-වාර්තා CRC බීජය. එහි අතථ්‍ය යතුරුපුවරුවේ යතුරු වගුව PadForge හි යතුරු වගුවට මඟ පෙන්වීය. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවා ඇත, GPL කේත කිසිවක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock හැසිරීම් ලේඛන: අක්‍රිය කාලයේ විසන්ධි කිරීම, ටච්පෑඩ් මායිම්, බැටරි විකේතනය, Bluetooth විසන්ධි කිරීමේ IOCTL, DualSense කම්පන-ප්‍රකාර බිටු, ගයිරෝ ජිටර් වක්‍රය, ස්ටික්-මූසිකයක්-ලෙස පරිමාණය, සහ Bluetooth ප්‍රතිදාන-වාර්තා CRC බීජය. එහි අතථ්‍ය යතුරුපුවරුවේ යතුරු වගුව PadForge හි යතුරු වගුවට මඟ පෙන්වීය. ලේඛන ලෙස පමණක් කියවා ඇත, GPL කේත කිසිවක් ඇතුළත් නොවේ.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl තහවුරු කරන GIP LED විධාන ලේඛන. GPL-2.0-or-later, ලේඛන පමණි.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl තහවුරු කරන GIP LED විධාන ලේඛන. ලේඛන පමණි.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR කැමරාව සහ Balance Board හැසිරීම් ලේඛන, Brian Peek විසිනි. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR කැමරාව සහ Balance Board හැසිරීම් ලේඛන, Brian Peek විසිනි.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD කම්පන wire-format ලේඛන, Sergey004 විසිනි. ප්‍රොටෝකෝල කරුණු සඳහා පමණක් කියවා ඇත.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>යුගල කරන්න</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>පාලකයක් යුගල කරන්න</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>පාලකයක් යුගල කරන්න</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii Remote එකක් යුගල කරන්න</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>බැටරි ආවරණය විවෘත කර රතු SYNC බොත්තම ඔබන්න.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>රිමෝට් එකේ ලයිට් දැල්වෙන අතරතුර එය මෙම පරිගණකය අසල තබා ගන්න.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3 එකක් යුගල කරන්න</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move හෝ Navigation පාලකයක් යුගල කරන්න</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>අනුක්‍රමික පාලකයක් එක් කරන්න</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI දුරස්ථ පාලකයක් එක් කරන්න</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>පාලක පවුල</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>බැටරි ආවරණය විවෘත කර රතු SYNC බොත්තම ඔබන්න. ඔබේ පාලකය දිස්වන තෙක් PadForge දිගටම සෙවීමට ඉඩ දෙන්න.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>තාවකාලික යුගල කිරීම (1 සහ 2 ඔබාගෙන සිටින්න)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>යුගල කරන්න</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>සොයමින්. දැන් SYNC බොත්තම ඔබන්න.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>රිමෝට් එකක් සොයමින්.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>සොයාගත් පාලක</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>තවම පාලක හමු වී නැත. නිල් ලයිට් දැල්වෙමින් නිවෙමින් පවතින බව තහවුරු කරගන්න.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} යුගල කරන ලදී. එය ඔබේ උපාංග ලැයිස්තුවේ දිස්වනු ඇත.</value></data>
@@ -3179,7 +3345,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>නිමයි</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve හි OpenVR සේවාදායක API (BSD 3-Clause): VR හෙඩ්සෙට් සහ චලන පාලක ආදාන ප්‍රභව ලෙස. ස්වදේශීය ධාවන පරිසරය ඔබේම SteamVR ස්ථාපනයෙන් පූරණය වේ.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve හි OpenVR සේවාදායක API: VR හෙඩ්සෙට් සහ චලන පාලක ආදාන ප්‍රභව ලෙස. ස්වදේශීය ධාවන පරිසරය ඔබේම SteamVR ස්ථාපනයෙන් පූරණය වේ.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>ධාවනය වෙමින්</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>ධාවනය වෙමින්, ධාවකය සම්බන්ධිතයි</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>ධාවනය වෙමින්, පාලක සක්‍රියයි</value></data>
@@ -3217,13 +3383,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>යුගල කිරීම සම්පූර්ණ නොවීය. අසාර්ථක වූ පියවර ඉහත පෙන්වා ඇත.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>වසන්න</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ටැග්</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>ටැගයක් ලියාපදිංචි කරන්න</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>ටැගයක UID එක ලබා ගැනීමට එය කියවනය මත තට්ටු කරන්න.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(රැඳී සිටිමින්)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>නම:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>කියවනය මත ටැගයක් තට්ටු කර එයට නමක් දෙන්න. එය ඔබට සිතියම්ගත කළ හැකි බොත්තමක් බවට පත්වේ.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>කියවනය මත ටැගයක් තට්ටු කරන්න.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>නම</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>මෙම ටැගයට නමක් දෙන්න</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>ලියාපදිංචි කරන්න</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ලියාපදිංචි ටැග්</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ලියාපදිංචි</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFC කියවනයක් හඳුනා නොගැනිණි. PC/SC කියවනයක් සම්බන්ධ කර නැවත විවෘත කරන්න.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ටැගය ලබා ගන්නා ලදී. නමක් ඇතුළත් කර "ලියාපදිංචි කරන්න" ක්ලික් කරන්න. එය ප්‍රතිස්ථාපනය කිරීමට වෙනත් ටැගයක් තට්ටු කරන්න.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" ලියාපදිංචි කරන ලදී. තවත් එක් කිරීමට වෙනත් ටැගයක් තට්ටු කරන්න.</value></data>
@@ -3301,22 +3466,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack බෙදාගත් මතකය ද විවෘත කළ නොහැකි විය.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>සැඟවුණු බොත්තම් ඉගෙන ගන්න / කළමනාකරණය කරන්න</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>සැඟවුණු බොත්තම්</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>බොත්තමක් ඉගෙන ගන්න</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>ඉල්ලූ විට සැඟවුණු බොත්තම එක් වරක් ඔබන්න. PadForge මෙම යන්ත්‍රයේ යතුරුපුවරුව, මූසිකය, සෑම නිෂ්පාදක වාර්තාවක්ම සහ සෑම පද්ධති සිදුවීමක්ම නිරීක්ෂණය කර, බොත්තම වෙනස් කරන එක වාර්තා කරයි.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>යන්ත්‍රය:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>ඉගෙනීම අරඹන්න</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Windows පාලකයක් ලෙස නොපෙන්වන බොත්තමක් PadForge හට උගන්වන්න. ඉල්ලූ විට එය ඔබන්න.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>අත් ඉවත් කරන්න. නිෂ්ක්‍රිය තත්ත්වය කියවමින්…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>දැන් සැඟවුණු බොත්තම ඔබා, පසුව අත හරින්න…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>මොහොතක්…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>කිසිදු වෙනසක් දක්නට නොලැබුණි. උද්දීපනය කළ කාලය තුළ බොත්තම ඔබා නැවත උත්සාහ කරන්න.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>දැන් බොත්තම ඔබාගෙන සිටින්න.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>බොත්තම අත හරින්න.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>පියවර {0} / {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>කිසිදු වෙනසක් දක්නට නොලැබුණි. “නැවත අරඹන්න” තෝරා, ඉල්ලූ විට බොත්තම ඔබාගෙන සිටින්න.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>නිෂ්පාදක වාර්තා {0} ක් සහ සිදුවීම් පන්ති {1} ක් නිරීක්ෂණය කළා. එබීම අතරතුර: වාර්තා {2}, සිදුවීම් {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>බොත්තම ග්‍රහණය කළා. නමක් ඇතුළත් කර “ලියාපදිංචි කරන්න” ක්ලික් කරන්න.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>මූලාශ්‍රය:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>නම:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>මූලාශ්‍රය</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>නම</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>මෙම බොත්තමට නමක් දෙන්න</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>ලියාපදිංචි කරන්න</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>ඉගෙනගත් බොත්තම්</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>නැවත අරඹන්න</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>තවම කිසිදු බොත්තමක් ඉගෙන ගෙන නැත.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>“{0}” ලියාපදිංචි කළා. තවත් එකක් ඉගෙන ගැනීමට නැවත අරඹන්න.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>{0} මත ඉගෙන ගත්</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>“{0}” ලියාපදිංචි කළා. තවත් එකක් ඉගෙන ගැනීමට “නැවත අරඹන්න” තෝරන්න.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>යතුරු: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>සැඟවුණු බොත්තම් අක්‍රියයි. පළමුව සැකසීම් තුළ “අතේ ගෙන යන PC බොත්තම් සබල කරන්න” සක්‍රිය කරන්න.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} ක්‍රියාත්මක වේ. ඔබ එය නවත්වන තෙක් එය තවමත් මෙම බොත්තම්වලට ප්‍රතිචාර දක්වයි.</value></data>
@@ -3465,6 +3630,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ප්‍රජා වින්‍යාස</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ප්‍රජාව විසින් සාදන ලද Steam Input පාලක වින්‍යාස පිරික්සා ඒවා PadForge පැතිකඩ බවට පරිවර්තනය කරන්න. PadForge Steam සේවාදායකවලට සෘජුවම සම්බන්ධ වන්නේ ඔබ සොයන විට, වින්‍යාසයක් විවෘත කරන විට, හෝ ඔබ ආනයනය කළ වින්‍යාස යාවත්කාලීන සඳහා පරීක්ෂා කරන විට පමණි. එය ඔබේ සෙවුම් පාඨය, අදාළ ක්‍රීඩා, වින්‍යාස සහ නිර්මාණකරුවන්ගේ id, සහ PadForge අනුවාදය යවයි. නිර්නාමික Steam පිවිසුම ඔබේ Windows අනුවාදය සහ ඔබේ Windows ස්ථාපන ID, ජාල ඇඩැප්ටර ලිපින, සහ ආරම්භක තැටියේ අනුක්‍රමික අංකයේ හෑෂ්වලින් සාදන ලද යන්ත්‍ර id එකක් ද යවයි. ටෙලිමෙට්‍රි නැත, තෙවන පාර්ශ්ව සේවාවක් නැත, Steam ගිණුමක් නැත.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam සේවාදායකවලට සම්බන්ධ වන්නේ ඔබ සොයන විට, වින්‍යාසයක් විවෘත කරන විට, හෝ ආනයනය කළ වින්‍යාස යාවත්කාලීන සඳහා පරීක්ෂා කරන විට පමණි. ටෙලිමෙට්‍රි නැත, Steam ගිණුමක් නැත.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>යවන දේ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ප්‍රජා වින්‍යාස සබල කරන්න</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>පැරණි Workshop වින්‍යාස පෙන්වන්න</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>සමහර පැරණි වින්‍යාසවලට Steam හි CDN මත බාගත කළ හැකි ගොනුවක් නැත. PadForge ඒවා පැරණි ලාංඡනයක් සමඟ ලැයිස්තුගත කරන අතර, ඔබ දායක වූ පසු Steam තබා ගන්නා පිටපත කියවයි. එතෙක්, එය Steam Workshop හි වින්‍යාසය විවෘත කිරීමට ඉදිරිපත් කරයි.</value></data>
@@ -3472,18 +3639,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>ආනයනය කළ පැතිකඩ යාවත්කාලීන සඳහා පරීක්ෂා කරන්න</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop හැඹිලිය හිස් කළා</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>ප්‍රජා වින්‍යාස පිරික්සන්න</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>ප්‍රජා වින්‍යාස පිරික්සන්න</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>පැතිකඩ · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>පැතිකඩ ලබා ගන්න</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>සූදානම් කළ පැතිකඩකින්, ප්‍රජා වින්‍යාසයකින් හෝ වෙනත් මෙවලමක ගොනුවකින් ආරම්භ කරන්න.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>ආරම්භක</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>ප්‍රජාව</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>ගොනුවක් ආනයනය කරන්න</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>සුරැකීමෙන් ඔබට සංස්කරණය කළ හැකි සාමාන්‍ය පැතිකඩක් එක් වේ.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>කම්මල සීතලයි</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>ප්‍රජා වින්‍යාස පිරික්සීම PadForge Steam වෙත සෘජුවම සම්බන්ධ කරයි, ඔබ සොයන විට පමණි, ආරම්භයේදී කිසිවිටෙක නොවේ.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>ප්‍රජා වින්‍යාස සබල කරන්න</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ක්‍රීඩා සොයන්න</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>ක්‍රීඩා {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>ක්‍රීඩා</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam වෙළඳසැලේ කිසිදු ක්‍රීඩාවක් හමු නොවීය.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam සොයමින්…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam වෙතින් වින්‍යාස කියවමින්…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam වෙතින් වින්‍යාසය කියවමින්…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>ශ්‍රේණිගත කිරීම අනුව පෙළගස්වා ඇත</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>පෙළගැස්වීම</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>මෙම වින්‍යාස සොයන්න</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>ශ්‍රේණිගත කිරීම</value></data>
@@ -3497,7 +3667,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ක් හමු විය</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} න් {0} පෙන්වමින්</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>වින්‍යාස {0}</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>ප්‍රජා වින්‍යාස</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>සම්පූර්ණ පාලක සහාය</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>අර්ධ පාලක සහාය</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ක්‍රීඩා සොයන්න</value></data>
@@ -3516,8 +3685,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>නැවත උත්සාහ කරන්න</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>මෙම 2016 යුගයේ වින්‍යාසය Steam හි වින්‍යාස CDN එකට වඩා පැරණිය. Steam තුළ එයට දායක වන්න, එවිට PadForge එය ඔබේ Steam ෆෝල්ඩරයෙන් කියවයි.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop හි විවෘත කරන්න</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>එහි පරිවර්තන මැනිෆෙස්ටය කියවීමට වින්‍යාසයක් තෝරන්න.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>බැඳීම් {0} ක් කියවා ඇත</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ලැබෙන දේ බැලීමට වින්‍යාසයක් තෝරන්න.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ලැබෙන දේ</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>බවට පත්වේ</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>වින්‍යාසයේ බොත්තම් සහ ස්ටික් ලබා ගන්නා අතථ්‍ය පාලකය තෝරයි. එහි යතුරු සහ මූසිකය සැමවිටම යතුරුපුවරුව + මූසිකය පාලකයකට යයි.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>ස්ථර</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>පිරිසිදු</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>අර්ධ</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>මඟ හැරුණු</value></data>
@@ -3582,7 +3754,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>යාවත්කාලීන සඳහා Steam Workshop පරීක්ෂා කරමින්…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>ආනයනය කළ පැතිකඩ යාවත්කාලීනයි ({0} ක් පරීක්ෂා කළා)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop යාවත්කාලීන</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>මෙම ආනයනය කළ පැතිකඩවල නවතම අනුවාද Steam Workshop හි ඇත. වෙනස්කම් ලබා ගැනීමට “ප්‍රජා වින්‍යාස පිරික්සන්න” වෙතින් ඒවා නැවත ආනයනය කරන්න.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>මෙම ආනයනය කළ පැතිකඩවල නවතම අනුවාද Steam Workshop හි ඇත. වෙනස්කම් ලබා ගැනීමට “පැතිකඩ ලබා ගන්න” වෙතින් ඒවා නැවත ආනයනය කරන්න.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>දිගු එබීමේදී</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>කෙටි එබීමේදී</value></data>
@@ -3730,7 +3902,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>මෙනුව {0} කොටුව {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>මෙනු ඕවර්ලේ</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>ඕවර්ලේ</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර PadForge තිරය මත පෙන්වන දර්ශක. එකක් අක්‍රිය කිරීම කිසිවිටෙක හැසිරීම වෙනස් නොකරයි, එය නිවේදනය කරනවාද යන්න පමණි.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර PadForge තිරය මත පෙන්වන දර්ශක. එකක් අක්‍රිය කිරීම කිසිවිටෙක හැසිරීම වෙනස් නොකරයි, එය පෙන්වනවාද යන්න පමණි.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>මාරු ස්ථර උත්පතනය</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>පැතිකඩ මාරු ඕවර්ලේ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>රේඩියල් හෝ ස්පර්ශ මෙනුවක් සක්‍රිය අතරතුර තිරයේ වළල්ල හෝ ජාලකය පෙන්වන්න. ඕවර්ලේ අක්‍රිය වුවද මෙනු ක්‍රියාත්මක වේ.</value></data>
@@ -3780,6 +3952,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>මෙම නාලිකාව සඳහා නාද සංඛ්‍යාතය, 20 සිට 120 Hz දක්වා. ඔබේ ෂේකරය වඩාත් ප්‍රබලව ප්‍රතිචාර දක්වන තැන සොයා ගැනීමට සංඛ්‍යාත ස්වීප් එක ධාවනය කරන්න.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ප්‍රධාන වර්ධනයට පෙර මෙම නාලිකාවේ ශබ්ද තීව්‍රතාව.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ලාභය</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>සංඛ්‍යාතය</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>පරීක්ෂා කරන්න</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>මෙම නාලිකාවේ ස්වරය එයට සකසා ඇති වර්ධනයෙන් තත්පර 1.5ක් වාදනය කරයි.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>අඩු සංඛ්‍යාත මෝටරය යළි සකසන්න</value></data>
@@ -3822,16 +3995,16 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>ටච්පෑඩ් සිට මූසික ප්‍රතිදානය සඳහා ට්‍රැක්පෑඩ් දර්ශක ත්වරණ වක්‍රය. libinput හි ටච්පෑඩ් ත්වරණ පැතිකඩෙහි C# අනුවාදයකි. MIT.</value>
+    <value>ටච්පෑඩ් සිට මූසික ප්‍රතිදානය සඳහා ට්‍රැක්පෑඩ් දර්ශක ත්වරණ වක්‍රය. libinput හි ටච්පෑඩ් ත්වරණ පැතිකඩෙහි C# අනුවාදයකි.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D පාලක මාදිලි (Xbox 360, Steam Deck) සහ 3D දසුනේ මාදිලි හා සජීවිකරණ කේතය, CasperH2O, Lesueur Benjamin, trippyone විසින්. Steam Deck වාර්තාව සහ හැප්ටික් විකේතනය, Steam Controller (2015) බලය අක්‍රිය කිරීමේ වාර්තාව, අතේ ගෙන යා හැකි පරිගණක daemon නිරීක්ෂණ ලැයිස්තුව, යාවත්කාලීන පරීක්ෂාවේ කාල නිර්ණය, සහ 500 ms පරතරයෙන් කෙරෙන හබ් තොට චක්‍රය සඳහාද මූලාශ්‍රය මෙයයි. එම චක්‍රය සැඟවූ USB පාලකයක් නැවත සම්බන්ධ කරන බැවින්, එය මුලින් විවෘත කළ වැඩසටහන්වලට එය අහිමි වේ. CC BY-NC-SA 4.0.</value>
+    <value>3D පාලක මාදිලි (Xbox 360, Steam Deck) සහ 3D දසුනේ මාදිලි හා සජීවිකරණ කේතය, CasperH2O, Lesueur Benjamin, trippyone විසින්. Steam Deck වාර්තාව සහ හැප්ටික් විකේතනය, Steam Controller (2015) බලය අක්‍රිය කිරීමේ වාර්තාව, අතේ ගෙන යා හැකි පරිගණක daemon නිරීක්ෂණ ලැයිස්තුව, යාවත්කාලීන පරීක්ෂාවේ කාල නිර්ණය, සහ 500 ms පරතරයෙන් කෙරෙන හබ් තොට චක්‍රය සඳහාද මූලාශ්‍රය මෙයයි. එම චක්‍රය සැඟවූ USB පාලකයක් නැවත සම්බන්ධ කරන බැවින්, එය මුලින් විවෘත කළ වැඩසටහන්වලට එය අහිමි වේ.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D පාලක සැලසුම් රූප (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man විසින්. MIT.</value>
+    <value>2D පාලක සැලසුම් රූප (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man විසින්.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4 ශ්‍රව්‍ය ප්‍රොටෝකෝල ලේඛන: SBC පරාමිති සහ පැකට් පිරිසැලසුම්, khallmark විසින්. GPL-2.0, ලේඛන පමණි.</value>
+    <value>DualShock 4 ශ්‍රව්‍ය ප්‍රොටෝකෝල ලේඛන: SBC පරාමිති සහ පැකට් පිරිසැලසුම්, khallmark විසින්. ලේඛන පමණි.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>ඩෙස්ක්ටොප්</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>සෝෆාවේ සිට Windows හසුරුවන්න. කර්සරය, අනුචලනය, සහ ට්‍රිගර මත ක්ලික්.</value></data>
@@ -3845,10 +4018,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>අක්ෂ දෙකෙහිම තරඟාවලි නීතිවලට අනුකූල SOCD පිරිසිදු කිරීම සහිත බොත්තම් හයේ පිරිසැලසුම.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ගේම්පෑඩ්</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>ආරම්භක පැතිකඩ පිරික්සන්න</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>ආරම්භක පැතිකඩ</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>සම්පූර්ණ ක්‍රීඩා ප්‍රභේදයක් සඳහා සූදානම් කළ පැතිකඩ. එකක් තෝරා, ඕනෑම පාලකයක් පවරා, ක්‍රීඩා කරන්න. සුරැකීමෙන් ඔබට සංස්කරණය කළ හැකි සාමාන්‍ය පැතිකඩක් එක් වේ.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>පැතිකඩ සුරකින්න</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>ආරම්භක පැතිකඩ "{0}" එක් කරන ලදී.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>යොමු කර ක්ලික් කිරීම</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>වික්‍රමාන්විත ක්‍රීඩා සහ කර්සරයක් හා ක්‍රියා පද දෙකකින් ක්‍රියා කරන ඕනෑම දෙයක්.</value></data>
@@ -3944,13 +4113,13 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>ප්‍රතිදාන මාර්ගය යළි සකසන්න</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>හෙඩ්ෆෝන් ජැක් අනුගමනය කරන්න</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz විසින් DualSense ප්‍රතිදාන වාර්තා බයිට සිතියම සහ Sony scePad අර්ථ නිරූපණ, PadForge හි ප්‍රයෝග සහ ශ්‍රව්‍ය ලේඛකවල පදනම. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz විසින් DualSense ප්‍රතිදාන වාර්තා බයිට සිතියම සහ Sony scePad අර්ථ නිරූපණ, PadForge හි ප්‍රයෝග සහ ශ්‍රව්‍ය ලේඛකවල පදනම.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments විසින් ජැක් හඳුනාගැනීමේ ශ්‍රව්‍ය මාර්ගගත කිරීමේ රටාව, "හෙඩ්ෆෝන් ජැක් අනුගමනය කරන්න" පිටුපස ඇති මූලාශ්‍රය. ලේඛන ලෙස කියවන ලදී. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments විසින් ජැක් හඳුනාගැනීමේ ශ්‍රව්‍ය මාර්ගගත කිරීමේ රටාව, "හෙඩ්ෆෝන් ජැක් අනුගමනය කරන්න" පිටුපස ඇති මූලාශ්‍රය. ලේඛන ලෙස කියවන ලදී.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki හි මූලාශ්‍ර ක්‍රියාත්මක කිරීමෙන් පෝට් කළ, වෙබ් පාලකයේ ලිපින සඳහා බයිට මාදිලියේ QR කේතකය. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki හි මූලාශ්‍ර ක්‍රියාත්මක කිරීමෙන් පෝට් කළ, වෙබ් පාලකයේ ලිපින සඳහා බයිට මාදිලියේ QR කේතකය.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය දෘශ්‍යකරණයේ මූසික චිත්‍ර, Igor Budzhak විසින්. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>යතුරුපුවරුව + මූසිකය දෘශ්‍යකරණයේ මූසික චිත්‍ර, Igor Budzhak විසින්.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>පීඩනයට අනුව වේගය</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>පුනරාවර්තන වේගය තෝරාගත් ඇනලොග් මූලාශ්‍රය කොතරම් තදින් ඔබනවාද යන්න අනුගමනය කරයි. සැහැල්ලු එබීමක් "මන්දගාමී පරතරය" අනුවත්, සම්පූර්ණ එබීමක් ඉහත "පරතරය" අනුවත් පුනරාවර්තනය වන අතර, ඒ අතර ඇති සියල්ල සුමටව මිශ්‍ර වේ.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>මන්දගාමී පරතරය</value></data>
@@ -3965,7 +4134,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>කේතය මඟින් සම්බන්ධ වෙමින්…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>අනෙක් පරිගණකයට සෘජුව ළඟා විය නොහැකි විය. VPN එකක් හරහා "ලිපිනය මඟින් සම්බන්ධ වන්න" උත්සාහ කරන්න.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>මෙම පරිගණකයේ කේතය</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>අනෙක් පුද්ගලයා සමඟ කේත හුවමාරු කරගන්න: ඔවුන් ඔබේ කේතය අලවන අතරතුර ඔබ ඔවුන්ගේ කේතය ඔබේ "සම්බන්ධ වන්න" කොටුවට අලවන්න, පසුව දෙදෙනාම "සම්බන්ධ වන්න" ක්ලික් කරන්න. එමඟින් අන්තර්ජාලය හරහා සෘජු මාර්ගයක් විවෘත වේ, VPN අවශ්‍ය නොවේ. දුරස්ථ සබැඳිය ක්‍රියාත්මක වන අතරතුර කේතය යාවත්කාලීන වේ.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>අනෙක් පුද්ගලයා සමඟ කේත හුවමාරු කරගන්න: ඔවුන් ඔබේ කේතය අලවන අතරතුර ඔබ ඔවුන්ගේ කේතය තවත් යටතේ ඇති "ලිපිනයෙන් සම්බන්ධ වන්න" වෙත අලවන්න, පසුව දෙදෙනාම "යුගල කරන්න / සම්බන්ධ වන්න" ක්ලික් කරන්න. එමඟින් අන්තර්ජාලය හරහා සෘජු මාර්ගයක් විවෘත වේ, VPN අවශ්‍ය නොවේ. දුරස්ථ සබැඳිය ක්‍රියාත්මක වන අතරතුර කේතය යාවත්කාලීන වේ.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>මෙම ජාලයට සෘජු සම්බන්ධතා ඇති කළ නොහැක (එය ජංගම හොට්ස්පොට් එකක් හෝ වාහක මට්ටමේ NAT එකක් ලෙස පෙනේ). Tailscale වැනි VPN එකක් භාවිත කරන්න, නැතහොත් නිවසේ බ්‍රෝඩ්බෑන්ඩ් සම්බන්ධතාවකින් සම්බන්ධ වන්න.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>මෙම පරිගණකයේ පොදු ලිපිනය සොයාගත නොහැකි විය (අවශ්‍ය දත්ත ගමනාගමනය ජාලය විසින් අවහිර කරනවා විය හැක). මෙහි සෘජු සම්බන්ධතා ක්‍රියා නොකරයි. VPN එකක් භාවිත කරන්න, නැතහොත් එම ජාලයේම "ලිපිනය මඟින් සම්බන්ධ වන්න" භාවිත කරන්න.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>පාලකයේ බැටරිය අඩුයි</value></data>
@@ -3976,6 +4145,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>මෙම මට්ටමේ හෝ ඊට අඩුවෙන් දැනුම් දෙන්න</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>පාලකයද කම්පනය කරන්න</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>පරීක්ෂණ දැනුම්දීම</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>දැනුම්දීම පරීක්ෂා කරන්න</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>පැවරුම් විමසීම්</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>අතථ්‍ය පාලකයක පිටුව විවෘතව ඇති විට උපාංගයක් සම්බන්ධ වුවහොත්, PadForge හට එය එහි පැවරීමට යෝජනා කළ හැක, සහ මුල් පිටුවට නව උපාංගයකට එයටම අයත් අතථ්‍ය පාලකයක් යෝජනා කළ හැක. ඔබ යෝජනාවක් පිළිගන්නා තුරු කිසිවක් පැවරෙන්නේ නැත. යතුරුපුවරු, මූසික, ටච්පෑඩ් සහ මාධ්‍ය යතුරු කිසිදා යෝජනා නොකෙරේ.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>නව උපාංග විවෘත අතථ්‍ය පාලකයට යෝජනා කරන්න</value></data>
@@ -3989,23 +4159,28 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>දැන් නොවේ</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>ඕනෑම වාක්‍ය ඛණ්ඩයක්</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>හඬ මැක්‍රෝ</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>වාක්‍ය ඛණ්ඩයක් පවසන්න, එය ඔබට සිතියම්ගත කළ හැකි බොත්තමක් ඔබයි. PadForge හට ළඟා විය හැකි සෑම මයික්‍රෆෝනයක්ම සවන් දෙයි.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>හඬ මැක්‍රෝ කළමනාකරණය කරන්න</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>හඬ මැක්‍රෝ සක්‍රිය කරන්න</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>සවන්දීම සක්‍රිය කරයි. සක්‍රියව ඇති අතරතුර, ලියාපදිංචි කළ සෑම වාක්‍ය ඛණ්ඩයක්ම ඔබ එය පවසන විට ක්‍රියාත්මක වන බොත්තමකි. හඳුනාගැනීමේ මාදිලිය PadForge තුළම ඇතුළත් වන අතර සම්පූර්ණයෙන්ම නොබැඳිව ක්‍රියා කරයි.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>සවන්දීම</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"සැමවිටම" මයික්‍රෆෝනය සැමවිටම විවෘතව තබයි. "කතා කිරීමට ඔබන්න" සවන් දෙන්නේ බැඳි "හඬ සවන්දීම" මැක්‍රෝවක් ඔබාගෙන සිටින අතරතුර පමණි.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>සවන්දීම ක්‍රියාත්මක හෝ ක්‍රියාවිරහිත, ප්‍රකාරය, විශ්වාසය</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>සැමවිටම</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>කතා කිරීමට ඔබන්න</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>අවම විශ්වාසය</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>වාක්‍ය ඛණ්ඩයක් ක්‍රියාත්මක වීමට පෙර හඳුනාගන්නා කොතරම් විශ්වාස විය යුතුද යන්න. අහඹු කථනය මැක්‍රෝ ක්‍රියාත්මක කරයි නම් එය වැඩි කරන්න, ඔබේ වාක්‍ය ඛණ්ඩ මඟ හැරේ නම් අඩු කරන්න.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>කථනය සඳහා රැඳී සිටිමින්. හඳුනාගැනීම් ඒවායේ විශ්වාසය සමඟ මෙහි දිස් වේ.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>"{0}" ඇසුණි ({1:F2}). ක්‍රියාත්මක විය.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>"{0}" ඇසුණි ({1:F2}). විශ්වාස සීමාවට පහළින් හෝ කතා කිරීමේ යතුර ඔබා නැත.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>සවන්දීම ක්‍රියාවිරහිතයි. තවත් යටතේ එය ක්‍රියාත්මක කරන්න.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>{1} මත {0} ඇසුණි</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>{1} මත {0} ඇසුණි. එය විශ්වාස සීමාවට පහළින් විය, නැතහොත් කතා කිරීමේ යතුර ඔබා නොතිබුණි.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>වාක්‍ය ඛණ්ඩය</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>පැවසිය යුතු වාක්‍ය ඛණ්ඩය</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>නම</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>බොත්තමේ නම</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>ලියාපදිංචි කරන්න</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ලියාපදිංචි වාක්‍ය ඛණ්ඩ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}" ලියාපදිංචි කරන ලදී. එහි බොත්තම ක්‍රියාත්මක කිරීමට එය පවසන්න, සහ පාලක පිටුවේදී මැක්‍රෝ එයට බඳින්න.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>වාක්‍ය ඛණ්ඩ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}" ලියාපදිංචි කරන ලදී. එහි බොත්තම ක්‍රියාත්මක කිරීමට එය පවසන්න, සහ පාලකයක පිටුවේදී එය සිතියම්ගත කරන්න.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>හඬ සවන්දීම (ඔබාගෙන සිටින අතරතුර)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>හඬ මැක්‍රෝ සඳහා කතා කිරීමට ඔබන්න: මෙම මැක්‍රෝව ඔබාගෙන සිටින අතරතුර, හඳුනාගන්නා සවන් දෙයි. "හඬ මැක්‍රෝ කළමනාකරණය කරන්න" තුළ "සවන්දීම" "කතා කිරීමට ඔබන්න" ලෙස සකසන්න.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>මයික්‍රෆෝනය</value></data>
@@ -4013,12 +4188,12 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa පේළියේ කම්පනය පිටුපස ඇති හැප්ටික් එන්ජිම සහ Razer සපයන්නා. HAR.dll සහ Interhaptics.RazerProvider.dll, පොදු Core SDK වෙතින් වෙනස් නොකර PadForge තුළ ඇතුළත් වේ. Wyvrn විසින්. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa පේළියේ කම්පනය පිටුපස ඇති හැප්ටික් එන්ජිම සහ Razer සපයන්නා. HAR.dll සහ Interhaptics.RazerProvider.dll, පොදු Core SDK වෙතින් වෙනස් නොකර PadForge තුළ ඇතුළත් වේ. Wyvrn විසින්.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller (2015) සහ Steam Controller (2026) 3D මාදිලි, Valve ප්‍රකාශයට පත් කළ STEP ගොනුවලින් මෙෂ් කරන ලදී. ප්‍රකාශන හිමිකම Valve Corporation. CC BY-NC-SA 4.0. PadForge, Valve සමඟ සම්බන්ධ නොවන අතර Valve විසින් අනුමත කර නොමැත.</value>
+    <value>Steam Controller (2015) සහ Steam Controller (2026) 3D මාදිලි, Valve ප්‍රකාශයට පත් කළ STEP ගොනුවලින් මෙෂ් කරන ලදී. ප්‍රකාශන හිමිකම Valve Corporation. PadForge, Valve සමඟ සම්බන්ධ නොවන අතර Valve විසින් අනුමත කර නොමැත.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 ධාවන පරිසරය</value>
@@ -4035,7 +4210,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer ආලෝකකරණය සඳහා Razer Chroma REST API රාමුගත කිරීම තහවුරු කිරීම, Adam Hellberg සහ Brandon Scott විසින්. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer ආලෝකකරණය සඳහා Razer Chroma REST API රාමුගත කිරීම තහවුරු කිරීම, Adam Hellberg සහ Brandon Scott විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK මූලාශ්‍ර</value>
   </data>
@@ -4044,19 +4219,19 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>හිස් ලුහුබැඳීම සඳහා UDP ට්‍රැකර් ඩේටාග්‍රෑම් සහ FreeTrack 2.0 හවුල් මතක පිරිසැලසුම. ISC. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value>
+    <value>හිස් ලුහුබැඳීම සඳහා UDP ට්‍රැකර් ඩේටාග්‍රෑම් සහ FreeTrack 2.0 හවුල් මතක පිරිසැලසුම. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>අතේ ගෙන යා හැකි පරිගණකවල සැඟවුණු බොත්තම් ඉගෙනීමේ මෙවලම දායක වන Lenovo WMI උපයෝගිතා සිදුවීම් පන්තිය, සහ බාහිර පැතිකඩ පාලනය පිටුපස ඇති ඉහළ අවසර සහිත IPC සේවාදායක රටාව. GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value>
+    <value>අතේ ගෙන යා හැකි පරිගණකවල සැඟවුණු බොත්තම් ඉගෙනීමේ මෙවලම දායක වන Lenovo WMI උපයෝගිතා සිදුවීම් පන්තිය, සහ බාහිර පැතිකඩ පාලනය පිටුපස ඇති ඉහළ අවසර සහිත IPC සේවාදායක රටාව. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>සැඟවුණු බොත්තම් ඉගෙනීමේ මෙවලම සඳහා හරස් පරීක්ෂා කළ, අතේ ගෙන යා හැකි පරිගණක හැඳුනුම් පෙළ සහ නිෂ්පාදක වාර්තා සටහන්. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value>
+    <value>සැඟවුණු බොත්තම් ඉගෙනීමේ මෙවලම සඳහා හරස් පරීක්ෂා කළ, අතේ ගෙන යා හැකි පරිගණක හැඳුනුම් පෙළ සහ නිෂ්පාදක වාර්තා සටහන්. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook සහ WiimoteHook</value>
@@ -4071,13 +4246,13 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>පැරණි MIDI API පිටුපස ඇති WinMM ඇමතුම් අනුපිළිවෙළ: තොටක් විවෘත කිරීම, එයට යැවීම, සහ එය වැසීම. PortMidi (MIT, Ross Bencina, Phil Burk, සහ Roger B. Dannenberg විසින්) සහ RtMidi (MIT ආකාරයේ RtMidi බලපත්‍රය, Gary P. Scavone විසින්) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK මූලාශ්‍ර</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key ආදානය පිටුපස ඇති සිදුවීම් වචන පිරිසැලසුම SDK හි LogitechGkeyLib.h වෙතින් පැමිණේ. පුස්තකාල සෙවීමේ අනුපිළිවෙළ සහ වසා දැමීම Mumble හි GKey.cpp (BSD 3-Clause) අනුගමනය කරයි. PadForge යන්ත්‍රයේ ඇති පුස්තකාලයේ ඕනෑම පිටපතක් පූරණය කරන අතර කිසිදු Logitech කේතයක් ඇතුළත් නොකරයි.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key ආදානය පිටුපස ඇති සිදුවීම් වචන පිරිසැලසුම SDK හි LogitechGkeyLib.h වෙතින් පැමිණේ. පුස්තකාල සෙවීමේ අනුපිළිවෙළ සහ වසා දැමීම Mumble හි GKey.cpp අනුගමනය කරයි. PadForge යන්ත්‍රයේ ඇති පුස්තකාලයේ ඕනෑම පිටපතක් පූරණය කරන අතර කිසිදු Logitech කේතයක් ඇතුළත් නොකරයි.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup, සහ AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>ඇනලොග් යතුරුපුවරු ආදානය, HallJoy හි යතුරුපුවරු මාර්ග, යතුරු වගු, සහ මාදිලි නාමාවලි C# (AGPL-3.0, PashOK7) වෙත පෝට් කරන අතර, Soup සහ AnalogSense JavaScript SDK (MIT, Calamity, Inc.) අනුගමනය කරයි, Wooting Analog SDK (MPL-2.0) සමඟ පරීක්ෂා කර ඇත. අනෙකුත් යතුරුපුවරු AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk සහ hmkconf (GPL-3.0-or-later, peppapighs), සහ DenkiSuki, LeiterConsulting, සහ paysdelest හි Soup ෆෝක් (MIT) අනුගමනය කරයි. වාර්තා ආකෘති සහ යතුරු වගුද Razer හි Synapse Web සහ NuPhy හි NuPhyIO වින්‍යාසකරුවන්, OpenRazer (GPL-2.0-or-later), Abbytech හි razer-analog-keyboard, TinyUSB (MIT), සහ Sainan හි ග්‍රහණ සටහන් වෙතින් පැමිණේ.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box මූලාශ්‍ර</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>"Bliss-Box ඇඩැප්ටර කියවන්න" පිටුපස ඇති Bliss-Box API, Bliss-Box LLC හි API Tool (BSD ආකාරයේ, ගාස්තුවකින් තොරව නැවත බෙදාහැරීම) සහ DeviceBuddy (මූලාශ්‍ර කේතය ලබා ගත හැක, Bliss-Box LLC) වෙතින් කියවන ලදී. බොත්තම් නාම SteveFox1620 හි retroarch-joypad-autoconfig ෆෝක් එකේ Bliss-Box ගොනුවලින්ද, Controller Pak චෙක්සම් libdragon (Unlicense) සමඟ පරීක්ෂා කිරීමෙන්ද, PlayStation පාලක පිළිතුර psx-spx සහ Linux හි psxpad-spi ධාවකයෙන් (GPL-2.0-or-later)ද ගන්නා ලදී. පාලක නාම සහ සහාය සටහන්ද Bliss-Box LLC හි ගැළපුම් ලැයිස්තුවෙන් පැමිණෙන අතර, ඇඩැප්ටරවල හැසිරීම ඒවායේ ස්ථිරාංග සමඟ පරීක්ෂා කරන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro හි සංයුක්ත USB පාලක සඳහා Vadym Hrynchyshyn විසින් USB ප්‍රවාහනය. HIDMaestro එහි අත්සන් කළ ධාරක පාලක ධාවකය රැගෙන යන අතර සංයුක්ත පාලකයක් පළමු වරට නිර්මාණය කරන විට එය ස්ථාපනය කරයි. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro හි සංයුක්ත USB පාලක සඳහා Vadym Hrynchyshyn විසින් USB ප්‍රවාහනය. HIDMaestro එහි අත්සන් කළ ධාරක පාලක ධාවකය රැගෙන යන අතර සංයුක්ත පාලකයක් පළමු වරට නිර්මාණය කරන විට එය ස්ථාපනය කරයි.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>මෙම ස්ලොට් එකේ ක්‍රියාත්මක වන්නේ කුමන අර්ධදැයි තෝරන්න. අර්ධයක් අක්‍රිය කිරීමෙන් එහි පේළි සැඟවී එය යැවීම නවතී, නමුත් එහි සිතියම්ගත කිරීම් තබා ගන්නා බැවින් නැවත සක්‍රිය කළ විට ඒවා ප්‍රතිසාධනය වේ.</value>
   </data>
@@ -4145,13 +4320,15 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
     <value>බෙදාගත් උපාංග පවරන්න</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} හි පැවරුම්</value>
+    <value>{0} සමඟ බෙදාගත් උපාංග</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>මෙම පරිගණකය විසින් බෙදාගත් උපාංගයක් තෝරා, පසුව අනෙක් පරිගණකයේ එහි අතථ්‍ය පාලක තෝරන්න.</value>
+    <value>උපාංගයක් තෝරා, පසුව එය පාලනය කළ යුතු එම පරිගණකයේ පාලක තෝරන්න.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>මෙම පරිගණකයෙන් බෙදාගත්</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} හි පාලක</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>පැතිකඩ: {0}</value>
+    <value>සක්‍රිය පැතිකඩ: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>අනෙක් පරිගණකයේ, දුරස්ථ සබැඳිය &gt; යුගල කළ පරිගණක යටතේ මෙම පරිගණකය සඳහා දුරස්ථ පැවරුම් වෙනස් කිරීමට ඉඩ දෙන්න.</value>
@@ -4243,60 +4420,60 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS, සහ CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll තුළ ඇති කථන විකේතකය, ට්‍රාන්ස්ඩියුසර් පුස්තකාලය, සහ රේඛීය වීජ ගණිතය. Kaldi සහ OpenFst: Apache-2.0. OpenBLAS සහ CLAPACK: BSD 3-Clause, OpenBLAS තුළ ඇති GotoBLAS2 සහ f2c ධාවන පරිසරය සඳහා වෙනම දැන්වීම් සමඟ.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>උපාය මාර්ග සහ ඩෙස්ක්ටොප් ආරම්භක පැතිකඩ පිරිසැලසුම්, සහ පීඩනයට අනුව ටර්බෝ මඟ හරින ටර්බෝ හැසිරීම. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>උපාය මාර්ග සහ ඩෙස්ක්ටොප් ආරම්භක පැතිකඩ පිරිසැලසුම්, සහ පීඩනයට අනුව ටර්බෝ මඟ හරින ටර්බෝ හැසිරීම. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge පාලකයක ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය නැවත සක්‍රිය කිරීමට භාවිත කරන, Windows හි ලේඛනගත නොකළ IPolicyConfig අතුරුමුහුණතේ පිරිසැලසුම සඳහා Antoine Aflalo විසින් මූලාශ්‍රය. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>PadForge පාලකයක ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය නැවත සක්‍රිය කිරීමට භාවිත කරන, Windows හි ලේඛනගත නොකළ IPolicyConfig අතුරුමුහුණතේ පිරිසැලසුම සඳහා Antoine Aflalo විසින් මූලාශ්‍රය. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>පාලකයක පරාමිතික EQ ආයාත කරන පරාමිතික EQ පැතිකඩ ආකෘතිය, Jaakko Pasanen විසින්. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>පාලකයක පරාමිතික EQ ආයාත කරන පරාමිතික EQ පැතිකඩ ආකෘතිය, Jaakko Pasanen විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>පෙළ කොටස් මැක්‍රෝ සහ යතුරුපුවරු සංයෝජන ග්‍රහණය පිටුපස ඇති SendInput ශිල්පීය ක්‍රම: Unicode ටයිප් කිරීම, කාණ්ඩ සීමා, Win යතුර ආවරණය කරන යතුර, සහ ටැග් කළ එන්නත් කළ ආදානය. GPL-2.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>පෙළ කොටස් මැක්‍රෝ සහ යතුරුපුවරු සංයෝජන ග්‍රහණය පිටුපස ඇති SendInput ශිල්පීය ක්‍රම: Unicode ටයිප් කිරීම, කාණ්ඩ සීමා, Win යතුර ආවරණය කරන යතුර, සහ ටැග් කළ එන්නත් කළ ආදානය. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>චලන සේවාදායකය පිටුපස ඇති DSU ප්‍රොටෝකෝල මූලාශ්‍රය, v1993 විසින්. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>චලන සේවාදායකය පිටුපස ඇති DSU ප්‍රොටෝකෝල මූලාශ්‍රය, v1993 විසින්.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ප්‍රතිදාන වාර්තා රාමුගත කිරීම, Christopher Rosell විසින්. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 Bluetooth ප්‍රතිදාන වාර්තා රාමුගත කිරීම, Christopher Rosell විසින්.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 බැටරි පරාස, ටච්පෑඩ් හැප්ටික් ස්පන්දන කාල නිර්ණය සහ තීව්‍රතා පියවර, සහ ටච්පෑඩ් ෆ්ලින්ග් හැසිරීම. GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 බැටරි පරාස, ටච්පෑඩ් හැප්ටික් ස්පන්දන කාල නිර්ණය සහ තීව්‍රතා පියවර, සහ ටච්පෑඩ් ෆ්ලින්ග් හැසිරීම. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton ෆෝක් එක)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense ශ්‍රව්‍ය හඬ පරිමාව පරාස, සලකුණු සහිත බිට් 8 හැප්ටික් නියැදි, සහ ඒකාබද්ධ Bluetooth ප්‍රවාහන පිරිසැලසුම. GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense ශ්‍රව්‍ය හඬ පරිමාව පරාස, සලකුණු සහිත බිට් 8 හැප්ටික් නියැදි, සහ ඒකාබද්ධ Bluetooth ප්‍රවාහන පිරිසැලසුම. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense Bluetooth ශ්‍රව්‍ය බෆර දිගෙහි පෙරනිමිය සහ අවම අගය, awalol විසින්. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense Bluetooth ශ්‍රව්‍ය බෆර දිගෙහි පෙරනිමිය සහ අවම අගය, awalol විසින්.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube අනුවර්තී ට්‍රිගර පෙරසැකසුම් අගයන්, Mxater විසින්. කරුණු සඳහා පමණක් කියවන ලදී.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU චලන අක්ෂ ලකුණු, එහි UDP විකේතකය සමඟ පරීක්ෂා කරන ලදී. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU චලන අක්ෂ ලකුණු, එහි UDP විකේතකය සමඟ පරීක්ෂා කරන ලදී. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>"අභ්‍යවකාශ සිමියුලේෂන්" ආරම්භක පැතිකඩ පිටුපස ඇති Elite Dangerous පෙරනිමි පෙරසැකසුම්, Richard Buckle විසින්. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>"අභ්‍යවකාශ සිමියුලේෂන්" ආරම්භක පැතිකඩ පිටුපස ඇති Elite Dangerous පෙරනිමි පෙරසැකසුම්, Richard Buckle විසින්.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote ස්පීකරයේ ADPCM නිබල් අනුපිළිවෙළ, සහ DualShock 4 කේතකය පරීක්ෂා කළ SBC විකේතකය. LGPL-2.1-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote ස්පීකරයේ ADPCM නිබල් අනුපිළිවෙළ, සහ DualShock 4 කේතකය පරීක්ෂා කළ SBC විකේතකය. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>මාලිමා යෝ සඳහා ඇලවීමට වන්දි ගෙවන මාලිමා දිශාව, C# වෙත පෝට් කරන ලදී, x-io Technologies විසින්. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>මාලිමා යෝ සඳහා ඇලවීමට වන්දි ගෙවන මාලිමා දිශාව, C# වෙත පෝට් කරන ලදී, x-io Technologies විසින්.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>අඩු බැටරි දැනුම්දීමේ නීතිය සහ "හඳුනාගන්න" කම්පන රටාව, Lukas Frühstück විසින්. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>අඩු බැටරි දැනුම්දීමේ නීතිය සහ "හඳුනාගන්න" කම්පන රටාව, Lukas Frühstück විසින්.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series, සහ Switch 2 Pro Controller හි 3D මාදිලි, CGTrader හි මිලදී ගන්නා ලදී. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series, සහ Switch 2 Pro Controller හි 3D මාදිලි, CGTrader හි මිලදී ගන්නා ලදී.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 හි 3D මාදිලිය, CGTrader හි මිලදී ගෙන කොටස් අනුව මෙෂ් වලට බෙදන ලදී. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 හි 3D මාදිලිය, CGTrader හි මිලදී ගෙන කොටස් අනුව මෙෂ් වලට බෙදන ලදී.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>බණ්ඩල් කළ SDL3.dll තුළට සම්පාදනය කළ HID ස්ථරය, Alan Ott, Signal 11 Software විසින්. BSD ආකාරයේ බලපත්‍රය.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>බණ්ඩල් කළ SDL3.dll තුළට සම්පාදනය කළ HID ස්ථරය, Alan Ott, Signal 11 Software විසින්.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>අයිකන මූලාශ්‍ර</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) වෙතින් ගිනිදැල් ග්ලිෆය, Ionicons (Ionic, MIT) වෙතින් සාමාන්‍ය ගේම්පෑඩ් අයිකනය, Jam Icons (Michael Amprimo, MIT) වෙතින් Extended ජොයිස්ටික් එක, සහ SVG Repo වෙතින් Xbox සහ PlayStation අයිකන, එක් එක් අයිකනයේ පිටුවේ ඇති බලපත්‍රය යටතේ.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>දුරස්ථ සබැඳියේ විකල්ප මාර්ගය පිටුපස ඇති රිලේ ප්‍රොටෝකෝලය, FlexInput කරන ආකාරයටම n0.computer හි නොමිලේ පොදු රිලේ සමඟ සන්නිවේදනය කරයි. iroh: MIT OR Apache-2.0. FlexInput: MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>"මූසික චලනය X" සහ "Y" පිටුපස ඇති Joy-Con 2 ප්‍රකාශ මූසික ගණක සහ වටා යන ඩෙල්ටා, coffincolors, Frano, සහ moutella විසින්. MIT. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>"මූසික චලනය X" සහ "Y" පිටුපස ඇති Joy-Con 2 ප්‍රකාශ මූසික ගණක සහ වටා යන ඩෙල්ටා, coffincolors, Frano, සහ moutella විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux කර්නල ධාවක</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck සහ PID බල ප්‍රතිපෝෂණ ප්‍රොටෝකෝල කරුණු, සහ ACPI WMI බ්ලොක් පිරිසැලසුම. PadForge යතුරුපුවරු සහ මූසික විස්තරක hid-core හි නීති අනුව කියවයි. GPL-2.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck සහ PID බල ප්‍රතිපෝෂණ ප්‍රොටෝකෝල කරුණු, සහ ACPI WMI බ්ලොක් පිරිසැලසුම. PadForge යතුරුපුවරු සහ මූසික විස්තරක hid-core හි නීති අනුව කියවයි. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite පැඩල ඇතුළුව Windows පාලක ආදානය. SDK පූරකය SDL තුළට සම්බන්ධ කර ඇත. MIT (SDK පූරකය).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite පැඩල ඇතුළුව Windows පාලක ආදානය. SDK පූරකය SDL තුළට සම්බන්ධ කර ඇත.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll හට අවශ්‍ය C++ ධාවන පරිසරය (msvcp140.dll, vcruntime140.dll සහ, x64 බිල්ඩ් එකේ, vcruntime140_1.dll), වෙනස් නොකර PadForge තුළ ඇතුළත් වේ. Microsoft Visual Studio බලපත්‍ර නියම.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll හට අවශ්‍ය C++ ධාවන පරිසරය (msvcp140.dll, vcruntime140.dll සහ, x64 බිල්ඩ් එකේ, vcruntime140_1.dll), වෙනස් නොකර PadForge තුළ ඇතුළත් වේ.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con සහ Pro Controller HID, HD කම්පනය, සහ Home LED සටහන්, dekuNukem විසින්, Switch 2 සඳහා ndeadly හි switch2_controller_research සමඟ. ප්‍රොටෝකෝල කරුණු සඳහා පමණක් කියවන ලදී.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>යෙදුම තුළ ඇති යාවත්කාලීනකාරකයේ සහායකය පිටුපස ඇති ඉහළ අවසර සහිත update-verb රටාව. LGPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>යෙදුම තුළ ඇති යාවත්කාලීනකාරකයේ සහායකය පිටුපස ඇති ඉහළ අවසර සහිත update-verb රටාව. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු LGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC ටැග් ආදානය පිටුපස ඇති WinSCard අත්සන් සහ කියවනය නිරීක්ෂණය කිරීමේ ඇමතුම් අනුපිළිවෙළ, Daniel Mueller විසින්. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC ටැග් ආදානය පිටුපස ඇති WinSCard අත්සන් සහ කියවනය නිරීක්ෂණය කිරීමේ ඇමතුම් අනුපිළිවෙළ, Daniel Mueller විසින්.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move වාර්තා පිරිසැලසුම්, සංවේදක ක්‍රමාංකනය, සහ EXT අමතර උපාංග හෑන්ඩ්ෂේක් එක, Thomas Perl විසින්, moveonpc wiki සමඟ හරස් පරීක්ෂා කරන ලදී. PadForge හි ක්‍රියාත්මක කිරීම මුල් C# වේ. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>රේසිං ටෙලිමෙට්‍රි මූලාශ්‍ර</value></data>
@@ -4304,23 +4481,23 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth යුගල කිරීම සහ වාර්තා ලේඛන. GPL-2.0 සහ GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>දුරස්ථ සබැඳියේ NAT පසුකිරීම පිටුපස ඇති STUN පණිවිඩ පිරිසැලසුම සහ XOR-MAPPED-ADDRESS විකේතනය, එහි C# මූලාශ්‍ර කේතයෙන් ඇතුළත් කරන ලදී, Aaron Clauson විසින්. BSD 3-Clause, එහි බලපත්‍රයේ 2 වන කොටසේ ඇති භාවිත සීමාව සමඟ.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>දුරස්ථ සබැඳියේ NAT පසුකිරීම පිටුපස ඇති STUN පණිවිඩ පිරිසැලසුම සහ XOR-MAPPED-ADDRESS විකේතනය, එහි C# මූලාශ්‍ර කේතයෙන් ඇතුළත් කරන ලදී, Aaron Clauson විසින්. එහි බලපත්‍රය 2 වන කොටසේ භාවිත සීමාවක් එක් කරයි.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse මූලාශ්‍ර</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion වාර්තා පිරිසැලසුම, උපාංග වගුව, සහ අක්ෂ පරිමාණය, hid.spacemouse (MIT), PySpaceMouse (MIT), AndunHH විසින් spacemouse (CC BY-NC-SA 4.0), සහ spacenavd (GPL-3.0-or-later) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>ධාරක IOCTL මඟින් Bluetooth සබැඳිය විසන්ධි කිරීම, සැඟවුණු XInput බලය අක්‍රිය කිරීමේ සහ හැකියා ඕඩිනල්, සහ DualSense ට්‍රිගර කම්පන පෙරනිමි. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>ධාරක IOCTL මඟින් Bluetooth සබැඳිය විසන්ධි කිරීම, සැඟවුණු XInput බලය අක්‍රිය කිරීමේ සහ හැකියා ඕඩිනල්, සහ DualSense ට්‍රිගර කම්පන පෙරනිමි. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller ප්‍රොටෝකෝල මූලාශ්‍ර</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>ස්වයිප් හැප්ටික් ටික්, වාර්තා 0x42 බොත්තම් බිටු, බලය අක්‍රිය කිරීමේ විධානය, සහ ඩොංගල් රිලේ, OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0), සහ SteamlessController (MIT) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු GPL හෝ AGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>ඩෙඩ්සෝන් හැඩ හය, Minimuino විසින්. GFDL-1.3-or-later සහ GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR දර්ශක හැසිරීම: තිත් යුගලයේ මධ්‍ය ලක්ෂ්‍යය, මායිම්, සංවේදක තීරුවේ ඕෆ්සෙට්, සුමට කිරීම, සහ FPS Mouse වක්‍රය, Ryochan7, Suegrini, සහ Trihy ෆෝක් සමඟ. GPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR දර්ශක හැසිරීම: තිත් යුගලයේ මධ්‍ය ලක්ෂ්‍යය, මායිම්, සංවේදක තීරුවේ ඕෆ්සෙට්, සුමට කිරීම, සහ FPS Mouse වක්‍රය, Ryochan7, Suegrini, සහ Trihy ෆෝක් සමඟ. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense අනුවර්තී ට්‍රිගර ප්‍රයෝග පිරිසැලසුම් සහ කලාප ඇසුරුම් කිරීම, C# තුළ ප්‍රතිනිෂ්පාදනය කරන ලදී, John "Nielk1" Klein විසින්. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense අනුවර්තී ට්‍රිගර ප්‍රයෝග පිරිසැලසුම් සහ කලාප ඇසුරුම් කිරීම, C# තුළ ප්‍රතිනිෂ්පාදනය කරන ලදී, John "Nielk1" Klein විසින්.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>අතථ්‍ය DualShock 4 ආදාන වාර්තාව පිටුපස ඇති DS4_REPORT_EX පිරිසැලසුම, Benjamin Höglinger-Stelzer විසින්. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>අතථ්‍ය DualShock 4 ආදාන වාර්තාව පිටුපස ඇති DS4_REPORT_EX පිරිසැලසුම, Benjamin Höglinger-Stelzer විසින්.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton ෆෝක් එක)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>අතථ්‍ය DualSense මයික්‍රෆෝනයේ 48 dB දුර්වල කිරීමේ පරාසය. GPL-3.0-or-later, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>අතථ්‍ය DualSense මයික්‍රෆෝනයේ 48 dB දුර්වල කිරීමේ පරාසය. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>සුක්කානම් ප්‍රොටෝකෝල මූලාශ්‍ර</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, සහ Logitech සුක්කානම් සඳහා ස්වදේශීය බල ප්‍රතිපෝෂණ සහ RPM ගියර් මාරු LED වාර්තා, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), සහ thrustmaster-led-linux (GPL-3.0) වෙතින් කියවා, prodigal.knight විසින් SimHub LED ප්ලගිනය (MIT) සහ tm-bt-led (MIT) සමඟ හරස් පරීක්ෂා කරන ලදී. ලේඛන පමණි, කිසිදු GPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>ආකේඩ් I/O මූලාශ්‍ර</value></data>
@@ -4350,19 +4527,19 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox පාලක මූලාශ්‍ර</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ මුල් Xbox, Steel Battalion, Xbox 360 chatpad සහ Xbox 360 uDraw ධාවක, සහ PadForge විසින් Windows හි ධාවකයටම බඳින Xbox 360 ග්‍රාහක පිටුපස ඇති ප්‍රොටෝකෝල, brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), ITO Takayuki විසින් euc.jp, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later), සහ xemu (LGPL-2.0-or-later) වෙතින් කියවන ලදී. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>ස්වයංක්‍රීය WinUSB බැඳීම පිටුපස ඇති, උපාංගයකට එක් INF බැගින් ඇසුරුම් කිරීම සහ උපාංග ලැයිස්තුගත කිරීම, Pete Batard විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>ස්වයංක්‍රීය WinUSB බැඳීම පිටුපස ඇති, උපාංගයකට එක් INF බැගින් ඇසුරුම් කිරීම සහ උපාංග ලැයිස්තුගත කිරීම, Pete Batard විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PS Move උපාංගයක් හඳුනා ගැනීමට PadForge යවන Bluetooth HID feature-report ඉල්ලීම, Ricardo Quesada විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PS Move උපාංගයක් හඳුනා ගැනීමට PadForge යවන Bluetooth HID feature-report ඉල්ලීම, Ricardo Quesada විසින්. ලේඛන පමණි, කිසිදු කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ Windows Mixed Reality වින්‍යාස යතුර Monado වෙතින් පැමිණේ. ප්‍රකාශන හිමිකම 2021 Jan Schmidt. SDL3.dll තුළ ඇතුළත් වේ. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ Windows Mixed Reality වින්‍යාස යතුර Monado වෙතින් පැමිණේ. ප්‍රකාශන හිමිකම 2021 Jan Schmidt. SDL3.dll තුළ ඇතුළත් වේ.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ Rift DK1 සංවේදක සංයෝජනය OpenHMD හි එකෙහි පෝට් එකකි. ප්‍රකාශන හිමිකම 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll තුළ ඇතුළත් වේ. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL ෆෝක් එකේ Rift DK1 සංවේදක සංයෝජනය OpenHMD හි එකෙහි පෝට් එකකි. ප්‍රකාශන හිමිකම 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll තුළ ඇතුළත් වේ.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote ස්පීකර ප්‍රොටෝකෝලය සහ IR ක්‍රමාංකන ලේඛන. ප්‍රොටෝකෝල කරුණු සඳහා පමණක් කියවන ලදී.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox ආවේග ට්‍රිගර බයිට 9 වාර්තාව සහ එහි ලිවීමේ මාර්ගය, araghon007 විසින්. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox ආවේග ට්‍රිගර බයිට 9 වාර්තාව සහ එහි ලිවීමේ මාර්ගය, araghon007 විසින්.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 හැප්ටික් PCM ආකෘතිය, 3 kHz හි සලකුණු සහිත බිට් 16, එය සලකුණු සහිත බිට් 8 Bluetooth හැප්ටික් කේතනය නිරවුල් කළේය. AGPL-3.0, ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු AGPL කේතයක් ඇතුළත් නොවේ.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 හැප්ටික් PCM ආකෘතිය, 3 kHz හි සලකුණු සහිත බිට් 16, එය සලකුණු සහිත බිට් 8 Bluetooth හැප්ටික් කේතනය නිරවුල් කළේය. ලේඛන ලෙස පමණක් කියවන ලදී, කිසිදු AGPL කේතයක් ඇතුළත් නොවේ.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>යතුරුපුවරු තිර</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech හි GamePanel යතුරුපුවරු සහ Mad Catz S.T.R.I.K.E. 7 තුළ ඇති තිර මත ද, Logitech Arx Control හරහා දුරකථනයක් මත ද අඳියි: පැතිකඩ, ඔරලෝසුවක්, ක්‍රීඩා කාලය, විරාම ඔරලෝසුවක්, පින්තූරයක්, නැතහොත් DualShock 4 හෝ DualSense ලයිට්බාර් එකක වර්ණය. සෑම තිරයකටම උපාංග පිටුවේ එහිම පේළියක් ලැබේ, එහිදී එය පෙන්වන දේ ඔබ සකසයි. තිරයක් අසල ඇති යතුරු එහි පේළියේ බොත්තම් වේ.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>යතුරුපුවරු තිර පාලනය කරන්න</value></data>
@@ -4430,6 +4607,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>ගෙනයාම</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>X ගෙනයාම</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y ගෙනයාම</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>එය පෙන්වන දේ තෝරන්න. ඔබ සුරකින තෙක් කිසිවක් වෙනස් නොවේ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} ලෙස සකසා ඇත.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz හි S.T.R.I.K.E. 7 SDK බාගත කරමින්…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 දැන් {0} පූරණය කරයි.</value></data>
@@ -4569,8 +4747,8 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>හවුල් මතකයෙන් {0} කියවමින්.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Assetto Corsa හෝ Assetto Corsa Competizione සඳහා රැඳී සිටිමින්.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>තොට {0} වෙත යොමු කරමින්.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>අභිරුචි ටෙලිමෙට්‍රි ආකෘති</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ක්‍රීඩාවක් යවන පැකට් ක්ෂේත්‍රයෙන් ක්ෂේත්‍රය විස්තර කරන්න, එවිට PadForge එම ක්‍රීඩාව ද කියවයි. සෑම විචල්‍යයක්ම ක්‍රීඩා ටෙලිමෙට්‍රි පේළියේ අක්ෂයක් සහ අභිරුචි ප්‍රකාශන ප්‍රේරක සඳහා නාලිකාවක් බවට පත්වේ. ක්‍රීඩාව ලැයිස්තුවෙන් නමින් ආකෘතියක් තෝරන්න, නැතහොත් ස්වයංක්‍රීය හඳුනාගැනීම එය සොයා ගන්නා ලෙස එයට දිගක් හෝ යතුරක් දෙන්න.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>අභිරුචි ආකෘති</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>PadForge නොදන්නා ක්‍රීඩාවක ටෙලිමෙට්‍රි පැකට් විස්තර කරන්න.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>ආකෘතිය එක් කරන්න</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>ආකෘතිය {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>නම</value></data>
@@ -4581,12 +4759,15 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>හරියටම මෙපමණ බයිට ඇති පැකට් පමණක් මෙම ආකෘතියෙන් කියවේ. 0 නම්, ඕනෑම පැකට්ටුවක් කියවෙන අතර ස්වයංක්‍රීය හඳුනාගැනීම මෙම ආකෘතිය මඟ හරියි, එබැවින් එය නමින් තෝරන්න.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>අවශ්‍ය යතුර</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>මෙම යතුර අඩංගු JSON පැකට් පමණක් මෙම ආකෘතියෙන් කියවේ. හිස්ව තැබුවහොත්, ඕනෑම පැකට්ටුවක් කියවෙන අතර ස්වයංක්‍රීය හඳුනාගැනීම මෙම ආකෘතිය මඟ හරියි, එබැවින් එය නමින් තෝරන්න.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>බයිට අනුපිළිවෙළ</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>ලිට්ල්-එන්ඩියන් සෑම සංඛ්‍යාවකම අවම වැදගත් බයිටය මුලින් තබයි, PC ක්‍රීඩා සෑම විටම පාහේ කරන පරිදි. බිග්-එන්ඩියන් වැඩිම වැදගත් බයිටය මුලින් තබයි.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>ලිට්ල්-එන්ඩියන්</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>බිග්-එන්ඩියන්</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>පැකට්ටුව සෑම සංඛ්‍යාවක්ම වැඩිම වැදගත්කමක් ඇති බයිටය මුලින් තබා ලියයි. පරිගණකයේ ක්‍රීඩා සෑම විටම පාහේ අඩුම වැදගත්කමක් ඇති බයිටය මුලින් තබා ලියයි.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>ගියර් අගයන්</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Forza හි 0 සහ 11 මෙන්, ගියර් ක්ෂේත්‍රයට රිවර්ස් සහ නියුට්‍රල් සඳහා තමන්ගේම අංක ඇත. මෙය අක්‍රිය විට, සෘණ ගියරයක් රිවර්ස් වන අතර 0 නියුට්‍රල් වේ.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>රිවර්ස්</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>නියුට්‍රල්</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON පැකට් සඳහා අවශ්‍ය යතුර, ගියර අගයන්</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>ක්ෂේත්‍ර</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>සෑම ක්ෂේත්‍රයක්ම එහි ඕෆ්සෙට් එකෙහි, හෝ JSON හි එහි යතුර යටතේ (තිත් මගින් කැදැලි වස්තු තුළට යයි) ඇති සංඛ්‍යාවක් කියවා එය පරිමාණයෙන් ගුණ කරයි. පරිමාණයෙන් පසු, වේගය km/h වලින් වේ, පැඩල 0 සිට 1 දක්වා ද, සුක්කානම් හැසිරවීම සම්පූර්ණ වමේ -1 සිට සම්පූර්ණ දකුණේ 1 දක්වා ද විහිදේ. විචල්‍යයක අක්ෂය නිශ්චලව ඇති විට එහි අවම අගයේ සිට සම්පූර්ණයෙන් ඇති විට එහි උපරිම අගය දක්වා විහිදේ.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>ඉලක්කය</value></data>
@@ -4670,4 +4851,35 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>නවත්වන තුරු {1} මත {0}</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} මත ට්‍රිගර ප්‍රයෝගය නවත්වන්න</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>මෙම උපාංගයේ ආලෝකකරණය පාලනය කරන්න, ආලෝකකරණ රඳවා ගැනීම</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>සම්බන්ධිත</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>සම්බන්ධ නොවූ</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>වෙනත් ආදාන</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>කිසිදු උපාංගයක් නොගැළපේ.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>භාවිතයේ නැත</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>බැටරිය {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>බැටරිය {0}, ආරෝපණය වෙමින්</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>භාවිත කරන්නේ</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>නව පාලකය</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>සැකසීම්</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>සෑම අක්ෂයක්ම, බොත්තමක්ම සහ සංවේදකයක්ම</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>ඔබා ඇත: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, මාර්ගය, හැකියා, අමු ජොයිස්ටික් ප්‍රකාරය බල කරන්න</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, මාර්ගය, හැකියා</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>විස්තර පිටපත් කරන්න</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>නිෂ්පාදනය</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>වර්ගය</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>හැකියා</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>සබැඳිය</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>බැටරිය</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>මාර්ගය</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>අනුක්‍රමික අංකය</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ස්ථිරාංග</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>සංශෝධනය</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>පාලකයද කම්පනය කරන්න, දැනුම්දීම නැවත කරන කාලාන්තරය, සම්පූර්ණයෙන් ආරෝපණය වූ විට දැනුම් දෙන්න</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>පරීක්ෂා කළ යුතුයි</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>නිවැරදිව ආනයනය විය</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>මුරපදයක් සකසන්න</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>දුරස්ථ සබැඳිය අගුළු අරින්න</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>මුරපදය</value></data>
 </root>

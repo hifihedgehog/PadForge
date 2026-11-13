@@ -11,8 +11,8 @@ namespace PadForge.Tests
     /// sequence on each page, so a moved or added card fails here before it
     /// ships, and they pin the driver status strip the Dashboard once had as
     /// gone: Settings carries the HidHide, HIDMaestro, MIDI Services and
-    /// SteamVR cards in full, so the three-row copy under the ED5D glyph was
-    /// a duplicate.
+    /// SteamVR rows in full in its Drivers card, so the three-row copy under
+    /// the ED5D glyph was a duplicate.
     /// </summary>
     public class PageOrderContractTests
     {
@@ -63,7 +63,7 @@ namespace PadForge.Tests
                 "<Border x:Name=\"EngineCard\"",
                 "<Border x:Name=\"HomeOffer\"",
                 "Text=\"{Binding Home_Controllers" + heading,
-                "<ItemsControl x:Name=\"SlotsItemsControl\">",
+                "<ItemsControl x:Name=\"SlotsItemsControl\"",
                 "Value=\"{Binding Home_ExtrasInUse" + heading,
                 "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\"",
                 "<StackPanel x:Name=\"ExtrasFoot\"",
@@ -168,6 +168,29 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The strings the Extras pages stopped using (#574) left
+        /// the string tables: Head Tracking's More hint is the three
+        /// settings' own names now, and the Web Controller and Remote Link
+        /// pages dropped their old captions. The More row keeps
+        /// Extras_More_HeadTracking as its AutomationId, which is no
+        /// string.</summary>
+        [Fact]
+        public void Extras_DroppedStringsLeftTheStringTables()
+        {
+            string designer = RepoText("PadForge.App", "Resources", "Strings", "Strings.Designer.cs");
+            foreach (string gone in new[]
+            {
+                "Extras_More_HeadTracking", "Dashboard_WebFooter", "Dashboard_WebScanToOpen", "Dashboard_WebPlainLocalAddress",
+                "RemoteLink_NearbyTitle", "RemoteLink_PeerNamePlaceholder", "RemoteLink_Online",
+            })
+            {
+                Assert.DoesNotContain("\"" + gone + "\"", designer);
+                foreach (var f in Directory.GetFiles(Path.Combine(RepoRoot(), "PadForge.App", "Resources", "Strings"), "Strings*.resx"))
+                    Assert.DoesNotContain("name=\"" + gone + "\"", File.ReadAllText(f));
+            }
+            Assert.Contains("AutomationProperties.AutomationId=\"Extras_More_HeadTracking\"", RepoText("PadForge.App", "Views", "ExtrasPage.xaml"));
+        }
+
         [Fact]
         public void Home_CarriesNoDriverStatusStrip()
         {
@@ -199,30 +222,54 @@ namespace PadForge.Tests
             Assert.Contains("{Binding SteamVrStatusText}", settings);
         }
 
+        /// <summary>Settings (#574): the five group buttons, the five groups'
+        /// panels in the same order, and each card's title inside its group's
+        /// panel in the board's order. The rows that were cards once (the
+        /// handheld buttons, the keyboard screens, the Falcon, each driver)
+        /// carry no card title now.</summary>
         [Fact]
         public void Settings_CardsRunInTheDecidedOrder()
         {
             string page = RepoText("PadForge.App", "Views", "SettingsPage.xaml");
-            AssertTitleOrder(page,
-                "{Binding ", ", Source={x:Static strings:Strings.Instance}}\" Style=\"{StaticResource CardTitle}\"",
-                new[]
+            string[] groups = { "General", "Input", "Hardware", "Drivers", "Data" };
+            AssertTitleOrder(page, "Content=\"{Binding Settings_Group_", ", Source={x:Static strings:Strings.Instance}}\"", groups);
+            AssertTitleOrder(page, "x:Name=\"", "Group\" ", groups);
+
+            const string suffix = ", Source={x:Static strings:Strings.Instance}}\" Style=\"{StaticResource CardTitle}\"";
+            var titles = new (string Key, string Group)[]
+            {
+                ("Settings_Language", "General"),
+                ("Settings_Appearance", "General"),
+                ("Settings_Window", "General"),
+                ("Settings_Updates", "General"),
+                ("Settings_InputEngine", "Input"),
+                ("Settings_AssignOffer", "Input"),
+                ("Settings_BatteryNotify", "Input"),
+                ("Settings_HardwareSupport", "Hardware"),
+                ("Settings_Group_Drivers", "Drivers"),
+                ("Settings_CommunityConfigs", "Data"),
+                ("Settings_SettingsFile", "Data"),
+                ("Settings_Diagnostics", "Data"),
+            };
+            AssertTitleOrder(page, "{Binding ", suffix, titles.Select(t => t.Key).ToArray());
+            for (int g = 0; g < groups.Length; g++)
+            {
+                int start = page.IndexOf("x:Name=\"" + groups[g] + "Group\" ", StringComparison.Ordinal);
+                int end = g + 1 < groups.Length
+                    ? page.IndexOf("x:Name=\"" + groups[g + 1] + "Group\" ", StringComparison.Ordinal)
+                    : page.Length;
+                foreach (var (key, group) in titles.Where(t => t.Group == groups[g]))
                 {
-                    "Settings_Language",
-                    "Settings_Appearance",
-                    "Settings_Window",
-                    "Settings_Updates",
-                    "Settings_InputEngine",
-                    "Settings_AssignOffer",
-                    "Settings_Handheld",
-                    "Settings_BatteryNotify",
-                    "Settings_HidHide",
-                    "Settings_HIDMaestro",
-                    "Settings_MidiServices",
-                    "Settings_SteamVR",
-                    "Settings_CommunityConfigs",
-                    "Settings_SettingsFile",
-                    "Settings_Diagnostics",
-                });
+                    int at = page.IndexOf("{Binding " + key + suffix, StringComparison.Ordinal);
+                    Assert.True(at > start && at < end, key + " is not inside the " + group + " group's panel");
+                }
+            }
+            foreach (string row in new[]
+                     {
+                         "Settings_Handheld", "Settings_KeyboardScreens_Title", "Settings_Falcon_Title", "Settings_HidHide",
+                         "Settings_HIDMaestro", "Settings_BthPS3", "Settings_MidiServices", "Settings_SteamVR",
+                     })
+                Assert.DoesNotContain("{Binding " + row + suffix, page, StringComparison.Ordinal);
         }
     }
 }

@@ -229,6 +229,130 @@ namespace PadForge.Tests
             Assert.Equal(800, TileGridPanel.FullRowWidth(800, 380));
         });
 
+        // ── a balanced set, and the tile that takes what is left ───────
+
+        /// <summary>A short, fixed set is shared out evenly between its
+        /// rows: as few columns as still need no more rows than the columns
+        /// that fit would. A set that fits one row has a column each.</summary>
+        [Theory]
+        // Four tiles where three columns fit stand two and two.
+        [InlineData(4, 3, 2)]
+        [InlineData(4, 4, 4)]
+        [InlineData(4, 2, 2)]
+        [InlineData(4, 1, 1)]
+        [InlineData(5, 4, 3)]
+        [InlineData(6, 4, 3)]
+        [InlineData(7, 4, 4)]
+        [InlineData(3, 5, 3)]
+        // Nothing to share out: the columns that fit.
+        [InlineData(0, 3, 3)]
+        public void ABalancedSet_UsesAsFewColumnsAsNeedNoMoreRows(int count, int columns, int expected)
+            => Assert.Equal(expected, TileGridPanel.BalancedColumns(count, columns));
+
+        [Fact]
+        public void ABalancedGrid_SharesTheWidthAmongItsFewerColumns()
+        {
+            // 764 holds three columns of 230 with 12 between them. Four
+            // tiles then stand two and two, each half the width.
+            var (columns, item) = TileGridPanel.ColumnsFor(764, 230, 12, int.MaxValue, 4, balance: true);
+            Assert.Equal(2, columns);
+            Assert.Equal((764 - 12) / 2.0, item, 6);
+            // Unbalanced, the columns that fit.
+            (columns, item) = TileGridPanel.ColumnsFor(764, 230, 12, int.MaxValue, 4, balance: false);
+            Assert.Equal(3, columns);
+            Assert.Equal((764 - 24) / 3.0, item, 6);
+            // Wide enough for all four: one row, as without it.
+            (columns, item) = TileGridPanel.ColumnsFor(1104, 230, 12, int.MaxValue, 4, balance: true);
+            Assert.Equal(4, columns);
+            Assert.Equal((1104 - 36) / 4.0, item, 6);
+            // No width to go by: the narrowest width, as without it.
+            (columns, item) = TileGridPanel.ColumnsFor(double.PositiveInfinity, 230, 12, 4, 4, balance: true);
+            Assert.Equal(4, columns);
+            Assert.Equal(230, item);
+        }
+
+        [Theory]
+        // The last of two tiles in a row of four columns takes three of them.
+        [InlineData(1348.0, 4, 2, 325.0, 1007.0)]
+        // Alone on its row it takes them all.
+        [InlineData(1348.0, 4, 1, 325.0, 1348.0)]
+        // A full row leaves it its column.
+        [InlineData(1348.0, 4, 4, 325.0, 325.0)]
+        // No width to go by: its column.
+        [InlineData(double.PositiveInfinity, 4, 1, 300.0, 300.0)]
+        [InlineData(double.NaN, 4, 1, 300.0, 300.0)]
+        public void ATileThatTakesTheRest_RunsThroughTheColumnsLeft(double width, int columns, int inRow, double itemWidth, double expected)
+            => Assert.Equal(expected, TileGridPanel.RestWidth(width, 16, columns, inRow, itemWidth), 6);
+
+        /// <summary>Laid out, as the Profiles page's cards and drop tile
+        /// are. The tile is the last of its row and runs on to the row's
+        /// end, so no column stands empty. In a row with cards it is as
+        /// tall as they are, and alone on a line it is as tall as itself.
+        /// A tile that is not the last of its row keeps its column.</summary>
+        [Fact]
+        public void TheLastTile_TakesWhatIsLeftOfItsRow() => RunSta(() =>
+        {
+            var panel = new TileGridPanel { MinItemWidth = 300, Gap = 16 };
+            var a = new Border { Height = 167 };
+            var b = new Border { Height = 167 };
+            var drop = new Border { MinHeight = 107 };
+            TileGridPanel.SetTakesRest(drop, true);
+            Assert.True(TileGridPanel.GetTakesRest(drop));
+            foreach (var tile in new[] { a, b, drop }) panel.Children.Add(tile);
+
+            void Lay(double width)
+            {
+                panel.Measure(new Size(width, double.PositiveInfinity));
+                panel.Arrange(new Rect(panel.DesiredSize));
+            }
+            void Is(FrameworkElement tile, double x, double y, double width, double height)
+            {
+                var slot = LayoutInformation.GetLayoutSlot(tile);
+                Assert.Equal(x, slot.X, 6);
+                Assert.Equal(y, slot.Y, 6);
+                Assert.Equal(width, slot.Width, 6);
+                Assert.Equal(height, slot.Height, 6);
+            }
+
+            // 1104 holds three columns: two cards and the tile in the third.
+            double column = (1104 - 32) / 3.0;
+            Lay(1104);
+            Is(a, 0, 0, column, 167);
+            Is(b, column + 16, 0, column, 167);
+            Is(drop, 2 * (column + 16), 0, column, 167);
+
+            // One card: the tile runs through the two columns left.
+            b.Visibility = Visibility.Collapsed;
+            Lay(1104);
+            Is(drop, column + 16, 0, 2 * column + 16, 167);
+            b.Visibility = Visibility.Visible;
+
+            // 764 holds two columns: the cards fill their line, and the tile
+            // is a band under them, the panel's width and its own height.
+            Lay(764);
+            Is(b, 390, 0, 374, 167);
+            Is(drop, 0, 183, 764, 107);
+            Assert.Equal(new Size(764, 167 + 16 + 107), panel.DesiredSize);
+
+            // Rows that share their width already leave nothing over.
+            panel.FillRows = true;
+            Lay(764);
+            Is(drop, 0, 183, 764, 107);
+            b.Visibility = Visibility.Collapsed;
+            Lay(764);
+            Is(a, 0, 0, 374, 167);
+            Is(drop, 390, 0, 374, 167);
+            panel.FillRows = false;
+            b.Visibility = Visibility.Visible;
+
+            // Not the last of its row: its column, like any tile.
+            TileGridPanel.SetTakesRest(drop, false);
+            TileGridPanel.SetTakesRest(a, true);
+            Lay(1104);
+            Is(a, 0, 0, column, 167);
+            Is(drop, 2 * (column + 16), 0, column, 167);
+        });
+
         /// <summary>A window's resize measures and arranges its root at the
         /// new size and only then runs the layout pass, as HwndSource does
         /// on WM_SIZE. When that arrange reaches the grid while the measure

@@ -34,8 +34,8 @@ namespace PadForge.Tests
     /// ListView, ComboBox or plain ItemsControl take the text they show. What
     /// stays counted is what no rule names.</para>
     ///
-    /// <para>UI built in C# (the sidebar controller cards, the Add Controller
-    /// popup) is invisible here. tools/a11y_uia_audit.ps1 covers it at
+    /// <para>UI built in C# (the sidebar controller cards, the type bar) is
+    /// invisible here. tools/a11y_uia_audit.ps1 covers it at
     /// runtime.</para>
     ///
     /// <para>Set PADFORGE_A11Y_AUDIT_OUT to a file path to write every finding
@@ -83,11 +83,13 @@ namespace PadForge.Tests
             ("PadForge.App/Views/ColorPickerControl.xaml", XamlA11yAudit.MouseOnly, "Canvas|HueCanvas",
                 "The R, G, B and hex fields beside the canvas set the same color."),
             ("PadForge.App/Views/DevicesPage.xaml", XamlA11yAudit.MouseOnly, "Border|PreviewMouseLeftButtonDown:DeviceCard_MouseDown",
-                "Dragging a device card onto a slot assigns it. The slot toggles in the device's details assign it from the keyboard."),
+                "Dragging a device row onto a controller in the sidebar assigns it. The Used By chips in the device's panel assign it from the keyboard."),
             ("PadForge.App/Views/DevicesPage.xaml", XamlA11yAudit.MouseOnly, "Border|PreviewMouseLeftButtonUp:DeviceCard_MouseUp",
-                "Dragging a device card onto a slot assigns it. The slot toggles in the device's details assign it from the keyboard."),
+                "Dragging a device row onto a controller in the sidebar assigns it. The Used By chips in the device's panel assign it from the keyboard."),
             ("PadForge.App/Views/PadPage.xaml", XamlA11yAudit.MouseOnly, "Border|ConstantForcePadBorder",
                 "The X and Y sliders and boxes beside the pad set the same force."),
+            ("PadForge.App/Views/ProfilesPage.xaml", XamlA11yAudit.MouseOnly, "Border|ProfileCard",
+                "A double click on a card loads its profile. The card's Load button does the same from the keyboard."),
             ("PadForge.App/Views/TouchpadGestureRecorderDialog.xaml", XamlA11yAudit.MouseOnly, "Canvas|DrawingCanvas",
                 "A gesture is a drawn path: a controller's touchpad, a mouse, a pen or a finger draws it."),
             ("PadForge.App/Views/TouchpadOverlay.xaml", XamlA11yAudit.MouseOnly, "Border|ClickBar",
@@ -187,26 +189,30 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void EachSettingsUninstallButton_IsNamedForItsCard()
+        public void EachSettingsDriverButton_IsNamedForItsRow()
         {
-            // Five buttons on the Settings page show "Uninstall". Named alike,
-            // they read the same in a screen reader's list of buttons, and Axe
-            // fails focusable siblings with one name and type, so each one's
-            // name puts its card's title before the word.
+            // Five buttons in the Settings page's Drivers card show "Uninstall"
+            // and three "Install". Named alike, they read the same in a screen
+            // reader's list of buttons, and Axe fails focusable siblings with
+            // one name and type, so each one's name puts its driver's name
+            // before the word.
             var page = XDocument.Load(Path.Combine(RepoRoot(), "PadForge.App", "Views", "SettingsPage.xaml"), LoadOptions.SetLineInfo);
-            var buttons = page.Descendants().Where(e => e.Name.LocalName == "Button"
-                && ((string)e.Attribute("Content") ?? "").Contains("Common_Uninstall", StringComparison.Ordinal)).ToList();
-            Assert.Equal(5, buttons.Count);
-            var titles = new List<string>();
-            foreach (var b in buttons)
+            foreach (var (verb, count) in new[] { ("Common_Uninstall", 5), ("Common_Install", 3) })
             {
-                var parts = b.Elements().FirstOrDefault(e => e.Name.LocalName == "AutomationProperties.Name")
-                    ?.Descendants().Where(e => e.Name.LocalName == "Binding").Select(e => (string)e.Attribute("Path")).ToList();
-                Assert.True(parts is { Count: 2 } && parts[1] == "Common_Uninstall",
-                    $"SettingsPage.xaml:{((IXmlLineInfo)b).LineNumber} has no card title in its name");
-                titles.Add(parts[0]);
+                var buttons = page.Descendants().Where(e => e.Name.LocalName == "Button"
+                    && ((string)e.Attribute("Content") ?? "").Contains("{Binding " + verb + ",", StringComparison.Ordinal)).ToList();
+                Assert.Equal(count, buttons.Count);
+                var names = new List<string>();
+                foreach (var b in buttons)
+                {
+                    var parts = b.Elements().FirstOrDefault(e => e.Name.LocalName == "AutomationProperties.Name")
+                        ?.Descendants().Where(e => e.Name.LocalName == "Binding").Select(e => (string)e.Attribute("Path")).ToList();
+                    Assert.True(parts is { Count: 2 } && parts[1] == verb,
+                        $"SettingsPage.xaml:{((IXmlLineInfo)b).LineNumber} has no driver's name in its name");
+                    names.Add(parts[0]);
+                }
+                Assert.Equal(names.Count, names.Distinct().Count());
             }
-            Assert.Equal(titles.Count, titles.Distinct().Count());
         }
 
         [Fact]
@@ -318,7 +324,7 @@ namespace PadForge.Tests
             // (TextBlockAutomationPeer.IsControlElementCore). wpf-ui's FontIcon
             // and SymbolIcon draw with a TextBlock built in code, outside any
             // template, so PadForge places their Decorative subclasses.
-            var glyphStyles = new[] { "SectionGlyph", "StageGlyphText" };
+            var glyphStyles = new[] { "StageGlyphText" };
             static bool IconFont(string font)
                 => font.Contains("MDL2", StringComparison.OrdinalIgnoreCase) || font.Contains("Fluent Icons", StringComparison.Ordinal);
             var plain = new List<string>();
@@ -632,10 +638,11 @@ namespace PadForge.Tests
         };
 
         private static readonly HashSet<string> Buttons = new() { "Button", "ToggleButton", "RepeatButton", "HyperlinkButton", "Anchor", "SplitButton", "DropDownButton", "SegmentButton", "StateToggleButton", "AvailabilityButton" };
-        private static readonly HashSet<string> Inputs = new() { "TextBox", "NumberBox", "PasswordBox", "ComboBox", "Slider", "AutoSuggestBox", "RichTextBox" };
-        // The inputs the label scan passes over (AccessibleNames.IsInput): a
-        // range slider sits between a label and the boxes that set its ends.
-        private static readonly HashSet<string> ScanInputs = new(Inputs) { "RangeSlider" };
+        // A range slider is an input too: its thumbs take the keyboard and
+        // read by the name its row's label gives it.
+        private static readonly HashSet<string> Inputs = new() { "TextBox", "NumberBox", "PasswordBox", "ComboBox", "Slider", "RangeSlider", "AutoSuggestBox", "RichTextBox" };
+        // The inputs the label scan passes over (AccessibleNames.IsInput).
+        private static readonly HashSet<string> ScanInputs = new(Inputs);
         // A panel or border, whose row the label scan climbs to when the input
         // inside it has no label of its own (AccessibleNames.FindLabel).
         private static readonly HashSet<string> RowParents = new() { "StackPanel", "DockPanel", "WrapPanel", "Grid", "UniformGrid", "Canvas", "VirtualizingStackPanel", "Border", "Viewbox", "SettingRow" };

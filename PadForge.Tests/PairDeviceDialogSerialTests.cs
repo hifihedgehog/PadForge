@@ -44,19 +44,23 @@ namespace PadForge.Tests
             return System.IO.File.ReadAllText(System.IO.Path.Combine(new[] { dir.FullName }.Concat(parts).ToArray()));
         }
 
-        private static readonly string[] DialogKeys =
-            { "BodyFontFamily", "DisplayFontFamily", "EmberIconButton", "EmberPrimaryButton", "EmberSelectListItem" };
-
+        /// <summary>Every key the dialog names is defined: by the dialog
+        /// itself, by the dialogs' dictionary, or by the app's two. The
+        /// dialog is on the dialogs' frame (#574), so its looks are the
+        /// frame's, and the flame of its live line is the app's.</summary>
         [Fact]
         public void EveryStaticResourceTheDialogNames_IsDefinedInApp()
         {
             string dialog = Repo("PadForge.App", "Views", "PairDeviceDialog.xaml");
-            string app = Repo("PadForge.App", "App.xaml");
+            string defined = dialog + Repo("PadForge.App", "Resources", "Dialogs.xaml")
+                + Repo("PadForge.App", "Resources", "ControllerIcons.xaml") + Repo("PadForge.App", "App.xaml");
             var named = System.Text.RegularExpressions.Regex.Matches(dialog, @"\{StaticResource\s+([A-Za-z0-9_]+)\}")
                 .Select(m => m.Groups[1].Value).Distinct().OrderBy(k => k).ToArray();
-            Assert.Equal(DialogKeys.OrderBy(k => k).ToArray(), named);
+            Assert.Contains("DialogLiveBox", named);
+            Assert.Contains("DialogPrimaryButton", named);
+            Assert.Contains("FlameOuterGeometry", named);
             foreach (string key in named)
-                Assert.Contains($"x:Key=\"{key}\"", app);
+                Assert.Contains($"x:Key=\"{key}\"", defined);
         }
 
         [Fact]
@@ -222,41 +226,13 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Builds a plain Application holding stand-ins for the
-        /// dialog's static resource keys, runs the body on its STA thread,
-        /// and then puts the process back with no Application: WPF never
-        /// clears its singleton on its own, and every other test runs without
-        /// one.</summary>
+        /// <summary>Runs the body on the dialog tests' one host
+        /// (DialogTestHost), which puts the process back with no Application:
+        /// WPF never clears its singleton on its own, and every other test
+        /// runs without one. Then a window still loads.</summary>
         private static void RunWithApp(Action body)
         {
-            Exception failure = null;
-            var thread = new Thread(() =>
-            {
-                var dispatcher = Dispatcher.CurrentDispatcher;
-                SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(dispatcher));
-                try
-                {
-                    var app = new Application();
-                    app.Resources["BodyFontFamily"] = new FontFamily("Segoe UI");
-                    app.Resources["DisplayFontFamily"] = new FontFamily("Segoe UI");
-                    app.Resources["EmberIconButton"] = new Style(typeof(Wpf.Ui.Controls.Button));
-                    app.Resources["EmberPrimaryButton"] = new Style(typeof(Wpf.Ui.Controls.Button));
-                    app.Resources["EmberSelectListItem"] = new Style(typeof(ListBoxItem));
-                    body();
-                }
-                catch (Exception error) { failure = error; }
-                finally
-                {
-                    try { ReleaseApplication(); }
-                    catch (Exception error) { failure ??= error; }
-                    dispatcher.InvokeShutdown();
-                }
-            }) { IsBackground = true };
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            Assert.True(thread.Join(30000), "The STA dialog test timed out.");
-            if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
-            Assert.Null(Application.Current);
+            DialogTestHost.Run(body);
             AssertAWindowStillLoads();
         }
 

@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>ჩართული</value></data>
   <data name="Common_Off" xml:space="preserve"><value>გამორთული</value></data>
   <data name="Common_More" xml:space="preserve"><value>მეტი</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>ყველას ნახვა</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>დაყენებულია</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>არ არის დაყენებული</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>მიუწვდომელია ARM64-ზე</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>ჩერდება…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ძრავა ჩერდება…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>მუშაობს: {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>მუშაობს ({0} კლიენტი)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>მუშაობს, დაკავშირებულია {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>ისმენს :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>პორტი {0} დაკავებულია</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>პორტზე {0} წვდომა უარყოფილია (გაუშვით ადმინისტრატორის სახელით)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>ოფლაინ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>უცნობი</value></data>
   <data name="Common_Default" xml:space="preserve"><value>ნაგულისხმევი</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>დათვალიერება...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>დათვალიერება…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>გაგრძელება</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>გაჩერება</value></data>
   <data name="Common_Start" xml:space="preserve"><value>დაწყება</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>წინა სესიიდან დარჩენილი ვირტუალური კონტროლერების გასუფთავება.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> მოწყობილობა</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>კონტროლერის დამატება</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>კონტროლერის დამატება</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>აირჩიეთ, რას დაინახავენ თამაშები. კონტროლერი ემატება დაწკაპუნებისთანავე.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>წყარო</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>არჩევა მოგვიანებით</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>გავრცელებული</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>სხვა გამოსვლები</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>განლაგება, რომელსაც PC-ის უმეტესი თამაში ელოდება.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>თამაშებისთვის PlayStation-ის მინიშნებებით, ტაჩპედითა და ლაითბარით.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch-ის ღილაკების განლაგება თამაშებისა და ემულატორებისთვის, რომლებსაც ეს სჭირდებათ.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>კლავიშები, კურსორი და გადახვევა პედიდან.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>საჭეები, ფრენის სტიკები და საკუთარი განლაგებები.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>ნოტები და კონტროლის ცვლილებები მუსიკალური პროგრამებისთვის.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>ვირტუალური VR კონტროლერები SteamVR-ით.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>ტიპის მოგვიანებით შესაცვლელად დააწკაპუნეთ კონტროლერის ტიპის ჩიპზე. ამას ერთი დაწკაპუნება სჭირდება.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services არ პასუხობს. იხილეთ მისი ბარათი პარამეტრებში.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>საჭიროებს SteamVR-ს. დააყენეთ ის პარამეტრებში მისი ბარათიდან.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR კონტროლერი უკვე არსებობს. ერთი ორივე ხელს მართავს.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge-ს {0} კონტროლერი აქვს, ეს მაქსიმუმია. წაშალეთ ერთი, რომ სხვა დაამატოთ.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>პროფილი</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>პარამეტრების, მოწყობილობებისა და პროფილების ძებნა</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>ძებნა</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>შედეგები</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>ზემოთ</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>ქვემოთ</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} გადასაადგილებლად</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} გასახსნელად</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} ნებისმიერი ადგილიდან</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>გვერდები</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>მოქმედებები</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>დოკუმენტაცია</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>მეტის ქვეშ</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>რიგის პარამეტრებში</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge-ში „{0}“ ვერაფერი მოიძებნა.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>მოძებნეთ დოკუმენტაციაში „{0}“</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>ვირტუალური კონტროლერის წაშლა</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>სრული ეკრანი</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge-ის ჩვენება</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>პროფილი „{0}“ შეიქმნა.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>პროფილი „{0}“ წაიშალა.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>პროფილი „{0}“ განახლდა.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>პროფილი „{0}“ ახლა მიმდინარე მოწყობას შეიცავს.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>პროფილი ჩაიტვირთა: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>პროფილი დაბრუნდა ნაგულისხმევზე</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>„{0}“ მიენიჭა ვირტუალურ კონტროლერს {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>პროფილი გადაირთო: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>პროფილი გადაირთო: ნაგულისხმევი</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ნაგულისხმევი</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>პროფილის მალსახმობები</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>მალსახმობები</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>მიანიჭეთ ღილაკების კომბინაციები, რომ ნებისმიერი კონტროლერიდან გადართოთ პროფილები.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>მალსახმობის დამატება</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>შემდეგი პროფილი</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>წინა პროფილი</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>კონკრეტული პროფილი</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ფანჯრის გადართვა</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ვირტუალური კონტროლერების გამორთვის გადართვა</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge-ის ჩვენება ან დამალვა</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ვირტუალური კონტროლერების ჩართვა ან გამორთვა</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ნებისმიერი დაკავშირებული მოწყობილობა</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>ჩაწერა</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ჩაწერა...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>მოწყობილობა არჩეული არ არის.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>სლოტის არასწორი ინდექსი: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>მოწყობილობის მინიჭება ვერ მოხერხდა.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>როცა</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>მოწყობილობაზე</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}“ მიენიჭა ვირტუალურ კონტროლერს {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ მოცილდა ვირტუალურ კონტროლერს {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>მოწყობილობა დამალულია. (აღდგენა შესაძლებელია პარამეტრების ფაილში.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>მოწყობილობა ამოღებულია.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ვირტუალური კონტროლერი {0} წაიშალა.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>მთავარი</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>დაკავშირებული მოწყობილობები: {0}. კონტროლერები: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>თამაშები ხედავენ ყველა ჩართულ კონტროლერს.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>ძრავა ჩართულია და არც ერთი კონტროლერი არ მუშაობს.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>გაუშვით ძრავა, რომ კონტროლერები დაგიბრუნდეთ.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>გამოკითხვის სიხშირე</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>ჩართული კონტროლერები</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>დაკავშირებული მოწყობილობები</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>ამ კონტროლერის ჩართვა ან გამორთვა</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>ის ირთვება ძრავის ჩართვისას.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ის ირთვება, როცა ეს მოწყობილობა დაუკავშირდება.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ის ირთვება, როცა ამ მოწყობილობებიდან ერთი დაუკავშირდება.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>არ არის დაკავშირებული</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>შეყვანას აგზავნის</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ბატარეა {0}, დაბალია</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ბატარეა {0}, იმუხტება</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>გამოყენებული დამატებითი</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR კოდის ჩვენება</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} დაკავშირებულია და არ გამოიყენება.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>გამოყენება</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>რას უნდა ხედავდნენ თამაშები?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ამ კონტროლერს იმად აქცევს, რასაც თქვენი თამაშები ელოდებიან. დასაწყებად აირჩიეთ ერთ-ერთი. მოგვიანებით ერთი დაწკაპუნებით შეგიძლიათ შეცვალოთ.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge თქვენს კონტროლერს იმად აქცევს, რასაც თქვენი თამაშები ელოდებიან. დასაწყებად აირჩიეთ ერთ-ერთი. მოგვიანებით ერთი დაწკაპუნებით შეგიძლიათ შეცვალოთ.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>ითამაშეთ კლავიატურისა და მაუსის თამაშები პედით.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>სხვა ტიპები: [{0}, {1}, {2} და {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>ღილაკები, სტიკები და ტრიგერები 1:1 მიება, როგორც კი კონტროლერი იქმნება.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>დააწყვილეთ Bluetooth კონტროლერი</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>დაიწყეთ მზა პროფილით</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>დაკავშირებულია</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, ბატარეა {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>ბატარეა {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>კონტროლერი დაკავშირებული არ არის</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>დააკავშირეთ კაბელით ან Bluetooth-ით.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> მიბმულია, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> დაკავშირებულია</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>ძრავა მუშაობს. დააწკაპუნეთ გასაჩერებლად.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>ძრავა უმოქმედოა. დააწკაპუნეთ გასაჩერებლად.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>ძრავა გაჩერებულია. დააწკაპუნეთ გასაშვებად.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>ამ კონტროლერის გაწყობა</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>აანთეთ ქურა</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>დააკავშირეთ კონტროლერი, აირჩიეთ გამოსასვლელი ტიპი და PadForge თქვენს შეყვანას მასში გადაჭედავს. მოკლე ტური გაჩვენებთ, რა სად არის.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>ტურის დაწყება</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>გამოტოვება</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>შემდეგი</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>მზადაა</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>სლოტები</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>აქ ცხოვრობს თითოეული ვირტუალური კონტროლერი. ალი გვიჩვენებს, რომელ სლოტებში მიმდინარეობს ჭედვა ახლა.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>თვით ქურა. ალის გადართვით ყველა შეყვანის გამოკითხვა ირთვება ან ითიშება.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>ვირტუალური კონტროლერები</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>აირჩიეთ გამოსასვლელი ტიპი, მიაწოდეთ სლოტს მოწყობილობები და დააწკაპუნეთ ბარათზე მისი მიბმების გასაწყობად.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>აქ დამატებითი ფუნქციები გელოდებათ: ტელეფონის ვებ-კონტროლერი, დისტანციური კავშირი, მოძრაობის სერვერი და სხვა.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>მისალმების ტურის ჩვენება</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>სლოტი</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>მოწყობილობა</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>წყარო</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>მოწყობილობის დამატება</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>დაბალი</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>სურათი</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>სია</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} გამოსავალი</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>რომელ დაჭერას ხედავს თამაში, როცა წყვილის ორივე კლავიში დაჭერილია</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>ინარჩუნებს სტიკის მცირე გადახრას, რომ თამაშებმა კონტროლერის მინიშნებები აჩვენონ</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ჭედვა</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>ჩართულია {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>აირჩიეთ მაკრო სიაში ან ახლის შესაქმნელად დააჭირეთ + ღილაკს „მაკროების“ გვერდით.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>გადახედვა</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>დამატებითი</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>არასავალდებულო ფუნქციები. თითოეული ხელს არ შეგიშლით, სანამ არ ჩართავთ.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>ჩართულია {0} / {1}</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>თამაშის მეტი გზა</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>გადაგზავნა სხვაგან</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>ეკრანზე</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>მიმოიხედეთ თავის ტრეკერით ან VR ჰარნიტურით.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები სარბოლო თამაშებიდან.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>მაყურებლებს ჩატში აკრეფით შეეძლებათ ღილაკების დაჭერა.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>გააზიარეთ კონტროლერები სხვა კომპიუტერზე არსებულ PadForge-თან.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>მართეთ ვირტუალური კონტროლერები სხვა კომპიუტერზე.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>გადაეცით კონტროლერის მოძრაობა ემულატორებს.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>მიიღეთ ტრიგერისა და განათების ეფექტები თამაშის მოდებიდან.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>აჩვენეთ მენიუები, შრეები და პროფილის გადართვები თამაშისას.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის მომხმარებელი თამაშებისთვის.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>სურათი, ტაიმერი ან საათი სხვა ფანჯრების თავზე.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>პორტი, უბრალო HTTP მისამართი, წვდომის კოდი</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური ხელახალი დაკავშირება, პორტი, პირადობის დაცვა, მისამართით დაკავშირება</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR-ის გაშვების გარემო, UDP პორტი, დიაპაზონი ღერძების მიხედვით</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>პორტი, უბრალო HTTP, წვდომის კოდი</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური გადაკავშირება, პორტი, დაწყვილების პირადობა, დაკავშირება მისამართით</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე, საკუთარი ფორმატები</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე და საკუთარი ფორმატები</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ირგვლივ იხედეთ თავის ტრეკერით ან VR ჰედსეტით, ხოლო ორივე ცერა თითი ღილაკებზე რჩება.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები, რომლებსაც მანქანის მართვის თამაში აგზავნის, ნებისმიერი შეყვანის მსგავსად.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>გაუგზავნეთ კონტროლერის მოძრაობა ემულატორებს, რომლებიც DSU მოძრაობის წყაროს კითხულობენ.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>მიიღეთ ადაპტური ტრიგერისა და განათების ეფექტები DSX-ისთვის დაწერილი თამაშის მოდებიდან.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ჩართეთ თამაშში ტელემეტრიის გამოტანა და მიუთითეთ ეს კომპიუტერი და პორტი.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ემულატორში დაამატეთ მოძრაობის წყარო ამ კომპიუტერის მისამართით და ამ პორტით.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>მოდის ეფექტები აღწევს ყველა კონტროლერს, რომელსაც მათთვის აპარატურა აქვს.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>თავის პოზა არის „თავის ტრეკერის“ რიგი გვერდზე [მოწყობილობები]. მიაბით თავის გვერდითი შებრუნება სტიკის ღერძს კონტროლერის ღილაკების განყოფილებაში.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>მნიშვნელობები არის „თამაშის ტელემეტრიის“ რიგი გვერდზე [მოწყობილობები]. მიაბით ისინი კონტროლერის ღილაკების განყოფილებაში ან გამოიყენეთ მაკროების გასაშვებად.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>მენიუს საკუთარი ადგილი, ზომა და გაუმჭვირვალობა მენიუზე დგინდება, კონტროლერის განყოფილებაში [მაკროები და მენიუები].</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>წყაროები</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack და ყველაფერი, რაც მის UDP ფორმატს აგზავნის</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>დიაპაზონი ღერძების მიხედვით. ნული ზემოთ მოცემულ დიაპაზონს მიჰყვება.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>თამაშები, რომლებსაც PadForge არ იცნობს</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>მოდებისთვის, რომლებიც გაგზავნამდე გაშვებულ DSX-ს ეძებენ</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>რა ჩანს</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, სანამ Shift-შრე დაჭერილია</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>მისამართის კოპირება</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ადგილი ეკრანზე</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ტელეფონის დაკავშირება</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>ჩართეთ ტელეფონი ამ კომპიუტერთან ერთსა და იმავე ქსელში.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>დაასკანირეთ კოდი ტელეფონის კამერით.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>აირჩიეთ კონტროლერის განლაგება.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>ტელეფონები</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>ტელეფონი დაკავშირებული არ არის.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>დაკავშირებული ტელეფონი ჩანს აქ და გვერდზე „მოწყობილობები“, სადაც მას კონტროლერზე მიანიჭებთ.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>თქვენი არხი</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>სიტყვები, რომლებსაც მაყურებელი წერს</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>მაყურებელი წერს სიტყვას, მაგალითად !a, და PadForge აჭერს იმას, რაზეც !a არის მიბმული მოწყობილობების გვერდის Twitch ჩატის რიგში. მიანიჭეთ ეს რიგი კონტროლერს, ნებისმიერი მოწყობილობის მსგავსად.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>ეთერში ყოფნისას</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>სურათი თქვენი ტრანსლაციისთვის</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>დაწყვილებული კომპიუტერები არ არის.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>სხვა კომპიუტერის დაწყვილება</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>ახლომახლო დაუწყვილებელი კომპიუტერები არ არის.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>ჩართეთ დისტანციური კავშირი PadForge-ში მეორე კომპიუტერზე. ის აქ გამოჩნდება და ორივე ეკრანზე მოკლე კოდს შეადარებთ.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>იერი და ადგილი</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>მის გადასაადგილებლად გადაათრიეთ მაუსის მარჯვენა ღილაკით ან სამი თითით.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>გადაფარვა {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>აჩვენებს</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>სანამ სხვა პროგრამაა წინა პლანზე, დაწკაპუნებები გადაფარვას გაივლის. სანამ PadForge არის წინა პლანზე, გადაათრიეთ ის მაუსის მარჯვენა ღილაკით და ზომა შეცვალეთ მისი კუთხიდან. მაკროს შეუძლია გადაფარვის ჩვენება ან დამალვა მისი ნომრით.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>მოძრაობის სერვერი</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider პროტოკოლის სერვერი გიროსკოპისა და აქსელერომეტრის მონაცემებისთვის.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU მოძრაობის სერვერის ჩართვა (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>კონტროლერი არ არის</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>ტიპი {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>ვებ-კონტროლერი</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>გეიმპადის ინტერფეისის მიწოდება ბრაუზერებისთვის თქვენს ლოკალურ ქსელში.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>გამოიყენეთ ტელეფონი ან ტაბლეტი კონტროლერად. ტელეფონზე არაფრის დაყენება არ არის საჭირო.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>ვებ-კონტროლერის სერვერის ჩართვა</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>დაუკავშირდით ტელეფონის ან ტაბლეტის ბრაუზერიდან, რომ გეიმპადად გამოიყენოთ.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>დაასკანირეთ ტელეფონის კამერით ან გახსენით ეს მისამართი მის ბრაუზერში:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>უბრალო HTTP მისამართი</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>მეორე მისამართი HTTPS-ის გარეშე, ბრაუზერებისთვის, რომლებიც PadForge-ის სერტიფიკატს უარყოფს, და გვირაბისთვის ან რევერს პროქსისთვის, რომელსაც საკუთარი მოაქვს. ტელეფონის მოძრაობას HTTPS სჭირდება, ამიტომ აქ ის მუშაობს მხოლოდ გვირაბით ან პროქსით, რომელიც HTTPS-ს ემსახურება.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>ასევე უბრალო HTTP-ის მიწოდება</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>წვდომის კოდი</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>უბრალო მისამართი მხოლოდ ამ კოდით იხსნება, ქვემოთ მოცემული ბმული კი მას შეიცავს. ახალი კოდი უბრალო მისამართზე ყველას გათიშავს.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>ახალი კოდი</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>მისამართი ამ კომპიუტერზე:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ვიბრაცია (დააწკაპუნეთ ამ მოწყობილობის იდენტიფიცირებისთვის)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>ამ მოწყობილობას ვიბრაციას აძლევს, რომ გაიგოთ რომელია.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>დისტანციური კავშირი</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>გააზიარეთ კონტროლერები დაწყვილებულ PadForge-თან სხვა კომპიუტერზე, თქვენს ქსელში ან ინტერნეტით.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>მართეთ ვირტუალური კონტროლერები სხვა კომპიუტერზე. ერთჯერადი დაწყვილების შემდეგ სანდო კომპიუტერი ავტომატურად ერთდება.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>დისტანციური კავშირის სერვერის ჩართვა</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>ერთჯერადი დაწყვილების შემდეგ სანდო კომპიუტერი ავტომატურად ერთდება. დაწყვილებულ კომპიუტერს შეუძლია ამის გეიმპადის გამოსვლის მართვა და, თუ არ შეზღუდავთ, კლავიატურის, მაუსისა და მაკროების მართვაც.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>ან დაუკავშირდით მისამართით (გაფართოებული)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>დაწყვილებულ კომპიუტერს შეუძლია ამის გეიმპადის გამოსვლის მართვა და, თუ არ შეზღუდავთ, კლავიატურის, მაუსისა და მაკროების მართვაც.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>დაკავშირება მისამართით</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>დაწყვილება / დაკავშირება</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>დაწყვილება</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>დაკავშირება</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>დაკავშირებულია</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>დაწყვილება დისტანციურ კომპიუტერთან</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>დარწმუნდით, რომ ეს კოდი ორივე ეკრანზე ერთნაირია, შემდეგ დააჭირეთ „დაწყვილებას“.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>დაწყვილდეს სხვა კომპიუტერთან?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>შეამოწმეთ, რომ ორივე ეკრანზე ერთი და იგივე კოდი ჩანს.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>დაწყვილება</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>უარყოფა</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ამ კომპიუტერის შეზღუდვა მხოლოდ გეიმპადის შეყვანით</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>მხოლოდ გეიმპადი</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>იდენტობა</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>დაწყვილებულ კომპიუტერს შეუძლია ამ კომპიუტერზე კლავიატურის, მაუსისა და მაკროს შეყვანის გაგზავნა, თუ არ შეზღუდავთ მხოლოდ გეიმპადით.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>დაწყვილებულ კომპიუტერს შეუძლია ამ კომპიუტერის გეიმპადის გამოსვლის მართვა და, თუ არ შეზღუდავთ, მისი კლავიატურის, მაუსისა და მაკროების მართვაც.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>დაწყვილებული კომპიუტერები</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>კომპიუტერები, რომლებთანაც დისტანციური კავშირისთვის დაიწყვილეთ. გააუქმეთ ერთ-ერთი, რომ აღარ დაუკავშირდეს. მას ხელახლა დაწყვილება მოუწევს.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>გაუქმება</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ყველას გაუქმება</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>სახელის შეცვლა</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვა</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ეკრანზე სენსორული ზედაპირი PlayStation-თან თავსებადი ტაჩპედის ემულაციისთვის.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის, სენსორული ეკრანისთვის ან მაუსისთვის.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ტაჩპედის გადაფარვის ჩართვა</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>გაუმჭვირვალობა</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>პოზიციის დაბრუნება</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>პარამეტრები</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>ზოგადი</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>შეყვანა</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>აპარატურა</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>დრაივერები</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>მონაცემები და კონფიდენციალურობა</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>პარამეტრების ძებნა</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>პარამეტრი „{0}“ ვერ მოიძებნა.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>გარეგნობა</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>აირჩიეთ სასურველი ვიზუალური თემა.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>თემა</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>მუქი</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>შეყვანის ძრავა</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>გამოკითხვის ქცევისა და ფონური დამუშავების გაწყობა.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>აპარატურის მხარდაჭერა</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ძრავის ავტომატური გაშვება გახსნისას</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>გამოკითხვის გაგრძელება, როცა ფანჯარა ფოკუსს კარგავს</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>გამოკითხვის ინტერვალი (თუ პროფილი არ გადაფარავს)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge განახლდა {0}-მდე.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ჩაკეცილად გაშვება</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>გაშვება სისტემაში შესვლისას</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide დრაივერი</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ფიზიკური მოწყობილობების დამალვა თამაშებისგან ორმაგი შეყვანის თავიდან ასაცილებლად.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>მალავს ფიზიკურ მოწყობილობებს თამაშებისგან ორმაგი შეყვანის თავიდან ასაცილებლად.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide-ის პარამეტრები</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>მოწყობილობების დამალვა თამაშებისგან, მოწყობილობების დაფარვა გაშვებებს შორის, თეთრ სიაში შეყვანილი აპლიკაციები</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>თეთრ სიაში შეყვანილი აპლიკაციები</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>ეს აპლიკაციები დამალულ მოწყობილობებს მაინც ხედავენ. PadForge ყოველთვის ავტომატურად არის თეთრ სიაში.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>დამატება...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro დრაივერი</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>მომხმარებლის რეჟიმის ვირტუალური HID კონტროლერის ძრავა. ჩაშენებულია PadForge.App-ში. ავტომატურად დაყენდება პირველი ვირტუალური კონტროლერის შექმნისას. v3-ში ანაცვლებს ViGEmBus-სა და vJoy-ს.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ამ დრაივერს პირველ შექმნილ ვირტუალურ კონტროლერთან ერთად აყენებს. წაშლამდე ჩამოთვლის, რა დარჩა HIDMaestro-დან ამ კომპიუტერზე.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ქმნის ვირტუალურ კონტროლერებს.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro-ს დეინსტალაცია</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>ეს წაშლის HIDMaestro-ს ამ კომპიუტერიდან: მის ვირტუალურ კონტროლერებს, დრაივერს, ხელმოწერის სერტიფიკატს, რეესტრის გასაღებებსა და ფაილებს. PadForge ჯერ თავის ძრავას გააჩერებს. სხვა პროგრამები, რომლებიც HIDMaestro-ს იყენებენ, მის დრაივერს დაკარგავენ, სანამ ხელახლა არ გაეშვებიან. PadForge მას ხელახლა დააყენებს, როცა შემდეგ ვირტუალურ კონტროლერს შექმნის.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2-ის, რომელიც მისივე ინსტალერით არის დაყენებული, ასევე წაშლა</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>ეს არის ის, რაც ამ კომპიუტერიდან წაიშლება. PadForge HIDMaestro-ს ხელახლა დააყენებს შემდეგ ვირტუალურ კონტროლერთან ერთად.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2-ის ასევე წაშლა</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge-ის ძველი ვერსიები usbip-win2-ს მისივე ინსტალერით აყენებდა. ეს წაშლის ამ დაყენებასაც, მისი USB root hub-ის ფილტრის ჩათვლით, თუ usbip-win2-ს სხვა პროგრამა არ იყენებს. ფილტრის წაშლა ყველა USB 3 root hub-ს გადატვირთავს, ამიტომ USB მოწყობილობებს ცოტა ხნით კავშირი გაუწყდებათ.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>მიმდინარეობს იმის წაკითხვა, რაც HIDMaestro-მ ამ კომპიუტერზე დატოვა…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro-მ ამ კომპიუტერზე წასაშლელი არაფერი დატოვა.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>რჩება: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>ვერ წაიკითხა: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>ვერ წაიშალა: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth დრაივერი</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>წაშლილია</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>დარჩა</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>წაუკითხავია</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ვერ წაიშალა</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>აძლევს საშუალებას PlayStation 3-ის კონტროლერებს, PlayStation Move-სა და Navigation კონტროლერს Bluetooth-ით დაუკავშირდნენ. ჩაშენებულია PadForge-ში და ირთვება მათგან პირველის დაწყვილებისას.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>აკავშირებს PlayStation 3-ის კონტროლერებს Bluetooth-ით.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3-ს დეინსტალაცია</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>ეს წაშლის BthPS3-ს ამ კომპიუტერიდან: მის დრაივერებს, Bluetooth-ში მის მიერ დამატებულ ფილტრს და WinUSB დრაივერს, რომელიც PadForge-მა PlayStation 3-ის კონტროლერებს დაწყვილებისთვის მისცა. PadForge ჯერ თავის ძრავას გააჩერებს, ხოლო დრაივერების გამოტვირთვისას Bluetooth ცოტა ხნით გამოირთვება. PlayStation 3-ის, Move-ისა და Navigation კონტროლერები ამის შემდეგ მხოლოდ USB-ით იმუშავებენ. მათგან რომელიმეს დაწყვილება BthPS3-ს ხელახლა დააყენებს.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>ეს არის ის, რაც ამ კომპიუტერიდან წაიშლება. PlayStation 3-ის, Move-ისა და Navigation კონტროლერები ამის შემდეგ მხოლოდ USB-ით იმუშავებენ, სანამ მათგან რომელიმეს დაწყვილება BthPS3-ს ხელახლა არ დააყენებს.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>მიმდინარეობს იმის წაკითხვა, რაც BthPS3-მ ამ კომპიუტერზე დატოვა…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3-მ ამ კომპიუტერზე წასაშლელი არაფერი დატოვა.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>ამ დრაივერებს DsHidMini იყენებს, ამიტომ ისინი დარჩება, სანამ DsHidMini დაყენებულია.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth ხელახლა არ ჩაირთო. ჩართეთ Windows-ის პარამეტრებში.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>ვირტუალური MIDI პორტები და MIDI შეყვანა. Windows 11 25H2 შეიცავს API-ს 2026 წლის ნოემბრის ბოლოს განახლებიდან. სხვა კომპიუტერები იყენებენ Windows MIDI Services-ის გაშვების გარემოს, რომლის დაყენებაც PadForge-ს შეუძლია, ან მოძველებულ MIDI API-ს.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>ვირტუალური MIDI პორტები და MIDI შეყვანა.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>ჩაშენებულია Windows-ში</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK გაშვების გარემო</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>მიუწვდომელია</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>ეს შლის Microsoft-ის Windows MIDI Services-ის გაშვების გარემოსა და ხელსაწყოებს, MIDI Settings აპთან, MIDI კონსოლთან და PowerShell მოდულთან ერთად. Microsoft ამათ ჩამოსატვირთად აღარ გვთავაზობს, ამიტომ ისინი ხელახლა ვეღარ დაყენდება.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR გაშვების გარემო ვირტუალური VR კონტროლერებისთვის. ყენდება Valve-ის სერვერებიდან Steam-ის ანგარიშისა და კლიენტის გარეშე (რამდენიმე გიგაბაიტი).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>VR გაშვების გარემო ვირტუალური VR კონტროლერებისთვის.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>დაყენების ადგილი</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR-ის დეინსტალაცია</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>ეს შლის Steam-ის გარეშე დაყენებულ SteamVR-ს მისამართზე {0} და ათავისუფლებს რამდენიმე გიგაბაიტს. VR ვირტუალური კონტროლერები არ იმუშავებს, სანამ SteamVR ხელახლა არ დაყენდება.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>დიაგნოსტიკა</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>ვერსიის ინფორმაცია და ძრავის მოვლენების ჟურნალი პრობლემების გასარკვევად.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>დიაგნოსტიკის ჟურნალის წარმოება</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>მუდმივად წერს ძრავის მოვლენებს diagnostics.log-ში ქვემოთ ნაჩვენებ საქაღალდეში. ჩართული რჩება გადატვირთვების მერეც. როცა ფაილი 8 MB-ს მიაღწევს, გადადის diagnostics.log.old-ში.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>მუდმივად წერს ძრავის მოვლენებს diagnostics.log-ში ჟურნალის საქაღალდეში, რომელსაც „ჟურნალის საქაღალდის გახსნა“ ხსნის. ჩართული რჩება გადატვირთვების მერეც. როცა ფაილი 8 MB-ს მიაღწევს, გადადის diagnostics.log.old-ში.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>სნეპშოტის შენახვა</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ინახავს ძრავის უახლეს მოვლენებს ახალ ფაილში. მუშაობს მაშინაც, როცა დიაგნოსტიკის ჟურნალი გამორთულია.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ჟურნალის საქაღალდის გახსნა</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>შესახებ</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>კონტროლერების მიბმის უტილიტა</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>განახლებულია.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>დოკუმენტაცია</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>განახლებების შემოწმება</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ის ფორკი, ხელახლა აგებული SDL3-ზე, WPF-სა და .NET 10-ზე</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge ნებისმიერ შეყვანის მოწყობილობას ნებისმიერ ვირტუალურ კონტროლერად აქცევს. გეიმპადები, ჯოისტიკები, კლავიატურები, მაუსები და სენსორული ეკრანები ეთანადება ვირტუალურ სათამაშო კონტროლერებს (Xbox, PlayStation, ფრენის ჯოისტიკები, საჭეები, მესამე მხარის გეიმპადები) ან კლავიატურა+მაუსის / MIDI გამოსვლას, რომელსაც თამაშები რეალურ აპარატურად აღიქვამენ. მუშაობს HIDMaestro-სა და Windows MIDI Services-ზე. კონტროლერის შეყვანისთვის იყენებს SDL3-ს, კლავიატურისა და მაუსისთვის Windows Raw Input-ს, თამაშის მიხედვით მოწყობილობების ნიღბვისთვის HidHide-ს, და გთავაზობთ Fluent Design ინტერფეისს მიბმების, მკვდარი ზონების, მგრძნობელობის მრუდებისა და ძალისმიერი უკუკავშირისთვის.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>მიმოხილვა</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>აგებულია</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>ავტორების ძებნა</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>ყველა ავტორის ჩვენება</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>ნაკლები ავტორის ჩვენება</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>ავტორი „{0}“ ვერ მოიძებნა.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>გაშვების გარემო და WPF ფრეიმვორკი. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>გაშვების გარემო და WPF ფრეიმვორკი.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>კონტროლერის შეყვანა და ჩამოთვლა. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>კონტროლერის შეყვანა და ჩამოთვლა.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>კლავიატურისა და მაუსის შეყვანა თითოეული მოწყობილობისთვის ცალ-ცალკე</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>ვირტუალური MIDI მოწყობილობის გამოსვლა (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>ვირტუალური MIDI მოწყობილობის გამოსვლა (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>კონტროლერის 3D ვიზუალიზაცია. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>კონტროლერის 3D ვიზუალიზაცია.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 დიზაინის სისტემა WPF-ისთვის. Wpf.Ui.dll შეიცავს VirtualizingWrapPanel-ს, fluentui-system-icons შრიფტებს და კოდს WPF-დან და microsoft-ui-xaml-დან. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 დიზაინის სისტემა WPF-ისთვის. Wpf.Ui.dll შეიცავს VirtualizingWrapPanel-ს, fluentui-system-icons შრიფტებს და კოდს WPF-დან და microsoft-ui-xaml-დან.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm მონაცემთა მიბმისთვის. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm მონაცემთა მიბმისთვის.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly-ს „Xbox Series Button Icons and Controls“-იდან მიღებული სტიკისა და ტრიგერის ხატულები (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly-ს „Xbox Series Button Icons and Controls“-იდან მიღებული სტიკისა და ტრიგერის ხატულები.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>ტაჩპედის ფიგურების შაბლონების შემჯერებელი (წრე / კვადრატი / სამკუთხედი / Z / ნიშნული და საკუთარი ჩაწერილი ჟესტები). JavaScript-ის საცნობარო ვერსიის C#-ზე ხელახლა შექმნილი ვარიანტი. ავტორები: Magrofuoco, Vatavu, Anthony და Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>ტაჩპედის ფიგურების შაბლონების შემჯერებელი (წრე / კვადრატი / სამკუთხედი / Z / ნიშნული და საკუთარი ჩაწერილი ჟესტები). JavaScript-ის საცნობარო ვერსიის C#-ზე ხელახლა შექმნილი ვარიანტი. ავტორები: Magrofuoco, Vatavu, Anthony და Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>კლავიშების პოზიციები და საბაზისო შრის კლავიშები იმ კლავიატურებისა, რომლებსაც „კლავიატურა + მაუსი“-ს გადახედვა ხატავს. შექმნილია QMK-ის განლაგების მონაცემებიდან და Keychron-ის QMK ფორკიდან. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>კლავიშების პოზიციები და საბაზისო შრის კლავიშები იმ კლავიატურებისა, რომლებსაც „კლავიატურა + მაუსი“-ს გადახედვა ხატავს. შექმნილია QMK-ის განლაგების მონაცემებიდან და Keychron-ის QMK ფორკიდან.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>კუთხური ზღვრის შეფასების მიდგომა, რომელიც წერტილთა ღრუბლის შემჯერებელთან ერთად მუშაობს ერთთითიან ფორმებზე. ახორციელებს შეფასების იდეას GestureSign-ის PointPatternAnalyzer-იდან ორიგინალ C#-ში. GPL-2.0, მხოლოდ დოკუმენტაციისთვის.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>კუთხური ზღვრის შეფასების მიდგომა, რომელიც წერტილთა ღრუბლის შემჯერებელთან ერთად მუშაობს ერთთითიან ფორმებზე. ახორციელებს შეფასების იდეას GestureSign-ის PointPatternAnalyzer-იდან ორიგინალ C#-ში. მხოლოდ დოკუმენტაციისთვის.</value></data>
   <data name="About_License" xml:space="preserve"><value>ლიცენზია</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>ეს პროგრამა ლიცენზირებულია CC BY-NC-SA 4.0 ლიცენზიით (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack, ავტორი AL2009man (MIT), აწვდის 2D კონტროლერის რესურსებს. GestureSign, ავტორი TransposonY (GPL-2.0), დოკუმენტაციად იქნა წაკითხული AngularMarginRecognizer-ისთვის და მისი არცერთი კოდი არ იგზავნება. Handheld Companion (CC BY-NC-SA 4.0) აწვდის Xbox 360-ისა და Steam Deck-ის 3D მოდელებს, რომლებსაც PadForge ადაპტირებს. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services და WPF UI ლიცენზირებულია MIT ლიცენზიით. OpenXInput მხოლოდ ორიგინალის სავაჭრო ნიშნის უარყოფას შეიცავს და იმავე პირობებით თავისი სახით ნაწილდება. $Q Recognizer, ავტორები Magrofuoco, Vatavu, Anthony და Wobbrock (BSD 3-Clause), საცნობარო ვერსიაა ტაჩპედის ShapeRecognizer-ისთვის, C#-ზე ხელახლა შექმნილი ვარიანტი. SDL3 ლიცენზირებულია zlib ლიცენზიით. x360ce (LGPL-3.0-or-later) არის ორიგინალი კოდბაზა, საიდანაც PadForge ფორკირებულია. Zergatul.Obs.InputOverlay, ავტორი Igor Budzhak (MIT), აწვდის მაუსის გრაფიკას.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK ჩამტვირთველი)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD-ის მსგავსი</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ლიცენზიის პირობები</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK-ის პირობები</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>მხოლოდ სავაჭრო ნიშნის უარყოფა</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>პირობები დასახელებული არ არის</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>გამოქვეყნებული არ არის</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>რამდენიმე ლიცენზია</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>მომხმარებლის რეჟიმის ვირტუალური HID კონტროლერის ძრავა (ანაცვლებს ViGEmBus-სა და vJoy-ს). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>მომხმარებლის რეჟიმის ვირტუალური HID კონტროლერის ძრავა (ანაცვლებს ViGEmBus-სა და vJoy-ს).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput-ის პირდაპირი შემცვლელი. თავისი ხედვიდან ფილტრავს PadForge-ის საკუთარ ვირტუალურ კონტროლერებს. ორიგინალის სავაჭრო ნიშნის უარყოფა, OSS ლიცენზიის გარეშე.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput-ის პირდაპირი შემცვლელი. თავისი ხედვიდან ფილტრავს PadForge-ის საკუთარ ვირტუალურ კონტროლერებს.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ბირთვის დრაივერი ფიზიკური მოწყობილობების თამაშებისგან დასამალად. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ბირთვის დრაივერი ფიზიკური მოწყობილობების თამაშებისგან დასამალად.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>მოწვევა</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>„და ჩვენ ვლაპარაკობთ ქრისტეზე, ჩვენ ვხარობთ ქრისტეში, ჩვენ ვქადაგებთ ქრისტეზე, ჩვენ ვწინასწარმეტყველებთ ქრისტეზე და ჩვენ ვწერთ ჩვენი წინასწარმეტყველებების შესაბამისად, რათა ჩვენმა შვილებმა იცოდნენ, რომელ წყაროს დაეყრდნონ თავიანთი ცოდვების მისატევებლად.“</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 ნეფი 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>დიდება, პატივი და ქება უფალ იესო ქრისტეს, ყოველგვარი ჭეშმარიტებისა და ხსნის წყაროს, უკუნითი უკუნისამდე.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>გულთბილად გიწვევთ, ეწვიოთ ComeUntoChrist.org და გაიგოთ მეტი მასზე და იესო ქრისტეს უკანასკნელ დღეთა წმინდანთა ეკლესიის შესახებ.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>ბაუერის სტერეოფონულიდან ბინაურალურზე გადასვლის ჯვარედინი მიწოდება ყურსასმენების გამოსვლისთვის. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>ბაუერის სტერეოფონულიდან ბინაურალურზე გადასვლის ჯვარედინი მიწოდება ყურსასმენების გამოსვლისთვის.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>წმინდა C# Opus-ის ენკოდერი, რომელიც DualSense-ის დინამიკის აუდიოს Bluetooth-ით ამოძრავებს. ავტორი Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>წმინდა C# Opus-ის ენკოდერი, რომელიც DualSense-ის დინამიკის აუდიოს Bluetooth-ით ამოძრავებს. ავტორი Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ს DualSense Bluetooth აუდიოს კვლევა: პაკეტების გადაცემა, რომელზეც კონტროლერის დინამიკის ნაკადი მიდის. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ს DualSense Bluetooth აუდიოს კვლევა: პაკეტების გადაცემა, რომელზეც კონტროლერის დინამიკის ნაკადი მიდის. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ის Bluetooth დინამიკის რეცეპტი: Opus-ის ფრეიმინგი და პაკეტის განლაგება. ასევე მადლობა TechAntohere-ს გაზიარებული დაკვირვებებისა და ტესტირებისთვის. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ის Bluetooth დინამიკის რეცეპტი: Opus-ის ფრეიმინგი და პაკეტის განლაგება. ასევე მადლობა TechAntohere-ს გაზიარებული დაკვირვებებისა და ტესტირებისთვის.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>საცნობარო რეალიზაცია USB კონტროლერის აუდიოს გატარებისთვის. ავტორი WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>სიმბოლოს დაყოვნება (მწმ)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>მილიწამები აკრეფილ სიმბოლოებს შორის, 1000-მდე. 0 მთელ ტექსტს ერთდროულად კრეფს.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>უმოქმედობისას გამორთვა</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>კვება</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>მოწყობილობის დოსიე</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>დეტალები</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>წუთი (0 = არასდროს)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth-ის გამორთვა USB-ით შეერთებისას</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>სწრაფი დატენვა. როცა ეს კონტროლერი Bluetooth-ით დაკავშირებულ მდგომარეობაში იტყობინება, რომ იტენება, Bluetooth კავშირი წყდება, რათა დაიტენოს რადიოს კვების გარეშე. ნებისმიერი USB კვების წყარო ითვლება, კედლის დამტენების ჩათვლით. თუ კაბელის ჩართულობისას Bluetooth-ს კვლავ ჩართავთ, ის კაბელის შემდეგ გამოღებამდე არ შეეხება.</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>ეკითხება ამ PlayStation გეიმპადს მიმართულებებს პირდაპირ, რათა მარცხენა და მარჯვენა, ან ზემოთ და ქვემოთ, საცეკვაო ხალიჩაზე პირველივე ნაბიჯიდან ერთად დარეგისტრირდეს. ისინი მოდის როგორც ისრების ზემოთ, ქვემოთ, მარცხნივ და მარჯვნივ ღილაკები, რომლებსაც 3.34 ფირმვერი თავადაც აგზავნის, როცა საპირისპირო მიმართულებები დაიჭირება, და მაშინ PadForge კითხვას წყვეტს. მანამდე ადაპტერი გეიმპადის საკუთარ წაკითხვათა უმეტესობას ტოვებს.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2-ის წნევა</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>მოთამაშის ნომერი</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ადაპტერი ნომერს ინახავს და ხელახლა უკავშირდება ამ მოთამაშედ. Windows ამის შემდეგ ახალ მოწყობილობას ხედავს, ამიტომ დაბრუნებისას პორტი ხელახლა მიაბით.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>ადაპტერი ნომერს ინახავს და ხელახლა უკავშირდება, რასაც Windows ახალ მოწყობილობად ხედავს.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>მოთამაშე</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>მოთამაშის მითითება</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast-ის ეკრანი</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>პორტამდე არაფერი აღწევს, სანამ არ შეინახავთ.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>ჩვენება</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>ადაპტერის სურათი</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>პროფილის სახელი</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO იკითხება როგორც ორი Taiko დოლი.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} იკითხება როგორც iCade კონტროლერი.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} ისევ კლავიატურად იკითხება.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>სინათლის იარაღი</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>ნაგულისხმევი დამიზნების დიაპაზონი: X {0}-დან {1}-მდე, Y {2}-დან {3}-მდე</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>დაკალიბრებული დამიზნების დიაპაზონი: X {0}-დან {1}-მდე, Y {2}-დან {3}-მდე</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>იარაღის კალიბრაცია</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>ყველა კლავიატურა (გაერთიანებული)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>ყველა მაუსი (გაერთიანებული)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>მოწყობილობები</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} დაკავშირებულია</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>მოწყობილობების ძებნა</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>ყველა</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>კლავიატურები და მაუსები</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad-ის წაკითხვა</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad-ებისა და uDraw პლანშეტების წაკითხვა</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>გეიმპადების წაკითხვა</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} ისევ თავის Windows-ის დრაივერზეა.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}-ის Windows-ის დრაივერის აღდგენა ვერ მოხერხდა.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows-მა {0} თავის საკუთარ დრაივერზე დააბრუნა. ისევ რომ გადართოთ, აირჩიეთ ის მოწყობილობების გვერდზე.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> ონლაინ / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> სულ</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>ამ მოწყობილობის და მისი პარამეტრების წაშლა</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>მოწყობილობის წაშლა</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} მოწყობილობების სიიდან წაიშლება და მისი შენახული პარამეტრები დაიკარგება.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>მოწყობილობის მინიჭებისთვის ჩაათრიეთ ის გვერდითა პანელის კონტროლერის ბარათზე.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>პროდუქტი: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>მოწყობილობის მისანიჭებლად ჩაათრიეთ ის გვერდით პანელში კონტროლერზე.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>მოწყობილობის მიბმის გაგზავნა</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>ვირტუალური კონტროლერის მინიჭება</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>მინიჭების გადართვა</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>ვირტუალური კონტროლერის სლოტები ჯერ არ არის. ამ მოწყობილობის მისანიჭებლად შექმენით ერთი მთავარ პანელზე.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>შეყვანის რეჟიმი</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>ამ მოწყობილობას ამ კონტროლერს ანიჭებს ან ხსნის მას.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>ნედლი ჯოისტიკის რეჟიმის იძულება (გეიმპადის გადანაწილების გვერდის ავლით)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL-ის გეიმპადის მიბმის ნაცვლად ნედლი HID ინდექსების წაკითხვა. გამოიყენეთ, როცა SDL ღილაკებისა და ღერძების განლაგებას შეცდომით ამოიცნობს.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>შეყვანის დამალვა</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>თამაშებისგან დამალვა (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>ამ მოწყობილობას სრულად მალავს სხვა აპლიკაციებისგან HidHide დრაივერის მეშვეობით. როცა PadForge უკვე შეერთებულ USB კონტროლერს მალავს, Windows-ში მას ხელახლა აერთებს, ამიტომ ყველაფერი, რაც მას ხსნიდა, კარგავს მას. Bluetooth კონტროლერი, ან ის, რომელიც მიმღებს სხვა კონტროლერთან იზიარებს, რჩება ყველაფერთან, რაც მას დამალვამდე გახსნიდა, სანამ ის შემდეგ ჯერზე არ დაუკავშირდება.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>ამ პარამეტრის გასააქტიურებლად დააყენეთ HidHide დრაივერი</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>მიბმული შეყვანების ჩახშობა (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>ახშობს მხოლოდ მიბმულ კონკრეტულ კლავიშებს/ღილაკებს, ხოლო მიუბმელ შეყვანებს ატარებს</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>ნედლი შეყვანის მდგომარეობა</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>აირჩიეთ მოწყობილობა მისი ნედლი შეყვანის სანახავად.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>შეყვანების გამოცდა</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>აირჩიეთ მოწყობილობა მისი პარამეტრების სანახავად და შეყვანების გამოსაცდელად.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>ღერძები</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ღილაკები</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>კლავიატურა</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>არჩეულ მოწყობილობას კლონირებისთვის ღერძები, ღილაკები ან POV-ები არ აქვს.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ამ სლოტზე 1:1 გატარებით დაიკლონოს? განლაგება გახდება {1} ღერძი, {2} ღილაკი და {3} POV, ხოლო ამ მოწყობილობის რიგები სლოტზე მისი საკუთარი შეყვანებით ჩანაცვლდება.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>ამ მოწყობილობას უფრო მეტი შეყვანა აქვს, ვიდრე გაფართოებულ კონტროლერს შეუძლია გადაიტანოს. მიბმულია {1}-დან {0} ღერძი, {3}-დან {2} ღილაკი და {5}-დან {4} POV. დანარჩენი მიუბმელი დარჩა.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>იმპორტირებული პროფილები</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>მომხმარებლის მიერ იმპორტირებული HIDMaestro პროფილები PadForge.xml-შია შენახული და ყველა გაფართოებული სლოტის პროფილების ჩამოსაშლელში ჩანს. ქვემოთ გადაიღეთ ახალი შეერთებული მოწყობილობიდან, ან არსებული ექსპორტირეთ / წაშალეთ.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>თქვენი იმპორტირებული პროფილები ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>იმპორტისთვის ხელმისაწვდომი შეერთებული მოწყობილობები</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>კონტროლერის პრესეტები</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>დაამატეთ პრესეტი კონტროლერისთვის, რომელსაც PadForge არ აწვდის, ფაილიდან ან თვით კონტროლერიდან.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>იმპორტირებული</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>იმპორტი დაკავშირებული მოწყობილობიდან</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ექსპორტი…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>წაშლა</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>დახურვა</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>პროფილის JSON-ის ექსპორტი</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>წაიშალოს იმპორტირებული პროფილი?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>წაიშალოს „{0}“? ამ პროფილის მომხმარებელი ყველა სლოტი სინთეტიკურ ჩანაწერზე „Custom“ დაბრუნდება.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>წაიშალოს პრესეტი?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>ნებისმიერი კონტროლერი, რომელიც იყენებს {0}-ს, „Custom“ ჩანაწერზე დაბრუნდება. ამის გაუქმება შეუძლებელია.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>ექსპორტირებულია: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ექსპორტი ვერ მოხერხდა: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>წაშლილია „{0}“.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ფაილიდან იმპორტი…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>იმპორტი ფაილიდან…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>პროფილის JSON-ის იმპორტი</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>იმპორტირებულია: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>წაკითხვა ვერ მოხერხდა: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro-მ ეს პროფილი უარყო აქ: {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ამ პროფილს HID აღმწერი არ აქვს, ამიტომ მისგან კონტროლერის შექმნა შეუძლებელია.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>არაფერი იმპორტირებულა. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>განახლება</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>იმპორტი</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(უსახელო HID მოწყობილობა)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>ნაპოვნია {0} HID ინტერფეისი.</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>ცენტრი</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>მკვდარი ზონა</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ცენტრის წანაცვლება, მკვდარი ზონის ფორმა და ღერძების მნიშვნელობები, მრუდი თითოეული ღერძისთვის, დიაპაზონი, მართვა</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>დიაპაზონი რიცხვებში, ნედლი მნიშვნელობები</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„საზღვრის კალიბრაცია“ ზომავს კიდეს, რომლამდეც სტიკს მისვლა შეუძლია, და მას სრულ წრედ აქცევს. ოთხი სლაიდერი მხოლოდ თითოეულ მიმართულებას ზღუდავს.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>ნიმუშის აღება...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>საწყისზე დაბრუნება: ფორმის დამთხვევის ზღვარი</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>ტაჩპედის ჟესტის ჩაწერა</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>დახატეთ ჟესტი ქვემოთ მოცემულ ზედაპირზე. დიალოგი იჭერს ყველა თითს, რომელსაც დადებთ. როცა ყველა თითს ზედაპირიდან აიღებთ, ნიმუში ჩაიწერება. წინა ნიმუშებისგან განსხვავებული თითების რაოდენობით დახატვა დასტას ანულებს.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>ველოდები თითის შეხებას ტილოზე</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>ჟესტის ჩაწერა</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>დახატეთ ფორმა კონტროლერის ტაჩპედზე. ის ხდება შეყვანა, რომლის მიბმაც შეგიძლიათ.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>დახატეთ ჟესტი აქ.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>დახატეთ ტაჩპედზე. ტილო მას ცოცხლად ირეკლავს.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>იწერება: {0}, ტაჩპედი {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ეს ტაჩპედი</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ტაჩპედი მიუწვდომელია. გამოიყენეთ ქვემოთ მოცემული ტილო მაუსით ან შეხებით.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ტაჩპედი მიუწვდომელია. დახატეთ აქ მაუსით, კალმით ან თითით.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>იხატება…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>ყველა ნიმუში აღებულია. დაარქვით ჟესტს სახელი და დააწკაპუნეთ „შენახვა“.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>ნიმუში {0} {1}-დან</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ნიმუში</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>აღსაღები ნიმუშები</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 სტანდარტულია. მეტი ნიმუში = უფრო საიმედო დამთხვევა, ნაკლები = უფრო სწრაფი ჩაწერა.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>აღსაღები ნიმუშები</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 სტანდარტულია. მეტი ნიმუში უფრო საიმედო დამთხვევას იძლევა, ნაკლები უფრო სწრაფად იწერება.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>სახელი</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>ხელახლა ცდა</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>დაარქვით ამ ჟესტს სახელი</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>სახელი აუცილებელია</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>სახელი ძალიან გრძელია (მაქს. 64 სიმბოლო)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>სახელი არასწორ სიმბოლოებს შეიცავს</value></data>
@@ -2301,41 +2444,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>პროფილები</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>პროფილების მართვა</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>შექმენით კონტროლერის პროფილები თითოეული აპლიკაციისთვის, რომლებიც აქტიური თამაშის მიხედვით ავტომატურად გადაირთვება.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>პროფილების ავტომატური გადართვა წინა პლანზე მყოფი აპლიკაციის მიხედვით</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>პროფილი სრული მოწყობაა: მისი კონტროლერები, მიბმები და მორგება.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>საწყისი პროფილები</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>მზა პროფილები მთელი ჟანრისთვის. აირჩიეთ ერთ-ერთი, მიაბით ნებისმიერი კონტროლერი და ითამაშეთ.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>პროფილების გადართვა თამაშის მიხედვით</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>ავტომატური გადართვა</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, მისთვის პროფილი არ არის მითითებული</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, იტვირთება პროფილი {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>ახლა წინა პლანზეა: {0}, და არც ერთ პროფილს ჯერ თამაში არ აქვს მითითებული</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>ლანჩერებისა და სკრიპტებისთვის გარე მართვის დაშვება</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>აწვდის ლოკალურ დასახელებულ არხს, PadForge.Control, რათა Playnite-მ, LaunchBox-მა ან სკრიპტმა შეძლოს პროფილების გააქტიურება და გამორთვა. ასე გააქტიურებული პროფილი აქტიური რჩება, სანამ სკრიპტი არ გაათავისუფლებს ან თქვენ თვითონ არ გადართავთ პროფილს. მხოლოდ ამ კომპიუტერზე.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>გარე მართვა</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>აქტიური პროფილი:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>სლოტების გარეშე</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>ავტომატური გადართვა: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>კონტროლერების გარეშე</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ჩააგდეთ პროფილის იმპორტისთვის</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>ახალი</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>ჩააგდეთ პროფილის ფაილი აქ</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>ახალი პროფილი</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>შენახვა როგორც</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>მიმდინარე მოწყობის აქ შენახვა</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>რედაქტირება</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ჩატვირთვა</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>არც ერთ პროფილს არ აქვს შესრულებადი ფაილი</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ჩაშენებული</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>ჯერ აირჩიეთ პროფილი.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>ჩაშენებულ პროფილს „ნაგულისხმევი“ ვერ შეცვლით და ვერ წაშლით.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>პროფილის წაშლა</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>წაიშალოს „{0}“? მისი შენახული სლოტებისა და მიბმების სნეპშოტი განადგურდება.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>თამაში არ არის მითითებული</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>იტვირთება თამაშისთვის: {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>მითითებულია თამაშისთვის: {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>აქტიური</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>მეტი პროფილისთვის {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>წაიშალოს {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>პროფილი და მისი ავტომატური გადართვის წესი წაიშლება. ამის გაუქმება შეუძლებელია.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>პროფილი წაიშლება. ამის გაუქმება შეუძლებელია.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>ჩაანაცვლოთ „{0}“-ში შენახული მოწყობა მიმდინარით? მისი სახელი და თამაშები დარჩება.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>ჩანაცვლება</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>პროფილად შენახვა</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>პროფილის რედაქტირება</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>პროფილის სახელი:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>ახალი პროფილი</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>სახელი</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>ახალი პროფილი</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>შესრულებადი ფაილები (მოწმდება წინა პლანზე მყოფ ფანჯარასთან):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>თამაშები, რომლებიც მას ტვირთავს</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>გამოკითხვის სიხშირე</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ნაგულისხმევი (გლობალური პარამეტრი)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>გადაფარულია, სანამ პროფილი „{0}“ აქტიურია: {1} მწმ</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ინახავს ყველა სლოტის მიბმებსა და თითოეული მოწყობილობის პარამეტრებს ერთი სახელით. მიბმული შესრულებადი ფაილები ავტომატურად გადაერთვება მასზე.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ცვლის პროფილის სახელს და განაახლებს მის გამააქტიურებელ შესრულებად ფაილებს. შენახული მიბმები და პარამეტრები უცვლელი რჩება.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ინახავს ყველა კონტროლერის მიბმებსა და პარამეტრებს ერთი სახელით. ის თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>პროფილი თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>იწყება კონტროლერების გარეშე. ის თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>გაშვებული თამაშის დამატება</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>სხვა პროგრამას ღია ფანჯარა არ აქვს.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ამოღება: {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>გამოკითხვის სიხშირე, სანამ ეს პროფილი ჩატვირთულია</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>პარამეტრების კოპირება...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>აირჩიეთ მოწყობილობა, საიდანაც უნდა დაკოპირდეს პარამეტრები:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>კოპირება აქედან</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>შეცვალეთ {0}-ის მიბმები და თითოეული მოწყობილობის მორგება სხვა კონტროლერისით.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>დაამატეთ სხვა კონტროლერის მაკროები {0}-ს.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>მინიჭებული არ არის, წინა მიბმები რჩება</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>აირჩიეთ აპლიკაცია თეთრ სიაში დასამატებლად</value></data>
@@ -2377,6 +2541,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ანტი-მკვდარი ზონა</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ორჯერ დააწკაპუნეთ წერტილის დასამატებლად. მარჯვენა დაწკაპუნებით წაშალეთ. გადაათრიეთ რეგულირებისთვის.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>მრუდის რედაქტორი</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ტრიგერის ღერძი</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2732,8 +2897,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ძირითადი</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift შრე</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ძირითადის კონფიგურაცია</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ძირითადი შრის სახელი, ხატულა და ფერი Shift-შრის ამომხტარ პანელზე და შრეების რიგში.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>შრის სახელი</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>გამშვები შეყვანა</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>სახელი</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ჭერა ამით</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>დაჭერა ამით</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>შემდეგი შრე ამით</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>წინა შრე ამით</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>და ამით</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>აირჩიეთ შეყვანა</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>მიუბმელი კონტროლები</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>გადასვლა ძირითადზე</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>არაფრის გაკეთება</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>რეჟიმი, შეყვანის სახეობა, დრო და ფერი</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>რეჟიმი</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>დაჭერილად ყოფნა</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>გადართვა</value></data>
@@ -2760,14 +2936,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>მონიშვნისას ამ შრის სამიზნე რჩება გამორთული და არ გადადის ბაზის მწკრივზე.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>დაყოვნება</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>რამდენ ხანს უნდა იყოს შეყვანა დაჭერილი, სანამ შრე რეაგირებს. დაჭერილად ყოფნის რეჟიმში ეს ხმაურის გაფილტვრაა. გადართვის, ჩაკეტვისა და მიმაგრებულ რეჟიმებში გადართვა ხანგრძლივი დაჭერით ხდება: შრე ერთხელ იცვლება, როცა დაჭერა ამ დროს გადააჭარბებს, უფრო მოკლე შეხებას კი არაფერი მოსდევს. 0 რეაგირებს დაუყოვნებლივ.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>კომბინაციის მეორე შეყვანა</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>ღერძის ზღვარი</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>შრეების ციკლი</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>მხოლოდ შრეში ყოფნისას</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>ნებისმიერი შრე</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>შეყვანა ითვლება მხოლოდ მაშინ, როცა არჩეული შრე აქტიურია. შემოწმება ხდება შეყვანის დაჭერისას და მოქმედებს მთელი დაჭერის განმავლობაში. „ნებისმიერი შრე“ ნიშნავს, რომ შეყვანა ყოველთვის ითვლება. თითოეული შრის გასასვლელები ამავე შრეზე დააყენეთ, სხვა გამშვებით ან შრის გადართვის მაკროთი.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>შემდეგი ღილაკი</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>წინა ღილაკი</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>ციკლური გადასვლა</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>ჩართულის შემთხვევაში ბოლო შრის გადაცილება პირველზე აბრუნებს, პირველის წინ გადასვლა კი ბოლოზე. გამორთულის შემთხვევაში კურსორი ბოლოებზე ჩერდება.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>ბაზის ჩართვა</value></data>
@@ -2779,18 +2952,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>შრეს რთავს ერთი ღილაკის (ან POV მიმართულების) დაჭერა.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>ჩასართავად ორივე ღილაკი ერთდროულად უნდა იყოს დაჭერილი. მხარდაჭერილია სხვადასხვა მოწყობილობის ღილაკების კომბინაცია.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>ჩართულია, სანამ ანალოგური ღერძი ზღვრის მნიშვნელობას სცდება.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>შრე ჩართული რჩება, სანამ გამშვები დაჭერილია. გაშვებისას გამოირთვება.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>სანამ მისი შეყვანა დაჭერილია, ამ შრის მიბმები ძირითადი შრის მიბმებს ანაცვლებს.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>ჩასართავად შეეხეთ. გამოსართავად კვლავ შეეხეთ. შრე ბევრი დაჭერის განმავლობაში რჩება.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>დაჭერით ეს შრე ჩაიკეტება და ჩართული დარჩება. ხელახალი დაჭერა ბაზაზე აბრუნებს. სხვა ჩაკეტვის ღილაკი თავის შრეზე გადართავს.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>თითოეული დაჭერა დალაგებულ შრეთა სიაში წინ მიდის. ბოლოს ბაზაზე ბრუნდება.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>ერთხელ შეეხეთ ჩასართავად. შემდეგი მიბმული ღილაკის დაჭერა შრეზე ამუშავდება, ამის შემდეგ შრე ავტომატურად გამოირთვება.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>საკუთარი ღილაკი არ აქვს. დაამატეთ ციკლის კონტროლის რიგში და ციკლი მასაც მიაღწევს.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>მიუბმელი სამიზნეები ბაზიდან მემკვიდრეობით</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>გაშვებისას გააქტიურება</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ელოდება ღილაკის აშვებას და მხოლოდ შემდეგ ამუშავებს გამშვებს. თუ დაყოვნებაა დაყენებული, აშვების ჩასათვლელად დაჭერა ამდენ ხანს უნდა გაგრძელდეს.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>გამშვების საკუთარი მიბმაც გააქტიურდეს</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>მონიშვნისას გამშვები ღილაკი კვლავ აკონტროლებს ყველა მწკრივს, რომელიც მას წყაროდ იყენებს. ერთი დაჭერა ცვლის შრეს და ამუშავებს ღილაკის საკუთარ მიბმასაც. მონიშვნის გარეშე (ნაგულისხმევი) გამშვების დაჭერას მხოლოდ შრის შეცვლა შთანთქავს.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>მონიშვნისას სამიზნეები, რომლებსაც ეს შრე პირდაპირ არ მიაბამს, ბაზის შრეზე გადადის. მონიშვნის გარეშე (ნაგულისხმევი) შრე ბაზას მთლიანად ცვლის და მიუბმელი სამიზნეები გამორთული რჩება.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>„გადასვლა ძირითადზე“ რეჟიმში კონტროლები, რომლებსაც ეს შრე არ მიაბამს, თავის ძირითადი შრის მიბმებს ინარჩუნებს. „არაფრის გაკეთება“ რეჟიმში შრე ძირითადს მთლიანად ცვლის და ეს კონტროლები გამორთული რჩება.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ბრუნვის დიაპაზონი</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ბრუნვის დიაპაზონის დაყენება</value></data>
@@ -2993,15 +3165,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>არჩეულ მოწყობილობას ჩაშენებული დინამიკი არ აქვს. ამ კონტროლერის მაკროს ხმები სისტემის ნაგულისხმევ გამოსავალზე უკრავს.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ხმის გამოსვლის საწყისზე დაბრუნება</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>ბრაუზერული DualSense-ის სატესტო კომპლექტი, ავტორი Xuezhou Dai (daidr): მითითება Sony-ის feature-report-ის CRC ჩარჩოებისა და ფირმვერის სატესტო ბრძანებებისთვის, რომლებსაც PadForge ვირტუალური კონტროლერებიდან ფიზიკურ კონტროლერებზე გადასცემს. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>ბრაუზერული DualSense-ის სატესტო კომპლექტი, ავტორი Xuezhou Dai (daidr): მითითება Sony-ის feature-report-ის CRC ჩარჩოებისა და ფირმვერის სატესტო ბრძანებებისთვის, რომლებსაც PadForge ვირტუალური კონტროლერებიდან ფიზიკურ კონტროლერებზე გადასცემს.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4-ის Bluetooth აუდიოს მითითება, ავტორი nefarius: ანგარიშების ჩარჩოება PadForge-ის DS4 დინამიკის ნაკადისთვის. SBC კოდერი ორიგინალური C# რეალიზაციაა Bluetooth A2DP სპეციფიკაციიდან. პროტოკოლის დოკუმენტაცია khallmark-ის ds4mac-იდან. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4-ის Bluetooth აუდიოს მითითება, ავტორი nefarius: ანგარიშების ჩარჩოება PadForge-ის DS4 დინამიკის ნაკადისთვის. SBC კოდერი ორიგინალური C# რეალიზაციაა Bluetooth A2DP სპეციფიკაციიდან. პროტოკოლის დოკუმენტაცია khallmark-ის ds4mac-იდან.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>ექსპორტი…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>იმპორტი…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>პროფილი „{0}“ ექსპორტირებულია.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>პროფილი „{0}“ იმპორტირებულია (დარეგისტრირებული ხმის პაკეტები: {1}).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ფაილი არ არის წასაკითხი PadForge-ის პროფილი.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>აირჩიეთ ხმა: {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>ხმის პაკეტები</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ხმების zip ფაილები ხმოვანი მაკროებისთვის</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>ხმის პაკეტი არის ერთი zip ფაილი ხმებით, გაფართოებით .pfsounds. დაამატეთ აქ, შემდეგ აირჩიეთ მისი ხმები ნებისმიერ ხმის მაკროში. PadForge კითხულობს პირდაპირ ფაილიდან და არასოდეს ხსნის მას. შეინახეთ პაკეტები PadForge.exe-ს გვერდით, რომ პორტატული დარჩეს.</value></data>
@@ -3046,20 +3217,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>პირადობის დაცვა</value>
+    <value>დაწყვილების პირადობა</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>როგორ ინახება ამ კომპიუტერის დაწყვილების პირადობა. აირჩიეთ პორტატული რეჟიმი, რომ დაწყვილებები ფლეშ-დრაივზე ერთი მანქანიდან მეორეზე გადაიტანოთ.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>დაარქვით ამ კომპიუტერს სახელი</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>ახლომდებარე კომპიუტერები (დაუწყვილებელი)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>საწყისზე დაბრუნება</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>დისტანციური კავშირის პაროლი</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge ტაჩპედი</value>
@@ -3091,9 +3255,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>დაწყვილებული კომპიუტერი</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>ონლაინ</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>ოფლაინ</value>
   </data>
@@ -3110,7 +3271,7 @@
     <value>დაცვის შეცვლამდე განბლოკეთ მიმდინარე პირადობა.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>დააყენეთ პაროლი პორტატული პირადობის დასაცავად. თითოეულ კომპიუტერზე დისტანციური კავშირის განსაბლოკად მას შეიყვანთ.</value>
+    <value>პაროლი იცავს ამ კომპიუტერის დაწყვილების პირადობას.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>პირადობის დაცვა განახლდა.</value>
@@ -3130,7 +3291,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>მიმდინარეობს დაკავშირება: {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ავტომატური ხელახალი დაკავშირება</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>ავტომატური გადაკავშირება</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>მოსმენა: {0}</value>
   </data>
@@ -3149,65 +3310,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>პარტნიორი {0} დაკავშირდა, მოწყობილობები: {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>აირჩიეთ ხმა დამატებული პაკეტიდან ან მოძებნეთ ფაილი.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>ფაილების დათვალიერება…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>აირჩიეთ ხმა</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>ხმა უკრავს კონტროლერის დინამიკით, ხოლო თუ მას არ აქვს, კომპიუტერისით.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>ხმის გამოყენება</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>დაკვრა: {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback-ჩაწერა კონტროლერის აუდიოს ასახვისა და აუდიო-ბასით ტრიგერის ვიბრაციისთვის. NAudio.Midi, რომელიც PadForge-ში არ შედის, ასევე მითითებაა ძველი MIDI API-ის WinMM-ის დეკლარაციებისა და პორტების თანმიმდევრობისთვის, წესისთვის, რომ Note On ნულოვანი სიჩქარით არის Note Off, და ჩართვა/გამორთვის კონტროლერებისთვის, როგორიცაა სუსტეინი. ავტორი Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback-ჩაწერა კონტროლერის აუდიოს ასახვისა და აუდიო-ბასით ტრიგერის ვიბრაციისთვის. NAudio.Midi, რომელიც PadForge-ში არ შედის, ასევე მითითებაა ძველი MIDI API-ის WinMM-ის დეკლარაციებისა და პორტების თანმიმდევრობისთვის, წესისთვის, რომ Note On ნულოვანი სიჩქარით არის Note Off, და ჩართვა/გამორთვის კონტროლერებისთვის, როგორიცაა სუსტეინი. ავტორი Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>ოფლაინ მეტყველების ამომცნობი, რომელიც მაკროს სამეტყველო ფრაზებს ესმის. ავტორი Alpha Cephei. მოდელი PadForge-შია ჩაშენებული. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>ოფლაინ მეტყველების ამომცნობი, რომელიც მაკროს სამეტყველო ფრაზებს ესმის. ავტორი Alpha Cephei. მოდელი PadForge-შია ჩაშენებული.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>კრიპტოგრაფია დისტანციური კავშირის დაწყვილებისა და გადაცემისთვის (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, MIT-ის მსგავსი ლიცენზია.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>კრიპტოგრაფია დისტანციური კავშირის დაწყვილებისა და გადაცემისთვის (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>ჩაშენებული Bluetooth პროფილისა და PSM ფილტრის დრაივერები, ავტორი nefarius, რომლებიც DualShock 3-ს საერთო რადიოთი დაკავშირების საშუალებას აძლევს. დაწყვილებისას აპლიკაციაშივე ინსტალირდება. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>ჩაშენებული Bluetooth პროფილისა და PSM ფილტრის დრაივერები, ავტორი nefarius, რომლებიც DualShock 3-ს საერთო რადიოთი დაკავშირების საშუალებას აძლევს. დაწყვილებისას აპლიკაციაშივე ინსტალირდება.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-ის პროტოკოლის მითითება, ავტორი Benjamin Höglinger-Stelzer: sixpair feature report-ები, Bluetooth output-report შაბლონი, ჩართვის თანმიმდევრობა, ბატარეის რუკა. PadForge-ის რეალიზაცია ორიგინალური C#-ია. HIDMaestro-ს DualShock 3 (SIXAXIS): Full controller იყენებს DsHidMini-ის SXS-რეჟიმის report descriptor-ს. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-ის პროტოკოლის მითითება, ავტორი Benjamin Höglinger-Stelzer: sixpair feature report-ები, Bluetooth output-report შაბლონი, ჩართვის თანმიმდევრობა, ბატარეის რუკა. PadForge-ის რეალიზაცია ორიგინალური C#-ია. HIDMaestro-ს DualShock 3 (SIXAXIS): Full controller იყენებს DsHidMini-ის SXS-რეჟიმის report descriptor-ს.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>დრაივერების საცავში ინსტალაცია, Bluetooth კლასის ფილტრის რეგისტრაცია და USB პორტის ციკლირება აპლიკაციაში BthPS3-ის დაყენებისთვის და დამალული USB კონტროლერის გასათავისუფლებლად, ავტორი nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>დრაივერების საცავში ინსტალაცია, Bluetooth კლასის ფილტრის რეგისტრაცია და USB პორტის ციკლირება აპლიკაციაში BthPS3-ის დაყენებისთვის და დამალული USB კონტროლერის გასათავისუფლებლად, ავტორი nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>USB წვდომა Switch 2 Pro-ს სადენიანი დრაივერისთვის და იმ კონტროლერებისთვის, რომლებსაც PadForge WinUSB-ზე აკავშირებს, მიეწოდება როგორც libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>USB წვდომა Switch 2 Pro-ს სადენიანი დრაივერისთვის და იმ კონტროლერებისთვის, რომლებსაც PadForge WinUSB-ზე აკავშირებს, მიეწოდება როგორც libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>სენსორული ჯოისტიკი ტელეფონის ვებ-კონტროლერში, ავტორი Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>სენსორული ჯოისტიკი ტელეფონის ვებ-კონტროლერში, ავტორი Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>გეიმპადების მიბმების საზოგადოებრივი ბაზა, რომელსაც PadForge-ის ჩაშენებული მიბმები აფართოებს. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>გეიმპადების მიბმების საზოგადოებრივი ბაზა, რომელსაც PadForge-ის ჩაშენებული მიბმები აფართოებს.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide ღილაკის LED-ის კვლევა: XboxGIP პაკეტის განლაგება და აღმოჩენის თანმიმდევრობა, ავტორი Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide ღილაკის LED-ის კვლევა: XboxGIP პაკეტის განლაგება და აღმოჩენის თანმიმდევრობა, ავტორი Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>დახვევის კუთხის მართვისა და დახრის მათემატიკა, ავტორები JibbSmart და Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>დახვევის კუთხის მართვისა და დახრის მათემატიკა, ავტორები JibbSmart და Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>მოთამაშის სივრცისა და მსოფლიო სივრცის გიროსკოპის გარდაქმნა, ავტორი JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>მოთამაშის სივრცისა და მსოფლიო სივრცის გიროსკოპის გარდაქმნა, ავტორი JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ის (2015) ჰაპტიკური ანგარიშის განლაგება და ნოტის პერიოდის მათემატიკა, ავტორები Pila და Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ის (2015) ჰაპტიკური ანგარიშის განლაგება და ნოტის პერიოდის მათემატიკა, ავტორები Pila და Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ისა და Steam Deck-ის LFO-ტონური ჰაპტიკის განლაგება, ავტორები Pila, Crazy და AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ისა და Steam Deck-ის LFO-ტონური ჰაპტიკის განლაგება, ავტორები Pila, Crazy და AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-ის გასუფთავების სემანტიკა Snap Tap რეჟიმებისთვის, ავტორი valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-ის გასუფთავების სემანტიკა Snap Tap რეჟიმებისთვის, ავტორი valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam-ის ქსელის კლიენტი, რომელიც ანონიმური სესიით იღებს Steam Workshop-ის კონტროლერის კონფიგურაციებს, ავტორები Ryan Stecker და SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers სერიალიზატორი, რომელსაც SteamKit2 Steam-ის სადენური პროტოკოლისთვის იყენებს, ავტორი Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers სერიალიზატორი, რომელსაც SteamKit2 Steam-ის სადენური პროტოკოლისთვის იყენებს, ავტორი Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-ის დეკომპრესია, რომელსაც SteamKit2 Steam-ის depot-ის ბლოკებისთვის იყენებს, zstd ბიბლიოთეკის C# პორტი, ავტორი Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-ის დეკომპრესია, რომელსაც SteamKit2 Steam-ის depot-ის ბლოკებისთვის იყენებს, zstd ბიბლიოთეკის C# პორტი, ავტორი Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>დოკუმენტაცია Wii-ს დაწყვილების პროცედურისთვის, დინამიკის ADPCM-ისთვის, Wii Remote-ის გვერდულად და ვერტიკალურად დაჭერის ორიენტაციისთვის, სტიკის გეითის მოდელისა და მისი შენახვის ფორმატისთვის და გიროსკოპის ღერძების კონვენციისთვის. GPL-2.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>დოკუმენტაცია Wii-ს დაწყვილების პროცედურისთვის, დინამიკის ADPCM-ისთვის, Wii Remote-ის გვერდულად და ვერტიკალურად დაჭერის ორიენტაციისთვის, სტიკის გეითის მოდელისა და მისი შენახვის ფორმატისთვის და გიროსკოპის ღერძების კონვენციისთვის. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ის ქცევის დოკუმენტაცია: უმოქმედობისას გათიშვა, ტაჩპედის საზღვრები, ბატარეის დეკოდირება, Bluetooth-ის გათიშვის IOCTL, DualSense-ის ვიბრაციის რეჟიმის ბიტები, გიროსკოპის ჯიტერის მრუდი, სტიკის მაუსად გამოყენების მასშტაბი და Bluetooth output-report-ის CRC seed. მისი ვირტუალური კლავიატურის კლავიშების ცხრილი PadForge-ის ცხრილის შექმნას წარმართავდა. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ის ქცევის დოკუმენტაცია: უმოქმედობისას გათიშვა, ტაჩპედის საზღვრები, ბატარეის დეკოდირება, Bluetooth-ის გათიშვის IOCTL, DualSense-ის ვიბრაციის რეჟიმის ბიტები, გიროსკოპის ჯიტერის მრუდი, სტიკის მაუსად გამოყენების მასშტაბი და Bluetooth output-report-ის CRC seed. მისი ვირტუალური კლავიატურის კლავიშების ცხრილი PadForge-ის ცხრილის შექმნას წარმართავდა. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>GIP LED-ის ბრძანების დოკუმენტაცია, რომელიც xbledctl-ს ადასტურებს. GPL-2.0-or-later, მხოლოდ დოკუმენტაცია.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>GIP LED-ის ბრძანების დოკუმენტაცია, რომელიც xbledctl-ს ადასტურებს. მხოლოდ დოკუმენტაცია.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii-ს IR კამერისა და Balance Board-ის ქცევის დოკუმენტაცია, ავტორი Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii-ს IR კამერისა და Balance Board-ის ქცევის დოკუმენტაცია, ავტორი Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD ვიბრაციის გადაცემის ფორმატის დოკუმენტაცია, ავტორი Sergey004. წაკითხულია მხოლოდ პროტოკოლის ფაქტებისთვის.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>დაწყვილება</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>კონტროლერის დაწყვილება</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>კონტროლერის დაწყვილება</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii Remote-ის დაწყვილება</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>გახსენით ბატარეის სახურავი და დააჭირეთ წითელ SYNC ღილაკს.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>ამ კომპიუტერთან ახლოს დაიჭირეთ პულტი, სანამ მისი ნათურები ციმციმებს.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3-ის დაწყვილება</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move ან Navigation კონტროლერის დაწყვილება</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>სერიული კონტროლერის დამატება</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI პულტის დამატება</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>კონტროლერის ოჯახი</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>გახსენით ბატარეის სახურავი და დააჭირეთ წითელ SYNC ღილაკს. PadForge-ს ძებნა გაუგრძელეთ, სანამ თქვენი კონტროლერი გამოჩნდება.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>დროებითი დაწყვილება (დააჭირეთ 1-ს და 2-ს)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>დაწყვილება</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>ძებნა მიმდინარეობს. ახლა დააჭირეთ SYNC ღილაკს.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>პულტი იძებნება.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>ნაპოვნი კონტროლერები</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>კონტროლერები ჯერ არ არის ნაპოვნი. დარწმუნდით, რომ ლურჯი შუქები ციმციმებს.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>დაწყვილდა {0}. ის გამოჩნდება თქვენი მოწყობილობების სიაში.</value></data>
@@ -3217,7 +3383,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>მზადაა</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ის OpenVR კლიენტის API (BSD 3-Clause): VR ჰედსეტები და მოძრაობის კონტროლერები შეყვანის წყაროდ. მშობლიური გაშვების გარემო იტვირთება თქვენი SteamVR-ის ინსტალაციიდან.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ის OpenVR კლიენტის API: VR ჰედსეტები და მოძრაობის კონტროლერები შეყვანის წყაროდ. მშობლიური გაშვების გარემო იტვირთება თქვენი SteamVR-ის ინსტალაციიდან.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>მუშაობს</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>მუშაობს, დრაივერი დაკავშირებულია</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>მუშაობს, კონტროლერები აქტიურია</value></data>
@@ -3255,13 +3421,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>დაწყვილება არ დასრულდა. ვერშესრულებული ნაბიჯი ზემოთ არის ნაჩვენები.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>დახურვა</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ტეგები</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>ტეგის რეგისტრაცია</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>UID-ის მისაღებად მიადეთ ტეგი მკითხველს.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ელოდება)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>სახელი:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>მიადეთ ტეგი მკითხველს და დაარქვით სახელი. ის ხდება ღილაკი, რომლის მიბმაც შეგიძლიათ.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>მიადეთ ტეგი მკითხველს.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>სახელი</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>დაარქვით ამ ტეგს სახელი</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>რეგისტრაცია</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>რეგისტრირებული ტეგები</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>რეგისტრირებული</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFC მკითხველი ვერ მოიძებნა. დააკავშირეთ PC/SC მკითხველი და ხელახლა გახსენით.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ტეგი ამოკითხულია. შეიყვანეთ სახელი და დააწკაპუნეთ „რეგისტრაცია“. მეორე ტეგის მიდებით ამას ჩაანაცვლებთ.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>დარეგისტრირდა „{0}“. მეტის დასამატებლად მიადეთ სხვა ტეგი.</value></data>
@@ -3339,22 +3504,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack-ის გაზიარებული მეხსიერების გახსნაც ვერ მოხერხდა.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>დამალული ღილაკების სწავლება / მართვა</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>დამალული ღილაკები</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>ღილაკის სწავლება</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>დააჭირეთ დამალულ ღილაკს ერთხელ, როცა მოგთხოვენ. PadForge აკვირდება კლავიატურას, მაუსს, მწარმოებლის ყველა ანგარიშს და ამ კომპიუტერზე სისტემის ყველა მოვლენას და ინახავს იმას, რასაც ღილაკი ცვლის.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>კომპიუტერი:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>სწავლების დაწყება</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>ასწავლეთ PadForge-ს ღილაკი, რომელსაც Windows კონტროლერად არ აჩვენებს. დააჭირეთ მას, როცა მოგთხოვენ.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>ხელები გაუშვით. იკითხება უქმი მდგომარეობა…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>ახლა დააჭირეთ დამალულ ღილაკს, შემდეგ გაუშვით…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ერთი წუთით…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>ცვლილება არ დაფიქსირდა. დააჭირეთ ღილაკს გამოკვეთილ ფანჯარაში და სცადეთ ხელახლა.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>ახლა დააჭირეთ ღილაკს და გეჭიროთ.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>გაუშვით ღილაკი.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>ნაბიჯი {0}, სულ {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>ცვლილება არ დაფიქსირდა. აირჩიეთ „თავიდან დაწყება“, შემდეგ დააჭირეთ ღილაკს და გეჭიროთ, როცა მოგთხოვენ.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>დაკვირვებული იყო {0} მწარმოებლის ანგარიში და {1} მოვლენის კლასი. დაჭერისას: {2} ანგარიში, {3} მოვლენა.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ღილაკი დაფიქსირდა. შეიყვანეთ სახელი და დააწკაპუნეთ „რეგისტრაცია“.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>წყარო:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>სახელი:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>წყარო</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>სახელი</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>დაარქვით ამ ღილაკს სახელი</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>რეგისტრაცია</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>ნასწავლი ღილაკები</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>თავიდან დაწყება</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>ღილაკები ჯერ ნასწავლი არ არის.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>დარეგისტრირდა „{0}“. დაიწყეთ ხელახლა, რომ სხვა ღილაკი ისწავლოთ.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>ნასწავლია: {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>დარეგისტრირდა „{0}“. აირჩიეთ „თავიდან დაწყება“, რომ სხვა ღილაკი ისწავლოთ.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>კლავიშები: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>დამალული ღილაკები გამორთულია. ჯერ პარამეტრებში ჩართეთ „პორტატული PC-ის ღილაკები“.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} გაშვებულია. ის კვლავ რეაგირებს ამ ღილაკებზე, სანამ არ გააჩერებთ.</value></data>
@@ -3503,6 +3668,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციები</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>დაათვალიერეთ საზოგადოების მიერ შექმნილი Steam Input-ის კონტროლერის კონფიგურაციები და გადათარგმნეთ ისინი PadForge-ის პროფილებად. PadForge Steam-ის სერვერებს უშუალოდ მხოლოდ მაშინ უკავშირდება, როცა ეძებთ, კონფიგურაციას ხსნით ან იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ. ის აგზავნის თქვენს საძიებო ტექსტს, ჩართული თამაშების, კონფიგურაციებისა და ავტორების ID-ებს და PadForge-ის ვერსიას. ანონიმური Steam-ში შესვლა ასევე აგზავნის თქვენს Windows-ის ვერსიას და კომპიუტერის ID-ს, რომელიც შედგენილია თქვენი Windows-ის ინსტალაციის ID-ის, ქსელის ადაპტერების მისამართებისა და ჩატვირთვის დისკის სერიული ნომრის ჰეშებისგან. არც ტელემეტრია, არც მესამე მხარის სერვისი, არც Steam ანგარიში.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ის სერვერებს უკავშირდება მხოლოდ მაშინ, როცა ეძებთ, კონფიგურაციას ხსნით ან იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ. არც ტელემეტრია, არც Steam ანგარიში.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>რა იგზავნება</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციების ჩართვა</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>ძველი Workshop-ის კონფიგურაციების ჩვენება</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>ზოგიერთ ძველ კონფიგურაციას Steam-ის CDN-ზე ჩამოსატვირთი ფაილი არ აქვს. PadForge მათ „ძველის“ ბეჯით აჩვენებს და გამოწერისას კითხულობს ასლს, რომელსაც Steam ინახავს. მანამდე ის გთავაზობთ კონფიგურაციის Steam Workshop-ში გახსნას.</value></data>
@@ -3510,18 +3677,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>იმპორტირებული პროფილების განახლებების შემოწმება</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop-ის ქეში გასუფთავდა</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>საზოგადოების კონფიგურაციების დათვალიერება</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>საზოგადოების კონფიგურაციების დათვალიერება</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>პროფილები · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>პროფილების მიღება</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>დაიწყეთ მზა პროფილით, საზოგადოების კონფიგურაციით ან სხვა ხელსაწყოს ფაილით.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>საწყისები</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>საზოგადოება</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>ფაილის იმპორტი</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>შენახვა ამატებს ჩვეულებრივ პროფილს, რომელსაც შეგიძლიათ შეცვალოთ.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>სამჭედლო ცივია</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>საზოგადოების კონფიგურაციების დათვალიერება PadForge-ს უშუალოდ Steam-თან აკავშირებს მხოლოდ ძებნისას და არასდროს გაშვებისას.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>საზოგადოების კონფიგურაციების ჩართვა</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>თამაშების ძებნა</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} თამაში</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>თამაშები</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam-ის მაღაზიაში თამაშები ვერ მოიძებნა.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam-ში ძებნა…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>კონფიგურაციების კითხვა Steam-იდან…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>კონფიგურაციის კითხვა Steam-იდან…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>რეიტინგის მიხედვით</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>დალაგება</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>ამ კონფიგურაციებში ძებნა</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>რეიტინგი</value></data>
@@ -3535,7 +3705,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>ნაპოვნია {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>ნაჩვენებია {0} {1}-დან</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} კონფიგურაცია</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>საზოგადოების კონფიგურაცია</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>კონტროლერის სრული მხარდაჭერა</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>კონტროლერის ნაწილობრივი მხარდაჭერა</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>თამაშების ძებნა</value></data>
@@ -3554,8 +3723,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>ხელახლა ცდა</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>ეს 2016 წლის ეპოქის კონფიგურაცია Steam-ის კონფიგურაციების CDN-ზე ადრეა. გამოიწერეთ ის Steam-ში და PadForge წაიკითხავს მას თქვენი Steam-ის საქაღალდიდან.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>გახსნა Steam Workshop-ში</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>აირჩიეთ კონფიგურაცია, რომ წაიკითხოთ მისი თარგმანის მანიფესტი.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>წაკითხულია {0} მიბმა</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>აირჩიეთ კონფიგურაცია, რომ ნახოთ რა გადმოდის.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>რა გადმოდის</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>ხდება</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>ირჩევს ვირტუალურ კონტროლერს, რომელიც კონფიგურაციის ღილაკებსა და სტიკებს მიიღებს. მისი კლავიშები და მაუსი ყოველთვის „კლავიატურა + მაუსი“ კონტროლერზე გადადის.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>შრეები</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>სუფთა</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>ნაწილობრივი</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>გამოტოვებული</value></data>
@@ -3620,7 +3792,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop-ში განახლებების შემოწმება…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>იმპორტირებული პროფილები განახლებულია (შემოწმდა {0})</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop-ის განახლებები</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ამ იმპორტირებულ პროფილებს Steam Workshop-ში უფრო ახალი ვერსიები აქვთ. ცვლილებების მისაღებად ხელახლა დააიმპორტეთ ისინი „საზოგადოების კონფიგურაციების დათვალიერებიდან“.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ამ იმპორტირებულ პროფილებს Steam Workshop-ში უფრო ახალი ვერსიები აქვთ. ცვლილებების მისაღებად ხელახლა დააიმპორტეთ ისინი განყოფილებით „პროფილების მიღება“.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>ხანგრძლივი დაჭერისას</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>მოკლე დაჭერისას</value></data>
@@ -3768,7 +3940,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>მენიუ {0} უჯრა {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>მენიუს გადაფარვა</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>გადაფარვები</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ეკრანული ინდიკატორები, რომლებსაც PadForge თამაშისას აჩვენებს. ერთის გამორთვა ქცევას არასდროს ცვლის, მხოლოდ იმას, გამოცხადდება თუ არა.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ეკრანული ინდიკატორები, რომლებსაც PadForge თამაშისას აჩვენებს. ერთის გამორთვა ქცევას არასდროს ცვლის, მხოლოდ იმას, გამოჩნდება თუ არა.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-შრის ამომხტარი პანელი</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>პროფილის გადართვის გადაფარვა</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>აჩვენებს ეკრანულ რგოლს ან ბადეს, სანამ რადიალური ან სენსორული მენიუ ჩართულია. გადაფარვის გამორთვისასაც მენიუები მუშაობს.</value></data>
@@ -3818,6 +3990,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>ამ არხის ტონის სიხშირე, 20-დან 120 ჰც-მდე. გაუშვით სიხშირის სკანირება, რომ იპოვოთ, სად რეაგირებს თქვენი შეიკერი ყველაზე ძლიერად.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>ამ არხის ხმის სიმძლავრე მთავარ გაძლიერებამდე.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>გაძლიერება</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>სიხშირე</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>ტესტი</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>უკრავს ამ არხის ტონს 1.5 წამის განმავლობაში მისი დაყენებული გაძლიერებით.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>საწყისზე დაბრუნება: დაბალი ძრავა</value></data>
@@ -3860,16 +4033,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>ტრექპედის მაჩვენებლის აჩქარების მრუდი ტაჩპედიდან მაუსზე გამოტანისთვის. libinput-ის ტაჩპედის აჩქარების პროფილის C#-ზე გადატანა. MIT.</value>
+    <value>ტრექპედის მაჩვენებლის აჩქარების მრუდი ტაჩპედიდან მაუსზე გამოტანისთვის. libinput-ის ტაჩპედის აჩქარების პროფილის C#-ზე გადატანა.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D კონტროლერის მოდელები (Xbox 360, Steam Deck) და 3D ხედის მოდელისა და ანიმაციის კოდი, ავტორები: CasperH2O, Lesueur Benjamin, trippyone. ასევე წყარო Steam Deck-ის ანგარიშისა და ჰაპტიკის გაშიფვრისთვის, Steam Controller-ის (2015) გამორთვის ანგარიშისთვის, handheld daemon-ის სადამკვირვებლო სიისთვის, განახლების შემოწმების დროისთვის და USB ჰაბის პორტის ციკლისთვის, 500 ms ინტერვალით, რომელიც დამალულ USB კონტროლერს თავიდან აკავშირებს, რათა მისი პირველად გამხსნელი პროგრამები მას დაკარგონ. CC BY-NC-SA 4.0.</value>
+    <value>3D კონტროლერის მოდელები (Xbox 360, Steam Deck) და 3D ხედის მოდელისა და ანიმაციის კოდი, ავტორები: CasperH2O, Lesueur Benjamin, trippyone. ასევე წყარო Steam Deck-ის ანგარიშისა და ჰაპტიკის გაშიფვრისთვის, Steam Controller-ის (2015) გამორთვის ანგარიშისთვის, handheld daemon-ის სადამკვირვებლო სიისთვის, განახლების შემოწმების დროისთვის და USB ჰაბის პორტის ციკლისთვის, 500 ms ინტერვალით, რომელიც დამალულ USB კონტროლერს თავიდან აკავშირებს, რათა მისი პირველად გამხსნელი პროგრამები მას დაკარგონ.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D კონტროლერის სქემები (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), ავტორი: AL2009man. MIT.</value>
+    <value>2D კონტროლერის სქემები (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), ავტორი: AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4-ის აუდიო პროტოკოლის დოკუმენტაცია: SBC პარამეტრები და პაკეტების განლაგება, ავტორი: khallmark. GPL-2.0, მხოლოდ დოკუმენტაცია.</value>
+    <value>DualShock 4-ის აუდიო პროტოკოლის დოკუმენტაცია: SBC პარამეტრები და პაკეტების განლაგება, ავტორი: khallmark. მხოლოდ დოკუმენტაცია.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>სამუშაო მაგიდა</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>გამოიყენეთ Windows დივნიდან. კურსორი, გადახვევა და დაწკაპუნებები ტრიგერებზე.</value></data>
@@ -3883,10 +4056,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>ექვსღილაკიანი განლაგება ტურნირისთვის დაშვებული SOCD გასუფთავებით ორივე ღერძზე.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>კლავიატურა + მაუსი</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>გეიმპადი</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>საწყისი პროფილების დათვალიერება</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>საწყისი პროფილები</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>მზა პროფილები მთელი ჟანრისთვის. აირჩიეთ ერთ-ერთი, მიაბით ნებისმიერი კონტროლერი და ითამაშეთ. შენახვა ამატებს ჩვეულებრივ პროფილს, რომელსაც შეგიძლიათ შეცვალოთ.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>პროფილის შენახვა</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>საწყისი პროფილი „{0}“ დაემატა.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>მიუთითე და დააჭირე</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>სათავგადასავლო თამაშები და ყველაფერი, რასაც კურსორი და ორი მოქმედება მართავს.</value></data>
@@ -3986,13 +4155,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>გამოტანის გზის საწყისზე დაბრუნება</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>ყურსასმენის ბუდის მიყოლა</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ის გამომავალი ანგარიშის ბაიტების რუკა და Sony scePad-ის სემანტიკა, ავტორი WujekFoliarz, PadForge-ის ეფექტებისა და აუდიოს ჩამწერების საფუძველი. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ის გამომავალი ანგარიშის ბაიტების რუკა და Sony scePad-ის სემანტიკა, ავტორი WujekFoliarz, PadForge-ის ეფექტებისა და აუდიოს ჩამწერების საფუძველი.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ყურსასმენის ბუდის ამოცნობით აუდიოს მარშრუტიზაციის მიდგომა, ავტორი SundayMoments, „ყურსასმენის ბუდის მიყოლის“ წყარო. წაკითხულია როგორც დოკუმენტაცია. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>ყურსასმენის ბუდის ამოცნობით აუდიოს მარშრუტიზაციის მიდგომა, ავტორი SundayMoments, „ყურსასმენის ბუდის მიყოლის“ წყარო. წაკითხულია როგორც დოკუმენტაცია.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-რეჟიმის QR კოდირება ვებ-კონტროლერის მისამართებისთვის, გადატანილი Nayuki-ს საცნობარო იმპლემენტაციიდან. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-რეჟიმის QR კოდირება ვებ-კონტროლერის მისამართებისთვის, გადატანილი Nayuki-ს საცნობარო იმპლემენტაციიდან.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>მაუსის ილუსტრაცია კლავიატურა + მაუსის ვიზუალიზაციაში, ავტორი Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>მაუსის ილუსტრაცია კლავიატურა + მაუსის ვიზუალიზაციაში, ავტორი Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>დაჭერის ძალაზე დამოკიდებული სიხშირე</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>გამეორების სიხშირე მიჰყვება არჩეული ანალოგური წყაროს დაჭერის ძალას. მსუბუქი დაჭერა მეორდება ნელი ინტერვალით, სრული დაჭერა ზემოთ მითითებული ინტერვალით, შუალედში კი სიხშირე შეუფერხებლად გადადის.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>ნელი ინტერვალი</value></data>
@@ -4007,7 +4176,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>კოდით დაკავშირება…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>პირდაპირ ვერ მივაღწიეთ მეორე მხარეს. სცადეთ დაკავშირება მისამართით VPN-ის გავლით.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>ამ კომპიუტერის კოდი</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>გაცვალეთ კოდები მეორე პირთან: ჩასვით მისი კოდი თქვენს დაკავშირების ველში, სანამ ის თქვენსას ჩასვამს, შემდეგ ორივემ დააჭირეთ დაკავშირებას. ეს პირდაპირ გზას ხსნის ინტერნეტში, VPN საჭირო არ არის. კოდი განახლდება, სანამ დისტანციური კავშირი მუშაობს.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>გაცვალეთ კოდები მეორე პირთან: ჩასვით მისი კოდი ველში „დაკავშირება მისამართით“, „მეტის“ ქვეშ, სანამ ის თქვენსას ჩასვამს, შემდეგ ორივემ დააჭირეთ „დაწყვილება / დაკავშირებას“. ეს პირდაპირ გზას ხსნის ინტერნეტში, VPN საჭირო არ არის. კოდი განახლდება, სანამ დისტანციური კავშირი მუშაობს.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>ამ ქსელს პირდაპირი კავშირების დამყარება არ შეუძლია (როგორც ჩანს, ეს მობილური ჰოტსპოტია ან carrier-grade NAT). გამოიყენეთ VPN, მაგალითად Tailscale, ან დაუკავშირდით სახლის ფართოზოლოვანი ინტერნეტიდან.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>ამ კომპიუტერის საჯარო მისამართი ვერ მოიძებნა (ქსელმა შეიძლება საჭირო ტრაფიკი დაბლოკოს). პირდაპირი კავშირები აქ არ იმუშავებს. გამოიყენეთ VPN ან იმავე ქსელში დაუკავშირდით მისამართით.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>კონტროლერის ბატარეა იცლება</value></data>
@@ -4018,6 +4187,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>შეტყობინება ამ დონეზე ან დაბლა</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>ასევე კონტროლერის ვიბრაცია</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>სატესტო შეტყობინება</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>შეტყობინების შემოწმება</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>მინიჭების შეთავაზებები</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>როცა მოწყობილობა უერთდება ვირტუალური კონტროლერის გვერდის გახსნისას, PadForge-ს შეუძლია შესთავაზოს მისი იქ მინიჭება, ხოლო მთავარს შეუძლია ახალ მოწყობილობას შესთავაზოს საკუთარი ვირტუალური კონტროლერი. არაფერი ენიჭება, სანამ შეთავაზებას არ მიიღებთ. კლავიატურები, მაუსები, ტაჩპედები და მედია კლავიშები არასოდეს შემოგთავაზდება.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>ახალი მოწყობილობების შეთავაზება გახსნილ ვირტუალურ კონტროლერზე</value></data>
@@ -4031,23 +4201,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ახლა არა</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>ნებისმიერი ფრაზა</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>ხმოვანი მაკროები</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>თქვით ფრაზა და ის დააჭერს ღილაკს, რომლის მიბმაც შეგიძლიათ. ყველა მიკროფონი, რომელსაც PadForge წვდება, უსმენს.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>ხმოვანი მაკროების მართვა</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>ხმოვანი მაკროების ჩართვა</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>რთავს მოსმენას. ჩართვისას თითოეული რეგისტრირებული ფრაზა ღილაკია, რომელიც მისი თქვენი თქმისას ირთვება. ამოცნობის მოდელი PadForge-შია ჩაშენებული და მთლიანად ოფლაინ მუშაობს.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>მოსმენა</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>„ყოველთვის“ მიკროფონს ღიად ტოვებს. „დაჭერით საუბარი“ უსმენს მხოლოდ მაშინ, როცა მიბმული ხმოვანი მოსმენის მაკრო დაჭერილია.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>მოსმენის ჩართვა ან გამორთვა, რეჟიმი, სიზუსტე</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>ყოველთვის</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>დაჭერით საუბარი</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>მინიმალური სიზუსტე</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>რამდენად დარწმუნებული უნდა იყოს ამომცნობი, სანამ ფრაზა ჩაირთვება. გაზარდეთ, თუ შემთხვევითი მეტყველება მაკროებს ააქტიურებს, შეამცირეთ, თუ თქვენი ფრაზები გამოტოვებულია.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>მეტყველების მოლოდინი. ამოცნობები აქ გამოჩნდება სიზუსტესთან ერთად.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>გაიგონა „{0}“ ({1:F2}). ჩაირთო.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>გაიგონა „{0}“ ({1:F2}). სიზუსტის ზღვარზე დაბალია ან საუბრის კლავიში აშვებულია.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>მოსმენა გამორთულია. ჩართეთ „მეტის“ ქვეშ.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>გაიგონა {0}, მიკროფონი: {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>გაიგონა {0}, მიკროფონი: {1}. ის სიზუსტის ზღვარზე დაბალი იყო, ან საუბრის კლავიში აშვებული იყო.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>ფრაზა</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>ფრაზა სათქმელად</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>სახელი</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>ღილაკის სახელი</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>რეგისტრაცია</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>რეგისტრირებული ფრაზები</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>დარეგისტრირდა „{0}“. თქვით, რომ მისი ღილაკი ჩაირთოს, და მიაბით მას მაკროები პედის გვერდზე.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ფრაზები</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>დარეგისტრირდა „{0}“. თქვით, რომ მისი ღილაკი ჩაირთოს, და მიაბით ის კონტროლერის გვერდზე.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>ხმოვანი მოსმენა (დაჭერისას)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>დაჭერით საუბარი ხმოვანი მაკროებისთვის: სანამ ეს მაკრო დაჭერილია, ამომცნობი უსმენს. ხმოვანი მაკროების მართვაში დააყენეთ მოსმენა „დაჭერით საუბარზე“.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>მიკროფონი</value></data>
@@ -4055,12 +4230,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ჰაპტიკის ძრავა და Razer-ის პროვაიდერი Razer Sensa-ს ხაზის ვიბრაციის უკან. HAR.dll და Interhaptics.RazerProvider.dll PadForge-შია ჩაშენებული, საჯარო Core SDK-დან უცვლელად. ავტორი: Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>ჰაპტიკის ძრავა და Razer-ის პროვაიდერი Razer Sensa-ს ხაზის ვიბრაციის უკან. HAR.dll და Interhaptics.RazerProvider.dll PadForge-შია ჩაშენებული, საჯარო Core SDK-დან უცვლელად. ავტორი: Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller-ის (2015) და Steam Controller-ის (2026) 3D მოდელები, Valve-ის გამოქვეყნებული STEP ფაილებიდან გადაყვანილი მეშებად. Copyright Valve Corporation. CC BY-NC-SA 4.0. PadForge არ არის დაკავშირებული Valve-თან და მის მიერ არ არის რეკომენდებული.</value>
+    <value>Steam Controller-ის (2015) და Steam Controller-ის (2026) 3D მოდელები, Valve-ის გამოქვეყნებული STEP ფაილებიდან გადაყვანილი მეშებად. Copyright Valve Corporation. PadForge არ არის დაკავშირებული Valve-თან და მის მიერ არ არის რეკომენდებული.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 რანტაიმი</value>
@@ -4077,7 +4252,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer Chroma REST API-ს ფრეიმინგის დადასტურება Razer-ის განათებისთვის, ავტორები: Adam Hellberg და Brandon Scott. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer Chroma REST API-ს ფრეიმინგის დადასტურება Razer-ის განათებისთვის, ავტორები: Adam Hellberg და Brandon Scott. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK-ის წყაროები</value>
   </data>
@@ -4086,19 +4261,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>UDP ტრეკერის დატაგრამა და FreeTrack 2.0-ის გაზიარებული მეხსიერების განლაგება თავის თვალთვალისთვის. ISC. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value>
+    <value>UDP ტრეკერის დატაგრამა და FreeTrack 2.0-ის გაზიარებული მეხსიერების განლაგება თავის თვალთვალისთვის. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Lenovo WMI-ის უტილიტის მოვლენის კლასი, რომელზეც პორტატული კომპიუტერის დამალული ღილაკის სწავლების ფუნქცია იწერება, და ამაღლებული IPC სერვერის მიდგომა გარე პროფილის მართვისთვის. GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value>
+    <value>Lenovo WMI-ის უტილიტის მოვლენის კლასი, რომელზეც პორტატული კომპიუტერის დამალული ღილაკის სწავლების ფუნქცია იწერება, და ამაღლებული IPC სერვერის მიდგომა გარე პროფილის მართვისთვის. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>პორტატული კომპიუტერის იდენტიფიკაციის სტრიქონები და მწარმოებლის ანგარიშების შენიშვნები, გადამოწმებული დამალული ღილაკის სწავლებისთვის. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value>
+    <value>პორტატული კომპიუტერის იდენტიფიკაციის სტრიქონები და მწარმოებლის ანგარიშების შენიშვნები, გადამოწმებული დამალული ღილაკის სწავლებისთვის. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook და WiimoteHook</value>
@@ -4112,11 +4287,11 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>WinMM-ის გამოძახებათა თანმიმდევრობა ძველი MIDI API-ს უკან: პორტის გახსნა, მასზე გაგზავნა და დახურვა. წაკითხულია PortMidi (MIT, ავტორები Ross Bencina, Phil Burk და Roger B. Dannenberg) და RtMidi (MIT-ის მსგავსი RtMidi ლიცენზია, ავტორი Gary P. Scavone) წყაროებიდან. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK-ის წყაროები</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key შეყვანის მოვლენის სიტყვის განლაგება SDK-ის LogitechGkeyLib.h-იდან მოდის. ბიბლიოთეკის ძებნის რიგი და გამორთვა Mumble-ის GKey.cpp-ს მიჰყვება (BSD 3-Clause). PadForge იტვირთავს ბიბლიოთეკის იმ ასლს, რომელიც მანქანაზეა, და Logitech-ის კოდს არ შეიცავს.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key შეყვანის მოვლენის სიტყვის განლაგება SDK-ის LogitechGkeyLib.h-იდან მოდის. ბიბლიოთეკის ძებნის რიგი და გამორთვა Mumble-ის GKey.cpp-ს მიჰყვება. PadForge იტვირთავს ბიბლიოთეკის იმ ასლს, რომელიც მანქანაზეა, და Logitech-ის კოდს არ შეიცავს.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup და AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box-ის წყაროები</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB ტრანსპორტი, ავტორი Vadym Hrynchyshyn, HIDMaestro-ს კომპოზიტური USB კონტროლერებისთვის. HIDMaestro-ს თან ახლავს მისი ხელმოწერილი ჰოსტ-კონტროლერის დრაივერი და აყენებს მას კომპოზიტური კონტროლერის პირველად შექმნისას. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB ტრანსპორტი, ავტორი Vadym Hrynchyshyn, HIDMaestro-ს კომპოზიტური USB კონტროლერებისთვის. HIDMaestro-ს თან ახლავს მისი ხელმოწერილი ჰოსტ-კონტროლერის დრაივერი და აყენებს მას კომპოზიტური კონტროლერის პირველად შექმნისას.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>აირჩიეთ ამ სლოტის რომელი ნახევრებია აქტიური. ნახევრის გამორთვა მალავს მის რიგებს და აჩერებს გაგზავნას, მიბმებს კი ინარჩუნებს, ამიტომ ხელახლა ჩართვისას ისინი აღდგება.</value>
   </data>
@@ -4184,13 +4359,15 @@
     <value>გაზიარებული მოწყობილობების მინიჭება</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>მინიჭებები: {0}</value>
+    <value>გაზიარებული მოწყობილობები: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>აირჩიეთ ამ კომპიუტერის მიერ გაზიარებული მოწყობილობა, შემდეგ აირჩიეთ მისი ვირტუალური კონტროლერები მეორე კომპიუტერზე.</value>
+    <value>აირჩიეთ მოწყობილობა, შემდეგ იმ კომპიუტერის კონტროლერები, რომლებიც მან უნდა მართოს.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>გაზიარებულია ამ კომპიუტერიდან</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>კონტროლერები: {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>პროფილი: {0}</value>
+    <value>აქტიური პროფილი: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>მეორე კომპიუტერზე დართეთ ამ კომპიუტერს დისტანციური მინიჭების ცვლილებები: დისტანციური კავშირი &gt; დაწყვილებული კომპიუტერები.</value>
@@ -4281,60 +4458,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS და CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>მეტყველების დეკოდერი, ტრანსდუსერების ბიბლიოთეკა და წრფივი ალგებრა libvosk.dll-ის შიგნით. Kaldi და OpenFst: Apache-2.0. OpenBLAS და CLAPACK: BSD 3-Clause, GotoBLAS2-ის ცალკე შეტყობინებებით OpenBLAS-ში და f2c რანტაიმისთვის.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>სტრატეგიისა და სამუშაო მაგიდის საწყისი პროფილების განლაგებები და ტურბო ქცევა, რომელსაც დაჭერის ძალაზე დამოკიდებული ტურბო თავს არიდებს. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>სტრატეგიისა და სამუშაო მაგიდის საწყისი პროფილების განლაგებები და ტურბო ქცევა, რომელსაც დაჭერის ძალაზე დამოკიდებული ტურბო თავს არიდებს. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ს მიერ Windows-ის დაუდოკუმენტებელი IPolicyConfig ინტერფეისის განლაგების წყარო, რომელსაც PadForge კონტროლერის აუდიო ენდფოინთის თავიდან ჩასართავად იყენებს. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ს მიერ Windows-ის დაუდოკუმენტებელი IPolicyConfig ინტერფეისის განლაგების წყარო, რომელსაც PadForge კონტროლერის აუდიო ენდფოინთის თავიდან ჩასართავად იყენებს. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>პარამეტრული EQ პროფილის ფორმატი, რომელსაც კონტროლერის „პარამეტრული EQ“ აიმპორტებს, ავტორი Jaakko Pasanen. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>პარამეტრული EQ პროფილის ფორმატი, რომელსაც კონტროლერის „პარამეტრული EQ“ აიმპორტებს, ავტორი Jaakko Pasanen. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ის ტექნიკები ტექსტური ბლოკის მაკროებისა და კლავიატურის აკორდის ჰუკის უკან: Unicode აკრეფა, პარტიების ლიმიტები, Win კლავიშის დამაფარავი კლავიში და მონიშნული ინექტირებული შეყვანა. GPL-2.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ის ტექნიკები ტექსტური ბლოკის მაკროებისა და კლავიატურის აკორდის ჰუკის უკან: Unicode აკრეფა, პარტიების ლიმიტები, Win კლავიშის დამაფარავი კლავიში და მონიშნული ინექტირებული შეყვანა. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU პროტოკოლის წყარო მოძრაობის სერვერის უკან, ავტორი v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU პროტოკოლის წყარო მოძრაობის სერვერის უკან, ავტორი v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ის Bluetooth გამომავალი ანგარიშის ფრეიმინგი, ავტორი Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ის Bluetooth გამომავალი ანგარიშის ფრეიმინგი, ავტორი Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ის ბატარეის დიაპაზონები, ტაჩპედის ჰაპტიკური იმპულსის დრო და ინტენსივობის საფეხურები და ტაჩპედის ფლინგის ქცევა. GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ის ბატარეის დიაპაზონები, ტაჩპედის ჰაპტიკური იმპულსის დრო და ინტენსივობის საფეხურები და ტაჩპედის ფლინგის ქცევა. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton-ის ფორკი)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ის აუდიოს ხმის დიაპაზონები, ნიშნიანი 8-ბიტიანი ჰაპტიკური სემპლები და გაერთიანებული Bluetooth ტრანსპორტის განლაგება. GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ის აუდიოს ხმის დიაპაზონები, ნიშნიანი 8-ბიტიანი ჰაპტიკური სემპლები და გაერთიანებული Bluetooth ტრანსპორტის განლაგება. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ის Bluetooth აუდიო ბუფერის სიგრძის ნაგულისხმევი და მინიმალური მნიშვნელობა, ავტორი awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ის Bluetooth აუდიო ბუფერის სიგრძის ნაგულისხმევი და მინიმალური მნიშვნელობა, ავტორი awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ის ადაპტური ტრიგერის პრესეტის მნიშვნელობები, ავტორი Mxater. წაკითხულია მხოლოდ ფაქტებისთვის.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU მოძრაობის ღერძების ნიშნები, გადამოწმებული მისი UDP დეკოდერით. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU მოძრაობის ღერძების ნიშნები, გადამოწმებული მისი UDP დეკოდერით. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ის ნაგულისხმევი პრესეტები კოსმოსური სიმულატორის საწყისი პროფილის უკან, ავტორი Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ის ნაგულისხმევი პრესეტები კოსმოსური სიმულატორის საწყისი პროფილის უკან, ავტორი Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ის დინამიკის ADPCM ნიბლების რიგი და SBC დეკოდერი, რომელმაც DualShock 4-ის ენკოდერი გადაამოწმა. LGPL-2.1-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, LGPL კოდი არ შედის.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ის დინამიკის ADPCM ნიბლების რიგი და SBC დეკოდერი, რომელმაც DualShock 4-ის ენკოდერი გადაამოწმა. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, LGPL კოდი არ შედის.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>დახრილობაკომპენსირებული კომპასის მიმართულება კომპასის იაუსთვის, C#-ზე გადატანილი, ავტორი x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>დახრილობაკომპენსირებული კომპასის მიმართულება კომპასის იაუსთვის, C#-ზე გადატანილი, ავტორი x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ბატარეის დაბალი დონის შეტყობინების წესი და ამოცნობის ვიბრაციის შაბლონი, ავტორი Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>ბატარეის დაბალი დონის შეტყობინების წესი და ამოცნობის ვიბრაციის შაბლონი, ავტორი Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4-ის, DualSense-ის, DualSense Edge-ის, Xbox Series-ისა და Switch 2 Pro Controller-ის 3D მოდელები, ნაყიდი CGTrader-ზე. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4-ის, DualSense-ის, DualSense Edge-ის, Xbox Series-ისა და Switch 2 Pro Controller-ის 3D მოდელები, ნაყიდი CGTrader-ზე.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ის 3D მოდელი, ნაყიდი CGTrader-ზე და ნაწილებად დაყოფილი მეშებით. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ის 3D მოდელი, ნაყიდი CGTrader-ზე და ნაწილებად დაყოფილი მეშებით.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>HID ფენა, რომელიც ჩაშენებულ SDL3.dll-შია გამოყენებული, ავტორები Alan Ott, Signal 11 Software. BSD-ის მსგავსი ლიცენზია.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>HID ფენა, რომელიც ჩაშენებულ SDL3.dll-შია გამოყენებული, ავტორები Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ხატულების წყაროები</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>ალის გლიფი Material Design Icons-იდან (Pictogrammers, Apache-2.0), ზოგადი გეიმპადის ხატულა Ionicons-იდან (Ionic, MIT), გაფართოებული ჯოისტიკი Jam Icons-იდან (Michael Amprimo, MIT) და Xbox-ისა და PlayStation-ის ხატულები SVG Repo-დან, თითოეული ხატულის გვერდზე მითითებული ლიცენზიით.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>რელეს პროტოკოლი დისტანციური კავშირის სარეზერვო გზის უკან, n0.computer-ის უფასო საჯარო რელეებთან ისე, როგორც FlexInput აკეთებს. iroh: MIT OR Apache-2.0. FlexInput: MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Joy-Con 2-ის ოპტიკური მაუსის მრიცხველები და გადატრიალების დელტები „მაუსის მოძრაობა X და Y“-ის უკან, ავტორები coffincolors, Frano და moutella. MIT. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Joy-Con 2-ის ოპტიკური მაუსის მრიცხველები და გადატრიალების დელტები „მაუსის მოძრაობა X და Y“-ის უკან, ავტორები coffincolors, Frano და moutella. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux-ის ბირთვის დრაივერები</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3-ის, Move-ის, DualSense-ის, Steam Deck-ისა და PID ძალისმიერი უკუკავშირის პროტოკოლის ფაქტები და ACPI WMI ბლოკის განლაგება. PadForge კლავიატურებისა და მაუსების დესკრიპტორებს hid-core-ის წესებით კითხულობს. GPL-2.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3-ის, Move-ის, DualSense-ის, Steam Deck-ისა და PID ძალისმიერი უკუკავშირის პროტოკოლის ფაქტები და ACPI WMI ბლოკის განლაგება. PadForge კლავიატურებისა და მაუსების დესკრიპტორებს hid-core-ის წესებით კითხულობს. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows-ის კონტროლერის შეყვანა, Xbox Elite-ის უკანა ღილაკების ჩათვლით. SDK ჩამტვირთველი SDL-შია მიბმული. MIT (SDK ჩამტვირთველი).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows-ის კონტროლერის შეყვანა, Xbox Elite-ის უკანა ღილაკების ჩათვლით. SDK ჩამტვირთველი SDL-შია მიბმული.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ რანტაიმი</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>C++ რანტაიმი, რომელიც SDL3.dll-ს სჭირდება (msvcp140.dll, vcruntime140.dll და x64 ბილდში vcruntime140_1.dll), PadForge-შია უცვლელად ჩაშენებული. Microsoft Visual Studio ლიცენზიის პირობები.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>C++ რანტაიმი, რომელიც SDL3.dll-ს სჭირდება (msvcp140.dll, vcruntime140.dll და x64 ბილდში vcruntime140_1.dll), PadForge-შია უცვლელად ჩაშენებული.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con-ისა და Pro Controller-ის HID, HD ვიბრაციისა და home LED-ის შენიშვნები, ავტორი dekuNukem, Switch 2-ისთვის ndeadly-ის switch2_controller_research-ით. წაკითხულია მხოლოდ პროტოკოლის ფაქტებისთვის.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ამაღლებული განახლების ზმნის მიდგომა აპლიკაციაში განახლების დამხმარეს უკან. LGPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, LGPL კოდი არ შედის.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ამაღლებული განახლების ზმნის მიდგომა აპლიკაციაში განახლების დამხმარეს უკან. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, LGPL კოდი არ შედის.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>WinSCard-ის სიგნატურები და მკითხველის მონიტორინგის გამოძახებათა თანმიმდევრობა NFC ტეგის შეყვანის უკან, ავტორი Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>WinSCard-ის სიგნატურები და მკითხველის მონიტორინგის გამოძახებათა თანმიმდევრობა NFC ტეგის შეყვანის უკან, ავტორი Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ის ანგარიშების განლაგება, სენსორის კალიბრაცია და EXT აქსესუარის ხელის ჩამორთმევა, ავტორი Thomas Perl, გადამოწმებულია moveonpc wiki-სთან. PadForge-ის იმპლემენტაცია ორიგინალური C#-ია. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>რბოლის ტელემეტრიის წყაროები</value></data>
@@ -4342,23 +4519,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ის Bluetooth დაწყვილებისა და ანგარიშების დოკუმენტაცია. GPL-2.0 და GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>STUN შეტყობინების განლაგება და XOR-MAPPED-ADDRESS-ის დეკოდირება დისტანციური კავშირის NAT-ის გავლის უკან, მისი C# წყაროდან გადმოტანილი, ავტორი Aaron Clauson. BSD 3-Clause, მისი ლიცენზიის მე-2 განყოფილების გამოყენების შეზღუდვით.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>STUN შეტყობინების განლაგება და XOR-MAPPED-ADDRESS-ის დეკოდირება დისტანციური კავშირის NAT-ის გავლის უკან, მისი C# წყაროდან გადმოტანილი, ავტორი Aaron Clauson. მისი ლიცენზია მე-2 განყოფილებაში გამოყენების შეზღუდვას ამატებს.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse-ის წყაროები</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion-ის ანგარიშის განლაგება, მოწყობილობების ცხრილი და ღერძის მასშტაბი, წაკითხულია hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse, ავტორი AndunHH (CC BY-NC-SA 4.0), და spacenavd (GPL-3.0-or-later) წყაროებიდან. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Bluetooth კავშირის გაწყვეტა მასპინძლის IOCTL-ით, დამალული XInput-ის გამორთვისა და შესაძლებლობების ორდინალები და DualSense-ის ტრიგერის ვიბრაციის ნაგულისხმევები. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Bluetooth კავშირის გაწყვეტა მასპინძლის IOCTL-ით, დამალული XInput-ის გამორთვისა და შესაძლებლობების ორდინალები და DualSense-ის ტრიგერის ვიბრაციის ნაგულისხმევები. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller-ის პროტოკოლის წყაროები</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>სვაიპის ჰაპტიკური ტკაცუნები, ანგარიში 0x42-ის ღილაკის ბიტები, გამორთვის ბრძანება და დონგლის რელე, წაკითხულია OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) და SteamlessController (MIT) წყაროებიდან. მხოლოდ დოკუმენტაცია, GPL ან AGPL კოდი არ შედის.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>სტიკის მკვდარი ზონები</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>ექვსი მკვდარი ზონის ფორმა, ავტორი Minimuino. GFDL-1.3-or-later და GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ის IR მაჩვენებლის ქცევა: წერტილთა წყვილის შუა წერტილი, ველები, სენსორ-ზოლის წანაცვლება, გასწორება და FPS Mouse-ის მრუდი, Ryochan7-ის, Suegrini-სა და Trihy-ის ფორკებით. GPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ის IR მაჩვენებლის ქცევა: წერტილთა წყვილის შუა წერტილი, ველები, სენსორ-ზოლის წანაცვლება, გასწორება და FPS Mouse-ის მრუდი, Ryochan7-ის, Suegrini-სა და Trihy-ის ფორკებით. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ის ადაპტური ტრიგერის ეფექტების განლაგებები და ზონების შეფუთვა, C#-ში გამეორებული, ავტორი John „Nielk1“ Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ის ადაპტური ტრიგერის ეფექტების განლაგებები და ზონების შეფუთვა, C#-ში გამეორებული, ავტორი John „Nielk1“ Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>DS4_REPORT_EX განლაგება ვირტუალური DualShock 4-ის შეყვანის ანგარიშის უკან, ავტორი Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>DS4_REPORT_EX განლაგება ვირტუალური DualShock 4-ის შეყვანის ანგარიშის უკან, ავტორი Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton-ის ფორკი)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ვირტუალური DualSense მიკროფონის 48 dB შესუსტების დიაპაზონი. GPL-3.0-or-later, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>ვირტუალური DualSense მიკროფონის 48 dB შესუსტების დიაპაზონი. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>საჭის პროტოკოლის წყაროები</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>ძალისმიერი უკუკავშირისა და RPM-ის გადართვის LED ანგარიშები Fanatec-ის, Thrustmaster-ისა და Logitech-ის საჭეებისთვის, წაკითხულია hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) და thrustmaster-led-linux (GPL-3.0) წყაროებიდან და გადამოწმებულია SimHub-ის LED დანამატთან, ავტორი prodigal.knight (MIT), და tm-bt-led-თან (MIT). მხოლოდ დოკუმენტაცია, GPL კოდი არ შედის.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O-ს წყაროები</value></data>
@@ -4380,19 +4557,19 @@
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>მატარებლის კონტროლერების წყაროები</value></data>
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox კონტროლერების წყაროები</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>ერთი INF თითო მოწყობილობაზე შეფუთვა და მოწყობილობების სია ავტომატური WinUSB მიბმის უკან, ავტორი Pete Batard. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>ერთი INF თითო მოწყობილობაზე შეფუთვა და მოწყობილობების სია ავტომატური WinUSB მიბმის უკან, ავტორი Pete Batard. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Bluetooth HID feature-ანგარიშის მოთხოვნა, რომელსაც PadForge PS Move აქსესუარის ამოსაცნობად აგზავნის, ავტორი Ricardo Quesada. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Bluetooth HID feature-ანგარიშის მოთხოვნა, რომელსაც PadForge PS Move აქსესუარის ამოსაცნობად აგზავნის, ავტორი Ricardo Quesada. მხოლოდ დოკუმენტაცია, კოდი არ შედის პროგრამაში.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Windows Mixed Reality-ის კონფიგურაციის გასაღები SDL ფორკში Monado-დან მოდის. Copyright 2021 Jan Schmidt. მოდის SDL3.dll-ის შიგნით. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Windows Mixed Reality-ის კონფიგურაციის გასაღები SDL ფორკში Monado-დან მოდის. Copyright 2021 Jan Schmidt. მოდის SDL3.dll-ის შიგნით.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Rift DK1-ის სენსორების შერწყმა SDL ფორკში OpenHMD-ისას გადმოაქვს. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. მოდის SDL3.dll-ის შიგნით. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Rift DK1-ის სენსორების შერწყმა SDL ფორკში OpenHMD-ისას გადმოაქვს. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. მოდის SDL3.dll-ის შიგნით.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote-ის დინამიკის პროტოკოლისა და IR კალიბრაციის დოკუმენტაცია. წაკითხულია მხოლოდ პროტოკოლის ფაქტებისთვის.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox-ის იმპულსური ტრიგერის 9-ბაიტიანი ანგარიში და მისი ჩაწერის გზა, ავტორი araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox-ის იმპულსური ტრიგერის 9-ბაიტიანი ანგარიში და მისი ჩაწერის გზა, ავტორი araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ის ჰაპტიკური PCM ფორმატი, ნიშნიანი 16-ბიტიანი 3 kHz-ზე, რომელმაც ნიშნიანი 8-ბიტიანი Bluetooth ჰაპტიკის კოდირება დაადგინა. AGPL-3.0, წაკითხულია მხოლოდ როგორც დოკუმენტაცია, AGPL კოდი არ შედის.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ის ჰაპტიკური PCM ფორმატი, ნიშნიანი 16-ბიტიანი 3 kHz-ზე, რომელმაც ნიშნიანი 8-ბიტიანი Bluetooth ჰაპტიკის კოდირება დაადგინა. წაკითხულია მხოლოდ როგორც დოკუმენტაცია, AGPL კოდი არ შედის.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>კლავიატურის ეკრანები</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>ხატავს Logitech-ის GamePanel კლავიატურებსა და Mad Catz S.T.R.I.K.E. 7-ში ჩაშენებულ ეკრანებზე და ტელეფონზე Logitech Arx Control-ის მეშვეობით: პროფილს, საათს, თამაშის დროს, წამზომს, სურათს ან DualShock 4-ის ან DualSense-ის შუქის ზოლის ფერს. თითოეულ ეკრანს მოწყობილობების გვერდზე თავისი რიგი აქვს, სადაც ირჩევთ, რას აჩვენებს. ეკრანის გვერდით მდებარე კლავიშები მისი რიგის ღილაკებია.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>კლავიატურის ეკრანების მართვა</value></data>
@@ -4460,6 +4637,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>გადაადგილება</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>გადაადგილება X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>გადაადგილება Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>აირჩიეთ, რას აჩვენებს. არაფერი იცვლება, სანამ არ შეინახავთ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: დაყენებულია {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>მიმდინარეობს Mad Catz-ის S.T.R.I.K.E. 7 SDK-ს ჩამოტვირთვა…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ახლა ტვირთავს {0}-ს.</value></data>
@@ -4599,8 +4777,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>{0} იკითხება გაზიარებული მეხსიერებიდან.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>ველოდებით Assetto Corsa-ს ან Assetto Corsa Competizione-ს.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>გადაიგზავნება პორტზე {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>საკუთარი ტელემეტრიის ფორმატები</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>აღწერეთ პაკეტები, რომლებსაც თამაში აგზავნის, ველ-ველად, და PadForge ამ თამაშსაც წაიკითხავს. თითოეული ცვლადი ხდება ღერძი „თამაშის ტელემეტრია“ რიგში და არხი საკუთარი გამოსახულების გამშვებებისთვის. აირჩიეთ ფორმატი სახელით სიაში „თამაში“, ან მიუთითეთ მას სიგრძე ან გასაღები, რომ „ავტომატურმა ამოცნობამ“ იპოვოს.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>საკუთარი ფორმატები</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>აღწერეთ იმ თამაშის ტელემეტრიის პაკეტები, რომელსაც PadForge არ იცნობს.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>ფორმატის დამატება</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>ფორმატი {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>სახელი</value></data>
@@ -4611,11 +4789,14 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>ამ ფორმატით იკითხება მხოლოდ ზუსტად ამდენი ბაიტის პაკეტები. 0-ის შემთხვევაში ნებისმიერი პაკეტი იკითხება, ხოლო „ავტომატური ამოცნობა“ ფორმატს არ ეხება, ამიტომ აირჩიეთ სახელით.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>აუცილებელი გასაღები</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>ამ ფორმატით იკითხება მხოლოდ JSON პაკეტები, რომლებშიც ეს გასაღებია. ცარიელის შემთხვევაში ნებისმიერი პაკეტი იკითხება, ხოლო „ავტომატური ამოცნობა“ ფორმატს არ ეხება, ამიტომ აირჩიეთ სახელით.</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>პაკეტი თითოეულ რიცხვს უფროსი ბაიტით იწყებს. კომპიუტერის თამაშები თითქმის ყოველთვის ჯერ უმცროს ბაიტს წერენ.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>ბაიტების რიგი</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian თითოეული რიცხვის ყველაზე უმნიშვნელო ბაიტს პირველად აყენებს, როგორც PC-ის თამაშები თითქმის ყოველთვის აკეთებენ. Big-Endian ყველაზე მნიშვნელოვან ბაიტს აყენებს პირველად.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>გადაცემის მნიშვნელობები</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>გადაცემის ველს უკუსვლისა და ნეიტრალისთვის საკუთარი რიცხვები აქვს, როგორიცაა Forza-ს 0 და 11. გამორთულის შემთხვევაში უარყოფითი გადაცემა უკუსვლაა, 0 კი ნეიტრალი.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>უკუსვლა</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>ნეიტრალი</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>აუცილებელი გასაღები JSON პაკეტებისთვის, გადაცემების მნიშვნელობები</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>ველები</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>თითოეული ველი კითხულობს რიცხვს თავისი წანაცვლებით ან JSON-ში თავისი გასაღებით (წერტილები შიგა ობიექტებში აღწევენ) და ამრავლებს მასშტაბზე. მასშტაბის შემდეგ სიჩქარე კმ/სთ-შია, პედლები 0-დან 1-მდეა, საჭე კი -1-დან (სრულად მარცხნივ) 1-მდე (სრულად მარჯვნივ). ცვლადის ღერძი მოსვენებისას მის მინიმუმს უდრის, სრულზე კი მაქსიმუმს.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>ჩაიწერება</value></data>
@@ -4695,4 +4876,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}, ტრიგერი: {1}, შეჩერებამდე</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>ტრიგერის ეფექტის შეჩერება: {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ამ მოწყობილობის განათების მართვა, განათების დაკავება</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>დაკავშირებული</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>არ არის დაკავშირებული</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>სხვა შეყვანები</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>მოწყობილობები ვერ მოიძებნა.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>არ გამოიყენება</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ბატარეა {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>ბატარეა {0}, იმუხტება</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>გამოიყენება</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>ახალი კონტროლერი</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>პარამეტრები</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>ყველა ღერძი, ღილაკი და სენსორი</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>დაჭერილია: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID-ები, გზა, შესაძლებლობები, ნედლი ჯოისტიკის რეჟიმის იძულება</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID-ები, გზა, შესაძლებლობები</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>დეტალების კოპირება</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>პროდუქტი</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>ტიპი</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>შესაძლებლობები</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>კავშირი</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>ბატარეა</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>გზა</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>სერიული ნომერი</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ფირმვერი</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>რევიზია</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>ასევე კონტროლერის ვიბრაცია, შეტყობინების გამეორება ყოველ, შეტყობინება სრულ დამუხტვაზე</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>საჭიროებს გადახედვას</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>იმპორტირდა სუფთად</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>პაროლის დაყენება</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>დისტანციური კავშირის განბლოკვა</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>პაროლი</value></data>
 </root>

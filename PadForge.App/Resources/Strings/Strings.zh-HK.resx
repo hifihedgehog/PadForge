@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>開</value></data>
   <data name="Common_Off" xml:space="preserve"><value>關</value></data>
   <data name="Common_More" xml:space="preserve"><value>更多</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>查看全部</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>已安裝</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未安裝</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>在 ARM64 上無法使用</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>正在停止…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>正在停止引擎…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>執行於 {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>執行中（{0} 個用戶端）</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>執行中，已連接 {0} 個</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>正在監聽 :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>連接埠 {0} 已被佔用</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>連接埠 {0} 存取被拒（請以系統管理員身分執行）</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>離線</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>未知</value></data>
   <data name="Common_Default" xml:space="preserve"><value>預設</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>瀏覽...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>瀏覽…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>繼續</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
   <data name="Common_Start" xml:space="preserve"><value>啟動</value></data>
@@ -137,7 +138,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上次執行時遺留的虛擬控制器。</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 部裝置</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>新增控制器</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>新增控制器</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>選擇遊戲應該看到的類型。一按下就會新增控制器。</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>輸入來源</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>稍後選擇</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>藍牙，{0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>常用</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>更多輸出</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>大多數 PC 遊戲預期的版面。</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>適用於有 PlayStation 提示、觸控板和燈條的遊戲。</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch 按鈕版面，適用於預期此版面的遊戲和模擬器。</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>由控制器操作按鍵、游標和捲動。</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>方向盤、飛行搖桿和自訂版面。</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>供音樂軟件使用的音符和控制變更。</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>透過 SteamVR 的虛擬 VR 控制器。</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>之後要更改類型，請按一下控制器上的類型標籤。只需按一下。</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services 沒有回應。請參閱「設定」中的卡片。</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>需要 SteamVR。請從「設定」中的卡片安裝。</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>已有一個 VR 控制器。一個就能驅動雙手。</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge 已有 {0} 個控制器，已達上限。請刪除一個才能新增。</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>設定檔</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>搜尋設定、裝置和設定檔</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>搜尋</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>結果</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} 移動</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} 開啟</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>隨處按 {0}</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>頁面</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>動作</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>說明文件</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>在「更多」下</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>在列的選項中</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>， </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge 中沒有符合「{0}」的項目。</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>在說明文件中搜尋「{0}」</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>刪除虛擬控制器</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>全熒幕</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
@@ -224,6 +260,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>已建立設定檔「{0}」。</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>已刪除設定檔「{0}」。</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>已更新設定檔「{0}」。</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>設定檔「{0}」現已儲存目前的設定。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>已載入設定檔：{0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>設定檔已還原為預設</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>已將「{0}」指派到虛擬控制器 {1}。</value></data>
@@ -249,29 +286,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>已切換設定檔：{0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>已切換設定檔：預設</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>預設</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>設定檔快捷鍵</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>快捷鍵</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>指派按鈕組合，以便從任何控制器切換設定檔。</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>新增快捷鍵</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>下一個設定檔</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>上一個設定檔</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>指定設定檔</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>切換視窗顯示</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>切換虛擬控制器停用狀態</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>顯示或隱藏 PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>開啟或關閉虛擬控制器</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>任何已連接的裝置</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>錄製</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>正在錄製...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>未選擇裝置。</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>插槽索引無效：{0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>無法指派裝置。</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>當</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>在</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>已將「{0}」指派到虛擬控制器 {1}。</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>已將「{0}」從虛擬控制器 {1} 取消指派。</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>裝置已隱藏。（可在設定檔案中還原。）</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>裝置已移除。</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>虛擬控制器 {0} 已刪除。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>主頁</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>已連接裝置：{0}。控制器：{1}。</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>遊戲會看到每個運行中的控制器。</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>引擎已開啟，沒有運行中的控制器。</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>啟動引擎，便可喚回你的控制器。</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>輪詢率</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>運行中的控制器</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>已連接的裝置</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>開啟或關閉此控制器</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>它會在引擎啟動時啟動。</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>它會在此裝置連接時啟動。</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>它會在其中一個裝置連接時啟動。</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>未連接</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>正在傳送輸入</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>電量 {0}，偏低</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>電量 {0}，充電中</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>輸入引擎</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>控制器</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中的附加功能</value></data>
@@ -281,31 +328,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>顯示 QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} 已連接，但未被使用。</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>使用</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>遊戲應該看到什麼？</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge 會把這個控制器變成你的遊戲預期的那一種。選擇一種便可開始，之後只需按一下就能更改。</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge 會把你的控制器變成你的遊戲預期的那一種。選擇一種便可開始，之後只需按一下就能更改。</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>用控制器玩鍵盤和滑鼠遊戲。</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>更多類型：[{0}、{1}、{2} 和 {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>按鈕、搖桿和扳機會在控制器建立時以 1:1 對應。</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>配對藍牙控制器</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>從現成的設定檔開始</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>已連接</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>藍牙，電量 {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>電量 {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>沒有已連接的控制器</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>請用電纜或藍牙連接一個。</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 個已對應，</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 個已連接</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>引擎執行中。按一下即可停止。</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>引擎閒置中。按一下即可停止。</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>引擎已停止。按一下即可啟動。</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>設定此控制器</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>點燃熔爐</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>連接控制器，選擇輸出類型，PadForge 便會把你的輸入鍛造成該類型的控制器。一段簡短的導覽會帶你認識各項功能的位置。</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>開始導覽</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>略過</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>下一步</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>完成</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>插槽</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>每個虛擬控制器都在這裡。火焰顯示哪些插槽正在鍛造。</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>輸入引擎</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>熔爐本身。切換火焰即可啟動或停止所有輸入輪詢。</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>虛擬控制器</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>選擇輸出類型，為插槽加入裝置，再按一下卡片來調整其對應。</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>選用功能都在這裡：手機網頁控制器、遠端連線、體感伺服器等等。</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>顯示歡迎導覽</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>插槽</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>裝置</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>輸入來源</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>新增裝置</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>藍牙</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>偏低</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>圖片</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>清單</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} 個輸出</value></data>
@@ -341,6 +388,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>同時按住成對按鍵時，遊戲會看到哪一個按下動作</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>保持搖桿小幅推動，讓遊戲持續顯示控制器提示</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>鍛造中</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>運行中：{0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>在清單中選擇巨集，或按「巨集」旁的 + 來建立一個。</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>原始</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>輸出</value></data>
@@ -348,6 +396,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>預覽</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>附加功能</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>選用功能。每項功能在你開啟之前都不會打擾你。</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} / {1} 已開啟</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>更多玩法</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>傳送到其他地方</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>熒幕顯示</value></data>
@@ -355,17 +404,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>用頭部追蹤器或 VR 頭戴裝置環顧四周。</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>對應駕駛遊戲的速度、踏板和檔位。</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>讓觀眾在聊天室打字就能按下按鈕。</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>與另一部電腦上的 PadForge 共用控制器。</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>在另一部電腦上操控虛擬控制器。</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>把控制器的體感數據傳送到模擬器。</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>接收遊戲模組發出的扳機和燈光效果。</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在你遊玩時顯示選單、層和設定檔切換。</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>為使用 PlayStation 觸控板的遊戲提供熒幕上的觸控面。</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>為 PlayStation 觸控板遊戲提供熒幕上的觸控面。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器或時鐘。</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>連接埠、未加密的 HTTP 位址、存取碼</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動重新連線、連接埠、身分保護、以位址連線</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR 執行階段、UDP 連接埠、個別軸範圍</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>連接埠、未加密的 HTTP、存取碼</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動重新連線、連接埠、配對身分、以位址連線</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>連接埠、DSX.exe 替身程式</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>連接埠、全速、自訂格式</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>連接埠、全速值、自訂格式</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>用頭部追蹤器或 VR 頭戴式裝置環顧四周，雙手拇指仍可留在按鈕上。</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>把賽車遊戲傳送的速度、踏板和檔位，像任何輸入一樣對應。</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>把控制器體感傳送給讀取 DSU 體感來源的模擬器。</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>接收為 DSX 編寫的遊戲模組所提供的自適應扳機和燈光效果。</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>在遊戲中開啟遙測輸出，並指向這部電腦和連接埠。</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>在模擬器中，以這部電腦的位址和此連接埠新增體感來源。</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>模組的效果會傳到每個具備相應硬件的控制器。</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭部姿態就是[裝置]頁上的「頭部追蹤器」列。請在控制器的「按鈕」區段把頭部偏航對應到搖桿軸。</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>這些數值就是[裝置]頁上的「遊戲遙測」列。請在控制器的「按鈕」區段對應它們，或用來觸發巨集。</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>選單本身的位置、大小和不透明度，請在控制器的[巨集與選單]區段中的選單上設定。</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>來源</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 以及任何傳送其 UDP 格式的程式</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>範圍</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>個別軸範圍。零表示沿用上方的範圍。</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge 不認識的遊戲</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>供會先尋找執行中 DSX 才傳送的模組使用</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>顯示內容</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>選單開啟時的環形、格狀或列狀介面</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>按住 Shift 層期間顯示該層的名稱</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>設定檔切換時顯示設定檔名稱</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>複製位址</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>放置在熒幕上</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>連接手機</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>讓手機連接到與這部電腦相同的網絡。</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>用手機相機掃描代碼。</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>選擇一個控制器版面。</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>手機</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>沒有已連接的手機。</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>連接的手機會顯示在此和「裝置」頁，你可在那裏把它指派到控制器。</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>你的頻道</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>觀眾可輸入的字詞</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>觀眾輸入像 !a 的字詞，PadForge 就會按下 !a 在「裝置」頁 Twitch 聊天室列上所對應的按鍵。可像任何裝置一樣把該列指派到控制器。</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>直播期間</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>直播用畫面</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>沒有已配對的電腦。</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>配對另一部電腦</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>附近沒有未配對的電腦。</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>在另一部電腦的 PadForge 開啟遠端連線。它會顯示在這裏，然後你在兩邊熒幕上比對一個短代碼。</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>外觀與位置</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>用右鍵或三隻手指拖曳即可移動。</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>重疊介面 {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>顯示</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>其他程式位於前台時，點擊會穿透重疊介面。PadForge 位於前台時，可用右鍵拖曳移動，並從角落調整大小。巨集可按編號顯示或隱藏重疊介面。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>體感伺服器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>提供陀螺儀和加速度計數據的 DSU/CemuHook Motion Provider 協定伺服器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>啟用 DSU 體感伺服器（CemuHook Motion Provider 協定）</value></data>
@@ -406,10 +497,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>沒有控制器</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>類型 {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>網頁控制器</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>為本地網絡內的瀏覽器提供遊戲控制器介面。</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>用手機或平板電腦當作控制器。手機上無需安裝任何東西。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>啟用網頁控制器伺服器</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>用手機或平板電腦的瀏覽器連接，即可當作遊戲控制器使用。</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>用手機相機掃描，或在手機瀏覽器開啟此位址：</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>未加密的 HTTP 位址</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>不使用 HTTPS 的第二個位址，供拒絕 PadForge 憑證的瀏覽器使用，亦供自備憑證的通道或反向代理使用。手機體感需要 HTTPS，因此在此位址上，只有經由提供 HTTPS 的通道或代理才可使用。</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>同時提供未加密的 HTTP</value></data>
@@ -419,30 +508,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>存取碼</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>未加密的位址必須使用此存取碼才能開啟，下方連結已包含此碼。產生新存取碼會中斷所有經未加密位址連接的用戶。</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>新存取碼</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>這部電腦上的位址：</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>震動（按一下以識別此裝置）</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>令此裝置震動，讓你分辨是哪一個。</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>遠端連線</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>與另一部電腦上已配對的 PadForge 共用控制器，可經你的網絡或互聯網進行。</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>在另一部電腦上操控虛擬控制器。完成一次配對後，受信任的電腦會自動重新連線。</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>啟用遠端連線伺服器</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>完成一次配對後，受信任的電腦會自動重新連線。已配對的電腦可以操控這部電腦的遊戲控制器輸出，除非你加以限制，否則亦可操控其鍵盤、滑鼠和巨集。</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>或以位址連線（進階）</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>已配對的電腦可以操控這部電腦的遊戲控制器輸出，除非你加以限制，否則亦可操控其鍵盤、滑鼠和巨集。</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>以位址連線</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>配對 / 連線</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>配對</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>連線</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>已連線</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>與遠端電腦配對</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>確認兩邊熒幕上的代碼相同，然後按「配對」。</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>與另一部電腦配對？</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>請確認兩邊熒幕顯示相同的代碼。</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>配對</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>拒絕</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>限制這部電腦只可作遊戲控制器輸入</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>只限遊戲控制器</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>身分</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>除非你限制它只可作遊戲控制器輸入，否則已配對的電腦可以向這部電腦傳送鍵盤、滑鼠和巨集輸入。</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>已配對的電腦可以操控這部電腦的遊戲控制器輸出，除非你加以限制，否則亦可操控其鍵盤、滑鼠和巨集。</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>已配對的電腦</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>你已為遠端連線配對的電腦。撤銷其中一部即可阻止它連線，之後它必須重新配對。</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>撤銷</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>全部撤銷</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>重新命名</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>觸控板重疊介面</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>顯示在熒幕上的觸控面，用於模擬 PlayStation 相容的觸控板。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>為 PlayStation 觸控板遊戲提供的熒幕觸控面，可用觸控熒幕或滑鼠操作。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>啟用觸控板重疊介面</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>重設位置</value></data>
@@ -451,6 +540,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>設定</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>一般</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>輸入</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>硬件</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>驅動程式</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>資料與私隱</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>搜尋設定</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>沒有符合「{0}」的設定。</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>外觀</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>選擇你喜歡的視覺主題。</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>主題</value></data>
@@ -459,6 +555,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>深色</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>輸入引擎</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>設定輪詢行為和背景處理。</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>硬件支援</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>啟動時自動執行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>視窗失去焦點時繼續輪詢</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>輪詢間隔（除非設定檔覆寫）</value></data>
@@ -515,16 +612,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge 已更新至 {0}。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>啟動時最小化</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>登入時啟動</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide 驅動程式</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>對遊戲隱藏實體裝置，以免出現重複輸入。</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>會對遊戲隱藏實體裝置，以免出現重複輸入。</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide 選項</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>對遊戲隱藏裝置、在兩次啟動之間保持裝置遮蔽、白名單應用程式</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>白名單應用程式</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>這些應用程式仍可看到已隱藏的裝置。PadForge 一律會自動列入白名單。</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>新增...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro 驅動程式</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>用戶模式虛擬 HID 控制器引擎。內嵌於 PadForge.App。首次建立虛擬控制器時自動安裝。在 v3 中取代 ViGEmBus 和 vJoy。</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge 會在你建立第一個虛擬控制器時安裝此驅動程式。解除安裝會先列出 HIDMaestro 在這部電腦上留下的內容，然後才移除。</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>建立虛擬控制器。</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>解除安裝 HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>這會從此電腦移除 HIDMaestro：其虛擬控制器、驅動程式、簽署憑證、登錄機碼和檔案。PadForge 會先停止其引擎。其他使用 HIDMaestro 的程式在下次啟動前會失去其驅動程式。PadForge 下次啟動虛擬控制器時會再次安裝。</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>同時移除由 usbip-win2 自己的安裝程式安裝的 usbip-win2</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>以下是會從這部電腦移除的內容。PadForge 會在下一個虛擬控制器建立時再次安裝 HIDMaestro。</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>同時移除 usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>舊版 PadForge 曾用 usbip-win2 的安裝程式安裝 usbip-win2。此選項會一併移除該安裝，包括其 USB 根集線器篩選器，除非有其他程式正在使用 usbip-win2。移除篩選器會重新啟動所有 USB 3 根集線器，因此 USB 裝置會短暫中斷連線。</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>正在讀取 HIDMaestro 在此電腦上留下的內容…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro 在此電腦上沒有留下任何可移除的內容。</value></data>
@@ -533,10 +633,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>保留：{0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>無法讀取：{0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>未移除：{0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 藍牙驅動程式</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>已移除</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>已保留</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>未讀取</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>未移除</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 藍牙</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>讓 PlayStation 3 控制器、PlayStation Move 和 Navigation 控制器可經藍牙連接。內嵌於 PadForge，首次配對其中一款時安裝。</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>透過藍牙連接 PlayStation 3 控制器。</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>解除安裝 BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>這會從此電腦移除 BthPS3：其驅動程式、它加入藍牙的篩選器，以及 PadForge 為配對而給 PlayStation 3 控制器安裝的 WinUSB 驅動程式。PadForge 會先停止其引擎，驅動程式卸載期間藍牙會暫時關閉。PlayStation 3、Move 和 Navigation 控制器之後只能透過 USB 使用。配對其中一款會再次安裝 BthPS3。</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>以下是會從這部電腦移除的內容。PlayStation 3、Move 和 Navigation 控制器之後只能透過 USB 使用，直到配對其中一款時再次安裝 BthPS3。</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>正在讀取 BthPS3 在此電腦上留下的內容…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 在此電腦上沒有留下任何可移除的內容。</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini 使用這些驅動程式，所以安裝它期間會保留。</value></data>
@@ -555,6 +660,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>藍牙沒有重新開啟。請在 Windows 設定中開啟。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>虛擬 MIDI 連接埠和 MIDI 輸入。Windows 11 25H2 由 2026 年 11 月下旬的更新起內置此 API。其他電腦會使用 PadForge 可代為安裝的 Windows MIDI Services 執行階段，或舊版 MIDI API。</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>虛擬 MIDI 連接埠和 MIDI 輸入。</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows 內置</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK 執行階段</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>無法使用</value></data>
@@ -572,6 +678,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>此操作會移除 Microsoft 的 Windows MIDI Services Runtime and Tools，連同 MIDI Settings 應用程式、MIDI 主控台和 PowerShell 模組。Microsoft 已不再提供下載，因此無法再次安裝。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>供虛擬 VR 控制器使用的 VR 執行階段。從 Valve 的伺服器安裝，無需 Steam 帳戶或 Steam 用戶端（數 GB）。</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>供虛擬 VR 控制器使用的 VR 執行階段。</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>安裝位置</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>解除安裝 SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>此操作會移除位於 {0}、不經 Steam 安裝的 SteamVR，並釋放數 GB 空間。在重新安裝 SteamVR 之前，VR 虛擬控制器將無法運作。</value></data>
@@ -584,7 +691,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>診斷</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>版本資訊，以及用於疑難排解的引擎事件記錄。</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>保留診斷記錄</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>持續把引擎事件寫入下方所示資料夾內的 diagnostics.log。重新啟動後仍會保持啟用。檔案達到 8 MB 時，會轉存為 diagnostics.log.old。</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>持續把引擎事件寫入記錄資料夾內的 diagnostics.log，「開啟記錄資料夾」可開啟該資料夾。重新啟動後仍會保持啟用。檔案達到 8 MB 時，會轉存為 diagnostics.log.old。</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>儲存快照</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>把最近的引擎事件儲存到新檔案。即使診斷記錄已關閉亦可使用。</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>開啟記錄資料夾</value></data>
@@ -597,53 +704,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>關於</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>控制器對應工具</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>已是最新版本。</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}。{1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>說明文件</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>檢查更新</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce 的現代分支，以 SDL3、WPF 和 .NET 10 重新打造</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge 可將任何輸入裝置變成任何虛擬控制器。遊戲控制器、操縱桿、鍵盤、滑鼠和觸控熒幕可對應到虛擬遊戲控制器(Xbox、PlayStation、飛行操縱桿、方向盤、第三方遊戲控制器)，或對應到鍵盤 + 滑鼠 / MIDI 輸出，而遊戲會將其視為真實硬件。由 HIDMaestro 和 Windows MIDI Services 驅動。它使用 SDL3 處理控制器輸入，使用 Windows Raw Input 處理鍵盤和滑鼠，使用 HidHide 按遊戲隱藏裝置，並提供現代化的 Fluent Design 介面，用於設定對應、死區、靈敏度曲線和力回饋。</value></data>
   <data name="About_Overview" xml:space="preserve"><value>概覽</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>採用技術</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>搜尋致謝</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>顯示全部致謝</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>顯示較少致謝</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>沒有符合「{0}」的致謝。</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>執行階段和 WPF 框架。MIT。</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>執行階段和 WPF 框架。</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>控制器輸入和列舉。zlib。</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>控制器輸入和列舉。</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>按裝置區分的鍵盤和滑鼠輸入</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>虛擬 MIDI 裝置輸出(Windows MIDI Services)。MIT。</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>虛擬 MIDI 裝置輸出(Windows MIDI Services)。</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 控制器視覺化顯示。MIT。</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 控制器視覺化顯示。</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>適用於 WPF 的 Fluent 2 設計系統。Wpf.Ui.dll 內含 VirtualizingWrapPanel、fluentui-system-icons 字型，以及來自 WPF 和 microsoft-ui-xaml 的程式碼。MIT。</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>適用於 WPF 的 Fluent 2 設計系統。Wpf.Ui.dll 內含 VirtualizingWrapPanel、fluentui-system-icons 字型，以及來自 WPF 和 microsoft-ui-xaml 的程式碼。</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用於資料繫結的 CommunityToolkit.Mvvm。MIT。</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>用於資料繫結的 CommunityToolkit.Mvvm。</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly 圖示套件</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>搖桿和扳機圖示衍生自 Zacksly 的「Xbox Series Button Icons and Controls」(CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>搖桿和扳機圖示衍生自 Zacksly 的「Xbox Series Button Icons and Controls」。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>觸控板形狀範本比對器(圓形 / 正方形 / 三角形 / Z / 剔號，以及自訂錄製的手勢)。根據 Magrofuoco、Vatavu、Anthony 和 Wobbrock 的 JavaScript 參考實作，以 C# 重新推導。BSD 3-Clause。</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>觸控板形狀範本比對器(圓形 / 正方形 / 三角形 / Z / 剔號，以及自訂錄製的手勢)。根據 Magrofuoco、Vatavu、Anthony 和 Wobbrock 的 JavaScript 參考實作，以 C# 重新推導。</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>鍵盤 + 滑鼠預覽所繪製鍵盤的按鍵位置和基礎層按鍵，由 QMK 的版面配置資料和 Keychron 的 QMK 分支產生。GPL-2.0-or-later。</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>鍵盤 + 滑鼠預覽所繪製鍵盤的按鍵位置和基礎層按鍵，由 QMK 的版面配置資料和 Keychron 的 QMK 分支產生。</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>角度邊際評分方法，在單指形狀上與點雲比對器並行運作。以原創 C# 實作 GestureSign 的 PointPatternAnalyzer 的評分概念。GPL-2.0，只作參考文件。</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>角度邊際評分方法，在單指形狀上與點雲比對器並行運作。以原創 C# 實作 GestureSign 的 PointPatternAnalyzer 的評分概念。只作參考文件。</value></data>
   <data name="About_License" xml:space="preserve"><value>授權</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>本軟件以 CC BY-NC-SA 4.0(共享創意 署名-非商業性-相同方式共享 4.0 國際)授權。AL2009man 的 Gamepad-Asset-Pack(MIT)提供 2D 控制器素材。TransposonY 的 GestureSign(GPL-2.0)只作為 AngularMarginRecognizer 的參考文件閱讀，並無隨附其任何程式碼。Handheld Companion(CC BY-NC-SA 4.0)提供經 PadForge 改編的 Xbox 360 和 Steam Deck 3D 模型。HelixToolkit、HidHide、HIDMaestro、Windows MIDI Services 和 WPF UI 以 MIT 授權條款授權。OpenXInput 只附有上游的商標免責聲明，並按相同條款原樣再散佈。Magrofuoco、Vatavu、Anthony 和 Wobbrock 的 $Q Recognizer(BSD 3-Clause)是觸控板 ShapeRecognizer 的參考依據，後者以 C# 重新推導。SDL3 以 zlib 授權條款授權。x360ce(LGPL-3.0-or-later)是 PadForge 分支所源自的原始程式碼庫。Igor Budzhak 的 Zergatul.Obs.InputOverlay(MIT)提供滑鼠圖像。</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK loader)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD-style</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio 授權條款</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK 條款</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>僅商標免責聲明</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>未列明條款</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>未公開</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>多項授權</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>用戶模式虛擬 HID 控制器引擎(取代 ViGEmBus 和 vJoy)。MIT。</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>用戶模式虛擬 HID 控制器引擎(取代 ViGEmBus 和 vJoy)。</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>可直接替換 XInput 的程式庫。把 PadForge 自身的虛擬控制器從其自身的檢視中篩除。附上游商標免責聲明，沒有開源授權。</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>可直接替換 XInput 的程式庫。把 PadForge 自身的虛擬控制器從其自身的檢視中篩除。</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>用於對遊戲隱藏實體裝置的核心驅動程式。MIT。</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>用於對遊戲隱藏實體裝置的核心驅動程式。</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>一份邀請</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>「我們談論基督，我們因基督而快樂，我們傳揚基督，我們預言基督，我們依照我們的預言記錄，好使我們的子孫知道去哪裡尋求罪的赦免。」</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>尼腓二書25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>願榮耀、尊貴和讚美歸於主耶穌基督，祂是一切真理與救恩的源頭，直到永永遠遠。</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>誠摯邀請你瀏覽 ComeUntoChrist.org，進一步認識祂和耶穌基督後期聖徒教會。</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>用於耳機輸出的 Bauer 立體聲轉雙耳交叉饋送。MIT。</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>用於耳機輸出的 Bauer 立體聲轉雙耳交叉饋送。</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>純 C# 的 Opus 編碼器，用於經藍牙驅動 DualSense 喇叭音訊。作者：Logan Stromberg。BSD 3-Clause。</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>純 C# 的 Opus 編碼器，用於經藍牙驅動 DualSense 喇叭音訊。作者：Logan Stromberg。</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga 的 DualSense 藍牙音訊研究：控制器喇叭串流所依賴的封包傳輸方式。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga 的 DualSense 藍牙音訊研究：控制器喇叭串流所依賴的封包傳輸方式。apps.sdore.me/SAxense。</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol 的藍牙喇叭方案：Opus 分幀和封包配置。亦感謝 TechAntohere 分享研究結果並協助測試。MIT。</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol 的藍牙喇叭方案：Opus 分幀和封包配置。亦感謝 TechAntohere 分享研究結果並協助測試。</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB 控制器音訊直通的參考實作。作者：WujekFoliarz。</value></data>
 
@@ -689,8 +835,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>字元延遲（毫秒）</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>每個輸入字元之間相隔的毫秒數，最多 1000。0 表示一次輸入全部文字。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>閒置時中斷連接</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>裝置詳細資料</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>詳細資料</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分鐘（0 = 永不）</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>以 USB 插線時中斷藍牙連接</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充電。當此控制器以藍牙連接期間回報正在充電時，會中斷藍牙連接，讓它充電時無需為無線電供電。任何 USB 電源均適用，包括插牆式充電器。若在插著線時重新開啟藍牙，便不會再中斷，直至下次拔線為止。</value></data>
@@ -714,10 +859,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 控制器查詢方向，讓跳舞毯上的左和右、或上和下，由第一步起便可同時生效。這些方向會以上、下、左、右箭嘴按鈕的形式傳入。韌體 3.34 在相反方向被按過後，亦會自行傳送這些按鈕，屆時 PadForge 便會停止查詢。在此之前，轉接器會略過它本身對控制器的大部分讀取。</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 壓力感應</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>玩家編號</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>轉接器會儲存編號，並以該玩家身分重新連接。Windows 其後會視之為新裝置，因此連接埠重新出現後，請再對應一次。</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>轉接器會儲存編號並重新連接，而 Windows 會視之為新裝置。</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>玩家</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>設定玩家</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast 熒幕</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>在你儲存之前，不會有任何內容傳到連接埠。</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>顯示</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>轉接器的圖片</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>設定檔名稱</value></data>
@@ -764,7 +910,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>正在把 Namco USIO 讀取為兩個太鼓。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>正在把 {0} 讀取為 iCade 控制器。</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>已重新把 {0} 讀取為鍵盤。</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>光線槍</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>預設瞄準範圍：X {0} 至 {1}，Y {2} 至 {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>已校準瞄準範圍：X {0} 至 {1}，Y {2} 至 {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>光線槍校準</value></data>
@@ -823,6 +968,36 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>所有鍵盤（合併）</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>所有滑鼠（合併）</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>裝置</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} 個已連接</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>搜尋裝置</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>全部</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>控制器</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>鍵盤與滑鼠</value></data>
+  <data name="Devices_Filter_Other" xml:space="preserve"><value>其他</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>已連接</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>未連接</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>其他輸入</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>沒有符合的裝置。</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>未使用</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>電量 {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>電量 {0}，充電中</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>使用於</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>新控制器</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>設定</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>每個軸、按鈕和感應器</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>已按下：{0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID、路徑、功能、強制使用原始操縱桿模式</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID、路徑、功能</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>複製詳細資料</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>產品</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>類型</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>功能</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>連接方式</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>電量</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>路徑</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>序號</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>韌體</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>修訂版</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>讀取 Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>讀取 Chatpad 和 uDraw 繪圖板</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>讀取遊戲控制器</value></data>
@@ -866,9 +1041,9 @@
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>要在 PadForge 保留此鍵盤嗎？</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>要在 PadForge 保留此滑鼠嗎？</value></data>
   <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>要在 PadForge 保留此觸控板嗎？</value></data>
-  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 輸入文字。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
-  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
-  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果這令你沒有可用的鍵盤或滑鼠，請不要做任何操作：倒數結束時，PadForge 會把它還給 Windows。</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 輸入文字。如果你並非有意這樣，請不要做任何操作，它會自動還原。</value></data>
+  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果你並非有意這樣，請不要做任何操作，它會自動還原。</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows 不會再以 {0} 移動指標。如果你並非有意這樣，請不要做任何操作，它會自動還原。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後還給 Windows</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>保留</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>立即還給 Windows</value></data>
@@ -884,28 +1059,21 @@
   <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>請安裝 HidHide，才能只在 PadForge 使用觸控板。</value></data>
   <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>請在設定中開啟「對遊戲隱藏裝置」，才能只在 PadForge 使用觸控板。</value></data>
   <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>請啟動引擎，才能只在 PadForge 使用觸控板。</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> 部在線 / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> 部合共</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此裝置及其設定</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>移除裝置</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} 將從裝置清單中移除，其已儲存的設定亦會一併清除。</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>把裝置拖曳到側邊欄的控制器卡片上即可指派。</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>產品：</value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>把裝置拖曳到側邊欄的控制器上即可指派。</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>提交裝置對應</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>虛擬控制器指派</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>切換指派</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>尚未有虛擬控制器插槽。請在儀表板建立一個，以指派此裝置。</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>輸入模式</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>把此裝置指派到這個控制器，或取消指派。</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>強制使用原始操縱桿模式（繞過遊戲控制器重新對應）</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>讀取原始 HID 索引，而非 SDL 的遊戲控制器對應。適用於 SDL 錯誤識別按鈕或軸配置的情況。</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>輸入隱藏</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>對遊戲隱藏（HidHide）</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>透過 HidHide 驅動程式，對其他應用程式完全隱藏此裝置。當 PadForge 隱藏一個已連接的 USB 控制器時，會在 Windows 中將它重新連接，因此原本已開啟它的程式會失去它。至於藍牙控制器，或與另一控制器共用接收器的控制器，在隱藏前已開啟它的程式仍可繼續使用，直至它下次連接為止。</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>安裝 HidHide 驅動程式即可啟用此選項</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>攔截已對應的輸入（掛鉤）</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>只抑制已對應的特定按鍵或按鈕，未對應的輸入則照常通過</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>原始輸入狀態</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>選擇裝置以查看其原始輸入。</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>測試輸入</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>選擇裝置以查看其設定並測試其輸入。</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>軸</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>按鈕</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>鍵盤</value></data>
@@ -1289,27 +1457,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>所選裝置沒有可供複製的軸、按鈕或 POV 帽。</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>要以 1:1 直通方式把 {0} 複製到此插槽嗎？配置會變成 {1} 個軸、{2} 個按鈕和 {3} 個 POV 帽，而此裝置在插槽上的各列會被其本身的輸入取代。</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>此裝置的輸入數量超出擴充控制器所能承載的上限。已對應 {1} 個軸中的 {0} 個、{3} 個按鈕中的 {2} 個，以及 {5} 個 POV 帽中的 {4} 個。其餘未有對應。</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>已匯入的設定檔</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>用戶匯入的 HIDMaestro 設定檔儲存在 PadForge.xml 內，並會出現在每個擴充插槽的設定檔下拉式選單中。可在下方從已連接的裝置擷取新設定檔，或匯出、刪除現有設定檔。</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>你已匯入的設定檔（{0}）</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>可供匯入的已連接裝置</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>控制器預設</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>為 PadForge 並未附帶的控制器新增預設，可來自檔案或控制器本身。</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>已匯入</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>從已連接的裝置匯入</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>匯出…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>刪除</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>關閉</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>匯出設定檔 JSON</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>刪除已匯入的設定檔？</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>要刪除「{0}」嗎？目前使用此設定檔的插槽會退回到合成的「自訂」項目。</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>刪除預設？</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>任何使用 {0} 的控制器都會退回到「自訂」項目。此操作無法復原。</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>已匯出到 {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>匯出失敗：{0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>已刪除「{0}」。</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>從檔案匯入…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>由檔案匯入…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>匯入設定檔 JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>已從 {0} 匯入。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>讀取失敗：{0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro 在 {1} 拒絕了此設定檔：{0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>此設定檔沒有 HID 描述元，因此無法據此建立控制器。</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>沒有匯入任何內容。{0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>重新整理</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>匯入</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（未命名的 HID 裝置）</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>找到 {0} 個 HID 介面。</value></data>
@@ -1595,6 +1761,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>中心</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>死區</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>中心偏移、死區形狀和各軸數值、各軸曲線、範圍、轉向</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>以數值表示的範圍、原始數值</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>範圍</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>「校準邊界」會量度搖桿可到達的邊緣，並把它重塑成完整的圓形。四個滑桿只會限制各個方向。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>正在取樣...</value></data>
@@ -2127,21 +2294,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>重設形狀比對閾值</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>錄製觸控板手勢</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>在下方的畫布上畫出手勢。對話方塊會擷取你放下的每一隻手指。所有手指離開畫布後，便會記錄樣本。若所用手指數目與之前的樣本不同，會重設已收集的樣本。</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>正在等待手指接觸畫布</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>錄製手勢</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>在控制器的觸控板上畫出形狀。它會成為你可以對應的輸入。</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>在此畫出手勢。</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>請在觸控板上繪畫。畫布會即時同步顯示。</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>正在從 {0} 的觸控板 {1} 錄製</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>此觸控板</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>觸控板無法使用。請以滑鼠或觸控操作下方的畫布。</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>觸控板無法使用。可在此以滑鼠、手寫筆或手指繪畫。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>繪畫中…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>已擷取所有樣本。請為手勢命名，然後按一下「儲存」。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>第 {0} 個樣本，共 {1} 個</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} 個樣本</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>要擷取的樣本數目</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準為 3 個。樣本越多，比對越穩健。樣本越少，錄製越快。</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>要擷取的樣本數</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準為 3 個。樣本越多，比對越準確，樣本越少，錄製越快。</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>名稱</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>再試一次</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>為此手勢命名</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>必須輸入名稱</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>名稱太長（最多 64 個字元）</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>名稱包含無效字元</value></data>
@@ -2464,41 +2632,63 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>設定檔</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>設定檔管理</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>為個別應用程式建立控制器設定檔，並按使用中的遊戲自動切換。</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>按前景應用程式自動切換設定檔</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>設定檔是一整套設定，包括控制器、對應和調校。</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>入門設定檔</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>適用於整個遊戲類型的現成設定檔。選擇一個，指派任何控制器，便可遊玩。</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>按遊戲切換設定檔</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>自動切換</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>目前在前台：{0}，未為它設定設定檔</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>目前在前台：{0}，會載入 {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>目前在前台：{0}，而且還沒有任何設定檔設定了遊戲</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>允許啟動器和指令碼進行外部控制</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>提供本機具名管道 PadForge.Control，讓 Playnite、LaunchBox 或指令碼可以啟用和停用設定檔。以這種方式啟用的設定檔會一直生效，直至指令碼將它釋放，或你自行切換設定檔為止。只限本機。</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>外部控制</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>使用中的設定檔：</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>沒有插槽</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自動切換：{0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>沒有控制器</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>放下以匯入設定檔</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>新增</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>把設定檔檔案放到這裏</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge、reWASD 或 DS4Windows</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>新增設定檔</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>另存為</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>把目前設定儲存到這裏</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>編輯</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>載入</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>尚未有設定檔設定了執行檔</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>內置</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>請先選擇設定檔。</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>內置的「預設」設定檔無法編輯或刪除。</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>刪除設定檔</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>要刪除「{0}」嗎？其已儲存的插槽和對應快照將會被銷毀。</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>未設定遊戲</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>為 {0} 載入</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>已設定給 {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>使用中</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} 的更多選項</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}：{1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>刪除 {0}？</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>設定檔及其自動切換規則會被移除。此操作無法復原。</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>設定檔會被移除。此操作無法復原。</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>要以目前的設定取代「{0}」中儲存的設定嗎？其名稱和遊戲會保留。</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>取代</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>另存為設定檔</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>編輯設定檔</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>設定檔名稱：</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>新增設定檔</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>名稱</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>新設定檔</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>執行檔（與前景視窗比對）：</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>會載入它的遊戲</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>輪詢率</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>預設（全域設定）</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>設定檔「{0}」生效期間被覆寫：{1} 毫秒</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>把每個插槽的對應和各裝置的設定，以一個名稱儲存為快照。已連結的執行檔會自動切換到此設定檔。</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>重新命名設定檔，並更新會啟用它的執行檔。已儲存的對應和設定維持不變。</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>把每個控制器的對應和設定，以一個名稱儲存。其中一款遊戲位於前台時，設定檔會自動載入。</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>其中一款遊戲位於前台時，設定檔會自動載入。</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>從沒有控制器開始。其中一款遊戲位於前台時，會自動載入。</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>新增執行中的遊戲</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>沒有其他程式開啟了視窗。</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>移除 {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>載入此設定檔時的輪詢率</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>複製設定自...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>選擇要複製其設定的裝置：</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>複製設定自…</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>把 {0} 的對應和各裝置調校，取代為另一個控制器的。</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>把另一個控制器的巨集加入到 {0}。</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>未指派，保留之前的對應</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>選擇要加入白名單的應用程式</value></data>
@@ -2540,6 +2730,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>範圍</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死區</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>按兩下可新增控制點。按右鍵可移除。拖曳可調整。</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>曲線編輯器</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳機軸</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2899,8 +3090,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>基礎層</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 層</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>設定基礎層</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>基礎層在 Shift 層彈出視窗和各層列中的名稱、圖示和顏色。</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>層名稱</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>啟動器輸入</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>名稱</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>按住的輸入</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>按下的輸入</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>下一層的輸入</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>上一層的輸入</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>加上輸入</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>選擇輸入</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>未對應的控制項</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>穿透到基礎層</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>不執行任何動作</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>模式、輸入類型、時間和顏色</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>按住</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切換</value></data>
@@ -2927,14 +3129,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>勾選時，此層的這個目標會保持關閉，而不會退回使用基礎層的列。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>延遲</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>輸入必須按住多久，層才會有反應。在「按住」模式下，這是防彈跳時間。在「切換」、「鎖定」和「黏滯」模式下，它會把切換變成長按：按住的時間超過此值時，層會切換一次，較短的輕按則沒有作用。0 表示即時反應。</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>組合鍵的第二個輸入</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸閾值</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>循環切換層</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>只在此層時</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>任何層</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>只有所選的層生效時，輸入才會計算。檢查會在輸入按下的一刻進行，並在整個按下過程中維持不變。「任何層」表示輸入一律計算。請在每一層上自行設定該層的離開方式，可使用另一個啟動器或「切換層」巨集。</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>下一個按鈕</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>上一個按鈕</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>首尾循環</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>開啟時，越過最後一層會回到第一層，越過第一層則回到最後一層。關閉時，循環位置會停在兩端。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>包括基礎層</value></data>
@@ -2946,18 +3145,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>按下單一按鈕（或 POV 方向）便會令層生效。</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>必須同時按住兩個按鈕才會生效。支援跨裝置的組合鍵。</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>類比軸超過閾值期間生效。</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>按住啟動器期間，層會保持生效。放開便會解除。</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>按住其輸入期間，此層的對應會取代基礎層的對應。</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>輕按一下生效。再輕按一下解除。層會在多次按下之間保持生效。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>按一下便鎖定並保持此層。再按一下便解除並返回基礎層。按另一個「鎖定」按鈕則會切換到它本身的層。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>每按一下便在有序的層清單中前進一步。到盡頭會返回基礎層。</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>輕按一下生效。下一次按下已對應的按鈕會在此層觸發，然後自動解除。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>本身沒有按鈕。把它加入「循環」控制項的佇列，循環便會到達此層。</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未對應的目標沿用基礎層</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>放開時觸發</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>等到按鈕放開後，此啟動器才會觸發。若設定了按住延遲，按下的時間必須達到該長度，放開才會計算。</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同時觸發啟動器本身的對應</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>勾選時，啟動器按鈕仍會驅動以它為來源的任何列。按一下既會切換層，亦會觸發該按鈕本身的對應。取消勾選時（預設），啟動器的按下動作只會用於切換層。</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>勾選時，此層沒有明確對應的目標會退回使用基礎層。取消勾選時（預設），此層會完全取代基礎層，未對應的目標會保持關閉。</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>選擇「穿透到基礎層」時，此層沒有對應的控制項會保留其基礎層的對應。選擇「不執行任何動作」時，此層會完全取代基礎層，這些控制項會保持關閉。</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>旋轉範圍</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>設定旋轉範圍</value></data>
@@ -3160,15 +3358,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所選裝置沒有內置喇叭。此控制器的巨集聲音會在系統預設輸出上播放。</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重設聲音輸出</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)製作的瀏覽器版 DualSense 測試套件：PadForge 由虛擬控制器轉送到實體控制器的 Sony 功能報告 CRC 封裝格式和韌體測試指令，均以此為參考。MIT。</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)製作的瀏覽器版 DualSense 測試套件：PadForge 由虛擬控制器轉送到實體控制器的 Sony 功能報告 CRC 封裝格式和韌體測試指令，均以此為參考。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius 的 DualShock 4 藍牙音訊參考：PadForge 的 DS4 喇叭串流所用的報告封裝格式。SBC 編碼器是根據藍牙 A2DP 規格編寫的原創 C# 實作。另參考了 khallmark 的 ds4mac 的協定文件。MIT。</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius 的 DualShock 4 藍牙音訊參考：PadForge 的 DS4 喇叭串流所用的報告封裝格式。SBC 編碼器是根據藍牙 A2DP 規格編寫的原創 C# 實作。另參考了 khallmark 的 ds4mac 的協定文件。</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>匯出…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>匯入…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>已匯出設定檔「{0}」。</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>已匯入設定檔「{0}」（已登記 {1} 個聲音套件）。</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>該檔案並非可讀取的 PadForge 設定檔。</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>從 {0} 選擇聲音</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>聲音套件</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>供聲音巨集使用的聲音 zip 檔</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>聲音套件是一個副檔名為 .pfsounds、內含聲音的 zip 檔案。在這裡加入後，便可在任何聲音巨集中選用其中的聲音。PadForge 會直接從檔案讀取，不會把它解壓縮。把套件放在 PadForge.exe 旁邊，便可保持可攜。</value></data>
@@ -3213,22 +3410,18 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>身分保護</value>
+    <value>配對身分</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>這部電腦的配對身分的儲存方式。選擇可攜模式，便可用 USB 手指把配對資料帶到不同電腦。</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>為這部電腦命名</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>附近的電腦（未配對）</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>重設</value>
   </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>遠端連線密碼</value>
-  </data>
-  <data name="RemoteLink_PasswordConfirm" xml:space="preserve"><value>確認密碼</value></data>
+  <data name="RemoteLink_PasswordConfirm" xml:space="preserve"><value>再輸入一次</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>設定密碼</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>解鎖遠端連線</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>密碼</value></data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge 觸控板</value>
   </data>
@@ -3259,9 +3452,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>已配對的電腦</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>在線</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>離線</value>
   </data>
@@ -3278,7 +3468,7 @@
     <value>請先解鎖目前的身分，才可更改其保護方式。</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>設定密碼以保護你的可攜身分。你需要在每部電腦上輸入此密碼來解鎖遠端連線。</value>
+    <value>密碼用來保護這部電腦的配對身分。</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>身分保護已更新。</value>
@@ -3298,7 +3488,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>正在連線到 {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>自動重新連線</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>自動重連</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>正在監聽 {0}</value>
   </data>
@@ -3317,65 +3507,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>電腦 {0} 已連線，{1} 部裝置</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>從已加入的套件選擇聲音，或瀏覽檔案。</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>瀏覽檔案…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>選擇聲音</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>聲音會透過控制器的喇叭播放，若沒有則透過電腦的喇叭播放。</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>使用聲音</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>播放 {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>用於控制器音訊鏡像和音訊低音扳機震動的 WASAPI 迴路擷取。PadForge 並無隨附的 NAudio.Midi，亦是以下各項的參考依據：舊版 MIDI API 的 WinMM 宣告和連接埠呼叫次序、力度為 0 的 Note On 即 Note Off 這項規則，以及延音等開關式控制器。作者：Mark Heath。MIT。</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>用於控制器音訊鏡像和音訊低音扳機震動的 WASAPI 迴路擷取。PadForge 並無隨附的 NAudio.Midi，亦是以下各項的參考依據：舊版 MIDI API 的 WinMM 宣告和連接埠呼叫次序、力度為 0 的 Note On 即 Note Off 這項規則，以及延音等開關式控制器。作者：Mark Heath。</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>用來聆聽語音巨集短語的離線語音辨識器。作者：Alpha Cephei。模型隨附於 PadForge 內。Apache-2.0。</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>用來聆聽語音巨集短語的離線語音辨識器。作者：Alpha Cephei。模型隨附於 PadForge 內。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>用於遠端連線配對和傳輸的加密技術(X25519、Ed25519、ChaCha20-Poly1305)。採用 Bouncy Castle Licence，屬 MIT 式授權。</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>用於遠端連線配對和傳輸的加密技術(X25519、Ed25519、ChaCha20-Poly1305)。</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>隨附的藍牙設定檔和 PSM 篩選驅動程式，由 nefarius 編寫，讓 DualShock 3 可經共用的無線電連接。配對時在應用程式內安裝。BSD 3-Clause。</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>隨附的藍牙設定檔和 PSM 篩選驅動程式，由 nefarius 編寫，讓 DualShock 3 可經共用的無線電連接。配對時在應用程式內安裝。</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer 的 DualShock 3 協定參考：sixpair 功能報告、藍牙輸出報告範本、啟用次序、電量對照表。PadForge 的實作是原創 C#。HIDMaestro 的「DualShock 3 (SIXAXIS): Full」控制器使用 DsHidMini 的 SXS 模式報告描述元。BSD 3-Clause。</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer 的 DualShock 3 協定參考：sixpair 功能報告、藍牙輸出報告範本、啟用次序、電量對照表。PadForge 的實作是原創 C#。HIDMaestro 的「DualShock 3 (SIXAXIS): Full」控制器使用 DsHidMini 的 SXS 模式報告描述元。</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>驅動程式存放區安裝、藍牙類別篩選器登錄，以及 USB 連接埠重新啟動，用於應用程式內的 BthPS3 設定和釋放已隱藏的 USB 控制器，由 nefarius 編寫。MIT。</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>驅動程式存放區安裝、藍牙類別篩選器登錄，以及 USB 連接埠重新啟動，用於應用程式內的 BthPS3 設定和釋放已隱藏的 USB 控制器，由 nefarius 編寫。</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>為 Switch 2 Pro 有線驅動程式，以及 PadForge 綁定到 WinUSB 的控制器提供 USB 存取，以 libusb-1.0.dll 形式隨附。LGPL-2.1-or-later。</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>為 Switch 2 Pro 有線驅動程式，以及 PadForge 綁定到 WinUSB 的控制器提供 USB 存取，以 libusb-1.0.dll 形式隨附。</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>手機網頁控制器中的觸控搖桿，由 Yoann Moinet 編寫。MIT。</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>手機網頁控制器中的觸控搖桿，由 Yoann Moinet 編寫。</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>社群遊戲控制器對應資料庫，PadForge 隨附的對應以它為基礎擴充。zlib。</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>社群遊戲控制器對應資料庫，PadForge 隨附的對應以它為基礎擴充。</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide 按鈕 LED 研究：XboxGIP 封包配置和探索次序，由 Leclowndu93150 提供。MIT。</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide 按鈕 LED 研究：XboxGIP 封包配置和探索次序，由 Leclowndu93150 提供。</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>捲繞角度轉向和傾斜的數學運算，由 JibbSmart 和 Electronicks 編寫。MIT。</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>捲繞角度轉向和傾斜的數學運算，由 JibbSmart 和 Electronicks 編寫。</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>玩家空間和世界空間的陀螺儀轉換，由 JibbSmart 編寫。MIT。</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>玩家空間和世界空間的陀螺儀轉換，由 JibbSmart 編寫。</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller(2015)的觸覺報告配置和音符週期運算，由 Pila 和 Roboron3042 編寫。BSD 3-Clause。</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller(2015)的觸覺報告配置和音符週期運算，由 Pila 和 Roboron3042 編寫。</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 和 Steam Deck 的 LFO 音調觸覺配置，由 Pila、Crazy 和 AAGaming 編寫。BSD 3-Clause。</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 和 Steam Deck 的 LFO 音調觸覺配置，由 Pila、Crazy 和 AAGaming 編寫。</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap 模式的 SOCD 清理語意，由 valignatev 編寫。MIT。</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap 模式的 SOCD 清理語意，由 valignatev 編寫。</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam 網絡用戶端，經匿名工作階段擷取 Steam 工作坊的控制器設定，由 Ryan Stecker 和 SteamRE Team 編寫。LGPL-2.1-or-later(license.txt)、LGPL-2.1-only(NuGet)。</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 用於 Steam 傳輸協定的 Protocol Buffers 序列化程式，由 Marc Gravell 編寫。Apache-2.0。</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 用於 Steam 傳輸協定的 Protocol Buffers 序列化程式，由 Marc Gravell 編寫。</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 用於 Steam depot 區塊的 Zstandard 解壓縮，是 Oleg Stepanischev 把 zstd 程式庫移植到 C# 的版本。MIT。</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 用於 Steam depot 區塊的 Zstandard 解壓縮，是 Oleg Stepanischev 把 zstd 程式庫移植到 C# 的版本。</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>作為以下各項的參考文件：Wii 配對程序、喇叭 ADPCM、Wii 遙控器的橫握和直立方向、搖桿限位模型及其儲存格式，以及陀螺儀軸的慣例。GPL-2.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>作為以下各項的參考文件：Wii 配對程序、喇叭 ADPCM、Wii 遙控器的橫握和直立方向、搖桿限位模型及其儲存格式，以及陀螺儀軸的慣例。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock 行為的參考文件：閒置時中斷連接、觸控板邊界、電量解碼、藍牙中斷連接 IOCTL、DualSense 震動模式位元、陀螺儀抖動曲線、搖桿模擬滑鼠的比例，以及藍牙輸出報告的 CRC 種子。其虛擬鍵盤的按鍵表為 PadForge 的按鍵表提供了參考。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock 行為的參考文件：閒置時中斷連接、觸控板邊界、電量解碼、藍牙中斷連接 IOCTL、DualSense 震動模式位元、陀螺儀抖動曲線、搖桿模擬滑鼠的比例，以及藍牙輸出報告的 CRC 種子。其虛擬鍵盤的按鍵表為 PadForge 的按鍵表提供了參考。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>可印證 xbledctl 的 GIP LED 指令文件。GPL-2.0-or-later，只作參考文件。</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>可印證 xbledctl 的 GIP LED 指令文件。只作參考文件。</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii 紅外線鏡頭和平衡板行為的參考文件，由 Brian Peek 編寫。MIT。</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii 紅外線鏡頭和平衡板行為的參考文件，由 Brian Peek 編寫。</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD 震動傳輸格式的參考文件，由 Sergey004 編寫。只用於了解協定的事實。</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>配對</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>配對控制器</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>配對控制器</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>配對 Wii 遙控器</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>打開電池蓋，然後按下紅色的 SYNC 按鈕。</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>在指示燈閃爍期間，請讓遙控器靠近這部電腦。</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>配對 DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>配對 Move 或 Navigation 控制器</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>新增序列控制器</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>新增 DJI 遙控器</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>控制器系列</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>打開電池蓋，然後按下紅色的 SYNC 按鈕。請讓 PadForge 繼續搜尋，直至你的控制器出現為止。</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>臨時配對（按住 1 和 2）</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>配對</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>搜尋中。請現在按下 SYNC 按鈕。</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>正在搜尋遙控器。</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>已找到的控制器</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>尚未找到控制器。請確定藍色指示燈正在閃爍。</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>已配對 {0}。它會在你的裝置清單中出現。</value></data>
@@ -3385,7 +3580,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>完成</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve 的 OpenVR 用戶端 API(BSD 3-Clause)：把 VR 頭戴式裝置和體感控制器用作輸入來源。原生執行階段會從你自己安裝的 SteamVR 載入。</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve 的 OpenVR 用戶端 API：把 VR 頭戴式裝置和體感控制器用作輸入來源。原生執行階段會從你自己安裝的 SteamVR 載入。</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>執行中</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>執行中，驅動程式已連接</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>執行中，控制器已啟用</value></data>
@@ -3424,13 +3619,12 @@
   <data name="Common_Close" xml:space="preserve"><value>關閉</value></data>
   <data name="Common_ResizePanes" xml:space="preserve"><value>調整窗格大小</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC 標籤</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>登記標籤</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>把標籤輕觸讀取器，以擷取其 UID。</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID：</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>（等待中）</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>名稱：</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>把標籤輕觸讀取器並為它命名。它會成為你可以對應的按鈕。</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>把標籤輕觸讀取器。</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>名稱</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>為此標籤命名</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>登記</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>已登記的標籤</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>已登記</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>偵測不到 NFC 讀取器。請連接 PC/SC 讀取器，然後重新開啟。</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>已擷取標籤。請輸入名稱，然後按一下「登記」。輕觸另一個標籤可取而代之。</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>已登記「{0}」。輕觸另一個標籤可繼續新增。</value></data>
@@ -3508,29 +3702,29 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack 共用記憶體亦無法開啟。</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>學習 / 管理隱藏按鈕</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>隱藏按鈕</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>學習按鈕</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>按指示把隱藏按鈕按一下。PadForge 會監察這部機器上的鍵盤、滑鼠、所有廠商報告和所有系統事件，並記錄該按鈕所改變的一項。</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>機器：</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>開始學習</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>教 PadForge 認識 Windows 不會顯示為控制器的按鈕。依指示按下它。</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>請勿觸碰。正在讀取閒置狀態…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>現在請按下隱藏按鈕，然後放開…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>請稍候…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>偵測不到任何變化。請在醒目提示的時段內按下按鈕，然後再試一次。</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>現在請按住按鈕。</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>請放開按鈕。</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>第 {0} 步，共 {1} 步</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>沒有偵測到任何變化。請選擇「重新開始」，然後在指示時按住按鈕。</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>已監察 {0} 個廠商報告和 {1} 個事件類別。按下期間：{2} 個報告、{3} 個事件。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>已擷取按鈕。請輸入名稱，然後按一下「登記」。</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>來源：</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>名稱：</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>來源</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>名稱</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>為此按鈕命名</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>登記</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>已學習的按鈕</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>重新開始</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>尚未學習任何按鈕。</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>已登記「{0}」。再次開始即可學習另一個。</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>在 {0} 上學習到的</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>已登記「{0}」。選擇「重新開始」即可學習另一個。</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>按鍵：{0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>隱藏按鈕已關閉。請先在「設定」中啟用「掌上電腦按鈕」。</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} 正在執行。在你把它停止之前，它仍會對這些按鈕作出反應。</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>匯出…</value></data>
   <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>對應按鍵燈光</value></data>
   <data name="MapKeyLights_Title" xml:space="preserve"><value>對應按鍵燈光</value></data>
-  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge 會逐個點亮按鍵燈光。按下亮燈位置下方的按鍵，即可為該燈光命名。名稱會套用於此型號的所有鍵盤，讓「按鍵顏色」和按鍵顏色巨集能對準正確的按鍵。</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge 一次只點亮一個燈光。按下它下方的按鍵。</value></data>
   <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>裝置：</value></data>
   <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>已命名按鍵：{0} / {1}</value></data>
   <data name="MapKeyLights_NoLights" xml:space="preserve"><value>此裝置沒有 PadForge 可學習名稱的按鍵燈光。</value></data>
@@ -3544,7 +3738,7 @@
   <data name="MapKeyLights_Forget" xml:space="preserve"><value>忘記</value></data>
   <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>移除已亮起燈光所學習的名稱。</value></data>
   <data name="MapKeyLights_Stop" xml:space="preserve"><value>停止</value></data>
-  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>若沒有燈光亮起，請在 Windows 設定中關閉該裝置的動態光源，或關閉其專用燈光軟件，然後再按「開始」。</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>沒有燈光亮起？Windows 動態燈光效果或製造商的軟件可能正在佔用該裝置。</value></data>
   <data name="MapKeyLights_Export" xml:space="preserve"><value>匯出…</value></data>
   <data name="MapKeyLights_Import" xml:space="preserve"><value>匯入…</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>全部忘記</value></data>
@@ -3697,6 +3891,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>社群配置</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>瀏覽社群製作的 Steam Input 控制器配置，並把它們轉換為 PadForge 設定檔。只有在你搜尋、開啟配置，或檢查已匯入配置有否更新時，PadForge 才會直接連接 Steam 的伺服器。它會傳送你的搜尋文字、所涉及的遊戲、配置和作者的 ID，以及 PadForge 的版本。匿名 Steam 登入亦會傳送你的 Windows 版本，以及一個由 Windows 安裝 ID、網絡介面卡位址和開機磁碟序號的雜湊值組成的機器 ID。沒有遙測，沒有第三方服務，無需 Steam 帳戶。</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge 只會在你搜尋、開啟配置或檢查已匯入配置的更新時連接 Steam 的伺服器。沒有遙測，也不需要 Steam 帳戶。</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>傳送內容</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>啟用社群配置</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>顯示舊版工作坊配置</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>部分較舊的配置在 Steam 的 CDN 上沒有可下載的檔案。PadForge 會以「舊版」徽章列出這些配置，並在你訂閱後讀取 Steam 所保存的複本。在此之前，它會提供在 Steam 工作坊開啟該配置的選項。</value></data>
@@ -3704,18 +3900,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>檢查已匯入的設定檔有否更新</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>已清除工作坊快取</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>瀏覽社群配置</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>瀏覽社群配置</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>設定檔 · Steam 工作坊</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>取得設定檔</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>從現成的設定檔、社群配置或其他工具的檔案開始。</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>入門</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>社群</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>匯入檔案</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>儲存後會加入一個可供編輯的普通設定檔。</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>熔爐尚未生火</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>瀏覽社群配置時，PadForge 會直接連接 Steam，但只限你搜尋的時候，啟動時絕不會連接。</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>啟用社群配置</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>搜尋遊戲</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} 款遊戲</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>遊戲</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>在 Steam 商店找不到遊戲。</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>正在搜尋 Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>正在從 Steam 讀取配置…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>正在從 Steam 讀取配置…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>按評分排序</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>排序方式</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>搜尋這些配置</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>評分</value></data>
@@ -3729,7 +3928,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>找到 {0} 個</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>顯示 {1} 個中的 {0} 個</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 個配置</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>個社群配置</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>完全支援控制器</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分支援控制器</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>搜尋遊戲</value></data>
@@ -3748,8 +3946,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>重試</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>這個 2016 年前後的配置早於 Steam 的配置 CDN。請在 Steam 訂閱它，PadForge 便會從你的 Steam 資料夾讀取。</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>在 Steam 工作坊開啟</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>選擇配置以讀取其轉換清單。</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>已讀取 {0} 個綁定</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>選擇配置以查看會轉換哪些內容。</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>轉換內容</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>轉成</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>選擇接收配置按鈕和搖桿的虛擬控制器。其按鍵和滑鼠一律會傳到鍵盤 + 滑鼠控制器。</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>層</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>完整</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>部分</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>已略過</value></data>
@@ -3814,7 +4015,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>正在檢查 Steam 工作坊有否更新…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>已匯入的設定檔均為最新（已檢查 {0} 個）</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>工作坊更新</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>這些已匯入的設定檔在 Steam 工作坊上有較新的版本。請在「瀏覽社群配置」重新匯入，以取得變更。</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>這些已匯入的設定檔在 Steam 工作坊上有較新的版本。請在「取得設定檔」再次匯入，以取得變更。</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長按時</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>短按時</value></data>
@@ -3962,7 +4163,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>選單 {0} 格子 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>選單重疊介面</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>重疊介面</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge 在你遊玩時顯示的熒幕指示。關閉其中一項絕不會改變行為，只會改變是否顯示提示。</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge 在你遊玩時顯示的熒幕指示。關閉其中一項絕不會改變行為，只會改變是否顯示。</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift 層彈出視窗</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>設定檔切換重疊介面</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>徑向或觸控選單啟用期間，在熒幕上顯示環形或格狀選單。即使關閉重疊介面，選單仍會觸發。</value></data>
@@ -4012,6 +4213,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>此通道的音調頻率，20 至 120 Hz。可執行頻率掃描，找出你的震動器反應最強的頻率。</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>此通道在主增益之前的響度。</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>增益</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>頻率</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>測試</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>以所設定的增益播放此通道的音調 1.5 秒。</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>重設低頻馬達</value></data>
@@ -4054,18 +4256,18 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>用於觸控板轉滑鼠輸出的軌跡板指標加速曲線。移植自 libinput 的觸控板加速設定檔的 C# 版本。MIT。</value>
+    <value>用於觸控板轉滑鼠輸出的軌跡板指標加速曲線。移植自 libinput 的觸控板加速設定檔的 C# 版本。</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D 控制器模型(Xbox 360、Steam Deck)以及 3D 檢視的模型和動畫程式碼，由 CasperH2O、Lesueur Benjamin 和 trippyone 製作。亦是以下各項的參考依據：Steam Deck 報告和觸覺解碼、Steam Controller(2015)的關機報告、掌機常駐程式監察清單、檢查更新的時間安排，以及相隔 500 毫秒的集線器連接埠重新啟動，用來重新連接已隱藏的 USB 控制器，令先前開啟它的程式失去它。CC BY-NC-SA 4.0。</value>
+    <value>3D 控制器模型(Xbox 360、Steam Deck)以及 3D 檢視的模型和動畫程式碼，由 CasperH2O、Lesueur Benjamin 和 trippyone 製作。亦是以下各項的參考依據：Steam Deck 報告和觸覺解碼、Steam Controller(2015)的關機報告、掌機常駐程式監察清單、檢查更新的時間安排，以及相隔 500 毫秒的集線器連接埠重新啟動，用來重新連接已隱藏的 USB 控制器，令先前開啟它的程式失去它。</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D 控制器示意圖(Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense)，由 AL2009man 製作。MIT。</value>
+    <value>2D 控制器示意圖(Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense)，由 AL2009man 製作。</value>
   </data>
   <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
-  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch 聊天室列的指令語法和輪流規則，已移植到 C#，以及網頁控制器的 WLG 外觀，由 Yuriy (KLAVIATURKIN) 編寫。ISC。</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch 聊天室列的指令語法和輪流規則，已移植到 C#，以及網頁控制器的 WLG 外觀，由 Yuriy (KLAVIATURKIN) 編寫。</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4 音訊協定的參考文件：SBC 參數和封包配置，由 khallmark 編寫。GPL-2.0，只作參考文件。</value>
+    <value>DualShock 4 音訊協定的參考文件：SBC 參數和封包配置，由 khallmark 編寫。只作參考文件。</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>桌面</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>安坐梳化操作 Windows。游標、捲動，以及以扳機點擊。</value></data>
@@ -4079,10 +4281,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>六按鈕配置，兩個軸均採用符合比賽規則的 SOCD 清理。</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>鍵盤 + 滑鼠</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>遊戲控制器</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>瀏覽入門設定檔</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>入門設定檔</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>適用於整個遊戲類型的現成設定檔。選擇一個，指派任何控制器，便可遊玩。儲存後會加入一個可供編輯的普通設定檔。</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>儲存設定檔</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>已加入入門設定檔「{0}」。</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>點擊式</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>冒險遊戲，以及任何以游標和兩個動作操作的遊戲。</value></data>
@@ -4182,13 +4380,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>重設輸出路徑</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>跟隨耳機插孔</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 輸出報告位元組對照表和 Sony scePad 語意，是 PadForge 效果和音訊寫入程式的依據。MIT。</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 輸出報告位元組對照表和 Sony scePad 語意，是 PadForge 效果和音訊寫入程式的依據。</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的插孔偵測音訊路由模式，是「跟隨耳機插孔」的參考依據。只作文件閱讀。AGPL-3.0。</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的插孔偵測音訊路由模式，是「跟隨耳機插孔」的參考依據。只作文件閱讀。</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>用於網頁控制器位址的位元組模式 QR 編碼器，移植自 Nayuki 的參考實作。MIT。</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>用於網頁控制器位址的位元組模式 QR 編碼器，移植自 Nayuki 的參考實作。</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>「鍵盤 + 滑鼠」視覺化顯示中的滑鼠圖像，由 Igor Budzhak 製作。MIT。</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>「鍵盤 + 滑鼠」視覺化顯示中的滑鼠圖像，由 Igor Budzhak 製作。</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>按壓力調整速率</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>重複速率會跟隨所選類比來源的按壓力度。輕按時以「慢速間隔」重複，完全按下時以上方的「間隔」重複，介乎兩者之間則平滑過渡。</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>慢速間隔</value></data>
@@ -4203,7 +4401,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>正在以代碼連線…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>無法直接連接對方。請嘗試經 VPN 使用「以位址連線」。</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>這部電腦的代碼</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>與對方交換代碼：把對方的代碼貼到你的「連線」方塊，對方亦貼上你的代碼，然後雙方都按一下「連線」。這樣便會在互聯網上開通一條直接路徑，無需 VPN。遠端連線執行期間，代碼會自動更新。</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>與對方交換代碼：把對方的代碼貼到「更多」下的「以位址連線」，對方亦貼上你的代碼，然後雙方都按一下「配對 / 連線」。這樣便會在互聯網上開通一條直接路徑，無需 VPN。遠端連線執行期間，代碼會自動更新。</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>此網絡無法建立直接連線（看來是流動熱點或電訊商級 NAT）。請使用 Tailscale 等 VPN，或改用家居寬頻連線。</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>找不到這部電腦的公用位址（網絡可能封鎖了所需的流量）。這裡無法使用直接連線。請使用 VPN，或在同一網絡內使用「以位址連線」。</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>控制器電量不足</value></data>
@@ -4214,8 +4412,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>達到或低於此電量時通知</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>同時令控制器震動</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>測試通知</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>檢查通知</value></data>
   <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>重複提示間隔</value></data>
   <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>充滿電時通知</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>同時令控制器震動、重複提示間隔、充滿電時通知</value></data>
   <data name="Battery_FullTitle" xml:space="preserve"><value>控制器已充滿電</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}：已充滿電</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>指派提示</value></data>
@@ -4231,23 +4431,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>暫時不要</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>任何短語</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>語音巨集</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>說出短語，它就會按下你可以對應的按鈕。PadForge 能使用的每個麥克風都會聆聽。</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>管理語音巨集</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>啟用語音巨集</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>開啟聆聽。啟用期間，每個已登記的短語都是一個按鈕，你說出該短語時便會觸發。辨識模型隨附於 PadForge 內，完全離線運作。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>聆聽</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>「一直」會保持麥克風開啟。「按鍵通話」只會在按住已綁定的「語音聆聽」巨集時聆聽。</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>聆聽開關、模式、可信度</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>一直</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>按鍵通話</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>最低可信度</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>辨識器要有多大把握，短語才會觸發。若隨意的說話會觸發巨集，請調高。若你的短語經常被遺漏，請調低。</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>正在等待語音。辨識結果會連同其可信度在這裡顯示。</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>聽到「{0}」（{1:F2}）。已觸發。</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>聽到「{0}」（{1:F2}）。低於可信度下限，或沒有按住通話鍵。</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>聆聽已關閉。請在「更多」下開啟。</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>在 {1} 聽到 {0}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>在 {1} 聽到 {0}。低於可信度下限，或沒有按住通話鍵。</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>短語</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>要說的短語</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>名稱</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>按鈕名稱</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>登記</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>已登記的短語</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>已登記「{0}」。說出它便可觸發其按鈕，並可在控制器頁面為它綁定巨集。</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>短語</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>已登記「{0}」。說出它便可觸發其按鈕，並可在控制器頁面為它對應。</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>語音聆聽（按住期間）</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>語音巨集的按鍵通話：按住此巨集期間，辨識器會聆聽。請在「管理語音巨集」中把「聆聽」設為「按鍵通話」。</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>麥克風</value></data>
@@ -4255,12 +4460,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa 列的震動所依賴的觸覺引擎和 Razer 提供者。HAR.dll 和 Interhaptics.RazerProvider.dll 隨附於 PadForge 內，取自公開的 Core SDK，未經修改。由 Wyvrn 開發。Wyvrn EULA。</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa 列的震動所依賴的觸覺引擎和 Razer 提供者。HAR.dll 和 Interhaptics.RazerProvider.dll 隨附於 PadForge 內，取自公開的 Core SDK，未經修改。由 Wyvrn 開發。</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller (2015) 和 Steam Controller (2026) 的 3D 模型，由 Valve 發佈的 STEP 檔案轉成網格而成。版權屬 Valve Corporation 所有。CC BY-NC-SA 4.0。PadForge 與 Valve 並無關聯，亦未獲 Valve 認可。</value>
+    <value>Steam Controller (2015) 和 Steam Controller (2026) 的 3D 模型，由 Valve 發佈的 STEP 檔案轉成網格而成。版權屬 Valve Corporation 所有。PadForge 與 Valve 並無關聯，亦未獲 Valve 認可。</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 執行階段</value>
@@ -4277,7 +4482,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>用作印證 Razer 燈光所用的 Razer Chroma REST API 封裝格式，由 Adam Hellberg 和 Brandon Scott 編寫。MIT。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>用作印證 Razer 燈光所用的 Razer Chroma REST API 封裝格式，由 Adam Hellberg 和 Brandon Scott 編寫。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK 參考資料</value>
   </data>
@@ -4286,19 +4491,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>頭部追蹤所用的 UDP 追蹤器資料包和 FreeTrack 2.0 共用記憶體配置。ISC。只作參考文件，並無隨附任何程式碼。</value>
+    <value>頭部追蹤所用的 UDP 追蹤器資料包和 FreeTrack 2.0 共用記憶體配置。只作參考文件，並無隨附任何程式碼。</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>掌機隱藏按鈕學習功能所訂閱的 Lenovo WMI 公用程式事件類別，以及外部設定檔控制所用的提升權限 IPC 伺服器模式。GPL-3.0，只作文件閱讀，並無隨附任何 GPL 程式碼。</value>
+    <value>掌機隱藏按鈕學習功能所訂閱的 Lenovo WMI 公用程式事件類別，以及外部設定檔控制所用的提升權限 IPC 伺服器模式。只作文件閱讀，並無隨附任何 GPL 程式碼。</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>為隱藏按鈕學習功能交叉核對的掌上電腦識別字串和廠商報告筆記。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value>
+    <value>為隱藏按鈕學習功能交叉核對的掌上電腦識別字串和廠商報告筆記。只作文件閱讀，並無隨附任何 GPL 程式碼。</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook 和 WiimoteHook</value>
@@ -4313,13 +4518,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>舊版 MIDI API 所用的 WinMM 呼叫次序：開啟連接埠、向其傳送數據，以及將其關閉。參考自 PortMidi(MIT，由 Ross Bencina、Phil Burk 和 Roger B. Dannenberg 編寫)和 RtMidi(MIT 式的 RtMidi 授權，由 Gary P. Scavone 編寫)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 參考資料</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key 輸入所用的事件字組配置，來自 SDK 內的 LogitechGkeyLib.h。程式庫的搜尋次序和關閉程序依照 Mumble 的 GKey.cpp(BSD 3-Clause)。PadForge 會載入機器上現有的程式庫複本，並無隨附任何 Logitech 程式碼。</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key 輸入所用的事件字組配置，來自 SDK 內的 LogitechGkeyLib.h。程式庫的搜尋次序和關閉程序依照 Mumble 的 GKey.cpp。PadForge 會載入機器上現有的程式庫複本，並無隨附任何 Logitech 程式碼。</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup 和 AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>類比鍵盤輸入把 HallJoy 的鍵盤路徑、按鍵表和型號目錄移植到 C#(AGPL-3.0，PashOK7)，並依照 Soup 和 AnalogSense JavaScript SDK(MIT，Calamity, Inc.)，再與 Wooting Analog SDK(MPL-2.0)核對。其他鍵盤則依照 AnalogKeys(MIT，Nisayera)、KeyAxis(MIT，RigZeeel)、HallEffectAnalogMapper(MIT，Ricards Mironovs)、libhmk 和 hmkconf(GPL-3.0-or-later，peppapighs)，以及 DenkiSuki、LeiterConsulting 和 paysdelest 的 Soup 分支(MIT)。報告格式和按鍵表亦來自 Razer 的 Synapse Web 和 NuPhy 的 NuPhyIO 設定程式、OpenRazer(GPL-2.0-or-later)、Abbytech 的 razer-analog-keyboard、TinyUSB(MIT)和 Sainan 的擷取筆記。</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box 參考資料</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>「讀取 Bliss-Box 轉接器」所用的 Bliss-Box API，參考自 Bliss-Box LLC 的 API Tool(BSD 式授權，可免費再散佈)和 DeviceBuddy(原始碼公開，Bliss-Box LLC)，按鈕名稱取自 SteveFox1620 的 retroarch-joypad-autoconfig 分支內的 Bliss-Box 檔案，Controller Pak 的校驗碼與 libdragon(Unlicense)核對，PlayStation 控制器的回應則取自 psx-spx 和 Linux 的 psxpad-spi 驅動程式(GPL-2.0-or-later)。控制器名稱和支援說明亦來自 Bliss-Box LLC 的相容性清單，而轉接器的行為已對照其韌體核對。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 編寫的 USB 傳輸層，供 HIDMaestro 的複合 USB 控制器使用。HIDMaestro 內含其已簽署的主機控制器驅動程式，並在首次建立複合控制器時安裝。BSD 2-Clause。</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 編寫的 USB 傳輸層，供 HIDMaestro 的複合 USB 控制器使用。HIDMaestro 內含其已簽署的主機控制器驅動程式，並在首次建立複合控制器時安裝。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>選擇此插槽的哪一半生效。關閉其中一半會隱藏其列並停止傳送，但會保留其對應，重新開啟後便可還原。</value>
   </data>
@@ -4387,13 +4592,15 @@
     <value>指派共用裝置</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} 上的指派</value>
+    <value>與 {0} 共用的裝置</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>選擇這部電腦所共用的裝置，然後選擇它在另一部電腦上的虛擬控制器。</value>
+    <value>選擇一部裝置，再選擇它應該操控的那部電腦上的控制器。</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>由這部電腦共用</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} 上的控制器</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>設定檔：{0}</value>
+    <value>使用中的設定檔：{0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>請在另一部電腦的「遠端連線」&gt;「已配對的電腦」下，允許這部電腦遠端更改指派。</value>
@@ -4487,67 +4694,67 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi、OpenFst、OpenBLAS 和 CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll 內的語音解碼器、轉換器程式庫和線性代數程式庫。Kaldi 和 OpenFst：Apache-2.0。OpenBLAS 和 CLAPACK：BSD 3-Clause，另就 OpenBLAS 內的 GotoBLAS2 和 f2c 執行階段附有獨立聲明。</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>「策略」和「桌面」入門設定檔的配置，以及按壓力調整的連發所避免的連發行為。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>「策略」和「桌面」入門設定檔的配置，以及按壓力調整的連發所避免的連發行為。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo 的參考資料，說明 Windows 未公開的 IPolicyConfig 介面的配置，PadForge 以此介面重新啟用控制器的音訊端點。MIT。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo 的參考資料，說明 Windows 未公開的 IPolicyConfig 介面的配置，PadForge 以此介面重新啟用控制器的音訊端點。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>控制器的「參數等化器」所匯入的參數 EQ 設定檔格式，由 Jaakko Pasanen 編寫。MIT。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>控制器的「參數等化器」所匯入的參數 EQ 設定檔格式，由 Jaakko Pasanen 編寫。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>「文字區塊」巨集和鍵盤組合鍵掛鉤所用的 SendInput 技巧：Unicode 輸入、批次上限、Win 鍵遮罩按鍵，以及附有標記的注入輸入。GPL-2.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>「文字區塊」巨集和鍵盤組合鍵掛鉤所用的 SendInput 技巧：Unicode 輸入、批次上限、Win 鍵遮罩按鍵，以及附有標記的注入輸入。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>體感伺服器所用的 DSU 協定參考資料，由 v1993 編寫。Unlicense。</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>體感伺服器所用的 DSU 協定參考資料，由 v1993 編寫。</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 藍牙輸出報告的封裝格式，由 Christopher Rosell 編寫。MIT。</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 藍牙輸出報告的封裝格式，由 Christopher Rosell 編寫。</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 的電量範圍、觸控板觸覺脈衝的時序和強度級數，以及觸控板的甩動行為。GPL-3.0，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 的電量範圍、觸控板觸覺脈衝的時序和強度級數，以及觸控板的甩動行為。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows(hbashton 分支)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense 的音訊音量範圍、帶正負號的 8 位元觸覺樣本，以及合併式藍牙傳輸配置。GPL-3.0，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense 的音訊音量範圍、帶正負號的 8 位元觸覺樣本，以及合併式藍牙傳輸配置。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense 藍牙音訊緩衝區長度的預設值和下限，由 awalol 提供。MIT。</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense 藍牙音訊緩衝區長度的預設值和下限，由 awalol 提供。</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube 自適應扳機預設集的數值，由 Mxater 提供。只用於查證事實。</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 體感軸的正負號，已對照其 UDP 解碼器核對。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU 體感軸的正負號，已對照其 UDP 解碼器核對。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>「太空模擬」入門設定檔所依據的 Elite Dangerous 預設配置，由 Richard Buckle 編寫。MIT。</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>「太空模擬」入門設定檔所依據的 Elite Dangerous 預設配置，由 Richard Buckle 編寫。</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii 遙控器喇叭的 ADPCM 半位元組次序，以及用來核對 DualShock 4 編碼器的 SBC 解碼器。LGPL-2.1-or-later，只作文件閱讀，並無隨附任何 LGPL 程式碼。</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii 遙控器喇叭的 ADPCM 半位元組次序，以及用來核對 DualShock 4 編碼器的 SBC 解碼器。只作文件閱讀，並無隨附任何 LGPL 程式碼。</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>用於指南針偏航的傾斜補償指南針航向，已移植到 C#，由 x-io Technologies 編寫。MIT。</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>用於指南針偏航的傾斜補償指南針航向，已移植到 C#，由 x-io Technologies 編寫。</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>低電量通知規則和「識別」震動模式，由 Lukas Frühstück 編寫。MIT。</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>低電量通知規則和「識別」震動模式，由 Lukas Frühstück 編寫。</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4、DualSense、DualSense Edge、Xbox Series 和 Switch 2 Pro 控制器的 3D 模型，購自 CGTrader。CGTrader Royalty Free License。</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4、DualSense、DualSense Edge、Xbox Series 和 Switch 2 Pro 控制器的 3D 模型，購自 CGTrader。</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 的 3D 模型，購自 CGTrader，並拆分為各部件的網格。CGTrader Royalty Free License。</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 的 3D 模型，購自 CGTrader，並拆分為各部件的網格。</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>編譯進隨附的 SDL3.dll 內的 HID 層，由 Signal 11 Software 的 Alan Ott 編寫。BSD 式授權。</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>編譯進隨附的 SDL3.dll 內的 HID 層，由 Signal 11 Software 的 Alan Ott 編寫。</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>圖示來源</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>火焰圖示來自 Material Design Icons(Pictogrammers，Apache-2.0)，通用遊戲控制器圖示來自 Ionicons(Ionic，MIT)，「擴充」的操縱桿圖示來自 Jam Icons(Michael Amprimo，MIT)，Xbox 和 PlayStation 圖示則來自 SVG Repo，並按各圖示頁面所列的授權使用。</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>遠端連線後備通道所用的中繼協定，以 FlexInput 的方式與 n0.computer 的免費公共中繼伺服器通訊。iroh：MIT OR Apache-2.0。FlexInput：MIT。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>「滑鼠移動 X」和「滑鼠移動 Y」所用的 Joy-Con 2 光學滑鼠計數器和回繞差值，由 coffincolors、Frano 和 moutella 編寫。MIT。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>「滑鼠移動 X」和「滑鼠移動 Y」所用的 Joy-Con 2 光學滑鼠計數器和回繞差值，由 coffincolors、Frano 和 moutella 編寫。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux 核心驅動程式</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3、Move、DualSense、Steam Deck 和 PID 力回饋協定的事實，以及 ACPI WMI 區塊配置。PadForge 依照 hid-core 的規則讀取鍵盤和滑鼠的描述元。GPL-2.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3、Move、DualSense、Steam Deck 和 PID 力回饋協定的事實，以及 ACPI WMI 區塊配置。PadForge 依照 hid-core 的規則讀取鍵盤和滑鼠的描述元。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows 控制器輸入，包括 Xbox Elite 背鍵。SDK 載入器已連結到 SDL 內。MIT(SDK 載入器)。</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows 控制器輸入，包括 Xbox Elite 背鍵。SDK 載入器已連結到 SDL 內。</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ 執行階段</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll 所需的 C++ 執行階段(msvcp140.dll、vcruntime140.dll，以及 x64 組建中的 vcruntime140_1.dll)，未經修改，隨附於 PadForge 內。Microsoft Visual Studio 授權條款。</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll 所需的 C++ 執行階段(msvcp140.dll、vcruntime140.dll，以及 x64 組建中的 vcruntime140_1.dll)，未經修改，隨附於 PadForge 內。</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con 和 Pro 控制器的 HID、HD 震動和 Home LED 筆記，由 dekuNukem 編寫，Switch 2 部分則參考 ndeadly 的 switch2_controller_research。只用於了解協定的事實。</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge 直接驅動的燈光系列的偵測規則、報告框架、LED 表和按鍵配置，由 OpenRGB 移植和產生，以及 DualSense 和 DualShock 4 燈條位元組。 GPL-2.0-or-later.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge 直接驅動的燈光系列的偵測規則、報告框架、LED 表和按鍵配置，由 OpenRGB 移植和產生，以及 DualSense 和 DualShock 4 燈條位元組。</value></data>
   <data name="About_LightingRefs" xml:space="preserve"><value>燈光參考資料</value></data>
   <data name="About_LightingRefsDesc" xml:space="preserve"><value>直接燈光系列的報告框架、按鍵名稱和程式名稱，讀取自： SignalRGB plugins (facts only), qmk-plugins (GPL-2.0), SRGBmods plugins, uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libratbag (MIT), tuxedo-drivers, vial-qmk (GPL-2.0-or-later), ite8291r3-ctl (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, LenovoLegionToolkit-Team, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Dygmalab/Kaleidoscope, Bazecor, mouse_m908, Nexus-Manager (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk, BlinkyTape_Arduino, LuxaforOnAir, elgatosf/cli, OpenRGB.NET, CSDK_ChromaModSample, WyvrnChroma, Annemone (MIT), blink1-tool (CC BY-SA 4.0), RGB.NET (LGPL-2.1), mystic-light-sdk, Blink1Control2 (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
   <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
-  <data name="About_IcueSdkDesc" xml:space="preserve"><value>Corsair 的程式庫，隨 PadForge 提供，在 iCUE 執行時點亮 Corsair 裝置。適用 Corsair 的 SDK 條款。</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>Corsair 的程式庫，隨 PadForge 提供，在 iCUE 執行時點亮 Corsair 裝置。</value></data>
   <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
-  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>MSI 的程式庫，隨 PadForge 提供，在 Mystic Light 執行時點亮 MSI 裝置。MSI 的下載內容未列出任何條款。</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>MSI 的程式庫，隨 PadForge 提供，在 Mystic Light 執行時點亮 MSI 裝置。</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>應用程式內更新程式的輔助程式所用的提升權限更新動詞模式。LGPL-3.0，只作文件閱讀，並無隨附任何 LGPL 程式碼。</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>應用程式內更新程式的輔助程式所用的提升權限更新動詞模式。只作文件閱讀，並無隨附任何 LGPL 程式碼。</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC 標籤輸入所用的 WinSCard 函數簽章和讀取器監察呼叫次序，由 Daniel Mueller 編寫。BSD 2-Clause。</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC 標籤輸入所用的 WinSCard 函數簽章和讀取器監察呼叫次序，由 Daniel Mueller 編寫。</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move 的報告配置、感應器校準和 EXT 配件交握程序，由 Thomas Perl 編寫，並與 moveonpc wiki 交叉核對。PadForge 的實作是原創 C#。BSD 2-Clause。</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>賽車遙測參考資料</value></data>
@@ -4555,23 +4762,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 藍牙配對和報告的參考文件。GPL-2.0 和 GPL-3.0，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>遠端連線 NAT 穿透所用的 STUN 訊息配置和 XOR-MAPPED-ADDRESS 解碼，取自其 C# 原始碼並納入本程式，由 Aaron Clauson 編寫。BSD 3-Clause，並附有其授權第 2 節的使用限制。</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>遠端連線 NAT 穿透所用的 STUN 訊息配置和 XOR-MAPPED-ADDRESS 解碼，取自其 C# 原始碼並納入本程式，由 Aaron Clauson 編寫。其授權在第 2 節附有使用限制。</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse 參考資料</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion 的報告配置、裝置表和軸比例，參考自 hid.spacemouse(MIT)、PySpaceMouse(MIT)、AndunHH 的 spacemouse(CC BY-NC-SA 4.0)和 spacenavd(GPL-3.0-or-later)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>以主機 IOCTL 中斷藍牙連接的方法、隱藏的 XInput 關機和功能查詢序數，以及 DualSense 扳機震動的預設值。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>以主機 IOCTL 中斷藍牙連接的方法、隱藏的 XInput 關機和功能查詢序數，以及 DualSense 扳機震動的預設值。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller 協定參考資料</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>滑動觸覺滴答、報告 0x42 的按鈕位元、關機指令和接收器中繼，參考自 OpenPuck(AGPL-3.0)、sc2-research(MIT)、steam_controller_tools(GPL-2.0)和 SteamlessController(MIT)。只作參考文件，並無隨附任何 GPL 或 AGPL 程式碼。</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>六種死區形狀，由 Minimuino 編寫。GFDL-1.3-or-later 和 GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii 遙控器紅外線指標的行為：光點對的中點、邊界、感應條偏移、平滑和「FPS 滑鼠」曲線，並參考了 Ryochan7、Suegrini 和 Trihy 的分支。GPL-3.0，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii 遙控器紅外線指標的行為：光點對的中點、邊界、感應條偏移、平滑和「FPS 滑鼠」曲線，並參考了 Ryochan7、Suegrini 和 Trihy 的分支。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense 自適應扳機效果的配置和區域封裝，以 C# 重現，由 John "Nielk1" Klein 編寫。MIT。</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense 自適應扳機效果的配置和區域封裝，以 C# 重現，由 John "Nielk1" Klein 編寫。</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>虛擬 DualShock 4 輸入報告所用的 DS4_REPORT_EX 配置，由 Benjamin Höglinger-Stelzer 編寫。MIT。</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>虛擬 DualShock 4 輸入報告所用的 DS4_REPORT_EX 配置，由 Benjamin Höglinger-Stelzer 編寫。</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER(hbashton 分支)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>虛擬 DualSense 麥克風的 48 dB 衰減範圍。GPL-3.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>虛擬 DualSense 麥克風的 48 dB 衰減範圍。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>方向盤協定參考資料</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec、Thrustmaster 和 Logitech 方向盤的原生力回饋和轉速換檔 LED 報告，參考自 hid-fanatecff(GPL-2.0)、hid-tmff2(GPL-2.0-or-later)、new-lg4ff(GPL-2.0-or-later)、oversteer(GPL-3.0)和 thrustmaster-led-linux(GPL-3.0)，並與 prodigal.knight 的 SimHub LED 外掛程式(MIT)和 tm-bt-led(MIT)交叉核對。只作參考文件，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>街機 I/O 參考資料</value></data>
@@ -4601,37 +4808,37 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox 控制器參考資料</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL 分支的初代 Xbox、Steel Battalion、Xbox 360 Chatpad 和 Xbox 360 uDraw 驅動程式，以及 PadForge 綁定到 Windows 本身驅動程式的 Xbox 360 接收器所用的協定，參考自 brandonw.net、Chatpad Super Driver(MIT)、Cxbx-Reloaded(GPL-2.0-or-later)、ITO Takayuki 的 euc.jp、JoypadOS(Apache-2.0)、libSteelBattalion、libsteelbat、Linux(GPL-2.0-or-later)、ogx360(GPL-3.0-or-later)、s-config.com、SBC(MIT)、Spivey's Corner、steel-battalion-net(LGPL-3.0)、SteelBattalionController(Apache-2.0)、SteelBattalionDriver(GPL-3.0)、SteelBattalionMapper(GPL-3.0-or-later)、tusb_xinput(MIT)、uDrawTablet、Xb2XInput(GPL-3.0)、xb360ChatpadToKM(GPL-3.0)、xbox360wirelesschatpad、xboxdevwiki、xboxdrv(GPL-3.0-or-later)和 xemu(LGPL-2.0-or-later)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>自動 WinUSB 綁定所用的「每部裝置一個 INF」封裝方式和裝置列舉，由 Pete Batard 編寫。只作參考文件，並無隨附任何程式碼。LGPL-3.0-or-later。</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>自動 WinUSB 綁定所用的「每部裝置一個 INF」封裝方式和裝置列舉，由 Pete Batard 編寫。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge 為識別 PS Move 配件而傳送的藍牙 HID 功能報告請求，由 Ricardo Quesada 編寫。只作參考文件，並無隨附任何程式碼。Apache-2.0。</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge 為識別 PS Move 配件而傳送的藍牙 HID 功能報告請求，由 Ricardo Quesada 編寫。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL 分支內的 Windows Mixed Reality 設定金鑰來自 Monado。Copyright 2021 Jan Schmidt。隨附於 SDL3.dll 內。BSL-1.0。</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL 分支內的 Windows Mixed Reality 設定金鑰來自 Monado。Copyright 2021 Jan Schmidt。隨附於 SDL3.dll 內。</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL 分支內的 Rift DK1 感應器融合移植自 OpenHMD。Copyright 2013 Fredrik Hultin, Jakob Bornecrantz。隨附於 SDL3.dll 內。BSL-1.0。</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL 分支內的 Rift DK1 感應器融合移植自 OpenHMD。Copyright 2013 Fredrik Hultin, Jakob Bornecrantz。隨附於 SDL3.dll 內。</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii 遙控器喇叭協定和紅外線校準的參考文件。只用於了解協定的事實。</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox 脈衝扳機的 9 位元組報告及其寫入路徑，由 araghon007 編寫。MIT。</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox 脈衝扳機的 9 位元組報告及其寫入路徑，由 araghon007 編寫。</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 的觸覺 PCM 格式，即帶正負號的 16 位元、3 kHz，由此確定了帶正負號 8 位元的藍牙觸覺編碼。AGPL-3.0，只作文件閱讀，並無隨附任何 AGPL 程式碼。</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 的觸覺 PCM 格式，即帶正負號的 16 位元、3 kHz，由此確定了帶正負號 8 位元的藍牙觸覺編碼。只作文件閱讀，並無隨附任何 AGPL 程式碼。</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX 遊戲模組參考資料</value></data>
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>「遊戲模組」所用的 UDP 指令、回覆、連接埠檔案和扳機效果位元組，參考自 Paliverse 官方的 DSX v3.1 和 DualSenseX v2 模組範例、DualSenseY 的兩個版本、DualSense4Rockstar(未公佈授權)、DSZ 和 pydualsense(MIT)，以及 Wujek Dualsense API 和 hbashton 的 DS4Windows 分支內的 DSX 伺服器(GPL-3.0)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 耳機麥克風參考資料</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 藍牙音訊所用的耳機和喇叭路由、音量上限、麥克風影格和報告模式，參考自 DS4-Sound-Link(MIT)、ds4mac(GPL-2.0)、ds4drv(MIT)和 hbashton 的 DS4Windows 分支(GPL-3.0)，而 SBC 解碼器的合成視窗已與 Google 的 libsbc(Apache-2.0)核對，第二代型號和 Sony 轉接器的 USB 耳機麥克風則參考自 DJm00n 的 ControllersInfo 描述元傾印檔(未公佈授權)和 linux-hardware.org 的 LsUSB 探測資料(CC BY 4.0)。以連接線連接的 DualShock 4 的喇叭路由，來自 Controllers Wiki(CC BY-SA)和 mihaits 的 NFSU2-SplitScreen(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch 聊天室參考資料</value></data>
-  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>無需登入便能讀取聊天室和 ! 指令規則，參考自 tmi.js(MIT)和 ComfyJS(MIT)，而只保留最新 20 個指令的做法，則參考自 DougDoug 的 TwitchPlays 範本(MIT)。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>無需登入便能讀取聊天室和 ! 指令規則，參考自 tmi.js和 ComfyJS，而只保留最新 20 個指令的做法，則參考自 DougDoug 的 TwitchPlays 範本。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>鍵盤熒幕參考資料</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>鍵盤熒幕所用的程式庫、影格和按鍵，參考自 Logitech 的 LCD 和 Arx Control SDK 以及 Mad Catz 的 S.T.R.I.K.E. 7 SDK，並與 logitech-lcd(MIT 或 Apache-2.0)、dcspy(MIT)、foo_logitech_lcd(LGPL-2.1)、LogitechStuff 和 ArxWidgetManager(未公佈授權)、Linux 的 hid-lg-g15 驅動程式(GPL-2.0-or-later)、libg15、G15Interface 和 lcdproc(GPL-2.0)、gnome15(GPL-3.0)以及 G19USB(Apache-2.0)交叉核對。PadForge 會載入 Logitech Gaming Software 的程式庫和你下載或選擇的 Strike7API.dll，並無隨附當中任何程式碼。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon 參考資料</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 支援所用的程式庫呼叫、手感和遊戲力道，參考自 Force Dimension 的 SDK 標頭檔、文件和範例，其中操縱桿手感取自 FalconJoystick，瞄準手感和震動取自 FalconJoyForce(兩者均由 Cyclops-11B 開發，未公佈授權)，並與 CHAI3D(BSD 3-Clause)和 libnifalcon(BSD)核對。PadForge 會載入你安裝的 Force Dimension 程式庫，因為其授權並無授予再散佈的權利，並無隨附當中任何程式碼。</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>
-  <data name="About_DualSenseWindowsDesc" xml:space="preserve"><value>DualSense 電池電量顯示於玩家燈上的玩家燈位元順序，來自 Ludwig Füchsl。MIT。只作參考文件，並無隨附任何程式碼。</value></data>
+  <data name="About_DualSenseWindowsDesc" xml:space="preserve"><value>DualSense 電池電量顯示於玩家燈上的玩家燈位元順序，來自 Ludwig Füchsl。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_Kodi" xml:space="preserve"><value>Kodi</value></data>
-  <data name="About_KodiDesc" xml:space="preserve"><value>其搖桿按鍵配置中的全熒幕影片控制，是「媒體遙控器」入門設定檔的依據。GPL-2.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_KodiDesc" xml:space="preserve"><value>其搖桿按鍵配置中的全熒幕影片控制，是「媒體遙控器」入門設定檔的依據。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_MenuRefs" xml:space="preserve"><value>選單參考資料</value></data>
   <data name="About_MenuRefsDesc" xml:space="preserve"><value>熒幕鍵盤的「轉輪」版面和首三組字元集，參考自 daisywheeljs(MIT)，而搖桿推到哪個幅度會啟動和放開「徑向環」選單的選擇，則參考自 sc-controller(GPL-2.0)。並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
-  <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS 的瀏覽器會取消載入其憑證不受信任的頁面，因此 OBS 瀏覽器來源所用的控制器圖片頁面改以一般位址提供。GPL-2.0-or-later，只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
+  <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS 的瀏覽器會取消載入其憑證不受信任的頁面，因此 OBS 瀏覽器來源所用的控制器圖片頁面改以一般位址提供。只作文件閱讀，並無隨附任何 GPL 程式碼。</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>設定檔匯入參考資料</value></data>
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD 設定檔格式，參考自 hcn1z1 的 shunt 結構描述傾印檔(MIT)、DatMoshu 的 reWASD-Powertools 文件(MIT)和 reWASD 的說明，而 DS4Windows 設定檔格式，則參考自 Schmaldeo 的 DS4Windows 分支(GPL-3.0-or-later)。只作參考文件，並無隨附任何程式碼。</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>熒幕顏色參考資料</value></data>
@@ -4703,6 +4910,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>平移</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>平移 X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>平移 Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>選擇它顯示的內容。在你儲存之前不會有任何改變。</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} 已設為「{1}」。</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>正在下載 Mad Catz 的 S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 現在會載入 {0}。</value></data>
@@ -4836,7 +5044,7 @@
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>在每款遊戲中開啟遙測輸出，並指向這部電腦和此連接埠。F1、Codemasters 遊戲和 EA SPORTS WRC 除非更改，否則使用 20777，Project CARS 2 和 Automobilista 2 固定使用 5606，MrHokss 的卡車模擬遊戲外掛程式使用 49001。Assetto Corsa 和 ACC 不需要連接埠。</value></data>
   <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>任何指令</value></data>
   <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch 聊天室</value></data>
-  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>讓觀看直播的人在聊天室輸入指令來玩遊戲。觀眾輸入 !a 之類的指令，PadForge 就會按下「裝置」頁 Twitch 聊天室列上 !a 所對應的按鍵。可以像一般控制器一樣把該列指派到插槽。PadForge 無需登入便能讀取聊天室，也不會在裏面發言。</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>讓觀看直播的人在聊天室輸入指令來玩遊戲。PadForge 無需登入便能讀取聊天室，也不會在裏面發言。</value></data>
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>讀取 Twitch 聊天室</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>頻道</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>你的頻道名稱或 twitch.tv 位址。</value></data>
@@ -4860,13 +5068,15 @@
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>無法連線到 {0} 的聊天室，正在重試。</value></data>
   <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch 沒有 {0} 的聊天室。請檢查頻道名稱。</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>已暫停。</value></data>
-  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>供直播使用的控制器畫面。請將此位址加入 OBS 作為瀏覽器來源：</value></data>
-  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>供直播使用的控制器畫面需要網頁控制器及其未加密的 HTTP 位址。請在網頁控制器卡片中開啟「同時提供未加密的 HTTP」。如果 OBS 在這部電腦上，只需選用「只限這部電腦」。</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>觀眾以 !claim 輪流取得控制，按上方設定批准，也可用 !skip 略過指令，須兩位觀眾或一位版主同意。隊列只保留最新的 20 個指令，每個指令最多執行 10 秒。</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>請將此位址加入 OBS 作為瀏覽器來源。</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>此畫面需要網頁控制器及其未加密的 HTTP 位址。請在網頁控制器頁面的「更多」下開啟「同時提供未加密的 HTTP」。如果 OBS 在這部電腦上，只需選用「只限這部電腦」。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>觀眾以 !claim 輪流取得控制，並以 !skip 略過指令。隊列只保留最新的 20 個指令，每個指令最多執行 10 秒。</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>管理聊天室指令</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>聊天室指令</value></data>
+  <data name="TwitchChat_DialogSubtitle" xml:space="preserve"><value>每個字詞都是 Twitch 聊天室列上的一個按鈕。觀眾加上驚嘆號輸入它。</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>觀眾在直播的聊天室輸入 ! 加一個詞，例如 !jump。每個詞都是 Twitch 聊天室列上的一個按鍵，可像一般輸入一樣對應。!a500ms 會按住 A 達 500 毫秒，!a+b 會同時按下兩者，!a b 則會先後按下。</value></data>
   <data name="TwitchChat_WordLabel" xml:space="preserve"><value>詞語</value></data>
+  <data name="TwitchChat_WordPlaceholder" xml:space="preserve"><value>jump</value></data>
   <data name="TwitchChat_AddButton" xml:space="preserve"><value>新增</value></data>
   <data name="TwitchChat_ListHeader" xml:space="preserve"><value>詞語</value></data>
   <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>還原常用詞語</value></data>
@@ -4894,8 +5104,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>正在從共用記憶體讀取 {0}。</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>正在等待 Assetto Corsa 或 Assetto Corsa Competizione。</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>正在轉發至連接埠 {0}。</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>自訂遙測格式</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>逐個欄位描述遊戲傳送的封包，PadForge 就能讀取該遊戲。每個變數會成為遊戲遙測列上的一條軸，也是自訂運算式觸發器的一個頻道。可在遊戲清單中按名稱選擇格式，或為它指定長度或索引鍵，讓自動偵測找到它。</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>自訂格式</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>描述 PadForge 並不認識的遊戲所傳送的遙測封包。</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>新增格式</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>格式 {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>名稱</value></data>
@@ -4906,12 +5116,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>只有剛好是這個位元組數的封包，才會用此格式讀取。設為 0 時會讀取任何封包，而自動偵測不會選用此格式，請按名稱選擇。</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>必要索引鍵</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>只有帶有此索引鍵的 JSON 封包，才會用此格式讀取。留空時會讀取任何封包，而自動偵測不會選用此格式，請按名稱選擇。</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>位元組順序</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>小端序會把每個數字的最低有效位元組放在最前，PC 上的遊戲幾乎都是如此。大端序則把最高有效位元組放在最前。</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>小端序</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>大端序</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>封包寫入每個數字時，最高有效位元組在先。PC 上的遊戲幾乎都是最低有效位元組在先。</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>檔位數值</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>檔位欄位以自己的數字代表倒車和空檔，如 Forza 的 0 和 11。關閉時，負數檔位為倒車，0 為空檔。</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>倒車</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>空檔</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON 封包的必要索引鍵、檔位數值</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>欄位</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>每個欄位會在其偏移量處讀取一個數字，JSON 則按其索引鍵讀取（用點號可進入巢狀物件），再乘以比例。套用比例後，速度以 km/h 計，踏板由 0 至 1，轉向由全左的 -1 至全右的 1。變數的軸由靜止時的最小值伸展到全開時的最大值。</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>讀入至</value></data>
@@ -5022,7 +5235,7 @@
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>其他</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}，第 {1} 個</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>熒幕重疊介面</value></data>
-  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器、時間或光條顏色，無需鍵盤熒幕。其他程式位於前台時，點擊會穿透此介面。PadForge 位於前台時，可用右鍵拖曳移動，並從角落調整大小。</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器、時間或光條顏色，無需鍵盤熒幕。</value></data>
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>啟用熒幕重疊介面</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>選擇顯示內容…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 熒幕重疊介面</value></data>
@@ -5050,9 +5263,12 @@
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切換熒幕重疊介面 {0}</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>顯示 {0} 圖片：{1} × {2} 毫秒，直至下一次顯示或模式巨集</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>匯入設定檔</value></data>
-  <data name="Import_Source_Format" xml:space="preserve"><value>{0}，一個 {1} 檔案</value></data>
-  <data name="Import_ProfileName_Format" xml:space="preserve"><value>將成為設定檔「{0}」。</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0}，一個 {1} 檔案。</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>它會成為設定檔「{0}」。</value></data>
   <data name="Import_Confirm" xml:space="preserve"><value>匯入</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>需要留意</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>完整匯入</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}。{1}</value></data>
   <data name="Import_NothingToImport" xml:space="preserve"><value>此檔案沒有 PadForge 可用的對應。</value></data>
   <data name="Import_NoteController" xml:space="preserve"><value>載入此設定檔後，請在裝置頁面把你的控制器指派到它的插槽。</value></data>
   <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>載入時，它會把 {0} 指派到其插槽。</value></data>

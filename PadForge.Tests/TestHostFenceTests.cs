@@ -188,7 +188,7 @@ namespace PadForge.Tests
         private const string TwitchChat = Input + "Twitch/TwitchChatClient.cs";
         private const string SteamHttpFile = "PadForge.SteamWorkshop/Api/SteamHttp.cs";
         private const string SteamClientFile = "PadForge.SteamWorkshop/Api/SteamWorkshopClient.cs";
-        private const string WorkshopDialog = "PadForge.App/Views/WorkshopBrowseDialog.xaml.cs";
+        private const string WorkshopPanel = "PadForge.App/Views/CommunityConfigsPanel.xaml.cs";
         private const string ControlPipe = Services + "ExternalControlService.cs";
         private const string Dsu = Services + "DsuMotionServer.cs";
         private const string GameMods = Services + "GameModServer.cs";
@@ -778,8 +778,9 @@ namespace PadForge.Tests
 
             // An HTTP client. The driver installer's, the updater's and
             // Steam's refuse under their own flags, and the two vendor
-            // clients under the vendor gate. The workshop browser's is made
-            // by the gate.
+            // clients under the vendor gate. Get Profiles' community configs
+            // make none of their own (#574): every Steam call goes through
+            // the PadForge.SteamWorkshop clients counted above.
             Assert.Equal(Map(
                 ("PadForge.App/Common/DriverInstaller.cs", 2),
                 (Chroma, 1),
@@ -787,8 +788,8 @@ namespace PadForge.Tests
                 (Services + "UpdateService.cs", 1),
                 (Outbound, 2),
                 (SteamHttpFile, 2)), FenceSource.Census(Creates("HttpClient")));
-            Assert.Contains("var http = PadForge.Engine.Common.OutboundNetworkGate.NewHttpClient();",
-                OffLimitsSource.Read(WorkshopDialog), StringComparison.Ordinal);
+            Assert.DoesNotContain("NewHttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
+            Assert.DoesNotContain("new HttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
 
             // A datagram sent. The DSU server's and the game mod server's
             // sockets are bound to loopback and the discovery socket is bound

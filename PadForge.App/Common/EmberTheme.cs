@@ -97,18 +97,39 @@ namespace PadForge.Common
             // show dark steel chrome on white.
             SetBrush("SteelRaisedBrush", dark ? Color.FromRgb(0x18, 0x20, 0x2E) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("SteelLineSoftBrush", dark ? Color.FromRgb(0x1E, 0x27, 0x34) : Color.FromRgb(0xD6, 0xD8, 0xDE));
-            // PadForge 6 surfaces (#574): the pane (title bar and sidebar)
-            // with its hairline, the field a value is typed in, a raised
-            // control under the pointer, and the engine's row at the
-            // sidebar's foot. Then the tinted grounds: the square behind a
-            // lit flame, a running controller's edge, the selected
-            // controller, the text on an ember fill, the band that offers
-            // a device, and a dashed outline.
-            SetBrush("SteelPaneBrush", dark ? Color.FromRgb(0x0C, 0x11, 0x1A) : Color.FromRgb(0xF3, 0xF4, 0xF7));
-            SetBrush("SteelPaneLineBrush", dark ? Color.FromRgb(0x1A, 0x22, 0x30) : Color.FromRgb(0xD6, 0xD8, 0xDE));
+            // PadForge 6 surfaces (#574): the pane (the sidebar) with its
+            // hairline, the field a value is typed in, a raised control
+            // under the pointer, and the engine's block at the sidebar's
+            // foot. Then the tinted grounds: the square behind a lit flame,
+            // a running controller's edge, the selected controller, the
+            // text on an ember fill, the band that offers a device, and a
+            // dashed outline.
+            SetBrush("SteelPaneBrush", dark ? Color.FromRgb(0x0A, 0x0E, 0x16) : Color.FromRgb(0xF3, 0xF4, 0xF7));
+            SetBrush("SteelPaneLineBrush", dark ? Color.FromRgb(0x16, 0x1E, 0x2B) : Color.FromRgb(0xD6, 0xD8, 0xDE));
+            // The window's own ground, under the title bar: the darkest
+            // step, with the sidebar one step up, the page another and a
+            // card another. The title bar is warm while the engine runs,
+            // fainter on a light ground.
+            SetBrush("SteelWindowBrush", dark ? Color.FromRgb(0x07, 0x0A, 0x10) : Color.FromRgb(0xE9, 0xEB, 0xF0));
+            SetTitleWarmth(dark ? (byte)0x66 : (byte)0x38);
+            // A forging controller's pill: a soft ember outline and wash.
+            // A waiting one: a gold outline.
+            SetBrush("EmberRingSoftBrush", dark ? Color.FromArgb(0x73, 0xFF, 0x6B, 0x2C) : Color.FromArgb(0x99, 0xC2, 0x4A, 0x12));
+            SetBrush("EmberWashBrush", dark ? Color.FromArgb(0x0D, 0xFF, 0x6B, 0x2C) : Color.FromArgb(0x14, 0xFF, 0x6B, 0x2C));
+            SetBrush("WaitRingBrush", dark ? Color.FromArgb(0x66, 0xF2, 0xB8, 0x4B) : Color.FromArgb(0x99, 0xB0, 0x7C, 0x10));
+            // The edge of a forging card and of its state pill, the fainter
+            // edge of an extra that is on, the gold wash of a waiting pill,
+            // and the steel of a mark at rest.
+            SetBrush("EmberRingBrush", dark ? Color.FromArgb(0x8C, 0xFF, 0x6B, 0x2C) : Color.FromArgb(0xB3, 0xC2, 0x4A, 0x12));
+            SetBrush("EmberRingFaintBrush", dark ? Color.FromArgb(0x4D, 0xFF, 0x6B, 0x2C) : Color.FromArgb(0x66, 0xC2, 0x4A, 0x12));
+            SetBrush("WaitTintBrush", dark ? Color.FromArgb(0x1A, 0xF2, 0xB8, 0x4B) : Color.FromArgb(0x24, 0xB0, 0x7C, 0x10));
+            SetBrush("SteelMarkBrush", dark ? Color.FromRgb(0x3A, 0x47, 0x5A) : Color.FromRgb(0xAE, 0xB6, 0xC4));
             SetBrush("SteelFieldBrush", dark ? Color.FromRgb(0x0D, 0x13, 0x1D) : Color.FromRgb(0xFF, 0xFF, 0xFF));
             SetBrush("SteelLiftBrush", dark ? Color.FromRgb(0x21, 0x2C, 0x3D) : Color.FromRgb(0xD9, 0xDD, 0xE6));
             SetBrush("SteelFootBrush", dark ? Color.FromRgb(0x10, 0x17, 0x22) : Color.FromRgb(0xE4, 0xE7, 0xEE));
+            // The page area behind a dialog drawn inside the window: one step
+            // under the page ground in either theme.
+            SetBrush("ShellDialogGroundBrush", dark ? Color.FromRgb(0x06, 0x09, 0x0E) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("SteelPillLineBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xC9, 0xCD, 0xD6));
             // The chosen segment of a segmented switch, on the field's fill.
             SetBrush("SteelSegmentBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xD9, 0xDD, 0xE6));
@@ -121,7 +142,7 @@ namespace PadForge.Common
             // under the pointer has a key of its own, SteelPaneHoverBrush,
             // with the row's color.
             var paneHover = dark ? Color.FromRgb(0x12, 0x19, 0x25) : Color.FromRgb(0xEC, 0xEE, 0xF2);
-            SetBrush("NavigationViewItemBackgroundSelected", dark ? Color.FromRgb(0x18, 0x20, 0x2E) : Color.FromRgb(0xE4, 0xE7, 0xEE));
+            SetBrush("NavigationViewItemBackgroundSelected", dark ? Color.FromRgb(0x14, 0x1C, 0x2A) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("NavigationViewItemBackgroundPointerOver", paneHover);
             SetBrush("NavigationViewItemBackgroundPressed", dark ? Color.FromRgb(0x14, 0x1B, 0x27) : Color.FromRgb(0xE8, 0xEA, 0xEF));
             SetBrush("SteelPaneHoverBrush", paneHover);
@@ -148,8 +169,16 @@ namespace PadForge.Common
             SetBrush("EmberPressBrush", Color.FromRgb(0xE8, 0x5F, 0x25));
             SetBrush("DangerEdgeBrush", dark ? Color.FromRgb(0x7A, 0x3A, 0x1A) : Color.FromRgb(0xC9, 0x6A, 0x3D));
             SetBrush("DangerInkBrush", dark ? Color.FromRgb(0xFF, 0xB0, 0x8A) : Color.FromRgb(0x9A, 0x3A, 0x10));
+            SetBrush("LinkHoverBrush", dark ? Color.FromRgb(0xFF, 0xB0, 0x8A) : Color.FromRgb(0x9A, 0x3A, 0x10));
             SetBrush("WaitWellBrush", dark ? Color.FromRgb(0x17, 0x15, 0x0F) : Color.FromRgb(0xFF, 0xF6, 0xDF));
             SetBrush("WaitEdgeBrush", dark ? Color.FromRgb(0x3D, 0x32, 0x20) : Color.FromRgb(0xE8, 0xCE, 0x8A));
+            SetBrush("WaitTextBrush", dark ? Color.FromRgb(0xE8, 0xD9, 0xB5) : Color.FromRgb(0x5C, 0x4A, 0x16));
+            SetBrush("WaitMutedBrush", dark ? Color.FromRgb(0xCD, 0xB9, 0x8D) : Color.FromRgb(0x7A, 0x65, 0x28));
+            // Gold as text and marks (#574): Low beside a battery, Awaiting
+            // devices in a state pill, the unsaved changes line. Raw gold
+            // reads about 1.8 to 1 on white, so light deepens it to hold 4.5
+            // to 1 on a card, on the wait well and on the wait tint.
+            SetBrush("WaitBrush", dark ? Color.FromRgb(0xF2, 0xB8, 0x4B) : Color.FromRgb(0x8F, 0x62, 0x00));
             SetBrush("DashLineBrush", dark ? Color.FromRgb(0x34, 0x41, 0x54) : Color.FromRgb(0xAE, 0xB6, 0xC4));
             // Text ramp (#175): both grounds get a deliberate steel-tinted
             // hierarchy; stock light gray reads too faint.
@@ -177,17 +206,18 @@ namespace PadForge.Common
             // Steel ground: on dark, the WPF-UI translucent-gray surface
             // tokens swap to the steel palette, so every page sits on the
             // one ground with its card fill and card edge (the PadForge 6
-            // values, #574). On light the overrides are removed so lookup
-            // falls back to the stock theme.
+            // values, #574). The page is a step over the sidebar, and a
+            // card's edge is lit at its top. On light the overrides are
+            // removed so lookup falls back to the stock theme.
             if (dark)
             {
-                SetBrush("ApplicationBackgroundBrush", Color.FromRgb(0x0A, 0x0E, 0x15));
-                SetBrush("SolidBackgroundFillColorBaseBrush", Color.FromRgb(0x0A, 0x0E, 0x15));
-                SetBrush("NavigationViewContentBackground", Color.FromRgb(0x0A, 0x0E, 0x15));
-                SetBrush("NavigationViewContentGridBorderBrush", Color.FromRgb(0x1A, 0x22, 0x30));
+                SetBrush("ApplicationBackgroundBrush", Color.FromRgb(0x0B, 0x10, 0x18));
+                SetBrush("SolidBackgroundFillColorBaseBrush", Color.FromRgb(0x0B, 0x10, 0x18));
+                SetBrush("NavigationViewContentBackground", Color.FromRgb(0x0B, 0x10, 0x18));
+                SetBrush("NavigationViewContentGridBorderBrush", Color.FromRgb(0x16, 0x1E, 0x2B));
                 SetBrush("CardBackgroundFillColorDefaultBrush", Color.FromRgb(0x12, 0x19, 0x25));
                 SetBrush("CardBackgroundFillColorSecondaryBrush", Color.FromRgb(0x18, 0x20, 0x2E));
-                SetBrush("CardStrokeColorDefaultBrush", Color.FromRgb(0x1E, 0x27, 0x34));
+                SetCardEdge();
                 SetBrush("ControlFillColorDefaultBrush", Color.FromRgb(0x18, 0x20, 0x2E));
                 SetBrush("ControlStrokeColorDefaultBrush", Color.FromRgb(0x2A, 0x35, 0x46));
                 // Slider recolor (#175 item 10): Wpf.Ui's Slider template
@@ -383,6 +413,45 @@ namespace PadForge.Common
             var brush = new SolidColorBrush(color);
             brush.Freeze();
             Application.Current.Resources[key] = brush;
+        }
+
+        /// <summary>A card's edge on the dark ground (#574): one hairline
+        /// with a lit top, as light from above catches an edge. The lit part
+        /// is the top three pixels whatever the card's height, so the brush
+        /// is mapped in pixels and holds its last color below them.</summary>
+        internal static readonly Color CardEdgeTop = Color.FromRgb(0x2C, 0x37, 0x4A);
+        internal static readonly Color CardEdge = Color.FromRgb(0x1E, 0x27, 0x34);
+
+        private static void SetCardEdge()
+        {
+            var edge = new LinearGradientBrush
+            {
+                MappingMode = BrushMappingMode.Absolute,
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(0, 3),
+            };
+            edge.GradientStops.Add(new GradientStop(CardEdgeTop, 0));
+            edge.GradientStops.Add(new GradientStop(CardEdge, 1));
+            edge.Freeze();
+            Application.Current.Resources["CardStrokeColorDefaultBrush"] = edge;
+        }
+
+        /// <summary>The warm light in the title bar while the engine runs
+        /// (#574): the lower rim of a wide ember glow whose middle is above
+        /// the bar, toward its trailing end.</summary>
+        private static void SetTitleWarmth(byte alpha)
+        {
+            var warmth = new RadialGradientBrush
+            {
+                Center = new Point(0.8, -1.5),
+                GradientOrigin = new Point(0.8, -1.5),
+                RadiusX = 0.6,
+                RadiusY = 3.2,
+            };
+            warmth.GradientStops.Add(new GradientStop(Color.FromArgb(alpha, Accent.R, Accent.G, Accent.B), 0));
+            warmth.GradientStops.Add(new GradientStop(Color.FromArgb(0, Accent.R, Accent.G, Accent.B), 0.64));
+            warmth.Freeze();
+            Application.Current.Resources["TitleWarmthBrush"] = warmth;
         }
     }
 }

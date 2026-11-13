@@ -512,6 +512,19 @@ namespace PadForge.Tests
                          System.IO.SearchOption.AllDirectories))
             {
                 string markup = System.IO.File.ReadAllText(xaml);
+                // A dialog on the shared frame (#574) takes its chrome from
+                // the frame's style, which extends its content into the title
+                // bar, and its drag from the frame's class.
+                if (System.Text.RegularExpressions.Regex.IsMatch(markup, @"^\s*<views:DialogWindow\b"))
+                {
+                    checkedCount++;
+                    string frame = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "PadForge.App", "Views", "DialogWindow.cs"));
+                    string looks = System.IO.File.ReadAllText(System.IO.Path.Combine(root, "PadForge.App", "Resources", "Dialogs.xaml"));
+                    if (!frame.Contains("DragMove()")
+                        || !looks.Contains("<Setter Property=\"ExtendsContentIntoTitleBar\" Value=\"True\"/>"))
+                        offenders.Add(System.IO.Path.GetFileName(xaml));
+                    continue;
+                }
                 if (!markup.Contains("FluentWindow")) continue;
                 if (!markup.Contains("ExtendsContentIntoTitleBar=\"True\"")) continue;
                 checkedCount++;

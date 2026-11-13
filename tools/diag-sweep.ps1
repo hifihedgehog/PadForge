@@ -287,18 +287,19 @@ public static class W {
     Note "mappings tab: $(Click-El $mt)"
     Start-Sleep 2
 
-    # ---- Workshop browse dialog (1o coverage rule: dialogs and their item
-    # templates never realize from page navigation alone) ----
+    # ---- Workshop browse, Get Profiles' Community tab (#574) (1o coverage
+    # rule: dialogs and their item templates never realize from page
+    # navigation alone) ----
     ForceFG $hwnd | Out-Null
     Click-El (Find-NavItem 'Profiles') | Out-Null
     Start-Sleep 2
     $browse = $null
-    $bc = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, 'Browse Community Configs')
+    $bc = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, 'Get Profiles')
     foreach ($el in $win.FindAll($TS::Descendants, $bc)) {
         if ($el.Current.ControlType -eq $CT::Button) { $browse = $el; break }
     }
     if ($browse) {
-        Note "browse click: $(Click-El $browse)"
+        Note "get profiles click: $(Click-El $browse)"
         # The modal is UIA-shy from the root: discover its HWND via Win32
         # EnumWindows (visible PadForge-PID window that is not the main
         # HWND, larger than 400x400), then attach with FromHandle.
@@ -321,6 +322,15 @@ public static class W {
             $dlg = [System.Windows.Automation.AutomationElement]::FromHandle($dlgHwnd)
             [W]::TakeForeground($dlgHwnd)
             Start-Sleep 1
+            # The window opens on Starters: the Community tab is selected
+            # through its radio's SelectionItem pattern, which raises Checked.
+            $tab = $dlg.FindFirst($TS::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, 'GetProfiles_Community')))
+            if ($tab) {
+                try { $tab.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select(); Note 'community tab selected' }
+                catch { Note "community tab select failed: $($_.Exception.Message)" }
+                Start-Sleep 2
+            } else { Note 'community tab not found' }
             $edit = $dlg.FindFirst($TS::Descendants,
                 (New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::Edit)))
             if ($edit) {
@@ -333,11 +343,11 @@ public static class W {
                 $tiles = $dlg.FindAll($TS::Descendants, $li)
                 Note "workshop tiles/cards=$($tiles.Count) first='$(if ($tiles.Count) { $tiles[0].Current.Name })'"
             } else {
-                # Not a defect on its own. WorkshopBrowseDialog opens in
-                # WsState.Search only when EnableCommunityConfigLookup is on
-                # (ApplyGateState); with it off the dialog shows the cold gate
-                # and SearchPanel stays Collapsed, so no search box exists to
-                # find. The gate view IS realized either way. Turning the
+                # Not a defect on its own. CommunityConfigsPanel shows the
+                # games only when EnableCommunityConfigLookup is on
+                # (ApplyGateState); with it off the panel shows the cold gate
+                # and Get Profiles keeps its search box collapsed, so no search
+                # box exists to find. The gate view IS realized either way. Turning the
                 # setting on here would reach the live Steam network from a
                 # routine gate run, so the search view stays out of scope and
                 # the note says which of the two states was covered.

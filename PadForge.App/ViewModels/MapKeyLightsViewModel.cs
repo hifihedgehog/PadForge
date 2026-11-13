@@ -92,6 +92,24 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The progress line in five parts, so the dialog can set its
+        /// two numbers in the telemetry face: the words before the first
+        /// number, that number, the words between, the second number and the
+        /// words after, in the order this language's sentence puts them
+        /// (#574).</summary>
+        public string ProgressLead => ProgressParts()[0];
+        public string ProgressFirst => ProgressParts()[1];
+        public string ProgressMiddle => ProgressParts()[2];
+        public string ProgressSecond => ProgressParts()[3];
+        public string ProgressTail => ProgressParts()[4];
+
+        private string[] ProgressParts()
+        {
+            var keys = KeyIndexes().ToList();
+            return PadForge.Common.FormatRuns.SplitTwo(Strings.Instance.MapKeyLights_Progress_Format,
+                keys.Count(i => _map.Lights[i].Usage != 0), keys.Count);
+        }
+
         /// <summary>What to do now.</summary>
         public string Status
         {
@@ -242,6 +260,11 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsListening));
             OnPropertyChanged(nameof(CanLearn));
             OnPropertyChanged(nameof(Progress));
+            OnPropertyChanged(nameof(ProgressLead));
+            OnPropertyChanged(nameof(ProgressFirst));
+            OnPropertyChanged(nameof(ProgressMiddle));
+            OnPropertyChanged(nameof(ProgressSecond));
+            OnPropertyChanged(nameof(ProgressTail));
             OnPropertyChanged(nameof(Status));
             LightsChanged?.Invoke();
         }

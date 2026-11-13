@@ -69,7 +69,7 @@ namespace PadForge
                     var profile = string.IsNullOrEmpty(profileId) ? null : SettingsManager.Profiles.Find(p => p.Id == profileId);
                     string profilePicture = profile != null ? profile.DreamcastPicture : _viewModel.Settings.DefaultProfileDreamcastPicture;
                     var choice = DreamcastScreenDialog.Show(this, service, port, service.Get(port.InstanceGuid),
-                        DreamcastScreenService.ActiveProfileName(), profilePicture, row.BlissBoxLine);
+                        DreamcastScreenService.ActiveProfileName(), profilePicture);
                     if (choice == null) return;
                     if (profile != null) profile.DreamcastPicture = choice.ProfilePicture;
                     else _viewModel.Settings.DefaultProfileDreamcastPicture = choice.ProfilePicture;

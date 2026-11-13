@@ -128,19 +128,29 @@ public static class AddSlotsWin {
         [AddSlotsWin]::mouse_event(4, 0, 0, 0, [UIntPtr]::Zero)
         Start-Sleep -Milliseconds 1500
 
-        # Find the type button. Search the desktop root because WPF Popups
-        # can be hosted in a separate top-level window outside the main
-        # app's UIA subtree.
-        $btn = $null
+        # The tiles are in Add a Controller, drawn inside PadForge's window
+        # (#574). Driven By picks a connected pad by default, so Choose Later
+        # is selected first: the slots made here take no device.
+        $dialog = $null
         for ($attempt = 0; $attempt -lt 5; $attempt++) {
-            $cond = New-Object System.Windows.Automation.PropertyCondition(
-                [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $Aid)
-            $btn = $root.FindFirst($TD, $cond)
-            if ($btn) { break }
+            $dialog = $win.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "AddControllerDialog")))
+            if ($dialog) { break }
             Start-Sleep -Milliseconds 600
         }
+        $btn = $null
+        if ($dialog) {
+            $later = $dialog.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::AutomationIdProperty, "AddController_ChooseLater")))
+            if ($later) {
+                try { $later.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() } catch {}
+                Start-Sleep -Milliseconds 200
+            }
+            $btn = $dialog.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $Aid)))
+        }
         if (-not $btn) {
-            "  !! '$Aid' button not found in popup" | Out-File $logFile -Encoding ascii -Append
+            "  !! '$Aid' tile not found in Add a Controller" | Out-File $logFile -Encoding ascii -Append
             [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
             Start-Sleep -Milliseconds 400
             return

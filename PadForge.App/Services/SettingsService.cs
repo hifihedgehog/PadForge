@@ -2689,7 +2689,6 @@ namespace PadForge.Services
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
-            vm.FirstRunTourCompleted = appSettings.FirstRunTourCompleted;
 
             // Which cards are opened further (#574). A reset to defaults
             // comes through here with an empty list and folds them all back.
@@ -4684,69 +4683,13 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Formats a profile's topology into a compact label like "2x Xbox, 1x PlayStation".
-        /// Returns the localized no-slots label when there is no topology data.
+        /// Gives a profile's card its type chips (#574): one chip per
+        /// controller type, counted from the profile's slots by
+        /// ProfileTypeChip.Build.
         /// </summary>
-        internal static string FormatTopologyLabel(bool[] slotCreated, int[] slotControllerTypes)
-        {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo, out int vr);
-            var parts = new System.Collections.Generic.List<string>();
-            if (xbox > 0) parts.Add($"{xbox}x Xbox");
-            if (playstation > 0) parts.Add($"{playstation}x PlayStation");
-            if (nintendo > 0) parts.Add($"{nintendo}x Nintendo");
-            if (extendedCount > 0) parts.Add($"{extendedCount}x Extended");
-            if (midi > 0) parts.Add($"{midi}x MIDI");
-            if (kbm > 0) parts.Add($"{kbm}x KB+M");
-            if (vr > 0) parts.Add($"{vr}x VR");
-            return parts.Count > 0 ? string.Join(", ", parts) : Strings.Instance.Profiles_NoSlots;
-        }
-
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
             bool[] slotCreated, int[] slotControllerTypes)
-        {
-            CountTopology(slotCreated, slotControllerTypes, out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm, out int nintendo, out int vr);
-            item.XboxCount = xbox;
-            item.PlayStationCount = playstation;
-            item.ExtendedCount = extendedCount;
-            item.MidiCount = midi;
-            item.KbmCount = kbm;
-            item.NintendoCount = nintendo;
-            item.VrCount = vr;
-            item.TopologyLabel = FormatTopologyLabel(slotCreated, slotControllerTypes);
-        }
-
-        private static void CountTopology(bool[] slotCreated, int[] slotControllerTypes,
-            out int xbox, out int playstation, out int extendedCount, out int midi, out int kbm,
-            out int nintendo, out int vr)
-        {
-            xbox = 0; playstation = 0; extendedCount = 0; midi = 0; kbm = 0; nintendo = 0; vr = 0;
-            if (slotCreated == null) return;
-            for (int i = 0; i < slotCreated.Length; i++)
-            {
-                if (!slotCreated[i]) continue;
-                int type = (slotControllerTypes != null && i < slotControllerTypes.Length)
-                    ? slotControllerTypes[i] : 0;
-                switch (type)
-                {
-                    case 1: playstation++; break;
-                    case 2: extendedCount++; break;
-                    case 3: midi++; break;
-                    case 4: kbm++; break;
-                    // Nintendo is VirtualControllerType 5. Without this case
-                    // it fell through to default and was counted as Xbox, so
-                    // a Switch Pro slot showed up as "1x Xbox" in the profile
-                    // topology label and count (round 34).
-                    case 5: nintendo++; break;
-                    // VR is VirtualControllerType 6, and it repeated the exact
-                    // mistake the Nintendo comment above describes: no case, so
-                    // it fell to default and a VR profile read "1x Xbox".
-                    // Anything added to VirtualControllerType needs a case HERE,
-                    // a count property, a label part, and a badge. Four places.
-                    case 6: vr++; break;
-                    default: xbox++; break;
-                }
-            }
-        }
+            => item.SetTopology(slotCreated, slotControllerTypes);
 
         /// <summary>
 
@@ -5238,7 +5181,6 @@ namespace PadForge.Services
                 MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
-                FirstRunTourCompleted = vm.FirstRunTourCompleted,
                 OpenCards = CardFoldState.Snapshot(),
                 HeadTrackingLastSources = _mainVm.Dashboard.HeadTrackingLastSources,
                 OverlaysLastShown = _mainVm.Dashboard.OverlaysLastShown,
@@ -7518,15 +7460,6 @@ namespace PadForge.Services
         public bool LegacyDriverCleanupOffered { get; set; }
 
         /// <summary>
-        /// True once the first-run welcome tour has been completed or
-        /// skipped. Replaces the pre-v4 PadForge.firstrun marker file
-        /// beside the exe: all persisted state lives in this single
-        /// settings file.
-        /// </summary>
-        [XmlElement]
-        public bool FirstRunTourCompleted { get; set; }
-
-        /// <summary>
         /// The cards the user has opened further (#574): the keys of the
         /// More rows and the folded cards that are open
         /// (<see cref="Common.CardFoldState"/>). Interface state, kept with
@@ -8189,7 +8122,7 @@ namespace PadForge.Services
 
     /// <summary>
     /// Steam Workshop provenance stamped on a profile when it is imported
-    /// through Browse Community Configs (#9). Update detection compares the
+    /// from Get Profiles' Community tab (#9). Update detection compares the
     /// stored <see cref="TimeUpdated"/> against a fresh
     /// GetPublishedFileDetails read to flag profiles whose Workshop item
     /// changed since import.
@@ -8550,8 +8483,8 @@ namespace PadForge.Services
         [XmlArrayItem("Overlay")]
         public ScreenOverlayData[] ScreenOverlays { get; set; }
 
-        /// <summary>Steam Workshop provenance for profiles imported via
-        /// Browse Community Configs (#9). Null on every other profile.
+        /// <summary>Steam Workshop provenance for profiles imported from
+        /// Get Profiles' Community tab (#9). Null on every other profile.
         /// Identity-scoped like <see cref="Name"/> and <see cref="Id"/>:
         /// the runtime-state mirrors (InputService.SnapshotCurrentProfile,
         /// SaveActiveProfileState, SettingsService.UpdateActiveProfileSnapshot)

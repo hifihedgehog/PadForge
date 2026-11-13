@@ -30,7 +30,7 @@ namespace PadForge.Tests
         [InlineData("controller_switch_pro", "Switch Pro")]
         [InlineData("controller_generic", "Generic")]
         public void RetailNames(string tag, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.ControllerTagLabel(tag, null));
+            => Assert.Equal(expected, CommunityConfigsPanel.ControllerTagLabel(tag, null));
 
         /// <summary>The three codename tags, which are the ones a
         /// prettifier cannot possibly get right.</summary>
@@ -39,7 +39,7 @@ namespace PadForge.Tests
         [InlineData("controller_triton", "Steam Controller (2026)")]
         [InlineData("controller_steamcontroller_gordon", "Steam Controller (2015)")]
         public void CodenamesResolveToRetailNames(string tag, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.ControllerTagLabel(tag, null));
+            => Assert.Equal(expected, CommunityConfigsPanel.ControllerTagLabel(tag, null));
 
         /// <summary>THE BUG. Steam echoes the tag back as display_name, so
         /// a mapped tag must ignore it rather than render it verbatim.</summary>
@@ -47,9 +47,9 @@ namespace PadForge.Tests
         public void EchoedDisplayNameIsIgnored()
         {
             Assert.Equal("DualSense Edge",
-                WorkshopBrowseDialog.ControllerTagLabel("controller_ps5_edge", "controller_ps5_edge"));
+                CommunityConfigsPanel.ControllerTagLabel("controller_ps5_edge", "controller_ps5_edge"));
             Assert.Equal("Steam Controller (2015)",
-                WorkshopBrowseDialog.ControllerTagLabel(
+                CommunityConfigsPanel.ControllerTagLabel(
                     "controller_steamcontroller_gordon", "controller_steamcontroller_gordon"));
         }
 
@@ -59,14 +59,14 @@ namespace PadForge.Tests
         [Fact]
         public void UnmappedTagPrefersARealDisplayName()
             => Assert.Equal("Cool New Pad",
-                WorkshopBrowseDialog.ControllerTagLabel("controller_future_thing", "Cool New Pad"));
+                CommunityConfigsPanel.ControllerTagLabel("controller_future_thing", "Cool New Pad"));
 
         /// <summary>And with no display_name at all it degrades to the
         /// prettified tag instead of showing the raw string.</summary>
         [Fact]
         public void UnmappedTagWithoutDisplayNameFallsBackToPrettified()
         {
-            var label = WorkshopBrowseDialog.ControllerTagLabel("controller_future_thing", null);
+            var label = CommunityConfigsPanel.ControllerTagLabel("controller_future_thing", null);
             Assert.Equal("Future Thing", label);
             Assert.DoesNotContain("controller_", label);
         }

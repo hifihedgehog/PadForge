@@ -1837,19 +1837,17 @@ namespace PadForge.Tests
             Assert.True(vm.GameTelemetryReadsUdp);
 
             // Both rows, each box with its reset button. They are the first
-            // two rows of the grid under More on the Game Telemetry page
-            // (#574), where the game picker's row used to sit above them.
+            // two rows under More on the Game Telemetry page (#574), each a
+            // row that rests while the game is read from shared memory.
             string page = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "ExtrasPage.xaml"));
-            foreach (string row in new[] { "Grid.Row=\"0\"", "Grid.Row=\"1\"" })
-            {
-                string panel = "<StackPanel " + row + " Grid.Column=\"1\" Orientation=\"Horizontal\" Margin=\"0,0,0,8\" IsEnabled=\"{Binding GameTelemetryReadsUdp}\">";
-                int at = page.IndexOf(panel, StringComparison.Ordinal);
-                Assert.True(at >= 0, "no " + panel);
-                Assert.True(at == page.LastIndexOf(panel, StringComparison.Ordinal), "two of " + panel);
-                string body = page.Substring(at, page.IndexOf("</StackPanel>", at, StringComparison.Ordinal) - at);
-                Assert.Contains(row == "Grid.Row=\"0\"" ? "{Binding GameTelemetryPort," : "{Binding GameTelemetryForwardPort,", body);
-                Assert.Contains("reset:SettingResetButton", body);
-            }
+            const string Row = "<controls:SettingRow MinHeight=\"44\" IsEnabled=\"{Binding GameTelemetryReadsUdp}\">";
+            var rows = new List<string>();
+            for (int at = page.IndexOf(Row, StringComparison.Ordinal); at >= 0; at = page.IndexOf(Row, at + 1, StringComparison.Ordinal))
+                rows.Add(page.Substring(at, page.IndexOf("</controls:SettingRow>", at, StringComparison.Ordinal) - at));
+            Assert.Equal(2, rows.Count);
+            Assert.Contains("{Binding GameTelemetryPort,", rows[0]);
+            Assert.Contains("{Binding GameTelemetryForwardPort,", rows[1]);
+            Assert.All(rows, body => Assert.Contains("reset:SettingResetButton", body));
         }
 
         /// <summary>The picker, the profiles and the reader name a format by

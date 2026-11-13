@@ -263,6 +263,67 @@ namespace PadForge.Tests
             });
         });
 
+        private static TextBlock Bound(string key)
+        {
+            var text = new TextBlock();
+            BindingOperations.SetBinding(text, TextBlock.TextProperty, new Binding(key) { Source = Strings.Instance });
+            return text;
+        }
+
+        /// <summary>A row of the controller page holds more than one box: a
+        /// value and the same value as the device reports it, or the two ends
+        /// of a range. Each box reads the row's label, and what tells it from
+        /// the box before it: the word between two ends (to), and its own
+        /// tooltip (Raw axis value). With the label alone, a screen reader
+        /// read two boxes of a row by one name, and with the tooltip alone
+        /// it read every raw box of a card by one name (#574).</summary>
+        [Fact]
+        public void TheBoxesOfOneRow_EachReadTheRowsLabel_AndWhatSetsThemApart() => RunSta(() =>
+        {
+            string label = Strings.Instance.Common_Close, to = Strings.Instance.Common_To;
+
+            // A value, its unit, then the raw value: Center Offset X on the
+            // controller page.
+            var slider = new Slider();
+            var value = new TextBox();
+            var raw = new TextBox { ToolTip = "Raw axis value" };
+            var offset = Panel(Bound(nameof(Strings.Common_Close)), slider, value, new TextBlock { Text = "%" }, raw, new Button { Content = "Reset" });
+            offset.Orientation = Orientation.Horizontal;
+
+            // A range: its two ends, their unit, then the two raw ends.
+            var low = new TextBox();
+            var high = new TextBox();
+            var rawLow = new TextBox { ToolTip = "Raw axis value" };
+            var rawHigh = new TextBox { ToolTip = "Raw axis value" };
+            var range = Panel(Bound(nameof(Strings.Common_Close)), new Slider(), low, Bound(nameof(Strings.Common_To)), high,
+                new TextBlock { Text = "%" }, rawLow, Bound(nameof(Strings.Common_To)), rawHigh);
+            range.Orientation = Orientation.Horizontal;
+
+            // A box with a tooltip and a row of its own keeps the label alone.
+            var alone = new TextBox { ToolTip = "A hint about the value" };
+            var single = Panel(Bound(nameof(Strings.Common_Close)), alone);
+            single.Orientation = Orientation.Horizontal;
+
+            Shown(Panel(offset, range, single), () =>
+            {
+                foreach (var input in new FrameworkElement[] { slider, value, raw, low, high, rawLow, rawHigh, alone })
+                    AccessibleNames.NameInput(input);
+                Assert.Equal(label, NameOf(slider));
+                Assert.Equal(label, NameOf(value));
+                Assert.Equal(label + ", Raw axis value", NameOf(raw));
+
+                Assert.Equal(label, NameOf(low));
+                Assert.Equal(label + ", " + to, NameOf(high));
+                Assert.Equal(label + ", Raw axis value", NameOf(rawLow));
+                Assert.Equal(label + ", " + to + ", Raw axis value", NameOf(rawHigh));
+
+                Assert.Equal(label, NameOf(alone));
+
+                // No two boxes of a row share a name.
+                Assert.Equal(4, new[] { low, high, rawLow, rawHigh }.Select(NameOf).Distinct().Count());
+            });
+        });
+
         private sealed class Plain
         {
             public string Title { get; set; }
@@ -345,7 +406,8 @@ namespace PadForge.Tests
             string slot3 = Strings.Instance.Dashboard_Slot + " 3";
             Assert.Equal(slot3, AccessibleNames.SlotTitle(3));
             Assert.Equal(slot3, new SlotSummary(0) { SlotNumber = 3 }.ToString());
-            Assert.Equal(slot3, new SlotBadge { SlotNumber = 3 }.ToString());
+            Assert.Equal(Strings.Instance.ControllerType_Xbox + " #2",
+                new SlotBadge { VcType = PadForge.Engine.VirtualControllerType.Xbox, TypeNumber = 2 }.ToString());
             Assert.Equal(Strings.Instance.Pad_Gyro, new SlotStageInfo("Gyro", "x").ToString());
             Assert.Equal(Strings.Instance.Pad_Sticks, new SlotStageInfo("Sticks", string.Empty, isStickShape: true).ToString());
             Assert.Equal("Left Stick", new StickConfigItem(0, "Left Stick").ToString());

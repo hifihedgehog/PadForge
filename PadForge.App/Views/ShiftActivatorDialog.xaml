@@ -1,595 +1,447 @@
-﻿<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ShiftActivatorDialog"
+﻿<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ShiftActivatorDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
         xmlns:views="clr-namespace:PadForge.Views"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
-        Height="760" Width="600"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-             xmlns:reset="clr-namespace:PadForge.Controls">
+        Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-            <!-- Slider/label/edit styles cloned from PadPage so this dialog's
-                 color section matches the Lighting tab's RGB row chrome.
-                 Reset/record/clear buttons use the shared EmberIconButton
-                 system from App.xaml (#175 control spec §3). -->
-            <Style x:Key="DzLabelTight" TargetType="TextBlock">
-                <Setter Property="Width" Value="14"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
-                <!-- Single-letter channel tokens are mono, matching the
-                     PadPage copy of this style (font sweep 2026-07-05). -->
-                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-            </Style>
-            <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
-                <Setter Property="Minimum" Value="0"/>
-                <Setter Property="Maximum" Value="255"/>
-                <Setter Property="Width" Value="148"/>
-                <Setter Property="Margin" Value="6,0,0,0"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="IsSnapToTickEnabled" Value="True"/>
-                <Setter Property="TickFrequency" Value="1"/>
-            </Style>
-            <Style x:Key="DzValueEditTight" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
-                <Setter Property="Width" Value="48"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="TextAlignment" Value="Right"/>
-                <Setter Property="Margin" Value="6,0,0,0"/>
-                <Setter Property="Padding" Value="2,1"/>
-            </Style>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- A shift layer (#574), as the Record board draws it: its name and
+         icon, the input that turns it on, and what its unmapped controls
+         do. The mode, the kind of input, the timing and the layer's color
+         are under More, which opens by itself for a layer that uses one of
+         them. The line under the title says what the chosen mode does, and
+         the code-behind keeps it in step with the mode.
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
+         The Base layer has a name, an icon and a color and nothing else, so
+         its window (the code-behind's first constructor) shows the name row
+         and the color with no More. -->
+    <views:DialogWindow.Resources>
+        <!-- A color channel's letter, in the code face as on the controller
+             page's color rows. -->
+        <Style x:Key="DzLabelTight" TargetType="TextBlock">
+            <Setter Property="Width" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+        </Style>
+        <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="Maximum" Value="255"/>
+            <Setter Property="MaxWidth" Value="280"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="1"/>
+        </Style>
+        <Style x:Key="RowSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
+            <Setter Property="MaxWidth" Value="280"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+        </Style>
+        <!-- The heading of a device's inputs in an input picker's list. -->
+        <DataTemplate x:Key="InputGroupHead">
+            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3">
+                <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CancelButton_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
+            </Border>
+        </DataTemplate>
+        <!-- A mode or a kind of input: its name over a line on what it does
+             in the open list, and its name alone in the closed box. -->
+        <DataTemplate x:Key="PickClosed">
+            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+        <DataTemplate x:Key="PickInList">
+            <StackPanel Margin="0,2">
+                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding Description}" FontSize="13" TextWrapping="Wrap" MaxWidth="340"
+                           HorizontalAlignment="Left"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+        </DataTemplate>
+        <controls:PickTemplateSelector x:Key="PickLook" Closed="{StaticResource PickClosed}" List="{StaticResource PickInList}"/>
+    </views:DialogWindow.Resources>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <Grid Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>  <!-- 0  layer-name label -->
-                    <RowDefinition Height="Auto"/>  <!-- 1  layer-name box -->
-                    <RowDefinition Height="Auto"/>  <!-- 2  kind label -->
-                    <RowDefinition Height="Auto"/>  <!-- 3  kind combo -->
-                    <RowDefinition Height="Auto"/>  <!-- 4  input label -->
-                    <RowDefinition Height="Auto"/>  <!-- 5  input combo -->
-                    <RowDefinition Height="Auto"/>  <!-- 6  chord label -->
-                    <RowDefinition Height="Auto"/>  <!-- 7  chord combo -->
-                    <RowDefinition Height="Auto"/>  <!-- 8  axis threshold label -->
-                    <RowDefinition Height="Auto"/>  <!-- 9  axis threshold row -->
-                    <RowDefinition Height="Auto"/>  <!-- 10 mode label -->
-                    <RowDefinition Height="Auto"/>  <!-- 11 mode combo -->
-                    <RowDefinition Height="Auto"/>  <!-- 12 inherit-unmapped checkbox -->
-                    <RowDefinition Height="Auto"/>  <!-- 13 cycle label -->
-                    <RowDefinition Height="Auto"/>  <!-- 14 cycle list -->
-                    <RowDefinition Height="Auto"/>  <!-- 15 delay grid -->
-                    <RowDefinition Height="Auto"/>  <!-- 16 color grid -->
-                    <RowDefinition Height="Auto"/>  <!-- 17 validation hint -->
-                    <RowDefinition Height="Auto"/>  <!-- 18 buttons -->
-                </Grid.RowDefinitions>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <!-- Shown for a layer that exists and is not Base. The caller
+                 asks before it deletes. -->
+            <Button x:Name="DeleteLayerButton" Style="{StaticResource DialogQuietButton}" Visibility="Collapsed"
+                    Content="{Binding Pad_Shift_Delete, Source={x:Static strings:Strings.Instance}}"
+                    Click="DeleteLayerButton_Click"/>
+            <!-- What stops a save: no name, a name another layer has, or no
+                 input. -->
+            <TextBlock x:Name="HintText" Style="{StaticResource DialogFootNote}" Visibility="Collapsed"
+                       Foreground="{DynamicResource WaitBrush}" common:LiveText.Polite="True"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="SaveButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    Click="SaveButton_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-                <!-- Layer name + icon. The square button on the left shows the
-                     layer's icon (a picture, an emoji, or ⇧ when unset) and
-                     opens the shared icon picker (#471). -->
-                <TextBlock Grid.Row="0"
-                           Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <Grid Grid.Row="1" Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" x:Name="IconPickerButton"
-                            Width="36" Height="36"
-                            Padding="0"
-                            Margin="0,0,6,0"
-                            Click="IconPickerButton_Click"
-                            ToolTip="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                        <Grid>
-                            <TextBlock x:Name="IconPickerGlyph"
-                                       Text="&#x21E7;"
-                                       FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                       FontSize="18"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                            <reset:DecorativeImage FlowDirection="LeftToRight" x:Name="IconPickerImage"
-                                   Width="22" Height="22"
-                                   Stretch="Uniform"
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   Visibility="Collapsed"/>
-                        </Grid>
-                    </Button>
-                    <TextBox AutomationProperties.Name="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" x:Name="LayerNameBox" VerticalContentAlignment="Center"/>
+    <StackPanel x:Name="BodyPanel">
+        <!-- The name, with the layer's icon before it. The square button
+             shows the icon (a picture, an emoji, or the shift arrow when
+             none is set) and opens the shared icon picker (#471). -->
+        <controls:SettingRow MinHeight="44">
+            <TextBlock x:Name="NameLabel" Style="{StaticResource DialogLabel}"
+                       Text="{Binding Pad_Shift_NameLabel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="IconPickerButton" Style="{StaticResource DialogButton}" Width="36" Height="36" Padding="0"
+                    Click="IconPickerButton_Click"
+                    ToolTip="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                    AutomationProperties.Name="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                <Grid>
+                    <TextBlock x:Name="IconPickerGlyph" Text="&#x21E7;"
+                               FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI" FontSize="16"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <reset:DecorativeImage FlowDirection="LeftToRight" x:Name="IconPickerImage"
+                                           Width="22" Height="22" Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality" Visibility="Collapsed"/>
                 </Grid>
+            </Button>
+            <ui:TextBox x:Name="LayerNameBox" Style="{StaticResource DialogTextBox}" Margin="10,0,0,0"
+                        controls:SettingRow.Fills="True"
+                        AutomationProperties.Name="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:SettingRow>
 
-                <!-- Activator kind. Items show a bold name + small description
-                     in the dropdown, mirroring the Mapping table's combine-mode
-                     picker so the user gets a one-line explanation of each
-                     option without hunting through tooltips. -->
-                <TextBlock Grid.Row="2" x:Name="KindLabel"
-                           Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=KindCombo}" Grid.Row="3" Margin="0,0,0,12">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Kind" Visibility="{Binding Visibility, ElementName=KindCombo}" IsEnabled="{Binding IsEnabled, ElementName=KindCombo}" SettingLabel="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KindCombo_225"/>
-                    <ComboBox x:Name="KindCombo"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              SelectedValuePath="Value"
-                              SelectionChanged="KindCombo_SelectionChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                    <TextBlock Text="{Binding Description}"
-                                               FontSize="10"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </DockPanel>
+        <!-- The input that turns the layer on. Its label follows the mode
+             (Held With, Pressed With, Next Layer With), its picker reads
+             as the board's chip, and the device the input is on is the
+             picker's tooltip. A layer with no button of its own has no
+             such row. -->
+        <controls:SettingRow x:Name="InputRow" MinHeight="44">
+            <TextBlock x:Name="InputLabel" Style="{StaticResource DialogLabel}"
+                       Text="{Binding Pad_Shift_HeldWith, Source={x:Static strings:Strings.Instance}}"/>
+            <Grid MaxWidth="240">
+                <ComboBox x:Name="InputCombo" Style="{StaticResource DialogInputChipCombo}" HorizontalAlignment="Stretch"
+                          DisplayMemberPath="DisplayName" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          SelectionChanged="InputPicker_SelectionChanged"
+                          AutomationProperties.Name="{Binding Text, ElementName=InputLabel, TargetNullValue=''}">
+                    <ComboBox.GroupStyle>
+                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                    </ComboBox.GroupStyle>
+                </ComboBox>
+                <TextBlock x:Name="InputPlaceholder" IsHitTestVisible="False" Margin="13,0,34,0" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           Text="{Binding Pad_Shift_ChooseInput, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+            <ui:Button x:Name="InputRecordButton" Style="{StaticResource DialogRecordButton}" Content="&#xE7C8;"
+                       Click="InputRecord_Click"
+                       AutomationProperties.Name="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+            <ui:Button x:Name="InputClearButton" Style="{StaticResource DialogClearButton}" Click="InputClear_Click"
+                       ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
+                <Path FlowDirection="LeftToRight" Data="M 4,4 L 12,12 M 12,4 L 4,12" Width="16" Height="16"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                      StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </ui:Button>
+        </controls:SettingRow>
 
-                <!-- Activator input. Sub-label below the dropdown mirrors the
-                     Mappings tab Source column: shows the picked input's owning
-                     device, italic "Unassigned" when nothing is selected. -->
-                <TextBlock Grid.Row="4" x:Name="InputLabel"
-                           Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <StackPanel Grid.Row="5" x:Name="InputRow" Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" x:Name="InputCombo"
-                                  DisplayMemberPath="DisplayName"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
-                            <ComboBox.GroupStyle>
-                                <GroupStyle>
-                                    <GroupStyle.HeaderTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                    Padding="6,3,6,3">
-                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           TextTrimming="CharacterEllipsis"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GroupStyle.HeaderTemplate>
-                                </GroupStyle>
-                            </ComboBox.GroupStyle>
-                        </ComboBox>
-                        <ui:Button AutomationProperties.Name="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" x:Name="InputRecordButton"
-                                   Style="{StaticResource EmberIconButtonHot}"
-                                   VerticalAlignment="Center"
-                                   Click="InputRecord_Click">
-                            <reset:GlyphText x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{DynamicResource EmberBrush}"/>
-                            <ui:Button.ToolTip>
-                                <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                            </ui:Button.ToolTip>
-                        </ui:Button>
-                        <ui:Button AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}" Grid.Column="2" x:Name="InputClearButton"
-                                   Style="{StaticResource EmberIconButtonHot}"
-                                   VerticalAlignment="Center"
-                                   Click="InputClear_Click">
-                            <reset:GlyphText Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                            <ui:Button.ToolTip>
-                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                            </ui:Button.ToolTip>
-                        </ui:Button>
-                    </Grid>
-                    <TextBlock FontSize="10"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="4,1,0,0"
-                               TextTrimming="CharacterEllipsis">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="{Binding ElementName=InputCombo, Path=SelectedItem.DeviceLabel}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=InputCombo, Path=SelectedItem}" Value="{x:Null}">
-                                        <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                        <Setter Property="FontStyle" Value="Italic"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+        <!-- The second input: the other half of a chord, or the input that
+             steps a Cycle layer back. -->
+        <controls:SettingRow x:Name="ChordSecondRow" MinHeight="44">
+            <TextBlock x:Name="ChordLabel" Style="{StaticResource DialogLabel}"
+                       Text="{Binding Pad_Shift_AndWith, Source={x:Static strings:Strings.Instance}}"/>
+            <Grid MaxWidth="240">
+                <ComboBox x:Name="ChordSecondCombo" Style="{StaticResource DialogInputChipCombo}" HorizontalAlignment="Stretch"
+                          DisplayMemberPath="DisplayName" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          SelectionChanged="InputPicker_SelectionChanged"
+                          AutomationProperties.Name="{Binding Text, ElementName=ChordLabel, TargetNullValue=''}">
+                    <ComboBox.GroupStyle>
+                        <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>
+                    </ComboBox.GroupStyle>
+                </ComboBox>
+                <TextBlock x:Name="ChordSecondPlaceholder" IsHitTestVisible="False" Margin="13,0,34,0" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           Text="{Binding Pad_Shift_ChooseInput, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+            <ui:Button x:Name="ChordSecondRecordButton" Style="{StaticResource DialogRecordButton}" Content="&#xE7C8;"
+                       Click="ChordSecondRecord_Click"
+                       AutomationProperties.Name="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+            <ui:Button x:Name="ChordSecondClearButton" Style="{StaticResource DialogClearButton}" Click="ChordSecondClear_Click"
+                       ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                       AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
+                <Path FlowDirection="LeftToRight" Data="M 4,4 L 12,12 M 12,4 L 4,12" Width="16" Height="16"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                      StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </ui:Button>
+        </controls:SettingRow>
 
-                <!-- Second chord input (Kind=Chord). Same sub-label treatment
-                     as the primary input above. -->
-                <TextBlock Grid.Row="6" x:Name="ChordLabel"
-                           Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <StackPanel Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
-                                  DisplayMemberPath="DisplayName"
-                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
-                            <ComboBox.GroupStyle>
-                                <GroupStyle>
-                                    <GroupStyle.HeaderTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                    Padding="6,3,6,3">
-                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           TextTrimming="CharacterEllipsis"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GroupStyle.HeaderTemplate>
-                                </GroupStyle>
-                            </ComboBox.GroupStyle>
-                        </ComboBox>
-                        <ui:Button AutomationProperties.Name="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}" Grid.Column="1" x:Name="ChordSecondRecordButton"
-                                   Style="{StaticResource EmberIconButtonHot}"
-                                   VerticalAlignment="Center"
-                                   Click="ChordSecondRecord_Click">
-                            <reset:GlyphText x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{DynamicResource EmberBrush}"/>
-                            <ui:Button.ToolTip>
-                                <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                            </ui:Button.ToolTip>
-                        </ui:Button>
-                        <ui:Button AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}" Grid.Column="2" x:Name="ChordSecondClearButton"
-                                   Style="{StaticResource EmberIconButtonHot}"
-                                   VerticalAlignment="Center"
-                                   Click="ChordSecondClear_Click">
-                            <reset:GlyphText Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                            <ui:Button.ToolTip>
-                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                            </ui:Button.ToolTip>
-                        </ui:Button>
-                    </Grid>
-                    <TextBlock FontSize="10"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="4,1,0,0"
-                               TextTrimming="CharacterEllipsis">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="{Binding ElementName=ChordSecondCombo, Path=SelectedItem.DeviceLabel}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=ChordSecondCombo, Path=SelectedItem}" Value="{x:Null}">
-                                        <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                        <Setter Property="FontStyle" Value="Italic"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+        <!-- How far an axis has to go to turn the layer on. -->
+        <controls:SettingRow x:Name="AxisThresholdRow" MinHeight="44">
+            <TextBlock x:Name="AxisThresholdLabel" Style="{StaticResource DialogLabel}"
+                       Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"/>
+            <Slider x:Name="AxisThresholdSlider" Style="{StaticResource RowSlider}" Minimum="0.05" Maximum="1.0" Value="0.5"
+                    TickFrequency="0.05"
+                    AutomationProperties.Name="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBox Style="{StaticResource DialogValueEdit}" MinWidth="34"
+                     Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
+                     AutomationProperties.Name="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="AxisThreshold" Visibility="{Binding Visibility, ElementName=AxisThresholdSlider}" IsEnabled="{Binding IsEnabled, ElementName=AxisThresholdSlider}" SettingLabel="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AxisThresholdSlider_384"/>
+        </controls:SettingRow>
 
-                <!-- Axis threshold (Kind=Axis) -->
-                <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"
-                           Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <StackPanel Grid.Row="9" x:Name="AxisThresholdRow" Orientation="Horizontal" Margin="0,0,0,12">
-                    <Slider x:Name="AxisThresholdSlider" Width="320" Minimum="0.05" Maximum="1.0" Value="0.5"
-                            TickFrequency="0.05" IsSnapToTickEnabled="True"/>
-                    <TextBox Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
-                             Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
-                             HorizontalContentAlignment="Right"/>
-                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="AxisThreshold" Visibility="{Binding Visibility, ElementName=AxisThresholdSlider}" IsEnabled="{Binding IsEnabled, ElementName=AxisThresholdSlider}" SettingLabel="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AxisThresholdSlider_384"/>
-                </StackPanel>
+        <!-- What the layer does with a control it has no mapping for. Do
+             Nothing is where a new layer starts: the layer replaces Base
+             entirely. Fall Through to Base keeps the Base mapping of each
+             such control. -->
+        <controls:SettingRow x:Name="UnmappedRow" MinHeight="44">
+            <TextBlock x:Name="UnmappedLabel" Style="{StaticResource DialogLabel}"
+                       Text="{Binding Pad_Shift_UnmappedControls, Source={x:Static strings:Strings.Instance}}"/>
+            <ComboBox x:Name="InheritUnmappedCombo" Style="{StaticResource DialogSelect}" MinWidth="200" SelectedIndex="1"
+                      ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                      AutomationProperties.Name="{Binding Pad_Shift_UnmappedControls, Source={x:Static strings:Strings.Instance}}">
+                <ComboBoxItem Content="{Binding Pad_Shift_FallThroughToBase, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding Pad_Shift_DoNothing, Source={x:Static strings:Strings.Instance}}"/>
+            </ComboBox>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="InheritUnmapped" Visibility="{Binding Visibility, ElementName=InheritUnmappedCombo}" IsEnabled="{Binding IsEnabled, ElementName=InheritUnmappedCombo}" SettingLabel="{Binding Pad_Shift_UnmappedControls, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_InheritUnmappedBox_433"/>
+        </controls:SettingRow>
 
-                <!-- Mode -->
-                <TextBlock Grid.Row="10" x:Name="ModeLabel"
-                           Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"/>
-                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=ModeCombo}" Grid.Row="11" Margin="0,0,0,12">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeCombo}" IsEnabled="{Binding IsEnabled, ElementName=ModeCombo}" SettingLabel="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeCombo_397"/>
-                    <ComboBox x:Name="ModeCombo"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              SelectedValuePath="Value"
-                              SelectionChanged="ModeCombo_SelectionChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                    <TextBlock Text="{Binding Description}"
-                                               FontSize="10"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </DockPanel>
+        <controls:MoreRow x:Name="ShiftMore" Style="{StaticResource DialogMoreRow}"
+                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                          Hint="{Binding Pad_Shift_MoreHint, Source={x:Static strings:Strings.Instance}}">
+            <StackPanel x:Name="MorePanel">
+                <!-- The mode: how the input turns the layer on and off. -->
+                <controls:SettingRow x:Name="ModeRow" MinHeight="44">
+                    <TextBlock x:Name="ModeLabel" Style="{StaticResource DialogLabel}"
+                               Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="ModeCombo" Style="{StaticResource DialogSelect}" MinWidth="200" MaxWidth="300"
+                              controls:SettingRow.Fills="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedValuePath="Value"
+                              ItemTemplateSelector="{StaticResource PickLook}"
+                              SelectionChanged="ModeCombo_SelectionChanged"
+                              AutomationProperties.Name="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeCombo}" IsEnabled="{Binding IsEnabled, ElementName=ModeCombo}" SettingLabel="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeCombo_397"/>
+                </controls:SettingRow>
 
-                <!-- Two activator-behavior checkboxes stacked together. Both
-                     are toggles on the activator itself (not on the rows). -->
-                <StackPanel Grid.Row="12" x:Name="BehaviorChecksRow" Orientation="Vertical" Margin="0,0,0,12">
-                    <!-- v9 host-layer condition (#370 follow-up): the
-                         activator's input only counts while the chosen layer
-                         is active, decided at the press and held for the
-                         whole press. Any Layer (empty mask) is every
-                         activator's historical behavior. Hidden for Passive
-                         (no input to gate); see ApplyModeVisibility. -->
-                    <StackPanel x:Name="HostLayerRow" Margin="0,0,0,8">
-                        <TextBlock Text="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}"
-                                   Margin="0,0,0,4"/>
-                        <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=HostLayerCombo}" HorizontalAlignment="Left">
-                            <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="HostLayer" Visibility="{Binding Visibility, ElementName=HostLayerCombo}" IsEnabled="{Binding IsEnabled, ElementName=HostLayerCombo}" SettingLabel="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_HostLayerCombo_425"/>
-                            <ComboBox x:Name="HostLayerCombo" Width="320"
-                                      DisplayMemberPath="DisplayName" SelectedValuePath="LayerMask"
-                                      ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        </DockPanel>
-                    </StackPanel>
-                    <!-- Inherit unmapped targets from Base. Off by default —
-                         shift layer REPLACES Base entirely; targets the layer
-                         doesn't map output zero. Check to fall through to Base. -->
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=InheritUnmappedBox}" Margin="0,0,0,4">
-                        <CheckBox VerticalAlignment="Center" x:Name="InheritUnmappedBox"
-                                  Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
-                                  ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="InheritUnmapped" Visibility="{Binding Visibility, ElementName=InheritUnmappedBox}" IsEnabled="{Binding IsEnabled, ElementName=InheritUnmappedBox}" SettingLabel="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_InheritUnmappedBox_433"/>
-                    </StackPanel>
-                    <!-- Fire on Release: the edge modes fire when the input is
-                         let go instead of pressed (Steam's release-hosted
-                         activators). Hidden for Hold (level-driven, both edges
-                         already) and Passive (no button); see ApplyModeVisibility. -->
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}" Margin="0,0,0,4">
-                        <CheckBox VerticalAlignment="Center" x:Name="FireOnReleaseBox"
-                                  Content="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}"
-                                  ToolTip="{Binding Pad_Shift_FireOnRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="FireOnRelease" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}" IsEnabled="{Binding IsEnabled, ElementName=FireOnReleaseBox}" SettingLabel="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FireOnReleaseBox_441"/>
-                    </StackPanel>
-                    <!-- v2 PostponeMapping: when checked, the activator's own
-                         descriptor still drives any row that uses it as a
-                         source — so a single button can both change layer AND
-                         fire its own existing mapping. Off by default (the
-                         activator press is consumed by the layer change only). -->
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}">
-                        <CheckBox VerticalAlignment="Center" x:Name="PostponeMappingBox"
-                                  Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
-                                  ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="PostponeMapping" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}" IsEnabled="{Binding IsEnabled, ElementName=PostponeMappingBox}" SettingLabel="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PostponeMappingBox_449"/>
-                    </StackPanel>
-                </StackPanel>
+                <!-- The kind of input: one button, two held together, or an
+                     axis past a threshold. A Cycle layer steps by buttons
+                     and a layer with no button has no input, so neither
+                     shows this row. -->
+                <controls:SettingRow x:Name="KindRow" MinHeight="44">
+                    <TextBlock x:Name="KindLabel" Style="{StaticResource DialogLabel}"
+                               Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="KindCombo" Style="{StaticResource DialogSelect}" MinWidth="200" MaxWidth="300"
+                              controls:SettingRow.Fills="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedValuePath="Value"
+                              ItemTemplateSelector="{StaticResource PickLook}"
+                              SelectionChanged="KindCombo_SelectionChanged"
+                              AutomationProperties.Name="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Kind" Visibility="{Binding Visibility, ElementName=KindCombo}" IsEnabled="{Binding IsEnabled, ElementName=KindCombo}" SettingLabel="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KindCombo_225"/>
+                </controls:SettingRow>
 
-                <!-- Rows 13-14 (the old Custom jump-to-layer picker) were removed
-                     with the Latch redesign; Latch engages its own layer. -->
+                <!-- v9 host-layer condition (#370 follow-up): the input
+                     only counts while the chosen layer is active, decided
+                     at the press and held for the whole press. Any Layer
+                     (an empty mask) is how every activator behaved before.
+                     A layer with no button has no input to gate. -->
+                <controls:SettingRow x:Name="HostLayerRow" MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
+                               Text="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="HostLayerCombo" Style="{StaticResource DialogSelect}" MinWidth="200" MaxWidth="300"
+                              controls:SettingRow.Fills="True"
+                              DisplayMemberPath="DisplayName" SelectedValuePath="LayerMask"
+                              ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              AutomationProperties.Name="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="HostLayer" Visibility="{Binding Visibility, ElementName=HostLayerCombo}" IsEnabled="{Binding IsEnabled, ElementName=HostLayerCombo}" SettingLabel="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_HostLayerCombo_425"/>
+                </controls:SettingRow>
 
-                <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
-                     layers; check the ones to include in the rotation. Order
-                     follows the source list. -->
-                <StackPanel Grid.Row="13" x:Name="CycleHeaderRow" Margin="0,0,0,4">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
-                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleLayers" SettingLabel="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding IsEnabled, ElementName=CycleLayersList}"/>
-                    </StackPanel>
-                    <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
-                         Include Base puts the unshifted state back in the rotation.
-                         Next/Previous are the two button pickers above (one control). -->
-                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                        <CheckBox x:Name="CycleWrapBox" IsChecked="True"
+                <!-- A check box of these rows stands where a row's control
+                     does: the label column is empty before it, since the
+                     box carries its own words, and the box's own inset
+                     stands for the gap. -->
+                <!-- Fire on Release: the edge modes fire when the input is
+                     let go and not when it is pressed (Steam's
+                     release-hosted activators). Hold has a job for both
+                     edges already and a layer with no button has neither,
+                     so the code-behind hides the box for those. -->
+                <controls:SettingRow MinHeight="44" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}">
+                    <CheckBox x:Name="FireOnReleaseBox" Margin="150,0,0,0" VerticalAlignment="Center"
+                              Content="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Pad_Shift_FireOnRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="FireOnRelease" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}" IsEnabled="{Binding IsEnabled, ElementName=FireOnReleaseBox}" SettingLabel="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FireOnReleaseBox_441"/>
+                </controls:SettingRow>
+
+                <!-- v2 PostponeMapping: checked, the input still drives any
+                     row that uses it as a source, so one press both changes
+                     the layer and fires the input's own mapping. Off, the
+                     press is taken by the layer change alone. -->
+                <controls:SettingRow MinHeight="44" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}">
+                    <CheckBox x:Name="PostponeMappingBox" Margin="150,0,0,0" VerticalAlignment="Center"
+                              Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="PostponeMapping" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}" IsEnabled="{Binding IsEnabled, ElementName=PostponeMappingBox}" SettingLabel="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PostponeMappingBox_449"/>
+                </controls:SettingRow>
+
+                <!-- A Cycle layer's stops: the layers to step through, in
+                     the list's own order, then whether the ends meet and
+                     whether Base is a stop (#119). The two inputs above
+                     step forward and back. -->
+                <StackPanel x:Name="CycleBlock">
+                    <DockPanel>
+                        <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="CycleLayers" SettingLabel="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding IsEnabled, ElementName=CycleLayersList}"/>
+                        <TextBlock Style="{StaticResource DialogHead3}" VerticalAlignment="Center"
+                                   Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
+                    </DockPanel>
+                    <Border Style="{StaticResource DialogList}">
+                        <ListBox x:Name="CycleLayersList" Style="{StaticResource DialogListBox}" MaxHeight="160"
+                                 ItemContainerStyle="{StaticResource DialogListItem}" SelectionMode="Multiple"
+                                 AutomationProperties.Name="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding DisplayName}"
+                                              IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                    <controls:SettingRow MinHeight="44">
+                        <CheckBox x:Name="CycleWrapBox" Margin="150,0,0,0" VerticalAlignment="Center" IsChecked="True"
                                   Content="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}"
                                   ToolTip="{Binding Pad_Shift_CycleWrap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleWrap" Visibility="{Binding Visibility, ElementName=CycleWrapBox}" IsEnabled="{Binding IsEnabled, ElementName=CycleWrapBox}" SettingLabel="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_CycleWrapBox_467" Margin="4,0,8,0"/>
-                        <CheckBox x:Name="CycleIncludeBaseBox" Margin="20,0,0,0"
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleWrap" Visibility="{Binding Visibility, ElementName=CycleWrapBox}" IsEnabled="{Binding IsEnabled, ElementName=CycleWrapBox}" SettingLabel="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_CycleWrapBox_467"/>
+                    </controls:SettingRow>
+                    <controls:SettingRow MinHeight="44">
+                        <CheckBox x:Name="CycleIncludeBaseBox" Margin="150,0,0,0" VerticalAlignment="Center"
                                   Content="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}"
                                   ToolTip="{Binding Pad_Shift_CycleIncludeBase_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                         <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleIncludeBase" Visibility="{Binding Visibility, ElementName=CycleIncludeBaseBox}" IsEnabled="{Binding IsEnabled, ElementName=CycleIncludeBaseBox}" SettingLabel="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_CycleIncludeBaseBox_470"/>
-                    </StackPanel>
+                    </controls:SettingRow>
                 </StackPanel>
-                <ListBox Grid.Row="14" x:Name="CycleLayersList" Margin="0,0,0,12"
-                         MinHeight="80" MaxHeight="160"
-                         ScrollViewer.VerticalScrollBarVisibility="Visible"
-                         ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                         SelectionMode="Multiple">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding DisplayName}"
-                                      IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
 
-                <!-- Delay slider + numeric. With an edge mode (Toggle /
-                     Latch / Sticky) a non-zero delay is a LONG PRESS:
-                     the switch fires once when the hold crosses it
-                     (#206). Rows 2-3 are the auto-cancel companion,
-                     Toggle only, hidden per mode in ApplyModeVisibility. -->
-                <Grid Grid.Row="15" x:Name="DelayRow" Margin="0,0,0,12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"
+                <!-- The delay. With an edge mode (Toggle, Latch, Sticky) a
+                     delay above zero makes the switch a long press: it
+                     fires once when the hold crosses the delay (#206). -->
+                <controls:SettingRow x:Name="DelayRow" MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
                                Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
-                               ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                               Margin="0,0,0,4"/>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
-                                TickFrequency="50" IsSnapToTickEnabled="True"/>
-                        <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
-                                 Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
-                                 HorizontalContentAlignment="Right"/>
-                        <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button Click="ResetDelay_Click" Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center" Margin="4,0,0,0"
-                                   ToolTip="{Binding Pad_ResetShiftDelay, Source={x:Static strings:Strings.Instance}}">
-                            <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                        </ui:Button>
-                    </StackPanel>
-                    <TextBlock Grid.Row="2" x:Name="AutoCancelLabel" Margin="0,8,0,4"
+                               ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider x:Name="DelaySlider" Style="{StaticResource RowSlider}" Minimum="0" Maximum="2000" Value="0"
+                            TickFrequency="50"
+                            ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBox Style="{StaticResource DialogValueEdit}" MinWidth="34"
+                             Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                             AutomationProperties.Name="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Style="{StaticResource DialogUnit}"
+                               Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button Click="ResetDelay_Click" Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                               ToolTip="{Binding Pad_ResetShiftDelay, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.Name="{Binding Pad_ResetShiftDelay, Source={x:Static strings:Strings.Instance}}">
+                        <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
+                </controls:SettingRow>
+
+                <!-- Auto-cancel, for a Toggle layer alone: the layer lets
+                     go by itself after this long (#206). -->
+                <controls:SettingRow x:Name="AutoCancelRow" MinHeight="44">
+                    <TextBlock x:Name="AutoCancelLabel" Style="{StaticResource DialogLabel}"
                                Text="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"
                                ToolTip="{Binding Pad_Shift_AutoCancel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <StackPanel Grid.Row="3" x:Name="AutoCancelRow" Orientation="Horizontal">
-                        <Slider x:Name="AutoCancelSlider" Width="320" Minimum="0" Maximum="30000" Value="0"
-                                TickFrequency="500" IsSnapToTickEnabled="True"/>
-                        <TextBox Text="{Binding ElementName=AutoCancelSlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
-                                 Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
-                                 HorizontalContentAlignment="Right"/>
-                        <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center" Margin="4,0,0,0"
-                                   ToolTip="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}">
-                            <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                        </ui:Button>
-                    </StackPanel>
-                </Grid>
+                    <Slider x:Name="AutoCancelSlider" Style="{StaticResource RowSlider}" Minimum="0" Maximum="30000" Value="0"
+                            TickFrequency="500"
+                            ToolTip="{Binding Pad_Shift_AutoCancel_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBox Style="{StaticResource DialogValueEdit}" MinWidth="42"
+                             Text="{Binding ElementName=AutoCancelSlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                             AutomationProperties.Name="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Style="{StaticResource DialogUnit}"
+                               Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                               ToolTip="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.Name="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}">
+                        <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
+                </controls:SettingRow>
 
-                <!-- Layer color: matches the Lighting tab picker — 200×200
-                     HSV plate, swatch + hex entry, RGB sliders with per-channel
-                     reset icons, plus a section-level reset that clears the
-                     color entirely (no tab tint, default flyout dot). -->
-                <Grid Grid.Row="16" Margin="0,0,0,12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center"/>
-                        <ui:Button x:Name="ClearColorButton"
-                                   Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center"
-                                   Click="ClearColor_Click"
-                                   ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
+                <!-- The layer's color, as the controller page's Lighting
+                     section picks one: the hue and shade plate, a swatch
+                     with its hex, and a slider per channel. The reset at
+                     the heading's end takes the color away, so the layer's
+                     tab has no tint and its flyout dot is the usual one.
+                     A layer with no color shows an empty swatch and None
+                     in the hex field, whatever the plate stands at. -->
+                <StackPanel x:Name="ColorBlock">
+                    <DockPanel>
+                        <ui:Button x:Name="ClearColorButton" DockPanel.Dock="Right" Style="{StaticResource QuietResetButton}"
+                                   VerticalAlignment="Center" Click="ClearColor_Click"
+                                   ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}"
+                                   AutomationProperties.Name="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                         </ui:Button>
-                    </StackPanel>
-                    <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
-                                              HorizontalAlignment="Left"
-                                              Margin="0,0,0,8"/>
-                    <Grid Grid.Row="2" Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="64"/>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" x:Name="ColorPreviewSwatch"
-                                Width="48" Height="36" CornerRadius="4"
-                                HorizontalAlignment="Left"
-                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                                BorderThickness="1">
-                            <Border.Background>
-                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                    <Binding ElementName="ColorPicker" Path="Red"/>
-                                    <Binding ElementName="ColorPicker" Path="Green"/>
-                                    <Binding ElementName="ColorPicker" Path="Blue"/>
-                                </MultiBinding>
-                            </Border.Background>
+                        <TextBlock Style="{StaticResource DialogHead3}" VerticalAlignment="Center"
+                                   Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"/>
+                    </DockPanel>
+                    <views:ColorPickerControl x:Name="ColorPicker" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Border x:Name="ColorPreviewSwatch" Width="48" Height="34" CornerRadius="6"
+                                BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                Background="{DynamicResource SteelFieldBrush}">
+                            <Border x:Name="ColorPreviewFill" CornerRadius="5">
+                                <Border.Background>
+                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                        <Binding ElementName="ColorPicker" Path="Red"/>
+                                        <Binding ElementName="ColorPicker" Path="Green"/>
+                                        <Binding ElementName="ColorPicker" Path="Blue"/>
+                                    </MultiBinding>
+                                </Border.Background>
+                            </Border>
                         </Border>
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
-                        <TextBox x:Name="ColorHexBox" Grid.Column="2" Width="100"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center"
-                                 FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
-                                 KeyDown="ColorHexBox_KeyDown"
-                                 LostFocus="ColorHexBox_LostFocus"
-                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    </Grid>
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center" Margin="12,0,10,0"/>
+                        <ui:TextBox x:Name="ColorHexBox" Style="{StaticResource DialogTextBox}" Width="110"
+                                    FontFamily="{StaticResource TelemetryFontFamily}"
+                                    PlaceholderText="{Binding Common_None, Source={x:Static strings:Strings.Instance}}"
+                                    KeyDown="ColorHexBox_KeyDown" LostFocus="ColorHexBox_LostFocus"
+                                    ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
+                                    AutomationProperties.Name="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                    <controls:SettingRow MinHeight="40">
                         <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
-                        <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetRed_Click" Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center"
-                                   ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
+                                AutomationProperties.Name="R"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"
+                                 AutomationProperties.Name="R"/>
+                        <ui:Button Click="ResetRed_Click" Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"
+                                   AutomationProperties.Name="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                         </ui:Button>
-                    </StackPanel>
-                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,4">
+                    </controls:SettingRow>
+                    <controls:SettingRow MinHeight="40">
                         <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
-                        <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetGreen_Click" Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center"
-                                   ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
+                                AutomationProperties.Name="G"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"
+                                 AutomationProperties.Name="G"/>
+                        <ui:Button Click="ResetGreen_Click" Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"
+                                   AutomationProperties.Name="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                         </ui:Button>
-                    </StackPanel>
-                    <StackPanel Grid.Row="5" Orientation="Horizontal">
+                    </controls:SettingRow>
+                    <controls:SettingRow MinHeight="40">
                         <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
-                        <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                        <ui:Button Click="ResetBlue_Click" Style="{StaticResource QuietResetButton}"
-                                   VerticalAlignment="Center"
-                                   ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"
+                                AutomationProperties.Name="B"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DialogValueEdit}" MinWidth="30"
+                                 AutomationProperties.Name="B"/>
+                        <ui:Button Click="ResetBlue_Click" Style="{StaticResource QuietResetButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"
+                                   AutomationProperties.Name="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
                             <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                         </ui:Button>
-                    </StackPanel>
-                </Grid>
-
-                <!-- Validation hint, surfaced on Save with a missing / duplicate
-                     layer name or unselected input. Hidden by default. -->
-                <TextBlock Grid.Row="17" x:Name="HintText"
-                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                           TextWrapping="Wrap"
-                           Visibility="Collapsed"/>
-
-                <!-- Footer band (#175 dialog language): Save is the dialog's
-                     primary affirmative and wears the ember accent. -->
-                <StackPanel Grid.Row="18" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                    <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                            MinWidth="90" Margin="0,0,8,0"
-                            IsDefault="True" Click="SaveButton_Click"
-                            Style="{StaticResource EmberAccentButton}"/>
-                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                            MinWidth="90"
-                            IsCancel="True" Click="CancelButton_Click"/>
+                    </controls:SettingRow>
                 </StackPanel>
-            </Grid>
-        </ScrollViewer>
-    </Grid>
-</ui:FluentWindow>
+            </StackPanel>
+        </controls:MoreRow>
+    </StackPanel>
+</views:DialogWindow>

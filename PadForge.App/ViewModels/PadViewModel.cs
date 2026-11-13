@@ -1153,18 +1153,25 @@ namespace PadForge.ViewModels
             private string _batteryGlyph = string.Empty;
 
             /// <summary>Segoe MDL2 battery glyph for the crucible card roster
-            /// (#175). Same bucketing as DeviceRowViewModel.BatteryGlyph.</summary>
+            /// (#175).</summary>
             public string BatteryGlyph
             {
                 get => _batteryGlyph;
                 set
                 {
                     if (SetProperty(ref _batteryGlyph, value ?? string.Empty))
+                    {
                         OnPropertyChanged(nameof(HasBattery));
+                        OnPropertyChanged(nameof(HasLinkOrBattery));
+                    }
                 }
             }
 
             public bool HasBattery => !string.IsNullOrEmpty(_batteryGlyph);
+
+            /// <summary>Whether anything stands after the device's name on
+            /// its pill: the mark of a Bluetooth link or a battery.</summary>
+            public bool HasLinkOrBattery => HasBattery || HasTransportGlyph;
 
             private string _transportGlyph = string.Empty;
 
@@ -1177,11 +1184,69 @@ namespace PadForge.ViewModels
                 set
                 {
                     if (SetProperty(ref _transportGlyph, value ?? string.Empty))
+                    {
                         OnPropertyChanged(nameof(HasTransportGlyph));
+                        OnPropertyChanged(nameof(IsBluetooth));
+                        OnPropertyChanged(nameof(HasLinkOrBattery));
+                    }
                 }
             }
 
             public bool HasTransportGlyph => !string.IsNullOrEmpty(_transportGlyph);
+
+            /// <summary>Whether the device is linked over Bluetooth, the one
+            /// link that is marked: a wired one stays unmarked.</summary>
+            public bool IsBluetooth => HasTransportGlyph;
+
+            private bool _isSending;
+
+            /// <summary>Whether the device is sending input now: the small
+            /// light beside its name (Common.Input.InputActivity).</summary>
+            public bool IsSending
+            {
+                get => _isSending;
+                set => SetProperty(ref _isSending, value);
+            }
+
+            private int _batteryPercent = -1;
+            private bool _batteryCharging;
+            private bool _batteryLow;
+
+            /// <summary>The charge from 0 to 100, or -1 while the device
+            /// reports no battery. The meter draws it.</summary>
+            public int BatteryPercent => _batteryPercent;
+
+            public bool BatteryCharging => _batteryCharging;
+
+            /// <summary>Whether the charge is at or under the level Settings
+            /// names for a low battery, and not charging.</summary>
+            public bool BatteryLow => _batteryLow;
+
+            /// <summary>The battery for a screen reader: its level, and that
+            /// it is low or charging when it is.</summary>
+            public string BatterySpoken => _batteryPercent < 0 ? string.Empty
+                : string.Format(_batteryLow ? Strings.Instance.Home_Battery_Low_Format
+                    : _batteryCharging ? Strings.Instance.Home_Battery_Charging_Format
+                    : Strings.Instance.Home_FirstRun_Battery_Format, BatteryText);
+
+            /// <summary>Sets every battery fact from one reading:
+            /// <paramref name="lowAt"/> is the level Settings names.</summary>
+            public void SetBattery(int percent, bool charging, int lowAt)
+            {
+                if (percent < 0)
+                {
+                    percent = -1;
+                    charging = false;
+                }
+                bool low = percent >= 0 && !charging && percent <= lowAt;
+                bool moved = false;
+                if (_batteryPercent != percent) { _batteryPercent = percent; OnPropertyChanged(nameof(BatteryPercent)); moved = true; }
+                if (_batteryCharging != charging) { _batteryCharging = charging; OnPropertyChanged(nameof(BatteryCharging)); moved = true; }
+                if (_batteryLow != low) { _batteryLow = low; OnPropertyChanged(nameof(BatteryLow)); moved = true; }
+                BatteryText = percent >= 0 ? $"{percent}%" : string.Empty;
+                BatteryGlyph = Common.BatteryGlyphs.For(percent, charging);
+                if (moved) OnPropertyChanged(nameof(BatterySpoken));
+            }
 
             private string _typeGlyph = "\uE7FC";
 
@@ -1510,7 +1575,7 @@ namespace PadForge.ViewModels
 
             // The visible side: the TABLE ROWS live-filter as the user
             // types, which is what a search box over a table means.
-            bool firstPick = false;
+            bool droppedPick = false;
             var rowView = CollectionViewSource.GetDefaultView(Mappings);
             if (rowView != null)
             {
@@ -1523,13 +1588,18 @@ namespace PadForge.ViewModels
 
                 if (pictureBar)
                 {
-                    // The picture always has a control picked, as its boards
-                    // open with one (#574): at the page's first show, after a
-                    // change of the slot's type, and whenever the rows are
-                    // built again, a pick that names no row goes to the first
-                    // row the slot shows. The change is told once the rows
-                    // follow it, as a pick's is.
-                    if (RowOfTarget(_pickedTarget) == null) firstPick = PickFirstRow(kbmCfg);
+                    // Nothing is picked until the user picks: a control
+                    // ringed as the page opened read as a choice nobody had
+                    // made (ruled 2026-11-12). A pick that names no row is
+                    // no pick either, and is forgotten here: after a change
+                    // of the slot's type, and whenever the rows are built
+                    // again without it. No row is picked in its place. The
+                    // change is told once the rows follow it, as a pick's is.
+                    if (_pickedTarget != null && RowOfTarget(_pickedTarget) == null)
+                    {
+                        _pickedTarget = null;
+                        droppedPick = true;
+                    }
 
                     // The bar under the picture holds the picked control's
                     // rows and no others. The slot's surface mode still
@@ -1567,24 +1637,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MappingPickerFilterActive));
             // The rows may be new objects (a rebuild ends here), so the
             // picked row is read again.
-            if (firstPick) OnPropertyChanged(nameof(PickedTarget));
+            if (droppedPick) OnPropertyChanged(nameof(PickedTarget));
             RaisePickedChanged();
-        }
-
-        /// <summary>Picks the slot's first row that its surface mode shows,
-        /// as the picture's boards open with their first control picked
-        /// (#574), and says whether it did: nothing changes when no row
-        /// shows. The caller tells of the change. The pick is session state,
-        /// never saved.</summary>
-        private bool PickFirstRow(KbmSlotConfig kbmCfg)
-        {
-            foreach (var m in Mappings)
-            {
-                if (string.IsNullOrEmpty(m.TargetSettingName) || !RowMatchesSurface(m, "All", kbmCfg)) continue;
-                _pickedTarget = m.TargetSettingName;
-                return true;
-            }
-            return false;
         }
 
         /// <summary>Rebuilds the device-filter popup rows from the current

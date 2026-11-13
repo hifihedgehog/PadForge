@@ -20,6 +20,14 @@ namespace PadForge.Views
     /// </summary>
     public partial class ColorPickerControl : UserControl
     {
+        /// <summary>The color box is worked by the pointer, and the HEX box
+        /// and the three sliders beside it set the same color by keyboard
+        /// and read it to a screen reader. As a UserControl the box read as
+        /// a custom control with no name, so it keeps out of the control
+        /// view.</summary>
+        protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer()
+            => new PadForge.Controls.DecorativeIconPeer(this);
+
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
             nameof(Red), typeof(byte), typeof(ColorPickerControl),
             new FrameworkPropertyMetadata((byte)0,

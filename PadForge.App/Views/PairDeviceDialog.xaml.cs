@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using PadForge.Resources.Strings;
 using PadForge.Services;
-using Wpf.Ui.Controls;
 
 namespace PadForge.Views
 {
@@ -18,7 +16,7 @@ namespace PadForge.Views
     /// <see cref="DialogResult"/> is true when at least one controller paired,
     /// so the caller can refresh the device list.
     /// </summary>
-    public partial class PairDeviceDialog : FluentWindow
+    public partial class PairDeviceDialog : DialogWindow
     {
         private readonly WiiPairingService _service = new();
         private CancellationTokenSource _cts;
@@ -45,14 +43,6 @@ namespace PadForge.Views
             ControllerCombo.SelectedIndex = 0;
             SerialAddedList.ItemsSource = _settings?.SerialControllers;
             DjiAddedList.ItemsSource = _settings?.DjiRemoteHosts;
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             Closing += OnClosing;
         }
@@ -73,13 +63,24 @@ namespace PadForge.Views
             bool move = IsMoveFamily;
             bool serial = IsSerialFamily;
             bool dji = IsDjiFamily;
+            bool wii = !(ds3 || move || serial || dji);
+            // The dialog is titled for the family. The markup titles it for
+            // the Wii, the family it opens on.
+            Title = dji ? Strings.Instance.DjiPair_Title
+                  : serial ? Strings.Instance.SerialPair_Title
+                  : move ? Strings.Instance.MovePair_Title
+                  : ds3 ? Strings.Instance.Ds3Pair_Title
+                        : Strings.Instance.WiiPair_Title;
+            // The Wii's two numbered steps, or the family's paragraph.
+            WiiSteps.Visibility = wii ? Visibility.Visible : Visibility.Collapsed;
+            InstructionsText.Visibility = wii ? Visibility.Collapsed : Visibility.Visible;
             InstructionsText.Text = dji ? Strings.Instance.DjiPair_Instructions
                                   : serial ? Strings.Instance.SerialPair_Instructions
                                   : move ? Strings.Instance.MovePair_Instructions
                                   : ds3 ? Strings.Instance.Ds3Pair_Instructions
-                                        : Strings.Instance.WiiPair_Instructions;
+                                        : string.Empty;
             // The "temporary pairing" and live found-list are Wii-only concepts.
-            TemporaryCheck.Visibility = (ds3 || move || serial || dji) ? Visibility.Collapsed : Visibility.Visible;
+            TemporaryCheck.Visibility = wii ? Visibility.Visible : Visibility.Collapsed;
             FoundPanel.Visibility = Visibility.Collapsed;
             SerialPickers.Visibility = serial ? Visibility.Visible : Visibility.Collapsed;
             DjiPickers.Visibility = dji ? Visibility.Visible : Visibility.Collapsed;
@@ -108,13 +109,24 @@ namespace PadForge.Views
         /// DualShock 3: run the USB pairing ceremony (sixpair + registry identity +
         /// radio cycle) on a background thread, streaming each step to the status line.
         /// </summary>
+        /// <summary>While a search or a ceremony runs, the foot shows Cancel
+        /// alone, as the board draws it, and Cancel takes the focus Pair
+        /// held. Pair is back, with the focus, when the work ends with
+        /// nothing paired.</summary>
+        private void ShowWorking(bool working)
+        {
+            PairButton.IsEnabled = !working;
+            PairButton.Visibility = working ? Visibility.Collapsed : Visibility.Visible;
+            if (working) DismissButton.Focus();
+            else PairButton.Focus();
+        }
+
         private async Task PairDs3(bool moveFamily = false)
         {
             _scanning = true;
             _pairedAny = false;
-            PairButton.IsEnabled = false;
+            ShowWorking(true);
             FamilyCombo.IsEnabled = false;
-            ScanRing.Visibility = Visibility.Visible;
             SetStatus(Strings.Instance.Ds3Pair_Working, secondary: true);
 
             var svc = new Ds3PairingService(msg =>
@@ -138,7 +150,6 @@ namespace PadForge.Views
             }
             finally
             {
-                ScanRing.Visibility = Visibility.Collapsed;
                 _scanning = false;
             }
 
@@ -168,7 +179,7 @@ namespace PadForge.Views
                     _ => Strings.Instance.Ds3Pair_Failed,
                 };
                 SetStatus(msg, error: true);
-                PairButton.IsEnabled = true;
+                ShowWorking(false);
                 FamilyCombo.IsEnabled = true;
             }
         }
@@ -179,10 +190,9 @@ namespace PadForge.Views
 
             _scanning = true;
             _pairedAny = false;
-            PairButton.IsEnabled = false;
+            ShowWorking(true);
             TemporaryCheck.IsEnabled = false;
             FamilyCombo.IsEnabled = false;
-            ScanRing.Visibility = Visibility.Visible;
             FoundPanel.Visibility = Visibility.Collapsed;
             FoundList.Items.Clear();
             SetStatus(Strings.Instance.WiiPair_Searching, secondary: true);
@@ -249,7 +259,6 @@ namespace PadForge.Views
             }
             finally
             {
-                ScanRing.Visibility = Visibility.Collapsed;
                 _scanning = false;
 
                 if (_pairedAny)
@@ -259,7 +268,7 @@ namespace PadForge.Views
                 }
                 else
                 {
-                    PairButton.IsEnabled = true;
+                    ShowWorking(false);
                     TemporaryCheck.IsEnabled = true;
                     FamilyCombo.IsEnabled = true;
                 }
@@ -405,6 +414,11 @@ namespace PadForge.Views
                 : secondary ? "TextFillColorSecondaryBrush"
                 : "TextFillColorPrimaryBrush";
             StatusText.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, brushKey);
+            // The live line shows while it has something to say. Its flame
+            // is ember once a controller is paired or added, and the wait
+            // color otherwise.
+            StatusPanel.Visibility = string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+            LiveFlame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, success ? "EmberBrush" : "WaitBrush");
         }
     }
 }

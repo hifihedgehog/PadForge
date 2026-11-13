@@ -739,9 +739,9 @@ namespace PadForge.Views
             if (bitmap == null)
             {
                 // Resource not found. Return an empty placeholder to avoid a crash.
-                return new Image { Width = w, Height = h };
+                return new PadForge.Controls.DecorativeImage { Width = w, Height = h };
             }
-            var img = new Image
+            var img = new PadForge.Controls.DecorativeImage
             {
                 Source = bitmap,
                 Width = w,

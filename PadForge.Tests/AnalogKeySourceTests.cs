@@ -590,16 +590,17 @@ namespace PadForge.Tests
             Assert.Contains("AnalogKeyboardsEnabled = vm.AnalogKeyboardsEnabled", settings);
         }
 
-        /// <summary>The switch sits in the Settings page's Input Engine card
-        /// beside the G-keys switch, the vendor input paths the engine can
-        /// read, and not on the Dashboard or among the extras.</summary>
+        /// <summary>The switch sits in the Settings page's Hardware Support
+        /// card beside the G-keys switch, the hardware the engine can read
+        /// (#574), and not on Home or among the extras.</summary>
         [Fact]
-        public void TheSwitch_SitsInTheInputEngineCard()
+        public void TheSwitch_SitsInTheHardwareSupportCard()
         {
             string page = RepoFile("PadForge.App", "Views", "SettingsPage.xaml");
-            int engine = page.IndexOf("Binding Settings_InputEngine,", StringComparison.Ordinal);
+            int hardware = page.IndexOf("Binding Settings_HardwareSupport,", StringComparison.Ordinal);
             int analog = page.IndexOf("Binding Settings_AnalogKeyboards,", StringComparison.Ordinal);
-            Assert.True(engine > 0 && analog > engine, "the analog keyboards row is not inside the Input Engine card");
+            int drivers = page.IndexOf("Binding Settings_Group_Drivers, Source={x:Static strings:Strings.Instance}}\" Style=\"{StaticResource CardTitle}\"", StringComparison.Ordinal);
+            Assert.True(hardware > 0 && analog > hardware && drivers > analog, "the analog keyboards row is not inside the Hardware Support card");
             Assert.Contains("CommandParameter=\"AnalogKeyboardsEnabled\"", page);
             Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "HomePage.xaml"));
             Assert.DoesNotContain("AnalogKeyboards", RepoFile("PadForge.App", "Views", "ExtrasPage.xaml"));

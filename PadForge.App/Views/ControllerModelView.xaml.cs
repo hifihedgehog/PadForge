@@ -285,15 +285,10 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
 
         // Model families that ship multiple appearance (colorway) atlas
-        // sets. Ids/names come from the model classes' registries.
-        private static (string[] ids, string[] names) AppearanceRegistry(string family) => family switch
-        {
-            "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
-            "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
-            "DS4" => (ControllerModelDS4.AppearanceIds, ControllerModelDS4.AppearanceNames),
-            "DualSenseEdge" => (ControllerModelDualSenseEdge.AppearanceIds, ControllerModelDualSenseEdge.AppearanceNames),
-            _ => (null, null),
-        };
+        // sets. Ids/names come from the model classes' registries, by the
+        // one list a Home card's still asks too.
+        private static (string[] ids, string[] names) AppearanceRegistry(string family)
+            => ControllerModelBase.Appearances(family);
 
         private string _currentModelAppearance;
         private bool _appearancePickerSyncing;

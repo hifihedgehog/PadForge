@@ -70,7 +70,7 @@
   <data name="Common_Paste" xml:space="preserve"><value>Mado</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Dị njikere</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Amaghị ama</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Chọgharịa...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Chọgharịa…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Gaa n'ihu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Kwụsị</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Malite</value></data>
@@ -102,16 +102,16 @@
   <data name="Status_BthPS3RemovalBlocked_Format" xml:space="preserve"><value>E kwụsịrị iwepụ BthPS3. {0}</value></data>
   <data name="Status_BthPS3RemovalFailed" xml:space="preserve"><value>E wepụrụ naanị otu akụkụ nke BthPS3. Ndepụta ahụ na-egosi ihe fọdụrụ na ihe kpatara ya.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Njehie: {0}</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Dekọọ</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Na-edekọ...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Ọ dịghị ngwaọrụ a họrọ.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>mgbe</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Next" xml:space="preserve"><value>Na-esote</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ngwaọrụ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ntinye sitere na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tinye ngwaọrụ</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Dị ala</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mod egwuregwu</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Nabata mod egwuregwu DSX</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port mod egwuregwu</value></data>
@@ -122,22 +122,33 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Ntọala</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Izugbe</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Ntinye</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Ngwaike</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data na nzuzo</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Chọọ ntọala</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Mmelite</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Lelee ugbu a</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Na-enyocha mmelite…</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Tinye...</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Wepụ HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Nke a na-ewepụ HIDMaestro na PC a: virtual controller ya niile, driver ya, asambodo mbinye aka ya, igodo registry ya na faịlụ ya. PadForge ga-ebu ụzọ kwụsị engine ya. Mmemme ndị ọzọ na-eji HIDMaestro agaghị enwe driver ya ruo mgbe ha ga-amalite ọzọ. PadForge ga-awụnye ya ọzọ mgbe ọ ga-amalite virtual controller ọzọ.</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Nke a bụ ihe a ga-ewepụ na PC a. PadForge ga-awụnye HIDMaestro ọzọ na virtual controller ya ọzọ.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Na-agụ ihe HIDMaestro hapụrụ na PC a…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro ahapụghị ihe ọ bụla a ga-ewepụ na PC a.</value></data>
   <data name="HIDMaestroUninstall_Blocked" xml:space="preserve"><value>Mmemme ndị a na-eji HIDMaestro. Mechie ha, wee họrọ “Mee ka ọ dị ọhụrụ”.</value></data>
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Ọ na-anọgide: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Enweghị ike ịgụ ya: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>E wepụghị ya: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver Bluetooth nke BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Ewepụrụ</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Edobere</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Agụghị ya</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ewepụghị ya</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Na-enye controller PlayStation 3, PlayStation Move na Navigation controller ohere ijikọ site na Bluetooth. Ọ dị n'ime PadForge, a na-awụnye ya oge mbụ e jikọọrọ otu n'ime ha.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Na-ejikọ controller PlayStation 3 site na Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Wepụ BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Nke a na-ewepụ BthPS3 na PC a: driver ya niile, filter ọ na-agbakwunye na Bluetooth, na WinUSB driver PadForge nyere controller PlayStation 3 maka ijikọ. PadForge ga-ebu ụzọ kwụsị engine ya, Bluetooth ga-agbanyụkwa nwa oge ka a na-ewepụ driver ndị ahụ. Mgbe ahụ, controller PlayStation 3, Move na Navigation ga-arụ ọrụ naanị site na USB. Ijikọ otu n'ime ha ga-awụnye BthPS3 ọzọ.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Nke a bụ ihe a ga-ewepụ na PC a. Mgbe ahụ, controller PlayStation 3, Move na Navigation ga-arụ ọrụ naanị site na USB, ruo mgbe ijikọ otu n'ime ha ga-awụnye BthPS3 ọzọ.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Na-agụ ihe BthPS3 hapụrụ na PC a…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 ahapụghị ihe ọ bụla a ga-ewepụ na PC a.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini na-eji driver ndị a, ya mere ha ga-anọgide ma ọ bụrụ na a ka wụnyere ya.</value></data>
@@ -162,7 +173,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Ọnọdụ key na key nke layer ndabara nke keyboard ndị nlele Keyboard + Mouse na-ese, e mepụtara site na data nhazi QMK na fork QMK nke Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Ọnọdụ key na key nke layer ndabara nke keyboard ndị nlele Keyboard + Mouse na-ese, e mepụtara site na data nhazi QMK na fork QMK nke Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -183,7 +194,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Dee "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(enweghị ederede)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ederede</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Ike</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>nkeji (0 = ọ dịghị mgbe)</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Gụọ dịka controller iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Gụọ dịka keyboard</value></data>
@@ -192,6 +202,7 @@
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nọmba onye egwuregwu</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Onye egwuregwu</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Ihuenyo Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Ọ dịghị ihe na-eru port ahụ ruo mgbe ị chekwara.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Gosi</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Foto nke adapter</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Aha profile</value></data>
@@ -222,6 +233,9 @@
   <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>Chọọ</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Ngwaọrụ</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>jikọrọ: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Chọọ ngwaọrụ</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Niile</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Weghachi driver Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Gbanwee gaa na driver PadForge</value></data>
   <data name="Devices_DriverSwitch" xml:space="preserve"><value>Gbanwee driver</value></data>
@@ -319,9 +333,8 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Bọtịn</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Bupụ…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Hichapụ</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Mechie</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>E hichapụla "{0}".</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Bubata site na faịlụ…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Bubata site na Faịlụ…</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro jụrụ profile a na {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profile a enweghị HID descriptor, ya mere enweghị ike ịme controller site na ya.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ọ dịghị ihe e bubatara. {0}</value></data>
@@ -499,7 +512,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_Drawing" xml:space="preserve"><value>Na-ese…</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Aha</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Nwaa ọzọ</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Gụọ mmegharị a aha</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Achọrọ aha</value></data>
 
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Tọgharịa calibration</value></data>
@@ -542,16 +555,16 @@
   <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Enweghị slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Ọhụrụ</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Enweghị controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profile ọhụrụ</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Chekwaa dị ka</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Chekwaa ntọala ugbu a ebe a</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Dezie</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Buru ụzọ họrọ profile.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Hichapụ profile</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Dezie profile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Aha profile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profile ọhụrụ</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Aha</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profile ọhụrụ</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -723,6 +736,17 @@
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekọnd (0 = ọ dịghị mgbe)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Aha layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Aha</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ejide ya na</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Pịa ya na</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Layer ọzọ na</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer gara aga na</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Na kwa</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Họrọ ntinye</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Njikwa a na-ahazighị</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Laghachi na Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Emela ihe ọ bụla</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ọnọdụ, ụdị ntinye, oge na agba</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ụdị</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Jide</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Achọrọ aha layer.</value></data>
@@ -739,8 +763,6 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Hichapụ layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Hichapụ layer "{0}" na ahịrị mapping ya niile? Enweghị ike ịmegharị nke a.</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Layer ọ bụla</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Bọtịn na-esote</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Bọtịn gara aga</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bọtịn</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Wepụ akara a ka ịhapụ range ahụ n'aka wheel ahụ na sọftụwia nke ya. PadForge agaghịzi ezigara wheel ahụ range ọ bụla.</value></data>
 
@@ -785,7 +807,6 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Ebupụla profile "{0}".</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Ebubatala profile "{0}" (edebanyela ngwugwu ụda {1}).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faịlụ a abụghị profile PadForge a pụrụ ịgụ.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Họrọ ụda site na {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Ngwugwu ụda</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faịlụ zip nke ụda maka macro ụda</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Tinye ngwugwu…</value></data>
@@ -823,9 +844,6 @@
   <data name="Common_Reset" xml:space="preserve">
     <value>Tọgharịa</value>
   </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Paswọọdụ Remote Link</value>
-  </data>
   <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
     <value>Tinye paswọọdụ.</value>
   </data>
@@ -838,12 +856,12 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Na-ejikọ na {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Jikọọ ọzọ na-akpaghị aka</value></data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Họrọ ụda site na ngwugwu etinyere, ma ọ bụ chọgharịa faịlụ.</value>
-  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Njikọ ọzọ akpaghị aka</value></data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Chọgharịa faịlụ…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Họrọ ụda</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ụda ahụ na-akpọ site na speaker nke controller, ma ọ bụ nke PC mgbe o nweghị nke ọ bụla.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Jiri ụda</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Kpọọ {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -867,11 +885,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Jikọọ</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Jikọọ controller</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Jikọọ controller</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Jikọọ Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Meghee mkpuchi batrị ma pịa bọtịn SYNC na-acha uhie uhie.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Debe remote ahụ nso PC a mgbe ọkụ ya na-amụnye amụnye.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Jikọọ DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Jikọọ Move ma ọ bụ Navigation Controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Tinye controller serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Tinye remote DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Jikọọ</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Na-achọ. Pịa bọtịn SYNC ugbu a.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Na-achọ remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Controller ndị a chọtara</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Ejikọọla {0}. Ọ ga-apụta na ndepụta ngwaọrụ gị.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Achọtaghị redio Bluetooth. Kwụnye adapter Bluetooth ma nwaa ọzọ.</value></data>
@@ -887,8 +911,8 @@
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Na-edozi controller ahụ. Hapụ ya ka ọ nọrọ na USB.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Achọtaghị DualShock 3 na USB. Kwụnye ya site na eriri USB ma nwaa ọzọ.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Mechie</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(na-eche)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Aha:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Aha</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Gụọ tag a aha</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Debanye aha</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Controller VR</value></data>
   <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Ọkụ</value></data>
@@ -902,15 +926,15 @@
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Bọtịn ndị ezoro ezo</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Mụta bọtịn</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Igwe:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Malite ịmụ</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pịa bọtịn ezoro ezo ugbu a, wee hapụ ya…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Nwa oge…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Aha:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pịa ma jide bọtịn ahụ ugbu a.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Hapụ bọtịn ahụ.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Nzọụkwụ {0} n'ime {1}</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Aha</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Gụọ bọtịn a aha</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Debanye aha</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Bọtịn ndị a mụtara</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Bido ọzọ</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Amụtabeghị bọtịn ọ bụla.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Amụtara na {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Key: {0}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Bupụ…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Bubata…</value></data>
@@ -930,7 +954,7 @@
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Ọsọ</value></data>
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Ọsọ kacha elu</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Chọọ egwuregwu</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Egwuregwu {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Egwuregwu</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Na-achọ na Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Nke kacha ọhụrụ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Chọọ egwuregwu</value></data>
@@ -986,7 +1010,6 @@
   </data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Egwuregwu ọgụ</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Keyboard + mouse</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Chekwaa profile</value></data>
   <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Gbanyụọ</value></data>
   <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Ala</value></data>
   <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Etiti</value></data>
@@ -1009,20 +1032,24 @@
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Gwa m mgbe batrị dị ala</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Mekwaa ka controller maa jijiji</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Nwalee ọkwa</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Lelee ọkwa ahụ</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ka jikọrọ. Kenye ya na virtual controller a?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Kenye</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ọ bụghị ugbu a</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Nkebiokwu ọ bụla</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macro olu</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Kwuo nkebiokwu, ọ ga-apị bọtịn ị nwere ike ịhazi. Igwe okwu ọ bụla PadForge nwere ike iru na-ege ntị.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Jikwaa macro olu</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Gbanye macro olu</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Na-ege ntị</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Mgbe niile</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Pịa ka ị kwuo okwu</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Nkebiokwu</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Nkebiokwu a ga-ekwu</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Aha</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Aha bọtịn</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Debanye aha</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Nkebiokwu edebanyere aha</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Nkebiokwu</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (enweghị macro dị otú ahụ)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
@@ -1254,9 +1281,12 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Nata mmetụta trigger na ọkụ sitere na mod egwuregwu.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Gosi menu, layer na mgbanwe profile mgbe ị na-egwu egwu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, ihe nnọchi DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, ọsọ zuru ezu, usoro nke gị</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Ọsọ zuru ezu, Usoro nke gị</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} jikọrọ, mana a naghị eji ya.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Jiri ya</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Gịnị ka egwuregwu kwesịrị ịhụ?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge na-eme ka controller a ghọọ nke egwuregwu gị na-atụ anya ya. Họrọ otu iji malite. Ị nwere ike ịgbanwe ya ma emechaa site n'otu pịa.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge na-eme ka controller gị ghọọ nke egwuregwu gị na-atụ anya ya. Họrọ otu iji malite. Ị nwere ike ịgbanwe ya ma emechaa site n'otu pịa.</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick na Trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Ọkụ na Ụda</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro na Menu</value></data>
@@ -1293,4 +1323,87 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Aka ekpe</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Aka nri</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Kpochapụ trigger</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hazie ọsọ, pedal na gia nke egwuregwu ịnya ụgbọ ala na-eziga, dị ka ntinye ọ bụla.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Nweta mmetụta trigger na-agbanwe agbanwe na ọkụ site na mod egwuregwu e dere maka DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Gbanye mbupụ telemetry n'egwuregwu ahụ ma tụgharịa ya gaa na PC a na port a.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ọnọdụ isi bụ ahịrị Head Tracker na [Ngwaọrụ]. Hazie ntụgharị isi gaa n'axis stick na ngalaba Bọtịn nke controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Uru ndị ahụ bụ ahịrị Game Telemetry na [Ngwaọrụ]. Hazie ha na ngalaba Bọtịn nke controller ma ọ bụ jiri ha malite macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>A na-edozi ebe, nha na nghọta nke menu n'onwe ya na menu ahụ, na ngalaba [Macro na Menu] nke controller.</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ihe na-egosi</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Okirikiri, grid ma ọ bụ bar nke menu mgbe ọ meghere</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Detuo adreesị</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ekwentị jikọrọ na-egosi ebe a na na peeji Ngwaọrụ, ebe ị na-ekenye ya controller.</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Ọ dịghị ngwaọrụ dabara.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batrị {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batrị {0}, na-achaji</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Ndị na-eji ya</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Ntọala</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, bọtịn na sensọ niile</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Detuo nkọwa</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Ngwaahịa</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Ụdị</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Njikọ</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batrị</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ụzọ</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nọmba serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Ndozigharị</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ihe ndị ọzọ maka {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Dochie ntọala echekwara na "{0}" na nke ugbu a? Aha ya na egwuregwu ya ga-anọgide.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Dochie</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Tụba faịlụ profile ebe a</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Nweta profile</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Bubata faịlụ</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ịchekwa na-agbakwunye profile nkịtị ị nwere ike idezi.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ghọọ</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Mekwaa ka controller maa jijiji, Megharịa ọkwa ahụ kwa, Gwa m mgbe ọ chajiri zuru oke</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Zoo ngwaọrụ n'egwuregwu, Debe ngwaọrụ ezoro ezo n'etiti mmalite, Ngwa ndị ekwenyere</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Ọ dị ọhụrụ.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Akwụkwọ ntuziaka</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Lelee mmelite</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Chọọ ndị e kelere</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Ntinye sitere na</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Họrọ ma emechaa</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Ndị a na-ahọkarị</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Nhazi ọtụtụ egwuregwu PC na-atụ anya ya.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Maka egwuregwu nwere akara PlayStation, touchpad na lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Nhazi bọtịn Switch, maka egwuregwu na emulator na-atụ anya ya.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Note na control change maka software egwu.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller VR mebere site na SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Iji gbanwee ụdị ya ma emechaa, pịa chip ụdị dị na controller ahụ. Ọ na-ewe otu pịa.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ọ chọrọ SteamVR. Wụnye ya site na kaadị ya na Ntọala.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Controller VR adịlarị. Otu na-achịkwa aka abụọ.</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>A na-ahazi bọtịn, stick na trigger 1:1 ozugbo e mere controller ahụ.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Jikọọ controller Bluetooth</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Ejikọrọ</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batrị {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Batrị {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Ọ dịghị controller jikọrọ</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Jikọọ otu site na eriri ma ọ bụ Bluetooth.</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Chọọ ntọala, ngwaọrụ na profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Chọọ</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Nsonaazụ</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} iji gagharịa</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} iji mepee</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} site n'ebe ọ bụla</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Peeji</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Omume</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Hichapụ {0}?</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ọ na-amalite na-enweghị controller. Ọ na-ebunye onwe ya mgbe otu n'ime egwuregwu ya nọ n'ihu.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tinye egwuregwu na-agba ọsọ</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ọ dịghị mmemme ọzọ nwere window meghere.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Wepụ {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Aha, akara ngosi na agba nke layer Base na Shift Layer Flyout na n'ahịrị layer.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Ige ntị gbanyere ma ọ bụ gbanyụrụ, ọnọdụ, ntụkwasị obi</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Ige ntị agbanyụọla. Gbanye ya n'okpuru Ihe ndị ọzọ.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Ebubatara</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Bubata site na ngwaọrụ jikọrọ</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Họrọ ihe ọ na-egosi. Ọ dịghị ihe na-agbanwe ruo mgbe ị chekwara.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} n'ime {1} gbanyere</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profile ndị a ebubatara nwere ụdị ọhụrụ na Steam Workshop. Bubata ha ọzọ site na Nweta profile iji nweta mgbanwe ndị ahụ.</value></data>
 </root>

@@ -82,7 +82,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Tuimotu</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Kāore e mōhiotia</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Taunoa</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Tirotiro...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Tirotiro…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Haere tonu</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Whakamutu</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Tīmata</value></data>
@@ -135,6 +135,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Kua waihangatia te kōtaha “{0}”.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Kua mukua te kōtaha “{0}”.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Kua whakahōungia te kōtaha “{0}”.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Kei te kōtaha “{0}” te tatūnga o nāianei ināianei.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Kua utaina te kōtaha: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Hapa i te uta tautuhinga: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Kua tiakina ngā tautuhinga ki {0}.</value></data>
@@ -146,19 +147,16 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Kua mutu te pūkaha.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hapa: {0}</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Taunoa</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Kāore he pūrere i tīpakohia.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Kua tangohia te pūrere.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>E rere ana te pūkaha. Pāwhiri kia mutu.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Kua mutu te pūkaha. Pāwhiri kia tīmata.</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Peke</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Panuku</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Kua oti</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Pūrere</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Tāuru mai i</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tāpiri pūrere</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Iti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pikitia</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Rārangi</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} putanga</value></data>
@@ -184,6 +182,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Tautuhinga</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Whānui</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Tāuru</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Pūmārō</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Ngā taraiwa</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Raraunga me te tūmataiti</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Rapu tautuhinga</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Āhua</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Kaupapa</value></data>
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Taunoa a te pūnaha</value></data>
@@ -203,8 +207,8 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>Kua whakahōungia a PadForge ki {0}.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Tāpiri...</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Wetetāuta i HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ka tangohia e tēnei a HIDMaestro i tēnei PC: ōna controller mariko, tōna taraiwa, tōna tiwhikete waitohu, ōna kī rēhita me ōna kōnae. Ka whakamutua e PadForge tōna pūkaha i te tuatahi. Ka ngaro te taraiwa o HIDMaestro i ētahi atu hōtaka e whakamahi ana i a ia, kia tīmata anō rā anō rātou. Ka tāuta anō a PadForge i a HIDMaestro ā te wā e tīmata ai ia i tētahi controller mariko.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tangohia hoki a usbip-win2 i tāutaina mā tōna ake hōtaka tāuta</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Koinei ngā mea ka tangohia i tēnei PC. Ka tāuta anō a PadForge i a HIDMaestro ā tōna controller mariko e whai ake nei.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tangohia hoki a usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>I tāutaina e ngā putanga tawhito o PadForge a usbip-win2 mā te hōtaka tāuta a usbip-win2. Ka tangohia hoki e tēnei taua tāutanga, tae atu ki tōna tātari mō te USB root hub, ki te kore tētahi atu hōtaka e whakamahi ana i a usbip-win2. Ina tangohia te tātari, ka tīmata anō ngā USB 3 root hub katoa, nā reira ka motu te hononga o ngā pūrere USB mō te wā poto.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>E pānui ana i ngā mea i waiho e HIDMaestro ki tēnei PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>Kāore he mea i waiho e HIDMaestro ki tēnei PC hei tango.</value></data>
@@ -213,10 +217,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Ka noho tonu: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Kāore i taea te pānui: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Kāore i tangohia: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Taraiwa Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Kua tangohia</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Kua puritia</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Kāore i pānuitia</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Kāore i tangohia</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ka taea e ngā controller PlayStation 3, te PlayStation Move me te Navigation controller te hono mā te Bluetooth. Kua whakaurua ki roto i a PadForge, ā, ka tāutahia i te wā tuatahi ka honoa tētahi o rātou.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ka hono i ngā controller PlayStation 3 mā te Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Wetetāuta i BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ka tangohia e tēnei a BthPS3 i tēnei PC: ōna taraiwa, te tātari ka tāpiritia e ia ki te Bluetooth, me te taraiwa WinUSB i hoatu e PadForge ki ngā controller PlayStation 3 hei hono. Ka whakamutua e PadForge tōna pūkaha i te tuatahi, ā, ka weto te Bluetooth mō tētahi wā poto i te wā e wetewetea ana ngā taraiwa. Ā muri iho, mā te USB anake e mahi ai ngā controller PlayStation 3, Move me Navigation. Ki te honoa tētahi mā te Bluetooth, ka tāutahia anō a BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Koinei ngā mea ka tangohia i tēnei PC. Ā muri iho, mā te USB anake e mahi ai ngā controller PlayStation 3, Move me Navigation, kia honoa rā anō tētahi, ka tāutahia anō a BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>E pānui ana i ngā mea i waiho e BthPS3 ki tēnei PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>Kāore he mea i waiho e BthPS3 ki tēnei PC hei tango.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>Ka whakamahia ēnei taraiwa e DsHidMini, nō reira ka noho tonu ēnei mō te wā e tāutahia ana a DsHidMini.</value></data>
@@ -251,7 +260,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Ko ngā tūnga pātuhi me ngā pātuhi o te paparanga taketake o ngā papapātuhi e tuhia ana e te arokite Keyboard + Mouse, i hangaia mai i ngā raraunga tahora o QMK me te peka QMK a Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Ko ngā tūnga pātuhi me ngā pātuhi o te paparanga taketake o ngā papapātuhi e tuhia ana e te arokite Keyboard + Mouse, i hangaia mai i ngā raraunga tahora o QMK me te peka QMK a Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_License" xml:space="preserve"><value>Raihana</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -277,7 +286,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Patopato "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kāore he kuputuhi)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Kuputuhi</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Hiko</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>meneti (0 = kāore rawa)</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Pānui hei controller iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Pānui hei papapātuhi</value></data>
@@ -293,6 +301,7 @@
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Kaitākaro</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Tautuhi kaitākaro</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Mata Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Kāore he mea e tae ki te port kia tiaki rā anō koe.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Whakaatu</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Te pikitia o te adapter</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Ingoa kōtaha</value></data>
@@ -348,6 +357,9 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Ngā papapātuhi katoa (kua honoa)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Ngā kiore katoa (kua honoa)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Ngā pūrere</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>kua hono: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Rapu pūrere</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Katoa</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Whakahokia te taraiwa Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Huri ki te taraiwa o PadForge</value></data>
   <data name="Devices_DriverSwitch" xml:space="preserve"><value>Huri taraiwa</value></data>
@@ -359,8 +371,6 @@
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Tangohia tēnei pūrere me ōna tautuhinga</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Tango pūrere</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>Ka tangohia a {0} i te rārangi pūrere, ā, ka warewaretia ōna tautuhinga kua tiakina.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Hua: </value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Aratau whakauru</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Huna i ngā kēmu (HidHide)</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Tāutahia te taraiwa HidHide kia taea ai tēnei kōwhiringa</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Ngā tuaka</value></data>
@@ -446,22 +456,19 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Tāpiri tae</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ngā pātene</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ngā kōtaha kua kawemaitia…</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Ngā kōtaha kua kawemaitia</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Ō kōtaha kua kawemaitia ({0})</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Ngā tautuhinga controller</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Kaweake…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Muku</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Kati</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Muku i te kōtaha kua kawemaitia?</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Muku i te tautuhinga?</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Kua kaweake ki {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>I rahua te kaweake: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Kua mukua "{0}".</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Kawemai mai i te kōnae…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Kawemai i te kōnae…</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Kua kawemai mai i {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>I rahua te pānui: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I whakakāhoretia e HIDMaestro tēnei kōtaha i {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Kāore he HID descriptor o tēnei kōtaha, nō reira kāore e taea te hanga controller i a ia.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Kāore he mea i kawemaitia. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Whakahou</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Kawemai</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(pūrere HID kāore he ingoa)</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -861,7 +868,7 @@
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Tauira {0} o {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} tauira</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ingoa</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Whakamātau anō</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Tapaina tēnei tohu ā ringa</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Me whai ingoa</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>He roa rawa te ingoa (64 pū te mōrahi)</value></data>
 
@@ -954,25 +961,25 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Ngā kōtaha</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Whakahaere kōtaha</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Kōtaha hohe:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Kāore he slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Hou</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Kāore he controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Kōtaha hou</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Tiaki hei</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Tiakina te tatūnga o nāianei ki konei</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Whakatika</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Uta</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Tīpakohia tētahi kōtaha i te tuatahi.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Kāore e taea te kōtaha “Taunoa” te whakatika, te muku rānei.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Muku kōtaha</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Tiaki hei kōtaha</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Whakatika kōtaha</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Ingoa kōtaha:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Kōtaha hou</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Ingoa</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Kōtaha hou</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Tāruatia ngā tautuhinga mai i...</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Tāruatia mai i</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Whakakapia ngā mahere me te whakatikatika o ia pūrere o {0} ki ō tētahi atu controller.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Tāpiritia ngā mākoro o tētahi atu controller ki {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -1201,6 +1208,17 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Taumata</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ingoa paparanga</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Ingoa</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Pupuri ki</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Pēhi ki</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Paparanga panuku ki</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Paparanga o mua ki</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Me</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Kōwhiria he tāuru</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Ngā control kāore i maheretia</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Hoki ki te Taketake</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kaua e mahi</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Aratau, momo tāuru, wā me te tae</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Aratau</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Me whai ingoa te paparanga.</value></data>
@@ -1256,7 +1274,6 @@
   <data name="Profiles_Export" xml:space="preserve"><value>Kaweake…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Kawemai…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Kua kaweakehia te kōtaha "{0}".</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Kōwhiria he oro i {0}</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Mākoro</value></data>
   <data name="IconPicker_Images" xml:space="preserve"><value>Ngā atahanga</value></data>
   <data name="Emoji_Category_Animals" xml:space="preserve"><value>Kararehe</value></data>
@@ -1268,13 +1285,10 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Tiaki tuakiri</value>
+    <value>Tuakiri hono</value>
   </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Tautuhi anō</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Kupuhipa Hononga Mamao</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge Touchpad</value>
@@ -1284,9 +1298,6 @@
   </data>
   <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
     <value>Kāore ngā kupuhipa e ōrite.</value>
-  </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Tuihono</value>
   </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Tuimotu</value>
@@ -1300,7 +1311,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>E tūhono ana ki {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Tūhono anō aunoa</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Hono anō aunoa</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>E whakarongo ana ki {0}</value>
   </data>
@@ -1312,6 +1323,7 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Tirotiro kōnae…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Kōwhiria he oro</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ka rangona te oro mā te hōpuorooro o te controller, mā tō te PC rānei ki te kore ōna.</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1335,15 +1347,14 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>E rapu ana. Pēhia te pātene SYNC ināianei.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>E rapu ana i tētahi mamao.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Kua oti</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>E rere ana</value></data>
   <data name="Vr_DriverNameConflict_Format" xml:space="preserve"><value>Kei te whakamahi tētahi atu taraiwa OpenVR i te ingoa taraiwa o HIDMaestro, nā reira ka taea e SteamVR te uta i taua taraiwa hei whakakapi i te taraiwa o PadForge, ā, kāore ngā controller mariko VR e puta. Tangohia taua taraiwa kia whakatikaina ai tēnei: {0}</value></data>
   <data name="DjiPair_Address" xml:space="preserve"><value>Wāhitau</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Kati</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(e tatari ana)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Ingoa:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Ingoa</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Tapaina tēnei tūtohu</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Rēhita</value></data>
   <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Rama</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Pātene matua</value></data>
@@ -1354,16 +1365,16 @@
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Port UDP</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Kei te whakamahia te port UDP {0} e tētahi atu hōtaka.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Ngā pātene huna</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Akona tētahi pātene</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Mīhini:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Tīmata te ako</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pēhia te pātene huna ināianei, kātahi ka tuku…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Taihoa…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Mātāpuna:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Ingoa:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pēhia, ka pupuri i te pātene ināianei.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Tukuna te pātene.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Hipanga {0} o {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Mātāpuna</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Ingoa</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Tapaina tēnei pātene</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Rēhita</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Ngā pātene kua akona</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Tīmata anō</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Kāore anō kia akona he pātene.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>I akona i runga i {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ngā pātuhi: {0}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Kaweake…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Kawemai…</value></data>
@@ -1385,7 +1396,7 @@
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Tere mōrahi</value></data>
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Tere tīmata</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Rapu kēmu</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} kēmu</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Ngā kēmu</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Kāore he kēmu i kitea i te toa Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>E rapu ana i Steam…</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} i kitea</value></data>
@@ -1476,9 +1487,6 @@
   <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD me te kiore</value></data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Kēmu whawhai</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Papapātuhi + Kiore</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Tirohia ngā kōtaha tīmatanga</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Ngā kōtaha tīmatanga</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Tiakina te kōtaha</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Kua tāpirihia te kōtaha tīmatanga "{0}".</value></data>
   <data name="Starter_Strategy_Name" xml:space="preserve"><value>Rautaki</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Reihi</value></data>
@@ -1552,7 +1560,7 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Paparanga</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Kōtaha: {0}</value>
+    <value>Kōtaha hohe: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
     <value>Waihangatia he controller mariko ki tērā atu PC, kātahi ka whakahou.</value>
@@ -1799,10 +1807,23 @@
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tautapahia te tere, ngā pedal me ngā gear o ngā kēmu taraiwa.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Whiwhi i ngā pānga trigger me ngā pānga rama mai i ngā mod kēmu.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, whakakapi DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ngā port, tere mōrahi, ngā hōputu ritenga</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ngā port, Tere mōrahi, Ngā hōputu ritenga</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Kōtaha</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Rapu tautuhinga, pūrere, kōtaha</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Rapu</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ngā hua</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Runga</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Raro</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} hei neke</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} hei whakatuwhera</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} mai i hea rānei</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Ngā whārangi</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ngā mahi</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Kua hono a {0}, ā, kāore e whakamahia ana.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Whakamahia</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>He aha te mea me kite e ngā kēmu?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>Ka hurihia e PadForge tēnei controller hei te mea e tūmanakohia ana e ō kēmu. Kōwhiria tētahi hei tīmata. Ka taea te huri ā muri ake ki te pāwhiri kotahi.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>Ka hurihia e PadForge tō controller hei te mea e tūmanakohia ana e ō kēmu. Kōwhiria tētahi hei tīmata. Ka taea te huri ā muri ake ki te pāwhiri kotahi.</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Nekehanga me te pā</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rama me te oro</value></data>
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ngā mākoro me ngā tahua</value></data>
@@ -1825,6 +1846,7 @@
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Te kaha o ia trigger, te whakawhiti mōta, ngā wiri trigger urutau, Constant Trigger Force</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pūrere huaputa, ngā hongere, te kaha, he oro mō ia mōta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ngā center offset, te āhua me ngā uara deadzone o ia tuaka, he ānau mō ia tuaka, Awhe, urungi</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Awhe hei tau, ngā uara mata</value></data>
   <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, tāuru mai i</value></data>
   <data name="Pad_MoreOptions" xml:space="preserve"><value>Ētahi atu kōwhiringa</value></data>
   <data name="Pad_FewerOptions" xml:space="preserve"><value>Kōwhiringa iti iho</value></data>
@@ -1862,4 +1884,104 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Mauī</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Matau</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Ūkui trigger</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mahere i te tere, ngā pēra me ngā kia e tukuna ana e tētahi kēmu taraiwa, pērā i tētahi atu tāuru.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tangohia ngā pānga trigger urutau me ngā pānga rama i ngā mod kēmu i tuhia mō DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Whakakāhia te tuku telemetry i roto i te kēmu, ka tohu ai ki tēnei PC me tēnei port.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ka tae ngā pānga o tētahi mod ki ia controller kei a ia te pūmārō mō aua pānga.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko te tū o te māhunga te rārangi Head Tracker i [Ngā pūrere]. Mahere i te huri o te māhunga ki tētahi tuaka stick i te wāhanga Ngā pātene o tētahi controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko ngā uara te rārangi Game Telemetry i [Ngā pūrere]. Mahere i a rātou i te wāhanga Ngā pātene o tētahi controller, whakamahia rānei hei whakaoho mākoro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ko te tūnga, te rahi me te pūataata o tētahi tahua ka tautuhia ki te tahua anō, i te wāhanga [Ngā mākoro me ngā tahua] o tētahi controller.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Ngā kēmu kāore e mōhiotia ana e PadForge</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mō ngā mod e rapu ana i tētahi DSX e rere ana i mua i tā rātou tuku</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Tāruatia te wāhitau</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Tūnga ki te mata</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ka puta mai tētahi waea ka hono ki konei, ki te whārangi Ngā pūrere hoki, ki reira tautapa ai ki tētahi controller.</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Papapātuhi me ngā kiore</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Kua hono</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Kāore i hono</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ētahi atu tāuru</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Kāore he pūrere e ōrite ana.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Kāore e whakamahia ana</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>pūhiko {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>pūhiko {0}, e whakakī ana</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Whakamahia e</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Tautuhinga</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Ia tuaka, ia pātene, ia pūoko</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Tāruatia ngā taipitopito</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Hua</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Momo</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ngā āheinga</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Hononga</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Pūhiko</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ara</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Tau rangatū</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Pūmanawa mārō</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Putanga</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Kei mua ināianei: {0}, kāore he kōtaha i tautuhia mōna</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Kei mua ināianei: {0}, ka uta i a {1}</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Ka uta mō {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Kua tautuhia mō {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Hohe</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ētahi atu mō {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Whakakapia te tatūnga kua tiakina ki “{0}” ki tō nāianei? Ka noho tonu tōna ingoa me ōna kēmu.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Whakakapia</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Tukuna he kōnae kōtaha ki konei</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ina</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>i runga i</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Tiki kōtaha</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Tīmatanga</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Kawemai kōnae</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Mā te tiaki ka tāpiritia he kōtaha noa ka taea e koe te whakatika.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ka huri hei</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Whakawiri anō i te controller, Tukuna anō te pānui ia, Pānui ina kī katoa</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hunaia ngā pūrere i ngā kēmu, Kia huna tonu ngā pūrere i waenga i ngā whakarewanga, Ngā taupānga kua whakaaetia</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Kua hou.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Tuhinga</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Tirohia ngā whakahou</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Rapu whakamihi</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Kāore he whakamihi e ōrite ana ki “{0}”.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Tāuru mai i</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Ngā mea noa</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Te tahora e tūmanakohia ana e te nuinga o ngā kēmu PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Mō ngā kēmu whai tohu PlayStation, papa pā, rama hoki.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Te tahora pātene o Switch, mō ngā kēmu me ngā kaiwhaiahua e tūmanako ana ki tērā.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Ngā orotahi me ngā control change mō ngā pūmanawa puoro.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Ngā controller VR mariko mā SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Hei huri i te momo ā muri ake, pāwhiria te tohu momo i runga i te controller. Kotahi noa te pāwhiri.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Me whai SteamVR. Tāutahia mai i tōna kāri i Tautuhinga.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Kua puta kē he controller VR. Kotahi noa e whakahaere ana i ngā ringa e rua.</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Ka maheretia ngā pātene, ngā stick me ngā trigger 1:1 i te wā e hangaia ana te controller.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Hono i tētahi controller Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Tīmata mai i tētahi kōtaha kua oti kē</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Kua hono</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, pūhiko {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Pūhiko {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Kāore he controller kua hono</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Honoa tētahi ki te taura, mā te Bluetooth rānei.</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Kāore he mea i PadForge e ōrite ana ki “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Rapua ngā tuhinga mō “{0}”</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Muku i a {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Ka tangohia te kōtaha me tōna ture huri aunoa. Kāore e taea te whakahoki.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Ka tangohia te kōtaha. Kāore e taea te whakahoki.</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Whakatangihia {0}</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ka tīmata me te kore controller. Ka uta noa ina kei mua tētahi o ōna kēmu.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tāpiri kēmu e rere ana</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kāore he hōtaka kē he matapihi tuwhera.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tango {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Te ingoa, te tohu me te tae o te paparanga Taketake i te Shift Layer Flyout me te rārangi paparanga.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Kua kawemaitia</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Kawemai i tētahi pūrere kua hono</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Raupapa paita</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Kōwhiria tāna e whakaatu ai. Kāore he mea e huri kia tiaki rā anō koe.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>ētita ānau</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ora: {0} o {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Ngā kōtaha tīmatanga</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>He kōtaha kua oti kē mō tētahi momo kēmu katoa. Kōwhiria tētahi, tautapa he controller, ka tākaro.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o {1} kua kā</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>He putanga hou ake o ēnei kōtaha kua kawemaitia kei te Steam Workshop. Kawemai anō i a rātou mai i Tiki kōtaha kia riro mai ngā panoni.</value></data>
 </root>

@@ -353,10 +353,10 @@ namespace PadForge.Tests
         {
             // 0x5A = Z, 0x20 = Space: the two a user would otherwise see
             // as "KbmKey5A" / "KbmKey20" in the community-profile preview.
-            Assert.Equal("Z", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmKey5A"));
+            Assert.Equal("Z", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmKey5A"));
             Assert.Equal(
                 PadForge.ViewModels.MacroAction.VirtualKeyDisplayName(PadForge.Common.VirtualKey.Space),
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmKey20"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmKey20"));
 
             // Mouse buttons are ZERO-based (audit 2026-07-25, C25: this
             // assertion previously encoded the off-by-one it was meant to
@@ -364,19 +364,19 @@ namespace PadForge.Tests
             // use the editor's own row names (C26).
             Assert.Equal(
                 PadForge.Resources.Strings.Strings.Instance.Mouse_LeftClick,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn0"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn0"));
             Assert.Equal(
                 PadForge.Resources.Strings.Strings.Instance.Mouse_RightClick,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn1"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn1"));
             Assert.Equal(
                 PadForge.Resources.Strings.Strings.Instance.Mouse_X,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMouseX"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMouseX"));
 
             // Non-KBM targets pass through: they are already readable.
-            Assert.Equal("ButtonA", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("ButtonA"));
-            Assert.Equal("LeftThumbAxisX", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("LeftThumbAxisX"));
+            Assert.Equal("ButtonA", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("ButtonA"));
+            Assert.Equal("LeftThumbAxisX", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("LeftThumbAxisX"));
             // An undefined VK keeps its raw spelling rather than lying.
-            Assert.Equal("KbmKeyFE", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmKeyFE"));
+            Assert.Equal("KbmKeyFE", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmKeyFE"));
         }
     }
 }

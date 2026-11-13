@@ -23,7 +23,7 @@ namespace PadForge.Tests
         [InlineData("ButtonStart", "Menu")]
         [InlineData("ButtonBack", "View")]
         public void NamesAreWhatAPlayerWouldSay(string raw, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.FriendlySource(raw));
+            => Assert.Equal(expected, CommunityConfigsPanel.FriendlySource(raw));
 
         /// <summary>Nothing user-facing may come out as run-together Pascal
         /// case, even for an input we never named.</summary>
@@ -32,7 +32,7 @@ namespace PadForge.Tests
         [InlineData("Gamepad WeirdNewPad3")]
         public void UnknownInputsStillReadAsWords(string raw)
         {
-            var s = WorkshopBrowseDialog.FriendlySource(raw);
+            var s = CommunityConfigsPanel.FriendlySource(raw);
             Assert.Contains(" ", s);
             Assert.DoesNotContain("Gamepad ", s);
         }
@@ -41,7 +41,7 @@ namespace PadForge.Tests
         [InlineData("LeftStickX", "Left Stick X")]
         [InlineData("Paddle2", "Paddle 2")]
         public void SpacingSplitsOnCaseAndDigitBoundaries(string raw, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.SpaceIdentifier(raw));
+            => Assert.Equal(expected, CommunityConfigsPanel.SpaceIdentifier(raw));
 
         /// <summary>THE JOIN THAT MUST NOT BREAK. Display names are
         /// humanized, but the controller art keys on the ENGINE identifier,
@@ -54,6 +54,6 @@ namespace PadForge.Tests
         [InlineData("LeftThumbAxisX", "LeftThumbRing")]
         [InlineData("RightThumbAxisY", "RightThumbRing")]
         public void ArtAnchorStaysTheEngineIdentifier(string source, string expected)
-            => Assert.Equal(expected, WorkshopBrowseDialog.ArtAnchorFor(source));
+            => Assert.Equal(expected, CommunityConfigsPanel.ArtAnchorFor(source));
     }
 }

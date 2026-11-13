@@ -91,16 +91,16 @@ namespace PadForge.Tests
 
         [Theory]
         [MemberData(nameof(LocaleCases))]
-        public void TheLockedHintNamesTheDefaultProfileAsTheListShowsIt(string locale)
+        public void TheUpdatesBodyNamesGetProfilesAsTheDialogDoes(string locale)
         {
-            // The Profiles list shows the built-in profile under
-            // Profile_Default, so a hint naming it in English named a row the
-            // list does not show in any other language.
+            // The update check's message sends the user to Get Profiles to
+            // import a config again (#574), so it names the button and the
+            // dialog in the words they show in that language.
             var culture = new CultureInfo(locale);
-            string name = Strings.ResourceManager.GetString("Profile_Default", culture);
-            string hint = Strings.ResourceManager.GetString("Profiles_DefaultLockedHint", culture);
+            string name = Strings.ResourceManager.GetString("GetProfiles_Title", culture);
+            string body = Strings.ResourceManager.GetString("Workshop_UpdatesBody", culture);
             Assert.False(string.IsNullOrEmpty(name));
-            Assert.Contains(name, hint);
+            Assert.Contains(name, body);
         }
 
         [Theory]

@@ -265,10 +265,12 @@ namespace PadForge.Services
             && (offer == null || ReferenceEquals(_offer, offer));
 
         /// <summary>Writes the card's status line for <paramref name="op"/>,
-        /// unless another operation or another offer has taken over.</summary>
-        private void Status(Operation op, UpdateOffer offer, Func<string> text)
+        /// unless another operation or another offer has taken over.
+        /// <paramref name="upToDate"/> says the line reports this build the
+        /// newest, which the About page shows in its own words.</summary>
+        private void Status(Operation op, UpdateOffer offer, Func<string> text, bool upToDate = false)
         {
-            if (IsCurrent(op, offer)) Settings.SetUpdateStatus(text);
+            if (IsCurrent(op, offer)) Settings.SetUpdateStatus(text, upToDate);
         }
 
         /// <summary>
@@ -359,7 +361,7 @@ namespace PadForge.Services
                         // newest, a pulled release among them.
                         ClearOffer();
                         TryDeletePending(out _);
-                        Status(op, null, () => string.Format(Strings.Instance.Update_UpToDate_Format, BuildIdentity.Display));
+                        Status(op, null, () => string.Format(Strings.Instance.Update_UpToDate_Format, BuildIdentity.Display), upToDate: true);
                         break;
                     case UpdateCheckOutcome.NoBuildForThisPc:
                         // The card says the newest build has none for this PC,
@@ -657,11 +659,22 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>The page Release Notes opens: the offered update's, or
+        /// the releases page while no update is offered (#574), since the
+        /// About page shows the button before any check. Null for an
+        /// address outside PadForge's repository.</summary>
+        internal static string ReleaseNotesUrl(UpdateOffer offer)
+        {
+            string url = offer == null ? "https://github.com/" + UpdateService.Repo + "/releases" : offer.ReleasePageUrl;
+            return !string.IsNullOrEmpty(url) && url.StartsWith("https://github.com/" + UpdateService.Repo + "/", StringComparison.OrdinalIgnoreCase)
+                ? url
+                : null;
+        }
+
         private void OpenReleaseNotes()
         {
-            string url = _offer?.ReleasePageUrl;
-            if (string.IsNullOrEmpty(url) || !url.StartsWith("https://github.com/" + UpdateService.Repo + "/", StringComparison.OrdinalIgnoreCase))
-                return;
+            string url = ReleaseNotesUrl(_offer);
+            if (url == null) return;
             // Through the update code's one process start, which the test host
             // refuses.
             try { UpdateService.StartProcess(new ProcessStartInfo(url) { UseShellExecute = true }); }

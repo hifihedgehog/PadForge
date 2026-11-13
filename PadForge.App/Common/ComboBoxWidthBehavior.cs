@@ -190,9 +190,11 @@ namespace PadForge.Common
             }
             if (list.Count == 0) _groups.Remove(group);
             if (groupMax <= 0) return;
+            // A member with a MaxWidth of its own stops there, as it does
+            // when it is sized alone.
             foreach (var member in active)
                 if (member.IsLoaded && GetSizeToItems(member) && GetWidthGroup(member) == group)
-                    member.Width = groupMax;
+                    member.Width = Math.Min(groupMax, member.MaxWidth);
         }
 
         private static double MeasureWidestItem(ComboBox cb)
@@ -220,6 +222,10 @@ namespace PadForge.Common
             double width = Math.Ceiling(maxText) + ChromeWidth;
             if (width < cb.MinWidth) width = cb.MinWidth;
             if (width > MaxAutoWidth) width = MaxAutoWidth;
+            // A picker with a MaxWidth of its own is never sized past it. The
+            // template draws its box at the Width it is given, so a Width over
+            // the MaxWidth drew the end of the box outside the picker's room.
+            if (width > cb.MaxWidth) width = cb.MaxWidth;
             return width;
         }
 

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 using PadForge.Engine.RemoteLink;
 using PadForge.Views;
@@ -19,7 +19,10 @@ using WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType;
 
 namespace PadForge.Tests
 {
-    [Collection("SettingsManagerStatics")]
+    /// <summary>The window of the devices shared with a paired PC. It is
+    /// on the dialogs' frame (#574), so it is made beside the dialogs' test
+    /// host, in the collection that keeps that host to itself.</summary>
+    [Collection("WpfApplicationSingleton")]
     public class RemoteAssignmentsDialogChromeTests
     {
         [Fact]
@@ -90,23 +93,29 @@ namespace PadForge.Tests
                     Assert.True(IsWindow(hwnd));
                     Assert.False(IsWindowVisible(hwnd));
 
-                    var title = Assert.IsType<TextBlock>(dialog.FindName("DialogTitleText"));
-                    var header = Assert.IsType<Border>(dialog.FindName("DialogHeader"));
-                    var close = Assert.IsAssignableFrom<ButtonBase>(dialog.FindName("HeaderCloseButton"));
-                    var root = Assert.IsType<Grid>(dialog.Content);
-                    root.Measure(new Size(620, 500));
-                    root.Arrange(new Rect(0, 0, 620, 500));
+                    // The frame's head shows the title, which names the
+                    // other PC, and so does the heading over its controllers.
+                    dialog.ApplyTemplate();
+                    var root = (FrameworkElement)VisualTreeHelper.GetChild(dialog, 0);
+                    root.Measure(new Size(560, 600));
+                    root.Arrange(new Rect(0, 0, 560, 600));
                     root.UpdateLayout();
-                    BindingOperations.GetBindingExpression(title, TextBlock.TextProperty)?.UpdateTarget();
+                    var title = dialog.TitlePart;
+                    Assert.NotNull(title);
+                    var close = Assert.IsAssignableFrom<ButtonBase>(dialog.FindName("CloseButton"));
                     Assert.Same(dialog, Window.GetWindow(title));
                     Assert.Equal(Visibility.Visible, title.Visibility);
-                    Assert.True(header.ActualHeight > 0);
+                    Assert.True(dialog.HeadPart.ActualHeight > 0);
                     Assert.True(title.ActualWidth > 0);
                     Assert.Equal(dialog.Title, title.Text);
                     Assert.Contains("Gaming PC", title.Text);
+                    Assert.Contains("Gaming PC", ((TextBlock)dialog.FindName("ControllersOnText")).Text);
                     dialog.Title = "Changed peer";
-                    BindingOperations.GetBindingExpression(title, TextBlock.TextProperty)?.UpdateTarget();
                     Assert.Equal("Changed peer", title.Text);
+                    // Nothing has been asked yet: no controllers, no status.
+                    var controllers = (FrameworkElement)dialog.FindName("ControllersBlock");
+                    var status = (TextBlock)dialog.FindName("StatusText");
+                    Assert.Equal(Visibility.Collapsed, controllers.Visibility);
 
                     var refreshButton = Assert.IsAssignableFrom<ButtonBase>(dialog.FindName("RefreshButton"));
                     var slots = Assert.IsType<ItemsControl>(dialog.FindName("SlotsList"));
@@ -114,6 +123,9 @@ namespace PadForge.Tests
                     Assert.NotNull(sent);
                     Assert.False(refresh.IsCompleted);
                     Assert.False(refreshButton.IsEnabled);
+                    // While the other PC is asked, the line says so.
+                    Assert.Equal(Visibility.Visible, status.Visibility);
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.RemoteLink_AssignmentBusy, status.Text);
                     var first = sent;
                     channel.Receive(LinkAssignmentCodec.Encode(new LinkAssignmentReply(first.RequestId,
                         first.DeviceId, LinkAssignmentStatus.Ok, 7, "Profile A",
@@ -122,6 +134,14 @@ namespace PadForge.Tests
                     refresh.GetAwaiter().GetResult();
                     Assert.True(refreshButton.IsEnabled);
                     Assert.Single(slots.Items.Cast<object>());
+                    // Its answer is the list: the controllers show under the
+                    // profile it has loaded, and the line has nothing to say.
+                    Assert.Equal(Visibility.Visible, controllers.Visibility);
+                    Assert.Equal(Visibility.Collapsed, status.Visibility);
+                    Assert.Equal(string.Format(PadForge.Resources.Strings.Strings.Instance.RemoteLink_AssignmentProfile_Format, "Profile A"),
+                        ((TextBlock)dialog.FindName("ProfileText")).Text);
+                    var devicesBox = Assert.IsType<ListBox>(dialog.FindName("DevicesBox"));
+                    Assert.Same(source, devicesBox.SelectedItem);
 
                     Task pending = Refresh(dialog, false);
                     Assert.False(pending.IsCompleted);
@@ -170,22 +190,10 @@ namespace PadForge.Tests
             Assert.True(completed(), "The dialog operation did not finish within three seconds.");
         }
 
-        private static void RunSta(Action body)
-        {
-            Exception failure = null;
-            var thread = new Thread(() =>
-            {
-                var dispatcher = Dispatcher.CurrentDispatcher;
-                SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(dispatcher));
-                try { body(); }
-                catch (Exception error) { failure = error; }
-                finally { dispatcher.InvokeShutdown(); }
-            }) { IsBackground = true };
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            Assert.True(thread.Join(15000), "The STA dialog test timed out.");
-            if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
-        }
+        // The dialog loads the dialogs' dictionary, whose styles build on
+        // the app's own, so it is made beside the stand-ins the dialogs'
+        // host holds.
+        private static void RunSta(Action body) => DialogTestHost.Run(body);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

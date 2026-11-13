@@ -5,6 +5,7 @@
              xmlns:uictrl="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
              xmlns:conv="clr-namespace:PadForge.Converters"
              xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
 >
 
     <Application.Resources>
@@ -55,17 +56,48 @@
                     <SolidColorBrush x:Key="SteelGroundBrush" Color="#0A0E15"/>
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#18202E"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#2A3546"/>
-                    <!-- PadForge 6 surfaces (#574). The pane is the title bar
-                         and the sidebar, one step off the page ground, with
-                         its own hairline. A field is where a value is typed.
-                         The lifted fill is a raised control under the
-                         pointer. EmberTheme.ApplyAccent sets all of these
-                         for the active ground. -->
-                    <SolidColorBrush x:Key="SteelPaneBrush" Color="#0C111A"/>
-                    <SolidColorBrush x:Key="SteelPaneLineBrush" Color="#1A2230"/>
+                    <!-- PadForge 6 surfaces (#574). The pane is the sidebar,
+                         one step under the page ground, with its own
+                         hairline. A field is where a value is typed. The
+                         lifted fill is a raised control under the pointer.
+                         EmberTheme.ApplyAccent sets all of these for the
+                         active ground. -->
+                    <SolidColorBrush x:Key="SteelPaneBrush" Color="#0A0E16"/>
+                    <SolidColorBrush x:Key="SteelPaneLineBrush" Color="#161E2B"/>
+                    <!-- The window's own ground, under the title bar: the
+                         darkest step. The sidebar is one step up, the page
+                         another and a card another. The title bar is warm
+                         while the engine runs. A forging controller's pill
+                         has a soft ember outline and wash, and a waiting
+                         one a gold outline. -->
+                    <SolidColorBrush x:Key="SteelWindowBrush" Color="#070A10"/>
+                    <RadialGradientBrush x:Key="TitleWarmthBrush" Center="0.8,-1.5" GradientOrigin="0.8,-1.5" RadiusX="0.6" RadiusY="3.2">
+                        <GradientStop Color="#66FF6B2C" Offset="0"/>
+                        <GradientStop Color="#00FF6B2C" Offset="0.64"/>
+                    </RadialGradientBrush>
+                    <SolidColorBrush x:Key="EmberRingSoftBrush" Color="#73FF6B2C"/>
+                    <SolidColorBrush x:Key="EmberWashBrush" Color="#0DFF6B2C"/>
+                    <SolidColorBrush x:Key="WaitRingBrush" Color="#66F2B84B"/>
+                    <!-- The edge of a forging card and of its state pill,
+                         the fainter edge of an extra that is on, the gold
+                         wash of a waiting pill, and the steel of a mark at
+                         rest: a device's light, a stopped engine's ring. -->
+                    <SolidColorBrush x:Key="EmberRingBrush" Color="#8CFF6B2C"/>
+                    <!-- The type tile in a controller page's header: ember
+                         running to deep ember, from its upper left. -->
+                    <LinearGradientBrush x:Key="EmberTileBrush" StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#FF6B2C" Offset="0"/>
+                        <GradientStop Color="#C43D0C" Offset="1"/>
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="EmberRingFaintBrush" Color="#4DFF6B2C"/>
+                    <SolidColorBrush x:Key="WaitTintBrush" Color="#1AF2B84B"/>
+                    <SolidColorBrush x:Key="SteelMarkBrush" Color="#3A475A"/>
                     <SolidColorBrush x:Key="SteelFieldBrush" Color="#0D131D"/>
                     <SolidColorBrush x:Key="SteelLiftBrush" Color="#212C3D"/>
                     <SolidColorBrush x:Key="SteelFootBrush" Color="#101722"/>
+                    <!-- The page area behind a dialog drawn inside the window
+                         (#574): one step under the page ground. -->
+                    <SolidColorBrush x:Key="ShellDialogGroundBrush" Color="#06090E"/>
                     <SolidColorBrush x:Key="SteelPillLineBrush" Color="#263142"/>
                     <!-- The chosen segment of a segmented switch. -->
                     <SolidColorBrush x:Key="SteelSegmentBrush" Color="#263142"/>
@@ -103,8 +135,13 @@
                     <SolidColorBrush x:Key="EmberPressBrush" Color="#E85F25"/>
                     <SolidColorBrush x:Key="DangerEdgeBrush" Color="#7A3A1A"/>
                     <SolidColorBrush x:Key="DangerInkBrush" Color="#FFB08A"/>
+                    <!-- A link under the pointer (#574): the boards' a:hover. -->
+                    <SolidColorBrush x:Key="LinkHoverBrush" Color="#FFB08A"/>
                     <SolidColorBrush x:Key="WaitWellBrush" Color="#17150F"/>
                     <SolidColorBrush x:Key="WaitEdgeBrush" Color="#3D3220"/>
+                    <!-- Words in a wait box, and a wait tile's label (#574 dialogs). -->
+                    <SolidColorBrush x:Key="WaitTextBrush" Color="#E8D9B5"/>
+                    <SolidColorBrush x:Key="WaitMutedBrush" Color="#CDB98D"/>
                     <SolidColorBrush x:Key="DashLineBrush" Color="#344154"/>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1E2734"/>
                     <SolidColorBrush x:Key="SegTrackBrush" Color="#0A0E15"/>
@@ -217,9 +254,20 @@
                 ItemsControls: ListBox, TabControl and the 3D view keep their
                 keyboard behavior. A list with a style of its own sets this
                 in that style.
+
+                A list with nothing in it takes no room, and a peer says an
+                element is on screen while it is visible: UI Automation
+                listed an empty list as on screen with no rectangle. While a
+                plain list is empty, whether it is on screen follows the
+                room it takes.
             -->
             <Style TargetType="ItemsControl">
                 <Setter Property="Focusable" Value="False"/>
+                <Style.Triggers>
+                    <Trigger Property="HasItems" Value="False">
+                        <Setter Property="AutomationProperties.IsOffscreenBehavior" Value="FromClip"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -633,9 +681,60 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!-- Reset All is a reset button in words (#574): the reset
+                 buttons' quiet rest state and fill under the pointer
+                 (QuietResetButton), at its natural width so the localized
+                 label fits. In a card's title row it docks right, as every
+                 reset does in its row. The controller page, the Extras pages
+                 and the Devices page share it. -->
+            <!-- A page shows several Reset All buttons, one a card. Each
+                 reads as its words and then its section, which its tooltip
+                 names (Reset All, Left Thumbstick), so a screen reader
+                 tells one from the next (ResetAllNameConverter). A button
+                 of this look with other words reads those words. -->
+            <conv:ResetAllNameConverter x:Key="ResetAllNameConverter"/>
+            <Style x:Key="ResetAllButton" TargetType="uictrl:Button" BasedOn="{StaticResource QuietResetButton}">
+                <Setter Property="AutomationProperties.Name">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource ResetAllNameConverter}">
+                            <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="ToolTip" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                            <Binding Path="Pad_ResetAll" Source="{x:Static strings:Strings.Instance}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="Height" Value="Auto"/>
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="Padding" Value="10,0"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Margin" Value="0"/>
+            </Style>
 
             <Style x:Key="EmberIconButtonHot" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>
+            </Style>
+
+            <!-- The X in a card's corner (#574, the world-class pass): no
+                 edge and a mark in the secondary text color at rest, the
+                 raised fill and the text's own color under the pointer. -->
+            <Style x:Key="CardCloseButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
+                <Setter Property="Width" Value="32"/>
+                <Setter Property="Height" Value="32"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -696,6 +795,21 @@
                 <Setter Property="PressedBorderBrush" Value="{DynamicResource EmberPressBrush}"/>
                 <Setter Property="PressedForeground" Value="{DynamicResource EmberInkBrush}"/>
             </Style>
+            <!-- The same call as an outline (#574): for a row of a list,
+                 where a filled ember button on every row would be louder
+                 than what the list is about. -->
+            <Style x:Key="EmberOutlineButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource EmberRingBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                <Setter Property="MouseOverBackground" Value="{DynamicResource EmberPickBrush}"/>
+                <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="PressedBackground" Value="{DynamicResource EmberPickBrush}"/>
+                <Setter Property="PressedBorderBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="PressedForeground" Value="{DynamicResource EmberTextBrush}"/>
+            </Style>
 
             <Style x:Key="EmberDestructiveButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                 <Style.Resources>
@@ -740,6 +854,197 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </Style>
+
+            <!--
+                Styles shared by the pages of PadForge 6 (#574). They began
+                on the controller page and moved here once another page
+                needed them, so every page draws them one way.
+            -->
+            <!-- A link among a page's words (#574): underlined in the link
+                 color at 13, lighter under the pointer. The way back at the
+                 top of an extra's page and See All on Profiles. -->
+            <Style x:Key="LinkButton" TargetType="Button">
+                <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <TextBlock x:Name="Label" Foreground="{TemplateBinding Foreground}" TextDecorations="Underline"
+                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                                           Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Label" Property="Foreground" Value="{DynamicResource LinkHoverBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- An icon button in a card's head (#574): the quiet reset's size
+                 with the glyph in the secondary text color. -->
+            <Style x:Key="CardIconButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- A list of a card: its items alone, with no scroll view of its
+                 own, so the wheel over it scrolls the page. -->
+            <Style x:Key="PartList" TargetType="ListBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBox">
+                            <ItemsPresenter/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- An item of such a list, as the Macros board draws it: 38 tall
+                 with 12 at its sides and corners of 6. The picked one stands
+                 on the ember fill in the text color at SemiBold. -->
+            <Style x:Key="PartListItem" TargetType="ListBoxItem">
+                <!-- An item is read by its name: with a template of its own it
+                     would be read as its type. -->
+                <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
+                <Setter Property="MinHeight" Value="38"/>
+                <Setter Property="Padding" Value="12,0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="Bd" CornerRadius="6" Background="Transparent"
+                                    Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+                                </Trigger>
+                                <!-- After the pointer's, so the picked item keeps
+                                     its fill under the pointer. -->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- A small head inside a block, over a group of its rows: 12 SemiBold in
+                 the quiet text color, as the board draws the heads of the lists' card. -->
+            <Style x:Key="EditorSubHead" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- An input of a macro's trigger, as the Macros board draws it: a pill
+                 30 tall on the raised fill with a cold edge, 12 at its start, and
+                 its remove 6 after its words. A name too long for the line is cut
+                 short. -->
+            <Style x:Key="InputChip" TargetType="Border">
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="Padding" Value="12,0,6,0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource InputChipEdgeBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource InputChipTextBrush}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- The quiet button under a list, as the board renders Add Action and Add
+                 Cell: no fill, and its mark and word in the text color. Both dim while
+                 it cannot be used: its content is a panel, which takes the button's own
+                 color and not the one the button's template gives a disabled label. -->
+            <Style x:Key="QuietTextButton" TargetType="ui:Button" BasedOn="{StaticResource QuietButton}">
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <Setter Property="Padding" Value="14,0"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- A record button, as the Macros board draws it: the ember dot, 7 across,
+                 and the word Record, 36 tall with 12 at each side, 10 after the control
+                 it records for. Its content is the glyph that says whether it records
+                 (the view models' record and stop glyphs), and its face follows that:
+                 while it records the dot is a square and the word is Stop. The glyph
+                 is not drawn, so a button with this look carries a name of its own. -->
+            <DataTemplate x:Key="RecordFace">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle x:Name="Mark" FlowDirection="LeftToRight" Width="7" Height="7" RadiusX="3.5" RadiusY="3.5"
+                               Margin="0,0,8,0" VerticalAlignment="Center" Fill="{DynamicResource EmberBrush}"/>
+                    <TextBlock x:Name="Word" Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding}" Value="&#xE71A;">
+                        <Setter TargetName="Mark" Property="RadiusX" Value="1"/>
+                        <Setter TargetName="Mark" Property="RadiusY" Value="1"/>
+                        <Setter TargetName="Word" Property="Text" Value="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+            <Style x:Key="RecordButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
+                <Setter Property="ContentTemplate" Value="{StaticResource RecordFace}"/>
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Padding" Value="12,0"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- A quiet button that holds a state: no fill until the pointer is
+                 on it, as QuietPlainButton, in the text color. -->
+            <Style x:Key="QuietToggle" TargetType="ToggleButton">
+                <Setter Property="MinHeight" Value="36"/>
+                <Setter Property="Padding" Value="10,0"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="6"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Face" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- A chip, as the boards draw one (#574): 22 tall with round ends, the
+                 raised fill inside the chip line, 9 at each side, its words 12 in the
+                 secondary color. A profile card's Built-in and type counts, a
+                 starter's output, a community config's controller. -->
+            <Style x:Key="PillChip" TargetType="Border">
+                <Setter Property="MinHeight" Value="22"/>
+                <Setter Property="CornerRadius" Value="11"/>
+                <Setter Property="Padding" Value="9,0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <Setter Property="TextElement.FontSize" Value="12"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
 
             <!--
@@ -862,6 +1167,29 @@
                 <Setter Property="Template" Value="{StaticResource InstrumentBarOutTemplate}"/>
             </Style>
 
+            <!-- A live bar (#574): a track 6 tall, a field's fill inside a
+                 hairline, filled in its Foreground, ember unless a page sets
+                 another. A motor's bar on the controller page and a
+                 trigger's on the Devices page. -->
+            <Style x:Key="ActivityBar" TargetType="ProgressBar">
+                <Setter Property="Height" Value="6"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ProgressBar">
+                            <Grid>
+                                <Border Background="{DynamicResource SteelFieldBrush}"
+                                        BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="3"/>
+                                <Rectangle x:Name="PART_Track" Margin="1"/>
+                                <Border x:Name="PART_Indicator" Margin="1" HorizontalAlignment="Left"
+                                        Background="{TemplateBinding Foreground}" CornerRadius="2"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <!--
                 Ember value slider (round-3 A3): Wpf.Ui 4.3.0's Slider
                 template has no decrease-side value-fill element (confirmed
@@ -951,6 +1279,80 @@
                         <Setter Property="Opacity" Value="0.4"/>
                     </Trigger>
                 </Style.Triggers>
+            </Style>
+
+            <!--
+                The rows of a settings card (#574), on every page: a setting's
+                label in a column 230 wide, its control, its value typed in
+                place with its unit after it, and its reset at the row's far
+                right. A page or a section whose board draws another label
+                column shadows DzLabel in its own resources.
+            -->
+            <Style x:Key="DzLabel" TargetType="TextBlock">
+                <Setter Property="Width" Value="230"/>
+                <Setter Property="Margin" Value="0,0,12,0"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            </Style>
+            <!-- A setting's value, typed in place. At rest it reads as plain
+                 text in the mono face, the number and then its unit, as the
+                 boards draw it. Under the pointer it takes the raised fill,
+                 and with the keyboard's focus the field's fill and a cold
+                 edge, so it shows where a value is typed. It is as wide as its
+                 number, and never narrower than two digits: a single digit
+                 stands at the right of that, against its unit. The template
+                 adds no inset of its own: a TextBox lays its Padding around its
+                 text itself, and a template that bound the same Padding again
+                 cut a third digit off a boxed value. -->
+            <Style x:Key="DzValueEdit" TargetType="TextBox">
+                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <Setter Property="CaretBrush" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="MinWidth" Value="20"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="8,0,0,0"/>
+                <Setter Property="Padding" Value="3,2,0,2"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- A unit reads as part of its row's phrase, so it takes the
+                 label's color (owner, 2026-10-30). UnitTextTests pins it. It
+                 follows its number at the value box's own inset, which is the
+                 width of a space. -->
+            <Style x:Key="DzPercent" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             </Style>
 
             <!--
@@ -1152,6 +1554,7 @@
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />
+            <conv:BracketPartConverter x:Key="BracketPartConverter" />
             <conv:OptionTextConverter x:Key="OptionTextConverter" />
             <conv:IndexTextConverter x:Key="IndexTextConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
@@ -1165,7 +1568,6 @@
             <conv:OneBasedIndexConverter x:Key="OneBasedIndexConverter" />
             <conv:BytePercentConverter x:Key="BytePercentConverter" />
             <conv:LogScaleConverter x:Key="LogScaleConverter" />
-            <conv:ExeIconConverter x:Key="ExeIconConverter" />
             <conv:CultureLanguageConverter x:Key="CultureLanguageConverter" />
 
         </ResourceDictionary>

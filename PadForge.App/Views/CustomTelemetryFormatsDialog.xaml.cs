@@ -15,7 +15,7 @@ namespace PadForge.Views
     /// so Cancel keeps the saved list. <see cref="Result"/> holds the edited
     /// list after Save.
     /// </summary>
-    public partial class CustomTelemetryFormatsDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class CustomTelemetryFormatsDialog : DialogWindow
     {
         private readonly ObservableCollection<TelemetryFormatEdit> _formats = new();
 
@@ -25,9 +25,6 @@ namespace PadForge.Views
         public CustomTelemetryFormatsDialog(IEnumerable<CustomTelemetryFormat> formats)
         {
             InitializeComponent();
-            // The Manage Profiles dialog's remedy for a window with no title
-            // bar: inert chrome drags it.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             if (formats != null)
                 foreach (var format in formats)
                     if (format != null) _formats.Add(TelemetryFormatEdit.From(format));
@@ -45,7 +42,17 @@ namespace PadForge.Views
             EditorScroll.Visibility = selected != null ? Visibility.Visible : Visibility.Hidden;
             DuplicateFormatButton.IsEnabled = selected != null;
             DeleteFormatButton.IsEnabled = selected != null;
+            // More opens for a format that uses what it holds, and is left
+            // as the user has it for one that does not.
+            if (UsesMore(selected)) FormatMore.IsExpanded = true;
         }
+
+        /// <summary>Whether a format uses what More holds: a gear field's
+        /// own numbers for reverse and neutral, or the key a JSON packet
+        /// must carry. More opens by itself for such a format, so a setting
+        /// that is in use is never out of sight.</summary>
+        internal static bool UsesMore(TelemetryFormatEdit format)
+            => format != null && (format.UseGearValues || (format.IsJson && !string.IsNullOrWhiteSpace(format.Key)));
 
         private void FormatList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
             => UpdateEditor();

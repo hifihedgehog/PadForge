@@ -4,7 +4,7 @@ using SteamKit2.Internal;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Paging state for the Browse Community Configs list. QueryFiles is
+    /// Paging state for Get Profiles' community config list. QueryFiles is
     /// page-based (page/numperpage on the request, total on the response),
     /// and a big game's catalog runs six figures (Skyrim SE: 155k+), so the
     /// list streams page by page instead of stopping at the first response.

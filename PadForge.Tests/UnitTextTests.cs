@@ -47,16 +47,17 @@ namespace PadForge.Tests
             }
             Assert.Empty(offenders);
 
-            // The controller page's unit style holds the color its label
-            // style holds, whichever that is.
-            string pad = File.ReadAllText(Path.Combine(root, "PadForge.App", "Views", "PadPage.xaml"));
-            string Foreground(string key)
+            // The unit style holds the color the label style holds,
+            // whichever that is. Both are the app's, which every page's
+            // rows share.
+            string app = File.ReadAllText(Path.Combine(root, "PadForge.App", "App.xaml"));
+            string Foreground(string xaml, string key)
             {
-                string style = Regex.Match(pad, "<Style x:Key=\"" + key + "\"[\\s\\S]*?</Style>").Value;
+                string style = Regex.Match(xaml, "<Style x:Key=\"" + key + "\"[\\s\\S]*?</Style>").Value;
                 return Regex.Match(style, "<Setter Property=\"Foreground\" Value=\"([^\"]*)\"").Groups[1].Value;
             }
-            Assert.StartsWith("{DynamicResource TextFillColor", Foreground("DzLabel"));
-            Assert.Equal(Foreground("DzLabel"), Foreground("DzPercent"));
+            Assert.StartsWith("{DynamicResource TextFillColor", Foreground(app, "DzLabel"));
+            Assert.Equal(Foreground(app, "DzLabel"), Foreground(app, "DzPercent"));
         }
     }
 }

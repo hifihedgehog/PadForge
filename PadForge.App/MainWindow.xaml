@@ -34,31 +34,45 @@
         </Grid>
 
         <!-- The title bar (#574): the PadForge mark and name, the profile
-             switcher, and the window's own buttons, on the pane's fill with
-             a hairline under it. TitleBar provides native minimize,
+             switcher, and the window's own buttons, on the window's own
+             ground, the darkest step, with a hairline under it. While the
+             engine runs a warm light lies across it, so the whole window
+             says the engine is on. TitleBar provides native minimize,
              maximize and close with Snap Layout support. -->
-        <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="48">
-            <Border Background="{DynamicResource SteelPaneBrush}"
+        <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="52">
+            <Border Background="{DynamicResource SteelWindowBrush}"
                     BorderBrush="{DynamicResource SteelPaneLineBrush}" BorderThickness="0,0,0,1"
                     IsHitTestVisible="False"/>
-            <ui:TitleBar x:Name="AppTitleBar" Height="48"
+            <Border x:Name="TitleWarmth" Background="{DynamicResource TitleWarmthBrush}" IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                <Setter Property="Opacity" Value="1"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+            <ui:TitleBar x:Name="AppTitleBar" Height="52" HorizontalContentAlignment="Stretch"
                          ButtonsForeground="{DynamicResource TextFillColorSecondaryBrush}"
                          CloseClicked="TitleBar_CloseClicked"
                          MaximizeClicked="TitleBar_MaximizeClicked"
                          ForceShutdown="False">
                 <ui:TitleBar.Resources>
                     <!-- Minimize, maximize and close: 40 by 32, centered in
-                         the 48 of the bar, 2 apart. wpf-ui draws them 44 by
+                         the 52 of the bar, 2 apart. wpf-ui draws them 44 by
                          30 against the bar's top edge, which leaves them
                          above the middle of a bar this tall. -->
                     <Style TargetType="ui:TitleBarButton" BasedOn="{StaticResource {x:Type ui:TitleBarButton}}">
                         <Setter Property="Width" Value="40"/>
                         <Setter Property="Height" Value="32"/>
-                        <Setter Property="Margin" Value="0,8,2,0"/>
+                        <Setter Property="Margin" Value="0,10,2,0"/>
                     </Style>
                 </ui:TitleBar.Resources>
                 <ui:TitleBar.Header>
-                    <Border x:Name="AppBrandingBorder" Padding="14,0,12,0" Height="48"
+                    <Border x:Name="AppBrandingBorder" Padding="16,0,12,0" Height="52"
                             Background="Transparent" MouseLeftButtonDown="BrandingBar_MouseDown">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <controls:DecorativeImage FlowDirection="LeftToRight" Source="/Resources/PadForge-icon.png" Width="24" Height="24"
@@ -68,6 +82,34 @@
                         </StackPanel>
                     </Border>
                 </ui:TitleBar.Header>
+                <ui:TitleBar.CenterContent>
+                    <!-- Search (#574): the box the boards draw between the mark
+                         and the profile pill. Only the box takes the pointer:
+                         the bar on either side still drags the window, since
+                         wpf-ui's title bar reads this element's own bounds in
+                         its hit test (TitleBar.cs, WM_NCHITTEST). A click, or
+                         Ctrl+K anywhere, opens Search. The key label's text and
+                         the box's shortcut are set in code, in the language's
+                         own Ctrl. -->
+                    <controls:ClickBorder x:Name="TitleSearchBox" Style="{StaticResource TitleSearchBox}"
+                                          Height="34" MaxWidth="560" Margin="16,0" HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Center"
+                                          WindowChrome.IsHitTestVisibleInChrome="True"
+                                          AutomationProperties.AutomationId="TitleSearchBox"
+                                          AutomationProperties.Name="{Binding Search_Placeholder, Source={x:Static strings:Strings.Instance}}">
+                        <DockPanel>
+                            <controls:DecorativeStrokeIcon Data="{StaticResource SearchLineGeometry}" Size="16" StrokeWidth="1.8"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Border DockPanel.Dock="Right" Style="{StaticResource KeyChip}" Margin="10,0,0,0">
+                                <TextBlock x:Name="TitleSearchShortcut" Style="{StaticResource KeyChipText}"/>
+                            </Border>
+                            <TextBlock Text="{Binding Search_Placeholder, Source={x:Static strings:Strings.Instance}}" FontSize="14"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </controls:ClickBorder>
+                </ui:TitleBar.CenterContent>
                 <ui:TitleBar.TrailingContent>
                     <StackPanel Orientation="Horizontal">
                     <!-- The profile switcher (#574): the pill the status bar
@@ -92,7 +134,7 @@
                          resources below, so the four read as one row. -->
                     <controls:StateToggleButton x:Name="FullScreenBtn" AutomationProperties.Name="{Binding Main_FullScreen, Source={x:Static strings:Strings.Instance}}" Click="FullScreenBtn_Click" Width="40" Height="32"
                             Background="Transparent" BorderThickness="0" Padding="0"
-                            VerticalAlignment="Top" Margin="0,8,2,0"
+                            VerticalAlignment="Top" Margin="0,10,2,0"
                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -140,19 +182,19 @@
                            IsBackButtonVisible="Collapsed"
                            IsPaneToggleVisible="False"
                            AlwaysShowHeader="False"
-                           OpenPaneLength="248"
+                           OpenPaneLength="264"
                            Template="{StaticResource PadNavigationViewTemplate}"
                            ItemTemplate="{StaticResource PadNavigationViewItemTemplate}">
 
             <ui:NavigationView.Resources>
-                <!-- One sidebar row (#574): 38 tall with 2 between rows.
+                <!-- One sidebar row (#574): 40 tall with 2 between rows.
                      It rests in the secondary text color, and the selected
                      one comes forward in the primary color and a heavier
                      weight. The fill and the icon's color are the entry
                      template's (Resources/Shell.xaml). Code-built entries
                      take this style too. -->
                 <Style TargetType="ui:NavigationViewItem">
-                    <Setter Property="MinHeight" Value="38"/>
+                    <Setter Property="MinHeight" Value="40"/>
                     <Setter Property="Margin" Value="0,0,0,2"/>
                     <Setter Property="FontSize" Value="14"/>
                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -167,9 +209,9 @@
 
             <!-- MenuItems built programmatically in code-behind (BuildNavigationItems) -->
 
-            <!-- Settings and About follow the controllers under a hairline
-                 (the sidebar's template draws the hairline and lays these
-                 entries out right after the others, Resources/Shell.xaml). -->
+            <!-- Settings and About stand at the sidebar's foot, over the
+                 engine's block (the sidebar's template holds the three
+                 there, Resources/Shell.xaml). -->
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItem x:Name="NavSettings" Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings" AutomationProperties.AutomationId="Nav_Settings" AutomationProperties.PositionInSet="1" AutomationProperties.SizeOfSet="2">
                     <ui:NavigationViewItem.Icon>
@@ -183,58 +225,145 @@
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
 
-            <!-- The engine's row (#574), last in the sidebar: the flame,
-                 the state and the polling rate, which is the text Home's
-                 engine card prints, in the language's own unit. The
+            <!-- The engine's block (#574), at the sidebar's foot: the
+                 flame in its ring, the state, how many of the controllers
+                 are live, and the polling rate with its number set large.
+                 While the engine runs the block has an ember edge, a warm
+                 wash and a soft light around it, and the ring's own light
+                 rises and falls slowly. Idle or stopping, the ring is
+                 gold. Stopped, it is steel and nothing is lit. The
                  bindings read MainViewModel, which the constructor hands
-                 this element by name. -->
+                 the outer element by name. -->
             <ui:NavigationView.PaneFooter>
-                <Border x:Name="EngineFoot" Margin="0,12,0,0" MinHeight="40" Padding="12,0" CornerRadius="8"
-                        Background="{DynamicResource SteelFootBrush}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Path x:Name="EngineFootFlame" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                              Width="16" Height="16" Stretch="Uniform"
-                              VerticalAlignment="Center">
-                            <Path.Style>
-                                <Style TargetType="Path">
-                                    <!-- Stopped: the outline alone. Running:
-                                         ember. Idle or stopping: gold. -->
-                                    <Setter Property="Fill" Value="Transparent"/>
-                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <Setter Property="StrokeThickness" Value="1.2"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
-                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
-                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
-                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                        <TextBlock x:Name="EngineFootState" Grid.Column="1" Text="{Binding EngineStatusText}"
-                                   FontSize="13" Margin="10,0,8,0"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                                   AutomationProperties.AutomationId="EngineFootState"/>
-                        <TextBlock x:Name="EngineFootRate" Grid.Column="2" VerticalAlignment="Center"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                   Foreground="{DynamicResource ColdBrush}"
-                                   Text="{Binding Dashboard.PollingFrequencyText, Mode=OneWay}"/>
-                    </Grid>
-                </Border>
+                <controls:Halo x:Name="EngineFootHalo" Margin="0,12,0,0" CornerRadius="12" Radius="27.5" Strength="0.06">
+                    <controls:Halo.Style>
+                        <Style TargetType="controls:Halo">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                    <Setter Property="IsLit" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:Halo.Style>
+                    <Border x:Name="EngineFoot" MinHeight="60" CornerRadius="12" BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource SteelFootBrush}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource EmberRingSoftBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <!-- The warm wash, from the ring's side. -->
+                            <Border CornerRadius="11" IsHitTestVisible="False">
+                                <Border.Background>
+                                    <RadialGradientBrush Center="0,0.5" GradientOrigin="0,0.5" RadiusX="0.75" RadiusY="1.1">
+                                        <GradientStop Color="#29FF6B2C" Offset="0"/>
+                                        <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Opacity" Value="0"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                            <Grid Margin="10,10,14,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <controls:Halo CornerRadius="19" Radius="17.5" Strength="0.275" Breathes="True" VerticalAlignment="Center">
+                                    <controls:Halo.Style>
+                                        <Style TargetType="controls:Halo">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                                    <Setter Property="IsLit" Value="True"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </controls:Halo.Style>
+                                    <Border x:Name="EngineFootRing" Width="38" Height="38" CornerRadius="19" BorderThickness="2">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource WaitBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource WaitBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Path x:Name="EngineFootFlame" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                                              Width="15" Height="15" Stretch="Uniform"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <!-- Stopped: the outline alone. Running:
+                                                         ember. Idle or stopping: gold. -->
+                                                    <Setter Property="Fill" Value="Transparent"/>
+                                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <Setter Property="StrokeThickness" Value="1.2"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
+                                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
+                                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
+                                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
+                                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+                                    </Border>
+                                </controls:Halo>
+                                <StackPanel Grid.Column="1" Margin="12,0,8,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="EngineFootState" Text="{Binding EngineStatusText}"
+                                               FontSize="14" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                               TextTrimming="CharacterEllipsis"
+                                               AutomationProperties.AutomationId="EngineFootState"/>
+                                    <TextBlock x:Name="EngineFootLine" Text="{Binding Dashboard.LiveLine}"
+                                               FontSize="12" Margin="0,1,0,0"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                                <!-- The rate: the number set large, the unit
+                                     small, in the order the language's own
+                                     format puts them. The runs sit on one
+                                     line of markup, since a line break
+                                     between runs would add a space. -->
+                                <TextBlock x:Name="EngineFootRate" Grid.Column="2" VerticalAlignment="Center"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                           AutomationProperties.Name="{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding Dashboard.PollingRateLead, Mode=OneWay}"/><Run Text="{Binding Dashboard.PollingRateNumber, Mode=OneWay}" FontSize="17" FontWeight="SemiBold"/><Run Text="{Binding Dashboard.PollingRateTail, Mode=OneWay}"/></TextBlock>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </controls:Halo>
             </ui:NavigationView.PaneFooter>
 
             <ui:NavigationView.ContentOverlay>
@@ -284,6 +413,24 @@
                     <views:SettingsPage x:Name="SettingsPageView" Visibility="Collapsed"/>
                     <views:ProfilesPage x:Name="ProfilesPageView" Visibility="Collapsed"/>
                     <views:AboutPage x:Name="AboutPageView" Visibility="Collapsed"/>
+                    <!-- Add a Controller (#574): a dialog drawn over the page
+                         area, as its board draws it, while the sidebar and the
+                         title bar stay as they are. OpenAddController opens it.
+                         It is under the message line, so a message still
+                         shows over it. -->
+                    <controls:ShellDialog x:Name="AddControllerHost" Panel.ZIndex="5" FrameMaxWidth="760"
+                                          AutomationProperties.AutomationId="AddControllerDialog"
+                                          AutomationProperties.Name="{Binding AddController_Title, Source={x:Static strings:Strings.Instance}}">
+                        <views:AddControllerView x:Name="AddControllerView"/>
+                    </controls:ShellDialog>
+                    <!-- Search (#574): the same dialog frame, at Search's width.
+                         A press on the dark ground closes it, as the board's
+                         page area invites. OpenSearch opens it. -->
+                    <controls:ShellDialog x:Name="SearchHost" Panel.ZIndex="5" FrameMaxWidth="660" ClosesOnGroundPress="True"
+                                          AutomationProperties.AutomationId="SearchPanel"
+                                          AutomationProperties.Name="{Binding Search_Title, Source={x:Static strings:Strings.Instance}}">
+                        <views:SearchPanel x:Name="SearchPanelView"/>
+                    </controls:ShellDialog>
                 </Grid>
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
@@ -314,112 +461,6 @@
                                TextAlignment="Center"/>
                 </StackPanel>
             </Border>
-        </Grid>
-
-        <!-- ═══════════════════════════════════════════
-             First-run welcome + spotlight tour (#175).
-             Shown while the FirstRunTourCompleted setting is false, and
-             re-runnable from Settings. A transparent click shield swallows
-             clicks window-wide. Code-behind positions the highlight border
-             and tip card.
-             ═══════════════════════════════════════════ -->
-        <Grid x:Name="FirstRunOverlay"
-              Grid.RowSpan="2"
-              Visibility="Collapsed"
-              Panel.ZIndex="900"
-              SizeChanged="FirstRunOverlay_SizeChanged">
-            <!-- Click shield: transparent but hit-testable, so the tour
-                 swallows clicks window-wide INCLUDING inside the spotlight
-                 cutout below (the dimmer path does not hit-test there). -->
-            <Border Background="Transparent"/>
-            <!-- The dim is a path with the spotlight CUT OUT of it, so the
-                 highlighted area renders at full brightness instead of
-                 sitting under the scrim (Discord feedback 2026-08-19: the
-                 old full-window dim left the very thing being pointed at
-                 unreadable). The hole rect is positioned in code-behind
-                 beside the ring; while the welcome panel is up the hole is
-                 Empty and the dim covers everything, in both themes. -->
-            <Path FlowDirection="LeftToRight" Fill="#D9070A0E">
-                <Path.Data>
-                    <CombinedGeometry GeometryCombineMode="Exclude">
-                        <CombinedGeometry.Geometry1>
-                            <RectangleGeometry x:Name="TourDimFull"/>
-                        </CombinedGeometry.Geometry1>
-                        <CombinedGeometry.Geometry2>
-                            <RectangleGeometry x:Name="TourDimHole" RadiusX="8" RadiusY="8"/>
-                        </CombinedGeometry.Geometry2>
-                    </CombinedGeometry>
-                </Path.Data>
-            </Path>
-
-            <Border x:Name="WelcomePanel"
-                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="1"
-                    CornerRadius="12" Padding="40,32"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                    MaxWidth="470">
-                <StackPanel HorizontalAlignment="Center">
-                    <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                          Width="46" Height="46" Stretch="Uniform"
-                          Fill="{DynamicResource EmberBrush}" HorizontalAlignment="Center">
-                        <Path.Effect>
-                            <DropShadowEffect Color="#FF6B2C" BlurRadius="26" ShadowDepth="0" Opacity="0.6"/>
-                        </Path.Effect>
-                    </Path>
-                    <TextBlock Text="{Binding FirstRun_Title, Source={x:Static strings:Strings.Instance}}"
-                               FontFamily="{StaticResource DisplayFontFamily}"
-                               FontSize="24" FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               HorizontalAlignment="Center" Margin="0,16,0,6"/>
-                    <TextBlock Text="{Binding FirstRun_Body, Source={x:Static strings:Strings.Instance}}"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" TextAlignment="Center"
-                               MaxWidth="360"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
-                        <!-- No Appearance=Primary: EmberPrimaryButton is the
-                             app-wide accent look and its setters lose to the
-                             Appearance style trigger (#175 dialog language). -->
-                        <ui:Button Style="{StaticResource EmberPrimaryButton}"
-                                   Content="{Binding FirstRun_Begin, Source={x:Static strings:Strings.Instance}}"
-                                   Click="FirstRunBegin_Click"/>
-                        <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
-                                Margin="8,0,0,0" Click="FirstRunSkip_Click"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <Canvas x:Name="TourCanvas" Visibility="Collapsed">
-                <Border x:Name="TourHighlight"
-                        BorderBrush="{DynamicResource EmberBrush}" BorderThickness="2"
-                        CornerRadius="8" IsHitTestVisible="False">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#FF6B2C" BlurRadius="18" ShadowDepth="0" Opacity="0.5"/>
-                    </Border.Effect>
-                </Border>
-                <Border x:Name="TourTip"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="1"
-                        CornerRadius="10" Padding="16" Width="320">
-                    <StackPanel>
-                        <TextBlock x:Name="TourStepLabel"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                   Foreground="{DynamicResource EmberHotBrush}"/>
-                        <!-- CardTitle carries the Display face + 15/SemiBold
-                             metrics this title already used (#175 font sweep). -->
-                        <TextBlock x:Name="TourTitle" Style="{StaticResource CardTitle}"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="0,4,0,2"/>
-                        <TextBlock x:Name="TourBody" TextWrapping="Wrap" FontSize="13"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
-                            <ui:Button x:Name="TourNextBtn"
-                                       Style="{StaticResource EmberPrimaryButton}"
-                                       Content="{Binding FirstRun_Next, Source={x:Static strings:Strings.Instance}}"
-                                       Click="TourNext_Click"/>
-                            <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
-                                    Margin="8,0,0,0" Click="FirstRunSkip_Click"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Canvas>
         </Grid>
 
         <!-- ═══════════════════════════════════════════

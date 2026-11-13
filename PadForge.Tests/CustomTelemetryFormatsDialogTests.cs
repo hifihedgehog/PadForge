@@ -77,61 +77,10 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Builds a plain Application holding stand-ins for the
-        /// dialog's static resource keys, runs the body on its STA thread,
-        /// and puts the process back with no Application, as
-        /// PairDeviceDialogSerialTests.RunWithApp does.</summary>
-        internal static void RunWithApp(Action body)
-        {
-            Exception failure = null;
-            var thread = new Thread(() =>
-            {
-                var dispatcher = Dispatcher.CurrentDispatcher;
-                SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(dispatcher));
-                try
-                {
-                    var app = new Application();
-                    app.Resources["BodyFontFamily"] = new FontFamily("Segoe UI");
-                    app.Resources["DisplayFontFamily"] = new FontFamily("Segoe UI");
-                    app.Resources["TelemetryFontFamily"] = new FontFamily("Segoe UI");
-                    app.Resources["BoolToVisibilityConverter"] = new PadForge.Converters.BoolToVisibilityConverter();
-                    app.Resources["CardTitle"] = new Style(typeof(TextBlock));
-                    app.Resources["CardDescription"] = new Style(typeof(TextBlock));
-                    app.Resources["EmberAccentButton"] = new Style(typeof(Button));
-                    app.Resources["EmberDestructiveButton"] = new Style(typeof(Button));
-                    app.Resources["EmberIconButton"] = new Style(typeof(Wpf.Ui.Controls.Button));
-                    app.Resources["EmberSelectListItem"] = new Style(typeof(ListBoxItem));
-                    body();
-                }
-                catch (Exception error) { failure = error; }
-                finally
-                {
-                    try { ReleaseApplication(); }
-                    catch (Exception error) { failure ??= error; }
-                    dispatcher.InvokeShutdown();
-                }
-            }) { IsBackground = true };
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            Assert.True(thread.Join(30000), "The STA dialog test timed out.");
-            if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
-            Assert.Null(Application.Current);
-        }
-
-        /// <summary>WPF keeps the Application in statics. Left set, the
-        /// shutting-down flag stops every later Window from loading.</summary>
-        private static void ReleaseApplication()
-        {
-            var type = typeof(Application);
-            const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;
-            var instance = type.GetField("_appInstance", flags);
-            var created = type.GetField("_appCreatedInThisAppDomain", flags);
-            var shutting = type.GetField("_isShuttingDown", flags);
-            if (instance == null || created == null || shutting == null)
-                throw new InvalidOperationException("WPF's Application statics moved. The test cannot put the process back.");
-            instance.SetValue(null, null);
-            created.SetValue(null, false);
-            shutting.SetValue(null, false);
-        }
+        /// <summary>Runs the body on the dialog tests' one host: an STA
+        /// thread beside a plain Application that holds a stand-in for every
+        /// key a dialog names from the app's dictionaries
+        /// (DialogTestHost).</summary>
+        internal static void RunWithApp(Action body) => DialogTestHost.Run(body);
     }
 }

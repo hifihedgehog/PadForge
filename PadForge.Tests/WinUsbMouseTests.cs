@@ -367,7 +367,7 @@ namespace PadForge.Tests
             string dialog = AuditDelta20261002Tests.RepoText("PadForge.App", "Views", "KeepDriverDialog.xaml.cs");
             // A touchpad's switch has its own words ahead of the mouse's.
             Assert.Contains(": mouse ? Strings.Instance.Devices_DriverKeepTitle_Mouse : Strings.Instance.Devices_DriverKeepTitle;", dialog);
-            Assert.Contains("TitleText.Text = Title;", dialog);
+            Assert.Contains("Subtitle = string.Format(touchpad", dialog);
             Assert.Contains("? Strings.Instance.Devices_DriverKeepMessage_Mouse_Format", dialog);
             string window = AuditDelta20261002Tests.RepoText("PadForge.App", "MainWindow.xaml.cs");
             Assert.Contains("Views.KeepDriverDialog.Show(this, name, KeepDriverSeconds, mouse)", window);

@@ -124,6 +124,17 @@ namespace PadForge.Tests
             Assert.Null(rows[0].Detail);
             Assert.Equal(string.Format(Strings.Instance.HIDMaestroUninstall_Stays_Format, "HIDMaestro never recorded its earlier value"), rows[1].Detail);
             Assert.Equal(string.Format(Strings.Instance.HIDMaestroUninstall_CannotRead_Format, "could not be read: Access is denied"), rows[2].Detail);
+
+            // Each row leads with what the item is, its first letter upper,
+            // and ends with what becomes of it. Only an item the removal
+            // takes reads quiet.
+            Assert.Equal("Driver package", rows[0].Title);
+            Assert.Equal("Service setting", rows[1].Title);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeRemoved, rows[0].Outcome);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeKept, rows[1].Outcome);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeUnread, rows[2].Outcome);
+            Assert.Equal(new[] { true, false, false }, rows.Select(r => r.IsRemoved));
+            Assert.Equal("Driver package, oem5.inf (hidmaestro.inf), " + Strings.Instance.HIDMaestroUninstall_OutcomeRemoved, rows[0].ToString());
         }
 
         /// <summary>After a removal the list holds only what it could not
@@ -139,6 +150,9 @@ namespace PadForge.Tests
             var row = Assert.Single(rows);
             Assert.Equal("OpenVR registration", row.Kind);
             Assert.Equal(string.Format(Strings.Instance.HIDMaestroUninstall_NotRemoved_Format, "in use (Win32 error 32)"), row.Detail);
+            Assert.Equal("OpenVR registration", row.Title);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeNotRemoved, row.Outcome);
+            Assert.False(row.IsRemoved);
         }
 
         /// <summary>Uninstall opens only when a removal has something to

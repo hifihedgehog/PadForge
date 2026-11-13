@@ -97,16 +97,13 @@
 
   <!-- ═══ MainWindow Status Messages ═══ -->
   <data name="Status_Error_Format" xml:space="preserve"><value>Impazamo: {0}</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Rekhoda</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Tsiba</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Okulandelayo</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Kugqityiwe</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Isixhobo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongeza isixhobo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>I-Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Iphantsi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Umfanekiso</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uluhlu</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Iziphumo: {0}</value></data>
@@ -153,8 +150,8 @@
   <data name="Settings_Window" xml:space="preserve"><value>Ifestile</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Uhlaziyo</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Susa i-HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Oku kususa i-HIDMaestro kule PC: izilawuli zayo ezibonakalayo, idrayiva, isatifikethi sokutyikitya, izitshixo zerejistri neefayile. I-PadForge iqala ngokumisa injini yayo. Ezinye iinkqubo ezisebenzisa i-HIDMaestro ziphulukana nedrayiva yayo de ziqale kwakhona. I-PadForge iyayifaka kwakhona xa iqala isilawuli esibonakalayo ngokulandelayo.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Susa kananjalo i-usbip-win2 efakwe yinkqubo yayo yokufaka</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Oku kuya kususwa kule PC. I-PadForge iyayifaka kwakhona i-HIDMaestro kunye nesilawuli sayo esibonakalayo esilandelayo.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Susa kananjalo i-usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Iinguqulelo ezindala ze-PadForge zafaka i-usbip-win2 ngenkqubo yokufaka ye-usbip-win2. Oku kuyisusa nayo, kuquka isihluzi sayo se-USB root hub, ngaphandle kokuba enye inkqubo isebenzisa i-usbip-win2. Ukususa isihluzi kuqalisa kwakhona zonke ii-USB 3 root hub, ngoko izixhobo ze-USB ziqhawuka okwexeshana.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Kufundwa oko i-HIDMaestro ikushiye kule PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>I-HIDMaestro ayishiyanga nto kule PC ekufuneka isuswe.</value></data>
@@ -163,10 +160,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Iyahlala: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Akukwazekanga ukuyifunda: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ayisuswanga: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Idrayiva ye-Bluetooth ye-BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Isusiwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Igciniwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ayifundwanga</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ayisuswanga</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>I-BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ivumela izilawuli ze-PlayStation 3, i-PlayStation Move nesilawuli se-Navigation ukuba ziqhagamshele nge-Bluetooth. Ifakwe ngaphakathi kwi-PadForge kwaye ifakwa xa esinye sazo sidityaniswa okokuqala.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Iqhagamshela izilawuli ze-PlayStation 3 nge-Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Susa i-BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Oku kususa i-BthPS3 kule PC: iidrayiva zayo, isihluzi sayo se-Bluetooth, nedrayiva ye-WinUSB efakwe yi-PadForge kwizilawuli ze-PlayStation 3 ukuze zidityaniswe. I-PadForge iqala ngokumisa injini yayo, kwaye i-Bluetooth icinywa okwexeshana ngelixa iidrayiva zikhutshwa. Emva koko izilawuli ze-PlayStation 3, Move ne-Navigation zisebenza nge-USB kuphela. Ukudibanisa esinye kufaka i-BthPS3 kwakhona.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Oku kuya kususwa kule PC. Emva koko izilawuli ze-PlayStation 3, Move ne-Navigation zisebenza nge-USB kuphela, de ukudibanisa esinye kufake i-BthPS3 kwakhona.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Kufundwa oko i-BthPS3 ikushiye kule PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>I-BthPS3 ayishiyanga nto kule PC ekufuneka isuswe.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>I-DsHidMini isebenzisa ezi drayiva, ngoko ziyahlala logama isafakiwe.</value></data>
@@ -192,7 +194,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Iindawo zamaqhosha kunye namaqhosha omaleko osisiseko kwiikhibhodi ezizotywa sisibonisi se-Keyboard + Mouse, zenziwe ngedatha yoyilo ye-QMK kunye nekopi ye-QMK kaKeychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Iindawo zamaqhosha kunye namaqhosha omaleko osisiseko kwiikhibhodi ezizotywa sisibonisi se-Keyboard + Mouse, zenziwe ngedatha yoyilo ye-QMK kunye nekopi ye-QMK kaKeychron.</value></data>
   <data name="About_License" xml:space="preserve"><value>Ilayisenisi</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -214,7 +216,6 @@
   <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>Inkqubo</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(akukho mbhalo)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Umbhalo</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Amandla</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Funda njengekhibhodi</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Inombolo yomdlali</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Umdlali</value></data>
@@ -235,7 +236,6 @@
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>I-adapter ayiphendulanga. Qinisekisa ukuba isilawuli sifakiwe, uze uzame kwakhona.</value></data>
   <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>I-adapter igcine inombolo yayo yomdlali. Zama kwakhona.</value></data>
   <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>Ifayile ayikwazanga ukusetyenziswa: {0}</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>I-light gun</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Ukulinganisa umpu</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Linganisa</value></data>
   <data name="Devices_WiiAimCalibrated" xml:space="preserve"><value>Kulinganiswe kwesi sikrini.</value></data>
@@ -365,17 +365,14 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ii-trigger</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Amaqhosha</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Iiprofayile ezingenisiweyo…</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Iiprofayile ezingenisiweyo</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Iiprofayile zakho ezingenisiweyo ({0})</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Iiseti zesilawuli</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Cima</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Vala</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Cima iprofayile engenisiweyo?</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ngenisa kwifayile…</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Cima iseti?</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ngenisa ukusuka kwifayile…</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Ukufunda kusilele: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I-HIDMaestro iyalile le profayile ku-{1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Le profayile ayinayo i-HID descriptor, ngoko akukho silawuli sinokwenziwa ngayo.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Akungeniswanga nto. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Hlaziya</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ngenisa</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>I-force feedback</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Itshaneli</value></data>
@@ -435,6 +432,7 @@
   <data name="Curve_Delay" xml:space="preserve"><value>Ukulibazisa</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>I-deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ukutyibilika kombindi, imilo ye-deadzone namaxabiso e-axis nganye, igophe le-axis nganye, uluhlu, ukuqhuba</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Uluhlu ngamanani, amaxabiso ekrwada</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Uluhlu</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>I-center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>I-center offset Y</value></data>
@@ -693,13 +691,13 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Seta kwakhona ukucofa ngeminwe emihlanu</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Rekhoda i-gesture ye-touchpad</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Rekhoda i-gesture</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>le touchpad</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Zonke iisampulu zifunyenwe. Nika i-gesture igama uze ucofe Gcina.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Isampulu {0} kwe-{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} iisampulu</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Igama</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Zama kwakhona</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Thiya le gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kufuneka igama</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Igama lide kakhulu (ubuninzi boonobumba abangama-64)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Igama linoonobumba abangavumelekanga</value></data>
@@ -818,17 +816,17 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Iiprofayile</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Iprofayile esebenzayo:</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Entsha</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Iprofayile entsha</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Gcina njenge</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Gcina ulungiselelo lwangoku apha</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Hlela</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Layisha</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Khetha iprofayile kuqala.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Cima iprofayile</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Gcina njengeprofayile</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Hlela iprofayile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Igama leprofayile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Iprofayile entsha</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Igama</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Iprofayile entsha</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -1010,6 +1008,17 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Inqanaba</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Igama lomaleko</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Igama</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ibanjwe nge</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Icinezelwe nge</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Umaleko olandelayo nge</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Umaleko wangaphambili nge</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Kwakunye ne</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Khetha igalelo</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Izilawuli ezingenamephu</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Dlulela kumaleko osisiseko</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ungenzi nto</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Imowudi, uhlobo lwegalelo, ixesha nombala</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Bamba</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>I-toggle</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Igama lomaleko liyafuneka.</value></data>
@@ -1026,8 +1035,6 @@
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Cima umaleko "{0}" kunye nayo yonke imigca yawo yeemephu? Oku akunakubuyiselwa umva.</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Umda we-axis</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Nawuphi na umaleko</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Iqhosha elilandelayo</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Iqhosha langaphambili</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Iqhosha</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Seta uluhlu lokujikeleza</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Susa uphawu apha ukuze ushiye uluhlu kwivili nakwinkqubo yalo. Emva koko i-PadForge ayilithumeleli ivili naluphi na uluhlu.</value></data>
@@ -1089,7 +1096,6 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Iprofayile "{0}" ithunyelwe ngaphandle.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Iprofayile "{0}" ingenisiwe (iipakethe zezandi ezibhalisiweyo: {1}).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ifayile ayiyiyo iprofayile ye-PadForge efundekayo.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Khetha isandi ku-{0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Iipakethe zezandi</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Iifayile ze-zip zezandi zee-macro zezandi</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Yongeza ipakethe…</value></data>
@@ -1120,14 +1126,10 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Ukhuseleko lwesazisi</value>
+    <value>Isazisi sokudibanisa</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Nika le PC igama</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Seta kwakhona</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Iphasiwedi ye-Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>I-touchpad ye-PadForge</value>
@@ -1162,18 +1164,18 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Iyaqhagamshela ku-{0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Qhagamshela kwakhona ngokuzenzekelayo</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Ukuqhagamshela kwakhona okuzenzekelayo</value></data>
   <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
     <value>Ukuqalisa kusilele: {0}</value>
   </data>
   <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
     <value>Ukuqhagamshela kusilele: {0}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Khetha isandi kwipakethe eyongeziweyo, okanye khangela ifayile.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Khangela iifayile…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Khetha isandi</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Isandi sidlala kwisipikha sesilawuli, okanye kwesePC xa singenaso.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Sebenzisa isandi</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Dlala u {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1197,12 +1199,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Dibanisa</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Dibanisa isilawuli</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Dibanisa isilawuli</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Dibanisa i-Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Vula isiciko sebhetri uze ucinezele iqhosha elibomvu le-SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Gcina i-remote kufutshane nale PC ngelixa izibane zayo zidanyaza.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Dibanisa i-DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Dibanisa isilawuli se-Move okanye se-Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Yongeza isilawuli se-serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Yongeza i-remote ye-DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Vula isiciko sebhetri uze ucinezele iqhosha elibomvu le-SYNC. Yiyeke i-PadForge iqhubeke ikhangela de isilawuli sakho sibonakale.</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Dibanisa</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Iyakhangela. Cinezela iqhosha le-SYNC ngoku.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Kukhangelwa i-remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Izilawuli ezifunyenweyo</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Akukafunyanwa zilawuli. Qinisekisa ukuba izibane eziluhlaza okwesibhakabhaka ziyakhazimla.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} idityanisiwe. Iza kubonakala kuluhlu lwezixhobo zakho.</value></data>
@@ -1225,9 +1232,8 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Akukho DualShock 3 ifunyenweyo kwi-USB. Yiqhagamshele ngentambo ye-USB uze uzame kwakhona.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Ukudibanisa akugqitywanga. Inyathelo elisilelayo liboniswe ngasentla.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Vala</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ilindile)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Igama:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Igama</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Thiya le thegi</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Bhalisa</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>I-head tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Isilawuli se-VR</value></data>
@@ -1256,16 +1262,16 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Kwamkelwa nge-UDP ukusuka ku-{0}.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Izibuko le-UDP {0} lisetyenziswa yenye inkqubo.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Amaqhosha afihliweyo</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Funda iqhosha</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Umatshini:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Qalisa ukufunda</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Cinezela iqhosha elifihliweyo ngoku, uze uliyeke…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Linda kancinci…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Umthombo:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Igama:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Cinezela uze ubambe iqhosha ngoku.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Liyeke iqhosha.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Inyathelo {0} kwali {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Igama</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Thiya eli qhosha</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Bhalisa</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Amaqhosha afundiweyo</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Qala kwakhona</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Akukho maqhosha afundiweyo okwangoku.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Kufundwe ku {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Amaqhosha: {0}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Thumela ngaphandle…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>Ngenisa…</value></data>
@@ -1305,7 +1311,7 @@
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Isantya sokuqala</value></data>
   <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>I-deadzone yentshukumo</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Khangela imidlalo</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Imidlalo: {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Imidlalo</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Akukho midlalo ifunyenweyo kwivenkile ye-Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Kukhangelwa kwi-Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Ezona zintsha</value></data>
@@ -1331,6 +1337,7 @@
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Akukho ziprofayile zingeniswe kwi-Steam Workshop okwangoku</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Kujongwa uhlaziyo kwi-Steam Workshop…</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Uhlaziyo lwe-Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ezi profayile zingenisiweyo zineenguqulelo ezintsha kwi-Steam Workshop. Zingenise kwakhona kwi-Fumana iiprofayile ukuze ufumane utshintsho.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Xa kucinezelwe kabini</value></data>
   <data name="Macro_SinglePress" xml:space="preserve"><value>Xa kucinezelwe kanye</value></data>
@@ -1393,10 +1400,6 @@
   </data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Imidlalo yokulwa</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Ikhibhodi + Impuku</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Khangela iiprofayile zokuqala</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Iiprofayile zokuqala</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Iiprofayile ezilungiselelwe uhlobo lonke lwemidlalo. Khetha enye, yabela nasiphi na isilawuli, uze udlale. Ukugcina kongeza iprofayile eqhelekileyo onokuyihlela.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Gcina iprofayile</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Kongezwe iprofayile yokuqala "{0}".</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Ugqatso</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Ukujolisa nge-gyro</value></data>
@@ -1417,18 +1420,22 @@
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Yaziswa xa ibhetri yesilawuli iphantsi, ngaphambi kokuba icime phakathi komdlalo.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Yazisa xa ibhetri iphantsi</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Vavanya isaziso</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Jonga isaziso</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Yabela</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Hayi ngoku</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Naliphi na ibinzana</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Iimakhro zelizwi</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Yitsho ibinzana kwaye licinezela iqhosha onokulibela. Yonke imayikrofoni efikelelwa yi-PadForge iyamamela.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Lawula iimakhro zelizwi</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Vula iimakhro zelizwi</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Ukumamela</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Rhoqo</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Ibinzana</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Ibinzana ekufuneka ulitsho</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Igama</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Igama leqhosha</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Bhalisa</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Amabinzana abhalisiweyo</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Amabinzana</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
@@ -1467,7 +1474,7 @@
     <value>Yabela izixhobo ekwabelwana ngazo</value>
   </data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Iprofayile: {0}</value>
+    <value>Iprofayile esebenzayo: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentStale" xml:space="preserve">
     <value>Iisetingi zitshintshile kwenye i-PC. Hlola izabelo uzame kwakhona.</value>
@@ -1636,7 +1643,7 @@
   <data name="Telemetry_Status_PortInUse_Format" xml:space="preserve"><value>Izibuko le-UDP {0} lisetyenziswa yenye inkqubo.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Kulindwa i-Assetto Corsa okanye i-Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Kudluliselwa kwizibuko {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Iifomathi zakho ze-telemetry</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Iifomathi zakho</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Yongeza ifomathi</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Ifomathi {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Igama</value></data>
@@ -1697,8 +1704,18 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Fumana iziphumo zezitrigger nezezibane kwii-mod zemidlalo.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Bonisa iimenyu, umaleko notshintsho lweprofayile ngoxa udlala.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Izibuko, endaweni ye DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Amazibuko, isantya esipheleleyo, iifomathi zakho</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Amazibuko, Isantya esipheleleyo, Iifomathi zakho</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Iprofayile</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Khangela iisetingi, izixhobo neeprofayile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Khangela</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Iziphumo</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Phezulu</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Ezantsi</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} ukuhamba</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} ukuvula</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} naphi na</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Amaphepha</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Izenzo</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Sebenzisa</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Amaqhosha</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Amaqhosha &amp; Impuku</value></data>
@@ -1742,4 +1759,107 @@
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>I-SteamVR iyasebenza, idrayiva iqhagamshelwe</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ekhohlo</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ekunene</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Yabela isantya, iipedali neegiya ezithunyelwa ngumdlalo wokuqhuba, njengalo naliphi na igalelo.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Thatha iziphumo ze-adaptive trigger nezokukhanya kwiimowudi zemidlalo ezibhalelwe i-DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Vula ukuphuma kwe-telemetry emdlalweni uze uyalathise kule PC nakweli zibuko.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Indlela intloko ebekwe ngayo ngumgca we-Head Tracker kwi-[Izixhobo]. Yabela i-yaw yentloko kwi-axis yentonga kwicandelo lamaqhosha esilawuli.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amaxabiso ngumgca we-Game Telemetry kwi-[Izixhobo]. Wayabele kwicandelo lamaqhosha esilawuli okanye uwasebenzise ukuqalisa iimakhro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Indawo, ubungakanani nokubonakala kwemenyu ngokwayo zisetwa kwimenyu leyo, kwicandelo lesilawuli elithi [Iimakhro &amp; Iimenyu].</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Uluhlu nge-axis nganye. U-0 ulandela uluhlu olungentla.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Imidlalo engaziwayo yi-PadForge</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Okubonakalayo</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Isangqa, igridi okanye ibha yemenyu xa ivuliwe</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Igama leprofayile xa iprofayile itshintsha</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopa idilesi</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ifowuni eqhagamshelayo ibonakala apha nakwiphepha leZixhobo, apho uyabela khona kwisilawuli.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Khangela izixhobo</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Zonke</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Iikhibhodi &amp; Iimpuku</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Amanye amagalelo</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Akukho zixhobo zihambelanayo.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ibhetri {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>ibhetri {0}, iyatshaja</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Isetyenziswa ngu</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Yonke i-axis, iqhosha nesivamvo</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ecinezelweyo: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopa iinkcukacha</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Imveliso</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Uhlobo</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Uqhagamshelo</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Ibhetri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Indlela</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Inombolo yesiriyeli</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>I-firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Uhlaziyo</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Ngaphambili ngoku: {0}, akukho profayile isetelwe yona</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Ngaphambili ngoku: {0}, elayisha {1}</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Ilayisha ku {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Isetelwe u {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Iyasebenza</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Okungakumbi ku {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Buyisela endaweni yolungiselelo olugcinwe ku "{0}" olwangoku? Igama layo nemidlalo yayo ziyahlala.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Buyisela endaweni</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Lahla ifayile yeprofayile apha</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>xa</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ku</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Fumana iiprofayile</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Qala ngeprofayile esele ilungile, ngoqwalaselo loluntu okanye ngefayile evela kwesinye isixhobo.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Ezokuqala</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Ngenisa ifayile</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ukugcina kongeza iprofayile eqhelekileyo onokuyihlela.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Iba</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ngokubanzi</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Igalelo</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Izixhobo zekhompyutha</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Iidrayiva</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Idatha &amp; Ubumfihlo</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Khangela iisetingi</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Ngcangcazelisa nesilawuli, Phinda isaziso rhoqo, Yazisa xa itshajwe ngokupheleleyo</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Fihla izixhobo kwimidlalo, Gcina izixhobo zifihliwe phakathi kokuqaliswa, Iinkqubo ezivunyelweyo</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Khangela uhlaziyo</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Khangela amagama ombulelo</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Akukho mbulelo uhambelana no “{0}”.</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Khetha oko imidlalo ifanele ikubone. Isilawuli songezwa kwangoko xa ucofa.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Khetha kamva</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>I-Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Eziqhelekileyo</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ubume obulindelwe yimidlalo emininzi ye-PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Kwimidlalo enemiqondiso ye-PlayStation, i-touchpad ne-lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Ubume bamaqhosha e-Switch, kwimidlalo nee-emulator ezibulindelayo.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Iinowuthi nee-control change zesoftware yomculo.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Izilawuli ze-VR ezibonakalayo nge-SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Ukutshintsha uhlobo kamva, cofa itshiphu yohlobo esilawulini. Kuthatha ukucofa okukodwa.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Kufuneka i-SteamVR. Yifake kwikhadi layo kwiiSetingi.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sele kukho isilawuli se-VR. Esinye siqhuba izandla zombini.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Dibanisa isilawuli se-Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Qala ngeprofayile esele ilungile</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>I-Bluetooth, ibhetri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Ibhetri {0}</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Akukho nto kwi-PadForge ihambelana no “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Khangela uxwebhu ngo “{0}”</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Cima u {0}?</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Iqala ingenazilawuli. Ilayisha ngokwayo xa omnye wemidlalo yayo engaphambili.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Akukho enye inkqubo enefestile evuliweyo.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Susa u {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Igama, i-icon nombala womaleko osisiseko kwi-Shift Layer Flyout nakumgca weemaleko.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Ukumamela kuvuliwe okanye kuvaliwe, imowudi, ukuqiniseka</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Ukumamela kuvaliwe. Kuvule phantsi kokuthi Okungakumbi.</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Seta igama lokugqitha</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Vula i-Remote Link</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Igama lokugqitha</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Ezingenisiweyo</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Ngenisa kwisixhobo esiqhagamshelweyo</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Ulandelelwano lweebhayithi</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Isitshixo esifunekayo seepakethi ze-JSON, amaxabiso egiya</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Khetha oko ikubonisayo. Akukho nto itshintshayo de ugcine.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Akukho nto ifika kwizibuko de ugcine.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>umhleli wegophe</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Iiprofayile zokuqala</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Iiprofayile ezilungiselelwe uhlobo lonke lwemidlalo. Khetha enye, yabela nasiphi na isilawuli, uze udlale.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kwezi {1} zivuliwe</value></data>
 </root>

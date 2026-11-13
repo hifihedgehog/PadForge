@@ -189,7 +189,7 @@ namespace PadForge.Tests
         [InlineData("Gamepad DPadUp", "DPadUp")]
         [InlineData("LeftTrigger", "LeftTrigger")]
         public void SourceAnchorsOntoItsOwnControl(string source, string expected)
-            => Assert.Equal(expected, PadForge.Views.WorkshopBrowseDialog.ArtAnchorFor(source));
+            => Assert.Equal(expected, PadForge.Views.CommunityConfigsPanel.ArtAnchorFor(source));
 
         /// <summary>A DualSense or DS4 has ONE touchpad, named without a
         /// side, so a sided anchor must fold onto it instead of vanishing.</summary>

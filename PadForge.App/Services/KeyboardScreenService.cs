@@ -324,6 +324,21 @@ namespace PadForge.Services
             return null;
         }
 
+        /// <summary>What a Screen Overlay shows (#574), read from the saved
+        /// choices with no service running: its mode, or the default when it
+        /// has none saved.</summary>
+        internal static KeyboardScreenMode OverlayMode(ViewModels.SettingsViewModel settings, int number)
+        {
+            string key = KeyboardScreenInfo.OverlayRow(number).ToString("D");
+            foreach (var screen in settings.KeyboardScreens)
+                if (string.Equals(screen.Device, key, StringComparison.OrdinalIgnoreCase)) return screen.Mode;
+            return KeyboardScreenData.DefaultMode;
+        }
+
+        /// <summary>Called with a screen's row after its choices change: a
+        /// dialog's save, a macro's mode, an overlay's Reset All.</summary>
+        internal Action<Guid> ChoicesChanged { get; set; }
+
         /// <summary>Changes a screen's choices, drops an entry left at every
         /// default, and marks the settings to save.</summary>
         public void Update(Guid device, Action<KeyboardScreenData> change)
@@ -340,6 +355,7 @@ namespace PadForge.Services
             _composed.Clear();
             _nextTick = 0;
             _markDirty();
+            ChoicesChanged?.Invoke(device);
         }
 
         /// <summary>Remove Device on a screen's row: its choices go with the
@@ -1016,6 +1032,10 @@ namespace PadForge.Services
                 line += Environment.NewLine + string.Format(culture, s.KeyboardScreens_LgsShared_Format, leader.Name);
             return line;
         }
+
+        /// <summary>The service runs and has found no screen at all, the
+        /// Settings line that warns (#574).</summary>
+        internal bool FoundNoScreen => _host != null && _host.Screens.Length == 0;
 
         /// <summary>The Settings card's lines: only what belongs to the
         /// feature as a whole. Arx Control's library while no Arx screen is

@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Асаалттай</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Унтраалттай</value></data>
   <data name="Common_More" xml:space="preserve"><value>Бусад</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Бүгдийг харах</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Суулгасан</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Суулгаагүй</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 дээр боломжгүй</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Зогсож байна…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Хөдөлгүүрийг зогсоож байна…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} дээр ажиллаж байна</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Ажиллаж байна ({0} клиент)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Ажиллаж байна, холбогдсон: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} дээр сонсож байна</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>{0} порт ашиглагдаж байна</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>{0} портод хандах эрхгүй (администратороор ажиллуулна уу)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Офлайн</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Тодорхойгүй</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Үндсэн</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Хайх...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Хайх…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Үргэлжлүүлэх</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зогсоох</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Эхлүүлэх</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Өмнөх сессээс үлдсэн виртуал контроллерүүдийг цэвэрлэж байна.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> төхөөрөмж</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер нэмэх</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Контроллер нэмэх</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Тоглоомд юу харагдахыг сонгоно уу. Дармагц контроллер нэмэгдэнэ.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Оролтын эх үүсвэр</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Дараа сонгох</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Түгээмэл</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Бусад гаралт</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ихэнх компьютерын тоглоомын хүлээдэг бүтэц.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>PlayStation товчлуурын тэмдэг, мэдрэгч самбар, гэрлийн зурвастай тоглоомуудад.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch товчлуурын бүтэц, түүнийг хүлээдэг тоглоом ба эмуляторуудад.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Геймпадаар товч, курсор, гүйлгэлт.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Жолоо, нислэгийн жойстик болон өөрийн бүтэц.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Хөгжмийн программд зориулсан нот ба CC мессежүүд.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR дамжуулан виртуал VR контроллерүүд.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Төрлийг дараа солихын тулд контроллер дээрх төрлийн тэмдгийг дарна уу. Нэг дарахад болно.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services хариу өгөхгүй байна. Тохиргоо доторх түүний картыг үзнэ үү.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR шаардлагатай. Тохиргоо доторх түүний картаас суулгана уу.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR контроллер аль хэдийн байна. Нэг нь хоёр гарыг хоёуланг нь удирдана.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge хамгийн ихдээ {0} контроллер ажиллуулдаг бөгөөд бүгд ашиглагдаж байна. Өөр нэг нэмэхийн тулд нэгийг устгана уу.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профайл</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Тохиргоо, төхөөрөмж, профайл хайх</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Хайлт</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Үр дүн</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Дээш</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Доош</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} шилжих</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} нээх</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} хаанаас ч</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Хуудсууд</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Үйлдлүүд</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Баримт бичиг</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>Бусад доор</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>мөрийн сонголтуудад</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge дотор “{0}” гэсэн хайлтад тохирох зүйл алга.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Баримт бичгээс “{0}” хайх</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Виртуал контроллерийг устгах</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Бүтэн дэлгэц</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge-ийг харуулах</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>“{0}” профайл үүсгэлээ.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>“{0}” профайлыг устгалаа.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>“{0}” профайлыг шинэчиллээ.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>“{0}” профайл одоогийн тохиргоог хадгаллаа.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Профайл ачааллаа: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Профайлыг Үндсэн рүү буцаалаа</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>Виртуал контроллер {1}: “{0}” оноогдлоо.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профайл солигдлоо: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профайл солигдлоо: Үндсэн</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Үндсэн</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Профайлын товчлол</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Товчлолууд</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Аль ч контроллерээс профайл солих товчны хослол оноох.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Товчлол нэмэх</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Дараагийн профайл</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Өмнөх профайл</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Тодорхой профайл</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Цонхыг сэлгэх</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Виртуал контроллерийн идэвхгүй төлөвийг сэлгэх</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge харуулах эсвэл нуух</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Виртуал контроллеруудыг асаах эсвэл унтраах</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Холбогдсон аль ч төхөөрөмж</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Бичих</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Бичиж байна...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Төхөөрөмж сонгоогүй байна.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Слотын индекс буруу: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Төхөөрөмж оноож чадсангүй.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>хэрэв</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>төхөөрөмж</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Виртуал контроллер {1}: “{0}” оноогдлоо.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Виртуал контроллер {1}: “{0}” оноолтоос хасагдлаа.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Төхөөрөмжийг нуулаа. (Тохиргооны файлд сэргээж болно.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Төхөөрөмжийг хаслаа.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуал контроллер {0} устгагдлаа.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Нүүр</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Холбогдсон төхөөрөмжүүд: {0}. Контроллерүүд: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Тоглоомууд идэвхтэй бүх контроллерыг харна.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Хөдөлгүүр асаалттай, гэвч идэвхтэй контроллер алга.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Контроллеруудаа буцаахын тулд хөдөлгүүрийг эхлүүлнэ үү.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Уншилтын давтамж</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Идэвхтэй контроллер</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Холбогдсон төхөөрөмж</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Энэ контроллерыг асаах эсвэл унтраах</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Хөдөлгүүр эхлэхэд энэ нь эхэлнэ.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Энэ төхөөрөмж холбогдоход эхэлнэ.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Эдгээр төхөөрөмжийн аль нэг нь холбогдоход эхэлнэ.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Холбогдоогүй</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Одоо оролт илгээж байна</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Батерей {0}, бага</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Батерей {0}, цэнэглэж байна</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контроллерүүд</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ашиглаж буй Нэмэлтүүд</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR харуулах</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} холбогдсон боловч ашиглагдаагүй байна.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Ашиглах</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Тоглоомд юу харагдах вэ?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge энэ контроллерыг таны тоглоомуудын хүлээдэг контроллер болгоно. Эхлэхийн тулд нэгийг сонгоно уу. Дараа нь нэг дарж сольж болно.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge таны контроллерыг таны тоглоомуудын хүлээдэг контроллер болгоно. Эхлэхийн тулд нэгийг сонгоно уу. Дараа нь нэг дарж сольж болно.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Гар ба хулганын тоглоомыг геймпадаар тоглох.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Бусад төрөл: [{0}, {1}, {2} ба {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Контроллер үүсэхэд товчлуур, стик, гохууд 1:1 оноогдоно.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth контроллер хослуулах</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Бэлэн профайлаас эхлэх</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Холбогдсон</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, батерей {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Батерей {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Контроллер холбогдоогүй</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Кабелиар эсвэл Bluetooth холболтоор нэгийг холбоно уу.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> оноосон, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> холбогдсон</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Хөдөлгүүр ажиллаж байна. Зогсоохын тулд дарна уу.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Хөдөлгүүр сул зогсож байна. Зогсоохын тулд дарна уу.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Хөдөлгүүр зогссон. Эхлүүлэхийн тулд дарна уу.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Энэ контроллерийг тохируулах</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Дарханы зуухыг асаа</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Контроллер холбож, гаралтын төрлөө сонгоход PadForge таны оролтыг түүнд хувиргана. Богино танилцуулга бүх зүйл хаана байгааг харуулна.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Танилцуулгыг эхлүүлэх</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Алгасах</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Дараах</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Дуусгах</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Слотууд</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Виртуал контроллер бүр энд байрлана. Аль слотууд яг одоо урлаж байгааг дөл харуулна.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Дарханы зуух өөрөө. Бүх оролтын уншилтыг эхлүүлэх эсвэл зогсоохын тулд дөлийг сэлгэнэ үү.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуал контроллерүүд</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Гаралтын төрлөө сонгож, слотод төхөөрөмж өгөөд, карт дээр дарж оноолтоо тохируулна уу.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Нэмэлт боломжууд энд байна: утасны веб контроллер, Алсын холболт, хөдөлгөөний сервер болон бусад.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Мэндчилгээний танилцуулгыг харуулах</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Төхөөрөмж</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Оролтын эх үүсвэр</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Төхөөрөмж нэмэх</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Бага</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Зураг</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Жагсаалт</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} гаралт</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Хосын хоёр товчлуур хоёулаа дарагдсан үед тоглоом аль даралтыг харах</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Тоглоом контроллерийн товчны зааврыг харуулсаар байхаар стикийг бага зэрэг хазайлгасан байлгана</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Урлаж байна</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Идэвхтэй: {0}/{1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Жагсаалтаас макро сонгох, эсвэл шинээр үүсгэхийн тулд Макро гарчгийн хажууд байгаа + товчийг дарна уу.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ТҮҮХИЙ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ГАРАЛТ</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Урьдчилан харах</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Нэмэлтүүд</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Нэмэлт боломжууд. Та асаах хүртэл аль нь ч саад болохгүй.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0}/{1} асаалттай</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Тоглох өөр арга замууд</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Өөр газар илгээх</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Дэлгэц дээр</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын хурд, дөрөө, арааг онооно.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Үзэгчдэд чатад бичиж товчлуур дарах боломж олгоно.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Контроллероо өөр компьютер дээрх PadForge програмтай хуваалцана.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Өөр компьютер дээрх виртуал контроллеруудыг удирдана.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллерын хөдөлгөөнийг эмуляторууд руу илгээнэ.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Тоглоомын модуудаас гох болон гэрлийн эффектийг авна.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Тоглож байхад цэс, давхарга, профайл солилтыг харуулна.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation мэдрэгч самбар ашигладаг тоглоомуудад зориулсан дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Бусад цонхны дээр харагдах зураг, хугацаа хэмжигч эсвэл цаг.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, энгийн HTTP хаяг, нэвтрэх код</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Дахин холбогдох, порт, таних мэдээллийн хамгаалалт, хаягаар холбогдох</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ажиллах орчин, UDP порт, тэнхлэг тус бүрийн муж</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, энгийн HTTP, нэвтрэх код</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автомат дахин холболт, порт, хослуулалтын таних мэдээлэл, хаягаар холбогдох</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, бүрэн хурд, өөрийн форматууд</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, Бүрэн хурд, Өөрийн форматууд</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Хоёр эрхий хуруу товчлуур дээрээ байх зуур толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын илгээдэг хурд, дөрөө, арааг бусад оролтын адил онооно.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU хөдөлгөөний эх үүсвэр уншдаг эмуляторуудад контроллерын хөдөлгөөнийг илгээнэ.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX-д зориулсан тоглоомын модуудаас дасан зохицох гохын болон гэрлийн эффектийг авна.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Тоглоомд телеметрийн гаралтыг асааж, энэ компьютер болон портыг зааж өгнө үү.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Эмулятор дотор энэ компьютерын хаяг, энэ порттой хөдөлгөөний эх үүсвэр нэмнэ үү.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Модын эффект нь түүнд тохирох техник хангамжтай бүх контроллерт хүрнэ.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Толгойн байрлал нь [Төхөөрөмжүүд] хуудсан дахь Толгой хянагч мөр юм. Толгойн хажуу тийш эргэлтийг контроллерын Товчлуурууд хэсэгт стикийн тэнхлэгт онооно уу.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Утгууд нь [Төхөөрөмжүүд] хуудсан дахь Тоглоомын телеметр мөр юм. Тэдгээрийг контроллерын Товчлуурууд хэсэгт онооно уу, эсвэл макро ажиллуулахад ашиглана уу.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Цэсний өөрийн байрлал, хэмжээ, тунгалаг бус байдлыг контроллерын [Макро ба цэсүүд] хэсэгт цэс дээр нь тохируулна.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Эх үүсвэрүүд</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack болон түүний UDP форматаар илгээдэг бүх програм</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Муж</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Тэнхлэг тус бүрийн муж. Тэг бол дээрх мужийг дагана.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge танихгүй тоглоомууд</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Илгээхээсээ өмнө ажиллаж буй DSX хайдаг модуудад</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Юу харагдах</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхаргыг барьж байх үед түүний нэр</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Хаягийг хуулах</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Дэлгэц дээрх байрлал</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Утас холбох</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Утсаа энэ компьютертой ижил сүлжээнд холбоно уу.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Утасныхаа камераар кодыг уншуулна уу.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Контроллерын загвар сонгоно уу.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Утаснууд</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Холбогдсон утас алга.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Холбогдсон утас энд болон Төхөөрөмжүүд хуудсанд харагдах бөгөөд тэнд та түүнийг контроллерт онооно.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Таны суваг</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Үзэгчдийн бичих үгс</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Үзэгч !a гэх мэт үг бичихэд PadForge нь Төхөөрөмжүүд хуудасны Twitch чат мөрөнд !a үгэнд оноосон зүйлийг дарна. Тэр мөрийг бусад төхөөрөмжийн адил контроллерт онооно уу.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Шууд дамжуулалтын үед</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Дамжуулалтад зориулсан зураг</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Хослуулсан компьютер алга.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Өөр компьютер хослуулах</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Ойролцоо хослуулаагүй компьютер алга.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Нөгөө компьютер дээрх PadForge дотор Алсын холболтыг асаана уу. Тэр энд харагдах бөгөөд та хоёр дэлгэц дээрх богино кодыг харьцуулна.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Харагдах байдал ба байрлал</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Түүнийг зөөхийн тулд хулганы баруун товч эсвэл гурван хуруугаар чирнэ үү.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Харуулж буй</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Өөр програм урд байх үед товшилт оверлейгээр нэвтэрч өнгөрнө. PadForge урд байх үед түүнийг хулганы баруун товчоор чирч, булангаас нь хэмжээг өөрчилнө үү. Макро оверлейг дугаараар нь харуулах эсвэл нууж чадна.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Хөдөлгөөний сервер</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп болон акселерометрийн өгөгдөлд зориулсан DSU/CemuHook Motion Provider протоколын сервер.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU хөдөлгөөний серверийг идэвхжүүлэх (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>контроллер алга</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Төрөл {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Веб контроллер</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Дотоод сүлжээн дэх хөтчүүдэд геймпадын интерфейс хүргэнэ.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Утас эсвэл таблетыг контроллер болгон ашиглана. Утсан дээр юу ч суулгах шаардлагагүй.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Веб контроллерийн серверийг идэвхжүүлэх</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Утас эсвэл таблетын хөтчөөс холбогдож геймпад болгон ашиглана уу.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Утасны камераар уншуулах, эсвэл энэ хаягийг утасныхаа хөтөч дээр нээнэ үү:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Энгийн HTTP хаяг</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>HTTPS-гүй хоёр дахь хаяг: PadForge-ийн гэрчилгээг хүлээн авдаггүй хөтчүүд болон өөрийн гэрчилгээтэй туннель эсвэл урвуу проксид зориулсан. Утасны хөдөлгөөнд HTTPS шаардлагатай тул энд зөвхөн HTTPS үйлчилдэг туннель эсвэл проксигоор дамжуулан ажиллана.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Мөн энгийн HTTP-ээр үйлчлэх</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Нэвтрэх код</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Энгийн хаяг зөвхөн энэ кодоор нээгдэх бөгөөд доорх холбоос үүнийг агуулна. Шинэ код энгийн хаягаар холбогдсон бүх хүнийг салгана.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Шинэ код</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Энэ компьютер дээрх хаяг:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Чичиргээ (энэ төхөөрөмжийг тодорхойлохын тулд дарна уу)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Аль нь болохыг таних боломжтой болгож энэ төхөөрөмжийг чичиргэнэ.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Алсын холболт</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Өөр компьютер дээрх хослуулсан PadForge-той контроллероо сүлжээгээрээ эсвэл интернэтээр хуваалцана.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Өөр компьютер дээрх виртуал контроллеруудыг удирдана. Нэг удаа хослуулсны дараа итгэмжлэгдсэн компьютер автоматаар дахин холбогдоно.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Алсын холболтын серверийг идэвхжүүлэх</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Нэг удаа хослуулсны дараа итгэмжлэгдсэн компьютер автоматаар дахин холбогдоно. Хослуулсан компьютер энэ компьютерийн геймпадын гаралтыг, хэрэв та хязгаарлаагүй бол гар, хулгана, макрог нь ч удирдаж чадна.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Эсвэл хаягаар холбогдох (нарийвчилсан)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Хослуулсан компьютер энэ компьютерийн геймпадын гаралтыг, хэрэв та хязгаарлаагүй бол гар, хулгана, макрог нь ч удирдаж чадна.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Хаягаар холбогдох</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Хослуулах / Холбогдох</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Хослуулах</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Холбогдох</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Холбогдсон</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Алсын компьютертэй хослуулах</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Энэ код хоёр дэлгэц дээр ижил байгааг шалгаад “Хослуулах” дээр дарна уу.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Өөр компьютертэй хослуулах уу?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Хоёр дэлгэц ижил код харуулж байгааг шалгана уу.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Хослуулах</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Татгалзах</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Энэ компьютерийг зөвхөн геймпадын оролтоор хязгаарлах</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Зөвхөн геймпад</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Таних тэмдэг</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Та зөвхөн геймпадаар хязгаарлаагүй бол хослуулсан компьютер энэ компьютерт гар, хулгана, макроны оролт илгээж чадна.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Хослуулсан компьютер энэ компьютерийн геймпадын гаралтыг, хэрэв та хязгаарлаагүй бол гар, хулгана, макрог нь ч удирдаж чадна.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Хослуулсан компьютерүүд</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Алсын холболтод зориулж хослуулсан компьютерүүд. Аль нэгийг нь холбогдохыг зогсоохын тулд хүчингүй болгоно уу. Тэр компьютер дахин хослуулах шаардлагатай болно.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Хүчингүй болгох</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Бүгдийг хүчингүй болгох</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Нэр өөрчлөх</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлей</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation-тэй нийцтэй мэдрэгч самбарыг дуурайх, дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан, мэдрэгч дэлгэц эсвэл хулганаар ашиглах дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлейг идэвхжүүлэх</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Тунгалаг бус байдал</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Байрлалыг дахин тохируулах</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Тохиргоо</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ерөнхий</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Оролт</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Техник хангамж</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Драйверууд</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Өгөгдөл ба нууцлал</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Тохиргоо хайх</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>“{0}” гэсэн хайлтад тохирох тохиргоо алга.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Харагдах байдал</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Дуртай загвараа сонгоно уу.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Загвар</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Бараан</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Оролтын хөдөлгүүр</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Уншилтын үйлдэл болон арын боловсруулалтыг тохируулах.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Техник хангамжийн дэмжлэг</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Нээхэд хөдөлгүүрийг автоматаар эхлүүлэх</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Цонх идэвхгүй болоход уншилтыг үргэлжлүүлэх</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Уншилтын интервал (профайл өөрчлөөгүй бол)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge шинэчлэгдлээ: {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Багасгасан байдлаар эхлэх</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Нэвтрэхэд эхлэх</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide драйвер</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Давхар оролтоос сэргийлэхийн тулд физик төхөөрөмжүүдийг тоглоомоос нуух.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Давхар оролтоос сэргийлэхийн тулд физик төхөөрөмжүүдийг тоглоомоос нуудаг.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide тохиргоо</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Төхөөрөмжийг тоглоомоос нуух, Дахин нээх хооронд төхөөрөмжийг нуусан хэвээр үлдээх, Зөвшөөрөгдсөн програмууд</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Зөвшөөрөгдсөн програмууд</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Эдгээр програм нуусан төхөөрөмжүүдийг харсаар байна. PadForge үргэлж автоматаар зөвшөөрөгдсөн жагсаалтад байдаг.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Нэмэх...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro драйвер</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Хэрэглэгчийн горимын виртуал HID контроллерийн хөдөлгүүр. PadForge.App дотор шингэсэн. Анхны виртуал контроллер үүсгэхэд автоматаар суулгагдана. v3-д ViGEmBus болон vJoy-г орлосон.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge таныг анхны виртуал контроллер үүсгэхэд энэ драйверыг суулгадаг. Устгах үйлдэл нь HIDMaestro-ийн энэ компьютер дээр үлдээсэн зүйлсийг устгахаасаа өмнө жагсааж харуулна.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Виртуал контроллерүүдийг үүсгэнэ.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro-г устгах</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Энэ нь HIDMaestro-г энэ компьютерээс устгана: түүний виртуал контроллерууд, драйвер, гарын үсгийн гэрчилгээ, бүртгэлийн түлхүүрүүд болон файлууд. PadForge эхлээд өөрийн хөдөлгүүрийг зогсооно. HIDMaestro ашигладаг бусад програмууд дараагийн удаа эхлэх хүртлээ түүний драйвергүй болно. PadForge дараагийн удаа виртуал контроллер эхлүүлэхдээ үүнийг дахин суулгана.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Өөрийн суулгагчаар суулгасан usbip-win2 програмыг мөн устгах</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Энэ компьютерээс дараах зүйлс устгагдана. PadForge дараагийн виртуал контроллерын хамт HIDMaestro-г дахин суулгана.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Мөн usbip-win2 устгах</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge-ийн хуучин хувилбарууд usbip-win2 програмыг usbip-win2-ийн суулгагчаар суулгадаг байсан. Өөр програм usbip-win2 ашиглахгүй бол энэ нь тэр суулгалтыг USB үндсэн хабын шүүлтүүртэй нь хамт мөн устгана. Шүүлтүүрийг устгахад бүх USB 3 үндсэн хаб дахин эхэлдэг тул USB төхөөрөмжүүдийн холболт түр зуур тасарна.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>HIDMaestro-гийн энэ компьютерт үлдээсэн зүйлсийг уншиж байна…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro энэ компьютерт устгах зүйл үлдээгээгүй байна.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Үлдэнэ: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Уншиж чадсангүй: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Устгагдаагүй: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth драйвер</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Устгасан</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Үлдээсэн</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Уншиж чадсангүй</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Устгаж чадсангүй</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 контроллерууд, PlayStation Move болон Navigation контроллерийг Bluetooth-ээр холбогдох боломжтой болгоно. PadForge дотор шингэсэн бөгөөд тэдгээрийн аль нэгийг анх хослуулахад суулгагдана.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 контроллерүүдийг Bluetooth холболтоор холбоно.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3-г устгах</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Энэ нь BthPS3-г энэ компьютерээс устгана: түүний драйверууд, Bluetooth-д нэмдэг шүүлтүүр, мөн PadForge-ийн PlayStation 3 контроллеруудад хослуулахад зориулж суулгасан WinUSB драйвер. PadForge эхлээд өөрийн хөдөлгүүрийг зогсоох бөгөөд драйверуудыг буулгах үед Bluetooth түр унтарна. Үүний дараа PlayStation 3, Move болон Navigation контроллерууд зөвхөн USB-ээр ажиллана. Аль нэгийг нь хослуулахад BthPS3 дахин суулгагдана.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Энэ компьютерээс дараах зүйлс устгагдана. Үүний дараа PlayStation 3, Move болон Navigation контроллерууд аль нэгийг нь хослуулж BthPS3 дахин суулгах хүртэл зөвхөн USB холболтоор ажиллана.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>BthPS3-ийн энэ компьютерт үлдээсэн зүйлсийг уншиж байна…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 энэ компьютерт устгах зүйл үлдээгээгүй байна.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini эдгээр драйверуудыг ашигладаг тул түүнийг суулгасан байх хугацаанд тэдгээр нь үлдэнэ.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth дахин асаагүй. Windows-ийн Тохиргоо дотроос асаана уу.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Виртуал MIDI портууд болон MIDI оролт. Windows 11 25H2 нь 2026 оны 11-р сарын сүүлээр гарсан шинэчлэлтээс эхлэн API-г агуулдаг. Бусад компьютер PadForge-ийн суулгаж чадах Windows MIDI Services ажиллах орчин, эсвэл хуучин MIDI API-г ашиглана.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Виртуал MIDI портууд болон MIDI оролт.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows-д багтсан</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK ажиллах орчин</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Боломжгүй</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Энэ нь Microsoft-ын Windows MIDI Services ажиллах орчин ба хэрэгслүүдийг MIDI Settings програм, MIDI консол, PowerShell модулийн хамт устгана. Microsoft тэдгээрийг цаашид татах боломжгүй болгосон тул дахин суулгах боломжгүй.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Виртуал VR контроллерүүдэд зориулсан VR ажиллах орчин. Steam бүртгэл, Steam клиентгүйгээр Valve-ын серверүүдээс суулгана (хэдэн ГБ).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Виртуал VR контроллерүүдэд зориулсан VR ажиллах орчин.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Суулгах байршил</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR-ыг устгах</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Энэ нь {0} дахь Steam-гүй SteamVR суулгалтыг устгаж, хэдэн ГБ зай чөлөөлнө. SteamVR-ыг дахин суулгах хүртэл VR виртуал контроллерүүд ажиллахгүй.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Оношилгоо</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Хувилбарын мэдээлэл, мөн алдаа засахад зориулсан хөдөлгүүрийн үйл явдлын бүртгэл.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Оношилгооны бүртгэл хөтлөх</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Хөдөлгүүрийн үйл явдлыг доор харуулсан хавтас дахь diagnostics.log файлд тасралтгүй бичнэ. Дахин эхлүүлсэн ч идэвхтэй хэвээр байна. Файл 8 МБ хүрэхэд diagnostics.log.old болж солигдоно.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Хөдөлгүүрийн үйл явдлыг бүртгэлийн хавтас дахь diagnostics.log файлд тасралтгүй бичнэ. Тэр хавтсыг Бүртгэлийн хавтас нээх товч нээнэ. Дахин эхлүүлсэн ч идэвхтэй хэвээр байна. Файл 8 МБ хүрэхэд diagnostics.log.old болж солигдоно.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Агшин зураг хадгалах</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Хөдөлгүүрийн хамгийн сүүлийн үйл явдлуудыг шинэ файлд хадгална. Оношилгооны бүртгэл унтраалттай үед ч ажиллана.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Бүртгэлийн хавтас нээх</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Тухай</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Контроллерийн оноолтын хэрэгсэл</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Хамгийн сүүлийн хувилбар.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Баримт бичиг</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Шинэчлэл шалгах</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ийн орчин үеийн салбар хувилбар, SDL3, WPF, .NET 10 дээр шинээр бүтээсэн</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge аливаа оролтын төхөөрөмжийг аливаа виртуал контроллер болгоно. Геймпад, жойстик, гар, хулгана, мэдрэгч дэлгэцийг тоглоомууд жинхэнэ төхөөрөмж гэж хүлээн авдаг виртуал тоглоомын контроллерт (Xbox, PlayStation, нислэгийн жойстик, жолоо, гуравдагч талын геймпад) эсвэл гар+хулгана / MIDI гаралтад оноодог. HIDMaestro болон Windows MIDI Services дээр ажилладаг. Контроллерийн оролтод SDL3, гар ба хулганад Windows Raw Input, тоглоом тус бүрээр төхөөрөмж нуухад HidHide ашигладаг бөгөөд оноолт, үхсэн бүс, мэдрэмжийн муруй, хүчний эргэх холбоог тохируулах орчин үеийн Fluent Design интерфейстэй.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Тойм</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Ашигласан технологи</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Талархал хайх</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Бүх талархлыг харуулах</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Цөөн талархал харуулах</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}” гэсэн хайлтад тохирох талархал алга.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Ажиллах орчин ба WPF фреймворк. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Ажиллах орчин ба WPF фреймворк.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллерийн оролт ба илрүүлэлт. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллерийн оролт ба илрүүлэлт.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Төхөөрөмж тус бүрийн гар ба хулганы оролт</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуал MIDI төхөөрөмжийн гаралт (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуал MIDI төхөөрөмжийн гаралт (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Контроллерийн 3D дүрслэл. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Контроллерийн 3D дүрслэл.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF-д зориулсан Fluent 2 дизайны систем. Wpf.Ui.dll нь VirtualizingWrapPanel, fluentui-system-icons фонтууд, мөн WPF болон microsoft-ui-xaml-ийн кодыг агуулдаг. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF-д зориулсан Fluent 2 дизайны систем. Wpf.Ui.dll нь VirtualizingWrapPanel, fluentui-system-icons фонтууд, мөн WPF болон microsoft-ui-xaml-ийн кодыг агуулдаг.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>Өгөгдөл холбоход зориулсан CommunityToolkit.Mvvm. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>Өгөгдөл холбоход зориулсан CommunityToolkit.Mvvm.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly дүрс тэмдгийн багц</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Стик ба гохны дүрс тэмдгүүдийг Zacksly (CC BY 3.0)-ийн “Xbox Series Button Icons and Controls” багцаас гаргасан</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Стик ба гохны дүрс тэмдгүүдийг Zacksly-ийн “Xbox Series Button Icons and Controls” багцаас гаргасан.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Мэдрэгч самбарын дүрсийн загвар тааруулагч (Тойрог / Дөрвөлжин / Гурвалжин / Z / Зөв тэмдэг болон өөрөө бичсэн дохионууд). Magrofuoco, Vatavu, Anthony, Wobbrock нарын JavaScript жишиг хэрэгжүүлэлтийг C# дээр дахин гаргасан хувилбар. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Мэдрэгч самбарын дүрсийн загвар тааруулагч (Тойрог / Дөрвөлжин / Гурвалжин / Z / Зөв тэмдэг болон өөрөө бичсэн дохионууд). Magrofuoco, Vatavu, Anthony, Wobbrock нарын JavaScript жишиг хэрэгжүүлэлтийг C# дээр дахин гаргасан хувилбар.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>«Гар + хулгана» урьдчилан харагдацад зурагддаг гаруудын товчлуурын байрлал ба үндсэн давхаргын товчлуурууд. QMK-ийн байршлын өгөгдөл болон Keychron-ы QMK салаа хувилбараас үүсгэсэн. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>«Гар + хулгана» урьдчилан харагдацад зурагддаг гаруудын товчлуурын байрлал ба үндсэн давхаргын товчлуурууд. QMK-ийн байршлын өгөгдөл болон Keychron-ы QMK салаа хувилбараас үүсгэсэн.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Нэг хурууны дүрс дээр цэгийн үүлний тааруулагчтай зэрэгцэн ажилладаг, өнцгийн зөрүүгээр оноо өгөх арга. GestureSign-ий PointPatternAnalyzer-ын оноо өгөх санааг анхны C# кодоор хэрэгжүүлсэн. GPL-2.0, зөвхөн баримт бичиг болгон ашигласан.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Нэг хурууны дүрс дээр цэгийн үүлний тааруулагчтай зэрэгцэн ажилладаг, өнцгийн зөрүүгээр оноо өгөх арга. GestureSign-ий PointPatternAnalyzer-ын оноо өгөх санааг анхны C# кодоор хэрэгжүүлсэн. Зөвхөн баримт бичиг болгон ашигласан.</value></data>
   <data name="About_License" xml:space="preserve"><value>Лиценз</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Энэ програм хангамж CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) лицензтэй. 2D контроллерийн зургуудыг AL2009man (MIT)-ийн Gamepad-Asset-Pack нийлүүлдэг. TransposonY (GPL-2.0)-ийн GestureSign-ийг AngularMarginRecognizer-т зориулж зөвхөн баримт бичиг болгон уншсан бөгөөд түүний ямар ч код програмд ороогүй. PadForge-ийн тохируулан ашигладаг Xbox 360 болон Steam Deck-ийн 3D загваруудыг Handheld Companion (CC BY-NC-SA 4.0) нийлүүлдэг. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services, WPF UI нь MIT License-ийн дагуу лицензлэгдсэн. OpenXInput нь зөвхөн эх төслийн барааны тэмдгийн мэдэгдэлтэй ирдэг бөгөөд ижил нөхцөлөөр байгаагаар нь дахин түгээгддэг. Magrofuoco, Vatavu, Anthony, Wobbrock (BSD 3-Clause)-ийн $Q Recognizer бол мэдрэгч самбарын ShapeRecognizer-ийн жишиг бөгөөд ShapeRecognizer нь түүнийг C# дээр дахин гаргасан хувилбар юм. SDL3 нь zlib License-ийн дагуу лицензлэгдсэн. x360ce (LGPL-3.0-or-later) бол PadForge-ийн салбарлан гарсан анхны код суурь юм. Igor Budzhak (MIT)-ийн Zergatul.Obs.InputOverlay хулганы зургийг нийлүүлдэг.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK ачаалагч)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD маягийн</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензийн нөхцөл</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK нөхцөл</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Зөвхөн барааны тэмдгийн мэдэгдэл</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Нөхцөл заагаагүй</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Нийтлээгүй</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Хэд хэдэн лиценз</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Хэрэглэгчийн горимын виртуал HID контроллерийн хөдөлгүүр (ViGEmBus болон vJoy-г орлоно). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Хэрэглэгчийн горимын виртуал HID контроллерийн хөдөлгүүр (ViGEmBus болон vJoy-г орлоно).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput-ийг шууд орлох сан. PadForge-ийн өөрийн виртуал контроллерүүдийг өөрийн харагдацаас шүүнэ. Эх төслийн барааны тэмдгийн мэдэгдэл, OSS лицензгүй.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput-ийг шууд орлох сан. PadForge-ийн өөрийн виртуал контроллерүүдийг өөрийн харагдацаас шүүнэ.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Физик төхөөрөмжүүдийг тоглоомоос нуух цөмийн драйвер. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Физик төхөөрөмжүүдийг тоглоомоос нуух цөмийн драйвер.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Урилга</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“Мөн бидний хүүхдүүд нүглээсээ ангижрахын тулд ямар эх сурвалжид хандаж болохыг мэдэж болохын тулд бид Христийн тухай ярьж, бид Христэд баясаж, бид Христийн талаар номлож, бид Христийн тухай бошиглож, мөн бид бошиглолуудынхаа дагуу бичдэг болой.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Нифай 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Бүх үнэн ба авралын эх сурвалж болох Эзэн Есүс Христэд алдар, хүндэтгэл, магтаал үүрд мөнхөд байх болтугай.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Таныг ComeUntoChrist.org сайтад зочилж, Түүний тухай болон Хожмын Үеийн Гэгээнтнүүдийн Есүс Христийн Сүмийн тухай илүү ихийг мэдэхийг чин сэтгэлээсээ урьж байна.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Чихэвчний гаралтад зориулсан Bauer стерео-бинаурал хөндлөн холилт (crossfeed). MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Чихэвчний гаралтад зориулсан Bauer стерео-бинаурал хөндлөн холилт (crossfeed).</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense-ийн чанга яригчийн аудиог Bluetooth-ээр дамжуулдаг цэвэр C# Opus кодлогч. Зохиогч: Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense-ийн чанга яригчийн аудиог Bluetooth-ээр дамжуулдаг цэвэр C# Opus кодлогч. Зохиогч: Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-гийн DualSense Bluetooth аудио судалгаа: контроллерийн чанга яригчийн урсгал дамждаг пакет тээвэрлэлт. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-гийн DualSense Bluetooth аудио судалгаа: контроллерийн чанга яригчийн урсгал дамждаг пакет тээвэрлэлт. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ын Bluetooth чанга яригчийн жор: Opus фрейм ба пакетийн бүтэц. Олдвороо хуваалцаж, туршилт хийсэн TechAntohere-д мөн баярлалаа. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ын Bluetooth чанга яригчийн жор: Opus фрейм ба пакетийн бүтэц. Олдвороо хуваалцаж, туршилт хийсэн TechAntohere-д мөн баярлалаа.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB контроллерийн аудио шууд дамжуулалтын жишиг хэрэгжүүлэлт. Зохиогч: WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Тэмдэгтийн саатал (мс)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Бичих тэмдэгт хоорондын миллисекунд, 1000 хүртэл. 0 бол бүх текстийг нэг дор бичнэ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Сул үед салгах</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Тэжээл</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Төхөөрөмжийн мэдээллийн хуудас</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Дэлгэрэнгүй</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>минут (0 = хэзээ ч үгүй)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-ээр залгахад Bluetooth-ийг салгах</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Хурдан цэнэглэлт. Bluetooth-ээр холбогдсон байхдаа энэ контроллер цэнэглэгдэж байгаагаа мэдээлэхэд Bluetooth холболт тасарч, радиог тэжээлгүйгээр цэнэглэгдэнэ. Ханын цэнэглэгч зэрэг аливаа USB тэжээлийн эх үүсвэр тооцогдоно. Кабель залгаатай байхад та Bluetooth-ийг дахин асаавал дараагийн удаа салгах хүртэл түүнийг хөндөхгүй.</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Энэ PlayStation геймпадаас чиглэлүүдийг шууд асуудаг тул бүжгийн дэвсгэр дээр зүүн ба баруун, эсвэл дээш ба доош чиглэл эхний алхмаас эхлэн хамт бүртгэгдэнэ. Тэдгээр нь Дээш, Доош, Зүүн, Баруун сум товч болж ирдэг бөгөөд эсрэг чиглэлүүдийг дарсны дараа 3.34 фирмвэр мөн тэдгээрийг өөрөө илгээдэг тул PadForge тэр үед асуухаа болино. Тэр хүртэл адаптер геймпадыг өөрөө унших ихэнх үйлдлээ алгасна.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 даралт</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Тоглогчийн дугаар</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер дугаарыг хадгалж, тэр тоглогч болж дахин холбогдоно. Дараа нь Windows шинэ төхөөрөмж гэж хардаг тул порт эргэж ирмэгц дахин онооно уу.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер дугаарыг хадгалж дахин холбогдох бөгөөд Windows үүнийг шинэ төхөөрөмж гэж хардаг.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Тоглогч</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Тоглогч тохируулах</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast дэлгэц</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Хадгалах хүртэл порт руу юу ч илгээгдэхгүй.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Харуулах</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Адаптерийн зураг</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Профайлын нэр</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO-г хоёр Taiko бөмбөр гэж уншиж байна.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0}: iCade контроллер гэж уншиж байна.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0}: дахин гар гэж уншиж байна.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Гэрлийн буу</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Үндсэн онилгын муж: X {0} – {1}, Y {2} – {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Калибровк хийсэн онилгын муж: X {0} – {1}, Y {2} – {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Бууны калибровк</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Бүх гар (нэгтгэсэн)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Бүх хулгана (нэгтгэсэн)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Төхөөрөмжүүд</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} холбогдсон</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Төхөөрөмж хайх</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Бүгд</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Контроллерүүд</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Гар ба хулгана</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad-ыг унших</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad болон uDraw таблетуудыг унших</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Геймпадуудыг унших</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} Windows драйвер руугаа буцлаа.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Windows драйверийг сэргээж чадсангүй: {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows нь {0} төхөөрөмжийг өөрийн драйвер руу нь буцаалаа. Дахин шилжүүлэхийн тулд Төхөөрөмжүүд хуудсанд үүнийг сонгоно уу.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> онлайн / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> нийт</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Энэ төхөөрөмж болон түүний тохиргоог хасах</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Төхөөрөмж хасах</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} төхөөрөмжийн жагсаалтаас хасагдаж, хадгалсан тохиргоо нь устгагдана.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Төхөөрөмжийг оноохын тулд хажуугийн самбар дахь контроллерийн карт руу чирнэ үү.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Бүтээгдэхүүн: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Төхөөрөмжийг оноохын тулд хажуугийн самбар дахь контроллер руу чирнэ үү.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Төхөөрөмжийн оноолтыг илгээх</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Виртуал контроллерт оноох</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Оноолтыг сэлгэх</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Виртуал контроллерийн слот одоогоор алга. Энэ төхөөрөмжийг оноохын тулд Хянах самбар дээр нэгийг үүсгэнэ үү.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Оролтын горим</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Энэ төхөөрөмжийг энэ контроллерт онооно, эсвэл хасна.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Түүхий жойстикийн горимыг албадах (геймпадын дахин оноолтыг алгасах)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL-ийн геймпадын оноолтын оронд түүхий HID индексүүдийг уншина. SDL товч/тэнхлэгийн бүтцийг буруу таньсан үед ашиглана уу.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Оролт нуух</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Тоглоомоос нуух (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide драйвераар дамжуулан энэ төхөөрөмжийг бусад програмаас бүрэн нууна. PadForge аль хэдийн холбогдсон USB контроллерийг нуухдаа түүнийг Windows-д дахин холбодог тул түүнийг нээсэн байсан бүх зүйл түүнийг алдана. Bluetooth контроллер, эсвэл өөр контроллертой хүлээн авагч хуваалцдаг контроллер нь нуугдахаас өмнө түүнийг нээсэн бүх зүйлд дараагийн холболт хүртэл харагдсаар байна.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Энэ сонголтыг идэвхжүүлэхийн тулд HidHide драйверийг суулгана уу</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Оноосон оролтыг шингээх (дэгээ)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Зөвхөн оноосон товчлуур/товчнуудыг хааж, оноогоогүй оролтуудыг нэвтрүүлнэ</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Түүхий оролтын төлөв</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Түүхий оролтыг нь шалгахын тулд төхөөрөмж сонгоно уу.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Оролтыг турших</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Тохиргоог нь харж, оролтыг нь турших бол төхөөрөмж сонгоно уу.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Тэнхлэгүүд</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Товчнууд</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Гар</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Сонгосон төхөөрөмжид хувилах тэнхлэг, товч, POV алга.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} төхөөрөмжийг энэ слот руу 1:1 шууд дамжуулалтаар хувилах уу? Бүтэц нь {1} тэнхлэг, {2} товч, {3} POV болж, слот дээрх энэ төхөөрөмжийн мөрүүд түүний өөрийн оролтуудаар солигдоно.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Энэ төхөөрөмж Өргөтгөсөн контроллерийн даах хэмжээнээс олон оролттой. Оноосон нь: тэнхлэг {0}/{1}, товч {2}/{3}, POV {4}/{5}. Үлдсэнийг оноогоогүй.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Импортолсон профайлууд</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Хэрэглэгчийн импортолсон HIDMaestro профайлууд PadForge.xml дотор хадгалагдах бөгөөд Өргөтгөсөн слот бүрийн профайлын унждаг жагсаалтад харагдана. Доорх холбогдсон төхөөрөмжөөс шинийг авах, эсвэл байгааг экспортлох / устгах боломжтой.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Таны импортолсон профайлууд ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Импортлох боломжтой холбогдсон төхөөрөмжүүд</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Контроллерын бэлэн тохиргоо</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge-д ороогүй контроллерт зориулсан бэлэн тохиргоог файлаас эсвэл контроллероос нь нэмнэ үү.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Импортолсон</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Холбогдсон төхөөрөмжөөс импортлох</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Экспортлох…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Устгах</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Хаах</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Профайлын JSON экспортлох</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Импортолсон профайлыг устгах уу?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>“{0}” профайлыг устгах уу? Энэ профайлыг одоо ашиглаж буй слот бүр нийлэгжүүлсэн “Өөрийн” бичлэг рүү буцна.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Бэлэн тохиргоог устгах уу?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ашиглаж буй контроллер бүр “Өөрийн” бичлэг рүү буцна. Үүнийг буцаах боломжгүй.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Экспортолсон: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Экспортлож чадсангүй: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>“{0}” устгагдлаа.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файлаас импортлох…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файлаас импорт хийх…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Профайлын JSON импортлох</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Импортолсон: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Уншиж чадсангүй: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro энэ профайлыг {1} байршилд татгалзсан: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Энэ профайлд HID тодорхойлогч байхгүй тул үүнээс контроллер үүсгэх боломжгүй.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Юу ч импортлогдсонгүй. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Сэргээх</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Импортлох</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(нэргүй HID төхөөрөмж)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID интерфейс олдлоо.</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Төв</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Үхсэн бүс</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Төвийн шилжилт, үхсэн бүсийн хэлбэр ба тэнхлэг тус бүрийн утга, тэнхлэг бүрийн муруй, муж, жолоодлого</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Муж тоогоор, түүхий утгууд</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Муж</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Хилийн калибровк нь стикийн хүрч чадах ирмэгийг хэмжиж, түүнийг бүтэн тойрог болгон хэлбэржүүлнэ. Дөрвөн гулсуур зөвхөн чиглэл бүрийг хязгаарлана.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Түүвэрлэж байна...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Дүрс тааруулах босгыг дахин тохируулах</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Мэдрэгч самбарын дохио бичих</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Доорх гадаргуу дээр дохиогоо зурна уу. Цонх таны хүргэсэн хуруу бүрийг бүртгэнэ. Бүх хуруугаа гадаргуугаас авахад дээж бичигдэнэ. Өмнөх дээжүүдээс өөр тооны хуруугаар зурвал цуглуулга дахин эхэлнэ.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Зургийн талбайд хуруу хүрэхийг хүлээж байна</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Дохио бичих</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Контроллерын мэдрэгч самбар дээр дүрсээ зурна уу. Энэ нь оноож болох оролт болно.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Дохиогоо энд зурна уу.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Мэдрэгч самбар дээр зурна уу. Зургийн талбай үүнийг шууд давтан харуулна.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Бичиж байна: {0}, мэдрэгч самбар {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>энэ мэдрэгч самбар</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Мэдрэгч самбар боломжгүй. Доорх зургийн талбайг хулгана эсвэл хүрэлтээр ашиглана уу.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Мэдрэгч самбар боломжгүй. Энд хулгана, үзэг эсвэл хуруугаар зурна уу.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Зурж байна…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Бүх дээжийг авлаа. Дохиодоо нэр өгөөд “Хадгалах” дээр дарна уу.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Дээж {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} дээж</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Авах дээжийн тоо</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт нь 3. Олон дээж = илүү найдвартай тааруулалт, цөөн = хурдан бичлэг.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Авах дээжийн тоо</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт нь 3. Олон дээж илүү найдвартай тааруулалт өгөх бөгөөд цөөн дээж хурдан бичигдэнэ.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Нэр</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Дахин оролдох</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Энэ дохио зангааг нэрлэх</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Нэр шаардлагатай</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Нэр хэт урт (дээд тал нь 64 тэмдэгт)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Нэрэнд буруу тэмдэгт байна</value></data>
@@ -2301,41 +2444,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Профайлууд</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Профайлын удирдлага</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Идэвхтэй тоглоомоос хамааран автоматаар солигддог, програм тус бүрийн контроллерийн профайл үүсгэнэ.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Урд талын програмаас хамааран профайлыг автоматаар солих</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Профайл бол бүрэн тохиргоо: түүний контроллерүүд, оноолт ба тааруулга.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Эхлэлийн профайлууд</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Бүхэл жанрт зориулсан бэлэн профайлууд. Нэгийг сонгож, дурын контроллер оноогоод тоглоорой.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Тоглоомоор профайл солих</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Автомат сэлгэлт</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, түүнд профайл тохируулаагүй</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, {1} профайлыг ачаална</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Одоо урд байгаа: {0}, мөн ямар ч профайлд тоглоом тохируулаагүй байна</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Эхлүүлэгч болон скриптүүдээр гаднаас удирдахыг зөвшөөрөх</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Playnite, LaunchBox эсвэл скрипт профайлыг идэвхжүүлж, идэвхгүй болгож чадахын тулд PadForge.Control нэртэй дотоод нэрлэсэн суваг (named pipe) нээнэ. Ийм байдлаар идэвхжүүлсэн профайл скрипт суллах эсвэл та өөрөө профайл солих хүртэл идэвхтэй хэвээр байна. Зөвхөн дотоод компьютерт.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Гадны удирдлага</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Идэвхтэй профайл:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Слот алга</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Автомат солилт: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Контроллер алга</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Профайл импортлохын тулд энд тавина уу</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Шинэ</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Профайл файлаа энд тавина уу</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Шинэ профайл</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Өөр нэрээр хадгалах</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Одоогийн тохиргоог энд хадгалах</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Засах</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Ачаалах</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Гүйцэтгэх файлтай профайл одоогоор алга</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Суурилагдсан</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Эхлээд профайл сонгоно уу.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Суурилагдсан “Үндсэн” профайлыг засах эсвэл устгах боломжгүй.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Профайл устгах</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>“{0}” профайлыг устгах уу? Түүний хадгалсан слот болон оноолтын агшин зураг устгагдана.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Тоглоом тохируулаагүй</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} ажиллахад ачаалагдана</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Тохируулсан тоглоом: {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Идэвхтэй</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} профайлын бусад үйлдэл</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} устгах уу?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профайл болон түүний автомат сэлгэлтийн дүрэм устгагдана. Үүнийг буцаах боломжгүй.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профайл устгагдана. Үүнийг буцаах боломжгүй.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>“{0}” дотор хадгалсан тохиргоог одоогийнхоор солих уу? Нэр болон тоглоомууд нь хэвээр үлдэнэ.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Солих</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Профайл болгон хадгалах</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Профайл засах</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Профайлын нэр:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Шинэ профайл</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Нэр</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Шинэ профайл</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Гүйцэтгэх файлууд (урд талын цонхтой тааруулна):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Үүнийг ачаалах тоглоомууд</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Уншилтын давтамж</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Үндсэн (ерөнхий тохиргоо)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” профайл идэвхтэй үед өөрчлөгдсөн: {1} мс</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Бүх слотын оноолт болон төхөөрөмж тус бүрийн тохиргоог нэг нэрийн дор агшин зураг болгон хадгална. Холбосон гүйцэтгэх файлууд үүн рүү автоматаар шилжинэ.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профайлын нэрийг өөрчилж, түүнийг идэвхжүүлдэг гүйцэтгэх файлуудыг шинэчилнэ. Хадгалсан оноолт, тохиргоо өөрчлөгдөхгүй.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Бүх контроллерын оноолт болон тохиргоог нэг нэрийн дор хадгална. Түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профайл нь түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллергүйгээр эхэлнэ. Түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ажиллаж буй тоглоом нэмэх</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Өөр ямар ч програмын цонх нээлттэй алга.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} хасах</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Энэ профайл ачаалагдсан үеийн уншилтын давтамж</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Тохиргоо хуулж авах...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Тохиргоог нь хуулж авах төхөөрөмжөө сонгоно уу:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Хуулж авах</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>{0} контроллерын оноолт болон төхөөрөмж тус бүрийн тааруулгыг өөр контроллерынхоор солино.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Өөр контроллерын макрог {0} контроллерт нэмнэ.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Оноогоогүй, өмнөх оноолтоо хадгална</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Зөвшөөрөгдсөн жагсаалтад нэмэх програмаа сонгоно уу</value></data>
@@ -2377,6 +2541,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>Муж</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Үхсэн бүсийн нөхөлт</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Цэг нэмэхийн тулд давхар товшино уу. Хасахын тулд баруун товчоор дарна уу. Тохируулахын тулд чирнэ үү.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>муруй засварлагч</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Гохны тэнхлэг</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2736,8 +2901,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Суурь</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift давхарга</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Суурийг тохируулах</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх болон давхаргын мөрөнд харагдах Суурь давхаргын нэр, дүрс тэмдэг, өнгө.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Давхаргын нэр</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Идэвхжүүлэгч оролт</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Нэр</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Барих товч</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Дарах товч</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Дараагийн давхарга</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Өмнөх давхарга</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Мөн хамт</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Оролт сонгох</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Оноогоогүй удирдлагууд</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Суурь давхаргыг дагах</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Юу ч хийхгүй</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Горим, оролтын төрөл, хугацаа ба өнгө</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Горим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Дарж барих</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Сэлгэх</value></data>
@@ -2764,14 +2940,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Чагтлагдсан үед энэ давхаргын зорилт Суурь мөр рүү шилжихийн оронд унтраалттай хэвээр үлдэнэ.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Саатал</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Давхарга хариу үйлдэл үзүүлэхээс өмнө оролтыг хэр удаан дарж барих ёстойг заана. Дарж барих горимд энэ нь хэлбэлзлийн шүүлт болно. Сэлгэх, Түгжих, Тогтоох горимд солилтыг удаан даралт болгоно: дарж барилт энэ хугацааг давахад давхарга нэг удаа солигдох бөгөөд үүнээс богино товшилт юу ч хийхгүй. 0 бол шууд хариу үйлдэл үзүүлнэ.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Хослолын хоёр дахь оролт</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Тэнхлэгийн босго</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Давхаргуудаар ээлжлэх</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Зөвхөн давхаргад байх үед</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Аль ч давхарга</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Оролт зөвхөн сонгосон давхарга идэвхтэй үед тооцогдоно. Шалгалт оролт дарагдах үед хийгдэж, даралтын турш хүчинтэй хэвээр байна. “Аль ч давхарга” гэвэл оролт үргэлж тооцогдоно. Давхарга бүрээс гарах замыг тухайн давхарга дээр өөр идэвхжүүлэгч эсвэл “Давхарга солих” макрогоор тохируулна уу.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Дараагийн товч</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Өмнөх товч</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Эргэлдэх</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Асаалттай үед сүүлийн давхаргаас цааш алхахад эхнийх рүү, эхнийхээс өмнө алхахад сүүлийнх рүү буцна. Унтраалттай үед заагч төгсгөлүүд дээр зогсоно.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Суурийг оруулах</value></data>
@@ -2783,18 +2956,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Нэг товч (эсвэл POV чиглэл) дарахад давхарга идэвхжинэ.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Идэвхжүүлэхийн тулд хоёр товчийг зэрэг дарж барих ёстой. Өөр төхөөрөмжүүдийн хоорондох хослолыг дэмжинэ.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Аналог тэнхлэг босго утгаас давсан үед идэвхжинэ.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Идэвхжүүлэгчийг дарж барих үед давхарга идэвхтэй байна. Суллахад идэвхгүй болно.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Оролтыг нь дарж барих үед энэ давхаргын оноолт Суурийн оноолтыг орлоно.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Идэвхжүүлэхийн тулд товшино. Дахин товшиход суллагдана. Давхарга олон даралтын турш хадгалагдана.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Дарахад энэ давхарга түгжигдэн идэвхтэй үлдэнэ. Дахин дарахад Суурь руу буцна. Өөр Түгжих товч өөрийн давхарга руу шилжүүлнэ.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Даралт бүр эрэмбэлсэн давхаргын жагсаалтаар урагшилна. Төгсгөлд нь Суурь руу буцна.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Идэвхжүүлэхийн тулд нэг товшино. Дараагийн оноосон товчны даралт давхарга дээр ажилласны дараа автоматаар суллагдана.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Өөрийн товчгүй. Үүнийг Ээлжлэх удирдлагын дараалалд нэмбэл ээлж түүнд хүрнэ.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Оноогоогүй зорилтуудыг Суурь давхаргаас өвлөх</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Суллахад ажиллах</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Энэ идэвхжүүлэгч ажиллахаас өмнө товч суллагдахыг хүлээнэ. Дарж барих саатал тохируулсан бол суллалт тооцогдохын тулд даралт тэр хугацаанаас удаан үргэлжлэх ёстой.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Идэвхжүүлэгчийн өөрийн оноолтыг мөн ажиллуулах</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Чагтлагдсан үед идэвхжүүлэгч товч түүнийг эх үүсвэр болгон ашигладаг мөрүүдийг удирдсаар байна. Нэг даралт давхаргыг сольж, товчны өөрийн оноолтыг ажиллуулна. Чагтлаагүй (үндсэн) үед идэвхжүүлэгчийн даралт зөвхөн давхарга солиход зарцуулагдана.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Чагтлагдсан үед энэ давхаргын тодорхой оноогоогүй зорилтууд Суурь давхарга руу шилжинэ. Чагтлаагүй (үндсэн) үед давхарга Суурийг бүхэлд нь орлож, оноогоогүй зорилтууд унтраалттай үлдэнэ.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Суурь давхаргыг дагах сонгосон үед энэ давхаргын оноогоогүй удирдлагууд Суурийн оноолтоо хадгална. Юу ч хийхгүй сонгосон үед давхарга Суурийг бүхэлд нь орлож, тэдгээр удирдлагууд унтраалттай үлдэнэ.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Эргэлтийн муж</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Эргэлтийн мужийг тохируулах</value></data>
@@ -2997,15 +3169,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Сонгосон төхөөрөмжид суурилуулсан чанга яригч байхгүй. Энэ контроллерын макро дуу системийн үндсэн гаралтаар тоглоно.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Дууны гаралтыг дахин тохируулах</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-ийн хөтөч дээр ажилладаг DualSense туршилтын багц: Sony feature report-ын CRC хүрээлэлт болон PadForge-ийн виртуал контроллероос физик контроллер руу дамжуулдаг фирмвэрийн туршилтын командуудын лавлагаа. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-ийн хөтөч дээр ажилладаг DualSense туршилтын багц: Sony feature report-ын CRC хүрээлэлт болон PadForge-ийн виртуал контроллероос физик контроллер руу дамжуулдаг фирмвэрийн туршилтын командуудын лавлагаа.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius-ийн DualShock 4 Bluetooth аудионы лавлагаа: PadForge-ийн DS4 чанга яригчийн урсгалын репортын хүрээлэлт. SBC кодлогч нь Bluetooth A2DP тодорхойлолтод тулгуурласан эх C# хэрэгжүүлэлт. khallmark-ийн ds4mac-ын протоколын баримт бичгийг ашигласан. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius-ийн DualShock 4 Bluetooth аудионы лавлагаа: PadForge-ийн DS4 чанга яригчийн урсгалын репортын хүрээлэлт. SBC кодлогч нь Bluetooth A2DP тодорхойлолтод тулгуурласан эх C# хэрэгжүүлэлт. khallmark-ийн ds4mac-ын протоколын баримт бичгийг ашигласан.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Экспортлох…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Импортлох…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>«{0}» профайлыг экспортлолоо.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>«{0}» профайлыг импортлолоо ({1} дууны багц бүртгэв).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Энэ файл уншигдах PadForge профайл биш байна.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} багцаас дуу сонгох</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Дууны багцууд</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Дууны макронд зориулсан дуунуудын zip файл</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Дууны багц нь .pfsounds өргөтгөлтэй, дуунуудыг агуулсан нэг zip файл юм. Энд нэмээд дараа нь аль ч дууны макрод түүний дууг сонгоно уу. PadForge файлаас шууд уншдаг бөгөөд хэзээ ч задалдаггүй. Зөөврөөр ашиглахын тулд багцуудыг PadForge.exe-ийн хажууд хадгална уу.</value></data>
@@ -3050,20 +3221,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Таних мэдээллийн хамгаалалт</value>
+    <value>Хослуулалтын таних мэдээлэл</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Энэ компьютерын хослуулалтын таних мэдээлэл хэрхэн хадгалагдахыг заана. Хослуулалтаа флаш дискээр компьютер хооронд зөөхийн тулд зөөврийн горим сонгоно уу.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Энэ компьютерт нэр өгөх</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Ойролцоох компьютерууд (хослуулаагүй)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Дахин тохируулах</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Алсын холболтын нууц үг</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge мэдрэгч самбар</value>
@@ -3095,9 +3259,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>Хослуулсан компьютер</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Онлайн</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Офлайн</value>
   </data>
@@ -3114,7 +3275,7 @@
     <value>Хамгаалалтыг өөрчлөхийн өмнө одоогийн таних мэдээллийн түгжээг тайлна уу.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Зөөврийн таних мэдээллээ хамгаалах нууц үг тохируулна уу. Компьютер бүр дээр Алсын холболтын түгжээг тайлахдаа үүнийг оруулна.</value>
+    <value>Нууц үг энэ компьютерийн хослуулалтын таних мэдээллийг хамгаална.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Таних мэдээллийн хамгаалалт шинэчлэгдлээ.</value>
@@ -3134,7 +3295,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>{0}:{1} руу холбогдож байна…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Автоматаар дахин холбогдох</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Автомат дахин холболт</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>{0} дээр хүлээж байна</value>
   </data>
@@ -3153,65 +3314,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Түнш {0} холбогдлоо, {1} төхөөрөмж</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Нэмсэн багцаас дуу сонгох, эсвэл файл хайх.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Файл хайх…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Дуу сонгох</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Дуу контроллерын чанга яригчаар, хэрэв байхгүй бол компьютерын чанга яригчаар тоглогдоно.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Дууг ашиглах</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>{0} тоглуулах</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Контроллерын аудио давхардуулалт болон аудионы басс дээр суурилсан гохын чичиргээнд зориулсан WASAPI loopback бичлэг. PadForge-д ороогүй NAudio.Midi нь мөн хуучин MIDI API-ийн WinMM тодорхойлолтууд ба портын дарааллууд, хурд 0 бүхий Note On нь Note Off гэсэн дүрэм, sustain зэрэг асаах/унтраах контроллеруудын лавлагаа болсон. Зохиогч Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Контроллерын аудио давхардуулалт болон аудионы басс дээр суурилсан гохын чичиргээнд зориулсан WASAPI loopback бичлэг. PadForge-д ороогүй NAudio.Midi нь мөн хуучин MIDI API-ийн WinMM тодорхойлолтууд ба портын дарааллууд, хурд 0 бүхий Note On нь Note Off гэсэн дүрэм, sustain зэрэг асаах/унтраах контроллеруудын лавлагаа болсон. Зохиогч Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Дуут макроны хэллэгийг сонсдог офлайн яриа таних хэрэгсэл. Зохиогч Alpha Cephei. Загвар нь PadForge дотор хамт ирдэг. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Дуут макроны хэллэгийг сонсдог офлайн яриа таних хэрэгсэл. Зохиогч Alpha Cephei. Загвар нь PadForge дотор хамт ирдэг.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Алсын холболтын хослуулалт ба дамжуулалтын криптограф (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, MIT маягийн лиценз.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Алсын холболтын хослуулалт ба дамжуулалтын криптограф (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius-ийн бүтээсэн, DualShock 3-ыг дундын радиогоор холбогдох боломж олгодог, хамт ирдэг Bluetooth профайл ба PSM шүүлтүүр драйверууд. Хослуулах үед програм дотроос суулгагдана. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius-ийн бүтээсэн, DualShock 3-ыг дундын радиогоор холбогдох боломж олгодог, хамт ирдэг Bluetooth профайл ба PSM шүүлтүүр драйверууд. Хослуулах үед програм дотроос суулгагдана.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer-ийн DualShock 3 протоколын лавлагаа: sixpair feature report-ууд, Bluetooth гаралтын репортын загвар, идэвхжүүлэх дараалал, батарейн хүснэгт. PadForge-ийн хэрэгжүүлэлт нь эх C#. HIDMaestro-ийн DualShock 3 (SIXAXIS): Full контроллер нь DsHidMini-ийн SXS горимын репорт дескрипторыг ашигладаг. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer-ийн DualShock 3 протоколын лавлагаа: sixpair feature report-ууд, Bluetooth гаралтын репортын загвар, идэвхжүүлэх дараалал, батарейн хүснэгт. PadForge-ийн хэрэгжүүлэлт нь эх C#. HIDMaestro-ийн DualShock 3 (SIXAXIS): Full контроллер нь DsHidMini-ийн SXS горимын репорт дескрипторыг ашигладаг.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Програм доторх BthPS3 тохируулга болон нуусан USB контроллерыг чөлөөлөхөд зориулсан драйверын агуулахад суулгах, Bluetooth ангиллын шүүлтүүр бүртгэх, USB портыг дахин эхлүүлэх. Зохиогч nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Програм доторх BthPS3 тохируулга болон нуусан USB контроллерыг чөлөөлөхөд зориулсан драйверын агуулахад суулгах, Bluetooth ангиллын шүүлтүүр бүртгэх, USB портыг дахин эхлүүлэх. Зохиогч nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro утастай драйвер болон PadForge-ийн WinUSB-д холбодог контроллеруудад USB хандалт олгоно. libusb-1.0.dll хэлбэрээр хамт ирдэг. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro утастай драйвер болон PadForge-ийн WinUSB-д холбодог контроллеруудад USB хандалт олгоно. libusb-1.0.dll хэлбэрээр хамт ирдэг.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Утасны веб контроллер дахь мэдрэгч жойстик. Зохиогч Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Утасны веб контроллер дахь мэдрэгч жойстик. Зохиогч Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge-ийн хамт ирдэг оноолтуудын өргөтгөдөг олон нийтийн геймпадын оноолтын өгөгдлийн сан. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge-ийн хамт ирдэг оноолтуудын өргөтгөдөг олон нийтийн геймпадын оноолтын өгөгдлийн сан.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide товчны LED судалгаа: XboxGIP пакетын бүтэц ба илрүүлэх дараалал. Зохиогч Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide товчны LED судалгаа: XboxGIP пакетын бүтэц ба илрүүлэх дараалал. Зохиогч Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Ороох өнцгийн жолоодлого ба налалтын тооцоо. Зохиогч JibbSmart ба Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Ороох өнцгийн жолоодлого ба налалтын тооцоо. Зохиогч JibbSmart ба Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Тоглогчийн орон зай ба дэлхийн орон зайн гироскопын хувиргалт. Зохиогч JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Тоглогчийн орон зай ба дэлхийн орон зайн гироскопын хувиргалт. Зохиогч JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015)-ын хаптик репортын бүтэц ба нотын үеийн тооцоо. Зохиогч Pila ба Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015)-ын хаптик репортын бүтэц ба нотын үеийн тооцоо. Зохиогч Pila ба Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ба Steam Deck-ийн LFO аяны хаптик бүтэц. Зохиогч Pila, Crazy, AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ба Steam Deck-ийн LFO аяны хаптик бүтэц. Зохиогч Pila, Crazy, AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap горимуудын SOCD цэвэрлэгээний утга зүй. Зохиогч valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap горимуудын SOCD цэвэрлэгээний утга зүй. Зохиогч valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam Workshop-ын контроллерын тохиргоог нэргүй сешнээр татдаг Steam сүлжээний клиент. Зохиогч Ryan Stecker ба SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2-ийн Steam сүлжээний протоколд ашигладаг Protocol Buffers сериалчлагч. Зохиогч Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2-ийн Steam сүлжээний протоколд ашигладаг Protocol Buffers сериалчлагч. Зохиогч Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2-ийн Steam depot хэсгүүдэд ашигладаг Zstandard задлалт, Oleg Stepanischev-ийн zstd сангийн C# порт. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2-ийн Steam depot хэсгүүдэд ашигладаг Zstandard задлалт, Oleg Stepanischev-ийн zstd сангийн C# порт.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii хослуулах журам, чанга яригчийн ADPCM, хажуу болон босоо Wii Remote-ын чиглэл, стикийн хүрээний загвар ба түүний хадгалах формат, гироскопын тэнхлэгийн тохиролцооны баримт бичиг. GPL-2.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код агуулаагүй.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii хослуулах журам, чанга яригчийн ADPCM, хажуу болон босоо Wii Remote-ын чиглэл, стикийн хүрээний загвар ба түүний хадгалах формат, гироскопын тэнхлэгийн тохиролцооны баримт бичиг. Зөвхөн баримт бичиг болгон уншсан, GPL код агуулаагүй.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ийн ажиллагааны баримт бичиг: идэвхгүй үеийн салгалт, мэдрэгч самбарын хил, батарейн тайлал, Bluetooth салгах IOCTL, DualSense чичиргээний горимын битүүд, гироскопын чичирхийллийн муруй, стикийг хулгана болгох масштаб, Bluetooth гаралтын репортын CRC эхлэх утга. Түүний виртуал гарын товчлуурын хүснэгтийг PadForge-ийн хүснэгтэд жишиг болгосон. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код агуулаагүй.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ийн ажиллагааны баримт бичиг: идэвхгүй үеийн салгалт, мэдрэгч самбарын хил, батарейн тайлал, Bluetooth салгах IOCTL, DualSense чичиргээний горимын битүүд, гироскопын чичирхийллийн муруй, стикийг хулгана болгох масштаб, Bluetooth гаралтын репортын CRC эхлэх утга. Түүний виртуал гарын товчлуурын хүснэгтийг PadForge-ийн хүснэгтэд жишиг болгосон. Зөвхөн баримт бичиг болгон уншсан, GPL код агуулаагүй.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl-ийг баталгаажуулсан GIP LED командын баримт бичиг. GPL-2.0-or-later, зөвхөн баримт бичиг.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl-ийг баталгаажуулсан GIP LED командын баримт бичиг. Зөвхөн баримт бичиг.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR камер ба Balance Board-ийн ажиллагааны баримт бичиг. Зохиогч Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR камер ба Balance Board-ийн ажиллагааны баримт бичиг. Зохиогч Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD чичиргээний дамжуулах форматын баримт бичиг. Зохиогч Sergey004. Зөвхөн протоколын баримтын төлөө уншсан.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Хослуулах</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Контроллер хослуулах</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Контроллер хослуулах</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii Remote хослуулах</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Батерейн тагийг нээж улаан SYNC товчийг дарна уу.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Гэрэл нь анивчиж байх зуур удирдлагыг энэ компьютерын ойролцоо байлгана уу.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3 хослуулах</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move эсвэл Navigation контроллер хослуулах</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Цуваа контроллер нэмэх</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI удирдлага нэмэх</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Контроллерын төрөл</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Батарейн тагийг нээж, улаан SYNC товчийг дарна уу. Контроллер гарч иртэл PadForge-ийн хайлтыг бүү зогсоо.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Түр хослуулалт (1 ба 2-ыг дарж барих)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Хослуулах</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Хайж байна. Одоо SYNC товчийг дарна уу.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Удирдлага хайж байна.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Олдсон контроллерууд</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Контроллер хараахан олдсонгүй. Цэнхэр гэрлүүд анивчиж байгаа эсэхийг шалгана уу.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} хослогдлоо. Төхөөрөмжийн жагсаалтад гарч ирнэ.</value></data>
@@ -3221,7 +3387,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>Дууссан</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ийн OpenVR клиент API (BSD 3-Clause): VR шил ба хөдөлгөөний контроллеруудыг оролтын эх үүсвэр болгоно. Төрөлх ажиллах орчин таны суулгасан SteamVR-аас ачаалагдана.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ийн OpenVR клиент API: VR шил ба хөдөлгөөний контроллеруудыг оролтын эх үүсвэр болгоно. Төрөлх ажиллах орчин таны суулгасан SteamVR-аас ачаалагдана.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Ажиллаж байна</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Ажиллаж байна, драйвер холбогдсон</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Ажиллаж байна, контроллерууд идэвхтэй</value></data>
@@ -3259,13 +3425,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Хослуулалт дуусаагүй. Амжилтгүй болсон алхам дээр харагдаж байна.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Хаах</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC шошго</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Шошго бүртгэх</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>UID-г нь авахын тулд шошгыг уншигчид хүргэнэ үү.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(хүлээж байна)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Нэр:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Уншигч дээр шошго хүргэж нэр өгнө үү. Энэ нь оноож болох товчлуур болно.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Шошгыг уншигчид хүргэнэ үү.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Нэр</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Энэ шошгыг нэрлэх</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Бүртгэх</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Бүртгэсэн шошгууд</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Бүртгэсэн</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFC уншигч илэрсэнгүй. PC/SC уншигч холбоод дахин нээнэ үү.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Шошго уншигдлаа. Нэр оруулаад «Бүртгэх» дээр дарна уу. Солихын тулд өөр шошго хүргэнэ үү.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Дахин нэмэхийн тулд өөр шошго хүргэнэ үү.</value></data>
@@ -3343,22 +3508,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack дундын санах ойг мөн нээж чадсангүй.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Далд товчнуудыг сурах / удирдах</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Далд товчнууд</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Товч сурах</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Асуух үед далд товчийг нэг удаа дарна уу. PadForge энэ компьютерын гар, хулгана, үйлдвэрлэгчийн бүх репорт, системийн бүх үйл явдлыг ажиглаж, товчны өөрчилсөн аль нэгийг нь бүртгэнэ.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Компьютер:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Сурч эхлэх</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Windows контроллер гэж харуулдаггүй товчийг PadForge-д заана уу. Асуух үед түүнийг дарна уу.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Гараа холдуулна уу. Идэвхгүй төлөвийг уншиж байна…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Одоо далд товчийг дараад суллана уу…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Түр хүлээнэ үү…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Өөрчлөлт илрээгүй. Тодруулсан хугацаанд товчийг дараад дахин оролдоно уу.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Одоо товчийг дараад барина уу.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Товчийг суллана уу.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Алхам {0}/{1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Өөрчлөлт илрээгүй. Дахин эхлэх дээр дараад, асуух үед товчийг дарж барина уу.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Үйлдвэрлэгчийн {0} репорт ба үйл явдлын {1} ангиллыг ажигласан. Дарах үед: {2} репорт, {3} үйл явдал.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Товч илэрлээ. Нэр оруулаад «Бүртгэх» дээр дарна уу.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Эх үүсвэр:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Нэр:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Эх үүсвэр</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Нэр</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Энэ товчлуурыг нэрлэх</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Бүртгэх</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Сурсан товчнууд</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Дахин эхлэх</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Сурсан товч хараахан алга.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Өөр товч сурахын тулд дахин эхлүүлнэ үү.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>{0} дээр сурсан</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Өөр товч сурахын тулд Дахин эхлэх дээр дарна уу.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Товчлуурууд: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Далд товчнууд унтраалттай байна. Эхлээд Тохиргоо хэсэгт «Гар компьютерын товчнууд»-ыг идэвхжүүлнэ үү.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} ажиллаж байна. Та зогсоох хүртэл энэ товчнуудад хариу үйлдэл үзүүлсээр байна.</value></data>
@@ -3507,6 +3672,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Олон нийтийн тохиргоо</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Олон нийтийн хийсэн Steam Input контроллерын тохиргоог үзэж, PadForge-ийн профайл болгон хөрвүүлнэ. PadForge зөвхөн таныг хайх, тохиргоо нээх эсвэл импортолсон тохиргоогоо шинэчлэлт байгаа эсэхийг шалгах үед Steam-ийн серверт шууд холбогдоно. Энэ нь таны хайлтын текст, холбогдох тоглоом, тохиргоо, бүтээгчдийн ID болон PadForge-ийн хувилбарыг илгээнэ. Steam-д нэргүй нэвтрэх үед мөн таны Windows-ийн хувилбар болон Windows суулгацын ID, сүлжээний адаптерийн хаяг, ачаалах дискний серийн дугаарын хэшээс үүсгэсэн машины ID илгээгдэнэ. Телеметр байхгүй, гуравдагч талын үйлчилгээ байхгүй, Steam бүртгэл шаардахгүй.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge зөвхөн таныг хайх, тохиргоо нээх эсвэл импортолсон тохиргооны шинэчлэлийг шалгах үед Steam серверүүдэд холбогдоно. Телеметр байхгүй, Steam бүртгэл шаардлагагүй.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Илгээгдэх зүйлс</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Олон нийтийн тохиргоог идэвхжүүлэх</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Хуучин Workshop тохиргоог харуулах</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Зарим хуучин тохиргоонд Steam-ийн CDN дээр татаж авах файл байдаггүй. PadForge тэдгээрийг «Хуучин» тэмдэгтэйгээр жагсааж, таныг захиалсны дараа Steam-ийн хадгалдаг хуулбарыг уншина. Түүнээс өмнө тохиргоог Steam Workshop дээр нээхийг санал болгоно.</value></data>
@@ -3514,18 +3681,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Импортолсон профайлын шинэчлэлтийг шалгах</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop-ийн кэш цэвэрлэгдлээ</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Олон нийтийн тохиргоог үзэх</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Олон нийтийн тохиргоог үзэх</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Профайлууд · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Профайл авах</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Бэлэн профайл, олон нийтийн тохиргоо эсвэл өөр хэрэгслийн файлаас эхэлнэ үү.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Бэлэн</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Олон нийт</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Файл импортлох</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Хадгалахад засах боломжтой энгийн профайл нэмэгдэнэ.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Дархны зуух хүйтэн байна</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Олон нийтийн тохиргоог үзэхэд PadForge нь Steam-д шууд холбогдоно. Зөвхөн таныг хайх үед холбогдох бөгөөд программ эхлэхэд хэзээ ч холбогдохгүй.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Олон нийтийн тохиргоог идэвхжүүлэх</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Тоглоом хайх</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} тоглоом</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Тоглоомууд</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam дэлгүүрээс тоглоом олдсонгүй.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam-ээс хайж байна…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam-ээс тохиргоонуудыг уншиж байна…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam-ээс тохиргоог уншиж байна…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>үнэлгээгээр эрэмбэлсэн</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Эрэмбэлэх</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Эдгээр тохиргооноос хайх</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Үнэлгээ</value></data>
@@ -3539,7 +3709,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} олдлоо</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} / {1} харуулж байна</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} тохиргоо</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>олон нийтийн тохиргоо</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>контроллерын бүрэн дэмжлэгтэй</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>контроллерын хэсэгчилсэн дэмжлэгтэй</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Тоглоом хайх</value></data>
@@ -3558,8 +3727,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Дахин оролдох</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Энэ 2016 оны үеийн тохиргоо нь Steam-ийн тохиргооны CDN-ээс өмнө үүссэн. Steam дээр үүнийг захиалбал PadForge таны Steam хавтаснаас уншина.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop-д нээх</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Хөрвүүлгийн тайланг унших тохиргоог сонгоно уу.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} холбоос уншсан</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Юу шилжихийг харахын тулд тохиргоо сонгоно уу.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Шилжих зүйлс</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Болох</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Тохиргооны товчлуур болон стикүүдийг авах виртуал контроллерыг сонгоно. Түүний гарын товч болон хулгана үргэлж Гар + хулгана контроллерт очно.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Давхаргууд</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Бүрэн</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Хэсэгчилсэн</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Алгассан</value></data>
@@ -3624,7 +3796,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop-оос шинэчлэлт шалгаж байна…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Импортолсон профайлууд хамгийн сүүлийн хувилбартай байна ({0} шалгасан)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop-ийн шинэчлэлт</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Эдгээр импортолсон профайлын шинэ хувилбар Steam Workshop-д гарсан. Өөрчлөлтийг авахын тулд «Олон нийтийн тохиргоог үзэх» хэсгээс дахин импортлоно уу.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Эдгээр импортолсон профайлын шинэ хувилбар Steam Workshop-д гарсан. Өөрчлөлтийг авахын тулд «Профайл авах» хэсгээс дахин импортлоно уу.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Удаан дарахад</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Богино дарахад</value></data>
@@ -3772,7 +3944,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Цэс {0} Нүд {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Цэсний оверлей</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Оверлейнүүд</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Таныг тоглож байхад PadForge-ийн харуулах дэлгэц дээрх заагчууд. Аль нэгийг унтраах нь ажиллагааг өөрчлөхгүй, зөвхөн мэдэгдэх эсэхийг өөрчилнө.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Таныг тоглож байхад PadForge-ийн харуулах дэлгэц дээрх заагчууд. Аль нэгийг унтраах нь ажиллагааг өөрчлөхгүй, зөвхөн харагдах эсэхийг өөрчилнө.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профайл солих оверлей</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиал эсвэл мэдрэгч цэс идэвхтэй үед дэлгэц дээрх цагираг эсвэл торыг харуулна. Оверлей унтраалттай байсан ч цэс ажилласаар байна.</value></data>
@@ -3817,6 +3989,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Энэ сувгийн дууны давтамж, 20-оос 120 Гц. Шейкер хаана хамгийн хүчтэй хариу үзүүлж байгааг олохын тулд давтамжийн шүүрдэлтийг ажиллуулна уу.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Ерөнхий өсгөлтөөс өмнөх энэ сувгийн чанга байдал.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Өсгөлт</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Давтамж</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Турших</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Энэ сувгийн дууг тохируулсан өсгөлтөөр 1.5 секунд тоглуулна.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Бага давтамжийн моторыг дахин тохируулах</value></data>
@@ -3858,16 +4031,16 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Мэдрэгч самбараас хулганы гаралтад зориулсан заагчийн хурдатгалын муруй. libinput-ийн мэдрэгч самбарын хурдатгалын профайлын C# порт. MIT.</value>
+    <value>Мэдрэгч самбараас хулганы гаралтад зориулсан заагчийн хурдатгалын муруй. libinput-ийн мэдрэгч самбарын хурдатгалын профайлын C# порт.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D контроллерын загварууд (Xbox 360, Steam Deck) болон 3D харагдацын загвар, хөдөлгөөнт дүрсийн код, зохиогч CasperH2O, Lesueur Benjamin, trippyone. Мөн Steam Deck-ийн тайлан ба хаптик тайлалт, Steam Controller (2015)-ийн унтраах тайлан, гар төхөөрөмжийн daemon-ы хяналтын жагсаалт, шинэчлэлт шалгах хугацаа, хабын портыг 500 мс зайтайгаар дахин эхлүүлэх аргын лавлагаа: энэ нь нуусан USB контроллерыг дахин холбож, түүнийг түрүүлж нээсэн программуудаас салгадаг. CC BY-NC-SA 4.0.</value>
+    <value>3D контроллерын загварууд (Xbox 360, Steam Deck) болон 3D харагдацын загвар, хөдөлгөөнт дүрсийн код, зохиогч CasperH2O, Lesueur Benjamin, trippyone. Мөн Steam Deck-ийн тайлан ба хаптик тайлалт, Steam Controller (2015)-ийн унтраах тайлан, гар төхөөрөмжийн daemon-ы хяналтын жагсаалт, шинэчлэлт шалгах хугацаа, хабын портыг 500 мс зайтайгаар дахин эхлүүлэх аргын лавлагаа: энэ нь нуусан USB контроллерыг дахин холбож, түүнийг түрүүлж нээсэн программуудаас салгадаг.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D контроллерын схемүүд (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), зохиогч AL2009man. MIT.</value>
+    <value>2D контроллерын схемүүд (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), зохиогч AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4-ийн аудио протоколын баримт бичиг: SBC параметрүүд болон пакетын бүтэц, зохиогч khallmark. GPL-2.0, зөвхөн баримт бичиг.</value>
+    <value>DualShock 4-ийн аудио протоколын баримт бичиг: SBC параметрүүд болон пакетын бүтэц, зохиогч khallmark. Зөвхөн баримт бичиг.</value>
   </data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Windows-ийг буйдан дээрээс удирдаарай. Курсор, гүйлгэлт, гох дээрх товшилт.</value></data>
   <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD ба хулгана</value></data>
@@ -3877,10 +4050,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Хоёр тэнхлэг дээр тэмцээнд зөвшөөрөгдсөн SOCD цэвэрлэгээтэй, зургаан товчтой байрлал.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Гар + хулгана</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Геймпад</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Эхлэлийн профайлуудыг үзэх</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Эхлэлийн профайлууд</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Бүхэл жанрт зориулсан бэлэн профайлууд. Нэгийг сонгож, дурын контроллер оноогоод тоглоорой. Хадгалахад засварлаж болох энгийн профайл нэмэгдэнэ.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Профайл хадгалах</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>«{0}» эхлэлийн профайлыг нэмлээ.</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Адал явдалт тоглоом болон курсор, хоёр үйлдлээр удирддаг бүх зүйл.</value></data>
   <data name="Starter_Strategy_Name" xml:space="preserve"><value>Стратеги</value></data>
@@ -3970,13 +4139,13 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Гаралтын замыг дахин тохируулах</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Чихэвчний залгуурыг дагах</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ийн гаралтын тайлангийн байтын зураглал ба Sony scePad-ийн утга зүй, WujekFoliarz-ийн бүтээл. PadForge-ийн эффект ба аудио бичигчдийн үндэс болсон. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ийн гаралтын тайлангийн байтын зураглал ба Sony scePad-ийн утга зүй, WujekFoliarz-ийн бүтээл. PadForge-ийн эффект ба аудио бичигчдийн үндэс болсон.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Залгуур илрүүлэх аудио чиглүүлэлтийн загвар, SundayMoments-ийн бүтээл. Чихэвчний залгуурыг дагах горимын эх сурвалж. Баримт бичиг болгон уншсан. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Залгуур илрүүлэх аудио чиглүүлэлтийн загвар, SundayMoments-ийн бүтээл. Чихэвчний залгуурыг дагах горимын эх сурвалж. Баримт бичиг болгон уншсан.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб контроллерын хаягуудад зориулсан байт горимын QR кодлогч, Nayuki-гийн жишиг хэрэгжүүлэлтээс шилжүүлсэн. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб контроллерын хаягуудад зориулсан байт горимын QR кодлогч, Nayuki-гийн жишиг хэрэгжүүлэлтээс шилжүүлсэн.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Гар + хулганы дүрслэл дэх хулганы зураг, Igor Budzhak-ийн бүтээл. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Гар + хулганы дүрслэл дэх хулганы зураг, Igor Budzhak-ийн бүтээл.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Даралтаас хамаарах хурд</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Давталтын хурд нь сонгосон аналог эх үүсвэрийг хэр хүчтэй дарахыг дагана. Зөөлөн дарахад Удаан интервалаар, бүрэн дарахад дээрх Интервалаар давтаж, хоорондох утгууд жигд шилжинэ.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Удаан интервал</value></data>
@@ -3991,7 +4160,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Кодоор холбогдож байна…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Нөгөө талтай шууд холбогдож чадсангүй. VPN-ээр дамжуулан хаягаар холбогдохыг оролдоно уу.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Энэ компьютерийн код</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Нөгөө хүнтэй кодоо солилцоно уу: тэд таны кодыг оруулах зуур та тэдний кодыг Холбогдох талбарт буулгаад, хоёулаа Холбогдох-ыг дарна. Ингэснээр интернэтээр шууд зам нээгдэх тул VPN хэрэггүй. Алсын холболт ажиллаж байх үед код шинэчлэгдэнэ.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Нөгөө хүнтэй кодоо солилцоно уу: тэд таны кодыг оруулах зуур та тэдний кодыг Бусад доторх Хаягаар холбогдох талбарт буулгаад, хоёулаа Хослуулах / Холбогдох дээр дарна. Ингэснээр интернэтээр шууд зам нээгдэх тул VPN хэрэггүй. Алсын холболт ажиллаж байх үед код шинэчлэгдэнэ.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Энэ сүлжээ шууд холболт хийх боломжгүй (мобайл хотспот эсвэл операторын түвшний NAT бололтой). Tailscale зэрэг VPN ашиглах, эсвэл гэрийн өргөн зурвасын интернэтээс холбогдоно уу.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Энэ компьютерийн нийтийн хаягийг олж чадсангүй (сүлжээ шаардлагатай урсгалыг хааж байж магадгүй). Энд шууд холболт ажиллахгүй. VPN ашиглах, эсвэл ижил сүлжээнд хаягаар холбогдоно уу.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Контроллерын батерей бага байна</value></data>
@@ -4002,6 +4171,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Энэ түвшин ба түүнээс доош үед мэдэгдэх</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Мөн контроллерыг чичиргэх</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Туршилтын мэдэгдэл</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Мэдэгдлийг шалгах</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Хуваарилах санал</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуал контроллерын хуудас нээлттэй байх үед төхөөрөмж холбогдвол PadForge түүнийг тэнд хуваарилахыг санал болгож болох бөгөөд Нүүр хуудас шинэ төхөөрөмжид өөрийн гэсэн виртуал контроллер санал болгож болно. Та саналыг хүлээн авах хүртэл юу ч хуваарилагдахгүй. Гар, хулгана, мэдрэгч самбар, медиа товчлууруудыг хэзээ ч санал болгохгүй.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Шинэ төхөөрөмжийг нээлттэй виртуал контроллерт санал болгох</value></data>
@@ -4015,23 +4185,28 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Одоо биш</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Дурын хэллэг</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Дуут макро</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Хэллэг хэлэхэд оноож болох товчлуур дарагдана. PadForge хүрч чадах бүх микрофон сонсоно.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Дуут макро удирдах</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Дуут макро идэвхжүүлэх</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Сонсохыг асаана. Идэвхтэй үед бүртгэсэн хэллэг бүр нь хэлэхэд ажилладаг товч болно. Таних загвар нь PadForge дотор ирдэг бөгөөд бүрэн офлайн ажиллана.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Сонсох</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Үргэлж нь микрофоныг байнга нээлттэй байлгана. Дарж ярих нь холбосон Дуут сонсох макро дарагдаж байх үед л сонсоно.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Сонсохыг асаах эсвэл унтраах, горим, итгэлийн түвшин</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Үргэлж</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Дарж ярих</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Хамгийн бага итгэлийн түвшин</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Хэллэг ажиллахаас өмнө таних систем хэр итгэлтэй байх ёстойг заана. Санамсаргүй яриа макро идэвхжүүлбэл өсгөж, хэллэгүүд тань алгасагдвал бууруулна уу.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Яриа хүлээж байна. Танигдсан зүйлс итгэлийн түвшинтэйгээ энд харагдана.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>«{0}» сонсогдлоо ({1:F2}). Ажилласан.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>«{0}» сонсогдлоо ({1:F2}). Итгэлийн доод хязгаараас бага, эсвэл ярих товчлуур дарагдаагүй байна.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Сонсох унтраалттай байна. Бусад хэсэгт асаана уу.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>{1} дээр {0} сонсогдлоо</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>{1} дээр {0} сонсогдлоо. Итгэлийн доод хязгаараас бага байсан, эсвэл ярих товчлуур дарагдаагүй байсан.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Хэллэг</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Хэлэх хэллэг</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Нэр</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Товчлуурын нэр</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Бүртгэх</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Бүртгэсэн хэллэгүүд</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Товчийг нь ажиллуулахын тулд үүнийг хэлж, виртуал контроллерын хуудсанд түүнд макро холбоно уу.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Хэллэгүүд</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Товчийг нь ажиллуулахын тулд үүнийг хэлж, контроллерын хуудсанд онооно уу.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Дуут сонсох (дарж байх үед)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Дуут макронд зориулсан дарж ярих: энэ макро дарагдаж байх үед таних систем сонсоно. Дуут макро удирдах хэсэгт Сонсох-ыг Дарж ярих болгож тохируулна уу.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Микрофон</value></data>
@@ -4039,12 +4214,12 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa мөрийн чичиргээний ард байгаа хаптик хөдөлгүүр ба Razer нийлүүлэгч. HAR.dll болон Interhaptics.RazerProvider.dll нь нийтийн Core SDK-ээс өөрчлөлтгүйгээр PadForge дотор ирдэг. Wyvrn-ийн бүтээл. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa мөрийн чичиргээний ард байгаа хаптик хөдөлгүүр ба Razer нийлүүлэгч. HAR.dll болон Interhaptics.RazerProvider.dll нь нийтийн Core SDK-ээс өөрчлөлтгүйгээр PadForge дотор ирдэг. Wyvrn-ийн бүтээл.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller (2015) ба Steam Controller (2026)-ийн 3D загварууд, Valve-ийн нийтэлсэн STEP файлуудаас тор болгосон. Зохиогчийн эрх Valve Corporation. CC BY-NC-SA 4.0. PadForge нь Valve-тэй холбоогүй бөгөөд Valve дэмжээгүй.</value>
+    <value>Steam Controller (2015) ба Steam Controller (2026)-ийн 3D загварууд, Valve-ийн нийтэлсэн STEP файлуудаас тор болгосон. Зохиогчийн эрх Valve Corporation. PadForge нь Valve-тэй холбоогүй бөгөөд Valve дэмжээгүй.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 ажиллах орчин</value>
@@ -4061,7 +4236,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer гэрэлтүүлэгт зориулсан Razer Chroma REST API-ийн хүрээллийн баталгаажуулалт, Adam Hellberg ба Brandon Scott нарын бүтээл. MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer гэрэлтүүлэгт зориулсан Razer Chroma REST API-ийн хүрээллийн баталгаажуулалт, Adam Hellberg ба Brandon Scott нарын бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK эх сурвалжууд</value>
   </data>
@@ -4070,19 +4245,19 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Толгой хянахад зориулсан UDP хянагчийн датаграм ба FreeTrack 2.0 хуваалцсан санах ойн бүтэц. ISC. Зөвхөн баримт бичиг, код багтаагүй.</value>
+    <value>Толгой хянахад зориулсан UDP хянагчийн датаграм ба FreeTrack 2.0 хуваалцсан санах ойн бүтэц. Зөвхөн баримт бичиг, код багтаагүй.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Гарт баригдах компьютерийн нуугдмал товч сурагчийн бүртгүүлдэг Lenovo WMI хэрэгслийн үйл явдлын класс, мөн гадаад профайл удирдлагын ард байгаа өндөр эрхтэй IPC серверийн загвар. GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value>
+    <value>Гарт баригдах компьютерийн нуугдмал товч сурагчийн бүртгүүлдэг Lenovo WMI хэрэгслийн үйл явдлын класс, мөн гадаад профайл удирдлагын ард байгаа өндөр эрхтэй IPC серверийн загвар. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Нуугдмал товч сурагчид зориулан тулган шалгасан гарт баригдах компьютерийн таних мөрүүд ба үйлдвэрлэгчийн тайлангийн тэмдэглэлүүд. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value>
+    <value>Нуугдмал товч сурагчид зориулан тулган шалгасан гарт баригдах компьютерийн таних мөрүүд ба үйлдвэрлэгчийн тайлангийн тэмдэглэлүүд. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook ба WiimoteHook</value>
@@ -4097,13 +4272,13 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Хуучин MIDI API-ийн ард байгаа WinMM дуудлагын дараалал: порт нээх, түүн рүү илгээх, хаах. PortMidi (MIT, Ross Bencina, Phil Burk, Roger B. Dannenberg нар) ба RtMidi (MIT маягийн RtMidi лиценз, Gary P. Scavone)-ээс уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK эх сурвалжууд</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key оролтын ард байгаа үйл явдлын үгийн бүтэц нь SDK доторх LogitechGkeyLib.h-ээс гаралтай. Сангийн хайлтын дараалал ба унтраалт нь Mumble-ийн GKey.cpp (BSD 3-Clause)-г дагана. PadForge нь компьютер дээр байгаа сангийн аль ч хуулбарыг ачаалдаг бөгөөд Logitech-ийн код агуулаагүй.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key оролтын ард байгаа үйл явдлын үгийн бүтэц нь SDK доторх LogitechGkeyLib.h-ээс гаралтай. Сангийн хайлтын дараалал ба унтраалт нь Mumble-ийн GKey.cpp-г дагана. PadForge нь компьютер дээр байгаа сангийн аль ч хуулбарыг ачаалдаг бөгөөд Logitech-ийн код агуулаагүй.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup ба AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Аналог гарын оролт нь HallJoy-ийн гарын чиглэлүүд, товчлуурын хүснэгтүүд, загварын каталогийг C# руу шилжүүлсэн (AGPL-3.0, PashOK7) бөгөөд Soup ба AnalogSense JavaScript SDK (MIT, Calamity, Inc.)-г дагаж, Wooting Analog SDK (MPL-2.0)-тэй тулган шалгасан. Бусад гарууд AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk ба hmkconf (GPL-3.0-or-later, peppapighs), мөн DenkiSuki, LeiterConsulting, paysdelest-ийн Soup салаануудыг (MIT) дагана. Тайлангийн формат ба товчлуурын хүснэгтүүдийг мөн Razer-ийн Synapse Web ба NuPhy-ийн NuPhyIO тохируулагчид, OpenRazer (GPL-2.0-or-later), Abbytech-ийн razer-analog-keyboard, TinyUSB (MIT), Sainan-ийн тэмдэглэлүүдээс авсан.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box эх сурвалжууд</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box адаптеруудыг унших функцийн ард байгаа Bliss-Box API-г Bliss-Box LLC-ийн API Tool (BSD маягийн, үнэ төлбөргүй дахин түгээх) болон DeviceBuddy (эх код нийтэд нээлттэй, Bliss-Box LLC)-ээс уншсан. Товчны нэрсийг SteveFox1620-ийн retroarch-joypad-autoconfig салаан дахь Bliss-Box файлуудаас авч, Controller Pak-ийн шалгах нийлбэрийг libdragon (Unlicense)-тэй тулган шалгаж, PlayStation контроллерын хариуг psx-spx ба Linux-ийн psxpad-spi драйвер (GPL-2.0-or-later)-ээс авсан. Контроллерын нэрс ба дэмжлэгийн тэмдэглэлийг мөн Bliss-Box LLC-ийн нийцлийн жагсаалтаас авч, адаптеруудын ажиллагааг тэдгээрийн фирмвэртэй тулган шалгасан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ийн нийлмэл USB контроллеруудад зориулсан USB дамжуулалт, Vadym Hrynchyshyn-ийн бүтээл. HIDMaestro нь түүний гарын үсэгтэй хост контроллерийн драйверийг агуулдаг бөгөөд нийлмэл контроллер анх үүсэх үед суулгана. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ийн нийлмэл USB контроллеруудад зориулсан USB дамжуулалт, Vadym Hrynchyshyn-ийн бүтээл. HIDMaestro нь түүний гарын үсэгтэй хост контроллерийн драйверийг агуулдаг бөгөөд нийлмэл контроллер анх үүсэх үед суулгана.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Энэ слотын аль хагасууд идэвхтэй байхыг сонгоно уу. Хагасыг унтраавал мөрүүд нь нуугдаж, илгээхээ болино. Оноолтууд нь хадгалагдах тул дахин асаахад сэргэнэ.</value>
   </data>
@@ -4171,13 +4346,15 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
     <value>Хуваалцсан төхөөрөмжүүдийг хуваарилах</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} дээрх хуваарилалтууд</value>
+    <value>{0} компьютертэй хуваалцсан төхөөрөмжүүд</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Энэ компьютерийн хуваалцсан төхөөрөмжийг сонгоод, нөгөө компьютер дээрх виртуал контроллеруудыг нь сонгоно уу.</value>
+    <value>Төхөөрөмж сонгоод, нөгөө компьютер дээр түүний удирдах контроллеруудыг сонгоно уу.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Энэ компьютероос хуваалцсан</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} дээрх контроллерүүд</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Профайл: {0}</value>
+    <value>Идэвхтэй профайл: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Нөгөө компьютер дээр Алсын холболт &gt; Хослуулсан компьютерууд хэсэгт энэ компьютерт алсаас хуваарилалт өөрчлөхийг зөвшөөрнө үү.</value>
@@ -4268,60 +4445,60 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS ба CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll доторх яриа тайлагч, трансдюсерийн сан, шугаман алгебр. Kaldi ба OpenFst: Apache-2.0. OpenBLAS ба CLAPACK: BSD 3-Clause, OpenBLAS доторх GotoBLAS2 болон f2c ажиллах орчинд тус тусдаа мэдэгдэлтэй.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратеги ба ширээний компьютерийн эхлэлийн профайлын бүтэц, мөн даралтаас хамаарах турбогийн зайлсхийдэг турбо үйлдэл. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратеги ба ширээний компьютерийн эхлэлийн профайлын бүтэц, мөн даралтаас хамаарах турбогийн зайлсхийдэг турбо үйлдэл. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-ийн баримтжуулаагүй IPolicyConfig интерфейсийн бүтцийн эх сурвалж, Antoine Aflalo-гийн бүтээл. PadForge үүнийг контроллерын аудио төгсгөлийн цэгийг дахин идэвхжүүлэхэд ашигладаг. MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-ийн баримтжуулаагүй IPolicyConfig интерфейсийн бүтцийн эх сурвалж, Antoine Aflalo-гийн бүтээл. PadForge үүнийг контроллерын аудио төгсгөлийн цэгийг дахин идэвхжүүлэхэд ашигладаг. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллерын Параметрт эквалайзерт импортлогддог параметрт эквалайзерийн профайлын формат, Jaakko Pasanen-ийн бүтээл. MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллерын Параметрт эквалайзерт импортлогддог параметрт эквалайзерийн профайлын формат, Jaakko Pasanen-ийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Текст блок макро болон гарын хослолын хяналтын ард байгаа SendInput аргууд: Unicode бичилт, багцын хязгаар, Win товчлуурын маск товчлуур, тэмдэглэгээтэй оруулсан оролт. GPL-2.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Текст блок макро болон гарын хослолын хяналтын ард байгаа SendInput аргууд: Unicode бичилт, багцын хязгаар, Win товчлуурын маск товчлуур, тэмдэглэгээтэй оруулсан оролт. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Хөдөлгөөний серверийн ард байгаа DSU протоколын эх сурвалж, v1993-ийн бүтээл. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Хөдөлгөөний серверийн ард байгаа DSU протоколын эх сурвалж, v1993-ийн бүтээл.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ийн Bluetooth гаралтын тайлангийн хүрээлэл, Christopher Rosell-ийн бүтээл. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ийн Bluetooth гаралтын тайлангийн хүрээлэл, Christopher Rosell-ийн бүтээл.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ийн батерейн муж, мэдрэгч самбарын хаптик импульсийн хугацаа ба эрчмийн алхмууд, мэдрэгч самбарын шидэлтийн үйлдэл. GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ийн батерейн муж, мэдрэгч самбарын хаптик импульсийн хугацаа ба эрчмийн алхмууд, мэдрэгч самбарын шидэлтийн үйлдэл. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton салаа)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ийн аудио дууны түвшний муж, тэмдэгтэй 8 битийн хаптик дээжүүд, нэгдсэн Bluetooth дамжуулалтын бүтэц. GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ийн аудио дууны түвшний муж, тэмдэгтэй 8 битийн хаптик дээжүүд, нэгдсэн Bluetooth дамжуулалтын бүтэц. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ийн Bluetooth аудио буферийн уртын үндсэн болон доод утга, awalol-ийн бүтээл. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ийн Bluetooth аудио буферийн уртын үндсэн болон доод утга, awalol-ийн бүтээл.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ийн дасан зохицох гохын бэлэн тохиргооны утгууд, Mxater-ийн бүтээл. Зөвхөн баримтын хувьд уншсан.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU хөдөлгөөний тэнхлэгийн тэмдэгүүд, түүний UDP декодлогчтой тулган шалгасан. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU хөдөлгөөний тэнхлэгийн тэмдэгүүд, түүний UDP декодлогчтой тулган шалгасан. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Сансрын симулятор эхлэлийн профайлын ард байгаа Elite Dangerous-ийн үндсэн бэлэн тохиргоонууд, Richard Buckle-ийн бүтээл. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Сансрын симулятор эхлэлийн профайлын ард байгаа Elite Dangerous-ийн үндсэн бэлэн тохиргоонууд, Richard Buckle-ийн бүтээл.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ийн чанга яригчийн ADPCM хагас байтын дараалал, мөн DualShock 4 кодлогчийг шалгасан SBC декодлогч. LGPL-2.1-or-later, зөвхөн баримт бичиг болгон уншсан, LGPL код багтаагүй.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ийн чанга яригчийн ADPCM хагас байтын дараалал, мөн DualShock 4 кодлогчийг шалгасан SBC декодлогч. Зөвхөн баримт бичиг болгон уншсан, LGPL код багтаагүй.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Луужингийн зүүн-баруун эргэлтэд зориулсан хазайлтыг нөхсөн луужингийн чиглэл, C# руу шилжүүлсэн, x-io Technologies-ийн бүтээл. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Луужингийн зүүн-баруун эргэлтэд зориулсан хазайлтыг нөхсөн луужингийн чиглэл, C# руу шилжүүлсэн, x-io Technologies-ийн бүтээл.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Батерей багасах мэдэгдлийн дүрэм ба Таних чичиргээний хэв маяг, Lukas Frühstück-ийн бүтээл. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Батерей багасах мэдэгдлийн дүрэм ба Таних чичиргээний хэв маяг, Lukas Frühstück-ийн бүтээл.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series, Switch 2 Pro Controller-ийн 3D загварууд, CGTrader-ээс худалдаж авсан. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series, Switch 2 Pro Controller-ийн 3D загварууд, CGTrader-ээс худалдаж авсан.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ын 3D загвар, CGTrader-ээс худалдаж аваад хэсэг тус бүрийн тор болгон хуваасан. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ын 3D загвар, CGTrader-ээс худалдаж аваад хэсэг тус бүрийн тор болгон хуваасан.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Хавсаргасан SDL3.dll-д хөрвүүлэгдсэн HID давхарга, Alan Ott, Signal 11 Software. BSD маягийн лиценз.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Хавсаргасан SDL3.dll-д хөрвүүлэгдсэн HID давхарга, Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Дүрсний эх сурвалжууд</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Галын дүрс Material Design Icons (Pictogrammers, Apache-2.0)-оос, ерөнхий геймпадын дүрс Ionicons (Ionic, MIT)-оос, Өргөтгөсөн жойстик Jam Icons (Michael Amprimo, MIT)-оос, Xbox ба PlayStation дүрсүүд SVG Repo-оос, дүрс тус бүрийн хуудсан дээрх лицензийн дагуу.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Алсын холболтын нөөц замын ард байгаа релей протокол, FlexInput-ийн адилаар n0.computer-ийн үнэгүй нийтийн релейтэй харилцана. iroh: MIT OR Apache-2.0. FlexInput: MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Хулганы хөдөлгөөн X ба Y-ийн ард байгаа Joy-Con 2-ын оптик хулганы тоолуур ба эргэлтийн дельтаууд, coffincolors, Frano, moutella нарын бүтээл. MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Хулганы хөдөлгөөн X ба Y-ийн ард байгаа Joy-Con 2-ын оптик хулганы тоолуур ба эргэлтийн дельтаууд, coffincolors, Frano, moutella нарын бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux цөмийн драйверууд</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck болон PID хүчний эргэх холбооны протоколын баримтууд, мөн ACPI WMI блокийн бүтэц. PadForge гар болон хулганы дескрипторуудыг hid-core-ийн дүрмээр уншдаг. GPL-2.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck болон PID хүчний эргэх холбооны протоколын баримтууд, мөн ACPI WMI блокийн бүтэц. PadForge гар болон хулганы дескрипторуудыг hid-core-ийн дүрмээр уншдаг. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows контроллерын оролт, Xbox Elite-ийн арын товч орно. SDK ачаалагч нь SDL-д холбогдсон. MIT (SDK ачаалагч).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows контроллерын оролт, Xbox Elite-ийн арын товч орно. SDK ачаалагч нь SDL-д холбогдсон.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll-д шаардлагатай C++ ажиллах орчин (msvcp140.dll, vcruntime140.dll, x64 хувилбарт vcruntime140_1.dll), PadForge дотор өөрчлөлтгүй ирдэг. Microsoft Visual Studio лицензийн нөхцөл.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll-д шаардлагатай C++ ажиллах орчин (msvcp140.dll, vcruntime140.dll, x64 хувилбарт vcruntime140_1.dll), PadForge дотор өөрчлөлтгүй ирдэг.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con ба Pro Controller-ийн HID, HD чичиргээ, гэрийн LED тэмдэглэл, dekuNukem-ийн бүтээл, Switch 2-т ndeadly-ийн switch2_controller_research. Зөвхөн протоколын баримтын хувьд уншсан.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Програм доторх шинэчлэгчийн туслахын ард байгаа өндөр эрхтэй шинэчлэлийн командын загвар. LGPL-3.0, зөвхөн баримт бичиг болгон уншсан, LGPL код багтаагүй.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Програм доторх шинэчлэгчийн туслахын ард байгаа өндөр эрхтэй шинэчлэлийн командын загвар. Зөвхөн баримт бичиг болгон уншсан, LGPL код багтаагүй.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC шошгоны оролтын ард байгаа WinSCard функцийн тодорхойлолтууд ба уншигч хянах дуудлагын дараалал, Daniel Mueller-ийн бүтээл. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC шошгоны оролтын ард байгаа WinSCard функцийн тодорхойлолтууд ба уншигч хянах дуудлагын дараалал, Daniel Mueller-ийн бүтээл.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ийн тайлангийн бүтэц, мэдрэгчийн калибровк, EXT дагалдах хэрэгслийн холболт тогтоох дараалал, Thomas Perl-ийн бүтээл, moveonpc вики-тэй тулган шалгасан. PadForge-ийн хэрэгжүүлэлт нь эх C# код. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Уралдааны телеметрийн эх сурвалжууд</value></data>
@@ -4329,23 +4506,23 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ын Bluetooth хослуулалт ба тайлангийн баримт бичиг. GPL-2.0 ба GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Алсын холболтын NAT нэвтрэлтийн ард байгаа STUN мессежийн бүтэц ба XOR-MAPPED-ADDRESS декод, түүний C# эх кодоос авсан, Aaron Clauson-ийн бүтээл. BSD 3-Clause, лицензийн 2-р хэсэг дэх хэрэглээний хязгаарлалттай.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Алсын холболтын NAT нэвтрэлтийн ард байгаа STUN мессежийн бүтэц ба XOR-MAPPED-ADDRESS декод, түүний C# эх кодоос авсан, Aaron Clauson-ийн бүтээл. Түүний лиценз 2-р хэсэгтээ хэрэглээний хязгаарлалт нэмдэг.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse эх сурвалжууд</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion-ийн тайлангийн бүтэц, төхөөрөмжийн хүснэгт, тэнхлэгийн хуваарийг hid.spacemouse (MIT), PySpaceMouse (MIT), AndunHH-ийн spacemouse (CC BY-NC-SA 4.0), spacenavd (GPL-3.0-or-later)-ээс уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Хостын IOCTL-ээр Bluetooth холболт таслах, XInput-ийн нуугдмал унтраах ба чадавхийн ординалууд, DualSense гохын чичиргээний үндсэн утгууд. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Хостын IOCTL-ээр Bluetooth холболт таслах, XInput-ийн нуугдмал унтраах ба чадавхийн ординалууд, DualSense гохын чичиргээний үндсэн утгууд. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller протоколын эх сурвалжууд</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Шудрах хаптик цохилтууд, 0x42 тайлангийн товчны битүүд, унтраах команд ба донглын релейг OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0), SteamlessController (MIT)-ээс уншсан. Зөвхөн баримт бичиг, GPL эсвэл AGPL код багтаагүй.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Үхсэн бүсийн зургаан хэлбэр, Minimuino-гийн бүтээл. GFDL-1.3-or-later ба GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ийн IR заагчийн ажиллагаа: цэгийн хосын дундаж цэг, зах, мэдрэгч зурвасын шилжилт, тэгшитгэл, FPS Mouse муруй, Ryochan7, Suegrini, Trihy салаануудын хамт. GPL-3.0, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ийн IR заагчийн ажиллагаа: цэгийн хосын дундаж цэг, зах, мэдрэгч зурвасын шилжилт, тэгшитгэл, FPS Mouse муруй, Ryochan7, Suegrini, Trihy салаануудын хамт. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ийн дасан зохицох гохын эффектийн бүтэц ба бүсийн багцлалт, C#-д хуулбарласан, John "Nielk1" Klein-ийн бүтээл. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ийн дасан зохицох гохын эффектийн бүтэц ба бүсийн багцлалт, C#-д хуулбарласан, John "Nielk1" Klein-ийн бүтээл.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Виртуал DualShock 4 оролтын тайлангийн ард байгаа DS4_REPORT_EX бүтэц, Benjamin Höglinger-Stelzer-ийн бүтээл. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Виртуал DualShock 4 оролтын тайлангийн ард байгаа DS4_REPORT_EX бүтэц, Benjamin Höglinger-Stelzer-ийн бүтээл.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton салаа)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуал DualSense микрофоны 48 dB сулруулалтын муж. GPL-3.0-or-later, зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуал DualSense микрофоны 48 dB сулруулалтын муж. Зөвхөн баримт бичиг болгон уншсан, GPL код багтаагүй.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Жолооны протоколын эх сурвалжууд</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster, Logitech жолоонуудын уугуул хүчний эргэх холбоо ба RPM шилжүүлэх LED тайлангуудыг hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), thrustmaster-led-linux (GPL-3.0)-аас уншиж, prodigal.knight-ийн SimHub LED плагин (MIT) ба tm-bt-led (MIT)-тэй тулган шалгасан. Зөвхөн баримт бичиг, GPL код багтаагүй.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Аркад I/O эх сурвалжууд</value></data>
@@ -4375,19 +4552,19 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox контроллерын эх сурвалжууд</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL салааны анхны Xbox, Steel Battalion, Xbox 360 chatpad ба Xbox 360 uDraw драйверууд, мөн PadForge-ийн Windows-ийн өөрийн драйвертай холбодог Xbox 360 хүлээн авагчуудын ард байгаа протоколуудыг brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), ITO Takayuki-ийн euc.jp, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later), xemu (LGPL-2.0-or-later)-оос уншсан. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Автомат WinUSB холболтын ард байгаа төхөөрөмж тус бүрд нэг INF багцлалт ба төхөөрөмжийн жагсаалт, Pete Batard-ийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Автомат WinUSB холболтын ард байгаа төхөөрөмж тус бүрд нэг INF багцлалт ба төхөөрөмжийн жагсаалт, Pete Batard-ийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PS Move дагалдах хэрэгслийг танихын тулд PadForge-ийн илгээдэг Bluetooth HID шинж чанарын тайлангийн хүсэлт, Ricardo Quesada-гийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PS Move дагалдах хэрэгслийг танихын тулд PadForge-ийн илгээдэг Bluetooth HID шинж чанарын тайлангийн хүсэлт, Ricardo Quesada-гийн бүтээл. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL салаа дахь Windows Mixed Reality тохиргооны түлхүүр Monado-оос гаралтай. Зохиогчийн эрх 2021 Jan Schmidt. SDL3.dll дотор ирдэг. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL салаа дахь Windows Mixed Reality тохиргооны түлхүүр Monado-оос гаралтай. Зохиогчийн эрх 2021 Jan Schmidt. SDL3.dll дотор ирдэг.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL салаа дахь Rift DK1 мэдрэгчийн нэгтгэл нь OpenHMD-ийнхээс шилжүүлсэн. Зохиогчийн эрх 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll дотор ирдэг. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL салаа дахь Rift DK1 мэдрэгчийн нэгтгэл нь OpenHMD-ийнхээс шилжүүлсэн. Зохиогчийн эрх 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll дотор ирдэг.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote-ийн чанга яригчийн протокол ба IR калибровкийн баримт бичиг. Зөвхөн протоколын баримтын хувьд уншсан.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox импульс гохын 9 байтын тайлан ба түүнийг бичих зам, araghon007-ийн бүтээл. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox импульс гохын 9 байтын тайлан ба түүнийг бичих зам, araghon007-ийн бүтээл.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ийн хаптик PCM формат, тэмдэгтэй 16 бит, 3 kHz, үүгээр тэмдэгтэй 8 битийн Bluetooth хаптик кодчлолыг тодорхойлсон. AGPL-3.0, зөвхөн баримт бичиг болгон уншсан, AGPL код багтаагүй.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ийн хаптик PCM формат, тэмдэгтэй 16 бит, 3 kHz, үүгээр тэмдэгтэй 8 битийн Bluetooth хаптик кодчлолыг тодорхойлсон. Зөвхөн баримт бичиг болгон уншсан, AGPL код багтаагүй.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Гарын дэлгэцүүд</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech-ийн GamePanel гарууд болон Mad Catz S.T.R.I.K.E. 7-д суурилуулсан дэлгэц дээр, мөн Logitech Arx Control-оор дамжуулан утсан дээр зурна: профайл, цаг, тоглосон хугацаа, секундомер, зураг эсвэл DualShock 4 буюу DualSense-ийн гэрлийн зурвасын өнгө. Дэлгэц бүр "Төхөөрөмжүүд" хуудсанд өөрийн мөртэй бөгөөд тэнд юу харуулахыг нь тохируулна. Дэлгэцийн хажуугийн товчлуурууд нь түүний мөрийн товчнууд болно.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Гарын дэлгэцүүдийг удирдах</value></data>
@@ -4455,6 +4632,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Гүйлгэх</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Гүйлгэх X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Гүйлгэх Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Юу харуулахыг сонгоно уу. Хадгалах хүртэл юу ч өөрчлөгдөхгүй.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: {1} болгож тохирууллаа.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-ийн S.T.R.I.K.E. 7 SDK-г татаж байна…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 одоо {0} файлыг ачаална.</value></data>
@@ -4594,8 +4772,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>{0}-г хуваалцсан санах ойгоос уншиж байна.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Assetto Corsa эсвэл Assetto Corsa Competizione-г хүлээж байна.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>{0} порт руу дамжуулж байна.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Өөрийн телеметрийн форматууд</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Тоглоомын илгээдэг пакетуудыг талбар талбараар нь тодорхойлбол PadForge тэр тоглоомыг ч уншина. Хувьсагч бүр Тоглоомын телеметр мөрөнд тэнхлэг, Өөрийн илэрхийлэл өдөөгчид суваг болно. Форматыг Тоглоом жагсаалтаас нэрээр нь сонгох, эсвэл Автоматаар илрүүлэх түүнийг олохын тулд урт эсвэл түлхүүр өгнө үү.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Өөрийн форматууд</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>PadForge танихгүй тоглоомын телеметрийн пакетуудыг тодорхойлно уу.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Формат нэмэх</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Формат {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Нэр</value></data>
@@ -4606,11 +4784,14 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Яг ийм тооны байттай пакетуудыг л энэ форматаар уншина. 0 бол дурын пакетыг уншиж, Автоматаар илрүүлэх энэ форматыг ашиглахгүй тул нэрээр нь сонгоно уу.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Шаардлагатай түлхүүр</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Энэ түлхүүрийг агуулсан JSON пакетуудыг л энэ форматаар уншина. Хоосон бол дурын пакетыг уншиж, Автоматаар илрүүлэх энэ форматыг ашиглахгүй тул нэрээр нь сонгоно уу.</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Пакет тоо бүрийг хамгийн их жинтэй байтаас нь эхлэн бичдэг. Компьютер дээрх тоглоомууд бараг үргэлж хамгийн бага жинтэй байтыг эхэлж бичдэг.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Байтын дараалал</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian нь тоо бүрийн хамгийн бага ач холбогдолтой байтыг эхэнд тавьдаг бөгөөд компьютерын тоглоомууд бараг үргэлж ингэдэг. Big-Endian нь хамгийн их ач холбогдолтой байтыг эхэнд тавьдаг.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Арааны утгууд</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Арааны талбар ухрах ба сул араанд өөрийн гэсэн тоотой, Forza-гийн 0 ба 11 шиг. Үүнийг унтраасан үед сөрөг араа нь ухрах, 0 нь сул араа байна.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Ухрах</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Сул</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON пакетын Шаардлагатай түлхүүр, арааны утгууд</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Талбарууд</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Талбар бүр өөрийн офсет дээрх тоог, эсвэл JSON-д өөрийн түлхүүрийн доорх тоог (цэгээр дотоод объект руу ордог) уншиж, масштабаар үржүүлнэ. Масштабын дараа хурд км/ц-аар, дөрөө 0-ээс 1 хүртэл, жолоодлого бүрэн зүүн -1-ээс бүрэн баруун 1 хүртэл байна. Хувьсагчийн тэнхлэг тайван үеийн Доод утгаас бүрэн үеийн Дээд утга хүртэл явна.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Зорилт</value></data>
@@ -4694,4 +4875,35 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} дээр {0}, зогсоох хүртэл</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} дээрх гохны эффектийг зогсоох</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Энэ төхөөрөмжийн гэрэлтүүлгийг удирдах, Гэрэлтүүлгийн хяналт</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Холбогдсон</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Холбогдоогүй</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Бусад оролт</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Тохирох төхөөрөмж алга.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Ашиглагдаагүй</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>батерей {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>батерей {0}, цэнэглэж байна</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Ашиглаж буй</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Шинэ контроллер</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Тохиргоо</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Бүх тэнхлэг, товчлуур, мэдрэгч</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Дарагдсан: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, зам, боломжууд, Түүхий жойстикийн горимыг албадах</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, зам, боломжууд</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Дэлгэрэнгүйг хуулах</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Бүтээгдэхүүн</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Төрөл</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Боломжууд</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Холболт</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батерей</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Зам</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Серийн дугаар</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Фирмвер</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Хувилбар</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Мөн контроллерыг чичиргэх, Мэдэгдлийг давтах давтамж, Бүрэн цэнэглэгдэхэд мэдэгдэх</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Шалгах шаардлагатай</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Бүрэн импортлогдсон</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Нууц үг тохируулах</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Алсын холболтын түгжээг тайлах</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Нууц үг</value></data>
 </root>

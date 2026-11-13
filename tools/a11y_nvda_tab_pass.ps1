@@ -5,10 +5,12 @@
 .DESCRIPTION
   Starts a portable NVDA with a silent synthesizer and its IO log (level 12,
   one "Speaking [...]" line per utterance), brings PadForge to the front,
-  optionally selects a sidebar page by its AutomationId (Nav_<Page>), sends
-  Tab a set number of times, then quits NVDA. Sends only Tab after the page
-  click, so it changes no setting. Read the log with
-  tools/a11y_nvda_speech_parse.py.
+  optionally selects a sidebar page by its AutomationId (Nav_<Page>) and then
+  a section or a group of that page (-Then Section_Sticks), sends Tab a set
+  number of times, then quits NVDA. A page, a section and a group are
+  selected through their SelectionItem pattern, as a screen reader selects
+  them, and only Tab is sent, so the pass changes no setting. Read the log
+  with tools/a11y_nvda_speech_parse.py.
 
   Run it elevated. PadForge runs as administrator, and a portable NVDA reads
   an elevated app only when it runs elevated too (NVDA user guide, portable
@@ -31,6 +33,9 @@ param(
     # Sidebar page to select first (Dashboard, Profiles, Devices, Pad1,
     # Settings, About). Empty: tab through whatever page is in front.
     [string]$Page,
+    # AutomationIds to select after the page, in order: a controller's
+    # section (Section_Sticks), a Settings group (Settings_Group_Input).
+    [string[]]$Then,
     [int]$Tabs = 80,
     # The longest a Tab waits for NVDA to speak before the next one goes.
     # Each Tab moves on as soon as a new line reaches NVDA's log.
@@ -101,8 +106,6 @@ public static class NvdaPassWin {
     [DllImport("user32.dll")] public static extern bool AttachThreadInput(uint a, uint b, bool attach);
     [DllImport("kernel32.dll")] public static extern uint GetCurrentThreadId();
     [DllImport("user32.dll")] public static extern bool BringWindowToTop(IntPtr h);
-    [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
-    [DllImport("user32.dll")] public static extern void mouse_event(uint f, uint dx, uint dy, uint d, UIntPtr e);
     // The Alt tap and the attached input queue get SetForegroundWindow past
     // the foreground lock, which refused it alone on 2026-10-06. Restore only
     // a minimized window, since PadForge saves its size and state.
@@ -128,25 +131,26 @@ for ($k = 0; $k -lt 5 -and [NvdaPassWin]::GetForegroundWindow() -ne $h; $k++) {
 Wait-Spoken (Log-Length) 1500
 "foreground_is_padforge=$([NvdaPassWin]::GetForegroundWindow() -eq $h)" | Add-Content $status
 
-if ($Page) {
-    # The entry's UIA node is WPF's DataItem wrapper, which exposes no
-    # selection or invoke pattern, so the page is selected by a click at the
-    # entry's center.
-    Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
+# A sidebar entry, a section and a group each offer SelectionItem
+# (NavItemsControl's peer, a RadioButton's), so each is selected without the
+# pointer. Selecting moves no keyboard focus, so the Tabs start where focus
+# already stands.
+$picks = @()
+if ($Page) { $picks += "Nav_$Page" }
+if ($Then) { $picks += @($Then | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ }) }
+if ($picks.Count -gt 0) {
     $win = [System.Windows.Automation.AutomationElement]::FromHandle($h)
-    $c = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::AutomationIdProperty, "Nav_$Page")
-    $nav = $win.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $c)
-    if (-not $nav) { "page Nav_$Page not found" | Add-Content $status }
-    # A click while another program's window is in front goes to that window.
-    elseif ([NvdaPassWin]::GetForegroundWindow() -ne $h) { "page Nav_$Page not clicked, another window is in front" | Add-Content $status }
-    else {
-        $r = $nav.Current.BoundingRectangle
+    foreach ($id in $picks) {
+        $c = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::AutomationIdProperty, $id)
+        $el = $win.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $c)
+        if (-not $el) { "$id not found" | Add-Content $status; continue }
         $from = Log-Length
-        [NvdaPassWin]::SetCursorPos([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2)) | Out-Null
-        [NvdaPassWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)
-        [NvdaPassWin]::mouse_event(4, 0, 0, 0, [UIntPtr]::Zero)
-        Wait-Spoken $from 1500
-        "page Nav_$Page selected" | Add-Content $status
+        try {
+            $el.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select()
+            Wait-Spoken $from 1500
+            Start-Sleep -Milliseconds 600
+            "$id selected" | Add-Content $status
+        } catch { "$id could not be selected: $($_.Exception.Message)" | Add-Content $status }
     }
 }
 

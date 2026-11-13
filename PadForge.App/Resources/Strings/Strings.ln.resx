@@ -89,7 +89,27 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Kokanga PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Kobanda PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kobakisa manette</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Kobakisa manette</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Pona oyo masano esengeli komona. Manette ebakisami kaka tango ofini.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Etambwisami na</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Kopona sima</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Oyo ya momesano</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Ba sortie mosusu</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Disposition oyo masano mingi ya PC elingaka.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Mpo na masano na bilembo PlayStation, touchpad mpe lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Disposition ya ba bouton ya Switch, mpo na masano mpe ba émulateur oyo elingaka yango.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Luka ba paramètre, ba appareil mpe ba profil</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Koluka</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ba résultat</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Likoló</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Nsé</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} mpo na kotambola</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} mpo na kofungola</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} uta esika nyonso</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Ba lokasa</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ba action</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Kolimwisa manette virtuelle</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Kolakisa PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Manette virtuelle {0}</value></data>
@@ -124,10 +144,6 @@
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Manette virtuelle {0} elimwisami.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Koleka</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Oyo elandi</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Esili</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Bisika</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Esika</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Ba mod ya masano</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Epesaka ba mod ya masano oyo esalemi mpo na DSX nzela ya kobongisa ba gâchette adaptative, barre lumineuse, miinda ya basakani mpe mwinda ya mute ya ba manette na yo ya PlayStation.</value></data>
@@ -150,10 +166,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Etikali: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Ekokaki kotangama te: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Elongolami te: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Pilote Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Elongolami</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ebatelami</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Etangami te</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Elongolami te</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Epesaka nzela na ba manette ya PlayStation 3, PlayStation Move mpe manette Navigation kokangana na nzela ya Bluetooth. Ezali kati na PadForge mpe etiamaka na PC mbala ya liboso oyo moko na yango ekangani na Bluetooth.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ekangisaka ba manette PlayStation 3 na Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Kolongola BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Oyo ekolongola BthPS3 na PC oyo: ba pilote na yango, filtre oyo etiaka na Bluetooth, mpe pilote WinUSB oyo PadForge apesaki ba manette PlayStation 3 mpo na kokangana na Bluetooth. PadForge akotelemisa moteur na ye liboso, mpe Bluetooth ekozima mwa ntango moke tango ba pilote ezali kolongwa. Sima na yango, ba manette PlayStation 3, Move mpe Navigation ekosala kaka na USB. Kokangisa moko na yango na Bluetooth ekotia BthPS3 lisusu.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Oyo nde ekolongwa na PC oyo. Sima na yango, ba manette PlayStation 3, Move mpe Navigation ekosala kaka na USB, tii kokangisa moko na yango ekotia BthPS3 lisusu.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Kotanga oyo BthPS3 etikaki na PC oyo…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 etikaki eloko moko te ya kolongola na PC oyo.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini esalelaka ba pilote oyo, yango wana ekotikala tango nyonso DsHidMini ezali na PC oyo.</value></data>
@@ -183,7 +204,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Bisika ya ba touches mpe ba touches ya couche ya ebandeli na ba clavier oyo aperçu ya Keyboard + Mouse ezali kolakisa. Esalemi na ba données ya disposition ya QMK mpe fork ya QMK ya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Bisika ya ba touches mpe ba touches ya couche ya ebandeli na ba clavier oyo aperçu ya Keyboard + Mouse ezali kolakisa. Esalemi na ba données ya disposition ya QMK mpe fork ya QMK ya Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -208,7 +229,7 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Koma "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(makomi ezali te)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Makomi</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Dossier ya appareil</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Ba détail</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti (0 = ata mokolo moko te)</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Tanga lokola manette iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Tanga lokola clavier</value></data>
@@ -224,6 +245,7 @@
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Mosakani</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Pona mosakani</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Écran ya Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Eloko moko te ekokoma na port tii okobomba.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Lakisa</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Elili ya adaptateur</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Nkombo ya profil</value></data>
@@ -256,7 +278,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO ezali kotangama lokola mbonda mibale ya Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} ezali kotangama lokola manette iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} ezali kotangama lisusu lokola clavier.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Pistolet optique</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Plage ya kolenga par défaut: X {0} tii {1}, Y {2} tii {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Plage ya kolenga nsima ya calibrage: X {0} tii {1}, Y {2} tii {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibrage ya pistolet</value></data>
@@ -279,6 +300,9 @@
   <data name="DevObj_ConsumerBrowserSearch" xml:space="preserve"><value>Luka</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Ba appareil</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>ekangani: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Luka ba appareil</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Nyonso</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Tanga ba manette</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Zongisa pilote ya Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Salela pilote ya PadForge</value></data>
@@ -404,7 +428,6 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ba POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Longola</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Kanga</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro eboyi profil oyo na {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profil oyo ezali na descripteur HID te, yango wana manette moko te ekoki kosalema na yango.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Eloko moko te ekotisami. {0}</value></data>
@@ -465,6 +488,7 @@
   <data name="Pad_Formula_Var_PositionD" xml:space="preserve"><value>Source ya minei</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zone morte</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Décalage ya katikati, lolenge ya zone morte mpe motuya ya axe moko moko, courbe mpo na axe moko moko, plage, volant</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Plage na ba nimero, ba motuya brut</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage ya katikati X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage ya katikati Y</value></data>
@@ -703,7 +727,7 @@
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Échantillon {0} kati na {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>échantillons {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Kombo</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Meka lisusu</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Pesa geste oyo nkombo</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kombo esengeli</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Kombo eleki molai (bilembo 64 kaka)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Kombo ezali na bilembo oyo endimami te</value></data>
@@ -810,23 +834,21 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Ba profil</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Kobongisa ba profil</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil oyo ezali kosala:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Esika moko te</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Ya sika</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Manette moko te</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profil ya sika</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Kobomba lokola</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Kobomba bobongisi ya sikoyo awa</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Kobongisa</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Pona profil liboso.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Kolongola profil</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Kobomba lokola profil</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Kobongisa profil</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nkombo ya profil:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profil ya sika</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nkombo</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profil ya sika</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Pona appareil oyo okokopia paramètres na yango:</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -1077,7 +1099,19 @@
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Kobakisa couche</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Kobongisa Base</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nkombo, icône mpe langi ya couche Base na Shift Layer Flyout mpe na molongo ya ba couche.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nkombo ya couche</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Esimbami na</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Efinami na</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Couche ekolanda na</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Couche ya liboso na</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Mpe na</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Pona input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Ba contrôle oyo etiami te</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Kozonga na Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kosala eloko te</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, lolenge ya input, ntango mpe langi</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kosimba</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Basculer</value></data>
@@ -1093,8 +1127,6 @@
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Kolongola couche Shift</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil ya axe</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Ata couche nini</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Bouton oyo elandi</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Bouton oyo eleki</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Lolenge ya activateur</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bouton</value></data>
 
@@ -1148,12 +1180,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Pesa PC oyo nkombo</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Kozongisa</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Mot de passe ya Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Pavé tactile ya PadForge</value>
@@ -1187,11 +1215,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Appairer</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Appairer manette</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Appairer manette</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Appairer Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Fungola ezipeli ya batterie mpe fina bouton motane SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Tika remote pembeni ya PC oyo tango ba mwinda na yango ezali kobeta.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Appairer DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Appairer manette Move to Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Kobakisa manette ya série</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Kobakisa remote DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Appairer</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Ezali koluka. Fina bouton SYNC sikoyo.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Ezali koluka remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Ba manette oyo emonani</value></data>
   <data name="WiiPair_Failed" xml:space="preserve"><value>Appairage ya Wii ekokaki kosila te. Meka lisusu.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Esili</value></data>
@@ -1202,9 +1236,8 @@
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Port COM moko ezali te.</value></data>
   <data name="DjiPair_Address" xml:space="preserve"><value>Adresse</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Kokanga</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ezali kozela)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nkombo:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Pesa tag oyo nkombo</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Suivi ya motó</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Manette VR</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Ba touche G ya Logitech</value></data>
@@ -1239,12 +1272,11 @@
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roulis</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Port UDP {0} ezali kosalelama na programme mosusu.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Babouton oyo ebombami</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Koyekola bouton</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Masini:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Banda koyekola</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Fina bouton oyo ebombami sikoyo, na sima tika yango…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Zela moke…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nkombo:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Fina mpe simba bouton sikoyo.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Tika bouton.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Etape {0} na {1}</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Pesa bouton oyo nkombo</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Batouche: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Souris</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Bageste ya souris</value></data>
@@ -1273,7 +1305,7 @@
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Mbangu ya ebandeli</value></data>
   <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Zone morte ya mouvement</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Luka masano</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Masano {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Masano</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Ezali koluka na Steam…</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Luka masano</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>lelo</value></data>
@@ -1338,10 +1370,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Masano ya bitumba</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Clavier + souris</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Manette</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Kotala ba profil ya ebandeli</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Ba profil ya ebandeli</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Ba profil oyo esili kobongisama mpo na lolenge mobimba ya masano. Pona moko, tia manette nyonso oyo olingi, mpe sakana. Kobomba ebakisaka profil ya momesano oyo okoki kobongola.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Kobomba profil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil ya ebandeli "{0}" ebakisami.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Mbangu ya mituka</value></data>
   <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Ba raccourci</value></data>
@@ -1386,6 +1414,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Koyebisa tango batterie ekiti</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Koningisa mpe manette</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Komeka notification</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Komeka liyebisi</value></data>
   <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Kaka ba appareil oyo PadForge emoni naino te. Ba appareil oyo eyebi kala ekangana kozanga motuna.</value></data>
   <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Ya sika to oyo eyebani kala. Soki manette virtuelle ezwi appareil, motuna oyo ekobima lisusu te.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ekangani sikawa. Kotia yango na manette virtuelle oyo?</value></data>
@@ -1393,14 +1422,17 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Sikoyo te</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Maloba nyonso</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Ba macro ya mongongo</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Loba liloba mpe ekofina bouton oyo okoki kotia. Microphone nyonso oyo PadForge ekoki kokoma eyokaka.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Kobongisa ba macro ya mongongo</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Koyoka</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Ntango nyonso</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Fina mpo na koloba</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Maloba</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Liloba ya koloba</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Nkombo ya bouton</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Kokomisa</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Maloba makomisami</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Maloba</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Micro</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (macro yango ezali te)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
@@ -1463,10 +1495,10 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ezali na liste ya esika oyo te)</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Bonene ya icône</value></data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Ba assignation na {0}</value>
+    <value>Ba appareil oyo ekabolami na {0}</value>
   </data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profil: {0}</value>
+    <value>Profil oyo ezali kosala: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Kozela PC mosusu...</value>
@@ -1725,11 +1757,15 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tala zingazinga na tracker ya motó to casque ya VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tia vitesse, ba pédale mpe ba rapport ya ba masano ya motuka.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette mpe ya mwinda uta na ba mod ya masano.</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, port UDP, étendue ya axe moko moko</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, mokitani ya DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ba port, vitesse mobimba, ba format personnalisé</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ba port, Vitesse mobimba, Ba format personnalisé</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Tala zingazinga na head tracker to casque VR wana manzaka mibale ezali kaka na ba bouton.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tia vitesse, ba pédale mpe ba vitesse oyo lisano ya motuka etindaka, lokola input nyonso.</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ekangani mpe ezali kosalelama te.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kosalela yango</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Masano esengeli komona nini?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ebongolaka manette oyo na oyo masano na yo elingaka. Pona moko mpo na kobanda. Okoki kobongola yango sima na kofina mbala moko.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ebongolaka manette na yo na oyo masano na yo elingaka. Pona moko mpo na kobanda. Okoki kobongola yango sima na kofina mbala moko.</value></data>
   <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ndako etunaka mbala moko mpo na appareil moko moko ya sika oyo manette virtuelle moko te ezali kosalela. Kosalela yango esalaka manette virtuelle mpo na yango, mpe Sikoyo te esukisaka motuna mpo na appareil wana.</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ba touche na souris</value></data>
@@ -1742,6 +1778,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ba macro na ba menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Kobakisa appareil</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Ekiti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Elilingi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ba sortie: {0}</value></data>
@@ -1802,4 +1839,88 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Préampli, ba bande, kokotisa</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ya mwasi</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ya mobali</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette adaptative mpe ya mwinda uta na ba mod ya masano oyo ekomamaki mpo na DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungola bobimisi ya télémétrie na lisano mpe tinda yango na PC oyo mpe na port oyo.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ba effet ya mod ekomaka na manette nyonso oyo ezali na matériel mpo na yango.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ezalela ya motó ezali molongo Head Tracker na [Ba appareil]. Tia yaw ya motó na axe ya stick na eteni Ba bouton ya manette.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ba motuya ezali molongo Game Telemetry na [Ba appareil]. Tia yango na eteni Ba bouton ya manette to salela yango mpo na kobandisa ba macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Esika, monene mpe opacité ya menu moko moko ebongisamaka na menu yango, na eteni [Ba macro na ba menu] ya manette.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Masano Oyo PadForge Eyebi Te</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mpo na ba mod oyo elukaka DSX ezali kosala liboso ya kotinda</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kokopia adresse</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Telefone oyo ekangani emonanaka awa mpe na lokasa Ba appareil, epai okotia yango na manette.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batterie {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batterie {0}, ezali kochargé</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Manette ya sika</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axe nyonso, bouton nyonso mpe capteur nyonso</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Efinami: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kokopia ba détail</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Makoki</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Boyokani</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterie</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Nzela</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numéro ya série</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Révision</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mingi mpo na {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Kozongisa bobongisi oyo ebombami na « {0} » na oyo ya sikoyo? Nkombo na yango mpe masano na yango ekotikala.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Kozongisa</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profil « {0} » ezali sikoyo na bobongisi ya sikoyo.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>tango</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Kozwa ba profil</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Banda na profil oyo esili kobongisama, config ya communauté to fichier ya programme mosusu.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Ya ebandeli</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kobomba ebakisaka profil ya momesano oyo okoki kobongola.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ekokoma</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ya nyonso</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Matériel</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Ba pilote</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Ba données mpe bomoi ya sekele</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Luka ba paramètre</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Koningisa mpe manette, Kozongela liyebisi mbala nyonso, Koyebisa tango batterie etondi</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Kobomba ba appareil na masano, Kobatela ba appareil ebombami kati na ba lancement, Ba application endimami</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Documentation</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Koluka ba mise à jour</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Luka ba crédit</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Ba note mpe ba control change mpo na ba logiciel ya miziki.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Ba manette VR ya virtuel na nzela ya SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Mpo na kobongola lolenge sima, fina chip ya lolenge na manette. Esengeli kofina mbala moko.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ezali koyanola te. Tala carte na yango na Paramètres.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Esengeli SteamVR. Tia yango uta na carte na yango na Paramètres.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Manette VR moko ezali kala. Moko etambwisaka maboko mibale.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ezali na ba manette {0}, motango monene oyo ekoki kosalisa. Longola moko mpo na kobakisa mosusu.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Ba lolenge mosusu: [{0}, {1}, {2} mpe {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Ba bouton, ba stick mpe ba gâchette etiamaka 1:1 tango manette esalemi.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Appairer manette Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Banda na profil oyo esili kobongisama</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Ekangani</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batterie {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Batterie {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Manette moko te ekangani</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Kangisa moko na nsinga to na Bluetooth.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Kolimwisa {0}?</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Kosalela makelele</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Kobeta {0}</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ebandaka na manette moko te. Efungwamaka yango moko tango lisano moko na yango ezali liboso.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Programme mosusu moko te ezali na fenêtre ya kofungwama.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kolongola {0}</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Koyoka efungwami to ekangami, mode, elikya</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Koyoka ekangami. Fungola yango na Mingi.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Kobanda lisusu</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Eyekolami na {0}</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Ba manette na {0}</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Molongo ya ba octet</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pona oyo ekolakisa. Eloko moko te ekobongwana tii okobomba.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>éditeur ya courbe</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ezali kosala: {0} na {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Ba profil ya ebandeli</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Ba profil oyo esili kobongisama mpo na lolenge mobimba ya masano. Pona moko, tia manette nyonso oyo olingi, mpe sakana.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} na {1} efungwami</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ba profil oyo ekotisami ezali na ba version ya sika na Steam Workshop. Kotisa yango lisusu uta na Kozwa ba profil mpo na kozwa ba mbongwana.</value></data>
 </root>

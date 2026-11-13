@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Ligadu</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Disligadu</value></data>
   <data name="Common_More" xml:space="preserve"><value>Más</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Odja tudu</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Instaladu</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ka sta instaladu</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Prontu</value></data>
@@ -85,7 +86,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Ta para…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Ta para motor…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Ta funsiona na {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Ta funsiona ({0} klienti)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Ta funsiona, {0} konektadu</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Porta {0} sta na uzu</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Ka konsigi inisia</value></data>
   <data name="Common_Online" xml:space="preserve"><value>Online</value></data>
@@ -116,7 +117,36 @@
   <data name="Main_StartingUp" xml:space="preserve"><value>Ta inisia PadForge…</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispozitivu</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Djunta komandu</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Djunta un komandu</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Skodji kuzé ki jogus ta odja. Komandu ta djuntadu mésmu ora ki bu klika.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Entrada di</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Skodji dipos</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Komun</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Más saídas</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Layout ki más jogu di PC ta spera.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Pa jogus ku sinal di PlayStation, touchpad i lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Layout di botons di Switch, pa jogus i emuladoris ki ta spera-l.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Téklas, kursor i skrol di un komandu.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Volantis, joystick di avion i layouts personalizadu.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Notas i Control Change pa programa di múzika.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Komandus VR virtual pa SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Pa muda tipu dipos, klika na chip di tipu na komandu. Ta leva un klik.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ka sta ta responde. Odja si kartãu na Konfigurason.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Presiza di SteamVR. Instala-l di si kartãu na Konfigurason.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Dja ten un komandu VR. Un ta kontrola dos mon.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ten {0} komandu, máximu ki e pode roda. Apaga un pa djunta otu.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Perfil</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Buska konfigurason, dispozitivus i perfis</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Buska</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Rezultadus</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Riba</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Baxu</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} pa muda</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} pa abri</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} di kualker lugar</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Páginas</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ason</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Apaga komandu virtual</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Mostra PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Komandu virtual {0}</value></data>
@@ -173,6 +203,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" kriadu.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Perfil "{0}" apagadu.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Perfil "{0}" atualizadu.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Perfil "{0}" gosi ten konfigurason atual.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Perfil karegadu: {0}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" atribuidu pa komandu virtual {1}.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Eru ora di karega konfigurason: {0}</value></data>
@@ -188,25 +219,36 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil trokadu: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Perfil trokadu: Padron</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Padron</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhus di perfil</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Atalhus</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Djunta atalhu</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Prósimu perfil</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Perfil anterior</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil spesífiku</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Alterna janela</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Mostra o skondi PadForge</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Kualker dispozitivu konektadu</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Grava</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta grava...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nenhun dispozitivu selesionadu.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Índisi di slot inválidu: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Ka konsigi atribui dispozitivu.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kantu</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" atribuidu pa komandu virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Dispozitivu tiradu.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Komandu virtual {0} apagadu.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Inísiu</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Dispozitivus konetadu: {0}. Komandus: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Jogus ta odja tudu komandu ki sta ativu.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Motor sta ligadu i nenhun komandu ka sta ativu.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Inisia motor pa traze bu komandus di volta.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Taxa di leitura</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Komandus ativu</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Dispozitivus konektadu</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Liga o dizliga es komandu</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>E ta kumesa kantu motor kumesa.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>E ta kumesa kantu es dispozitivu konekta.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>E ta kumesa kantu un di es dispozitivus konekta.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Ka konektadu</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Ta manda entrada gosi</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, baxu</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, ta karega</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Motor di entrada</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Komandus</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras en usu</value></data>
@@ -216,21 +258,30 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Mostra QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} sta konektadu i ka sta en usu.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Uza-l</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Kuzé ki jogus debe odja?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ta transforma es komandu na kel ki bu jogus ta spera. Skodji un pa kumesa. Bu pode muda-l dipos ku un klik.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ta transforma bu komandu na kel ki bu jogus ta spera. Skodji un pa kumesa. Bu pode muda-l dipos ku un klik.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Joga jogus di tekladu i mouse ku un komandu.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Más tipu: [{0}, {1}, {2} i {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Botons, sticks i gatilhus ta mapiadu 1:1 sima komandu ta kriadu.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Emparelha un komandu Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Kumesa di un perfil prontu</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Konektadu</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bateria {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bateria {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Nenhun komandu konektadu</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Konekta un ku kabu o pa Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapiadu, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> konektadu</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motor ta funsiona. Klika pa para.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Motor paradu. Klika pa inisia.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Konfigura es komandu</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Salta</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Prósimu</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor di entrada</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Komandus virtual</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispozitivu</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada di</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Djunta dispozitivu</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Baxu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imajen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} saída</value></data>
@@ -280,19 +331,19 @@
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Só es PC</value></data>
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Kódigu di asesu</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Kódigu novu</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Enderesu na es PC:</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Emparelha / Konekta</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Emparelha</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Konekta</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektadu</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Emparelha ku PC remotu</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Emparelha ku otu PC?</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Emparelha</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Rijeita</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Identidadi</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>PCs emparelhadu</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoga</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoga tudu</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Muda nómi</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Overlay di touchpad</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativa overlay di touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opasidadi</value></data>
@@ -300,6 +351,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Konfigurason</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Jeral</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Entrada</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Drivers</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Dadus i privasidadi</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Buska konfigurason</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Aparénsia</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
   <data name="Settings_ThemeSystem" xml:space="preserve"><value>Padron di sistema</value></data>
@@ -325,12 +382,12 @@
   <data name="Update_RestartFailed_Format" xml:space="preserve"><value>PadForge ka konsigi rinisia: {0}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge atualizadu pa {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Inisia minimizadu</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>Driver HidHide</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Djunta...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Driver HIDMaestro</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Dizinstala HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kel-li ta tra HIDMaestro di es PC: si komandu virtual, driver, sertifikadu di asinatura, txabi di registru i fitxeru. PadForge ta para si motor primeru. Otus programa ki ta uza HIDMaestro ta fika sen si driver ti es torna liga. PadForge ta torna instala-l próximu bes ki e kumesa un komandu virtual.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tra tanbê usbip-win2 instaladu ku si própi instalador</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kel-li e kuzé ki ta tiradu di es PC. PadForge ta torna instala HIDMaestro ku si próximu komandu virtual.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tra tanbê usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Versons antigu di PadForge instala usbip-win2 ku instalador di usbip-win2. Kel-li tanbê ta tra kel instalason, ku si filtru di USB root hub, a menus ki otu programa ta uza usbip-win2. Tra kel filtru ta torna inisia tudu USB 3 root hub, purisu dispozitivus USB ta disliga pa un momentu.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Ta lé kuzê ki HIDMaestro dexa na es PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro ka dexa nada na es PC pa tra.</value></data>
@@ -339,10 +396,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Ta fika: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Ka da pa lé: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ka tradu: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Tiradu</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Mantidu</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ka lidu</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ka tiradu</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ta dexa komandus PlayStation 3, PlayStation Move i komandu Navigation liga pa Bluetooth. E ta bem dentu di PadForge i e ta instaladu primeru bes ki un di es ta emparelhadu.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ta konekta komandus PlayStation 3 pa Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Dizinstala BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Kel-li ta tra BthPS3 di es PC: si driver, filtru ki e ta pui na Bluetooth, i driver WinUSB ki PadForge da komandus PlayStation 3 pa emparelha. PadForge ta para si motor primeru, i Bluetooth ta dizliga un bokadu enkuantu driver ta sai di memória. Dipos, komandus PlayStation 3, Move i Navigation ta funsiona só pa USB. Emparelha un di es ta torna instala BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Kel-li e kuzé ki ta tiradu di es PC. Dipos, komandus PlayStation 3, Move i Navigation ta funsiona só pa USB, ti emparelha un ta torna instala BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Ta lé kuzê ki BthPS3 dexa na es PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 ka dexa nada na es PC pa tra.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini ta uza es driver, entãu es ta fika enkuantu e sta instaladu.</value></data>
@@ -387,7 +449,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Pozison di téklas i téklas di kamada di bazi di tekladus ki imajen di Tekladu + Mouse ta mostra, jeradu di dadus di layout di QMK i di fork di QMK di Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Pozison di téklas i téklas di kamada di bazi di tekladus ki imajen di Tekladu + Mouse ta mostra, jeradu di dadus di layout di QMK i di fork di QMK di Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_License" xml:space="preserve"><value>Lisensa</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -426,7 +488,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Skrebe "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sen testu)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Testu</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Energia</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutu (0 = nunka)</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lê suma komandu iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lê suma tekladu</value></data>
@@ -464,7 +525,6 @@
   <data name="Status_PakRestored_Format" xml:space="preserve"><value>Controller Pak restauradu di {0}.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Ta lê {0} suma komandu iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Ta lê {0} suma tekladu otu bês.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Pistola di lus</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Kalibrason di pistola</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Kalibra</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Kalibrason di pistola</value></data>
@@ -495,6 +555,11 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Atualiza</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Dispozitivus</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} konektadu</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Buska dispozitivus</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Tudu</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Komandus</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Tekladus i Mouse</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Lê Chatpad</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Lê komandus</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Toka vibrason na es mouse</value></data>
@@ -507,14 +572,11 @@
   <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} sta na driver di PadForge.</value></data>
   <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} ka pode muda pa driver di PadForge.</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} volta pa se driver di Windows.</value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Tira es dispozitivu ku se konfigurason</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Tira dispozitivu</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Produtu: </value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Modu di entrada</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Skondi di jogus (HidHide)</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instala driver HidHide pa ativa es opson</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Skodji un dispozitivu pa odja se entrada bruta.</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Skodji un dispozitivu pa odja si konfigurason i testa si entradas.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Eixus</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Botãus</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Tekladu</value></data>
@@ -639,15 +701,14 @@
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klona dispozitivu 1:1</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klona</value></data>
   <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Skodji un dispozitivu na es slot pa klona.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Perfis importadu</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Predefinison di komandu</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Apaga</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Apaga perfil importadu?</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Apaga predefinison?</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" apagadu.</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importadu di {0}.</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro rijeita es perfil na {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Es perfil ka ten deskritor HID, pur isu ka ta da pa faze nenhun komandu ku el.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada ka importadu. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Atualiza</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importa</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispozitivu HID sen nómi)</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Personaliza</value></data>
@@ -909,6 +970,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Sentru</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Disvius di sentru, forma di zona morta i valor pa eixu, un kurva pa kada eixu, intervalu, volanti</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Intervalu na númeru, valoris brutu</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Intervalu</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Disviu di sentru X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Disviu di sentru Y</value></data>
@@ -1367,7 +1429,7 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Ripoi limiar di korespondénsia di forma</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Grava jestu di touchpad</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Grava un jestu</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Sta grava di {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>es touchpad</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Sta dizenha…</value></data>
@@ -1375,8 +1437,9 @@
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Amostra {0} di {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} amostra</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Amostra pa kaptura</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Amostras pa grava</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nomi</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Tenta otu bes</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Nómi pa es jestu</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Nomi obrigatóriu</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Nomi kumpridu dimás (máximu 64 karákter)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Nomi ten karákter inválidu</value></data>
@@ -1580,25 +1643,24 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Perfis</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Jestãu di perfis</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Perfil ativu:</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Nobu</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Perfil nobu</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Guarda komu</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Guarda konfigurason atual li</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Edita</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Skodje un perfil purmeru.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Ka podi edita nen apaga perfil integradu "Padron".</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Apaga perfil</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Guarda komu perfil</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Edita perfil</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nómi di perfil:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Perfil nobu</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nómi</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Perfil nobu</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Padron (konfigurason global)</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopia konfigurason di...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Skodje un dispozitivu pa kopia se konfigurason:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopia di</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Sustitui mapeamentu i afinason pa dispozitivu di {0} ku kes di otu komandu.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Djunta makrus di otu komandu na {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -1882,8 +1944,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bazi</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kamada shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigura bazi</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nómi, ikoni i kor di kamada di bazi na Shift Layer Flyout i na linha di kamadas.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nómi di kamada</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Entrada di ativador</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nómi</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Siguradu ku</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Karegadu ku</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Kamada siguinti ku</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Kamada anterior ku</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>I ku</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Skodji un entrada</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Kontrolus sen mapa</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Uza kamada di bazi</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ka faze nada</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modu, tipu di entrada, tenpu i kor</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modu</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Sigura</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
@@ -1907,15 +1980,13 @@
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limiar di eixu</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Só na kamada</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Kualker kamada</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Botãu prósimu</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Botãu anterior</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Inklui bazi</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipu di ativador</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botãu</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akordi (A + B)</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Eixu alén di limiar</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Ta ativa timenti ki un eixu analójiku sta alén di valor di limiar.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Kamada ta fika ativu timenti ki ativador sta siguradu. Ta dizativa óras ki bu solta.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Timenti ki si entrada sta siguradu, mapeamentu di es kamada ta sustitui kes di Bazi.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Toka pa ativa. Toka otu bes pa dizativa. Kamada ta fika ativu duranti txeu karga.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Kada karga ta avansa na un lista di kamada ordenadu. Ta volta pa bazi.</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Dispara óras ki bu solta</value></data>
@@ -2004,7 +2075,6 @@
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ripoi saída di son</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Skodje un son di {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakotis di son</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fixerus zip di son pa makrus di son</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Djunta pakoti…</value></data>
@@ -2042,17 +2112,10 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Protekson di identidadi</value>
-  </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Nómi di es PC</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PCs pertu (ka emparelhadu)</value>
+    <value>Identidadi di emparelhamentu</value>
   </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Ripoi</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Palavra-pasi di Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpad di PadForge</value>
@@ -2093,7 +2156,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Ta konekta ku {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Rekonekta automatikamenti</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Rekonekson otomátiku</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Ta skuta na {0}</value>
   </data>
@@ -2103,11 +2166,10 @@
   <data name="RemoteLink_StatusConnectFailed" xml:space="preserve">
     <value>Ka konsigi konekta: {0}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Skodje un son di un pakoti djuntadu, ô buska un fixeru.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Buska fixerus…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Skodje un son</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Son ta toka na alto falanti di komandu, o na di PC si e ka ten.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Uza son</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -2131,14 +2193,19 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Emparelha</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Emparelha un komandu</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Emparelha un komandu</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Emparelha un Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Abri tanpa di bateria i karga botãu SYNC burmedju.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Manti komandu pertu di es PC timenti ki si lus ta piska.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Emparelha un DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Emparelha un komandu Move o Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Djunta un komandu serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Djunta un komandu DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Família di komandu</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Abri tampa di pilha i karga botãu burmedju SYNC. Dexa PadForge ta buska ti bu komandu parse.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Emparelhamentu temporáriu (Sigura 1 i 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Emparelha</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Ta buska. Karga botãu SYNC gosi.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Ta buska un komandu.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Komandus atxadu</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} emparelhadu. E ta parse na bu lista di dispozitivu.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Ka atxa nenhun rádiu Bluetooth. Konekta un adaptador Bluetooth i tenta otu bes.</value></data>
@@ -2165,9 +2232,8 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Ka atxa nenhun DualShock 3 na USB. Konekta-l ku un kabu USB i tenta otu bes.</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Ka konsigi instala driver Bluetooth pa komandus PlayStation.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Fitxa</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ta spera)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nómi:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nómi</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Nómi pa es tag</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Rejista</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Ka detekta nenhun leitor NFC. Konekta un leitor PC/SC i abri otu bes.</value></data>
   <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Muvimentu di sistema</value></data>
@@ -2234,20 +2300,20 @@
   <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>Ta spera un rastreador na porta UDP {0}. Ka konsigi abri memória partilhadu di FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Tanbe ka konsigi abri memória partilhadu di FreeTrack.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Botãu skondidu</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Prende un botãu</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Karga botãu skondidu un bes ora ki pidi. PadForge ta vijia tekladu, mouse, tudu relatóriu di fabrikanti i tudu eventu di sistema na es mákina, i ta grava kualker ki botãu muda.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Mákina:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Kumesa prende</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Insina PadForge un botãu ki Windows ka ta mostra komu komandu. Karga-l ora ki pidi.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Ka toka. Ta lé stadu di ripozu…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Karga botãu skondidu gosi, dipos solta-l…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Un mumentu…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Ka odja nenhun mudansa. Karga botãu duranti djanela distakadu i torna tenta.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Karga i sigura botãu gosi.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Solta botãu.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Pasu {0} di {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Ka odja nenhun mudansa. Skodji Kumesa di novu, dipos karga i sigura botãu ora ki pidi.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Vijia {0} relatóriu di fabrikanti i {1} klasi di eventu. Duranti karga: {2} relatóriu, {3} eventu.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Botãu kapturadu. Skrebe un nomi i klika Rejista.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Fonti:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nomi:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Fonti</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nomi</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Nómi pa es botãu</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Rejista</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" rejistadu. Kumesa di novu pa prende otu.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Kumesa di novu</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" rejistadu. Skodji Kumesa di novu pa prende otu.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Tékla: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Botãu skondidu sta dizativadu. Purmeru, ativa Botãu di PC portátil na Konfigurason.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} sta ta roda. E inda ta reaji a es botãu ti bu para-l.</value></data>
@@ -2302,10 +2368,9 @@
   <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Zona morta di muvimentu</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurason di komunidadi</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ativa konfigurason di komunidadi</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Perfil · Steam Workshop</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Ativa konfigurason di komunidadi</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Buska jogu</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} jogu</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Jogus</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Ka atxa nenhun jogu na loja di Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Ta buska na Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Ta lé konfigurason di Steam…</value></data>
@@ -2315,7 +2380,6 @@
   <data name="Workshop_Sort_Votes" xml:space="preserve"><value>Más votu</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ta mostra {0} di {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurason</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>konfigurason di komunidadi</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Buska jogu</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>oji</value></data>
   <data name="Workshop_Votes_Format" xml:space="preserve"><value>{0} votu</value></data>
@@ -2338,6 +2402,7 @@
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Ativa konfigurason di komunidadi pa verifika atualizason</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Ta verifika atualizason na Steam Workshop…</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Atualizason di Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Es perfis importadu ten versons más nobu na Steam Workshop. Torna importa-s di Obten perfis pa resebe mudansas.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Karga kumpridu</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Karga kurtu</value></data>
@@ -2421,6 +2486,7 @@
   <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Gatilhu direitu</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volumi di es kanal antis di ganhu jeral.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Ganhu</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frekuénsia</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Testa</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Ta toka tom di es kanal pa 1.5 sigundu ku se ganhu difinidu.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Ripoi motor di frekuénsia altu</value></data>
@@ -2456,10 +2522,6 @@
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Jogu di luta</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Tekladu + mouse</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Komandu</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Djobe perfis inisial</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Perfis inisial</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Perfil prontu pa un jéneru interu. Skodje un, atribui kualker komandu i joga. Guarda ta djunta un perfil normal ki bu pode edita.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Guarda perfil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Perfil inisial "{0}" djuntadu.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Aponta i klika</value></data>
   <data name="Starter_Isometric_Name" xml:space="preserve"><value>RPG izométriku</value></data>
@@ -2507,18 +2569,22 @@
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisa kantu bateria sta baxu</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Tanbe vibra komandu</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testa notifikason</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Odja avisu</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} akaba di konekta. Atribui-l pa es komandu virtual?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribui</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Gosi nau</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Kualker frazi</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Makru di vos</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Fla un frazi i e ta karga un botãu ki bu pode mapia. Tudu mikrofoni ki PadForge pode alkansa ta skuta.</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Ativa makru di vos</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Sempri</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Konfiansa mínimu</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Frazi</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Frazi pa fla</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Nómi</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Nómi di botãu</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Rejista</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frazi rejistradu</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frazis</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikrofoni</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (makru ki ka izisti)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
@@ -2587,7 +2653,7 @@
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ka sta na lista di es slot)</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protokolu avansadu di Flydigi</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Perfil: {0}</value>
+    <value>Perfil ativu: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
     <value>Dispozitivu o konekson ka sta disponível. Rekonekta i abri es janela otu bes.</value>
@@ -2820,8 +2886,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Ta lê {0} di memória partilhadu.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Ta spera Assetto Corsa o Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Ta manda pa porta {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Formatus di telemetria personalizadu</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Diskrebe pakotis ki un jogu ta manda, kanpu pa kanpu, i PadForge ta lê kel jogu tanbe. Kada variável ta bira un eixu na linha Telemetria di jogu i un kanal pa Espreson personalizadu. Skodje un formatu pa nómi na lista Jogu, o da-l un kumprimentu o un xavi pa Detekson otomátiku atxa-l.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Formatus personalizadu</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Diskrebe pakotis di telemetria di un jogu ki PadForge ka ta konxe.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Adisiona formatu</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Formatu {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Nómi</value></data>
@@ -2832,6 +2898,9 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Sô pakotis ku exatamenti es númeru di bytes ki ta lidu ku es formatu. Ku 0, kualker pakoti ta lidu, i Detekson otomátiku ta dexa es formatu, pur isu skodje-l pa nómi.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Xavi obrigatóriu</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Sô pakotis JSON ki ten es xavi ki ta lidu ku es formatu. Si fika vaziu, kualker pakoti ta lidu, i Detekson otomátiku ta dexa es formatu, pur isu skodje-l pa nómi.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Orden di bytes</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian ta pui primeru byte menus signifikativu di kada númeru, sima jogus na PC kuazi sénpri ta faze. Big-Endian ta pui primeru byte más signifikativu.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Valoris di mudansa</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Kanpus</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Destinu</value></data>
@@ -2904,16 +2973,21 @@
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Uza un telemóvel o tablet suma komandu.</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Djobe pa tudu ladu ku un rastreador di kabesa o un óklus VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Mapia velosidadi, pedal i mudansa di jogus di kondusón.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Partilha komandus ku PadForge na otu PC.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kontrola komandus virtual na otu PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Toma efeitus di gatilhu i di lus di mods di jogu.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menu, kamadas i mudansa di perfil timenti bu sta ta joga.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfísi di toki na ekran pa jogus ki ta uza touchpad di PlayStation.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, enderesu HTTP simples, kódigu di asesu</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekoneson, porta, protekson di identidadi, konekson pa enderesu</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, porta UDP, intervalu pa eixu</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Un superfísi di toki na ekran pa jogus di touchpad di PlayStation.</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP simples, kódigu di asesu</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekonekson otomátiku, porta, identidadi di emparelhamentu, konekta pa enderesu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substitutu di DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, velosidadi máxima, formatus personalizadu</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portas, Velosidadi máxima, Formatus personalizadu</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Odja pa tudu ladu ku un head tracker o un óklus VR timenti ki dos dedu grandi ta fika na botons.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapia velosidadi, pedal i marxa ki un jogu di kondison ta manda, sima kualker entrada.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Manda muvimentu di komandu pa emuladoris ki ta lê un fonti di muvimentu DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Resebe efeitus di gatilhu adaptativu i di lus di mods di jogu skrebedu pa DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Liga saída di telemetria na jogu i manda-l pa es PC i pa es porta.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Na emulador, djunta un fonti di muvimentu ku enderesu di es PC i es porta.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Avizu na limiti di un stick na modu di volanti</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ta manda vibrason di motoris prinsipal pa gatilhus</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Vibrason di gatilhu di baxu di áudiu di sistema</value></data>
@@ -2927,4 +3001,103 @@
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, bandas, inportason</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instaladu</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ka sta instaladu</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozison di kabesa e linha Head Tracker na [Dispozitivus]. Mapia yaw di kabesa pa un eixu di stick na seson Botons di un komandu.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valoris e linha Telemetria di jogu na [Dispozitivus]. Mapia-s na seson Botons di un komandu o uza-s pa dispara makrus.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Lugar, tamanhu i opasidadi di un menu ta konfiguradu na menu, na seson [Makrus i Menu] di un komandu.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fontis</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack i kualker kusa ki ta manda si formatu UDP</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Intervalu</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Intervalu pa eixu. Zeru ta sigi intervalu di riba.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jogus ki PadForge ka ta konxe</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kuzé ki ta mostra</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Anel, grade o bara di un menu timenti ki e sta abertu</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopia enderesu</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konekta un telemóvel</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Pui telemóvel na mésmu redi ki es PC.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Skania kódigu ku kámara di telemóvel.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Skodji un layout di komandu.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Telemóvel</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Nenhun telemóvel konektadu.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Un telemóvel ki konekta ta parse li i na página Dispozitivus, undi bu ta atribui-l a un komandu.</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Nenhun PC emparelhadu.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Emparelha otu PC</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Ka ten PC sen emparelha pertu.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Liga Remote Link na PadForge na otu PC. E ta parse li, i bu ta konpara un kódigu kurtu na kada ekran.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Aparénsia i lugar</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Rasta-l ku botãu direitu di mouse o ku tres dedu pa muda-l.</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Konektadu</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Ka konektadu</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Ka ten dispozitivu ki ta kuadra.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Ka sta en usu</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateria {0}, ta karega</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Uzadu pa</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Komandu nobu</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Konfigurason</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Tudu eixu, botãu i sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Karegadu: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>IDs, kaminhu, kapasidadis, Modu joystick brutu forsadu</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>IDs, kaminhu, kapasidadis</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopia detalhis</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Produtu</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Tipu</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Kapasidadis</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Ligason</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Kaminhu</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Númeru di séri</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revison</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Trokason otomátiku</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Más pa {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Sustitui konfigurason guardadu na "{0}" ku kel atual? Si nómi i si jogus ta fika.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sustitui</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Obten perfis</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Kumesa di un perfil prontu, un konfigurason di komunidadi o un fitxeru di otu programa.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Inisial</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Komunidadi</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Guarda ta djunta un perfil normal ki bu pode edita.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ta bira</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Ta skodji komandu virtual ki ta resebe botons i sticks di konfigurason. Si téklas i mouse ta bai sénpri pa un komandu Tekladu + Mouse.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporti di hardware</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Tanbe vibra komandu, Ripiti avisu kada, Avisa kantu karega tudu</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Opson di HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Skondi dispozitivus di jogus, Manti dispozitivus skondidu entri lansamentu, Aplikason autorizadu</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Ta kria komandus virtual.</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Atualizadu.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Dokumentason</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Verifika atualizason</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Buska kréditus</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Mostra tudu kréditu</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Mostra menus kréditu</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ka ten kréditu ki ta kuadra ku “{0}”.</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>na Más</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>na opson di un linha</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Nada na PadForge ka ta kuadra ku “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Buska “{0}” na dokumentason</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Apaga {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Perfil i si régra di trokason otomátiku ta tiradu. Ka ta da pa disfaze kel-li.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Perfil ta tiradu. Ka ta da pa disfaze kel-li.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ta kumesa sen komandu. E ta karega sozinhu kantu un di si jogus sta na frenti.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nenhun otu programa ka ten janela abertu.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tira {0}</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Skuta ligadu o disligadu, modu, konfiansa</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Skuta sta disligadu. Liga-l na Más.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Prendidu na {0}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Difini un senha</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Dizbloka Remote Link</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Senha</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importa di un dispozitivu konektadu</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Xavi obrigatóriu pa pakotis JSON, valoris di marxa</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Skodji kuzé ki e ta mostra. Nada ka ta muda ti bu guarda.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Nada ka ta txiga porta ti bu guarda.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>editor di kurva</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ativu: {0} di {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Perfis inisial</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Perfil prontu pa un jéneru interu. Skodji un, atribui kualker komandu i joga.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} di {1} ligadu</value></data>
 </root>

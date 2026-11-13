@@ -71,7 +71,7 @@ namespace PadForge.Tests
                 "AutomationProperties.AutomationId=\"Dash_DeleteSlot\"",
                 "AutomationProperties.AutomationId=\"Dash_StageChips\"",
                 "<Border x:Name=\"EngineCard\"",
-                "<ItemsControl x:Name=\"SlotsItemsControl\">",
+                "<ItemsControl x:Name=\"SlotsItemsControl\"",
                 "<controls:ClickBorder x:Name=\"AddControllerCard\"",
                 "<CollectionContainer x:Name=\"SlotsCollectionContainer\"/>",
             })
@@ -85,6 +85,14 @@ namespace PadForge.Tests
                 "AutomationProperties.AutomationId=\"HomeOfferDismiss\"",
                 "AutomationProperties.AutomationId=\"Home_ExtrasLink\"",
                 "AutomationProperties.AutomationId=\"Home_OpenExtras\"",
+                // The first page's parts.
+                "<StackPanel x:Name=\"FirstRunPanel\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_Device\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_Start\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_Types\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_MoreTypes\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_Pair\"",
+                "AutomationProperties.AutomationId=\"Home_FirstRun_Profile\"",
             })
                 At(page, added);
 
@@ -98,10 +106,13 @@ namespace PadForge.Tests
             Assert.Contains("_selectedNavTag = \"Home\";", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "MainViewModel.cs"));
         }
 
-        /// <summary>The engine's card: the flame is the switch it always was,
-        /// the worded button beside the rate raises the same click, and the
-        /// state reads as a polite live line with the counts of devices and
-        /// controllers under it.</summary>
+        /// <summary>The engine's card, the page's first and its largest
+        /// words: the flame in its ring is the switch it always was, and
+        /// the worded button at the card's end raises the same click. The
+        /// state is one large word, a polite live line, with a sentence
+        /// under it and three numbers beside it, each with its label. While
+        /// the engine runs the card and the ring stand in ember light, the
+        /// ring's breathing, and Start is the page's one ember button.</summary>
         [Fact]
         public void TheEngineCard_HasTheFlameAndAWordedButton_ForTheOneSwitch()
         {
@@ -114,43 +125,145 @@ namespace PadForge.Tests
             At(engine, "<controls:StateToggleButton x:Name=\"EngineFlame\" IsOn=\"{Binding IsEngineOn}\"");
             At(engine, "Content=\"{Binding EngineButtonText}\"");
             At(engine, "<TextBlock x:Name=\"EngineStatusLine\" common:LiveText.Polite=\"True\" Text=\"{Binding EngineStatus}\"");
-            At(engine, "Text=\"{Binding PollingFrequencyText, Mode=OneWay}\"");
-            At(engine, "<TextBlock x:Name=\"EngineDevicesLine\" Text=\"{Binding EngineLine}\"");
+            At(engine, "<TextBlock x:Name=\"EngineDevicesLine\" Text=\"{Binding HeroLine}\"");
             // The flame and the button say the same thing on hover, in each state.
             foreach (string tip in new[] { "Dashboard_EngineFlame_Stopped", "Dashboard_EngineFlame_Running", "Dashboard_EngineFlame_Idle", "Common_Stopping" })
                 Assert.Equal(2, Count(engine, "Value=\"{Binding " + tip + ", Source={x:Static strings:Strings.Instance}}\""));
+
+            // The card's own measures, the board's: a 76 ring with the
+            // flame of a 38 icon, which is three quarters of the icon's
+            // box, the word at 32 in the display face, numbers at 30.
+            At(engine, "Width=\"76\" Height=\"76\"");
+            At(engine, "BorderBrush=\"{TemplateBinding BorderBrush}\" BorderThickness=\"3\" CornerRadius=\"38\">");
+            At(engine, "Width=\"29\" Height=\"29\" Stretch=\"Uniform\">");
+            At(engine, "FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"32\" FontWeight=\"SemiBold\"");
+            At(engine, "<controls:FlexLinePanel Margin=\"26,22,26,22\" Gap=\"28\" LineGap=\"18\">");
+            At(engine, "<StackPanel controls:FlexLinePanel.Basis=\"250\" controls:FlexLinePanel.Grow=\"1\" VerticalAlignment=\"Center\">");
+
+            // The light: one halo around the card and one around the ring,
+            // which breathes, each lit only while the engine runs. The card's
+            // is the card's own child, out to its outline by its margin.
+            Assert.Equal(2, Count(engine, "<controls:Halo "));
+            At(engine, "<controls:Halo x:Name=\"EngineHalo\" Margin=\"-1\" CornerRadius=\"12\" Radius=\"50\" Strength=\"0.07\" Rim=\"0.14\"");
+            At(engine, "<controls:Halo x:Name=\"EngineRingHalo\" CornerRadius=\"38\" Radius=\"27.5\" Strength=\"0.30\" Breathes=\"True\"");
+            Assert.Equal(2, Count(engine, "<Setter Property=\"IsLit\" Value=\"True\"/>"));
+            Assert.Equal(1, Count(engine, "Breathes=\"True\""));
+            At(engine, "<Border x:Name=\"EngineWash\" CornerRadius=\"11\" IsHitTestVisible=\"False\">");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding EngineStateKey\\}\" Value=\"Running\">\\s*"
+                + "<Setter Property=\"BorderBrush\" Value=\"\\{DynamicResource EmberRingSoftBrush\\}\"/>"), engine);
+
+            // Three numbers, each a text of its own with its label under it.
+            int stats = At(engine, "<controls:FlexLinePanel x:Name=\"EngineStats\" Gap=\"36\" LineGap=\"14\" VerticalAlignment=\"Center\">");
+            int button = At(engine, "<ui:Button x:Name=\"EngineButton\"");
+            string numbers = engine.Substring(stats, button - stats);
+            int rate = At(numbers, "<TextBlock x:Name=\"EngineRate\"");
+            int live = At(numbers, "<TextBlock x:Name=\"EngineLive\"");
+            int devices = At(numbers, "<TextBlock x:Name=\"EngineDevices\" Text=\"{Binding OnlineDevices, Mode=OneWay}\"");
+            Assert.True(rate < live && live < devices);
+            foreach (string label in new[] { "Home_Stat_PollingRate", "Home_Stat_ControllersLive", "Home_Stat_DevicesConnected" })
+                At(numbers, "Text=\"{Binding " + label + ", Source={x:Static strings:Strings.Instance}}\"/>");
+            Assert.Equal(3, Count(numbers, "<TextBlock Style=\"{StaticResource StatLabel}\""));
+            // The rate's number is apart from its unit, in the language's
+            // order, and a screen reader hears it whole. It is cold blue
+            // while there is a rate, in every state but stopped.
+            At(numbers, "AutomationProperties.Name=\"{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
+            Assert.DoesNotContain(" Hz", numbers);
+            foreach (string state in new[] { "Running", "Idle", "Stopping" })
+                At(numbers, "<DataTrigger Binding=\"{Binding EngineStateKey}\" Value=\"" + state + "\"><Setter Property=\"Foreground\" Value=\"{DynamicResource ColdBrush}\"/></DataTrigger>");
+            // How many of the controllers are live, said whole to a screen reader.
+            At(numbers, "AutomationProperties.Name=\"{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
+
+            // Start is ember, and only Start: the trigger is the stopped state's.
+            string start = engine.Substring(button);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding EngineStateKey\\}\" Value=\"Stopped\">\\s*"
+                + "<Setter Property=\"ToolTip\" Value=\"[^\"]*\"/>\\s*"
+                + "<Setter Property=\"Background\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), start);
+            Assert.Equal(1, Count(start, "<Setter Property=\"Background\" Value=\"{DynamicResource EmberBrush}\"/>"));
+            At(start, "MinHeight=\"42\" MinWidth=\"96\" Padding=\"22,0\"");
         }
 
-        /// <summary>The line under the engine's state counts the connected
-        /// devices and the controllers, each a number after its label, and
-        /// follows both counts.</summary>
+        /// <summary>What Home's engine card and the sidebar's foot read beside
+        /// the state: a sentence for each state with no number in it, the
+        /// count of the controllers that are forging, and the polling rate
+        /// with its number apart from its unit.</summary>
         [Fact]
-        public void TheEngineLine_CountsDevicesAndControllers_AndFollowsBoth()
+        public void TheEnginesLineItsLiveCountAndItsRate_FollowTheEngineAndTheControllers()
         {
             var vm = new DashboardViewModel();
             var changed = new List<string>();
             vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
-            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 0, 0), vm.EngineLine);
+            Assert.Equal(Strings.Instance.Home_Hero_Stopped, vm.HeroLine);
 
-            vm.OnlineDevices = 5;
-            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
-            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 0), vm.EngineLine);
+            vm.EngineStateKey = "Running";
+            Assert.Contains(nameof(DashboardViewModel.HeroLine), changed);
+            Assert.Equal(Strings.Instance.Home_Hero_Forging, vm.HeroLine);
+            vm.EngineStateKey = "Idle";
+            Assert.Equal(Strings.Instance.Home_Hero_Idle, vm.HeroLine);
+            vm.EngineStateKey = "Stopping";
+            Assert.Equal(Strings.Instance.Common_Stopping, vm.HeroLine);
+            // A sentence with a number in it would need plural forms.
+            foreach (string line in new[] { Strings.Instance.Home_Hero_Forging, Strings.Instance.Home_Hero_Idle, Strings.Instance.Home_Hero_Stopped })
+                Assert.DoesNotMatch(@"[\d{]", line);
 
+            // The count follows the list and each controller's heat.
+            vm.EngineStateKey = "Running";
             changed.Clear();
-            vm.SlotSummaries.Add(new SlotSummary(0));
-            vm.SlotSummaries.Add(new SlotSummary(1));
-            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
-            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 2), vm.EngineLine);
+            var one = new SlotSummary(0);
+            var two = new SlotSummary(1);
+            vm.SlotSummaries.Add(one);
+            vm.SlotSummaries.Add(two);
+            Assert.Contains(nameof(DashboardViewModel.LiveLine), changed);
+            Assert.Equal(0, vm.LiveControllers);
+            Assert.Equal(2, vm.ControllerCount);
+            Assert.Equal(SlotSummary.HeatCold, one.Heat);
 
+            // On with a device and no virtual controller yet: waiting.
             changed.Clear();
-            vm.SlotSummaries.RemoveAt(0);
-            Assert.Contains(nameof(DashboardViewModel.EngineLine), changed);
-            Assert.Equal(string.Format(Strings.Instance.Home_EngineLine_Format, 5, 1), vm.EngineLine);
+            one.MappedDeviceCount = 1;
+            Assert.Equal(SlotSummary.HeatWaiting, one.Heat);
+            Assert.Equal(0, vm.LiveControllers);
+            one.IsVirtualControllerConnected = true;
+            Assert.Equal(SlotSummary.HeatForging, one.Heat);
+            Assert.Contains(nameof(DashboardViewModel.LiveLine), changed);
+            Assert.Equal(1, vm.LiveControllers);
+            Assert.Equal(string.Format(Strings.Instance.Shell_Foot_Live_Format, 1, 2), vm.LiveLine);
 
-            // The English names both numbers, so a line that dropped one would not pass above by accident.
-            string english = Strings.Instance.Home_EngineLine_Format;
-            Assert.Contains("{0}", english);
-            Assert.Contains("{1}", english);
+            // The engine stops: a controller that would run waits.
+            vm.EngineStateKey = "Stopped";
+            Assert.Equal(SlotSummary.HeatWaiting, one.Heat);
+            Assert.Equal(0, vm.LiveControllers);
+            // One made while the engine is stopped is told so.
+            var three = new SlotSummary(2) { MappedDeviceCount = 1, IsVirtualControllerConnected = true };
+            vm.SlotSummaries.Add(three);
+            Assert.Equal(SlotSummary.HeatWaiting, three.Heat);
+            vm.EngineStateKey = "Running";
+            Assert.Equal(SlotSummary.HeatForging, three.Heat);
+            Assert.Equal(2, vm.LiveControllers);
+            // Being made counts as forging, and off is cold whatever else.
+            two.MappedDeviceCount = 1;
+            two.IsInitializing = true;
+            Assert.Equal(SlotSummary.HeatForging, two.Heat);
+            one.IsEnabled = false;
+            Assert.Equal(SlotSummary.HeatCold, one.Heat);
+            Assert.Equal(2, vm.LiveControllers);
+            // A controller that left the list is no longer counted or heard.
+            vm.SlotSummaries.Remove(three);
+            Assert.Equal(1, vm.LiveControllers);
+            changed.Clear();
+            three.IsEnabled = false;
+            Assert.DoesNotContain(nameof(DashboardViewModel.LiveLine), changed);
+
+            // The rate: the dash alone with no rate, then the number apart from its unit.
+            changed.Clear();
+            Assert.Equal(Strings.Instance.Dashboard_PollingDash, vm.PollingRateNumber);
+            Assert.Equal(string.Empty, vm.PollingRateLead + vm.PollingRateTail);
+            vm.PollingFrequency = 1000.4;
+            Assert.Contains(nameof(DashboardViewModel.PollingRateNumber), changed);
+            Assert.Equal(vm.PollingFrequencyText, vm.PollingRateLead + vm.PollingRateNumber + vm.PollingRateTail);
+            Assert.Equal(1000.4.ToString("F0", System.Globalization.CultureInfo.CurrentCulture), vm.PollingRateNumber);
+            Assert.NotEqual(string.Empty, vm.PollingRateLead + vm.PollingRateTail);
         }
 
         [Fact]
@@ -175,34 +288,38 @@ namespace PadForge.Tests
             Assert.Contains(nameof(DashboardViewModel.EngineButtonText), changed);
         }
 
-        /// <summary>A controller's card opens with its type chip, the type's
-        /// name and which one of that type it is, and its flame in the
-        /// corner. Under that line come the Preset, the devices that drive
-        /// it, its state with the device counts, and the stage icons. The
-        /// name is one of the seven type names, picked by the slot's output
-        /// type.</summary>
+        /// <summary>A controller's card, as its board draws it. Its head is
+        /// the type tile, the type's name with which one of that type it is
+        /// over the preset, the state pill and the delete button. Its body
+        /// is the controller's picture on a stage and, beside it, the
+        /// devices that drive it, what it waits for, the stage icons and
+        /// the counts. The name is one of the seven type names, picked by
+        /// the slot's output type.</summary>
         [Fact]
         public void AControllersCard_IsHeadedByItsTypeAndNumber_WithThePresetUnderIt()
         {
             string page = Home();
-            int row0 = At(page, "<!-- Row 0: [type chip] Type name #N ... [flame] -->");
-            int row1 = At(page, "<!-- Row 1: the Preset, what this controller");
-            int row2 = At(page, "<!-- Row 2: the devices that drive it.");
-            int row3 = At(page, "<!-- Row 3: the state, then how many devices are");
-            int row4 = At(page, "<!-- Row 4: the stage icons (#175 item 10)");
-            int delete = At(page, "<!-- Delete: a round button on the card's upper");
-            Assert.True(row0 < row1 && row1 < row2 && row2 < row3 && row3 < row4 && row4 < delete);
-            string head = page.Substring(row0, row1 - row0);
+            int template = At(page, "<DataTemplate DataType=\"{x:Type vm:SlotSummary}\">");
+            int templateEnd = page.IndexOf("</DataTemplate>", template, StringComparison.Ordinal);
+            string card = page.Substring(template, templateEnd - template);
+            int headAt = At(card, "<!-- The head: [type tile] name #N over the");
+            int bodyAt = At(card, "<!-- The body: the controller's picture on its");
+            Assert.True(headAt < bodyAt);
+            string head = card.Substring(headAt, bodyAt - headAt);
             int chip = At(head, "Click=\"TypeChip_Click\" Tag=\"{Binding PadIndex}\"");
             int name = At(head, "<Setter Property=\"Text\" Value=\"{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}\"/>");
             int number = At(head, "<TextBlock Text=\"{Binding TypeInstanceLabel, StringFormat={}#{0}}\"");
-            int flame = At(head, "IsOn=\"{Binding IsEnabled}\" Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\"");
-            Assert.True(chip < name && name < number && number < flame, "the card's first line is out of order");
-            // The flame is the line's last column, so it sits in the corner,
-            // and the delete button is no part of the line.
-            At(head, "<controls:StateToggleButton Grid.Column=\"2\" Width=\"32\" Height=\"32\" Margin=\"2,0,-6,0\"");
-            Assert.Equal(3, Count(head.Substring(0, head.IndexOf("</Grid.ColumnDefinitions>", StringComparison.Ordinal)), "<ColumnDefinition "));
-            Assert.DoesNotContain("DeleteSlot_Click", head);
+            int preset = At(head, "<controls:MarqueeLabel Text=\"{Binding PresetName}\"");
+            int pill = At(head, "IsOn=\"{Binding IsEnabled}\" Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\">");
+            int delete = At(head, "Click=\"DeleteSlot_Click\" Tag=\"{Binding PadIndex}\">");
+            Assert.True(chip < name && name < number && number < preset && preset < pill && pill < delete, "the card's head is out of order");
+            Assert.Equal(4, Count(head.Substring(0, head.IndexOf("</Grid.ColumnDefinitions>", StringComparison.Ordinal)), "<ColumnDefinition "));
+            At(head, "<Grid Margin=\"18,16,12,0\">");
+            // The tile is 34 with the type's symbol at 20, the name 18 in
+            // the display face.
+            At(head, "Width=\"34\" Height=\"34\" VerticalAlignment=\"Center\"");
+            At(head, "<Path FlowDirection=\"LeftToRight\" Width=\"20\" Height=\"20\" Stretch=\"Uniform\"");
+            At(head, "<TextBlock FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"18\" FontWeight=\"SemiBold\"");
             foreach (var (type, key) in new[]
             {
                 ("PlayStation", "ControllerType_PlayStation"), ("Nintendo", "ControllerType_Nintendo"),
@@ -219,30 +336,75 @@ namespace PadForge.Tests
             Assert.DoesNotContain("Dashboard_Slot,", page);
             Assert.DoesNotContain("{Binding SlotNumber}", page);
 
-            string preset = page.Substring(row1, row2 - row1);
-            At(preset, "<controls:MarqueeLabel Grid.Row=\"1\" Text=\"{Binding PresetName}\"");
+            // The state pill is the switch: a toggle named Enabled whose
+            // words are the state, said again when the state changes.
+            At(head, "<controls:StateToggleButton Grid.Column=\"2\" Style=\"{StaticResource StatePill}\"");
+            At(head, "AutomationProperties.Name=\"{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}\"");
+            At(head, "AutomationProperties.HelpText=\"{Binding StateWord, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            At(head, "ToolTip=\"{Binding Home_Card_Power, Source={x:Static strings:Strings.Instance}}\"");
+            At(head, "<TextBlock common:LiveText.Polite=\"True\" Text=\"{Binding StateWord}\" Margin=\"7,0,0,0\"");
+            // Delete is always there, in the head's last column, and one click.
+            At(head, "<ui:Button Grid.Column=\"3\" Style=\"{StaticResource CardCloseButton}\" Margin=\"4,0,0,0\"");
+            At(head, "AutomationProperties.Name=\"{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}\"");
+            Assert.Equal(1, Count(page, "DeleteSlot_Click"));
+            Assert.DoesNotContain("Property=\"Opacity\" Value=\"0\"", head);
 
-            // The devices: one entry for each, with a bar ahead of every
-            // entry but the first. The bar's trigger is in the bar's own
-            // style, where the nearest ContentPresenter is the entry's.
-            string devices = page.Substring(row2, row3 - row2);
-            // The line's list and the tooltip's, which names every device.
-            Assert.Equal(2, Count(devices, "<ItemsControl ItemsSource=\"{Binding MappedDevices}\""));
-            At(devices, "AlternationCount=\"99\" Focusable=\"False\"");
-            At(devices, "common:MarqueeBehavior.IsEnabled=\"True\"");
-            Assert.Matches(new Regex("<TextBlock Text=\"  \\|  \" FontSize=\"13\"\\s+"
-                + "Foreground=\"\\{DynamicResource TextFillColorTertiaryBrush\\}\">\\s*<TextBlock.Style>\\s*<Style TargetType=\"TextBlock\">\\s*<Style.Triggers>\\s*"
-                + "<DataTrigger Binding=\"\\{Binding \\(ItemsControl.AlternationIndex\\), RelativeSource=\\{RelativeSource AncestorType=ContentPresenter\\}\\}\" Value=\"0\">\\s*"
-                + "<Setter Property=\"Visibility\" Value=\"Collapsed\"/>"), devices);
-            Assert.DoesNotContain("<DataTemplate.Triggers>", devices);
+            // The card says its heat in its edge and its light, and tells
+            // what is inside it whether it is live.
+            string edge = card.Substring(0, headAt);
+            At(edge, "<Border CornerRadius=\"12\" BorderThickness=\"1\"");
+            At(edge, "Tag=\"{Binding PadIndex}\"");
+            At(edge, "Loaded=\"SlotCard_Loaded\"");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*"
+                + "<Setter Property=\"BorderBrush\" Value=\"\\{DynamicResource EmberRingBrush\\}\"/>\\s*"
+                + "<Setter Property=\"controls:Heat.IsLive\" Value=\"True\"/>"), edge);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Waiting\">\\s*"
+                + "<Setter Property=\"BorderBrush\" Value=\"\\{DynamicResource WaitRingBrush\\}\"/>"), edge);
+            At(edge, "<Setter Property=\"controls:Heat.IsLive\" Value=\"False\"/>");
+            // The light is the card's own child, so a dragged card takes it
+            // along and a hidden one hides it. Its margin takes it out to
+            // the card's outline.
+            At(edge, "<controls:Halo Grid.RowSpan=\"2\" Margin=\"-1\" CornerRadius=\"12\" Radius=\"42.5\" Strength=\"0.085\" Rim=\"0.18\"");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*<Setter Property=\"IsLit\" Value=\"True\"/>"), edge);
+            Assert.DoesNotContain("Property=\"Opacity\" Value=\"0.72\"", card);
 
-            // The state and the counts: one line while they fit the card,
-            // the counts under the state when they do not, and the dot
-            // between them only on the one line.
-            string state = page.Substring(row3, row4 - row3);
-            At(state, "<controls:LineOrStackPanel Grid.Row=\"3\" VerticalAlignment=\"Bottom\" Margin=\"0,10,0,0\">");
-            At(state, "<TextBlock common:LiveText.Polite=\"True\" Text=\"{Binding StatusText}\" FontSize=\"13\"");
-            At(state, "<TextBlock controls:LineOrStackPanel.OnLineOnly=\"True\" Text=\"·\"");
+            // The body: the stage, then the devices.
+            string under = card.Substring(bodyAt);
+            At(under, "<controls:FlexLinePanel Grid.Row=\"1\" Margin=\"18,14,18,16\" Gap=\"18\" LineGap=\"14\">");
+            int stage = At(under, "<controls:ClickBorder controls:FlexLinePanel.Basis=\"204\" Height=\"140\" CornerRadius=\"10\" BorderThickness=\"1\"");
+            int driven = At(under, "<Grid controls:FlexLinePanel.Basis=\"220\" controls:FlexLinePanel.Grow=\"1\">");
+            Assert.True(stage < driven);
+            string picture = under.Substring(stage, driven - stage);
+            // The stage opens the page for the keyboard and a screen reader.
+            At(picture, "Click=\"OpenSlot_Click\" Tag=\"{Binding PadIndex}\"");
+            At(picture, "AutomationProperties.Name=\"{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}\"");
+            At(picture, "AutomationProperties.AutomationId=\"Dash_SlotStage\">");
+            // Gray under, the colors over, by the heat.
+            int gray = At(picture, "<controls:DecorativeImage Source=\"{Binding PictureGray}\" Stretch=\"Uniform\"");
+            int color = At(picture, "<controls:DecorativeImage Source=\"{Binding Picture}\" Stretch=\"Uniform\"");
+            Assert.True(gray < color);
+            At(picture, "Visibility=\"{Binding HasPicture, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\">");
+            Assert.Equal(4, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Waiting\">"));
+            Assert.Equal(4, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Forging\">"));
+
+            string devices = under.Substring(driven);
+            At(devices, "Text=\"{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}\"/>");
+            At(devices, "<ItemsControl Grid.Row=\"1\" ItemsSource=\"{Binding MappedDevices}\" Focusable=\"False\"");
+            At(devices, "ItemTemplate=\"{StaticResource DrivenByRow}\"/>");
+            // With none mapped: the words and Add Device.
+            At(devices, "Visibility=\"{Binding HasMappedDevices, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\">");
+            At(devices, "Text=\"{Binding Mapping_NoDeviceMapped, Source={x:Static strings:Strings.Instance}}\"/>");
+            At(devices, "Click=\"AddDevice_Click\" Tag=\"{Binding PadIndex}\"");
+            At(devices, "Text=\"{Binding Pad_AddDevice, Source={x:Static strings:Strings.Instance}}\"/>");
+            // What a waiting card waits for, said when it changes.
+            At(devices, "<TextBlock Grid.Row=\"3\" common:LiveText.Polite=\"True\" Text=\"{Binding WaitHint}\"");
+            At(devices, "Visibility=\"{Binding WaitHint, Converter={StaticResource StringToVisibility}}\"/>");
+            // The foot: the stage icons, drawn by the template the
+            // controller page's header uses, and the counts at the end.
+            At(devices, "<controls:FlexLinePanel Grid.Row=\"5\" Margin=\"0,8,0,0\" Gap=\"6\" LineGap=\"4\" EndsApart=\"True\">");
+            At(devices, "<ItemsControl ItemsSource=\"{Binding StageLedger}\" Focusable=\"False\" VerticalAlignment=\"Center\"");
+            At(devices, "ItemTemplate=\"{StaticResource StageChipTemplate}\"");
+            At(devices, "<TextBlock controls:FlexLinePanel.AtEnd=\"True\" FontSize=\"12\" VerticalAlignment=\"Center\"");
             foreach (string run in new[]
             {
                 "<Run Text=\"{Binding MappedDeviceCount, Mode=OneWay}\"/>",
@@ -250,50 +412,199 @@ namespace PadForge.Tests
                 "<Run Text=\"{Binding ConnectedDeviceCount, Mode=OneWay}\"/>",
                 "<Run Text=\"{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}, Mode=OneWay}\"/>",
             })
-                At(state, run);
+                At(devices, run);
 
-            // The stage icons, drawn by the template the controller page's
-            // header uses.
-            string stages = page.Substring(row4, delete - row4);
-            At(stages, "<ItemsControl Grid.Row=\"4\" ItemsSource=\"{Binding StageLedger}\"");
-            At(stages, "ItemTemplate=\"{StaticResource StageChipTemplate}\"");
-
-            // Delete: on the card's upper corner, over all five rows, last
-            // in the grid, shown by the card's hover or its own keyboard
-            // focus, and one click.
-            string corner = page.Substring(delete, page.IndexOf("</DataTemplate>", delete, StringComparison.Ordinal) - delete);
-            At(corner, "<ui:Button Grid.RowSpan=\"5\" Width=\"26\" Height=\"26\" Padding=\"0\" CornerRadius=\"13\"");
-            At(corner, "HorizontalAlignment=\"Right\" VerticalAlignment=\"Top\" Margin=\"0,-28,-28,0\"");
-            At(corner, "Click=\"DeleteSlot_Click\" Tag=\"{Binding PadIndex}\"");
-            At(corner, "<Setter Property=\"Opacity\" Value=\"0\"/>");
-            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsMouseOver, RelativeSource=\\{RelativeSource AncestorType=ContentPresenter\\}\\}\" Value=\"True\">\\s*"
-                + "<Setter Property=\"Opacity\" Value=\"1\"/>"), corner);
-            Assert.Matches(new Regex("<Trigger Property=\"IsKeyboardFocused\" Value=\"True\">\\s*<Setter Property=\"Opacity\" Value=\"1\"/>"), corner);
-            Assert.Equal(1, Count(page, "DeleteSlot_Click"));
+            // The cards stand two across at the board's width and share
+            // the grid with the Add Controller tile.
+            At(page, "<controls:TileGridPanel MinItemWidth=\"470\" Gap=\"16\" FillRows=\"True\"/>");
+            At(page, "<controls:ClickBorder x:Name=\"AddControllerCard\"\r\n                                    MinHeight=\"132\" CornerRadius=\"12\"");
+            // The heading says how many there are.
+            At(page, "<TextBlock x:Name=\"ControllersHeading\" Style=\"{StaticResource PageSectionTitle}\"");
+            At(page, "<TextBlock x:Name=\"ControllersCount\" Text=\"{Binding ControllerCount, Mode=OneWay}\"");
         }
 
-        /// <summary>The margin that puts the delete button on the card's
-        /// corner is the card's own numbers: its padding and edge, and half
-        /// the button less the two it sits inside the corner.</summary>
+        /// <summary>One device's row on a controller's card: a light that
+        /// is ember while the device sends input, its name, a Bluetooth
+        /// mark, the battery as a meter and the percentage, which says low
+        /// or charging to a screen reader. A device that is not connected
+        /// says so and shows neither link nor battery.</summary>
         [Fact]
-        public void TheDeleteButtonsMargin_IsTheCardsPaddingEdgeAndHalfTheButton()
+        public void ADevicesRow_ShowsItsLightItsLinkAndItsBatteryAsAMeter()
         {
             string page = Home();
-            var card = Regex.Match(page, "<Border MinHeight=\"156\" Padding=\"(\\d+)\" CornerRadius=\"10\" BorderThickness=\"(\\d+)\"");
-            Assert.True(card.Success, "the card's opening tag changed");
-            var button = Regex.Match(page, "<ui:Button Grid.RowSpan=\"5\" Width=\"(\\d+)\" Height=\"(\\d+)\" Padding=\"0\" CornerRadius=\"(\\d+)\"\\s+"
-                + "HorizontalAlignment=\"Right\" VerticalAlignment=\"Top\" Margin=\"0,-(\\d+),-(\\d+),0\"");
-            Assert.True(button.Success, "the delete button's opening tag changed");
-            int padding = int.Parse(card.Groups[1].Value), edge = int.Parse(card.Groups[2].Value);
-            int width = int.Parse(button.Groups[1].Value), height = int.Parse(button.Groups[2].Value);
-            Assert.Equal(width, height);
-            Assert.Equal(width / 2, int.Parse(button.Groups[3].Value));
-            int margin = padding + edge + width / 2 - 2;
-            Assert.Equal(margin, int.Parse(button.Groups[4].Value));
-            Assert.Equal(margin, int.Parse(button.Groups[5].Value));
+            int rowAt = At(page, "<DataTemplate x:Key=\"DrivenByRow\">");
+            string row = page.Substring(rowAt, page.IndexOf("</DataTemplate>", rowAt, StringComparison.Ordinal) - rowAt);
+            At(row, "<controls:Halo CornerRadius=\"3\" Radius=\"10\" Strength=\"0.45\" IsLit=\"{Binding IsSending}\"");
+            At(row, "<Ellipse Width=\"6\" Height=\"6\" StrokeThickness=\"1\">");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsSending\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"Fill\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), row);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsSending\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"ToolTip\" Value=\"\\{Binding Home_Device_Sending, Source=\\{x:Static strings:Strings.Instance\\}\\}\"/>"), row);
+            // The clear box the pointer finds is ten wider than the light,
+            // and its margins give the ten back.
+            At(row, "<Border Width=\"16\" Margin=\"-5,0,-5,0\" Background=\"Transparent\">");
+            At(row, "<TextBlock Grid.Column=\"1\" Text=\"{Binding Name}\" Margin=\"6,0,6,0\" FontSize=\"13\"");
+            int link = At(row, "<controls:DecorativeStrokeIcon Data=\"{StaticResource BluetoothLineGeometry}\" Size=\"13\" StrokeWidth=\"2\"");
+            int meter = At(row, "<controls:BatteryMeter Margin=\"6,0,0,0\" Percent=\"{Binding BatteryPercent}\"");
+            int percent = At(row, "<TextBlock Text=\"{Binding BatteryText}\" MinWidth=\"34\" Margin=\"6,0,0,0\" TextAlignment=\"Right\"");
+            Assert.True(link < meter && meter < percent);
+            At(row, "Charging=\"{Binding BatteryCharging}\" Low=\"{Binding BatteryLow}\"/>");
+            At(row, "Visibility=\"{Binding IsBluetooth, Converter={StaticResource BoolToVisibilityConverter}}\"/>");
+            At(row, "AutomationProperties.Name=\"{Binding BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding BatteryLow\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"Foreground\" Value=\"\\{DynamicResource WaitBrush\\}\"/>"), row);
+            // Connected and not connected are the two faces of one fact.
+            At(row, "Visibility=\"{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}}\">");
+            At(row, "Text=\"{Binding Home_Device_NotConnected, Source={x:Static strings:Strings.Instance}}\"");
+            At(row, "Visibility=\"{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\"/>");
+            Assert.DoesNotContain("Segoe MDL2 Assets", row);
+
+            // The rune is the Bluetooth mark, one line.
+            At(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Shell.xaml"),
+                "<Geometry x:Key=\"BluetoothLineGeometry\">M7 7 L17 17 L12 22 V2 L17 7 L7 17</Geometry>");
         }
 
-        // ── the extras in use ──────────────────────────────────────────
+        /// <summary>The words on a card's pill and its waiting line follow
+        /// the controller's state, in the order the old flame's tooltip
+        /// had, and a card reads them again when the language changes.</summary>
+        [Fact]
+        public void ACardsStateWordAndWaitingLine_FollowItsState()
+        {
+            var s = Strings.Instance;
+            var slot = new SlotSummary(0) { EngineStopped = false };
+            var changed = new List<string>();
+            slot.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+            Assert.Equal(s.Dashboard_StatusCold, slot.StateWord);
+            Assert.Equal(string.Empty, slot.WaitHint);
+
+            // One device mapped and none connected: it waits for that device.
+            slot.MappedDeviceCount = 1;
+            Assert.Contains(nameof(SlotSummary.StateWord), changed);
+            Assert.Contains(nameof(SlotSummary.WaitHint), changed);
+            Assert.Equal(SlotSummary.HeatWaiting, slot.Heat);
+            Assert.Equal(s.Main_AwaitingDevices, slot.StateWord);
+            Assert.Equal(s.Home_Card_StartsWhenThis, slot.WaitHint);
+            slot.MappedDeviceCount = 3;
+            Assert.Equal(s.Home_Card_StartsWhenOne, slot.WaitHint);
+            // A device is there and the controller is not made yet: no line.
+            slot.ConnectedDeviceCount = 1;
+            Assert.Equal(string.Empty, slot.WaitHint);
+            slot.IsInitializing = true;
+            Assert.Equal(s.Main_Initializing, slot.StateWord);
+            Assert.Equal(SlotSummary.HeatForging, slot.Heat);
+            slot.IsInitializing = false;
+            slot.IsVirtualControllerConnected = true;
+            Assert.Equal(s.Main_Active, slot.StateWord);
+            Assert.Equal(string.Empty, slot.WaitHint);
+            // Its devices leave and it lives on through the grace: still forging.
+            slot.ConnectedDeviceCount = 0;
+            Assert.Equal(s.Main_Active, slot.StateWord);
+            Assert.Equal(string.Empty, slot.WaitHint);
+
+            // The engine stops: it waits for the engine, whatever is connected.
+            changed.Clear();
+            slot.EngineStopped = true;
+            Assert.Contains(nameof(SlotSummary.StateWord), changed);
+            Assert.Equal(s.Main_EngineStopped, slot.StateWord);
+            Assert.Equal(s.Home_Card_StartsWithEngine, slot.WaitHint);
+            slot.EngineStopped = false;
+
+            // A failed make outranks waiting, and says nothing to wait for.
+            slot.IsVirtualControllerConnected = false;
+            slot.IsCreateFailed = true;
+            Assert.Equal(s.Main_VcFailed, slot.StateWord);
+            Assert.Equal(string.Empty, slot.WaitHint);
+            slot.IsCreateFailed = false;
+            Assert.Equal(s.Home_Card_StartsWhenOne, slot.WaitHint);
+
+            // Off: Disabled, and nothing to wait for.
+            slot.IsEnabled = false;
+            Assert.Equal(s.Common_Disabled, slot.StateWord);
+            Assert.Equal(string.Empty, slot.WaitHint);
+            Assert.Equal(SlotSummary.HeatCold, slot.Heat);
+
+            // No sentence has a number in it, so none needs plural forms.
+            foreach (string line in new[] { s.Home_Card_StartsWithEngine, s.Home_Card_StartsWhenThis, s.Home_Card_StartsWhenOne })
+                Assert.DoesNotMatch(@"[\d{]", line);
+
+            // A change of language has every card read its words again.
+            var dash = new DashboardViewModel();
+            dash.SlotSummaries.Add(slot);
+            changed.Clear();
+            typeof(DashboardViewModel).GetMethod("OnCultureChanged", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .Invoke(dash, null);
+            Assert.Contains(nameof(SlotSummary.StateWord), changed);
+            Assert.Contains(nameof(SlotSummary.WaitHint), changed);
+        }
+
+        /// <summary>A mapped device's battery facts come from one reading:
+        /// the level, whether it charges, and whether it is low, which is
+        /// at or under the level Settings names while it does not charge. A
+        /// screen reader hears which. Its Bluetooth mark is its transport
+        /// glyph's.</summary>
+        [Fact]
+        public void AMappedDevicesBattery_IsOneReading_AndSaysLowOrCharging()
+        {
+            var s = Strings.Instance;
+            var device = new PadViewModel.MappedDeviceInfo();
+            var changed = new List<string>();
+            device.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+            Assert.Equal(-1, device.BatteryPercent);
+            Assert.False(device.HasBattery);
+            Assert.Equal(string.Empty, device.BatterySpoken);
+
+            device.SetBattery(90, false, 15);
+            Assert.Equal(90, device.BatteryPercent);
+            Assert.Equal("90%", device.BatteryText);
+            Assert.True(device.HasBattery);
+            Assert.False(device.BatteryLow);
+            Assert.Equal(string.Format(s.Home_FirstRun_Battery_Format, "90%"), device.BatterySpoken);
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.BatteryPercent), changed);
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.BatterySpoken), changed);
+
+            // At the level and under it: low. One over: not.
+            device.SetBattery(15, false, 15);
+            Assert.True(device.BatteryLow);
+            Assert.Equal(string.Format(s.Home_Battery_Low_Format, "15%"), device.BatterySpoken);
+            device.SetBattery(16, false, 15);
+            Assert.False(device.BatteryLow);
+            device.SetBattery(3, false, 15);
+            Assert.True(device.BatteryLow);
+            // Charging is never low.
+            device.SetBattery(3, true, 15);
+            Assert.False(device.BatteryLow);
+            Assert.True(device.BatteryCharging);
+            Assert.Equal(string.Format(s.Home_Battery_Charging_Format, "3%"), device.BatterySpoken);
+            // The same reading again raises nothing.
+            changed.Clear();
+            device.SetBattery(3, true, 15);
+            Assert.Empty(changed);
+            // No battery: nothing, and never charging.
+            device.SetBattery(-1, true, 15);
+            Assert.Equal(-1, device.BatteryPercent);
+            Assert.False(device.BatteryCharging);
+            Assert.False(device.HasBattery);
+            Assert.Equal(string.Empty, device.BatteryText);
+            Assert.Equal(string.Empty, device.BatterySpoken);
+            foreach (string format in new[] { s.Home_Battery_Low_Format, s.Home_Battery_Charging_Format })
+                Assert.Contains("{0}", format);
+
+            changed.Clear();
+            Assert.False(device.IsBluetooth);
+            device.TransportGlyph = "\uE702";
+            Assert.True(device.IsBluetooth);
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.IsBluetooth), changed);
+            device.IsSending = true;
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.IsSending), changed);
+
+            // The service sets them from the same reading the Devices rows
+            // get, with the alert's own level.
+            string svc = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+            At(svc, "int lowAt = _mainVm.Settings?.BatteryNotifyThreshold ?? 15;");
+            At(svc, "dev.SetBattery(pct, charging, lowAt);");
+        }
+
+        // ── the extras in use ──────────────────────────────────────────        // ── the extras in use ──────────────────────────────────────────
 
         private static readonly Regex TileElement = new("<controls:ExtraTile\\b[^>]*?/>", RegexOptions.Singleline);
         private static readonly Regex Attribute = new("([\\w.:]+)=\"([^\"]*)\"");
@@ -346,8 +657,11 @@ namespace PadForge.Tests
             // link in the line under the tiles, and the button that shows
             // while no extra is on.
             string page = Home();
-            At(page, "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\" MinItemWidth=\"280\" Gap=\"16\"");
+            At(page, "<controls:TileGridPanel x:Name=\"ExtrasInUseRows\" MinItemWidth=\"300\" Gap=\"16\" FillRows=\"True\"");
             At(page, "controls:ExtraTile.OpenRequested=\"ExtraInUse_OpenRequested\">");
+            // The tiles are lit while the engine is on, and steel while it
+            // is stopped: the row tells them, and the style draws it.
+            At(page, "controls:Heat.IsLive=\"{Binding IsEngineOn}\"");
             Assert.Equal(2, Count(page, "Click=\"OpenExtras_Click\""));
             // The style gives a tile its own id, so the two faces of one
             // extra never share one, and draws no switch. Its second
@@ -364,6 +678,14 @@ namespace PadForge.Tests
             Assert.Matches(new Regex("<Trigger Property=\"ActionText\" Value=\"\">\\s*<Setter TargetName=\"PART_Action\" Property=\"Visibility\" Value=\"Collapsed\"/>"), home);
             Assert.Matches(new Regex("<Trigger Property=\"ActionText\" Value=\"\\{x:Null\\}\">\\s*<Setter TargetName=\"PART_Action\" Property=\"Visibility\" Value=\"Collapsed\"/>"), home);
             Assert.Equal("PART_Action", PadForge.Controls.ExtraTile.ActionPartName);
+            // Lit: a warm square and a faint ember edge. Not live: steel.
+            At(home, "<Border x:Name=\"Card\" Style=\"{StaticResource CardBorder}\" Padding=\"0\" Margin=\"0\"");
+            At(home, "BorderBrush=\"{DynamicResource EmberRingFaintBrush}\">");
+            At(home, "<Border x:Name=\"IconSquare\" Width=\"40\" Height=\"40\" CornerRadius=\"10\" VerticalAlignment=\"Center\"");
+            Assert.Matches(new Regex("<Trigger Property=\"controls:Heat.IsLive\" Value=\"False\">\\s*"
+                + "<Setter TargetName=\"Card\" Property=\"BorderBrush\" Value=\"\\{DynamicResource CardStrokeColorDefaultBrush\\}\"/>\\s*"
+                + "<Setter TargetName=\"IconSquare\" Property=\"Background\" Value=\"\\{DynamicResource SteelRaisedBrush\\}\"/>\\s*"
+                + "<Setter TargetName=\"Icon\" Property=\"Foreground\" Value=\"\\{DynamicResource TextFillColorTertiaryBrush\\}\"/>"), home);
             // Under the name: the word On and then the status or the line.
             At(home, "<Binding Path=\"Summary\" RelativeSource=\"{RelativeSource TemplatedParent}\"/>");
             At(home, "<Binding Path=\"Home_ExtraOn_Format\" Source=\"{x:Static strings:Strings.Instance}\"/>");
@@ -453,7 +775,7 @@ namespace PadForge.Tests
             int foot = At(page, "<StackPanel x:Name=\"ExtrasFoot\"");
             Assert.True(heading < rows && rows < foot);
             string head = page.Substring(heading, rows - heading);
-            At(head, "<Style TargetType=\"TextBlock\" BasedOn=\"{StaticResource SectionTitle}\">");
+            At(head, "<Style TargetType=\"TextBlock\" BasedOn=\"{StaticResource PageSectionTitle}\">");
             At(head, "<Setter Property=\"Text\" Value=\"{Binding Home_ExtrasInUse, Source={x:Static strings:Strings.Instance}}\"/>");
             Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding ShowsExtrasIntro\\}\" Value=\"True\">\\s*"
                 + "<Setter Property=\"Text\" Value=\"\\{Binding Extras_Title, "), head);
@@ -522,6 +844,62 @@ namespace PadForge.Tests
                 foreach (string part in new[] { nameof(vm.ExtrasRestLead), nameof(vm.ExtrasRestLink), nameof(vm.ExtrasRestTail) })
                     Assert.Contains(part, changed);
                 Assert.Contains("6", vm.ExtrasRestLead + vm.ExtrasRestTail);
+            }
+            finally
+            {
+                HeadTrackingRuntime.Enabled = udp;
+                HeadTrackingRuntime.FreeTrackEnabled = free;
+                HeadTrackingRuntime.OpenXrEnabled = xr;
+                GameTelemetryRuntime.Enabled = telemetry;
+                TwitchChatRuntime.Enabled = twitch;
+            }
+        }
+
+        /// <summary>The Extras page's count, 2 of 10 on, is the number Home
+        /// counts, in three parts: what the language puts before the
+        /// number, the number, and what it puts after, with the total in
+        /// its place. A screen reader has the sentence whole. A switch
+        /// that changes the count tells all four.</summary>
+        [Fact]
+        public void TheExtrasPagesCount_IsHomesNumber_InThreeParts()
+        {
+            bool udp = HeadTrackingRuntime.Enabled, free = HeadTrackingRuntime.FreeTrackEnabled, xr = HeadTrackingRuntime.OpenXrEnabled;
+            bool telemetry = GameTelemetryRuntime.Enabled, twitch = TwitchChatRuntime.Enabled;
+            try
+            {
+                var vm = new DashboardViewModel { DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>() };
+                foreach (Action<bool> set in new Action<bool>[]
+                {
+                    v => vm.EnableWebController = v, v => vm.HeadTrackingAnyEnabled = v, v => vm.EnableGameTelemetry = v,
+                    v => vm.EnableTwitchChat = v, v => vm.EnableRemoteLink = v, v => vm.EnableDsuMotionServer = v,
+                    v => vm.EnableGameModServer = v, v => vm.OverlaysAnyEnabled = v, v => vm.EnableTouchpadOverlay = v,
+                    v => vm.ScreenOverlaysAnyEnabled = v,
+                })
+                    set(false);
+                vm.EnableWebController = true;
+                vm.OverlaysAnyEnabled = true;
+                Assert.Equal(2, vm.ExtrasInUseCount);
+
+                // The English, read from the file, since another test may
+                // have the interface in another language as this one runs.
+                Assert.Contains("<data name=\"Extras_OnCount_Format\" xml:space=\"preserve\"><value>{0} of {1} on</value></data>",
+                    ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
+                string format = Strings.Instance.Extras_OnCount_Format;
+                int at = format.IndexOf("{0}", StringComparison.Ordinal);
+                Assert.True(at >= 0 && format.Contains("{1}"), "the count's string lost a place: " + format);
+                Assert.Equal("2", vm.ExtrasOnNumber);
+                Assert.Equal(format.Substring(0, at).Replace("{1}", "10"), vm.ExtrasOnLead);
+                Assert.Equal(format.Substring(at + 3).Replace("{1}", "10"), vm.ExtrasOnTail);
+                Assert.Equal(string.Format(format, 2, 10), vm.ExtrasOnSpoken);
+                Assert.Equal(vm.ExtrasOnSpoken, vm.ExtrasOnLead + vm.ExtrasOnNumber + vm.ExtrasOnTail);
+
+                var changed = new List<string>();
+                vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+                vm.EnableTwitchChat = true;
+                foreach (string part in new[] { nameof(vm.ExtrasOnLead), nameof(vm.ExtrasOnNumber), nameof(vm.ExtrasOnTail), nameof(vm.ExtrasOnSpoken) })
+                    Assert.Contains(part, changed);
+                Assert.Equal("3", vm.ExtrasOnNumber);
+                Assert.Equal(string.Format(format, 3, 10), vm.ExtrasOnSpoken);
             }
             finally
             {
@@ -851,28 +1229,38 @@ namespace PadForge.Tests
             At(svc, "if (ud != null && ud.InstanceGuid == guid) ud.HomeOfferPending = false;");
 
             string code = WindowCode();
-            // Use It opens the type bar under its own button, for that device.
-            At(code, "ShowControllerTypePopup(args.Anchor, PlacementMode.Bottom, deviceForNewSlot: args.Device);");
-            // All seven types share one click, and it is the only place the
-            // bar makes a slot: the new slot takes the device, then the
-            // offer is read again.
-            int bar = At(code, "private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right,");
-            int end = At(code, "private void AddRetypeButtons(");
-            string method = code.Substring(bar, end - bar);
-            Assert.Equal(7, Count(method, "CreateFromBar(VirtualControllerType."));
-            foreach (string type in Enum.GetNames(typeof(VirtualControllerType)))
-                At(method, "CreateFromBar(VirtualControllerType." + type + ");");
+            // Use It opens Add a Controller for that device, from Home's
+            // offer and from the Devices page's Use It and New Controller.
+            Assert.Matches(@"HomePageView\.HomeOfferUseRequested \+= \(s, args\) => OpenAddController\(args\.Device, args\.Anchor\);", code);
+            Assert.Matches(@"DevicesPageView\.NewControllerRequested \+= \(s, args\) => OpenAddController\(args\.Device, args\.Anchor\);", code);
+            Assert.Equal(2, Count(code, "OpenAddController(args.Device, args.Anchor);"));
+            // One method makes a controller, for every tile of the dialog and
+            // of Home's first page: the dialog closes, the new slot takes the
+            // device, the offer is read again, and the slot's page opens.
+            int maker = At(code, "private void CreateController(VirtualControllerType type, Guid device)");
+            int makerEnd = code.IndexOf("\n        }", maker, StringComparison.Ordinal);
+            string method = code.Substring(maker, makerEnd - maker);
+            int close = At(method, "CloseAddController(returnFocus: false, restoreNav: true);");
             int create = At(method, "int newSlot = _deviceService.CreateSlot(type);");
-            int assign = At(method, "_deviceService.AssignDeviceToSlot(deviceForNewSlot, newSlot);");
+            int assign = At(method, "_deviceService.AssignDeviceToSlot(device, newSlot);");
             int reread = At(method, "_inputService.ReEvaluateHomeOffer();");
-            Assert.True(create < assign && assign < reread);
+            int open = At(method, "NavigateToSlot(");
+            Assert.True(close < create && create < assign && assign < reread && reread < open);
+            foreach (string gone in new[] { "ShowControllerTypePopup", "CreateFromBar", "deviceForNewSlot" })
+                Assert.DoesNotContain(gone, code);
             // The switch is followed at once.
             Assert.Matches(new Regex("if \\(e\\.PropertyName == nameof\\(SettingsViewModel\\.AssignOfferHome\\)\\)\\s*"
                 + "_inputService\\?\\.ReEvaluateHomeOffer\\(\\);"), code);
 
             string page = Home();
             At(page, "Visibility=\"{Binding HasHomeOffer, Converter={StaticResource BoolToVisibilityConverter}}\"");
-            At(page, "<TextBlock x:Name=\"HomeOfferLine\" Grid.Column=\"1\" common:LiveText.Polite=\"True\"");
+            At(page, "<TextBlock x:Name=\"HomeOfferLine\" common:LiveText.Polite=\"True\"");
+            // The sentence wraps, and the two buttons go under it together.
+            At(page, "<Border x:Name=\"HomeOffer\" Margin=\"0,12,0,0\" Padding=\"18,12,14,12\" CornerRadius=\"12\"");
+            At(page, "controls:FlexLinePanel.Basis=\"320\" controls:FlexLinePanel.Grow=\"1\"");
+            int use = At(page, "<ui:Button x:Name=\"HomeOfferUse\"");
+            int dismiss = At(page, "<ui:Button x:Name=\"HomeOfferDismiss\"");
+            Assert.DoesNotContain("</StackPanel>", page.Substring(use, dismiss - use));
             At(page, "Click=\"HomeOfferUse_Click\"");
             At(page, "Command=\"{Binding DismissHomeOfferCommand}\"");
             At(page, "Content=\"{Binding Pad_AssignOffer_Dismiss, Source={x:Static strings:Strings.Instance}}\"");
@@ -921,7 +1309,7 @@ namespace PadForge.Tests
             // Always open: no toggle in the markup, no pane state in the code.
             string xaml = Window();
             At(xaml, "IsPaneToggleVisible=\"False\"");
-            At(xaml, "OpenPaneLength=\"248\"");
+            At(xaml, "OpenPaneLength=\"264\"");
             Assert.DoesNotContain("PaneToggleBtn", xaml);
             Assert.DoesNotContain("IsPaneOpen", xaml);
             foreach (string gone in new[] { "IsPaneOpen", "PaneClosed", "PaneOpened", "CompactPaneLength", "PaneToggleBtn" })
@@ -943,11 +1331,26 @@ namespace PadForge.Tests
             At(shell, "<ui:NavigationViewContentPresenter x:Name=\"PART_NavigationViewContentPresenter\"");
             Assert.True(menu < footer && footer < paneFooter, "the sidebar's three lists are out of order");
             At(shell, "Width=\"{TemplateBinding OpenPaneLength}\"");
-            // The hairline over Settings is the template's, between the two
-            // lists, and no entry of either: an entry there was an unnamed
-            // item to a screen reader.
-            int hairline = At(shell, "<Border Height=\"1\" Margin=\"4,14,4,10\" Background=\"{DynamicResource SteelPaneLineBrush}\"/>");
-            Assert.True(menu < hairline && hairline < footer);
+            // The controllers scroll in the room over the foot, and the
+            // foot (Settings, About and the engine) stands at the pane's
+            // lower edge: the scrolling part ends before the foot starts.
+            // The foot comes second in the markup, so the keyboard reaches
+            // it after the controllers. No hairline stands between them:
+            // an entry there was an unnamed item to a screen reader.
+            // The list runs the pane's whole width with its entries inset
+            // inside it, so the light around a pill has the pane's inset to
+            // fade in and is not cut at the pill's two ends.
+            At(shell, "<Grid Margin=\"12,14,12,14\">");
+            At(shell, "<ui:DynamicScrollViewer x:Name=\"PART_ScrollViewer\" Margin=\"-12,0,-12,0\"");
+            At(shell, "<controls:NavItemsControl x:Name=\"PART_MenuItemsItemsControl\" Margin=\"12,0,12,0\"");
+            Assert.Equal(12.0, PadForge.MainWindow.PillLightReach);
+            At(code, "Radius = PillLightReach,");
+            int scroll = At(shell, "<ui:DynamicScrollViewer x:Name=\"PART_ScrollViewer\"");
+            int scrollEnd = At(shell, "</ui:DynamicScrollViewer>");
+            int foot = At(shell, "<StackPanel Grid.Row=\"1\" Margin=\"0,12,0,0\">");
+            Assert.True(scroll < menu && menu < scrollEnd && scrollEnd < foot && foot < footer);
+            At(shell, "<RowDefinition Height=\"*\"/>\r\n                        <RowDefinition Height=\"Auto\"/>");
+            Assert.DoesNotContain("<Border Height=\"1\"", shell);
             int items = At(xaml, "<ui:NavigationView.FooterMenuItems>");
             int itemsEnd = At(xaml, "</ui:NavigationView.FooterMenuItems>");
             string footerItems = xaml.Substring(items, itemsEnd - items);
@@ -1011,7 +1414,7 @@ namespace PadForge.Tests
             int rows = xaml.IndexOf("<Grid.RowDefinitions>", StringComparison.Ordinal);
             int rowsEnd = xaml.IndexOf("</Grid.RowDefinitions>", rows, StringComparison.Ordinal);
             Assert.Equal(2, Count(xaml.Substring(rows, rowsEnd - rows), "<RowDefinition "));
-            Assert.Equal(5, Count(xaml, "Grid.RowSpan=\"2\""));
+            Assert.Equal(4, Count(xaml, "Grid.RowSpan=\"2\""));
 
             // The foot.
             int foot = At(xaml, "<ui:NavigationView.PaneFooter>");
@@ -1019,16 +1422,30 @@ namespace PadForge.Tests
             string engine = xaml.Substring(foot, footEnd - foot);
             At(engine, "<Border x:Name=\"EngineFoot\"");
             At(engine, "<Path x:Name=\"EngineFootFlame\" FlowDirection=\"LeftToRight\" Data=\"{StaticResource FlameOuterGeometry}\"");
-            At(engine, "<TextBlock x:Name=\"EngineFootState\" Grid.Column=\"1\" Text=\"{Binding EngineStatusText}\"");
-            // The rate is the text Home's engine card prints, so the unit
-            // is the language's own in both places.
+            At(engine, "<TextBlock x:Name=\"EngineFootState\" Text=\"{Binding EngineStatusText}\"");
+            // Under the state: how many of the controllers are live.
+            At(engine, "<TextBlock x:Name=\"EngineFootLine\" Text=\"{Binding Dashboard.LiveLine}\"");
+            // The rate is the text Home's engine card prints, taken apart so
+            // its number stands larger than its unit, in the order the
+            // language's own format puts them. A screen reader hears it whole.
             At(engine, "<TextBlock x:Name=\"EngineFootRate\" Grid.Column=\"2\" VerticalAlignment=\"Center\"");
-            At(engine, "Text=\"{Binding Dashboard.PollingFrequencyText, Mode=OneWay}\"");
+            At(engine, "AutomationProperties.Name=\"{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            At(engine, "<Run Text=\"{Binding Dashboard.PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding Dashboard.PollingRateNumber, Mode=OneWay}\" FontSize=\"17\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding Dashboard.PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", engine);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 Assert.Contains("<DataTrigger Binding=\"{Binding Dashboard.EngineStateKey}\" Value=\"" + state + "\">", engine);
-            // The foot reads the window's view model, handed to it by name.
-            At(code, "EngineFoot.DataContext = _viewModel;");
+            // The block is lit only while the engine runs: its two halos, its
+            // edge, its wash and the rate's color each have the one trigger.
+            Assert.Equal(2, Count(engine, "<controls:Halo "));
+            // A board's shadow of blur 14 at 0.55 is a halo of 17.5 at
+            // 0.275, and the block's of 22 at 0.12 one of 27.5 at 0.06.
+            At(engine, "<controls:Halo CornerRadius=\"19\" Radius=\"17.5\" Strength=\"0.275\" Breathes=\"True\" VerticalAlignment=\"Center\">");
+            At(engine, "<controls:Halo x:Name=\"EngineFootHalo\" Margin=\"0,12,0,0\" CornerRadius=\"12\" Radius=\"27.5\" Strength=\"0.06\">");
+            Assert.Equal(1, Count(engine, "Breathes=\"True\""));
+            Assert.Equal(2, Count(engine, "<Setter Property=\"IsLit\" Value=\"True\"/>"));
+            // The foot reads the window's view model, handed to its outer
+            // element by name.
+            At(code, "EngineFootHalo.DataContext = _viewModel;");
 
             // The pill: the word Profile, the name and a chevron in one
             // outlined box, with no switch that hides the word.
@@ -1110,26 +1527,273 @@ namespace PadForge.Tests
             Assert.DoesNotContain("PaneToggleBtn", xaml);
         }
 
-        /// <summary>The Welcome Tour, until its own step removes it, stops at
-        /// the engine's card, the controller cards, the sidebar and the
-        /// Extras item, and no longer at a status bar. Its strings for that
-        /// stop are gone from every language.</summary>
+        // ── the first page (#574) ──────────────────────────────────────
+
+        /// <summary>Home shows its first page while no virtual controller
+        /// exists, and the rest of Home as soon as one does.</summary>
         [Fact]
-        public void TheTour_HasFourStops_AndNoneAtAStatusBar()
+        public void Home_IsOnItsFirstPage_WhileNoControllerExists()
+        {
+            var vm = new DashboardViewModel();
+            Assert.True(vm.IsFirstRun);
+            var raised = new List<string>();
+            vm.PropertyChanged += (s, e) => raised.Add(e.PropertyName);
+
+            vm.RefreshActiveSlots(new[] { 0 }, true);
+            Assert.False(vm.IsFirstRun);
+            Assert.Equal(1, raised.Count(n => n == nameof(DashboardViewModel.IsFirstRun)));
+
+            // A change of the set is decided once the list is whole: no turn
+            // back to the first page in between.
+            raised.Clear();
+            vm.RefreshActiveSlots(new[] { 1, 2 }, true);
+            Assert.DoesNotContain(nameof(DashboardViewModel.IsFirstRun), raised);
+
+            vm.RefreshActiveSlots(Array.Empty<int>(), true);
+            Assert.True(vm.IsFirstRun);
+            Assert.Contains(nameof(DashboardViewModel.IsFirstRun), raised);
+        }
+
+        /// <summary>The card names the controller, says that none is
+        /// connected, or says the engine is stopped, and the words under the
+        /// heading follow it.</summary>
+        [Fact]
+        public void TheFirstCard_ShowsTheDevice_NoDevice_OrTheStoppedEngine()
+        {
+            var vm = new DashboardViewModel { EngineStateKey = "Idle" };
+            var g = Guid.NewGuid();
+            vm.SetFirstRunDevice(g, "DualSense Wireless Controller", null);
+            Assert.True(vm.FirstRunShowsDevice);
+            Assert.False(vm.FirstRunShowsNoDevice || vm.FirstRunShowsStopped);
+            Assert.Equal("DualSense Wireless Controller", vm.FirstRunCardTitle);
+            Assert.Equal(g, vm.FirstRunDeviceGuid);
+            Assert.Equal(Strings.Instance.Home_FirstRun_Body, vm.FirstRunBody);
+            Assert.False(vm.HasFirstRunLine);
+
+            var raised = new List<string>();
+            vm.PropertyChanged += (s, e) => raised.Add(e.PropertyName);
+            vm.ClearFirstRunDevice();
+            Assert.True(vm.FirstRunShowsNoDevice);
+            Assert.False(vm.FirstRunShowsDevice);
+            Assert.Equal(Strings.Instance.Home_FirstRun_NoDevice, vm.FirstRunCardTitle);
+            Assert.Equal(Strings.Instance.Home_FirstRun_BodyNoDevice, vm.FirstRunBody);
+            Assert.Contains(nameof(DashboardViewModel.FirstRunCardTitle), raised);
+
+            raised.Clear();
+            vm.EngineStateKey = "Stopped";
+            Assert.True(vm.FirstRunShowsStopped);
+            Assert.False(vm.FirstRunShowsDevice || vm.FirstRunShowsNoDevice);
+            Assert.Equal(Strings.Instance.Main_EngineStopped, vm.FirstRunCardTitle);
+            Assert.Equal(Strings.Instance.Home_FirstRun_BodyNoDevice, vm.FirstRunBody);
+            Assert.Contains(nameof(DashboardViewModel.FirstRunShowsStopped), raised);
+            Assert.Contains(nameof(DashboardViewModel.FirstRunCardTitle), raised);
+        }
+
+        /// <summary>The first page's walk names the first connected game
+        /// controller that no virtual controller uses, and keeps the one shown
+        /// while it qualifies, as the offer's walk does.</summary>
+        [Fact]
+        public void TheFirstPageWalk_NamesTheFirstUnusedController_AndKeepsItStanding()
+        {
+            var (vm, svc) = Arrange();
+            var keyboard = Device("Some Keyboard", InputDeviceType.Keyboard);
+            var away = Device("Away Pad", online: false);
+            var used = Device("Used Pad");
+            var first = Device("First Pad");
+            var second = Device("Second Pad");
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = used.InstanceGuid, MapTo = 0 });
+            vm.Dashboard.EngineStateKey = "Idle";
+
+            svc.EvaluateFirstRunDevice();
+            Assert.Equal(first.InstanceGuid, vm.Dashboard.FirstRunDeviceGuid);
+            Assert.Contains("First Pad", vm.Dashboard.FirstRunCardTitle);
+            Assert.False(InputService.IsUnusedGameController(keyboard));
+
+            // A device ahead of it in the registry comes back: the card does
+            // not jump to it.
+            away.IsOnline = true;
+            svc.EvaluateFirstRunDevice();
+            Assert.Equal(first.InstanceGuid, vm.Dashboard.FirstRunDeviceGuid);
+
+            // It leaves: the next one in the registry is named.
+            first.IsOnline = false;
+            svc.EvaluateFirstRunDevice();
+            Assert.Equal(away.InstanceGuid, vm.Dashboard.FirstRunDeviceGuid);
+
+            // None left: the card names none.
+            away.IsOnline = false;
+            second.IsOnline = false;
+            svc.EvaluateFirstRunDevice();
+            Assert.False(vm.Dashboard.HasFirstRunDevice);
+
+            // Between walks the window asks again, which does nothing while
+            // the engine is stopped.
+            second.IsOnline = true;
+            svc.ReEvaluateFirstRunDevice();
+            Assert.False(vm.Dashboard.HasFirstRunDevice);
+            Assert.Empty(svc.UnusedGameControllers());
+        }
+
+        /// <summary>The card's line: Bluetooth and the battery, the battery
+        /// following the row as it changes, and Bluetooth alone without a
+        /// battery.</summary>
+        [Fact]
+        public void TheFirstPageLine_IsBluetoothAndTheBattery()
+        {
+            var vm = new DashboardViewModel { EngineStateKey = "Idle" };
+            var row = new DeviceRowViewModel
+            {
+                DevicePath = @"\\?\HID#{00001124-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0ce6#a&1&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+                VendorId = 0x054C,
+                ProductId = 0x0CE6,
+                BatteryPercent = 82,
+            };
+            Assert.True(row.IsBluetoothLink);
+            vm.SetFirstRunDevice(Guid.NewGuid(), "DualSense Wireless Controller", row);
+            Assert.True(vm.HasFirstRunLine);
+            Assert.Equal("Bluetooth, battery ", vm.FirstRunLineLead);
+            Assert.Equal("82%", vm.FirstRunLineBattery);
+            Assert.Equal(string.Empty, vm.FirstRunLineTail);
+            // As it is drawn: the battery's word is its picture, before
+            // the percentage. The words stay whole for a screen reader.
+            Assert.Equal("Bluetooth, ", vm.FirstRunLineFacts);
+            Assert.Equal(PadForge.Common.BatteryGlyphs.For(82, false), vm.FirstRunLineGlyph);
+            Assert.Equal(" ", vm.FirstRunLineGap);
+            Assert.Equal("Bluetooth, battery 82%", vm.FirstRunLineText);
+
+            var raised = new List<string>();
+            vm.PropertyChanged += (s, e) => raised.Add(e.PropertyName);
+            row.BatteryPercent = 50;
+            Assert.Contains(nameof(DashboardViewModel.FirstRunLineBattery), raised);
+            Assert.Contains(nameof(DashboardViewModel.FirstRunLineGlyph), raised);
+            Assert.Equal("50%", vm.FirstRunLineBattery);
+            Assert.Equal(PadForge.Common.BatteryGlyphs.For(50, false), vm.FirstRunLineGlyph);
+            raised.Clear();
+            row.BatteryCharging = true;
+            Assert.Contains(nameof(DashboardViewModel.FirstRunLineGlyph), raised);
+            Assert.Equal(PadForge.Common.BatteryGlyphs.For(50, true), vm.FirstRunLineGlyph);
+            row.BatteryCharging = false;
+
+            row.BatteryPercent = -1;
+            Assert.Equal(Strings.Instance.Pad_Transport_Bluetooth, vm.FirstRunLineLead);
+            Assert.Equal(Strings.Instance.Pad_Transport_Bluetooth, vm.FirstRunLineFacts);
+            Assert.Equal(string.Empty, vm.FirstRunLineGlyph);
+            Assert.Equal(string.Empty, vm.FirstRunLineGap);
+            Assert.Equal(string.Empty, vm.FirstRunLineBattery);
+
+            // A cleared card lets the row go.
+            vm.ClearFirstRunDevice();
+            raised.Clear();
+            row.BatteryPercent = 40;
+            Assert.DoesNotContain(nameof(DashboardViewModel.FirstRunLineBattery), raised);
+        }
+
+        /// <summary>The line under the tiles links the four other types.</summary>
+        [Fact]
+        public void TheMoreTypesLine_LinksTheFourOtherTypes()
+        {
+            var vm = new DashboardViewModel();
+            string link = vm.MoreTypesLink;
+            foreach (string type in new[] { Strings.Instance.ControllerType_Nintendo, Strings.Instance.ControllerType_Extended,
+                         Strings.Instance.ControllerType_MIDI, Strings.Instance.ControllerType_VR })
+                Assert.Contains(type, link);
+            Assert.Equal("More types: ", vm.MoreTypesLead);
+            Assert.Equal(string.Empty, vm.MoreTypesTail);
+            Assert.Equal(new[] { "Home_FirstRun_Xbox", "Home_FirstRun_PlayStation", "Home_FirstRun_KeyboardMouse" },
+                vm.FirstRunTypes.Select(t => t.AutomationId).ToArray());
+        }
+
+        /// <summary>The first page as its board draws it, top to bottom.</summary>
+        [Fact]
+        public void TheFirstPage_RunsInTheBoardsOrder()
+        {
+            string page = Home();
+            int panel = At(page, "<StackPanel x:Name=\"FirstRunPanel\" MaxWidth=\"720\" Margin=\"36,56,36,40\"");
+            int content = At(page, "<StackPanel x:Name=\"HomeContent\" Margin=\"36,26,36,36\"");
+            Assert.True(panel < content, "the first page does not stand before the rest of Home");
+            string first = page.Substring(panel, content - panel);
+            int card = At(first, "<Border x:Name=\"FirstRunDeviceCard\" Style=\"{StaticResource CardBorder}\" Padding=\"18,14\"");
+            int title = At(first, "Text=\"{Binding Home_FirstRun_Title, Source={x:Static strings:Strings.Instance}}\"");
+            int body = At(first, "<TextBlock x:Name=\"FirstRunBody\" Text=\"{Binding FirstRunBody}\" Margin=\"0,8,0,0\" FontSize=\"15\"");
+            int tiles = At(first, "<controls:TileGridPanel MinItemWidth=\"200\" Gap=\"16\" FillRows=\"True\"/>");
+            int more = At(first, "<TextBlock x:Name=\"MoreTypesLine\"");
+            int foot = At(first, "<controls:FlexLinePanel Gap=\"32\" LineGap=\"12\">");
+            Assert.True(card < title && title < body && body < tiles && tiles < more && more < foot, "the first page is out of order");
+            At(first, "FontSize=\"30\" FontWeight=\"SemiBold\"");
+            At(first, "Click=\"FirstRunStart_Click\"");
+            Assert.Equal(2, Count(page, "Click=\"EngineToggle_Click\""));
+            At(page, "Visibility=\"{Binding IsFirstRun, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\"");
+        }
+
+        /// <summary>A tile of the first page makes the controller for the
+        /// device the card names, and the walk that names it follows the
+        /// offer's.</summary>
+        [Fact]
+        public void TheFirstPageTiles_MakeAControllerForTheDeviceShown()
         {
             string code = WindowCode();
-            int stops = At(code, "private (FrameworkElement Target, string Title, string Body)[] BuildTourStops() => new[]");
-            int end = code.IndexOf("};", stops, StringComparison.Ordinal);
-            string list = code.Substring(stops, end - stops);
-            // One stop to a line, each line ending its tuple.
-            Assert.Equal(4, Count(list, "_Body),"));
-            At(list, "((FrameworkElement)HomePageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),");
-            At(list, "(HomePageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),");
-            At(list, "(NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),");
-            At(list, "(_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),");
-            Assert.DoesNotContain("Tour_Status", code);
-            // The ring's lower bound is the window's own edge.
-            At(code, "double bottom = Math.Min(origin.Y + h + 4, oh - 2);");
+            At(code, "HomePageView.FirstRunTypeChosen += (s, type) => CreateController(type, _viewModel.Dashboard.FirstRunDeviceGuid);");
+            At(code, "HomePageView.FirstRunMoreTypesRequested += (s, opener) => OpenAddController(_viewModel.Dashboard.FirstRunDeviceGuid, opener);");
+            string svc = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
+            int pads = svc.IndexOf("EvaluateAssignOffers();", StringComparison.Ordinal);
+            int offer = svc.IndexOf("EvaluateHomeOffer();", pads, StringComparison.Ordinal);
+            int named = svc.IndexOf("EvaluateFirstRunDevice();", offer, StringComparison.Ordinal);
+            Assert.True(pads > 0 && offer > pads && named > offer && named - offer < 60,
+                "the first page's walk does not follow the offer's");
+            int clear = At(svc, "_mainVm.Dashboard.ClearHomeOffer();");
+            int clearFirst = At(svc, "_mainVm.Dashboard.ClearFirstRunDevice();");
+            Assert.True(clearFirst > clear && clearFirst - clear < 80, "a stop does not clear the first page's card beside the offer");
+        }
+
+        /// <summary>The Welcome Tour is gone (#574): its overlay, its code, its
+        /// setting and its strings. A settings file that still has the
+        /// setting loads with it skipped, and the next save leaves it out.
+        /// The pre-v4 marker beside the exe is still deleted, and nothing
+        /// reads it.</summary>
+        [Fact]
+        public void TheWelcomeTourIsGone_WithItsOverlayItsSettingAndItsStrings()
+        {
+            var files = new[]
+            {
+                Window(), WindowCode(),
+                ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "SettingsViewModel.cs"),
+                ExtrasPageTests.RepoText("PadForge.App", "Services", "SettingsService.cs"),
+                // The Settings page's Show Welcome Tour button went last.
+                ExtrasPageTests.RepoText("PadForge.App", "Views", "SettingsPage.xaml"),
+                ExtrasPageTests.RepoText("PadForge.App", "Views", "SettingsPage.xaml.cs"),
+            };
+            foreach (string text in files)
+                foreach (string gone in new[] { "FirstRunOverlay", "TourCanvas", "WelcomePanel", "BuildTourStops", "MaybeShowFirstRun", "FirstRunTourCompleted", "StartFirstRunTour", "ShowTour" })
+                    Assert.DoesNotContain(gone, text);
+
+            string designer = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.Designer.cs");
+            string resx = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx");
+            foreach (string key in new[]
+            {
+                "FirstRun_Title", "FirstRun_Body", "FirstRun_Begin", "FirstRun_Skip", "FirstRun_Next", "FirstRun_Done",
+                "Tour_Slots_Title", "Tour_Slots_Body", "Tour_Engine_Title", "Tour_Engine_Body",
+                "Tour_Cards_Title", "Tour_Cards_Body", "Tour_Extras_Body", "Settings_ShowTour",
+            })
+            {
+                Assert.DoesNotContain("\"" + key + "\"", designer);
+                Assert.DoesNotContain("\"" + key + "\"", resx);
+            }
+
+            string code = WindowCode();
+            At(code, "\"PadForge.firstrun\"");
+            Assert.Contains("System.IO.File.Delete(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, \"PadForge.firstrun\"))", code);
+
+            const string old = "<AppSettingsData><FirstRunTourCompleted>true</FirstRunTourCompleted><Use2DControllerView>true</Use2DControllerView></AppSettingsData>";
+            var serializer = new XmlSerializer(typeof(AppSettingsData));
+            AppSettingsData read;
+            using (var reader = new StringReader(old))
+                read = (AppSettingsData)serializer.Deserialize(reader);
+            Assert.True(read.Use2DControllerView);
+            var written = new StringWriter();
+            serializer.Serialize(written, read);
+            Assert.DoesNotContain("FirstRunTourCompleted", written.ToString());
+            Assert.Contains("<Use2DControllerView>true</Use2DControllerView>", written.ToString());
         }
     }
 }

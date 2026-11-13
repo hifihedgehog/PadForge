@@ -18,8 +18,10 @@ namespace PadForge.Controls
     /// not fit starts the next line, <see cref="LineGap"/> under the last.
     /// What a line has left over goes to its parts by their
     /// <see cref="GrowProperty"/> shares, so a part with a large share
-    /// takes nearly all of it. A part alone on a line that is narrower
-    /// than its basis gets the line's width.</para>
+    /// takes nearly all of it. A part never grows past its
+    /// <c>MaxWidth</c>: what it leaves goes to the line's other growing
+    /// parts. A part alone on a line that is narrower than its basis gets
+    /// the line's width.</para>
     ///
     /// <para>Every part of a line is as tall as the line's tallest and
     /// stands at its top by its own alignment. A collapsed part takes no
@@ -145,18 +147,22 @@ namespace PadForge.Controls
         }
 
         /// <summary>The widths of one line's parts: their bases, with what
-        /// the line has left over shared out by their grow shares. A line
-        /// narrower than its bases gives its one part the line's width.
-        /// With no bound each part keeps its basis.</summary>
-        internal static double[] Share(IReadOnlyList<double> bases, IReadOnlyList<double> grows, double width, double gap)
+        /// the line has left over shared out by their grow shares. A part
+        /// stops at its most (<paramref name="mosts"/>, its MaxWidth), and
+        /// what it leaves is shared among the growing parts that have not
+        /// reached theirs. A part whose basis is over its most keeps its
+        /// basis and takes no more. A line narrower than its bases gives
+        /// its one part the line's width. With no bound each part keeps its
+        /// basis.</summary>
+        internal static double[] Share(IReadOnlyList<double> bases, IReadOnlyList<double> grows, double width, double gap,
+            IReadOnlyList<double> mosts = null)
         {
             var widths = new double[bases.Count];
-            double sum = 0, shares = 0;
+            double sum = 0;
             for (int i = 0; i < bases.Count; i++)
             {
                 widths[i] = bases[i];
                 sum += bases[i];
-                shares += Math.Max(0, grows[i]);
             }
             if (double.IsInfinity(width) || double.IsNaN(width) || bases.Count == 0) return widths;
             double left = width - sum - gap * (bases.Count - 1);
@@ -166,9 +172,40 @@ namespace PadForge.Controls
                 if (bases.Count == 1) widths[0] = Math.Max(0, width);
                 return widths;
             }
-            if (shares <= 0) return widths;
-            for (int i = 0; i < bases.Count; i++)
-                widths[i] += left * Math.Max(0, grows[i]) / shares;
+
+            var growing = new bool[bases.Count];
+            for (int i = 0; i < bases.Count; i++) growing[i] = grows[i] > 0;
+            // Each round shares what is left among the parts still growing.
+            // A part the round would take past its most stops there, and
+            // the next round shares what it left. A round that stops no
+            // part is the last.
+            while (left > 0)
+            {
+                double shares = 0;
+                for (int i = 0; i < bases.Count; i++)
+                    if (growing[i]) shares += grows[i];
+                if (shares <= 0) break;
+                double round = left;
+                bool stopped = false;
+                for (int i = 0; i < bases.Count; i++)
+                {
+                    if (!growing[i] || mosts == null) continue;
+                    double most = mosts[i];
+                    if (double.IsNaN(most) || double.IsInfinity(most)) continue;
+                    if (widths[i] + round * grows[i] / shares < most) continue;
+                    if (most > widths[i])
+                    {
+                        left -= most - widths[i];
+                        widths[i] = most;
+                    }
+                    growing[i] = false;
+                    stopped = true;
+                }
+                if (stopped) continue;
+                for (int i = 0; i < bases.Count; i++)
+                    if (growing[i]) widths[i] += round * grows[i] / shares;
+                break;
+            }
             return widths;
         }
 
@@ -210,12 +247,15 @@ namespace PadForge.Controls
             return shown;
         }
 
-        /// <summary>The parts' bases. A part with none set is measured with
-        /// no bound first, and its basis is the width it asks for.</summary>
-        private static (double[] Bases, double[] Grows) Plan(List<UIElement> parts)
+        /// <summary>The parts' bases, their grow shares and the most each
+        /// takes (its MaxWidth, with its margin, since a part's width here
+        /// is the room it stands in). A part with no basis set is measured
+        /// with no bound first, and its basis is the width it asks for.</summary>
+        private static (double[] Bases, double[] Grows, double[] Mosts) Plan(List<UIElement> parts)
         {
             var bases = new double[parts.Count];
             var grows = new double[parts.Count];
+            var mosts = new double[parts.Count];
             for (int i = 0; i < parts.Count; i++)
             {
                 double basis = GetBasis(parts[i]);
@@ -226,8 +266,11 @@ namespace PadForge.Controls
                 }
                 bases[i] = Math.Max(0, basis);
                 grows[i] = GetGrow(parts[i]);
+                mosts[i] = parts[i] is FrameworkElement element && !double.IsInfinity(element.MaxWidth)
+                    ? element.MaxWidth + element.Margin.Left + element.Margin.Right
+                    : double.PositiveInfinity;
             }
-            return (bases, grows);
+            return (bases, grows, mosts);
         }
 
         // The plan of the last measure, which the arrange lays out by: a
@@ -235,18 +278,20 @@ namespace PadForge.Controls
         // been measured again since at the width it got.
         private double[] _bases = Array.Empty<double>();
         private double[] _grows = Array.Empty<double>();
+        private double[] _mosts = Array.Empty<double>();
 
         protected override Size MeasureOverride(Size availableSize)
         {
             var parts = Shown();
             if (parts.Count == 0)
             {
-                _bases = _grows = Array.Empty<double>();
+                _bases = _grows = _mosts = Array.Empty<double>();
                 return new Size(0, 0);
             }
-            var (bases, grows) = Plan(parts);
+            var (bases, grows, mosts) = Plan(parts);
             _bases = bases;
             _grows = grows;
+            _mosts = mosts;
             double height = 0, widest = 0;
             int first = 0;
             var lines = Lines(bases, availableSize.Width, Gap);
@@ -254,7 +299,7 @@ namespace PadForge.Controls
             {
                 int count = lines[line];
                 var widths = Share(new ArraySegment<double>(bases, first, count), new ArraySegment<double>(grows, first, count),
-                    availableSize.Width, Gap);
+                    availableSize.Width, Gap, new ArraySegment<double>(mosts, first, count));
                 double tallest = 0, across = Gap * (count - 1);
                 for (int i = 0; i < count; i++)
                 {
@@ -276,8 +321,8 @@ namespace PadForge.Controls
             var parts = Shown();
             if (parts.Count == 0) return finalSize;
             // The measure's plan, unless the parts have changed since.
-            double[] bases = _bases, grows = _grows;
-            if (bases.Length != parts.Count) (bases, grows) = Plan(parts);
+            double[] bases = _bases, grows = _grows, mosts = _mosts;
+            if (bases.Length != parts.Count) (bases, grows, mosts) = Plan(parts);
             double y = 0;
             int first = 0;
             var lines = Lines(bases, finalSize.Width, Gap);
@@ -285,7 +330,7 @@ namespace PadForge.Controls
             {
                 int count = lines[line];
                 var widths = Share(new ArraySegment<double>(bases, first, count), new ArraySegment<double>(grows, first, count),
-                    finalSize.Width, Gap);
+                    finalSize.Width, Gap, new ArraySegment<double>(mosts, first, count));
                 double tallest = MinLineHeight;
                 var atEnd = new bool[count];
                 for (int i = 0; i < count; i++)

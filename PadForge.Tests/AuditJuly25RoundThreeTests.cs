@@ -278,25 +278,25 @@ namespace PadForge.Tests
         {
             var si = PadForge.Resources.Strings.Strings.Instance;
             Assert.Equal(si.Mouse_LeftClick,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn0"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn0"));
             Assert.Equal(si.Mouse_RightClick,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn1"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn1"));
             Assert.Equal(si.Mouse_MiddleClick,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn2"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn2"));
             Assert.Equal(si.Mouse_Button4,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn3"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn3"));
             Assert.Equal(si.Mouse_Button5,
-                PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn4"));
+                PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn4"));
 
             // The analog lanes use the editor's own row names, so the
             // preview and the mapping grid name a target identically.
-            Assert.Equal(si.Mouse_X, PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMouseX"));
-            Assert.Equal(si.Mouse_Y, PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMouseY"));
-            Assert.Equal(si.Mouse_Scroll, PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmScroll"));
+            Assert.Equal(si.Mouse_X, PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMouseX"));
+            Assert.Equal(si.Mouse_Y, PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMouseY"));
+            Assert.Equal(si.Mouse_Scroll, PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmScroll"));
 
             // Keys still resolve, and an out-of-range index stays raw.
-            Assert.Equal("Z", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmKey5A"));
-            Assert.Equal("KbmMBtn9", PadForge.Views.WorkshopBrowseDialog.HumanizeKbmTarget("KbmMBtn9"));
+            Assert.Equal("Z", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmKey5A"));
+            Assert.Equal("KbmMBtn9", PadForge.Views.CommunityConfigsPanel.HumanizeKbmTarget("KbmMBtn9"));
         }
     }
 }

@@ -168,7 +168,7 @@ namespace PadForge.Views
             var baseBmp = EmbeddedBitmaps.Load("2DModels/VRCONTROLLER/VRController_base.png");
             if (baseBmp != null)
             {
-                var img = new Image
+                var img = new PadForge.Controls.DecorativeImage
                 {
                     Source = baseBmp, Width = ArtW, Height = ArtH,
                     Stretch = Stretch.Fill, IsHitTestVisible = false,
@@ -216,7 +216,7 @@ namespace PadForge.Views
             var t = new TranslateTransform();
             var art = EmbeddedBitmaps.Load($"2DModels/VRCONTROLLER/VRController_{side}_StickCap.png");
             if (art == null) return t;
-            var img = new Image
+            var img = new PadForge.Controls.DecorativeImage
             {
                 Source = art, Width = w, Height = h,
                 Stretch = Stretch.Fill, IsHitTestVisible = false,
@@ -234,7 +234,7 @@ namespace PadForge.Views
             // as ControllerModel2DView shows its element overlays: 0.4 for
             // hover, full when the element is active.
             var art = EmbeddedBitmaps.Load($"2DModels/VRCONTROLLER/{el.File}.png");
-            var overlay = new Image
+            var overlay = new PadForge.Controls.DecorativeImage
             {
                 Width = el.W, Height = el.H,
                 Stretch = Stretch.Fill,
@@ -270,7 +270,7 @@ namespace PadForge.Views
                 // Second copy of the same art: the region highlight. Added
                 // after the overlay so it composites above it, matching the
                 // reference's ZIndex ordering.
-                var highlight = new Image
+                var highlight = new PadForge.Controls.DecorativeImage
                 {
                     Width = el.W, Height = el.H,
                     Stretch = Stretch.Fill,

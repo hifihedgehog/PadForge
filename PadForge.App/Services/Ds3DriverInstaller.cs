@@ -2322,7 +2322,7 @@ namespace PadForge.Services
             return k != null && k.GetValue("ImagePath") == null;
         }
 
-        // ── removal (Settings > BthPS3 Bluetooth Driver > Uninstall) ─────────────
+        // ── removal (Settings > Drivers > BthPS3 Bluetooth > Uninstall) ─────────
         //
         // BthPS3's own setup removes it in this order (BthPS3Installer/
         // CustomActions.cs UninstallDrivers): the filter's class registration,

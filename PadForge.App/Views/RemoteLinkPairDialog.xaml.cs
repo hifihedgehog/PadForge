@@ -1,7 +1,5 @@
-using System;
 using System.Text;
 using System.Windows;
-using Wpf.Ui.Controls;
 
 namespace PadForge.Views
 {
@@ -10,22 +8,17 @@ namespace PadForge.Views
     /// string for the user to compare against the other PC's screen, the peer's
     /// identity fingerprint, and the consent warning. DialogResult is true on Pair.
     /// </summary>
-    public partial class RemoteLinkPairDialog : FluentWindow
+    public partial class RemoteLinkPairDialog : DialogWindow
     {
         public RemoteLinkPairDialog(string sas, string fingerprintHex)
         {
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             SasText.Text = FormatSas(sas);
             IdentityText.Text = FormatFingerprint(fingerprintHex);
+            // Reject holds the focus as the dialog opens, so a key pressed
+            // too soon declines.
+            Loaded += (_, _) => RejectButton.Focus();
         }
 
         /// <summary>True if the user chose to restrict this peer to gamepad-only output.</summary>

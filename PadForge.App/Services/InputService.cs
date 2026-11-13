@@ -409,9 +409,21 @@ namespace PadForge.Services
         /// <summary>
         /// Whether the Devices page is currently visible.
         /// When true, the UI timer syncs raw device state to DevicesViewModel.
-        /// Set by MainWindow when navigation changes.
+        /// Set by MainWindow when navigation changes. The page shown asks
+        /// for the selected device's picture, since the timer rests while
+        /// the engine is stopped.
         /// </summary>
-        public bool IsDevicesPageVisible { get; set; }
+        public bool IsDevicesPageVisible
+        {
+            get => _isDevicesPageVisible;
+            set
+            {
+                _isDevicesPageVisible = value;
+                if (value) UpdateSelectedDevicePicture();
+            }
+        }
+
+        private bool _isDevicesPageVisible;
 
         /// <summary>
         /// Whether any Pad page is currently visible.
@@ -2700,6 +2712,7 @@ namespace PadForge.Services
                 // device still owes stays on the device.
                 _mainVm.Dashboard.HomeOfferDismissed -= OnHomeOfferDismissed;
                 _mainVm.Dashboard.ClearHomeOffer();
+                _mainVm.Dashboard.ClearFirstRunDevice();
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -2845,11 +2858,15 @@ namespace PadForge.Services
                 }
             });
 
-            // Mark all device rows offline so indicators turn gray.
+            // Mark all device rows offline so indicators turn gray. A
+            // stopped engine reads no device, so no row sends.
             _dispatcher.Invoke(() =>
             {
                 foreach (var row in _mainVm.Devices.Devices)
+                {
                     row.IsOnline = false;
+                    row.IsSending = false;
+                }
                 _mainVm.Devices.RefreshCounts();
             });
         }
@@ -3300,6 +3317,8 @@ namespace PadForge.Services
                 && !BackgroundUiSuspended())
             {
                 UpdateDevicesRawState();
+                UpdateDeviceRowLights();
+                UpdateSelectedDevicePicture();
             }
 
             // ── Update mapping row live values (only if a Pad page is visible) ──
@@ -3378,6 +3397,10 @@ namespace PadForge.Services
                     string exe = System.IO.Path.GetFileName(_foregroundMonitor.LastForegroundExePath);
                     _mainVm.Settings.ForegroundExeName = string.IsNullOrEmpty(exe) ? "-" : exe;
                     _mainVm.Settings.IsForegroundMatched = _foregroundMonitor.LastMatchedProfileId != null;
+                    // The In front now line names the profile the program
+                    // loads (#574).
+                    _mainVm.Settings.ForegroundProfileName =
+                        FindProfileById(_foregroundMonitor.LastMatchedProfileId)?.Name ?? string.Empty;
                 }
             }
         }
@@ -3870,6 +3893,175 @@ namespace PadForge.Services
             return false;
         }
 
+        /// <summary>The connected device of a snapshot with this id, or
+        /// null: the one AnyOnlineMatch answers yes for.</summary>
+        private static UserDevice OnlineMatch(UserDevice[] devices, Guid guid)
+        {
+            if (devices == null) return null;
+            for (int i = 0; i < devices.Length; i++)
+            {
+                var d = devices[i];
+                if (d != null && d.InstanceGuid == guid && d.IsOnline) return d;
+            }
+            return null;
+        }
+
+        /// <summary>Which mapped devices are sending input now, for the
+        /// light beside each one's name. Asked on the dashboard's lane.</summary>
+        private readonly InputActivity _inputActivity = new();
+
+        /// <summary>Whether a controller's picture is a still of its 3D
+        /// model: the controller page shows the 3D view. The picture is the
+        /// 2D art while the page shows the 2D view. One rule for a Home
+        /// card's stage and the Devices page's panel.</summary>
+        private bool PicturesAreStills => !(_mainVm.Settings?.Use2DControllerView ?? false);
+
+        /// <summary>Gives a card its picture. While the controller page
+        /// shows the 3D view, that is a still of the 3D model: the one made
+        /// already, or none for the moment it takes to make one, which is
+        /// then made on a thread of its own. A model that cannot be drawn
+        /// leaves the card its 2D art, as the 2D view does.</summary>
+        private void SetSlotPicture(SlotSummary slot, PadViewModel padVm, bool still)
+        {
+            string profile = padVm.ProfileId, finishes = padVm.Model3DAppearances;
+            var type = padVm.OutputType;
+            if (still)
+            {
+                var (family, finish) = StagePictures.StillFor(profile, type, padVm.GetModelAppearance);
+                if (family != null)
+                {
+                    if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))
+                    {
+                        WantStill(family, finish);
+                        slot.SetPicture(profile, type, finishes, still, null, null, coming: true);
+                        return;
+                    }
+                    if (color != null)
+                    {
+                        slot.SetPicture(profile, type, finishes, still, color, gray);
+                        return;
+                    }
+                }
+            }
+            string art = StagePictures.PathFor(profile, type, padVm.GetModelAppearance);
+            slot.SetPicture(profile, type, finishes, still, StagePictures.Color(art), StagePictures.Gray(art));
+        }
+
+        private readonly List<(string Family, string Finish)> _stillsWanted = new();
+        private bool _stillPosted;
+
+        /// <summary>Asks for a model's still. One is made at a time, the
+        /// first started when the interface next has nothing to do, so the
+        /// drawing does not compete with the launch.</summary>
+        private void WantStill(string family, string finish)
+        {
+            if (!_stillsWanted.Contains((family, finish))) _stillsWanted.Add((family, finish));
+            PostNextStill();
+        }
+
+        private void PostNextStill()
+        {
+            if (_stillPosted || _stillsWanted.Count == 0) return;
+            _stillPosted = true;
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(MakeNextStill));
+        }
+
+        private void MakeNextStill()
+        {
+            if (_stillsWanted.Count == 0)
+            {
+                _stillPosted = false;
+                return;
+            }
+            var (family, finish) = _stillsWanted[0];
+            _stillsWanted.RemoveAt(0);
+            StagePictures.MakeStillOnAWorker(family, finish, Dispatcher.CurrentDispatcher, StillMade);
+        }
+
+        private void StillMade()
+        {
+            _stillPosted = false;
+            // Every card asks again at its next refresh, and the ones that
+            // waited for this model find it. The Devices page's panel asks
+            // now: no timer runs for it while the engine is stopped.
+            foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();
+            _mainVm.Devices.ForgetPicture();
+            UpdateSelectedDevicePicture();
+            PostNextStill();
+        }
+
+        /// <summary>Gives the Devices page's panel the selected device's
+        /// picture: the controller it is, where a preset with the device's
+        /// own vendor and product ids has art of its own. While the
+        /// controller page shows the 3D view that is a still of the 3D
+        /// model in its first finish, made on a thread of its own, and
+        /// while it shows the 2D view it is the 2D art, as a Home card's
+        /// picture is. A device with no such preset has no picture, and the
+        /// panel shows its kind. Asked for only when the device, its ids or
+        /// the view changed.</summary>
+        private void UpdateSelectedDevicePicture()
+        {
+            var devVm = _mainVm.Devices;
+            var selected = devVm.SelectedDevice;
+            if (selected == null) return;
+            bool still = PicturesAreStills;
+            Guid device = selected.InstanceGuid;
+            ushort vendor = selected.VendorId, product = selected.ProductId;
+            if (devVm.PictureIsFor(device, vendor, product, still)) return;
+
+            var (folder, family) = StagePictures.ForDevice(vendor, product);
+            if (folder == null)
+            {
+                devVm.SetPicture(device, vendor, product, still, null, null);
+                return;
+            }
+            if (still)
+            {
+                string finish = StagePictures.FirstFinish(family);
+                if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))
+                {
+                    WantStill(family, finish);
+                    devVm.SetPicture(device, vendor, product, still, null, null, coming: true);
+                    return;
+                }
+                if (color != null)
+                {
+                    devVm.SetPicture(device, vendor, product, still, color, gray);
+                    return;
+                }
+            }
+            string art = StagePictures.FirstPath(folder);
+            devVm.SetPicture(device, vendor, product, still, StagePictures.Color(art), StagePictures.Gray(art));
+        }
+
+        /// <summary>Which devices are sending input now, for the light on
+        /// each row's icon on the Devices page. It keeps its own record of
+        /// what each device last sent, apart from the dashboard's, so
+        /// neither look takes a movement from the other.</summary>
+        private readonly InputActivity _rowActivity = new();
+
+        /// <summary>Lights the rows of the devices that send input. It runs
+        /// on the Devices page's lane, which rests while the page is not
+        /// shown and while the engine is stopped. A row that is not
+        /// connected is forgotten, so the record holds connected devices
+        /// only and a device that comes back starts over.</summary>
+        private void UpdateDeviceRowLights()
+        {
+            long nowMs = Environment.TickCount64;
+            foreach (var row in _mainVm.Devices.Devices)
+            {
+                if (!row.IsOnline)
+                {
+                    row.IsSending = false;
+                    _rowActivity.Forget(row.InstanceGuid);
+                    continue;
+                }
+                var ud = FindUserDevice(row.InstanceGuid);
+                row.IsSending = ud != null && ud.IsOnline
+                    && _rowActivity.Look(row.InstanceGuid, ud.InputState, ud.CapType == InputDeviceType.Gamepad, nowMs);
+            }
+        }
+
         /// <summary>
         /// Updates all SlotSummary properties on the dashboard (type, label, status, device info).
         /// Safe to call with or without the engine running.
@@ -3877,6 +4069,8 @@ namespace PadForge.Services
         public void RefreshSlotSummaryProperties(IEnumerable<UserDevice> devices = null)
         {
             var dash = _mainVm.Dashboard;
+            long nowMs = Environment.TickCount64;
+            bool engineReads = dash.EngineStateKey != "Stopped";
 
             if (devices == null)
             {
@@ -3916,9 +4110,17 @@ namespace PadForge.Services
                 // Per-device connect state (#175 phase 2 item 14): refresh
                 // each roster item's IsOnline from the same snapshot the
                 // connectedCount above reads, so a card can never say
-                // "0 connected" while its roster lines render as live.
+                // "0 connected" while its roster lines render as live. The
+                // light beside the device's name is ember while it sends
+                // input. A stopped engine reads no device, so nothing sends.
                 foreach (var dev in padVm.MappedDevices)
-                    dev.IsOnline = AnyOnlineMatch(devArr, dev.InstanceGuid);
+                {
+                    var mapped = OnlineMatch(devArr, dev.InstanceGuid);
+                    dev.IsOnline = mapped != null;
+                    dev.IsSending = mapped != null && engineReads
+                        && _inputActivity.Look(dev.InstanceGuid, mapped.InputState,
+                            mapped.CapType == InputDeviceType.Gamepad, nowMs);
+                }
 
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
@@ -3944,6 +4146,13 @@ namespace PadForge.Services
                 padVm.SlotNumber = globalCount;
                 slot.OutputType = padVm.OutputType;
                 slot.PresetName = padVm.PresetDisplayName;
+                // The picture on the card's stage: what the controller's
+                // page shows, in the finish chosen there. Asked for only
+                // when the preset, the type, the finishes or the page's
+                // view (3D or 2D) changed.
+                bool still = PicturesAreStills;
+                if (!slot.PictureIsFor(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still))
+                    SetSlotPicture(slot, padVm, still);
 
                 switch (padVm.OutputType)
                 {
@@ -4567,6 +4776,9 @@ namespace PadForge.Services
             if (e.PropertyName != nameof(ViewModels.DevicesViewModel.SelectedDevice))
                 return;
 
+            // The picture, with the engine running or stopped.
+            UpdateSelectedDevicePicture();
+
             // When engine is running, UpdateDevicesRawState handles everything.
             if (_inputManager != null && _inputManager.IsRunning)
                 return;
@@ -4636,7 +4848,8 @@ namespace PadForge.Services
                         : null,
                     isFalcon: ud.CapType == InputDeviceType.NovintFalcon,
                     isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry,
-                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat);
+                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat,
+                    gamepadLayout: ShowsGamepadTest(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4939,10 +5152,14 @@ namespace PadForge.Services
                 return val;
             }
 
+            // The level a battery is low at is the one the alert uses,
+            // whether or not the alert is on.
+            int lowAt = _mainVm.Settings?.BatteryNotifyThreshold ?? 15;
             foreach (var row in _mainVm.Devices.Devices)
             {
                 var ud = FindUserDevice(row.InstanceGuid);
                 var (rowPct, rowCharging) = EffectiveBattery(ud);
+                row.BatteryLowAt = lowAt;
                 row.BatteryPercent = rowPct;
                 row.BatteryCharging = rowCharging;
                 row.FirmwareVersion = DossierFirmware(ud);
@@ -4956,6 +5173,9 @@ namespace PadForge.Services
                 // also covers battery swaps).
                 NotifyBatteryEdge(ud, row.DeviceName, rowPct, rowCharging);
             }
+            // A battery that came or went changes which columns the
+            // Devices table has.
+            _mainVm.Devices.RefreshColumns();
 
             foreach (var padVm in _mainVm.Pads)
             {
@@ -4963,20 +5183,7 @@ namespace PadForge.Services
                 {
                     var ud = FindUserDevice(dev.InstanceGuid);
                     var (pct, charging) = EffectiveBattery(ud);
-                    dev.BatteryText = pct >= 0 ? $"{pct}%" : string.Empty;
-                    // Same MDL2 bucketing as DeviceRowViewModel.BatteryGlyph.
-                    if (pct < 0)
-                    {
-                        dev.BatteryGlyph = string.Empty;
-                    }
-                    else
-                    {
-                        int tenth = Math.Clamp((pct + 5) / 10, 0, 10);
-                        int code = charging
-                            ? (tenth == 10 ? 0xEA93 : tenth == 9 ? 0xE83E : 0xE85A + tenth)
-                            : (tenth == 10 ? 0xE83F : 0xE850 + tenth);
-                        dev.BatteryGlyph = char.ConvertFromUtf32(code);
-                    }
+                    dev.SetBattery(pct, charging, lowAt);
                 }
             }
 
@@ -5348,6 +5555,68 @@ namespace PadForge.Services
             EvaluateHomeOffer();
         }
 
+        // ─────────────────────────────────────────────
+        //  Add a Controller and Home's first page (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>A device Add a Controller and Home's first page can offer:
+        /// a connected game controller, by Home offer's own test, that no
+        /// virtual controller uses.</summary>
+        internal static bool IsUnusedGameController(UserDevice ud)
+            => ud != null && ud.IsOnline && IsHomeOfferEligible(ud)
+               && SettingsManager.GetAssignedSlots(ud.InstanceGuid).Count == 0;
+
+        /// <summary>Every unused game controller, in the registry's order.
+        /// Empty while the engine is stopped: nothing reads which devices are
+        /// connected then.</summary>
+        internal List<Guid> UnusedGameControllers()
+        {
+            var found = new List<Guid>();
+            if (_inputManager == null) return found;
+            foreach (var ud in UserDeviceSnapshot())
+                if (IsUnusedGameController(ud)) found.Add(ud.InstanceGuid);
+            return found;
+        }
+
+        /// <summary>Names the first unused game controller on Home's first
+        /// page, and keeps the one shown while it still qualifies, as the
+        /// offer does. Runs on every device walk. Internal for the
+        /// tests.</summary>
+        internal void EvaluateFirstRunDevice()
+        {
+            try
+            {
+                var home = _mainVm.Dashboard;
+                if (home == null) return;
+                UserDevice first = null, shown = null;
+                foreach (var ud in UserDeviceSnapshot())
+                {
+                    if (!IsUnusedGameController(ud)) continue;
+                    if (ud.InstanceGuid == home.FirstRunDeviceGuid) shown = ud;
+                    first ??= ud;
+                }
+                var named = shown ?? first;
+                if (named == null)
+                {
+                    home.ClearFirstRunDevice();
+                    return;
+                }
+                home.SetFirstRunDevice(named.InstanceGuid, LocalizedDeviceName(named) ?? named.ResolvedName,
+                    _mainVm.Devices?.FindByGuid(named.InstanceGuid));
+            }
+            catch { /* the first page must never break the device walk */ }
+        }
+
+        /// <summary>The same read between device walks: when the last
+        /// controller is deleted and Home turns back to its first page. Does
+        /// nothing while the engine is stopped, which Stop has already shown
+        /// on the page.</summary>
+        public void ReEvaluateFirstRunDevice()
+        {
+            if (_inputManager == null) return;
+            EvaluateFirstRunDevice();
+        }
+
         private void NotifyBatteryEdge(UserDevice ud, string name, int pct, bool charging)
         {
             try
@@ -5534,6 +5803,7 @@ namespace PadForge.Services
             var ht = im != null && im.IsRunning && (dash.HeadTrackingEnabled || dash.HeadTrackingFreeTrack || dash.HeadTrackingOpenXr) ? im.HeadTracker : null;
             if (ht == null)
             {
+                dash.IsHeadTrackingReceiving = false;
                 if (_headTrackingStatusVersion == HeadTrackingStatusStopped)
                     return;
                 _headTrackingStatusDevice = null;
@@ -5547,6 +5817,10 @@ namespace PadForge.Services
             _headTrackingStatusDevice = ht;
             _headTrackingStatusVersion = version;
             dash.HeadTrackingStatus = BuildHeadTrackerStatus(ht);
+            // The Extras page's flame (#574): ember while a source delivers a
+            // pose. StatusVersion moves whenever the source does, so the
+            // cache above never skips a change of it.
+            dash.IsHeadTrackingReceiving = ht.Source != PadForge.Common.Input.HeadTrackerSource.None;
         }
 
         private string _gKeysStatusLast;
@@ -5598,8 +5872,16 @@ namespace PadForge.Services
             // only when the text actually changed.
             if (string.Equals(_gKeysStatusLast, status, StringComparison.Ordinal)) return;
             _gKeysStatusLast = status;
+            // The text changes whenever the warning does, so the flag is set
+            // with it.
+            settings.GKeysStatusIsWarning = row != null && GKeysStatusIsWarning(row.SourceState, row.EventCount);
             settings.GKeysStatus = status;
         }
+
+        /// <summary>The G-keys line warns in every state but running with keys
+        /// arriving (#574): the five failures, and running with none seen yet.</summary>
+        internal static bool GKeysStatusIsWarning(PadForge.Engine.Common.Logitech.LogitechGKeyState state, long events)
+            => !(state == PadForge.Engine.Common.Logitech.LogitechGKeyState.Running && events > 0);
 
         private string _analogKeyboardsStatusLast;
 
@@ -5780,7 +6062,8 @@ namespace PadForge.Services
                         : null,
                     isFalcon: ud.CapType == InputDeviceType.NovintFalcon,
                     isGameTelemetry: ud.CapType == InputDeviceType.GameTelemetry,
-                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat);
+                    isTwitchChat: ud.CapType == InputDeviceType.TwitchChat,
+                    gamepadLayout: ShowsGamepadTest(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -5885,6 +6168,7 @@ namespace PadForge.Services
                     item.IsPressed = idx >= 0 && idx < state.Buttons.Length && state.Buttons[idx];
                 }
             }
+            if (devVm.ShowGamepadTest) devVm.UpdateGamepadTest(state);
 
             // MIDI preview: hand the live state to the MidiPreviewView, which
             // polls it each render frame (issue #128). Null until the first
@@ -10759,6 +11043,7 @@ namespace PadForge.Services
                 // the slot" read this walk's truth.
                 EvaluateAssignOffers();
                 EvaluateHomeOffer();
+                EvaluateFirstRunDevice();
                 // A Bliss-Box port read through SDL's gamepad mapping can be
                 // placed once it connects.
                 CompleteOwedBlissBoxMappings();
@@ -11683,10 +11968,17 @@ namespace PadForge.Services
                 return; // Already running.
 
             _webServer = WebServerFactory?.Invoke() ?? new WebControllerServer();
+            var server = _webServer;
             _webServer.StatusChanged += OnWebServerStatusChanged;
             _webServer.DeviceConnected += device =>
             {
                 _inputManager.RegisterExternalDevice(device);
+                // The Phones card (#574). Raised on the socket's thread, and a
+                // stopped server's late session is dropped.
+                _dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (ReferenceEquals(_webServer, server)) _mainVm.Dashboard.AddWebControllerPhone(device);
+                }));
             };
             // The controller picture page (#555) reads slots through these.
             _webServer.DisplaySlot = DisplayFrameFor;
@@ -11696,6 +11988,7 @@ namespace PadForge.Services
             _webServer.DeviceDisconnected += device =>
             {
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+                _dispatcher.BeginInvoke(new Action(() => _mainVm.Dashboard.RemoveWebControllerPhone(device)));
             };
             _webServer.ProfileSwitchRequested += id =>
             {
@@ -11895,6 +12188,9 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+            // The server raised each disconnect after its own clear, so the
+            // removals it dispatched find nothing left to take.
+            _mainVm.Dashboard.WebControllerPhones.Clear();
             // Events are detached before Dispose, so no "Stopped" status
             // flows through the handler; settle the flame here too (#175
             // phase 2 item 2).
@@ -16534,6 +16830,7 @@ namespace PadForge.Services
             // the Devices page for Xbox pads: every list refresh stamped -1 and
             // the next tick restored the overlay value.
             var (seedPct, seedCharging) = GetEffectiveBattery(ud);
+            row.BatteryLowAt = _mainVm.Settings?.BatteryNotifyThreshold ?? 15;
             row.BatteryPercent = seedPct;
             row.BatteryCharging = seedCharging;
 
@@ -16570,6 +16867,8 @@ namespace PadForge.Services
                 InputDeviceType.TwitchChat => "TwitchChat",
                 _ => "Device"
             };
+            // The list row's kind (#574), the glyph Home's offer draws.
+            row.KindGlyph = Common.DeviceTypeGlyph.For(ud.CapType);
             // Vendor daemon notice (#343): the sweep scans on its cadence;
             // the row carries the latest answer for the details pane.
             row.HandheldDaemonRunning = ud.CapType == InputDeviceType.HandheldButtons
@@ -17712,9 +18011,9 @@ namespace PadForge.Services
             // even when the engine (and its UI timer) is not running.
             RefreshSlotSummaryProperties();
 
-            // Update the active profile's topology label so the Profiles page
+            // Update the active profile's type chips so the Profiles page
             // reflects slot create/delete changes in real-time.
-            RefreshActiveProfileTopologyLabel();
+            RefreshActiveProfileTopology();
         }
 
         /// <summary>
@@ -17771,6 +18070,16 @@ namespace PadForge.Services
         /// native HID button is visible, and that is not a numbering
         /// inconsistency but a different question being asked.</para>
         /// </summary>
+        /// <summary>Whether the Devices page shows the compact test (sticks,
+        /// triggers, pressed buttons): the device's state is in SDL's gamepad
+        /// layout. The rule of InputManager.SpeaksGamepadLayout without its
+        /// Bliss-Box placement: a placed port's state stays raw, so the fixed
+        /// slots would read the wrong axes.</summary>
+        private static bool ShowsGamepadTest(UserDevice ud)
+            => ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice { Info.GamepadLayout: bool layout }
+                ? layout && !ud.ForceRawJoystickMode
+                : InputManager.InSdlGamepadLayout(ud.ForceRawJoystickMode, ud.Device, ud.CapType);
+
         internal static int[] ResolveButtonIndices(UserDevice ud)
         {
             int max = CustomInputState.MaxButtons;
@@ -20878,7 +21187,7 @@ namespace PadForge.Services
 
             // Switch to the target profile (or revert to default).
             // Set ActiveProfileId BEFORE ApplyProfile so that
-            // RefreshActiveProfileTopologyLabel updates the correct profile.
+            // RefreshActiveProfileTopology updates the correct profile.
             if (profileId != null)
             {
                 var target = FindProfileById(profileId);
@@ -21192,10 +21501,10 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Public wrapper so callers (e.g. MainWindow) can refresh the profile
-        /// topology label after controller type changes.
+        /// Public wrapper so callers (e.g. MainWindow) can refresh the active
+        /// profile's type chips after controller type changes.
         /// </summary>
-        public void RefreshProfileTopology() => RefreshActiveProfileTopologyLabel();
+        public void RefreshProfileTopology() => RefreshActiveProfileTopology();
 
         // ─────────────────────────────────────────────
         //  Profile CRUD (domain logic, called by MainWindow UI handlers)
@@ -21253,6 +21562,33 @@ namespace PadForge.Services
             snapshot.ExecutableNames = pipeSeparatedExePaths;
             snapshot.PollingRateOverrideMs = pollingRateOverrideMs;
             SettingsManager.Profiles.Add(snapshot);
+            return snapshot;
+        }
+
+        /// <summary>
+        /// Save Current Setup Here (#574): the live setup replaces what a stored
+        /// profile holds. The snapshot is the one Save As takes, kept under the
+        /// stored profile's id, name, games, polling override and screen pictures.
+        /// Its Workshop provenance goes, since it no longer holds that config. The
+        /// active profile and Default are refused: the first is the live setup
+        /// already, and the second is never overwritten. Returns the profile as
+        /// stored, or null when nothing changed.
+        /// </summary>
+        public ProfileData SaveCurrentSetupInto(string profileId)
+        {
+            if (string.IsNullOrEmpty(profileId) || profileId == SettingsManager.ActiveProfileId) return null;
+            int at = SettingsManager.Profiles.FindIndex(p => p.Id == profileId);
+            if (at < 0) return null;
+            var stored = SettingsManager.Profiles[at];
+            var snapshot = SnapshotCurrentProfile();
+            snapshot.Id = stored.Id;
+            snapshot.Name = stored.Name;
+            snapshot.ExecutableNames = stored.ExecutableNames;
+            snapshot.PollingRateOverrideMs = stored.PollingRateOverrideMs;
+            snapshot.DreamcastPicture = stored.DreamcastPicture;
+            snapshot.KeyboardScreenPicture = stored.KeyboardScreenPicture;
+            snapshot.WorkshopSource = null;
+            SettingsManager.Profiles[at] = snapshot;
             return snapshot;
         }
 
@@ -21545,7 +21881,7 @@ namespace PadForge.Services
             _mainVm.RefreshNavControllerItems();
 
             SyncDevicesList();
-            RefreshActiveProfileTopologyLabel();
+            RefreshActiveProfileTopology();
 
             // Player-identity idle floor (#191): reorders renumber slots.
             ReseedPlayerIdentities();
@@ -21561,10 +21897,10 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Updates the TopologyLabel on the active profile's list item so the
+        /// Refreshes the type chips on the active profile's card so the
         /// Profiles page reflects slot create/delete/type changes immediately.
         /// </summary>
-        private void RefreshActiveProfileTopologyLabel()
+        private void RefreshActiveProfileTopology()
         {
             string activeId = SettingsManager.ActiveProfileId;
             var slotCreated = SettingsManager.SlotCreated;

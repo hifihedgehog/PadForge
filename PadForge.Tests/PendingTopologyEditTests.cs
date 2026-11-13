@@ -15,7 +15,6 @@ namespace PadForge.Tests
     {
         [Theory]
         [InlineData("assign")]
-        [InlineData("assign-button")]
         [InlineData("unassign-slot")]
         [InlineData("unassign-all")]
         [InlineData("remove")]
@@ -51,7 +50,6 @@ namespace PadForge.Tests
                 switch (operation)
                 {
                     case "assign": devices.AssignDeviceToSlot(remote.InstanceGuid, 2); break;
-                    case "assign-button": InvokeTopologyHandler(devices, "OnAssignToSlot", 2); break;
                     case "unassign-slot": Assert.True(devices.SetDeviceSlotAssignment(remote.InstanceGuid, 0, false)); break;
                     case "unassign-all": devices.UnassignDevice(remote.InstanceGuid); break;
                     case "remove": InvokeTopologyHandler(devices, "OnRemoveDevice", remote.InstanceGuid); break;

@@ -70,8 +70,8 @@ namespace PadForge.Tests
             Assert.True(vm.Mappings.Count > 10);
             vm.ApplyMappingPickerFilter();
             Assert.True(vm.IsButtonsPictureView);
-            // The picture opens with its first control picked (#574).
-            Assert.Equal(new[] { "ButtonA" }, Shown(vm));
+            // Nothing is picked until the user picks, so no row shows.
+            Assert.Empty(Shown(vm));
 
             var buttons = RowsOf(vm, MappingCategory.Buttons);
             var leftStick = RowsOf(vm, MappingCategory.LeftStick);
@@ -106,11 +106,12 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "LeftThumbButton" }.Concat(leftStick), Shown(vm));
             Assert.Same(bipolar, vm.RowOfTarget(bipolar.NegSettingName));
 
-            // A pick that names no row goes back to the first control.
+            // A pick that names no row shows none, and so does no pick.
             vm.PickedTarget = "NoSuchTarget";
-            Assert.Equal(new[] { "ButtonA" }, Shown(vm));
+            Assert.Empty(Shown(vm));
+            vm.PickedTarget = buttons[0];
             vm.PickedTarget = null;
-            Assert.Equal(new[] { "ButtonA" }, Shown(vm));
+            Assert.Empty(Shown(vm));
 
             // The list holds every row, picked or not.
             vm.PickedTarget = buttons[0];
@@ -128,53 +129,88 @@ namespace PadForge.Tests
             Assert.Equal(dpad, Shown(vm));
         }
 
-        /// <summary>The picture always has a control picked, as the Buttons
-        /// board opens with A picked (#574): the slot's first row when its
-        /// rows are first shown, after a change of its type, and in place of
-        /// a pick that names no row. The list leaves a pick alone, and the
-        /// picture picks again when it comes back. The pick is the view
-        /// model's alone and never saved.</summary>
+        /// <summary>The picture opens with nothing picked: no control is
+        /// ringed, no row shows under it and it has no bar, until a control
+        /// is clicked, recorded or selected in the list. A control ringed as
+        /// the page opened read as a choice nobody had made (ruled
+        /// 2026-11-12). A pick that names no row is no pick and is
+        /// forgotten, as after a change of the slot's type, and nothing is
+        /// picked in its place. The pick is the view model's alone and
+        /// never saved.</summary>
         [Fact]
-        public void ThePictureAlwaysHasAControlPicked()
+        public void ThePictureOpensWithNothingPicked()
         {
             var vm = new PadViewModel(0);
             Assert.True(vm.IsButtonsPictureView);
-            string first = vm.Mappings[0].TargetSettingName;
-            Assert.Equal("ButtonA", first);
-            Assert.Equal(first, vm.PickedTarget);
-            Assert.True(vm.ShowPictureBar);
-            Assert.Equal(new[] { first }, Shown(vm));
+            Assert.Equal("ButtonA", vm.Mappings[0].TargetSettingName);
+            Assert.Null(vm.PickedTarget);
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
+            Assert.True(vm.PictureIsCardFoot);
+            Assert.Empty(vm.PickedTargets());
+            Assert.Empty(Shown(vm));
+            // The rows filtered again pick nothing either.
+            vm.ApplyMappingPickerFilter();
+            Assert.Null(vm.PickedTarget);
+            Assert.Empty(Shown(vm));
 
-            // A pick that names no row, or none, goes back to the first row,
-            // and is told once the rows follow it.
+            // A pick shows its control's row and the bar.
+            vm.PickedTarget = "ButtonA";
+            Assert.True(vm.ShowPictureBar);
+            Assert.False(vm.PictureIsCardFoot);
+            Assert.Equal(new[] { "ButtonA" }, Shown(vm));
+
+            // A pick that names no row is forgotten, and no row shows by
+            // the time the change is told.
             var seen = new List<(string Pick, int Rows)>();
             vm.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == nameof(PadViewModel.PickedTarget)) seen.Add((vm.PickedTarget, Shown(vm).Count));
             };
             vm.PickedTarget = "NoSuchTarget";
-            Assert.Equal(first, vm.PickedTarget);
-            Assert.All(seen, s => Assert.Equal((first, 1), s));
+            Assert.Null(vm.PickedTarget);
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
+            Assert.NotEmpty(seen);
+            Assert.All(seen, s => Assert.Equal(((string)null, 0), s));
             vm.PickedTarget = "DPadUp";
-            vm.PickedTarget = null;
-            Assert.Equal(first, vm.PickedTarget);
-
-            // The list leaves a pick alone, and none stays none there.
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.Equal(4, Shown(vm).Count);
             vm.PickedTarget = null;
             Assert.Null(vm.PickedTarget);
-            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
-            Assert.Equal(first, vm.PickedTarget);
+            Assert.False(vm.ShowPictureBar);
+            Assert.Empty(Shown(vm));
 
-            // Another type's rows: the pick goes to its first row.
+            // The list leaves a pick alone, and the picture shows it again.
+            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.Null(vm.PickedTarget);
+            vm.PickedTarget = "ButtonB";
+            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+            Assert.Equal("ButtonB", vm.PickedTarget);
+            Assert.True(vm.ShowPictureBar);
+
+            // Another type's rows: the pick names none of them, so it is
+            // forgotten, and the type's first row is not picked for it.
             vm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
-            Assert.NotNull(vm.PickedRow);
-            Assert.Equal(vm.Mappings.First(m => PadViewModel.RowMatchesSurface(m, "All", vm.KbmConfig)).TargetSettingName, vm.PickedTarget);
+            Assert.Null(vm.PickedTarget);
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
+            Assert.Empty(Shown(vm));
+            // Back on the first type nothing is picked: the pick was
+            // forgotten, and none is made.
             vm.OutputType = PadForge.Engine.VirtualControllerType.Xbox;
-            Assert.Equal(first, vm.PickedTarget);
+            Assert.Null(vm.PickedTarget);
+            Assert.False(vm.ShowPictureBar);
+
+            // A type whose rows have the picked one keeps the pick.
+            vm.PickedTarget = "ButtonA";
+            vm.OutputType = PadForge.Engine.VirtualControllerType.PlayStation;
+            Assert.Equal("ButtonA", vm.PickedTarget);
+            Assert.True(vm.ShowPictureBar);
 
             // Nothing on the setting holds a pick.
             Assert.DoesNotContain(typeof(PadSetting).GetProperties(), p => p.Name.Contains("Pick", StringComparison.Ordinal));
+            // The page's rows are never picked for the user.
+            Assert.DoesNotContain("PickFirstRow", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.cs"));
         }
 
         /// <summary>The bar has no Value on a Keyboard + Mouse or a MIDI
@@ -221,8 +257,7 @@ namespace PadForge.Tests
         {
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
-            // The first button is picked at the start, so the pick is the
-            // second.
+            // Nothing is picked at the start, so this pick is the first.
             string button = RowsOf(vm, MappingCategory.Buttons)[1];
             var seen = new List<(string Property, int Rows)>();
             vm.PropertyChanged += (_, e) =>
@@ -541,7 +576,7 @@ namespace PadForge.Tests
             Assert.Equal("{DynamicResource CardBackgroundFillColorDefaultBrush}", (string)head.Attribute("Background"));
             Assert.Equal("{DynamicResource CardStrokeColorDefaultBrush}", (string)head.Attribute("BorderBrush"));
             Assert.Equal("10,10,0,0", (string)head.Attribute("CornerRadius"));
-            Assert.Equal("32,0,32,0", (string)head.Attribute("Margin"));
+            Assert.Equal("36,0,36,0", (string)head.Attribute("Margin"));
             const string listOnly = "{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}";
 
             var left = Named(page, "ButtonsTopLeft").Elements().ToList();
@@ -626,8 +661,8 @@ namespace PadForge.Tests
             Assert.Equal("10,0", (string)more.Attribute("Padding"));
             Assert.Equal("MoreMenu_Click", (string)more.Attribute("Click"));
             var dots = Assert.Single(more.Elements(), e => e.Name.LocalName == "Path");
-            Assert.Equal("12.9", (string)dots.Attribute("Width"));
-            Assert.Equal("2.4", (string)dots.Attribute("Height"));
+            Assert.Equal("16.2", (string)dots.Attribute("Width"));
+            Assert.Equal("3.2", (string)dots.Attribute("Height"));
             Assert.Equal((string)Named(page, "PadMoreButton").Elements().Single(e => e.Name.LocalName == "Path").Attribute("Data"),
                 (string)dots.Attribute("Data"));
             var items = more.Descendants().Where(e => e.Name.LocalName is "MenuItem" or "Separator").ToList();
@@ -795,7 +830,7 @@ namespace PadForge.Tests
             Assert.Equal("ButtonsRoot_SizeChanged", (string)scroll.Attribute("SizeChanged"));
             // The view's content is 32 from each side of the page, as the
             // card's head is, with the page's scroll bar in that margin.
-            Assert.Equal("32,0", (string)scroll.Attribute("Padding"));
+            Assert.Equal("36,0", (string)scroll.Attribute("Padding"));
             // The card's body is drawn behind the picture, the line a
             // recording shows, the bar, the table and the slot's own foot:
             // its sides, its foot and its lower corners.
@@ -1138,33 +1173,32 @@ namespace PadForge.Tests
 
             // The view model: the foot is a Keyboard + Mouse slot's, and the
             // picture is the card's foot while nothing is picked on a slot
-            // that has none. The picture opens with a control picked (#574),
-            // so its bar is the foot then, and a pick can be none in the
-            // list alone.
+            // that has none. The picture opens with nothing picked, so it
+            // is the foot then, and a pick's bar takes its place.
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
             Assert.False(vm.ShowKbmFoot);
-            Assert.True(vm.ShowPictureBar);
-            Assert.False(vm.PictureIsCardFoot);
+            Assert.False(vm.ShowPictureBar);
+            Assert.True(vm.PictureIsCardFoot);
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            vm.PickedTarget = "ButtonA";
+            Assert.True(vm.ShowPictureBar);
+            Assert.False(vm.PictureIsCardFoot);
+            Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
+            raised.Clear();
             vm.PickedTarget = null;
             Assert.True(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
-            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
-            Assert.False(vm.PictureIsCardFoot);
 
             raised.Clear();
             vm.OutputType = PadForge.Engine.VirtualControllerType.KeyboardMouse;
             Assert.True(vm.ShowKbmFoot);
+            Assert.False(vm.ShowPictureBar);
             Assert.False(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
             Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
             raised.Clear();
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
-            vm.PickedTarget = null;
-            Assert.False(vm.PictureIsCardFoot);
             vm.OutputType = PadForge.Engine.VirtualControllerType.Xbox;
             Assert.False(vm.ShowKbmFoot);
             Assert.True(vm.PictureIsCardFoot);

@@ -686,6 +686,17 @@ namespace PadForge.Models3D
                     Fill(group);
         }
 
+        /// <summary>The finishes a family's model ships, by id and by name:
+        /// the model classes' own lists. Nulls for a family of one finish.</summary>
+        internal static (string[] Ids, string[] Names) Appearances(string family) => family switch
+        {
+            "XboxSeries" => (ControllerModelXboxSeries.AppearanceIds, ControllerModelXboxSeries.AppearanceNames),
+            "DualSense" => (ControllerModelDualSense.AppearanceIds, ControllerModelDualSense.AppearanceNames),
+            "DS4" => (ControllerModelDS4.AppearanceIds, ControllerModelDS4.AppearanceNames),
+            "DualSenseEdge" => (ControllerModelDualSenseEdge.AppearanceIds, ControllerModelDualSenseEdge.AppearanceNames),
+            _ => (null, null),
+        };
+
         /// <summary>The ONE construction path for a preview model, used by
         /// the viewport and by the tests that pin the interaction contract,
         /// so the two cannot drift. Ends in

@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>ચાલુ</value></data>
   <data name="Common_Off" xml:space="preserve"><value>બંધ</value></data>
   <data name="Common_More" xml:space="preserve"><value>વધુ</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>બધું જુઓ</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>ઇન્સ્ટોલ કરેલ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>ઇન્સ્ટોલ કરેલ નથી</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 પર ઉપલબ્ધ નથી</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>બંધ થઈ રહ્યું છે…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>એન્જિન બંધ થઈ રહ્યું છે…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} પર ચાલુ છે</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ચાલુ છે ({0} ક્લાયન્ટ)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>ચાલુ છે, કનેક્ટ થયેલ: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} પર સાંભળી રહ્યું છે</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>પોર્ટ {0} ઉપયોગમાં છે</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>પોર્ટ {0} માટે ઍક્સેસ નકારાઈ (એડમિન તરીકે ચલાવો)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>ઑફલાઇન</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>અજ્ઞાત</value></data>
   <data name="Common_Default" xml:space="preserve"><value>ડિફોલ્ટ</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>બ્રાઉઝ કરો...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>બ્રાઉઝ કરો…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>આગળ વધો</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>રોકો</value></data>
   <data name="Common_Start" xml:space="preserve"><value>શરૂ કરો</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>અગાઉના સત્રથી બાકી રહેલા વર્ચ્યુઅલ કંટ્રોલર સાફ થઈ રહ્યા છે.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ઉપકરણો</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>કંટ્રોલર ઉમેરો</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>કંટ્રોલર ઉમેરો</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>ગેમ્સે શું જોવું જોઈએ તે પસંદ કરો. ક્લિક કરતાં જ કંટ્રોલર ઉમેરાઈ જાય છે.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>ઇનપુટ સ્રોત</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>પછી પસંદ કરો</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>સામાન્ય</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>વધુ આઉટપુટ</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>મોટાભાગની PC ગેમ જે લેઆઉટ અપેક્ષે છે તે.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>PlayStation પ્રોમ્પ્ટ, ટચપેડ અને લાઇટબાર ધરાવતી ગેમ માટે.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>તેની અપેક્ષા રાખતી ગેમ અને ઇમ્યુલેટર માટે Switch બટન લેઆઉટ.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>પેડથી કી, કર્સર અને સ્ક્રોલ.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>વ્હીલ, ફ્લાઇટ સ્ટિક અને કસ્ટમ લેઆઉટ.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>મ્યુઝિક સૉફ્ટવેર માટે નોટ અને કંટ્રોલ ચેન્જ.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR દ્વારા વર્ચ્યુઅલ VR કંટ્રોલર.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>પ્રકાર પછીથી બદલવા માટે, કંટ્રોલર પરની પ્રકાર ચિપ પર ક્લિક કરો. તેમાં એક ક્લિક લાગે છે.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services પ્રતિસાદ આપતું નથી. સેટિંગ્સમાં તેનું કાર્ડ જુઓ.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR જરૂરી છે. સેટિંગ્સમાં તેના કાર્ડ પરથી ઇન્સ્ટોલ કરો.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR કંટ્રોલર પહેલેથી છે. એક જ બંને હાથને ચલાવે છે.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge પાસે {0} કંટ્રોલર છે, જે તે ચલાવી શકે તેટલા વધુમાં વધુ છે. બીજું ઉમેરવા એક કાઢી નાખો.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>પ્રોફાઇલ</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>સેટિંગ્સ, ઉપકરણો અને પ્રોફાઇલ શોધો</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>શોધ</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>પરિણામો</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>ઉપર</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>નીચે</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>ખસેડવા {0} {1}</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>ખોલવા {0}</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>ગમે ત્યાંથી {0}</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>પૃષ્ઠો</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>ક્રિયાઓ</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>દસ્તાવેજીકરણ</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>વધુ હેઠળ</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>પંક્તિના વિકલ્પોમાં</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge માં “{0}” સાથે કંઈ મેળ ખાતું નથી.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>“{0}” માટે દસ્તાવેજીકરણમાં શોધો</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર કાઢી નાખો</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>પૂર્ણ સ્ક્રીન</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge બતાવો</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” બની.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” કાઢી નાખી.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” અપડેટ થઈ.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” માં હવે હાલનું સેટઅપ છે.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>પ્રોફાઇલ લોડ થઈ: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>પ્રોફાઇલ ડિફોલ્ટ પર પાછી ફરી</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>“{0}” વર્ચ્યુઅલ કંટ્રોલર {1} ને અસાઇન કર્યું.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>પ્રોફાઇલ બદલાઈ: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>પ્રોફાઇલ બદલાઈ: ડિફોલ્ટ</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>ડિફોલ્ટ</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>પ્રોફાઇલ શૉર્ટકટ</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>શૉર્ટકટ</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>કોઈપણ કંટ્રોલરથી પ્રોફાઇલ બદલવા માટે બટન કૉમ્બો સોંપો.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>શૉર્ટકટ ઉમેરો</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>આગલી પ્રોફાઇલ</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>પાછલી પ્રોફાઇલ</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>ચોક્કસ પ્રોફાઇલ</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>વિન્ડો ટૉગલ કરો</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર અક્ષમ ટૉગલ કરો</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge બતાવો અથવા છુપાવો</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર ચાલુ અથવા બંધ કરો</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>કોઈપણ જોડાયેલ ઉપકરણ</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>રેકોર્ડ કરો</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>રેકોર્ડ થઈ રહ્યું છે...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>કોઈ ઉપકરણ પસંદ નથી.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>અમાન્ય સ્લોટ ઇન્ડેક્સ: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>ઉપકરણ અસાઇન કરવામાં નિષ્ફળ.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>જ્યારે</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>પર</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>“{0}” વર્ચ્યુઅલ કંટ્રોલર {1} ને અસાઇન કર્યું.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” ને વર્ચ્યુઅલ કંટ્રોલર {1} માંથી અનઅસાઇન કર્યું.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>ઉપકરણ છુપાવ્યું. (સેટિંગ્સ ફાઇલમાં પાછું લાવી શકાય છે.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>ઉપકરણ દૂર કર્યું.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર {0} કાઢી નાખ્યું.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>હોમ</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>જોડાયેલા ઉપકરણો: {0}. કંટ્રોલર: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>ગેમ્સ દરેક લાઇવ કંટ્રોલર જુએ છે.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>એન્જિન ચાલુ છે અને કોઈ કંટ્રોલર લાઇવ નથી.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>તમારા કંટ્રોલર પાછા લાવવા એન્જિન શરૂ કરો.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>પોલિંગ રેટ</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>લાઇવ કંટ્રોલર</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>જોડાયેલ ઉપકરણો</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>આ કંટ્રોલર ચાલુ કે બંધ કરો</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>એન્જિન શરૂ થાય ત્યારે તે શરૂ થાય છે.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>આ ઉપકરણ કનેક્ટ થાય ત્યારે તે શરૂ થાય છે.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>આમાંનું કોઈ ઉપકરણ કનેક્ટ થાય ત્યારે તે શરૂ થાય છે.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>કનેક્ટ થયેલ નથી</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>હમણાં ઇનપુટ મોકલે છે</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>બેટરી {0}, ઓછી</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>બેટરી {0}, ચાર્જ થઈ રહી છે</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>ઇનપુટ એન્જિન</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>કંટ્રોલર</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ઉપયોગમાં એક્સ્ટ્રાઝ</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR બતાવો</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} કનેક્ટ થયેલ છે અને ઉપયોગમાં નથી.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>તેનો ઉપયોગ કરો</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>ગેમ્સે શું જોવું જોઈએ?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge આ કંટ્રોલરને તમારી ગેમ્સ જે અપેક્ષે છે તેમાં ફેરવે છે. શરૂ કરવા એક પસંદ કરો. તમે તેને પછી એક ક્લિકથી બદલી શકો છો.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge તમારા કંટ્રોલરને તમારી ગેમ્સ જે અપેક્ષે છે તેમાં ફેરવે છે. શરૂ કરવા એક પસંદ કરો. તમે તેને પછી એક ક્લિકથી બદલી શકો છો.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>પેડથી કીબોર્ડ અને માઉસની ગેમ રમો.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>વધુ પ્રકારો: [{0}, {1}, {2} અને {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>કંટ્રોલર બને તેમ બટનો, સ્ટિક અને ટ્રિગર 1:1 મેપ થાય છે.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth કંટ્રોલર પેર કરો</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>તૈયાર પ્રોફાઇલથી શરૂ કરો</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>કનેક્ટ થયેલ</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, બેટરી {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>બેટરી {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>કોઈ કંટ્રોલર કનેક્ટ થયેલ નથી</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>કેબલથી અથવા Bluetooth દ્વારા એક કનેક્ટ કરો.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> મેપ કરેલ, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> જોડાયેલ</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>એન્જિન ચાલુ છે. બંધ કરવા ક્લિક કરો.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>એન્જિન નિષ્ક્રિય છે. બંધ કરવા ક્લિક કરો.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>એન્જિન બંધ છે. શરૂ કરવા ક્લિક કરો.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>આ કંટ્રોલર ગોઠવો</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>ફોર્જ પ્રગટાવો</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>કંટ્રોલર જોડો, આઉટપુટ પ્રકાર પસંદ કરો, અને PadForge તમારા ઇનપુટને તેમાં ફોર્જ કરે છે. એક ટૂંકો પરિચય બતાવે છે કે બધું ક્યાં છે.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>પરિચય શરૂ કરો</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>છોડો</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>આગળ</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>પૂર્ણ</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>સ્લોટ</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>દરેક વર્ચ્યુઅલ કંટ્રોલર અહીં રહે છે. જ્યોત બતાવે છે કે કયા સ્લોટ હમણાં ફોર્જ કરી રહ્યા છે.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>ઇનપુટ એન્જિન</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>ફોર્જ પોતે. બધું ઇનપુટ પોલિંગ શરૂ અથવા બંધ કરવા જ્યોતને ટૉગલ કરો.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>આઉટપુટ પ્રકાર પસંદ કરો, સ્લોટમાં ઉપકરણો આપો, અને તેના મેપિંગ ઘડવા કાર્ડ પર ક્લિક કરો.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>વૈકલ્પિક સુવિધાઓ અહીં રાહ જુએ છે: ફોન વેબ કંટ્રોલર, રિમોટ લિંક, મોશન સર્વર અને વધુ.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>સ્વાગત પરિચય બતાવો</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>સ્લોટ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>ઉપકરણ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ઇનપુટ સ્રોત</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ઉપકરણ ઉમેરો</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>ઓછી</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ચિત્ર</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>સૂચિ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} આઉટપુટ</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>જોડીની બંને કી દબાયેલી હોય ત્યારે ગેમને કયું દબાવવું દેખાય</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>નાનો સ્ટિક ઝુકાવ પકડી રાખે છે, જેથી ગેમ કંટ્રોલર સૂચનો બતાવતી રહે</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>ફોર્જિંગ</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>લાઇવ: {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>યાદીમાં મેક્રો પસંદ કરો, અથવા નવો બનાવવા “મેક્રો” ની બાજુમાં + દબાવો.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>પૂર્વાવલોકન</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>એક્સ્ટ્રાઝ</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>વૈકલ્પિક સુવિધાઓ. દરેક સુવિધા તમે ચાલુ ન કરો ત્યાં સુધી વચ્ચે આવતી નથી.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} / {1} ચાલુ</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>રમવાની વધુ રીતો</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>બીજે મોકલો</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>સ્ક્રીન પર</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>હેડ ટ્રૅકર કે VR હેડસેટથી આસપાસ જુઓ.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ડ્રાઇવિંગ ગેમમાંથી ઝડપ, પેડલ અને ગિયર મેપ કરો.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>દર્શકોને ચેટમાં ટાઇપ કરીને બટન દબાવવા દો.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>બીજા PC પરના PadForge સાથે કંટ્રોલર શેર કરો.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>બીજા PC પર વર્ચ્યુઅલ કંટ્રોલર ચલાવો.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>કંટ્રોલરનું મોશન ઇમ્યુલેટરને મોકલો.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ગેમ મોડ્સમાંથી ટ્રિગર અને લાઇટ ઇફેક્ટ લો.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>રમતી વખતે મેનૂ, લેયર અને પ્રોફાઇલ સ્વિચ બતાવો.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ટચપેડ વાપરતી ગેમ માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ટચપેડ ગેમ માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>અન્ય વિન્ડોની ઉપર ચિત્ર, ટાઇમર કે ઘડિયાળ.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>પોર્ટ, સાદું HTTP સરનામું, ઍક્સેસ કોડ</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ફરી જોડાવું, પોર્ટ, ઓળખ સુરક્ષા, સરનામાથી જોડાવું</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR રનટાઇમ, UDP પોર્ટ, પ્રતિ અક્ષ શ્રેણી</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>પોર્ટ, સાદું HTTP, ઍક્સેસ કોડ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>આપોઆપ ફરી જોડાવું, પોર્ટ, પેરિંગ ઓળખ, સરનામાથી જોડાવું</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>પોર્ટ, DSX.exe સ્ટેન્ડઇન</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>પોર્ટ, પૂર્ણ ઝડપ, કસ્ટમ ફોર્મેટ</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>પોર્ટ, પૂર્ણ ઝડપ, કસ્ટમ ફોર્મેટ્સ</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>બંને અંગૂઠા બટનો પર રાખીને હેડ ટ્રેકર અથવા VR હેડસેટથી આસપાસ જુઓ.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ડ્રાઇવિંગ ગેમ મોકલે છે તે ઝડપ, પેડલ અને ગિયરને કોઈપણ ઇનપુટની જેમ મેપ કરો.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU મોશન સ્રોત વાંચતા ઇમ્યુલેટરને કંટ્રોલરની મોશન મોકલો.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX માટે લખેલા ગેમ મોડમાંથી એડેપ્ટિવ ટ્રિગર અને લાઇટ ઇફેક્ટ લો.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ગેમમાં ટેલિમેટ્રી આઉટપુટ ચાલુ કરો અને તેને આ PC અને પોર્ટ પર મોકલો.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ઇમ્યુલેટરમાં આ PC ના સરનામા અને આ પોર્ટ પર મોશન સ્રોત ઉમેરો.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>મોડની ઇફેક્ટ તેને માટે હાર્ડવેર ધરાવતા દરેક કંટ્રોલર સુધી પહોંચે છે.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>હેડ પોઝ એ [ઉપકરણો] પરની હેડ ટ્રેકર પંક્તિ છે. કંટ્રોલરના બટન વિભાગમાં હેડ યૉને સ્ટિક અક્ષ પર મેપ કરો.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>મૂલ્યો [ઉપકરણો] પરની ગેમ ટેલિમેટ્રી પંક્તિ છે. તેમને કંટ્રોલરના બટન વિભાગમાં મેપ કરો અથવા મેક્રો ટ્રિગર કરવા વાપરો.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>મેનૂનું સ્થાન, કદ અને પારદર્શિતા મેનૂ પર જ, કંટ્રોલરના [મેક્રો અને મેનૂ] વિભાગમાં સેટ થાય છે.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>સ્રોત</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack અને તેનું UDP ફોર્મેટ મોકલતું કોઈપણ</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>શ્રેણી</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>પ્રતિ-અક્ષ શ્રેણી. શૂન્ય હોય તો ઉપરની શ્રેણી લાગુ પડે છે.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge જે ગેમ ઓળખતું નથી</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>મોકલતા પહેલાં ચાલુ DSX શોધતા મોડ માટે</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>શું દેખાય છે</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>મેનૂ ખુલ્લું હોય ત્યારે તેની રિંગ, ગ્રિડ અથવા બાર</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>શિફ્ટ લેયર પકડી રાખ્યું હોય ત્યારે લેયરનું નામ</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>પ્રોફાઇલ બદલાય ત્યારે પ્રોફાઇલનું નામ</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>સરનામું કૉપિ કરો</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>સ્ક્રીન પર સ્થાન</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ફોન કનેક્ટ કરો</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>ફોનને આ PC ના જ નેટવર્ક પર રાખો.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>તેના કેમેરાથી કોડ સ્કૅન કરો.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>કંટ્રોલર લેઆઉટ પસંદ કરો.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>ફોન</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>કોઈ ફોન કનેક્ટ થયેલ નથી.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>કનેક્ટ થતો ફોન અહીં અને ઉપકરણો પૃષ્ઠ પર દેખાય છે, જ્યાં તમે તેને કંટ્રોલર સોંપો છો.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>તમારી ચેનલ</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>દર્શકો ટાઇપ કરી શકે તે શબ્દો</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>દર્શક !a જેવો શબ્દ ટાઇપ કરે છે, અને PadForge ઉપકરણો પૃષ્ઠની Twitch Chat પંક્તિ પર !a ને જે મેપ કર્યું હોય તે દબાવે છે. તે પંક્તિને કોઈપણ ઉપકરણની જેમ કંટ્રોલરને સોંપો.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>તમે લાઇવ હો ત્યારે</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>તમારા પ્રસારણ માટે ચિત્ર</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>કોઈ પેર કરેલા PC નથી.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>બીજું PC પેર કરો</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>નજીકમાં કોઈ અનપેર PC નથી.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>બીજા PC પરના PadForge માં રિમોટ લિંક ચાલુ કરો. તે અહીં દેખાય છે, અને તમે બંને સ્ક્રીન પરનો ટૂંકો કોડ સરખાવો છો.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>દેખાવ અને સ્થાન</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>તેને ખસેડવા જમણા માઉસ બટન અથવા ત્રણ આંગળીઓથી ખેંચો.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ઓવરલે {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>દર્શાવે છે</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>બીજો પ્રોગ્રામ આગળ હોય ત્યારે ક્લિક ઓવરલેમાંથી પસાર થઈ જાય છે. PadForge આગળ હોય ત્યારે તેને જમણા માઉસ બટનથી ખેંચો અને તેના ખૂણેથી કદ બદલો. મેક્રો ઓવરલેને તેના નંબરથી બતાવી કે છુપાવી શકે છે.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>મોશન સર્વર</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>જાયરો અને એક્સેલરોમીટર ડેટા માટે DSU/CemuHook Motion Provider પ્રોટોકોલ સર્વર.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU મોશન સર્વર સક્ષમ કરો (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>કોઈ કંટ્રોલર નથી</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>પ્રકાર {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>વેબ કંટ્રોલર</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>તમારા સ્થાનિક નેટવર્ક પરના બ્રાઉઝરને ગેમપેડ UI પીરસો.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ફોન અથવા ટેબ્લેટને કંટ્રોલર તરીકે વાપરો. ફોન પર કંઈ ઇન્સ્ટૉલ કરવાની જરૂર નથી.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>વેબ કંટ્રોલર સર્વર સક્ષમ કરો</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>ગેમપેડ તરીકે વાપરવા ફોન કે ટેબ્લેટ બ્રાઉઝરથી જોડાઓ.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>ફોનના કૅમેરાથી સ્કૅન કરો, અથવા તેના બ્રાઉઝરમાં આ સરનામું ખોલો:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>સાદું HTTP સરનામું</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>HTTPS વિનાનું બીજું સરનામું, PadForge નું પ્રમાણપત્ર નકારતા બ્રાઉઝર માટે અને પોતાનું પ્રમાણપત્ર લાવતા ટનલ કે રિવર્સ પ્રોક્સી માટે. ફોન મોશનને HTTPS જોઈએ, તેથી અહીં તે ફક્ત HTTPS પીરસતા ટનલ કે પ્રોક્સી મારફતે જ કામ કરે છે.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>સાદું HTTP પણ પીરસો</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>ઍક્સેસ કોડ</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>સાદું સરનામું ફક્ત આ કોડથી ખૂલે છે, અને નીચેની લિંકમાં તે શામેલ છે. નવો કોડ સાદા સરનામા પરના બધાને ડિસ્કનેક્ટ કરે છે.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>નવો કોડ</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>આ PC પરનું સરનામું:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>રમ્બલ (આ ઉપકરણને ઓળખવા ક્લિક કરો)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>આ ઉપકરણને રમ્બલ કરાવે છે, જેથી તમે જાણી શકો કે તે કયું છે.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>રિમોટ લિંક</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>તમારા નેટવર્ક પર અથવા ઇન્ટરનેટ પર, બીજા PC પરના પેર કરેલા PadForge સાથે કંટ્રોલર શેર કરો.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>બીજા PC પર વર્ચ્યુઅલ કંટ્રોલર ચલાવો. એક વારના પેરિંગ પછી, વિશ્વસનીય PC આપોઆપ ફરી જોડાય છે.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>રિમોટ લિંક સર્વર સક્ષમ કરો</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>એક વારના પેરિંગ પછી, વિશ્વસનીય PC આપોઆપ ફરી જોડાય છે. પેર કરેલું PC આ PC ના ગેમપેડ આઉટપુટને ચલાવી શકે છે, અને તમે મર્યાદિત ન કરો ત્યાં સુધી કીબોર્ડ, માઉસ અને મેક્રોને પણ.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>અથવા સરનામાથી જોડાઓ (ઍડ્વાન્સ્ડ)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>પેર કરેલું PC આ PC ના ગેમપેડ આઉટપુટને ચલાવી શકે છે, અને તમે મર્યાદિત ન કરો ત્યાં સુધી કીબોર્ડ, માઉસ અને મેક્રોને પણ.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>સરનામાથી જોડાઓ</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>પેર / કનેક્ટ કરો</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>પેર કરો</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>કનેક્ટ કરો</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>કનેક્ટ થયેલ</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>રિમોટ PC સાથે પેર કરો</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>બંને સ્ક્રીન પર આ કોડ સરખો છે તેની ખાતરી કરો, પછી પેર કરો.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>બીજા PC સાથે પેર કરવું?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>તપાસો કે બંને સ્ક્રીન પર સરખો કોડ દેખાય છે.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>પેર કરો</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>નકારો</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>આ PC ને ફક્ત ગેમપેડ ઇનપુટ સુધી મર્યાદિત કરો</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ફક્ત ગેમપેડ</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>ઓળખ</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>પેર કરેલું PC, તમે તેને ફક્ત ગેમપેડ સુધી મર્યાદિત ન કરો ત્યાં સુધી, આ PC ને કીબોર્ડ, માઉસ અને મેક્રો ઇનપુટ મોકલી શકે છે.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>પેર કરેલું PC આ PC ના ગેમપેડ આઉટપુટને ચલાવી શકે છે, અને તમે મર્યાદિત ન કરો ત્યાં સુધી કીબોર્ડ, માઉસ અને મેક્રોને પણ.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>પેર કરેલા PC</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>રિમોટ લિંક માટે તમે જેમની સાથે પેર કર્યું છે તે PC. કોઈ એકને જોડાતું અટકાવવા તેને રદબાતલ કરો. તેણે ફરી પેર કરવું પડશે.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>રદબાતલ કરો</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>બધા રદબાતલ કરો</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>નામ બદલો</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ટચપેડ ઓવરલે</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation-સુસંગત ટચપેડ ઇમ્યુલેશન માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ટચ સ્ક્રીન કે માઉસ માટે, PlayStation ટચપેડ ગેમ માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ટચપેડ ઓવરલે સક્ષમ કરો</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>અપારદર્શકતા</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>સ્થાન રીસેટ કરો</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>સેટિંગ્સ</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>સામાન્ય</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>ઇનપુટ</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>હાર્ડવેર</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>ડ્રાઇવર</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>ડેટા અને ગોપનીયતા</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>સેટિંગ્સ શોધો</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>“{0}” સાથે કોઈ સેટિંગ મેળ ખાતું નથી.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>દેખાવ</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>તમારી પસંદગીની દૃશ્ય થીમ પસંદ કરો.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>થીમ</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ઘેરી</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>ઇનપુટ એન્જિન</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>પોલિંગ વર્તન અને બૅકગ્રાઉન્ડ પ્રોસેસિંગ ગોઠવો.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>હાર્ડવેર સપોર્ટ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>લૉન્ચ પર એન્જિન આપોઆપ શરૂ કરો</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>વિન્ડો ફોકસ ગુમાવે ત્યારે પણ પોલિંગ ચાલુ રાખો</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>પોલિંગ અંતરાલ (પ્રોફાઇલ ઓવરરાઇડ ન કરે ત્યારે)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} પર અપડેટ થયું.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>નાનું કરીને શરૂ કરો</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>લૉગિન પર શરૂ કરો</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide ડ્રાઇવર</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ડબલ ઇનપુટ ટાળવા ભૌતિક ઉપકરણોને ગેમ્સથી છુપાવો.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>ડબલ ઇનપુટ ટાળવા ભૌતિક ઉપકરણોને ગેમ્સથી છુપાવે છે.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide વિકલ્પો</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ગેમ્સથી ઉપકરણો છુપાવો, લૉન્ચ વચ્ચે ઉપકરણો ક્લોક રાખો, વ્હાઇટલિસ્ટ કરેલી ઍપ્લિકેશન</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>વ્હાઇટલિસ્ટ કરેલી ઍપ્લિકેશન</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>આ ઍપ્લિકેશન હજુ છુપાવેલા ઉપકરણો જોઈ શકે છે. PadForge હંમેશા આપોઆપ વ્હાઇટલિસ્ટ થયેલું હોય છે.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>ઉમેરો...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro ડ્રાઇવર</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>યુઝર-મોડ વર્ચ્યુઅલ HID કંટ્રોલર એન્જિન. PadForge.App માં સમાવિષ્ટ. પ્રથમ વર્ચ્યુઅલ કંટ્રોલર બનાવતી વખતે આપોઆપ ઇન્સ્ટોલ થાય છે. v3 માં ViGEmBus અને vJoy ની જગ્યા લે છે.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge આ ડ્રાઇવર તમે બનાવેલા પહેલા વર્ચ્યુઅલ કંટ્રોલર સાથે ઇન્સ્ટૉલ કરે છે. અનઇન્સ્ટૉલ HIDMaestro એ આ PC પર જે છોડ્યું છે તેની યાદી દૂર કરતા પહેલાં બતાવે છે.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલર બનાવે છે.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro અનઇન્સ્ટોલ કરો</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>HIDMaestro ને આ PC માંથી દૂર કરે છે: તેના વર્ચ્યુઅલ કંટ્રોલર, ડ્રાઇવર, સહી પ્રમાણપત્ર, રજિસ્ટ્રી કી અને ફાઇલો. PadForge પહેલા તેનું એન્જિન બંધ કરે છે. HIDMaestro વાપરતા અન્ય પ્રોગ્રામ ફરી શરૂ થાય ત્યાં સુધી તેનો ડ્રાઇવર ગુમાવે છે. PadForge આગલી વાર વર્ચ્યુઅલ કંટ્રોલર શરૂ કરે ત્યારે તેને ફરી ઇન્સ્ટૉલ કરે છે.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 ના પોતાના ઇન્સ્ટૉલરથી સેટ કરેલું usbip-win2 પણ દૂર કરો</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>આ PC માંથી શું દૂર થશે તે આ છે. PadForge આગલા વર્ચ્યુઅલ કંટ્રોલર સાથે HIDMaestro ફરી ઇન્સ્ટૉલ કરે છે.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 પણ દૂર કરો</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>જૂના PadForge વર્ઝન usbip-win2 ને usbip-win2 ના ઇન્સ્ટૉલરથી સેટ કરતા હતા. આ તે સેટઅપ પણ દૂર કરે છે, તેના USB રૂટ હબ ફિલ્ટર સહિત, સિવાય કે બીજો પ્રોગ્રામ usbip-win2 વાપરતો હોય. ફિલ્ટર દૂર કરવાથી દરેક USB 3 રૂટ હબ ફરી શરૂ થાય છે, તેથી USB ઉપકરણો થોડી વાર માટે ડિસ્કનેક્ટ થાય છે.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>આ PC પર HIDMaestro એ જે છોડ્યું તે વાંચી રહ્યા છીએ…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro એ આ PC પર દૂર કરવા જેવું કંઈ છોડ્યું નથી.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>રહે છે: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>વાંચી શકાયું નથી: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>દૂર કર્યું નથી: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth ડ્રાઇવર</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>દૂર કર્યું</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>રાખ્યું</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>વાંચ્યું નથી</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>દૂર કર્યું નથી</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 કંટ્રોલર, PlayStation Move અને Navigation કંટ્રોલરને Bluetooth પર જોડાવા દે છે. PadForge માં સમાવિષ્ટ છે અને તેમાંથી કોઈ એક પ્રથમ વાર પેર થાય ત્યારે ઇન્સ્ટૉલ થાય છે.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 કંટ્રોલરને Bluetooth દ્વારા જોડે છે.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3 અનઇન્સ્ટોલ કરો</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>આ PC માંથી BthPS3 દૂર કરે છે: તેના ડ્રાઇવર, તે Bluetooth માં ઉમેરે છે તે ફિલ્ટર, અને પેરિંગ માટે PadForge એ PlayStation 3 કંટ્રોલરને આપેલો WinUSB ડ્રાઇવર. PadForge પહેલા તેનું એન્જિન બંધ કરે છે, અને ડ્રાઇવર અનલોડ થાય ત્યારે Bluetooth થોડા સમય માટે બંધ થાય છે. ત્યારબાદ PlayStation 3, Move અને Navigation કંટ્રોલર ફક્ત USB પર કામ કરે છે. તેમાંથી કોઈ એકને પેર કરવાથી BthPS3 ફરી ઇન્સ્ટૉલ થાય છે.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>આ PC માંથી શું દૂર થશે તે આ છે. ત્યારબાદ PlayStation 3, Move અને Navigation કંટ્રોલર ફક્ત USB પર કામ કરે છે, જ્યાં સુધી તેમાંથી કોઈ એકને પેર કરવાથી BthPS3 ફરી ઇન્સ્ટૉલ ન થાય.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>આ PC પર BthPS3 એ જે છોડ્યું તે વાંચી રહ્યા છીએ…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 એ આ PC પર દૂર કરવા જેવું કંઈ છોડ્યું નથી.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini આ ડ્રાઇવર વાપરે છે, તેથી તે ઇન્સ્ટૉલ હોય ત્યાં સુધી તે રહે છે.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth પાછું ચાલુ થયું નથી. Windows સેટિંગ્સમાં તેને ચાલુ કરો.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>વર્ચ્યુઅલ MIDI પોર્ટ અને MIDI ઇનપુટ. Windows 11 25H2 માં નવેમ્બર 2026 ના અંતના અપડેટથી API સામેલ છે. અન્ય PC Windows MIDI Services રનટાઇમ વાપરે છે, જે PadForge ઇન્સ્ટોલ કરી શકે છે, અથવા લેગસી MIDI API.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>વર્ચ્યુઅલ MIDI પોર્ટ અને MIDI ઇનપુટ.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows માં સમાવિષ્ટ</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK રનટાઇમ</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>ઉપલબ્ધ નથી</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>આ Microsoft ના Windows MIDI Services રનટાઇમ અને ટૂલ્સને દૂર કરે છે, MIDI Settings ઍપ, MIDI કન્સોલ અને PowerShell મોડ્યુલ સાથે. Microsoft હવે તેમને ડાઉનલોડ માટે આપતું નથી, તેથી તેમને ફરી ઇન્સ્ટોલ કરી શકાતા નથી.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>વર્ચ્યુઅલ VR કંટ્રોલર માટે VR રનટાઇમ. Steam એકાઉન્ટ કે Steam ક્લાયન્ટ વિના Valve ના સર્વરથી ઇન્સ્ટોલ થાય છે (કેટલાક GB).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>વર્ચ્યુઅલ VR કંટ્રોલર માટે રનટાઇમ.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>ઇન્સ્ટોલ સ્થાન</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR અનઇન્સ્ટોલ કરો</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>આ {0} પર Steam વિનાનું SteamVR ઇન્સ્ટોલ દૂર કરે છે અને કેટલાક GB ખાલી કરે છે. SteamVR ફરી ઇન્સ્ટોલ ન થાય ત્યાં સુધી VR વર્ચ્યુઅલ કંટ્રોલર કામ કરશે નહીં.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>ડાયગ્નોસ્ટિક્સ</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>સંસ્કરણની માહિતી, સાથે મુશ્કેલીનિવારણ માટે એન્જિન ઇવેન્ટ લૉગિંગ.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>ડાયગ્નોસ્ટિક્સ લૉગ રાખો</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>નીચે બતાવેલા ફોલ્ડરમાં diagnostics.log માં એન્જિન ઇવેન્ટ સતત લખે છે. ફરી શરૂ કર્યા પછી પણ સક્ષમ રહે છે. ફાઇલ 8 MB એ પહોંચે ત્યારે diagnostics.log.old માં ફેરવાય છે.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>એન્જિન ઇવેન્ટ સતત લોગ ફોલ્ડરમાં diagnostics.log માં લખે છે, જેને લૉગ ફોલ્ડર ખોલો ખોલે છે. ફરી શરૂ કર્યા પછી પણ સક્ષમ રહે છે. ફાઇલ 8 MB એ પહોંચે ત્યારે diagnostics.log.old માં ફેરવાય છે.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>સ્નૅપશૉટ સાચવો</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>તાજેતરની એન્જિન ઇવેન્ટ નવી ફાઇલમાં સાચવે છે. ડાયગ્નોસ્ટિક્સ લૉગ બંધ હોય ત્યારે પણ કામ કરે છે.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>લૉગ ફોલ્ડર ખોલો</value></data>
@@ -584,50 +691,89 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>વિશે</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>કંટ્રોલર મેપિંગ યુટિલિટી</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>અપ ટુ ડેટ.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>દસ્તાવેજીકરણ</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>અપડેટ તપાસો</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce નો નવો ફોર્ક, SDL3, WPF અને .NET 10 સાથે ફરી બનાવેલો</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge કોઈપણ ઇનપુટ ઉપકરણને કોઈપણ વર્ચ્યુઅલ કંટ્રોલરમાં ફેરવે છે. ગેમપેડ, જોયસ્ટિક, કીબોર્ડ, માઉસ અને ટચસ્ક્રીનને વર્ચ્યુઅલ ગેમ કંટ્રોલર (Xbox, PlayStation, ફ્લાઇટ સ્ટિક, વ્હીલ, થર્ડ-પાર્ટી ગેમપેડ) અથવા કીબોર્ડ+માઉસ / MIDI આઉટપુટ પર મેપ કરવામાં આવે છે, જેને ગેમ્સ વાસ્તવિક હાર્ડવેર ગણે છે. HIDMaestro અને Windows MIDI Services દ્વારા સંચાલિત. કંટ્રોલર ઇનપુટ માટે SDL3, કીબોર્ડ અને માઉસ માટે Windows Raw Input, ગેમ-દીઠ ઉપકરણ માસ્કિંગ માટે HidHide વાપરે છે, અને મેપિંગ, ડેડઝોન, સંવેદનશીલતા વળાંકો અને ફોર્સ ફીડબેક માટે Fluent Design ઇન્ટરફેસ આપે છે.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>ઝાંખી</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>આનાથી બનેલું</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>શ્રેય શોધો</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>બધા શ્રેય બતાવો</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>ઓછા શ્રેય બતાવો</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}” સાથે કોઈ શ્રેય મેળ ખાતો નથી.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>રનટાઇમ અને WPF ફ્રેમવર્ક. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>રનટાઇમ અને WPF ફ્રેમવર્ક.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>કંટ્રોલર ઇનપુટ અને એન્યુમરેશન. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>કંટ્રોલર ઇનપુટ અને એન્યુમરેશન.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>ઉપકરણ-દીઠ કીબોર્ડ અને માઉસ ઇનપુટ</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>વર્ચ્યુઅલ MIDI ઉપકરણ આઉટપુટ (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>વર્ચ્યુઅલ MIDI ઉપકરણ આઉટપુટ (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D કંટ્રોલર વિઝ્યુલાઇઝેશન. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D કંટ્રોલર વિઝ્યુલાઇઝેશન.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF માટે Fluent 2 ડિઝાઇન સિસ્ટમ. Wpf.Ui.dll માં VirtualizingWrapPanel, fluentui-system-icons ફોન્ટ અને WPF તથા microsoft-ui-xaml નો કોડ છે. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF માટે Fluent 2 ડિઝાઇન સિસ્ટમ. Wpf.Ui.dll માં VirtualizingWrapPanel, fluentui-system-icons ફોન્ટ અને WPF તથા microsoft-ui-xaml નો કોડ છે.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>ડેટા બાઇન્ડિંગ માટે CommunityToolkit.Mvvm. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>ડેટા બાઇન્ડિંગ માટે CommunityToolkit.Mvvm.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly ના “Xbox Series Button Icons and Controls” પરથી લીધેલા સ્ટિક અને ટ્રિગર આઇકન (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly ના “Xbox Series Button Icons and Controls” પરથી લીધેલા સ્ટિક અને ટ્રિગર આઇકન.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>ટચપેડ આકાર-ટેમ્પલેટ મેચર (Circle / Square / Triangle / Z / Checkmark અને કસ્ટમ રેકોર્ડ કરેલા હાવભાવ). Magrofuoco, Vatavu, Anthony અને Wobbrock ના JavaScript સંદર્ભનું C# પુનઃવ્યુત્પત્તિ. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>ટચપેડ આકાર-ટેમ્પલેટ મેચર (Circle / Square / Triangle / Z / Checkmark અને કસ્ટમ રેકોર્ડ કરેલા હાવભાવ). Magrofuoco, Vatavu, Anthony અને Wobbrock ના JavaScript સંદર્ભનું C# પુનઃવ્યુત્પત્તિ.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>કીબોર્ડ + માઉસ પ્રીવ્યૂ જે કીબોર્ડ દોરે છે તેની કી સ્થિતિઓ અને બેઝ-લેયર કી, QMK ના લેઆઉટ ડેટા અને Keychron ના QMK ફોર્કમાંથી બનાવેલ. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>કીબોર્ડ + માઉસ પ્રીવ્યૂ જે કીબોર્ડ દોરે છે તેની કી સ્થિતિઓ અને બેઝ-લેયર કી, QMK ના લેઆઉટ ડેટા અને Keychron ના QMK ફોર્કમાંથી બનાવેલ.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>એકલ-આંગળીના આકારો પર પોઇન્ટ-ક્લાઉડ મેચર સાથે ચાલતો કોણીય-માર્જિન સ્કોરિંગ અભિગમ. GestureSign ના PointPatternAnalyzer માંના સ્કોરિંગ વિચારને મૂળ C# માં અમલમાં મૂકે છે. GPL-2.0, ફક્ત દસ્તાવેજીકરણ.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>એકલ-આંગળીના આકારો પર પોઇન્ટ-ક્લાઉડ મેચર સાથે ચાલતો કોણીય-માર્જિન સ્કોરિંગ અભિગમ. GestureSign ના PointPatternAnalyzer માંના સ્કોરિંગ વિચારને મૂળ C# માં અમલમાં મૂકે છે. ફક્ત દસ્તાવેજીકરણ.</value></data>
   <data name="About_License" xml:space="preserve"><value>લાઇસન્સ</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>આ સોફ્ટવેર CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) હેઠળ લાઇસન્સ થયેલું છે. AL2009man નું Gamepad-Asset-Pack (MIT) 2D કંટ્રોલર એસેટ પૂરા પાડે છે. TransposonY નું GestureSign (GPL-2.0) AngularMarginRecognizer માટે દસ્તાવેજીકરણ તરીકે વાંચવામાં આવ્યું હતું, અને તેનો કોઈ કોડ સાથે મોકલાતો નથી. Handheld Companion (CC BY-NC-SA 4.0) Xbox 360 અને Steam Deck 3D મૉડલ આપે છે જેને PadForge અપનાવે છે. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services અને WPF UI MIT લાઇસન્સ હેઠળ છે. OpenXInput ફક્ત અપસ્ટ્રીમ ટ્રેડમાર્ક અસ્વીકરણ સાથે આવે છે અને સમાન શરતો હેઠળ જેમ છે તેમ ફરી વિતરિત થાય છે. Magrofuoco, Vatavu, Anthony અને Wobbrock નું $Q Recognizer (BSD 3-Clause) ટચપેડ ShapeRecognizer માટે સંદર્ભ છે, જે C# પુનઃવ્યુત્પત્તિ છે. SDL3 zlib લાઇસન્સ હેઠળ છે. x360ce (LGPL-3.0-or-later) એ મૂળ કોડબેઝ છે જેમાંથી PadForge ફોર્ક થયું. Igor Budzhak નું Zergatul.Obs.InputOverlay (MIT) માઉસ આર્ટવર્ક પૂરું પાડે છે.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK લોડર)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD શૈલી</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio લાઇસન્સ શરતો</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK શરતો</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>ફક્ત ટ્રેડમાર્ક અસ્વીકરણ</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>કોઈ શરતો જણાવી નથી</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>કંઈ પ્રકાશિત નથી</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>અનેક લાઇસન્સ</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>યુઝર-મોડ વર્ચ્યુઅલ HID કંટ્રોલર એન્જિન (ViGEmBus અને vJoy ની જગ્યા લે છે). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>યુઝર-મોડ વર્ચ્યુઅલ HID કંટ્રોલર એન્જિન (ViGEmBus અને vJoy ની જગ્યા લે છે).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput નો ડ્રૉપ-ઇન વિકલ્પ. PadForge ના પોતાના વર્ચ્યુઅલ કંટ્રોલરને તેના પોતાના દૃશ્યમાંથી ફિલ્ટર કરે છે. અપસ્ટ્રીમ ટ્રેડમાર્ક અસ્વીકરણ, કોઈ OSS લાઇસન્સ નહીં.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput નો ડ્રૉપ-ઇન વિકલ્પ. PadForge ના પોતાના વર્ચ્યુઅલ કંટ્રોલરને તેના પોતાના દૃશ્યમાંથી ફિલ્ટર કરે છે.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ભૌતિક ઉપકરણોને ગેમ્સથી છુપાવવા માટેનો કર્નલ ડ્રાઇવર. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ભૌતિક ઉપકરણોને ગેમ્સથી છુપાવવા માટેનો કર્નલ ડ્રાઇવર.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>એક આમંત્રણ</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>પ્રભુ ઈસુ ખ્રિસ્તને મહિમા, સન્માન અને સ્તુતિ, જે સર્વ સત્ય અને ઉદ્ધારનો સ્રોત છે, સદાકાળ સુધી.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>હેડફોન આઉટપુટ માટે Bauer stereophonic-to-binaural crossfeed. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>હેડફોન આઉટપુટ માટે Bauer stereophonic-to-binaural crossfeed.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>બ્લૂટૂથ પર DualSense સ્પીકર ઑડિયો ચલાવતું શુદ્ધ C# Opus એન્કોડર. Logan Stromberg દ્વારા. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>બ્લૂટૂથ પર DualSense સ્પીકર ઑડિયો ચલાવતું શુદ્ધ C# Opus એન્કોડર. Logan Stromberg દ્વારા.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga દ્વારા DualSense બ્લૂટૂથ ઑડિયો સંશોધન: કંટ્રોલર સ્પીકર સ્ટ્રીમ જેના પર ચાલે છે તે પૅકેટ ટ્રાન્સપોર્ટ. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga દ્વારા DualSense બ્લૂટૂથ ઑડિયો સંશોધન: કંટ્રોલર સ્પીકર સ્ટ્રીમ જેના પર ચાલે છે તે પૅકેટ ટ્રાન્સપોર્ટ. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol દ્વારા બ્લૂટૂથ સ્પીકર રેસિપી: Opus ફ્રેમિંગ અને પૅકેટ લેઆઉટ. શેર કરેલા તારણો અને પરીક્ષણ માટે TechAntohere નો પણ આભાર. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol દ્વારા બ્લૂટૂથ સ્પીકર રેસિપી: Opus ફ્રેમિંગ અને પૅકેટ લેઆઉટ. શેર કરેલા તારણો અને પરીક્ષણ માટે TechAntohere નો પણ આભાર.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB કંટ્રોલર ઑડિયો પાસથ્રુ માટે સંદર્ભ અમલીકરણ. WujekFoliarz દ્વારા.</value></data>
 
@@ -673,8 +819,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>અક્ષર વિલંબ (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ટાઇપ થતા અક્ષરો વચ્ચે મિલિસેકન્ડ, વધુમાં વધુ 1000. 0 આખો ટેક્સ્ટ એકસાથે ટાઇપ કરે છે.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>નિષ્ક્રિય હોય ત્યારે ડિસ્કનેક્ટ કરો</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>પાવર</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>ઉપકરણ માહિતી</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>વિગતો</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>મિનિટ (0 = ક્યારેય નહીં)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB થી પ્લગ ઇન હોય ત્યારે બ્લૂટૂથ ડિસ્કનેક્ટ કરો</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ક્વિક ચાર્જ. બ્લૂટૂથથી જોડાયેલું આ કંટ્રોલર ચાર્જ થઈ રહ્યાનું જણાવે ત્યારે બ્લૂટૂથ લિંક તોડી દેવામાં આવે છે, જેથી રેડિયો ચલાવ્યા વિના તે ચાર્જ થાય. દીવાલના ચાર્જર સહિત કોઈ પણ USB પાવર સ્રોત ચાલે છે. કેબલ લગાવેલો હોય ત્યારે તમે બ્લૂટૂથ ફરી ચાલુ કરો, તો આગળની વખત અનપ્લગ થાય ત્યાં સુધી તેમાં ફેરફાર કરવામાં આવતો નથી.</value></data>
@@ -698,10 +843,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>આ PlayStation પેડ પાસેથી તેની દિશાઓ સીધી માગે છે, જેથી ડાન્સ મેટ પર પહેલા પગલાથી જ ડાબે અને જમણે, અથવા ઉપર અને નીચે, એકસાથે નોંધાય. તે ઉપર, નીચે, ડાબું અને જમણું તીર બટન તરીકે આવે છે, જે ફર્મવેર 3.34 પણ સામસામી દિશાઓ દબાયા પછી જાતે મોકલે છે, અને ત્યારે PadForge માગવાનું બંધ કરે છે. ત્યાં સુધી એડેપ્ટર પેડના તેના મોટા ભાગના પોતાના વાંચન છોડી દે છે.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 દબાણ</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>પ્લેયર નંબર</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>એડેપ્ટર નંબર સંગ્રહે છે અને તે પ્લેયર તરીકે ફરી કનેક્ટ થાય છે. ત્યારે Windows નવું ઉપકરણ જુએ છે, તેથી પોર્ટ પાછું આવે ત્યારે તેને ફરી મેપ કરો.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>એડેપ્ટર નંબર સંગ્રહે છે અને ફરી કનેક્ટ થાય છે, જેને Windows નવા ઉપકરણ તરીકે જુએ છે.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>પ્લેયર</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>પ્લેયર સેટ કરો</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast સ્ક્રીન</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>તમે સાચવો નહીં ત્યાં સુધી પોર્ટ સુધી કંઈ પહોંચતું નથી.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>બતાવો</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>એડેપ્ટરનું ચિત્ર</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>પ્રોફાઇલનું નામ</value></data>
@@ -748,7 +894,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO ને બે Taiko ડ્રમ તરીકે વાંચી રહ્યું છે.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} ને iCade કંટ્રોલર તરીકે વાંચી રહ્યું છે.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} ને ફરી કીબોર્ડ તરીકે વાંચી રહ્યું છે.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>લાઇટ ગન</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>ડિફોલ્ટ લક્ષ્ય શ્રેણી: X {0} થી {1}, Y {2} થી {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>કૅલિબ્રેટ કરેલી લક્ષ્ય શ્રેણી: X {0} થી {1}, Y {2} થી {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>ગન કૅલિબ્રેશન</value></data>
@@ -807,6 +952,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>બધા કીબોર્ડ (મર્જ કરેલા)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>બધા માઉસ (મર્જ કરેલા)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>ઉપકરણો</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} કનેક્ટ થયેલ</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ઉપકરણો શોધો</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>બધા</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>કંટ્રોલર</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>કીબોર્ડ અને માઉસ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>ચેટપૅડ વાંચો</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>ચેટપૅડ અને uDraw ટૅબ્લેટ વાંચો</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ગેમપૅડ વાંચો</value></data>
@@ -827,28 +977,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} ફરી તેના Windows ડ્રાઇવર પર છે.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} માટે Windows ડ્રાઇવર પુનઃસ્થાપિત થઈ શક્યો નહીં.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows એ {0} ને ફરી તેના પોતાના ડ્રાઇવર પર મૂક્યું. તેને ફરી સ્વિચ કરવા ઉપકરણો પેજ પર તે પસંદ કરો.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> ઓનલાઇન / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> કુલ</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>આ ઉપકરણ અને તેના સેટિંગ્સ દૂર કરો</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>ઉપકરણ દૂર કરો</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} ને ઉપકરણ યાદીમાંથી દૂર કરવામાં આવશે અને તેના સાચવેલા સેટિંગ્સ ભૂલી જવામાં આવશે.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>સોંપવા માટે ઉપકરણને સાઇડબારના કંટ્રોલર કાર્ડ પર ખેંચો.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>પ્રોડક્ટ: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>સોંપવા માટે ઉપકરણને સાઇડબારના કંટ્રોલર પર ખેંચો.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>ઉપકરણ મેપિંગ સબમિટ કરો</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>વર્ચ્યુઅલ કંટ્રોલરને સોંપણી</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>સોંપણી ટૉગલ કરો</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>હજી કોઈ વર્ચ્યુઅલ કંટ્રોલર સ્લોટ નથી. આ ઉપકરણ સોંપવા માટે ડેશબોર્ડ પર એક બનાવો.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>ઇનપુટ મોડ</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>આ ઉપકરણને આ કંટ્રોલરને સોંપે છે, અથવા દૂર કરે છે.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>રો જૉયસ્ટિક મોડ ફરજિયાત કરો (ગેમપૅડ રીમેપિંગ બાયપાસ કરો)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL ના ગેમપૅડ મેપિંગને બદલે રો HID ઇન્ડેક્સ વાંચો. SDL બટન/અક્ષનું લેઆઉટ ખોટું ઓળખે ત્યારે વાપરો.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>ઇનપુટ છુપાવવું</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>રમતોથી છુપાવો (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ડ્રાઇવર દ્વારા આ ઉપકરણને અન્ય એપ્લિકેશનોથી સંપૂર્ણપણે છુપાવે છે. PadForge પહેલેથી જોડાયેલા USB કંટ્રોલરને છુપાવે ત્યારે તેને Windows માં ફરી કનેક્ટ કરે છે, તેથી જેણે તેને ખોલેલું હોય તે તેને ગુમાવે છે. બ્લૂટૂથ કંટ્રોલર, અથવા રિસીવર અન્ય કંટ્રોલર સાથે વહેંચતું કંટ્રોલર, છુપાવાયા પહેલાં જેણે તેને ખોલ્યું હોય તેની સાથે તે ફરી કનેક્ટ થાય ત્યાં સુધી રહે છે.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>આ વિકલ્પ ચાલુ કરવા HidHide ડ્રાઇવર ઇન્સ્ટોલ કરો</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>મેપ કરેલા ઇનપુટ અવરોધો (હૂક્સ)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>ફક્ત મેપ કરેલી ચોક્કસ કી/બટનોને દબાવી દે છે, મેપ ન કરેલા ઇનપુટને પસાર થવા દે છે</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>રો ઇનપુટ સ્થિતિ</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>તેનું રો ઇનપુટ તપાસવા ઉપકરણ પસંદ કરો.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>ઇનપુટ ચકાસો</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>તેના સેટિંગ્સ જોવા અને ઇનપુટ ચકાસવા ઉપકરણ પસંદ કરો.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>અક્ષ</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>બટન</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>કીબોર્ડ</value></data>
@@ -1124,27 +1267,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>પસંદ કરેલું ઉપકરણ ક્લોન કરવા માટે કોઈ અક્ષ, બટન કે હૅટ આપતું નથી.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} ને આ સ્લોટ પર 1:1 પાસથ્રુ તરીકે ક્લોન કરવું? લેઆઉટ {1} અક્ષ, {2} બટન અને {3} POV નો બને છે, અને સ્લોટ પર આ ઉપકરણની પંક્તિઓ તેના પોતાના ઇનપુટથી બદલાય છે.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>આ ઉપકરણમાં Extended કંટ્રોલર વહન કરી શકે તેથી વધુ ઇનપુટ છે. {1} માંથી {0} અક્ષ, {3} માંથી {2} બટન અને {5} માંથી {4} POV મેપ થયા. બાકીના મેપ કર્યા વિના રહ્યા.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>આયાત કરેલી પ્રોફાઇલ</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>વપરાશકર્તાએ આયાત કરેલી HIDMaestro પ્રોફાઇલ PadForge.xml ની અંદર સંગ્રહાય છે અને દરેક Extended સ્લોટની પ્રોફાઇલ ડ્રોપડાઉનમાં દેખાય છે. નીચેથી જોડાયેલા ઉપકરણમાંથી નવી મેળવો, અથવા હાલની નિકાસ / ડિલીટ કરો.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>તમારી આયાત કરેલી પ્રોફાઇલ ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>આયાત માટે ઉપલબ્ધ જોડાયેલા ઉપકરણો</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>કંટ્રોલર પ્રીસેટ</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge જે મોકલતું નથી તેવા કંટ્રોલર માટે ફાઇલમાંથી અથવા કંટ્રોલરમાંથી જ પ્રીસેટ ઉમેરો.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>આયાત કરેલ</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>જોડાયેલ ઉપકરણમાંથી આયાત કરો</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>નિકાસ કરો…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ડિલીટ કરો</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>બંધ કરો</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>પ્રોફાઇલ JSON નિકાસ કરો</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>આયાત કરેલી પ્રોફાઇલ ડિલીટ કરવી?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" ડિલીટ કરવી? હાલ આ પ્રોફાઇલ વાપરતો કોઈ પણ સ્લોટ કૃત્રિમ Custom એન્ટ્રી પર પાછો જશે.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>પ્રીસેટ કાઢી નાખવું?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} વાપરતું કોઈપણ કંટ્રોલર Custom એન્ટ્રી પર પાછું જાય છે. આ પાછું લાવી શકાતું નથી.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} માં નિકાસ કર્યું</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>નિકાસ નિષ્ફળ: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" ડિલીટ કરી.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ફાઇલમાંથી આયાત કરો…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ફાઇલ પરથી આયાત કરો…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>પ્રોફાઇલ JSON આયાત કરો</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} માંથી આયાત કર્યું.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>વાંચન નિષ્ફળ: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro એ આ પ્રોફાઇલને {1} પર નકારી: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>આ પ્રોફાઇલમાં HID ડિસ્ક્રિપ્ટર નથી, તેથી તેમાંથી કોઈ કંટ્રોલર બનાવી શકાય નહીં.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>કંઈ આયાત થયું નથી. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>રિફ્રેશ</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>આયાત કરો</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(નામ વગરનું HID ઉપકરણ)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID ઇન્ટરફેસ મળ્યા.</value></data>
@@ -1429,6 +1570,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>કેન્દ્ર</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ડેડઝોન</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>કેન્દ્ર ઑફસેટ, ડેડઝોન આકાર અને દરેક અક્ષનાં મૂલ્ય, દરેક અક્ષ માટે વળાંક, શ્રેણી, સ્ટીયરિંગ</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>સંખ્યાઓમાં શ્રેણી, રો મૂલ્યો</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>શ્રેણી</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“સીમા કૅલિબ્રેટ કરો” સ્ટિક જ્યાં સુધી પહોંચી શકે તે કિનારી માપે છે અને તેને પૂર્ણ વર્તુળનો આકાર આપે છે. ચાર સ્લાઇડર માત્ર દરેક દિશા પર મર્યાદા મૂકે છે.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>નમૂના લઈ રહ્યું છે...</value></data>
@@ -1961,21 +2103,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>આકાર મેળ થ્રેશોલ્ડ રીસેટ કરો</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>ટચપેડ હાવભાવ રેકોર્ડ કરો</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>નીચેની સપાટી પર હાવભાવ દોરો. ડાયલોગ તમે મૂકેલી દરેક આંગળી કૅપ્ચર કરે છે. જ્યારે તમે બધી આંગળીઓ સપાટી પરથી ઉઠાવો ત્યારે નમૂનો રેકોર્ડ થાય છે. અગાઉના નમૂનાઓથી અલગ આંગળીઓની સંખ્યા સાથે દોરવાથી સ્ટેક રીસેટ થાય છે.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>કૅનવાસ પર આંગળીના સંપર્કની રાહ જોઈ રહ્યા છીએ</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>હાવભાવ રેકોર્ડ કરો</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>કંટ્રોલરના ટચપેડ પર આકાર દોરો. તે મેપ કરી શકાય તેવો ઇનપુટ બને છે.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>હાવભાવ અહીં દોરો.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>ટચપેડ પર દોરો. કૅનવાસ તેને જીવંત દર્શાવે છે.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}, ટચપેડ {1} પરથી રેકોર્ડ થઈ રહ્યું છે</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>આ ટચપેડ</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ટચપેડ ઉપલબ્ધ નથી. નીચેના કૅનવાસનો માઉસ અથવા ટચથી ઉપયોગ કરો.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>ટચપેડ ઉપલબ્ધ નથી. અહીં માઉસ, પેન કે આંગળીથી દોરો.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>દોરી રહ્યા છીએ…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>બધા નમૂના કૅપ્ચર થયા. હાવભાવનું નામ આપો અને સાચવો પર ક્લિક કરો.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>નમૂનો {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} નમૂના</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>કૅપ્ચર કરવાના નમૂના</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 સામાન્ય છે. વધુ નમૂના = વધુ મજબૂત મેળ, ઓછા = ઝડપી રેકોર્ડિંગ.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>કૅપ્ચર કરવાના નમૂના</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 સામાન્ય છે. વધુ નમૂના વધુ ચોક્કસ મેળ આપે છે, અને ઓછા નમૂના રેકોર્ડ કરવામાં ઝડપી છે.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>નામ</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>ફરી પ્રયત્ન કરો</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>આ હાવભાવને નામ આપો</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>નામ જરૂરી છે</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>નામ ખૂબ લાંબું છે (મહત્તમ 64 અક્ષર)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>નામમાં અમાન્ય અક્ષરો છે</value></data>
@@ -2298,41 +2441,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>પ્રોફાઇલ્સ</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>પ્રોફાઇલ સંચાલન</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>દરેક એપ્લિકેશન માટે કંટ્રોલર પ્રોફાઇલ બનાવો, જે સક્રિય ગેમ મુજબ આપમેળે બદલાય છે.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>અગ્રભૂમિ એપ્લિકેશન મુજબ પ્રોફાઇલ આપમેળે બદલો</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>પ્રોફાઇલ એ સંપૂર્ણ સેટઅપ છે: તેના કંટ્રોલર, મેપિંગ અને ટ્યુનિંગ.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>પ્રારંભિક પ્રોફાઇલ</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>આખી શૈલી માટે તૈયાર પ્રોફાઇલ. એક પસંદ કરો, કોઈપણ કંટ્રોલર સોંપો અને રમો.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ગેમ પ્રમાણે પ્રોફાઇલ બદલો</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>આપોઆપ બદલવું</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, તેના માટે કોઈ પ્રોફાઇલ સેટ નથી</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, જે {1} લોડ કરે છે</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>હમણાં આગળ: {0}, અને હજી કોઈ પ્રોફાઇલમાં ગેમ સેટ નથી</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>લૉન્ચર અને સ્ક્રિપ્ટને બાહ્ય નિયંત્રણની મંજૂરી આપો</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>સ્થાનિક નેમ્ડ પાઇપ PadForge.Control ચલાવે છે, જેથી Playnite, LaunchBox અથવા સ્ક્રિપ્ટ પ્રોફાઇલ સક્રિય અને નિષ્ક્રિય કરી શકે. આ રીતે સક્રિય કરેલી પ્રોફાઇલ સ્ક્રિપ્ટ તેને મુક્ત કરે અથવા તમે જાતે પ્રોફાઇલ બદલો ત્યાં સુધી સક્રિય રહે છે. ફક્ત સ્થાનિક મશીન.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>બાહ્ય નિયંત્રણ</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>સક્રિય પ્રોફાઇલ:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>કોઈ સ્લોટ નથી</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>ઑટો-સ્વિચ: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>કોઈ કંટ્રોલર નથી</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>પ્રોફાઇલ આયાત કરવા માટે છોડો</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>નવી</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>પ્રોફાઇલ ફાઇલ અહીં છોડો</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>નવી પ્રોફાઇલ</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>આ રીતે સાચવો</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>હાલનું સેટઅપ અહીં સાચવો</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>ફેરફાર કરો</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>લોડ કરો</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>હજી કોઈ પ્રોફાઇલમાં એક્ઝિક્યુટેબલ નથી</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>બિલ્ટ-ઇન</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>પહેલા પ્રોફાઇલ પસંદ કરો.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>બિલ્ટ-ઇન ડિફોલ્ટ પ્રોફાઇલ સંપાદિત કે કાઢી નાખી શકાતી નથી.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>પ્રોફાઇલ કાઢી નાખો</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" કાઢી નાખવી? તેનો સાચવેલ સ્લોટ અને મેપિંગ સ્નેપશોટ નાશ પામશે.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>કોઈ ગેમ સેટ નથી</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} માટે લોડ થાય છે</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} માટે સેટ</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>સક્રિય</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} માટે વધુ</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} કાઢી નાખવું?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>પ્રોફાઇલ અને તેનો ઑટો સ્વિચ નિયમ દૂર થાય છે. આ પાછું લાવી શકાતું નથી.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>પ્રોફાઇલ દૂર થાય છે. આ પાછું લાવી શકાતું નથી.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>“{0}” માં સાચવેલા સેટઅપને હાલના સેટઅપથી બદલવું? તેનું નામ અને તેની ગેમ રહેશે.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>બદલો</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>પ્રોફાઇલ તરીકે સાચવો</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>પ્રોફાઇલ સંપાદિત કરો</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>પ્રોફાઇલ નામ:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>નવી પ્રોફાઇલ</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>નામ</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>નવી પ્રોફાઇલ</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>એક્ઝિક્યુટેબલ (અગ્રભૂમિ વિન્ડો સાથે મેળવવા માટે):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>તેને લોડ કરતી ગેમ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>પોલિંગ રેટ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ડિફોલ્ટ (વૈશ્વિક સેટિંગ)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” સક્રિય હોય ત્યારે ઓવરરાઇડ થયેલ: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>દરેક સ્લોટના મેપિંગ અને ઉપકરણ દીઠ સેટિંગ્સનો એક નામ હેઠળ સ્નેપશોટ લે છે. જોડેલા એક્ઝિક્યુટેબલ આપમેળે તેમાં બદલાય છે.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>પ્રોફાઇલનું નામ બદલે છે અને તેને સક્રિય કરતા એક્ઝિક્યુટેબલ અપડેટ કરે છે. સાચવેલા મેપિંગ અને સેટિંગ્સ યથાવત રહે છે.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>દરેક કંટ્રોલરના મેપિંગ અને સેટિંગ્સ એક નામ હેઠળ સાચવે છે. તેની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>પ્રોફાઇલની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>કોઈ કંટ્રોલર વિના શરૂ થાય છે. તેની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>ચાલુ ગેમ ઉમેરો</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>બીજા કોઈ પ્રોગ્રામની વિન્ડો ખુલ્લી નથી.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} દૂર કરો</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>આ પ્રોફાઇલ લોડ હોય ત્યારે પોલિંગ રેટ</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>આમાંથી સેટિંગ્સ કૉપિ કરો...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>સેટિંગ્સ કૉપિ કરવા માટે ઉપકરણ પસંદ કરો:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>આમાંથી કૉપિ કરો</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>{0} ના મેપિંગ અને ઉપકરણ દીઠ ટ્યુનિંગને બીજા કંટ્રોલરના મેપિંગથી બદલો.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>બીજા કંટ્રોલરના મેક્રો {0} માં ઉમેરો.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>સોંપ્યું નથી, પહેલાંના મેપિંગ રાખે છે</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>વ્હાઇટલિસ્ટ કરવા માટે એપ્લિકેશન પસંદ કરો</value></data>
@@ -2374,6 +2538,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>શ્રેણી</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>એન્ટી-ડેડઝોન</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>બિંદુ ઉમેરવા ડબલ-ક્લિક કરો. દૂર કરવા જમણું ક્લિક કરો. ગોઠવવા ખેંચો.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>કર્વ એડિટર</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>ટ્રિગર અક્ષ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2724,8 +2889,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>બેઝ</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>શિફ્ટ લેયર</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>બેઝ ગોઠવો</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>શિફ્ટ લેયર ફ્લાયઆઉટ અને લેયરની પંક્તિમાં બેઝ લેયરનું નામ, આઇકન અને રંગ.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>લેયરનું નામ</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>એક્ટિવેટર ઇનપુટ</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>નામ</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>આનાથી પકડેલું</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>આનાથી દબાવેલું</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>આગલું લેયર આનાથી</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>પાછલું લેયર આનાથી</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>અને આની સાથે</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>ઇનપુટ પસંદ કરો</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>મેપ ન કરેલા નિયંત્રણો</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>બેઝ પર જવા દો</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>કંઈ ન કરો</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>મોડ, ઇનપુટનો પ્રકાર, સમય અને રંગ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>મોડ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>પકડી રાખો</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ટૉગલ</value></data>
@@ -2752,14 +2928,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>ચેક કરેલ હોય ત્યારે, આ લેયરનું ટાર્ગેટ બેઝ હરોળ પર ન જતાં બંધ રહે છે.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>વિલંબ</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>લેયર પ્રતિસાદ આપે તે પહેલાં ઇનપુટ કેટલો સમય દબાવી રાખવો પડે. હોલ્ડ મોડ માટે આ ડિબાઉન્સ છે. ટૉગલ, લૅચ અને સ્ટિકી માટે તે સ્વિચને લાંબું દબાવવું બનાવે છે: દબાણ આ સમય પાર કરે ત્યારે લેયર એક વાર પલટાય છે, અને ટૂંકું ટૅપ કંઈ કરતું નથી. 0 તરત પ્રતિસાદ આપે છે.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>બીજું કૉર્ડ ઇનપુટ</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>અક્ષ થ્રેશોલ્ડ</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>લેયર્સમાંથી સાયકલ કરો</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>ફક્ત લેયરમાં હોય ત્યારે</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>કોઈપણ લેયર</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>પસંદ કરેલું લેયર સક્રિય હોય ત્યારે જ ઇનપુટ ગણાય છે. ઇનપુટ દબાય ત્યારે તપાસ થાય છે અને આખા દબાણ દરમિયાન લાગુ રહે છે. કોઈપણ લેયરનો અર્થ છે કે ઇનપુટ હંમેશાં ગણાય છે. દરેક લેયરના નિકાસ તે જ લેયર પર, બીજા એક્ટિવેટર અથવા સ્વિચ લેયર મેક્રો વડે બનાવો.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>આગલું બટન</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>પાછલું બટન</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>ફરી શરૂઆતથી</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>ચાલુ હોય ત્યારે, છેલ્લા લેયરથી આગળ વધતાં પહેલા પર પાછા ફરે છે, અને પહેલાથી પાછળ જતાં છેલ્લા પર. બંધ હોય ત્યારે, કર્સર છેડે અટકી જાય છે.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>બેઝ સામેલ કરો</value></data>
@@ -2771,18 +2944,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>એક બટન (અથવા POV દિશા) દબાવવાથી લેયર સક્રિય થાય છે.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>સક્રિય કરવા માટે બંને બટન એકસાથે દબાવી રાખવાં પડે. અનેક ઉપકરણો વચ્ચે કૉર્ડ સમર્થિત છે.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>એનાલોગ અક્ષ થ્રેશોલ્ડ મૂલ્યથી આગળ હોય ત્યાં સુધી સક્રિય રહે છે.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>એક્ટિવેટર પકડી રાખો ત્યાં સુધી લેયર સક્રિય રહે છે. છોડો ત્યારે મુક્ત થાય છે.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>તેનું ઇનપુટ પકડેલું હોય ત્યાં સુધી, આ લેયરના મેપિંગ બેઝના મેપિંગને બદલે છે.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>સક્રિય કરવા ટૅપ કરો. મુક્ત કરવા ફરી ટૅપ કરો. લેયર ઘણાં દબાણો સુધી ટકી રહે છે.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>આ લેયરને ચાલુ કરી પકડી રાખવા દબાવો. બેઝ પર પાછા જવા ફરી દબાવો. અલગ લૅચ બટન તેના પોતાના લેયર પર સ્વિચ કરે છે.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>દરેક દબાણ ક્રમબદ્ધ લેયર યાદીમાં આગળ વધે છે. અંતે બેઝ પર પાછું ફરે છે.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>સક્રિય કરવા એક વાર ટૅપ કરો. પછીનું મેપ કરેલું બટન દબાણ લેયર પર ચાલે છે, પછી આપોઆપ મુક્ત થાય છે.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>તેનું પોતાનું કોઈ બટન નથી. તેને સાયકલ નિયંત્રણની કતારમાં ઉમેરો, અને સાયકલ તેના સુધી પહોંચશે.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>બેઝમાંથી મેપ ન કરેલા ટાર્ગેટ વારસામાં લો</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>છોડતી વખતે ચલાવો</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>આ એક્ટિવેટર ચાલે તે પહેલાં બટન છોડાય ત્યાં સુધી રાહ જુએ છે. જો હોલ્ડ વિલંબ સેટ હોય, તો છોડવું ગણાય તે માટે દબાણ એટલો સમય ચાલવું જોઈએ.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>એક્ટિવેટરનું પોતાનું મેપિંગ પણ ચલાવો</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ચેક કરેલ હોય ત્યારે, એક્ટિવેટર બટન તેને સ્રોત તરીકે વાપરતી કોઈપણ હરોળને હજુ ચલાવે છે. એક દબાણ લેયર બદલે છે અને બટનનું પોતાનું મેપિંગ પણ ચલાવે છે. ચેક વગર (ડિફોલ્ટ), એક્ટિવેટરનું દબાણ ફક્ત લેયર બદલવામાં વપરાય છે.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ચેક કરેલ હોય ત્યારે, આ લેયર સ્પષ્ટ રીતે મેપ ન કરે તેવા ટાર્ગેટ બેઝ લેયર પર જાય છે. ચેક વગર (ડિફોલ્ટ), લેયર બેઝને સંપૂર્ણ બદલે છે અને મેપ ન કરેલા ટાર્ગેટ બંધ રહે છે.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>બેઝ પર જવા દો સાથે, આ લેયર જેને મેપ કરતું નથી તે નિયંત્રણો તેમના બેઝ મેપિંગ રાખે છે. કંઈ ન કરો સાથે, લેયર બેઝને સંપૂર્ણ બદલે છે અને તે નિયંત્રણો બંધ રહે છે.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>પરિભ્રમણ શ્રેણી</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>પરિભ્રમણ શ્રેણી સેટ કરો</value></data>
@@ -2985,15 +3157,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>પસંદ કરેલા ઉપકરણમાં ઇનબિલ્ટ સ્પીકર નથી. આ પૅડના મેક્રો અવાજો સિસ્ટમ ડિફોલ્ટ આઉટપુટ પર વાગે છે.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>અવાજ આઉટપુટ રીસેટ કરો</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) નું બ્રાઉઝર DualSense ટેસ્ટ સ્યૂટ: PadForge વર્ચ્યુઅલ પૅડથી ભૌતિક પૅડ પર આગળ મોકલે છે તે Sony ફીચર-રિપોર્ટ CRC ફ્રેમિંગ અને ફર્મવેર ટેસ્ટ કમાન્ડ્સ માટેનો સંદર્ભ. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) નું બ્રાઉઝર DualSense ટેસ્ટ સ્યૂટ: PadForge વર્ચ્યુઅલ પૅડથી ભૌતિક પૅડ પર આગળ મોકલે છે તે Sony ફીચર-રિપોર્ટ CRC ફ્રેમિંગ અને ફર્મવેર ટેસ્ટ કમાન્ડ્સ માટેનો સંદર્ભ.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius દ્વારા DualShock 4 Bluetooth ઑડિયો સંદર્ભ: PadForge ના DS4 સ્પીકર સ્ટ્રીમ માટે રિપોર્ટ ફ્રેમિંગ. SBC એન્કોડર Bluetooth A2DP સ્પેસિફિકેશનમાંથી મૂળ C# અમલીકરણ છે. khallmark ના ds4mac ના પ્રોટોકોલ દસ્તાવેજીકરણ સાથે. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius દ્વારા DualShock 4 Bluetooth ઑડિયો સંદર્ભ: PadForge ના DS4 સ્પીકર સ્ટ્રીમ માટે રિપોર્ટ ફ્રેમિંગ. SBC એન્કોડર Bluetooth A2DP સ્પેસિફિકેશનમાંથી મૂળ C# અમલીકરણ છે. khallmark ના ds4mac ના પ્રોટોકોલ દસ્તાવેજીકરણ સાથે.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>નિકાસ કરો…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>આયાત કરો…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” નિકાસ થઈ.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” આયાત થઈ ({1} સાઉન્ડ પૅકેજ નોંધાયા).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>ફાઇલ વાંચી શકાય તેવી PadForge પ્રોફાઇલ નથી.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} માંથી અવાજ પસંદ કરો</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>સાઉન્ડ પૅકેજ</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>સાઉન્ડ મેક્રો માટે અવાજોની zip ફાઇલો</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>સાઉન્ડ પૅકેજ એટલે .pfsounds એક્સ્ટેન્શનવાળી અવાજોની એક zip ફાઇલ. અહીં એક ઉમેરો, પછી કોઈપણ સાઉન્ડ મેક્રોમાં તેના અવાજો પસંદ કરો. PadForge સીધું ફાઇલમાંથી વાંચે છે અને તેને ક્યારેય અનપૅક કરતું નથી. પોર્ટેબલ રાખવા પૅકેજ PadForge.exe ની બાજુમાં રાખો.</value></data>
@@ -3038,20 +3209,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>ઓળખ સુરક્ષા</value>
+    <value>પેરિંગ ઓળખ</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>આ PC ની પેરિંગ ઓળખ કેવી રીતે સંગ્રહાય છે. મશીનો વચ્ચે થમ્બ ડ્રાઇવ પર તમારાં પેરિંગ સાથે રાખવા પોર્ટેબલ મોડ પસંદ કરો.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>આ PC ને નામ આપો</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>નજીકના PC (પેર કરેલા નથી)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>રીસેટ કરો</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>રિમોટ લિંક પાસવર્ડ</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge ટચપેડ</value>
@@ -3083,9 +3247,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>પેર કરેલું PC</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>ઑનલાઇન</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>ઑફલાઇન</value>
   </data>
@@ -3102,7 +3263,7 @@
     <value>રક્ષણ બદલતાં પહેલાં હાલની ઓળખ અનલૉક કરો.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>તમારી પોર્ટેબલ ઓળખને સુરક્ષિત કરવા પાસવર્ડ સેટ કરો. દરેક PC પર રિમોટ લિંક અનલૉક કરવા તમે તે દાખલ કરશો.</value>
+    <value>પાસવર્ડ આ PC ની પેરિંગ ઓળખને સુરક્ષિત કરે છે.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>ઓળખ સુરક્ષા અપડેટ થઈ.</value>
@@ -3122,7 +3283,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>{0}:{1} સાથે જોડાઈ રહ્યું છે…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>આપોઆપ ફરી જોડાઓ</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>આપોઆપ ફરી જોડાવું</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>{0} પર સાંભળી રહ્યું છે</value>
   </data>
@@ -3141,65 +3302,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>પીઅર {0} જોડાયું, {1} ઉપકરણ</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>ઉમેરેલા પૅકેજમાંથી અવાજ પસંદ કરો, અથવા ફાઇલ બ્રાઉઝ કરો.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>ફાઇલો બ્રાઉઝ કરો…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>અવાજ પસંદ કરો</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>અવાજ કંટ્રોલરના સ્પીકરમાંથી વાગે છે, અથવા તેમાં ન હોય તો PC માંથી.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>અવાજ વાપરો</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>{0} વગાડો</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>કંટ્રોલર-ઑડિયો મિરર અને ઑડિયો-બાસ ટ્રિગર રમ્બલ માટે WASAPI લૂપબૅક કૅપ્ચર. NAudio.Midi, જે PadForge સાથે મોકલાતું નથી, તે લેગસી MIDI API ના WinMM ડિક્લેરેશન અને પોર્ટ ક્રમ માટે, વેલોસિટી 0 વાળી નોટ ઑન એ નોટ ઑફ છે તે નિયમ માટે, અને સસ્ટેન જેવા ઑન/ઑફ કંટ્રોલર માટે પણ સંદર્ભ છે. Mark Heath દ્વારા. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>કંટ્રોલર-ઑડિયો મિરર અને ઑડિયો-બાસ ટ્રિગર રમ્બલ માટે WASAPI લૂપબૅક કૅપ્ચર. NAudio.Midi, જે PadForge સાથે મોકલાતું નથી, તે લેગસી MIDI API ના WinMM ડિક્લેરેશન અને પોર્ટ ક્રમ માટે, વેલોસિટી 0 વાળી નોટ ઑન એ નોટ ઑફ છે તે નિયમ માટે, અને સસ્ટેન જેવા ઑન/ઑફ કંટ્રોલર માટે પણ સંદર્ભ છે. Mark Heath દ્વારા.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>ઑફલાઇન વાણી ઓળખ, જે વૉઇસ મેક્રો શબ્દસમૂહો સાંભળે છે. Alpha Cephei દ્વારા. મૉડેલ PadForge ની અંદર આવે છે. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>ઑફલાઇન વાણી ઓળખ, જે વૉઇસ મેક્રો શબ્દસમૂહો સાંભળે છે. Alpha Cephei દ્વારા. મૉડેલ PadForge ની અંદર આવે છે.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>રિમોટ લિંક પેરિંગ અને ટ્રાન્સપોર્ટ માટે ક્રિપ્ટોગ્રાફી (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, MIT જેવું લાઇસન્સ.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>રિમોટ લિંક પેરિંગ અને ટ્રાન્સપોર્ટ માટે ક્રિપ્ટોગ્રાફી (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius દ્વારા બંડલ કરેલા Bluetooth પ્રોફાઇલ અને PSM ફિલ્ટર ડ્રાઇવર, જે DualShock 3 ને વહેંચાયેલા રેડિયો પર જોડાવા દે છે. પેરિંગ સમયે ઍપમાં ઇન્સ્ટૉલ થાય છે. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius દ્વારા બંડલ કરેલા Bluetooth પ્રોફાઇલ અને PSM ફિલ્ટર ડ્રાઇવર, જે DualShock 3 ને વહેંચાયેલા રેડિયો પર જોડાવા દે છે. પેરિંગ સમયે ઍપમાં ઇન્સ્ટૉલ થાય છે.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer દ્વારા DualShock 3 પ્રોટોકોલ સંદર્ભ: sixpair ફીચર રિપોર્ટ, Bluetooth આઉટપુટ-રિપોર્ટ ટેમ્પ્લેટ, સક્ષમ કરવાનો ક્રમ, બૅટરી નકશો. PadForge નું અમલીકરણ મૂળ C# છે. HIDMaestro ના DualShock 3 (SIXAXIS): Full controller DsHidMini નું SXS-મોડ રિપોર્ટ ડિસ્ક્રિપ્ટર વાપરે છે. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer દ્વારા DualShock 3 પ્રોટોકોલ સંદર્ભ: sixpair ફીચર રિપોર્ટ, Bluetooth આઉટપુટ-રિપોર્ટ ટેમ્પ્લેટ, સક્ષમ કરવાનો ક્રમ, બૅટરી નકશો. PadForge નું અમલીકરણ મૂળ C# છે. HIDMaestro ના DualShock 3 (SIXAXIS): Full controller DsHidMini નું SXS-મોડ રિપોર્ટ ડિસ્ક્રિપ્ટર વાપરે છે.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>nefarius દ્વારા, ઍપમાંના BthPS3 સેટઅપ માટે અને છુપાવેલા USB કંટ્રોલરને મુક્ત કરવા માટે ડ્રાઇવર-સ્ટોર ઇન્સ્ટૉલ, Bluetooth ક્લાસ ફિલ્ટર નોંધણી અને USB પોર્ટ સાયકલિંગ. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>nefarius દ્વારા, ઍપમાંના BthPS3 સેટઅપ માટે અને છુપાવેલા USB કંટ્રોલરને મુક્ત કરવા માટે ડ્રાઇવર-સ્ટોર ઇન્સ્ટૉલ, Bluetooth ક્લાસ ફિલ્ટર નોંધણી અને USB પોર્ટ સાયકલિંગ.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro વાયર્ડ ડ્રાઇવર અને PadForge જેમને WinUSB સાથે બાંધે છે તે કંટ્રોલર માટે USB ઍક્સેસ, libusb-1.0.dll તરીકે મોકલાય છે. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro વાયર્ડ ડ્રાઇવર અને PadForge જેમને WinUSB સાથે બાંધે છે તે કંટ્રોલર માટે USB ઍક્સેસ, libusb-1.0.dll તરીકે મોકલાય છે.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>ફોન વેબ કંટ્રોલરમાં ટચ જોયસ્ટિક, Yoann Moinet દ્વારા. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>ફોન વેબ કંટ્રોલરમાં ટચ જોયસ્ટિક, Yoann Moinet દ્વારા.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>સમુદાયનો ગેમપૅડ મેપિંગ ડેટાબેઝ, જેને PadForge ના બંડલ કરેલા મેપિંગ વિસ્તારે છે. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>સમુદાયનો ગેમપૅડ મેપિંગ ડેટાબેઝ, જેને PadForge ના બંડલ કરેલા મેપિંગ વિસ્તારે છે.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox ગાઇડ બટન LED સંશોધન: XboxGIP પૅકેટ લેઆઉટ અને શોધ ક્રમ, Leclowndu93150 દ્વારા. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox ગાઇડ બટન LED સંશોધન: XboxGIP પૅકેટ લેઆઉટ અને શોધ ક્રમ, Leclowndu93150 દ્વારા.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>વાઇન્ડિંગ-એંગલ સ્ટીયરિંગ અને લીન ગણિત, JibbSmart અને Electronicks દ્વારા. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>વાઇન્ડિંગ-એંગલ સ્ટીયરિંગ અને લીન ગણિત, JibbSmart અને Electronicks દ્વારા.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>પ્લેયર-સ્પેસ અને વર્લ્ડ-સ્પેસ જાયરો રૂપાંતરણ, JibbSmart દ્વારા. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>પ્લેયર-સ્પેસ અને વર્લ્ડ-સ્પેસ જાયરો રૂપાંતરણ, JibbSmart દ્વારા.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) હૅપ્ટિક રિપોર્ટ લેઆઉટ અને નોટ-પિરિયડ ગણિત, Pila અને Roboron3042 દ્વારા. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) હૅપ્ટિક રિપોર્ટ લેઆઉટ અને નોટ-પિરિયડ ગણિત, Pila અને Roboron3042 દ્વારા.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 અને Steam Deck LFO-ટોન હૅપ્ટિક લેઆઉટ, Pila, Crazy અને AAGaming દ્વારા. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 અને Steam Deck LFO-ટોન હૅપ્ટિક લેઆઉટ, Pila, Crazy અને AAGaming દ્વારા.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap મોડ માટે SOCD ક્લીનિંગ સિમેન્ટિક્સ, valignatev દ્વારા. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap મોડ માટે SOCD ક્લીનિંગ સિમેન્ટિક્સ, valignatev દ્વારા.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>અનામી સત્ર દ્વારા Steam Workshop કંટ્રોલર રૂપરેખાઓ મેળવતો Steam નેટવર્ક ક્લાયન્ટ, Ryan Stecker અને SteamRE Team દ્વારા. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Steam વાયર પ્રોટોકોલ માટે SteamKit2 જે વાપરે છે તે Protocol Buffers સિરિયલાઇઝર, Marc Gravell દ્વારા. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Steam વાયર પ્રોટોકોલ માટે SteamKit2 જે વાપરે છે તે Protocol Buffers સિરિયલાઇઝર, Marc Gravell દ્વારા.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam ડેપો ચંક માટે SteamKit2 જે વાપરે છે તે Zstandard ડીકમ્પ્રેશન, Oleg Stepanischev ની zstd લાઇબ્રેરીનું C# પોર્ટ. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Steam ડેપો ચંક માટે SteamKit2 જે વાપરે છે તે Zstandard ડીકમ્પ્રેશન, Oleg Stepanischev ની zstd લાઇબ્રેરીનું C# પોર્ટ.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii પેરિંગ પ્રક્રિયા, સ્પીકર ADPCM, આડા અને ઊભા Wii Remote ઓરિએન્ટેશન, સ્ટિક-ગેટ મૉડેલ અને તેના સંગ્રહ ફૉર્મેટ, અને જાયરો અક્ષ સંમેલન માટે દસ્તાવેજીકરણ. GPL-2.0-or-later, ફક્ત દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ મોકલાતો નથી.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii પેરિંગ પ્રક્રિયા, સ્પીકર ADPCM, આડા અને ઊભા Wii Remote ઓરિએન્ટેશન, સ્ટિક-ગેટ મૉડેલ અને તેના સંગ્રહ ફૉર્મેટ, અને જાયરો અક્ષ સંમેલન માટે દસ્તાવેજીકરણ. ફક્ત દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ મોકલાતો નથી.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock વર્તન દસ્તાવેજીકરણ: નિષ્ક્રિય ડિસ્કનેક્ટ, ટચપેડ સીમાઓ, બૅટરી ડીકોડ, Bluetooth ડિસ્કનેક્ટ IOCTL, DualSense રમ્બલ-મોડ બિટ, જાયરો જિટર વળાંક, સ્ટિક-એઝ-માઉસ સ્કેલ અને Bluetooth આઉટપુટ-રિપોર્ટ CRC સીડ. તેના વર્ચ્યુઅલ કીબોર્ડના કી ટેબલે PadForge ના ટેબલને માર્ગદર્શન આપ્યું. GPL-3.0-or-later, ફક્ત દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ મોકલાતો નથી.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock વર્તન દસ્તાવેજીકરણ: નિષ્ક્રિય ડિસ્કનેક્ટ, ટચપેડ સીમાઓ, બૅટરી ડીકોડ, Bluetooth ડિસ્કનેક્ટ IOCTL, DualSense રમ્બલ-મોડ બિટ, જાયરો જિટર વળાંક, સ્ટિક-એઝ-માઉસ સ્કેલ અને Bluetooth આઉટપુટ-રિપોર્ટ CRC સીડ. તેના વર્ચ્યુઅલ કીબોર્ડના કી ટેબલે PadForge ના ટેબલને માર્ગદર્શન આપ્યું. ફક્ત દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ મોકલાતો નથી.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl ને સમર્થન આપતું GIP LED કમાન્ડ દસ્તાવેજીકરણ. GPL-2.0-or-later, ફક્ત દસ્તાવેજીકરણ.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl ને સમર્થન આપતું GIP LED કમાન્ડ દસ્તાવેજીકરણ. ફક્ત દસ્તાવેજીકરણ.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR કૅમેરા અને Balance Board વર્તન દસ્તાવેજીકરણ, Brian Peek દ્વારા. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR કૅમેરા અને Balance Board વર્તન દસ્તાવેજીકરણ, Brian Peek દ્વારા.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD રમ્બલ વાયર-ફૉર્મેટ દસ્તાવેજીકરણ, Sergey004 દ્વારા. ફક્ત પ્રોટોકોલ તથ્યો માટે વાંચ્યું.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>પેર કરો</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>કંટ્રોલર પેર કરો</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>કંટ્રોલર પેર કરો</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii Remote પેર કરો</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>બેટરીનું કવર ખોલો અને લાલ SYNC બટન દબાવો.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>લાઇટ ઝબકે ત્યાં સુધી રિમોટને આ PC ની નજીક રાખો.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3 પેર કરો</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move અથવા Navigation કંટ્રોલર પેર કરો</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>સિરિયલ કંટ્રોલર ઉમેરો</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI રિમોટ ઉમેરો</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>કંટ્રોલર પરિવાર</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>બૅટરી કવર ખોલો અને લાલ SYNC બટન દબાવો. તમારું કંટ્રોલર દેખાય ત્યાં સુધી PadForge ને શોધતું રહેવા દો.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>અસ્થાયી પેરિંગ (1 અને 2 પકડી રાખો)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>પેર કરો</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>શોધી રહ્યું છે. હવે SYNC બટન દબાવો.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>રિમોટ શોધી રહ્યું છે.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>મળેલાં કંટ્રોલર</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>હજુ કોઈ કંટ્રોલર મળ્યું નથી. ખાતરી કરો કે વાદળી લાઇટ્સ ઝબકે છે.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} પેર થયું. તે તમારી ઉપકરણ યાદીમાં દેખાશે.</value></data>
@@ -3209,7 +3375,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>પૂર્ણ</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve નું OpenVR ક્લાયન્ટ API (BSD 3-Clause): ઇનપુટ સ્રોત તરીકે VR હેડસેટ અને મોશન કંટ્રોલર. નેટિવ રનટાઇમ તમારા પોતાના SteamVR ઇન્સ્ટૉલેશનમાંથી લોડ થાય છે.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve નું OpenVR ક્લાયન્ટ API: ઇનપુટ સ્રોત તરીકે VR હેડસેટ અને મોશન કંટ્રોલર. નેટિવ રનટાઇમ તમારા પોતાના SteamVR ઇન્સ્ટૉલેશનમાંથી લોડ થાય છે.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>ચાલુ છે</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>ચાલુ છે, ડ્રાઇવર જોડાયેલ</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>ચાલુ છે, કંટ્રોલર સક્રિય</value></data>
@@ -3247,13 +3413,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>પેરિંગ પૂર્ણ થયું નહીં. જે પગલું નિષ્ફળ થયું તે ઉપર બતાવ્યું છે.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>બંધ કરો</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ટૅગ</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>ટૅગ નોંધો</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>તેનો UID મેળવવા રીડર પર ટૅગ ટૅપ કરો.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(રાહ જોઈ રહ્યું છે)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>નામ:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>રીડર પર ટેગ ટેપ કરો અને તેને નામ આપો. તે મેપ કરી શકાય તેવું બટન બને છે.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>રીડર પર ટૅગ ટૅપ કરો.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>નામ</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>આ ટેગને નામ આપો</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>નોંધો</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>નોંધાયેલા ટૅગ</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>નોંધાયેલ</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>કોઈ NFC રીડર મળ્યું નથી. PC/SC રીડર જોડો અને ફરી ખોલો.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ટૅગ મળ્યો. નામ દાખલ કરો અને નોંધો પર ક્લિક કરો. બદલવા માટે બીજો ટૅગ ટૅપ કરો.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>“{0}” નોંધાયો. વધુ ઉમેરવા બીજો ટૅગ ટૅપ કરો.</value></data>
@@ -3331,22 +3496,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack શેર્ડ મેમરી પણ ખોલી શકાઈ નહીં.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>છુપાયેલા બટનો શીખો / મેનેજ કરો</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>છુપાયેલા બટનો</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>બટન શીખો</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>પૂછવામાં આવે ત્યારે છુપાયેલું બટન એકવાર દબાવો. PadForge આ મશીન પરના કીબોર્ડ, માઉસ, દરેક વેન્ડર રિપોર્ટ અને દરેક સિસ્ટમ ઇવેન્ટ પર નજર રાખે છે અને બટન જેમાં ફેરફાર કરે છે તેને નોંધે છે.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>મશીન:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>શીખવાનું શરૂ કરો</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Windows કંટ્રોલર તરીકે ન બતાવતું બટન PadForge ને શીખવો. પૂછવામાં આવે ત્યારે તેને દબાવો.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>હાથ હટાવો. નિષ્ક્રિય સ્થિતિ વાંચી રહ્યું છે…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>હવે છુપાયેલું બટન દબાવો, પછી છોડી દો…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>એક ક્ષણ…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>કોઈ ફેરફાર દેખાયો નહીં. હાઇલાઇટ કરેલા સમયગાળા દરમિયાન બટન દબાવો અને ફરી પ્રયાસ કરો.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>હવે બટન દબાવી રાખો.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>બટન છોડી દો.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>પગલું {0} / {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>કોઈ ફેરફાર દેખાયો નહીં. ફરી શરૂ કરો પસંદ કરો, પછી પૂછવામાં આવે ત્યારે બટન દબાવી રાખો.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} વેન્ડર રિપોર્ટ અને {1} ઇવેન્ટ વર્ગો પર નજર રાખી. દબાવતી વખતે: {2} રિપોર્ટ, {3} ઇવેન્ટ.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>બટન મળી ગયું. નામ દાખલ કરો અને નોંધણી કરો પર ક્લિક કરો.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>સ્ત્રોત:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>નામ:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>સ્ત્રોત</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>નામ</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>આ બટનને નામ આપો</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>નોંધણી કરો</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>શીખેલા બટનો</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>ફરી શરૂ કરો</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>હજી કોઈ બટન શીખ્યું નથી.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>“{0}” નોંધાયું. બીજું શીખવા માટે ફરી શરૂ કરો.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>{0} પર શીખ્યા</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>“{0}” નોંધાયું. બીજું શીખવા માટે ફરી શરૂ કરો પસંદ કરો.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>કી: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>છુપાયેલા બટનો બંધ છે. પહેલા સેટિંગ્સમાં હેન્ડહેલ્ડ PC બટનો ચાલુ કરો.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} ચાલી રહ્યું છે. તમે તેને બંધ ન કરો ત્યાં સુધી તે આ બટનો પર પ્રતિક્રિયા આપે છે.</value></data>
@@ -3495,6 +3660,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>સમુદાયે બનાવેલા Steam Input કંટ્રોલર કોન્ફિગરેશન બ્રાઉઝ કરો અને તેમને PadForge પ્રોફાઇલમાં ફેરવો. PadForge ફક્ત ત્યારે જ સીધું Steam ના સર્વર સાથે જોડાય છે જ્યારે તમે શોધો, કોઈ કોન્ફિગ ખોલો, અથવા આયાત કરેલા કોન્ફિગના અપડેટ તપાસો. તે તમારો શોધ લખાણ, સંબંધિત રમતો, કોન્ફિગ અને સર્જકોના id, અને PadForge નું વર્ઝન મોકલે છે. અનામી Steam લૉગોન તમારું Windows વર્ઝન અને તમારા Windows ઇન્સ્ટોલેશન ID, નેટવર્ક એડેપ્ટર સરનામાં અને બૂટ ડિસ્ક સિરિયલના હેશમાંથી બનેલું મશીન id પણ મોકલે છે. કોઈ ટેલિમેટ્રી નથી, કોઈ તૃતીય-પક્ષ સેવા નથી, કોઈ Steam એકાઉન્ટ નથી.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam ના સર્વર સાથે ફક્ત ત્યારે જ જોડાય છે જ્યારે તમે શોધો, કોઈ કોન્ફિગ ખોલો અથવા આયાત કરેલા કોન્ફિગના અપડેટ તપાસો. કોઈ ટેલિમેટ્રી નથી, કોઈ Steam એકાઉન્ટ નથી.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>શું મોકલાય છે</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ સક્ષમ કરો</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>જૂના Workshop કોન્ફિગ બતાવો</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>કેટલાક જૂના કોન્ફિગની ડાઉનલોડ કરી શકાય તેવી ફાઇલ Steam ના CDN પર નથી. PadForge તેમને Legacy બેજ સાથે યાદીમાં બતાવે છે, અને તમે સબ્સ્ક્રાઇબ કરો ત્યારે Steam જે નકલ રાખે છે તે વાંચે છે. ત્યાં સુધી તે કોન્ફિગને Steam Workshop પર ખોલવાની ઓફર કરે છે.</value></data>
@@ -3502,18 +3669,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>આયાત કરેલા પ્રોફાઇલના અપડેટ તપાસો</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop કેશ સાફ થઈ</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ બ્રાઉઝ કરો</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ બ્રાઉઝ કરો</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>પ્રોફાઇલ · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>પ્રોફાઇલ મેળવો</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>તૈયાર પ્રોફાઇલ, કમ્યુનિટી કોન્ફિગ અથવા બીજા ટૂલની ફાઇલથી શરૂ કરો.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>સ્ટાર્ટર</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>કમ્યુનિટી</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>ફાઇલ આયાત કરો</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>સાચવવાથી ફેરફાર કરી શકાય તેવી સામાન્ય પ્રોફાઇલ ઉમેરાય છે.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>ફોર્જ ઠંડી છે</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ બ્રાઉઝ કરવાથી PadForge સીધું Steam સાથે જોડાય છે, ફક્ત જ્યારે તમે શોધો ત્યારે, શરૂઆતમાં ક્યારેય નહીં.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ સક્ષમ કરો</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>રમતો શોધો</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} રમતો</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>રમતો</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam સ્ટોર પર કોઈ રમત મળી નહીં.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam પર શોધી રહ્યું છે…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam માંથી કોન્ફિગ વાંચી રહ્યું છે…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam માંથી કોન્ફિગ વાંચી રહ્યું છે…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>રેટિંગ પ્રમાણે ગોઠવેલ</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>આ પ્રમાણે ગોઠવો</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>આ કોન્ફિગમાં શોધો</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>રેટિંગ</value></data>
@@ -3527,7 +3697,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} મળ્યા</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} માંથી {0} બતાવી રહ્યું છે</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} કોન્ફિગ</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>કમ્યુનિટી કોન્ફિગ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>સંપૂર્ણ કંટ્રોલર સપોર્ટ</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>આંશિક કંટ્રોલર સપોર્ટ</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>રમતો શોધો</value></data>
@@ -3546,8 +3715,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>ફરી પ્રયાસ કરો</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>2016 ના સમયનું આ કોન્ફિગ Steam ના કોન્ફિગ CDN પહેલાનું છે. તેને Steam માં સબ્સ્ક્રાઇબ કરો, અને PadForge તેને તમારા Steam ફોલ્ડરમાંથી વાંચશે.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop માં ખોલો</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>તેનું ભાષાંતર મેનિફેસ્ટ વાંચવા માટે કોઈ કોન્ફિગ પસંદ કરો.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} બાઇન્ડિંગ વંચાયા</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>શું આવે છે તે જોવા કોઈ કોન્ફિગ પસંદ કરો.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>શું આવે છે</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>બને છે</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>કોન્ફિગના બટનો અને સ્ટિક કયા વર્ચ્યુઅલ કંટ્રોલરને મળે તે પસંદ કરે છે. તેની કી અને માઉસ હંમેશા કીબોર્ડ + માઉસ કંટ્રોલરને જાય છે.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>લેયર</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>સ્વચ્છ</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>આંશિક</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>છોડેલા</value></data>
@@ -3612,7 +3784,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>અપડેટ માટે Steam Workshop તપાસી રહ્યું છે…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>આયાત કરેલા પ્રોફાઇલ અદ્યતન છે ({0} તપાસ્યા)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop અપડેટ</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>આ આયાત કરેલા પ્રોફાઇલના Steam Workshop પર નવા વર્ઝન છે. ફેરફારો મેળવવા માટે તેમને કમ્યુનિટી કોન્ફિગ બ્રાઉઝ કરો માંથી ફરી આયાત કરો.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>આ આયાત કરેલા પ્રોફાઇલના Steam Workshop પર નવા વર્ઝન છે. ફેરફારો મેળવવા માટે તેમને પ્રોફાઇલ મેળવો માંથી ફરી આયાત કરો.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>લાંબું દબાવતાં</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>ટૂંકું દબાવતાં</value></data>
@@ -3760,7 +3932,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>મેનૂ {0} સેલ {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>મેનૂ ઓવરલે</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>ઓવરલે</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>તમે રમો ત્યારે PadForge બતાવે છે તે ઑન-સ્ક્રીન સૂચકો. એકને બંધ કરવાથી વર્તન ક્યારેય બદલાતું નથી, ફક્ત તે જાહેર થાય છે કે નહીં તે બદલાય છે.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>તમે રમો ત્યારે PadForge બતાવે છે તે ઑન-સ્ક્રીન સૂચકો. એકને બંધ કરવાથી વર્તન ક્યારેય બદલાતું નથી, ફક્ત તે બતાવાય છે કે નહીં તે બદલાય છે.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>શિફ્ટ લેયર ફ્લાયઆઉટ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>પ્રોફાઇલ સ્વિચ ઓવરલે</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>રેડિયલ કે ટચ મેનૂ સક્રિય હોય ત્યારે ઑન-સ્ક્રીન રિંગ કે ગ્રિડ બતાવો. ઓવરલે બંધ હોય ત્યારે પણ મેનૂ ચાલે છે.</value></data>
@@ -3810,6 +3982,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>આ ચેનલ માટે ટોન આવૃત્તિ, 20 થી 120 Hz. તમારું શેકર ક્યાં સૌથી વધુ પ્રતિભાવ આપે છે તે શોધવા આવૃત્તિ સ્વીપ ચલાવો.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>માસ્ટર ગેઇન પહેલાં આ ચેનલની લાઉડનેસ.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ગેઇન</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>આવૃત્તિ</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>ટેસ્ટ</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>આ ચેનલનો ટોન તેના સેટ ગેઇન પર 1.5 સેકન્ડ માટે વગાડે છે.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>નીચી મોટર રીસેટ કરો</value></data>
@@ -3852,16 +4025,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>ટચપેડ-થી-માઉસ આઉટપુટ માટે ટ્રેકપેડ પોઇન્ટર એક્સેલરેશન વળાંક. libinput ના ટચપેડ એક્સેલ પ્રોફાઇલનું C# પોર્ટ. MIT.</value>
+    <value>ટચપેડ-થી-માઉસ આઉટપુટ માટે ટ્રેકપેડ પોઇન્ટર એક્સેલરેશન વળાંક. libinput ના ટચપેડ એક્સેલ પ્રોફાઇલનું C# પોર્ટ.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D કંટ્રોલર મૉડલ (Xbox 360, Steam Deck) અને 3D વ્યૂનો મૉડલ તથા એનિમેશન કોડ, CasperH2O, Lesueur Benjamin, trippyone દ્વારા. સાથે Steam Deck રિપોર્ટ અને હૅપ્ટિક ડીકોડ, Steam Controller (2015) પાવર-ઓફ રિપોર્ટ, હૅન્ડહેલ્ડ ડેમન વૉચ લિસ્ટ, અપડેટ ચેકનો સમય, અને 500 ms ના અંતરે હબ પોર્ટ સાયકલ માટેનો સંદર્ભ, જે છુપાવેલા USB કંટ્રોલરને ફરી કનેક્ટ કરે છે, જેથી તેને પહેલા ખોલનારા પ્રોગ્રામ તેને ગુમાવે. CC BY-NC-SA 4.0.</value>
+    <value>3D કંટ્રોલર મૉડલ (Xbox 360, Steam Deck) અને 3D વ્યૂનો મૉડલ તથા એનિમેશન કોડ, CasperH2O, Lesueur Benjamin, trippyone દ્વારા. સાથે Steam Deck રિપોર્ટ અને હૅપ્ટિક ડીકોડ, Steam Controller (2015) પાવર-ઓફ રિપોર્ટ, હૅન્ડહેલ્ડ ડેમન વૉચ લિસ્ટ, અપડેટ ચેકનો સમય, અને 500 ms ના અંતરે હબ પોર્ટ સાયકલ માટેનો સંદર્ભ, જે છુપાવેલા USB કંટ્રોલરને ફરી કનેક્ટ કરે છે, જેથી તેને પહેલા ખોલનારા પ્રોગ્રામ તેને ગુમાવે.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D કંટ્રોલર સ્કીમેટિક (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man દ્વારા. MIT.</value>
+    <value>2D કંટ્રોલર સ્કીમેટિક (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), AL2009man દ્વારા.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4 ઑડિયો પ્રોટોકોલ દસ્તાવેજીકરણ: SBC પેરામીટર અને પૅકેટ લેઆઉટ, khallmark દ્વારા. GPL-2.0, માત્ર દસ્તાવેજીકરણ.</value>
+    <value>DualShock 4 ઑડિયો પ્રોટોકોલ દસ્તાવેજીકરણ: SBC પેરામીટર અને પૅકેટ લેઆઉટ, khallmark દ્વારા. માત્ર દસ્તાવેજીકરણ.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>ડેસ્કટૉપ</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>સોફા પરથી Windows ચલાવો. કર્સર, સ્ક્રોલ અને ક્લિક ટ્રિગર પર.</value></data>
@@ -3875,10 +4048,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>બંને અક્ષ પર ટુર્નામેન્ટ-માન્ય SOCD ક્લીનિંગ સાથે છ-બટન લેઆઉટ.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>કીબોર્ડ + માઉસ</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ગેમપેડ</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>પ્રારંભિક પ્રોફાઇલ બ્રાઉઝ કરો</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>પ્રારંભિક પ્રોફાઇલ</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>આખી શૈલી માટે તૈયાર પ્રોફાઇલ. એક પસંદ કરો, કોઈપણ કંટ્રોલર અસાઇન કરો અને રમો. સાચવવાથી એક સામાન્ય પ્રોફાઇલ ઉમેરાય છે જેને તમે સંપાદિત કરી શકો.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>પ્રોફાઇલ સાચવો</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>પ્રારંભિક પ્રોફાઇલ “{0}” ઉમેરાઈ.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>પૉઇન્ટ અને ક્લિક</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>ઍડ્વેન્ચર ગેમ અને કર્સર તથા બે ક્રિયાઓથી ચાલતી દરેક વસ્તુ.</value></data>
@@ -3978,13 +4147,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>આઉટપુટ પાથ રીસેટ કરો</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>હેડફોન જૅકને અનુસરો</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz દ્વારા DualSense આઉટપુટ-રિપોર્ટ બાઇટ મેપ અને Sony scePad સિમેન્ટિક્સ, જે PadForge ના ઇફેક્ટ અને ઑડિયો રાઇટરનો આધાર છે. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz દ્વારા DualSense આઉટપુટ-રિપોર્ટ બાઇટ મેપ અને Sony scePad સિમેન્ટિક્સ, જે PadForge ના ઇફેક્ટ અને ઑડિયો રાઇટરનો આધાર છે.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments દ્વારા જૅક-ડિટેક્ટ ઑડિયો રાઉટિંગ પેટર્ન, હેડફોન જૅકને અનુસરો પાછળનો સંદર્ભ. દસ્તાવેજીકરણ તરીકે વાંચ્યું; AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments દ્વારા જૅક-ડિટેક્ટ ઑડિયો રાઉટિંગ પેટર્ન, હેડફોન જૅકને અનુસરો પાછળનો સંદર્ભ. દસ્તાવેજીકરણ તરીકે વાંચ્યું.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki ના રેફરન્સ અમલીકરણ પરથી પોર્ટ કરેલ, વેબ કંટ્રોલરના સરનામાં માટે બાઇટ મોડ QR એન્કોડર. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Nayuki ના રેફરન્સ અમલીકરણ પરથી પોર્ટ કરેલ, વેબ કંટ્રોલરના સરનામાં માટે બાઇટ મોડ QR એન્કોડર.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>કીબોર્ડ + માઉસ વિઝ્યુલાઇઝેશનમાં માઉસ આર્ટવર્ક, Igor Budzhak દ્વારા. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>કીબોર્ડ + માઉસ વિઝ્યુલાઇઝેશનમાં માઉસ આર્ટવર્ક, Igor Budzhak દ્વારા.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>દબાણ-આધારિત દર</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>પુનરાવર્તન દર પસંદ કરેલા એનાલોગ સ્રોતને કેટલું જોરથી દબાવ્યું છે તેને અનુસરે છે. હળવું દબાણ ધીમા અંતરાલે, પૂરું દબાણ ઉપરના અંતરાલે પુનરાવર્તન કરે છે, અને વચ્ચેનું બધું સરળતાથી ભળે છે.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>ધીમો અંતરાલ</value></data>
@@ -3999,7 +4168,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>કોડ દ્વારા કનેક્ટ થઈ રહ્યું છે…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>પીયર સુધી સીધા પહોંચી શકાયું નહીં. VPN પર સરનામા દ્વારા કનેક્ટ કરી જુઓ.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>આ PC નો કોડ</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>બીજી વ્યક્તિ સાથે કોડની અદલાબદલી કરો: તેમનો કોડ તમારા કનેક્ટ બૉક્સમાં પેસ્ટ કરો જ્યારે તેઓ તમારો પેસ્ટ કરે, પછી બંને કનેક્ટ ક્લિક કરો. તેનાથી ઇન્ટરનેટ પર સીધો માર્ગ ખુલે છે, VPN ની જરૂર નથી. રિમોટ લિંક ચાલે ત્યાં સુધી કોડ તાજો થતો રહે છે.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>બીજી વ્યક્તિ સાથે કોડની અદલાબદલી કરો: તેમનો કોડ વધુ હેઠળ સરનામાથી જોડાઓ માં પેસ્ટ કરો જ્યારે તેઓ તમારો પેસ્ટ કરે, પછી બંને પેર / કનેક્ટ કરો ક્લિક કરો. તેનાથી ઇન્ટરનેટ પર સીધો માર્ગ ખુલે છે, VPN ની જરૂર નથી. રિમોટ લિંક ચાલે ત્યાં સુધી કોડ તાજો થતો રહે છે.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>આ નેટવર્ક સીધા કનેક્શન બનાવી શકતું નથી (તે મોબાઇલ હોટસ્પોટ કે કેરિયર-ગ્રેડ NAT જેવું લાગે છે). Tailscale જેવું VPN વાપરો, અથવા ઘરના બ્રૉડબૅન્ડથી કનેક્ટ કરો.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>આ PC નું સાર્વજનિક સરનામું મળ્યું નહીં (નેટવર્ક જરૂરી ટ્રાફિક અવરોધતું હોઈ શકે). અહીં સીધા કનેક્શન કામ કરશે નહીં. VPN વાપરો, અથવા સમાન નેટવર્ક પર સરનામા દ્વારા કનેક્ટ કરો.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>કંટ્રોલર બેટરી ઓછી</value></data>
@@ -4010,6 +4179,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>આટલી કે તેનાથી ઓછી પર સૂચના આપો</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>કંટ્રોલરને પણ વાઇબ્રેટ કરો</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>સૂચનાની ચકાસણી</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>સૂચના તપાસો</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>અસાઇનમેન્ટ પ્રૉમ્પ્ટ</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>જ્યારે વર્ચ્યુઅલ કંટ્રોલરનું પેજ ખુલ્લું હોય ત્યારે કોઈ ઉપકરણ કનેક્ટ થાય, તો PadForge તેને ત્યાં અસાઇન કરવાની ઑફર કરી શકે છે, અને હોમ નવા ઉપકરણને તેનું પોતાનું વર્ચ્યુઅલ કંટ્રોલર ઑફર કરી શકે છે. તમે ઑફર સ્વીકારો નહીં ત્યાં સુધી કશું અસાઇન થતું નથી. કીબોર્ડ, માઉસ, ટચપેડ અને મીડિયા કીની ઑફર ક્યારેય થતી નથી.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>નવા ઉપકરણો ખુલ્લા વર્ચ્યુઅલ કંટ્રોલરને ઑફર કરો</value></data>
@@ -4023,23 +4193,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>હમણાં નહીં</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>કોઈપણ ફ્રેઝ</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>વૉઇસ મેક્રો</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>વાક્ય બોલો અને તે મેપ કરી શકાય તેવું બટન દબાવે છે. PadForge ની પહોંચમાંનો દરેક માઇક્રોફોન સાંભળે છે.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>વૉઇસ મેક્રો મેનેજ કરો</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>વૉઇસ મેક્રો ચાલુ કરો</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>સાંભળવાનું ચાલુ કરે છે. ચાલુ હોય ત્યારે, દરેક નોંધાયેલ ફ્રેઝ એક બટન છે જે તમે બોલો ત્યારે ચાલે છે. ઓળખ મૉડલ PadForge ની અંદર આવે છે અને સંપૂર્ણપણે ઑફલાઇન કામ કરે છે.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>સાંભળવું</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>હંમેશા માઇક્રોફોન ખુલ્લો રાખે છે. પુશ ટુ ટૉક ત્યારે જ સાંભળે છે જ્યારે જોડાયેલ વૉઇસ લિસન મેક્રો પકડી રાખ્યો હોય.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>સાંભળવું ચાલુ કે બંધ, મોડ, વિશ્વાસ સ્તર</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>હંમેશા</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>પુશ ટુ ટૉક</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>ન્યૂનતમ વિશ્વાસ</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>ફ્રેઝ ચાલે તે પહેલાં રેકગ્નાઇઝર કેટલું ચોક્કસ હોવું જોઈએ. રેન્ડમ બોલવાથી મેક્રો ચાલતા હોય તો વધારો, તમારા ફ્રેઝ ચૂકી જવાતા હોય તો ઘટાડો.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>બોલવાની રાહ જોવાય છે. ઓળખાયેલું અહીં તેમના વિશ્વાસ સાથે દેખાય છે.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>“{0}” સંભળાયું ({1:F2}). ચાલ્યું.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>“{0}” સંભળાયું ({1:F2}). વિશ્વાસ મર્યાદા નીચે છે અથવા ટૉક કી છૂટી છે.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>સાંભળવું બંધ છે. તેને વધુ હેઠળ ચાલુ કરો.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>{1} પર {0} સંભળાયું</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>{1} પર {0} સંભળાયું. તે વિશ્વાસ મર્યાદા નીચે હતું, અથવા ટૉક કી છૂટી હતી.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>ફ્રેઝ</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>બોલવાનું વાક્ય</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>નામ</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>બટનનું નામ</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>નોંધણી કરો</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>નોંધાયેલ ફ્રેઝ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>“{0}” નોંધાયું. તેનું બટન ચલાવવા તે બોલો, અને પેડ પેજ પર તેને મેક્રો બાંધો.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>ફ્રેઝ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>“{0}” નોંધાયું. તેનું બટન ચલાવવા તે બોલો, અને કંટ્રોલરના પેજ પર તેને મેપ કરો.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>વૉઇસ લિસન (પકડી રાખતી વખતે)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>વૉઇસ મેક્રો માટે પુશ ટુ ટૉક: આ મેક્રો પકડી રાખો ત્યાં સુધી રેકગ્નાઇઝર સાંભળે છે. વૉઇસ મેક્રો મેનેજ કરોમાં સાંભળવું ને પુશ ટુ ટૉક પર સેટ કરો.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>માઇક્રોફોન</value></data>
@@ -4047,12 +4222,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa પંક્તિના રમ્બલ પાછળનું હૅપ્ટિક એન્જિન અને Razer પ્રોવાઇડર. HAR.dll અને Interhaptics.RazerProvider.dll જાહેર Core SDK માંથી અપરિવર્તિત રીતે PadForge ની અંદર આવે છે. Wyvrn દ્વારા. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa પંક્તિના રમ્બલ પાછળનું હૅપ્ટિક એન્જિન અને Razer પ્રોવાઇડર. HAR.dll અને Interhaptics.RazerProvider.dll જાહેર Core SDK માંથી અપરિવર્તિત રીતે PadForge ની અંદર આવે છે. Wyvrn દ્વારા.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller (2015) અને Steam Controller (2026) ના 3D મૉડલ, Valve ની પ્રકાશિત STEP ફાઇલોમાંથી મેશ કરેલ. Copyright Valve Corporation. CC BY-NC-SA 4.0. PadForge, Valve સાથે સંકળાયેલ નથી કે તેના દ્વારા સમર્થિત નથી.</value>
+    <value>Steam Controller (2015) અને Steam Controller (2026) ના 3D મૉડલ, Valve ની પ્રકાશિત STEP ફાઇલોમાંથી મેશ કરેલ. Copyright Valve Corporation. PadForge, Valve સાથે સંકળાયેલ નથી કે તેના દ્વારા સમર્થિત નથી.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 રનટાઇમ</value>
@@ -4069,7 +4244,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer લાઇટિંગ માટે Razer Chroma REST API ફ્રેમિંગની પુષ્ટિ, Adam Hellberg અને Brandon Scott દ્વારા. MIT. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer લાઇટિંગ માટે Razer Chroma REST API ફ્રેમિંગની પુષ્ટિ, Adam Hellberg અને Brandon Scott દ્વારા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK સંદર્ભો</value>
   </data>
@@ -4078,19 +4253,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>હેડ ટ્રૅકિંગ માટે UDP ટ્રૅકર ડેટાગ્રામ અને FreeTrack 2.0 શેર્ડ-મેમરી લેઆઉટ. ISC. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value>
+    <value>હેડ ટ્રૅકિંગ માટે UDP ટ્રૅકર ડેટાગ્રામ અને FreeTrack 2.0 શેર્ડ-મેમરી લેઆઉટ. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Lenovo WMI યુટિલિટી-ઇવેન્ટ ક્લાસ જેને હૅન્ડહેલ્ડ હિડન-બટન લર્નર સબ્સ્ક્રાઇબ કરે છે, અને બાહ્ય પ્રોફાઇલ નિયંત્રણ પાછળની એલિવેટેડ IPC સર્વર પેટર્ન. GPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value>
+    <value>Lenovo WMI યુટિલિટી-ઇવેન્ટ ક્લાસ જેને હૅન્ડહેલ્ડ હિડન-બટન લર્નર સબ્સ્ક્રાઇબ કરે છે, અને બાહ્ય પ્રોફાઇલ નિયંત્રણ પાછળની એલિવેટેડ IPC સર્વર પેટર્ન. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>હિડન-બટન લર્નર માટે ક્રોસ-ચેક કરેલ હૅન્ડહેલ્ડ PC ઓળખ સ્ટ્રિંગ અને વેન્ડર-રિપોર્ટ નોંધો. GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value>
+    <value>હિડન-બટન લર્નર માટે ક્રોસ-ચેક કરેલ હૅન્ડહેલ્ડ PC ઓળખ સ્ટ્રિંગ અને વેન્ડર-રિપોર્ટ નોંધો. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook અને WiimoteHook</value>
@@ -4105,13 +4280,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>લેગસી MIDI API પાછળના WinMM કૉલ ક્રમ: પોર્ટ ખોલવો, તેમાં મોકલવું અને બંધ કરવું. PortMidi (MIT, Ross Bencina, Phil Burk અને Roger B. Dannenberg દ્વારા) અને RtMidi (MIT-શૈલીનું RtMidi લાઇસન્સ, Gary P. Scavone દ્વારા) માંથી વાંચ્યું. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK સંદર્ભો</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key ઇનપુટ પાછળનું ઇવેન્ટ વર્ડ લેઆઉટ SDK માંની LogitechGkeyLib.h પરથી આવે છે. લાઇબ્રેરી સર્ચ ઑર્ડર અને શટડાઉન Mumble ની GKey.cpp (BSD 3-Clause) ને અનુસરે છે. PadForge મશીન પર જે પણ કૉપી હોય તે લાઇબ્રેરી લોડ કરે છે અને Logitech નો કોઈ કોડ સાથે મોકલતું નથી.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key ઇનપુટ પાછળનું ઇવેન્ટ વર્ડ લેઆઉટ SDK માંની LogitechGkeyLib.h પરથી આવે છે. લાઇબ્રેરી સર્ચ ઑર્ડર અને શટડાઉન Mumble ની GKey.cpp ને અનુસરે છે. PadForge મશીન પર જે પણ કૉપી હોય તે લાઇબ્રેરી લોડ કરે છે અને Logitech નો કોઈ કોડ સાથે મોકલતું નથી.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup અને AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>HallJoy ના કીબોર્ડ રૂટ, કી ટેબલ અને મૉડલ કૅટલૉગને C# માં પોર્ટ કરીને એનાલોગ કીબોર્ડ ઇનપુટ (AGPL-3.0, PashOK7) અને Soup તથા AnalogSense JavaScript SDK (MIT, Calamity, Inc.) ને અનુસરે છે, Wooting Analog SDK (MPL-2.0) સામે ચકાસેલ. અન્ય કીબોર્ડ AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk અને hmkconf (GPL-3.0-or-later, peppapighs), અને DenkiSuki, LeiterConsulting અને paysdelest ના Soup ફોર્ક (MIT) ને અનુસરે છે. રિપોર્ટ ફોર્મેટ અને કી ટેબલ Razer ના Synapse Web અને NuPhy ના NuPhyIO કન્ફિગ્યુરેટર, OpenRazer (GPL-2.0-or-later), Abbytech ના razer-analog-keyboard, TinyUSB (MIT) અને Sainan ની કૅપ્ચર નોંધોમાંથી પણ આવે છે.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box સંદર્ભો</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box એડેપ્ટર વાંચો પાછળનું Bliss-Box API, Bliss-Box LLC ના API Tool (BSD-શૈલી, મફત પુનઃવિતરણ) અને DeviceBuddy (સ્રોત ઉપલબ્ધ, Bliss-Box LLC) માંથી વાંચ્યું, બટન નામો SteveFox1620 ના retroarch-joypad-autoconfig ફોર્કની Bliss-Box ફાઇલોમાંથી, Controller Pak ચેકસમ libdragon (Unlicense) સામે ચકાસેલ, અને PlayStation પેડ જવાબ psx-spx અને Linux ના psxpad-spi ડ્રાઇવર (GPL-2.0-or-later) માંથી. કંટ્રોલરના નામ અને સપોર્ટ નોંધો Bliss-Box LLC ની સુસંગતતા સૂચિમાંથી પણ આવે છે, અને એડેપ્ટરોનું વર્તન તેમના ફર્મવેર સામે ચકાસ્યું હતું. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro ના કમ્પોઝિટ USB કંટ્રોલર માટે Vadym Hrynchyshyn દ્વારા USB ટ્રાન્સપોર્ટ. HIDMaestro તેનો સહી કરેલો હોસ્ટ કંટ્રોલર ડ્રાઇવર સાથે રાખે છે અને કમ્પોઝિટ કંટ્રોલર પહેલી વાર બને ત્યારે તેને ઇન્સ્ટૉલ કરે છે. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro ના કમ્પોઝિટ USB કંટ્રોલર માટે Vadym Hrynchyshyn દ્વારા USB ટ્રાન્સપોર્ટ. HIDMaestro તેનો સહી કરેલો હોસ્ટ કંટ્રોલર ડ્રાઇવર સાથે રાખે છે અને કમ્પોઝિટ કંટ્રોલર પહેલી વાર બને ત્યારે તેને ઇન્સ્ટૉલ કરે છે.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>આ સ્લોટના કયા અર્ધ ભાગ ચાલુ છે તે પસંદ કરો. અર્ધ ભાગ બંધ કરવાથી તેની પંક્તિઓ છુપાય છે અને તે મોકલવાનું બંધ કરે છે, અને તેના મેપિંગ રાખે છે જેથી ફરી ચાલુ કરતાં તે પાછા આવે.</value>
   </data>
@@ -4179,13 +4354,15 @@
     <value>શેર કરેલા ઉપકરણો અસાઇન કરો</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} પરના અસાઇનમેન્ટ</value>
+    <value>{0} સાથે શેર કરેલા ઉપકરણો</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>આ PC દ્વારા શેર કરેલું ઉપકરણ પસંદ કરો, પછી બીજા PC પર તેના વર્ચ્યુઅલ કંટ્રોલર પસંદ કરો.</value>
+    <value>ઉપકરણ પસંદ કરો, પછી તે PC પરના કયા કંટ્રોલરને તે ચલાવે તે પસંદ કરો.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>આ PC પરથી શેર કરેલ</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} પરના કંટ્રોલર</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>પ્રોફાઇલ: {0}</value>
+    <value>સક્રિય પ્રોફાઇલ: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>બીજા PC પર, રિમોટ લિંક &gt; પેર કરેલા PC હેઠળ આ PC માટે રિમોટ અસાઇનમેન્ટ ફેરફારોને મંજૂરી આપો.</value>
@@ -4277,60 +4454,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS અને CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll ની અંદરનો સ્પીચ ડીકોડર, ટ્રાન્સડ્યુસર લાઇબ્રેરી અને લિનિયર ઍલ્જેબ્રા. Kaldi અને OpenFst: Apache-2.0. OpenBLAS અને CLAPACK: BSD 3-Clause, OpenBLAS ની અંદરના GotoBLAS2 અને f2c રનટાઇમ માટે અલગ નોટિસ સાથે.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>સ્ટ્રેટેજી અને ડેસ્કટૉપ પ્રારંભિક-પ્રોફાઇલ લેઆઉટ, અને દબાણ-આધારિત ટર્બો જે ટાળે છે તે ટર્બો વર્તન. GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>સ્ટ્રેટેજી અને ડેસ્કટૉપ પ્રારંભિક-પ્રોફાઇલ લેઆઉટ, અને દબાણ-આધારિત ટર્બો જે ટાળે છે તે ટર્બો વર્તન. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ના અનડૉક્યુમેન્ટેડ IPolicyConfig ઇન્ટરફેસના લેઆઉટ માટે Antoine Aflalo નો સંદર્ભ, જેનો PadForge કંટ્રોલરના ઑડિયો એન્ડપોઇન્ટને ફરી ચાલુ કરવા ઉપયોગ કરે છે. MIT. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows ના અનડૉક્યુમેન્ટેડ IPolicyConfig ઇન્ટરફેસના લેઆઉટ માટે Antoine Aflalo નો સંદર્ભ, જેનો PadForge કંટ્રોલરના ઑડિયો એન્ડપોઇન્ટને ફરી ચાલુ કરવા ઉપયોગ કરે છે. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>કંટ્રોલરનો પેરામેટ્રિક EQ જે પેરામેટ્રિક EQ પ્રોફાઇલ ફોર્મેટ આયાત કરે છે, Jaakko Pasanen દ્વારા. MIT. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>કંટ્રોલરનો પેરામેટ્રિક EQ જે પેરામેટ્રિક EQ પ્રોફાઇલ ફોર્મેટ આયાત કરે છે, Jaakko Pasanen દ્વારા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>ટેક્સ્ટ બ્લૉક મેક્રો અને કીબોર્ડ કોર્ડ હૂક પાછળની SendInput તકનીકો: Unicode ટાઇપિંગ, બૅચ મર્યાદા, Win-કી માસ્ક કી અને ટૅગ કરેલ ઇન્જેક્ટેડ ઇનપુટ. GPL-2.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>ટેક્સ્ટ બ્લૉક મેક્રો અને કીબોર્ડ કોર્ડ હૂક પાછળની SendInput તકનીકો: Unicode ટાઇપિંગ, બૅચ મર્યાદા, Win-કી માસ્ક કી અને ટૅગ કરેલ ઇન્જેક્ટેડ ઇનપુટ. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>v1993 દ્વારા મોશન સર્વર પાછળનો DSU પ્રોટોકોલ સંદર્ભ. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>v1993 દ્વારા મોશન સર્વર પાછળનો DSU પ્રોટોકોલ સંદર્ભ.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Christopher Rosell દ્વારા DualShock 4 Bluetooth આઉટપુટ-રિપોર્ટ ફ્રેમિંગ. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Christopher Rosell દ્વારા DualShock 4 Bluetooth આઉટપુટ-રિપોર્ટ ફ્રેમિંગ.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 બેટરી રેન્જ, ટચપેડ હૅપ્ટિક પલ્સ સમય અને તીવ્રતા પગલાં, અને ટચપેડ ફ્લિંગ વર્તન. GPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 બેટરી રેન્જ, ટચપેડ હૅપ્ટિક પલ્સ સમય અને તીવ્રતા પગલાં, અને ટચપેડ ફ્લિંગ વર્તન. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton ફોર્ક)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense ઑડિયો વૉલ્યુમ રેન્જ, સાઇન્ડ 8-બિટ હૅપ્ટિક સૅમ્પલ અને સંયુક્ત Bluetooth ટ્રાન્સપોર્ટ લેઆઉટ. GPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense ઑડિયો વૉલ્યુમ રેન્જ, સાઇન્ડ 8-બિટ હૅપ્ટિક સૅમ્પલ અને સંયુક્ત Bluetooth ટ્રાન્સપોર્ટ લેઆઉટ. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>awalol દ્વારા DualSense Bluetooth ઑડિયો બફર લંબાઈનું ડિફોલ્ટ અને ફ્લોર. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>awalol દ્વારા DualSense Bluetooth ઑડિયો બફર લંબાઈનું ડિફોલ્ટ અને ફ્લોર.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Mxater દ્વારા GameCube એડેપ્ટિવ-ટ્રિગર પ્રીસેટ મૂલ્યો. માત્ર તથ્યો માટે વાંચ્યું.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>તેના UDP ડીકોડર સામે ચકાસેલ DSU મોશન અક્ષ ચિહ્નો. GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>તેના UDP ડીકોડર સામે ચકાસેલ DSU મોશન અક્ષ ચિહ્નો. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Richard Buckle દ્વારા સ્પેસ સિમ પ્રારંભિક પ્રોફાઇલ પાછળના Elite Dangerous ડિફોલ્ટ પ્રીસેટ. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Richard Buckle દ્વારા સ્પેસ સિમ પ્રારંભિક પ્રોફાઇલ પાછળના Elite Dangerous ડિફોલ્ટ પ્રીસેટ.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote સ્પીકરનો ADPCM નિબલ ક્રમ, અને DualShock 4 એન્કોડર ચકાસનાર SBC ડીકોડર. LGPL-2.1-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ LGPL કોડ આવતો નથી.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote સ્પીકરનો ADPCM નિબલ ક્રમ, અને DualShock 4 એન્કોડર ચકાસનાર SBC ડીકોડર. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ LGPL કોડ આવતો નથી.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>x-io Technologies દ્વારા, C# માં પોર્ટ કરેલ, કંપાસ યૉ માટે ટિલ્ટ-કમ્પેન્સેટેડ કંપાસ હેડિંગ. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>x-io Technologies દ્વારા, C# માં પોર્ટ કરેલ, કંપાસ યૉ માટે ટિલ્ટ-કમ્પેન્સેટેડ કંપાસ હેડિંગ.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Lukas Frühstück દ્વારા ઓછી-બેટરી સૂચના નિયમ અને Identify રમ્બલ પેટર્ન. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Lukas Frühstück દ્વારા ઓછી-બેટરી સૂચના નિયમ અને Identify રમ્બલ પેટર્ન.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series અને Switch 2 Pro Controller ના 3D મૉડલ, CGTrader પર ખરીદ્યા. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series અને Switch 2 Pro Controller ના 3D મૉડલ, CGTrader પર ખરીદ્યા.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 નું 3D મૉડલ, CGTrader પર ખરીદ્યું અને ભાગ પ્રમાણે મેશમાં વિભાજિત. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 નું 3D મૉડલ, CGTrader પર ખરીદ્યું અને ભાગ પ્રમાણે મેશમાં વિભાજિત.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Alan Ott, Signal 11 Software દ્વારા, સાથે આવતા SDL3.dll માં કમ્પાઇલ થયેલ HID લેયર. BSD-શૈલી લાઇસન્સ.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Alan Ott, Signal 11 Software દ્વારા, સાથે આવતા SDL3.dll માં કમ્પાઇલ થયેલ HID લેયર.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>આઇકન સ્રોત</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) માંથી જ્યોતનો ગ્લિફ, Ionicons (Ionic, MIT) માંથી સામાન્ય ગેમપેડ આઇકન, Jam Icons (Michael Amprimo, MIT) માંથી Extended જૉયસ્ટિક, અને SVG Repo માંથી Xbox અને PlayStation આઇકન, દરેક આઇકનના પેજ પરના લાઇસન્સ હેઠળ.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>n0.computer ના મફત જાહેર રિલે સાથે FlexInput ની જેમ વાત કરતું, રિમોટ લિંકની ફૉલબૅક લેન પાછળનું રિલે પ્રોટોકોલ. iroh: MIT OR Apache-2.0. FlexInput: MIT. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>coffincolors, Frano અને moutella દ્વારા માઉસ મોશન X અને Y પાછળ Joy-Con 2 ઑપ્ટિકલ માઉસ કાઉન્ટર અને રેપઅરાઉન્ડ ડેલ્ટા. MIT. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>coffincolors, Frano અને moutella દ્વારા માઉસ મોશન X અને Y પાછળ Joy-Con 2 ઑપ્ટિકલ માઉસ કાઉન્ટર અને રેપઅરાઉન્ડ ડેલ્ટા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux kernel ડ્રાઇવર</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck અને PID ફોર્સ ફીડબેક પ્રોટોકોલ તથ્યો, અને ACPI WMI બ્લૉક લેઆઉટ. PadForge કીબોર્ડ અને માઉસના ડિસ્ક્રિપ્ટર hid-core ના નિયમો મુજબ વાંચે છે. GPL-2.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck અને PID ફોર્સ ફીડબેક પ્રોટોકોલ તથ્યો, અને ACPI WMI બ્લૉક લેઆઉટ. PadForge કીબોર્ડ અને માઉસના ડિસ્ક્રિપ્ટર hid-core ના નિયમો મુજબ વાંચે છે. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite પેડલ સહિત Windows કંટ્રોલર ઇનપુટ. SDK લોડર SDL માં લિંક થયેલ છે. MIT (SDK લોડર).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite પેડલ સહિત Windows કંટ્રોલર ઇનપુટ. SDK લોડર SDL માં લિંક થયેલ છે.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ રનટાઇમ</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll ને જોઈતો C++ રનટાઇમ (msvcp140.dll, vcruntime140.dll અને, x64 બિલ્ડમાં, vcruntime140_1.dll), PadForge ની અંદર અપરિવર્તિત રીતે આવે છે. Microsoft Visual Studio લાઇસન્સ શરતો.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll ને જોઈતો C++ રનટાઇમ (msvcp140.dll, vcruntime140.dll અને, x64 બિલ્ડમાં, vcruntime140_1.dll), PadForge ની અંદર અપરિવર્તિત રીતે આવે છે.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>dekuNukem દ્વારા Joy-Con અને Pro Controller HID, HD રમ્બલ અને હોમ LED નોંધો, અને Switch 2 માટે ndeadly ના switch2_controller_research સાથે. માત્ર પ્રોટોકોલ તથ્યો માટે વાંચ્યું.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ઇન-ઍપ અપડેટરના હેલ્પર પાછળની એલિવેટેડ અપડેટ-વર્બ પેટર્ન. LGPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ LGPL કોડ આવતો નથી.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>ઇન-ઍપ અપડેટરના હેલ્પર પાછળની એલિવેટેડ અપડેટ-વર્બ પેટર્ન. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ LGPL કોડ આવતો નથી.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Daniel Mueller દ્વારા NFC ટેગ ઇનપુટ પાછળના WinSCard સિગ્નેચર અને રીડર-મોનિટરિંગ કૉલ ક્રમ. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Daniel Mueller દ્વારા NFC ટેગ ઇનપુટ પાછળના WinSCard સિગ્નેચર અને રીડર-મોનિટરિંગ કૉલ ક્રમ.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Thomas Perl દ્વારા PlayStation Move રિપોર્ટ લેઆઉટ, સેન્સર કૅલિબ્રેશન અને EXT એક્સેસરી હૅન્ડશેક, moveonpc wiki સામે ક્રોસ-ચેક કર્યા. PadForge નું અમલીકરણ મૂળ C# છે. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>રેસિંગ ટેલિમેટ્રી સંદર્ભો</value></data>
@@ -4338,23 +4515,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth પેરિંગ અને રિપોર્ટ દસ્તાવેજીકરણ. GPL-2.0 અને GPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Aaron Clauson દ્વારા તેના C# સ્રોતમાંથી વેન્ડર કરેલ, રિમોટ લિંકના NAT ટ્રાવર્સલ પાછળનું STUN મેસેજ લેઆઉટ અને XOR-MAPPED-ADDRESS ડીકોડ. BSD 3-Clause, તેના લાઇસન્સની કલમ 2 માંના ઉપયોગ પ્રતિબંધ સાથે.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Aaron Clauson દ્વારા તેના C# સ્રોતમાંથી વેન્ડર કરેલ, રિમોટ લિંકના NAT ટ્રાવર્સલ પાછળનું STUN મેસેજ લેઆઉટ અને XOR-MAPPED-ADDRESS ડીકોડ. તેના લાઇસન્સની કલમ 2 માં ઉપયોગ પ્રતિબંધ ઉમેરાય છે.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse સંદર્ભો</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion રિપોર્ટ લેઆઉટ, ડિવાઇસ ટેબલ અને અક્ષ સ્કેલ, hid.spacemouse (MIT), PySpaceMouse (MIT), AndunHH ના spacemouse (CC BY-NC-SA 4.0) અને spacenavd (GPL-3.0-or-later) માંથી વાંચ્યા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>હોસ્ટ IOCTL દ્વારા Bluetooth લિંક ડ્રૉપ, છુપાયેલ XInput પાવર-ઓફ અને કૅપેબિલિટીઝ ઓર્ડિનલ, અને DualSense ટ્રિગર-વાઇબ્રેશન ડિફોલ્ટ. GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>હોસ્ટ IOCTL દ્વારા Bluetooth લિંક ડ્રૉપ, છુપાયેલ XInput પાવર-ઓફ અને કૅપેબિલિટીઝ ઓર્ડિનલ, અને DualSense ટ્રિગર-વાઇબ્રેશન ડિફોલ્ટ. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller પ્રોટોકોલ સંદર્ભો</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>સ્વાઇપ-હૅપ્ટિક ટિક, રિપોર્ટ 0x42 બટન બિટ, પાવર-ઓફ કમાન્ડ અને ડૉન્ગલ રિલે, OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) અને SteamlessController (MIT) માંથી વાંચ્યા. માત્ર દસ્તાવેજીકરણ, કોઈ GPL કે AGPL કોડ આવતો નથી.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>થમ્બસ્ટિક ડેડઝોન</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Minimuino દ્વારા છ ડેડઝોન આકાર. GFDL-1.3-or-later અને GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યા, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR પોઇન્ટર વર્તન: ડૉટ-જોડી મધ્યબિંદુ, માર્જિન, સેન્સર-બાર ઓફસેટ, સ્મૂધિંગ અને FPS માઉસ વળાંક, Ryochan7, Suegrini અને Trihy ફોર્ક સાથે. GPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR પોઇન્ટર વર્તન: ડૉટ-જોડી મધ્યબિંદુ, માર્જિન, સેન્સર-બાર ઓફસેટ, સ્મૂધિંગ અને FPS માઉસ વળાંક, Ryochan7, Suegrini અને Trihy ફોર્ક સાથે. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>John “Nielk1” Klein દ્વારા C# માં પુનઃઉત્પાદિત DualSense એડેપ્ટિવ-ટ્રિગર ઇફેક્ટ લેઆઉટ અને ઝોન પૅકિંગ. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>John “Nielk1” Klein દ્વારા C# માં પુનઃઉત્પાદિત DualSense એડેપ્ટિવ-ટ્રિગર ઇફેક્ટ લેઆઉટ અને ઝોન પૅકિંગ.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer દ્વારા વર્ચ્યુઅલ DualShock 4 ઇનપુટ રિપોર્ટ પાછળનું DS4_REPORT_EX લેઆઉટ. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer દ્વારા વર્ચ્યુઅલ DualShock 4 ઇનપુટ રિપોર્ટ પાછળનું DS4_REPORT_EX લેઆઉટ.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton ફોર્ક)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>વર્ચ્યુઅલ DualSense માઇક્રોફોનની 48 dB એટેન્યુએશન રેન્જ. GPL-3.0-or-later, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>વર્ચ્યુઅલ DualSense માઇક્રોફોનની 48 dB એટેન્યુએશન રેન્જ. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>વ્હીલ પ્રોટોકોલ સંદર્ભો</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster અને Logitech વ્હીલ માટે નેટિવ ફોર્સ ફીડબેક અને RPM શિફ્ટ LED રિપોર્ટ, hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) અને thrustmaster-led-linux (GPL-3.0) માંથી વાંચ્યા, અને prodigal.knight ના SimHub LED પ્લગઇન (MIT) તથા tm-bt-led (MIT) સામે ક્રોસ-ચેક કર્યા. માત્ર દસ્તાવેજીકરણ, કોઈ GPL કોડ આવતો નથી.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>આર્કેડ I/O સંદર્ભો</value></data>
@@ -4384,19 +4561,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox કંટ્રોલર સંદર્ભો</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL ફોર્કના મૂળ Xbox, Steel Battalion, Xbox 360 ચેટપૅડ અને Xbox 360 uDraw ડ્રાઇવર પાછળના પ્રોટોકોલ, અને Windows ના પોતાના ડ્રાઇવર સાથે PadForge જેને બાઇન્ડ કરે છે તે Xbox 360 રિસીવર, brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), ITO Takayuki ના euc.jp, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) અને xemu (LGPL-2.0-or-later) માંથી વાંચ્યા. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Pete Batard દ્વારા ઑટોમેટિક WinUSB બાઇન્ડિંગ પાછળનું પ્રતિ-ઉપકરણ એક-INF પૅકેજિંગ અને ઉપકરણ સૂચિ. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Pete Batard દ્વારા ઑટોમેટિક WinUSB બાઇન્ડિંગ પાછળનું પ્રતિ-ઉપકરણ એક-INF પૅકેજિંગ અને ઉપકરણ સૂચિ. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ricardo Quesada દ્વારા PS Move એક્સેસરી ઓળખવા PadForge જે Bluetooth HID ફીચર-રિપોર્ટ વિનંતી મોકલે છે તે. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ricardo Quesada દ્વારા PS Move એક્સેસરી ઓળખવા PadForge જે Bluetooth HID ફીચર-રિપોર્ટ વિનંતી મોકલે છે તે. માત્ર દસ્તાવેજીકરણ, કોઈ કોડ આવતો નથી.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL ફોર્કમાંની Windows Mixed Reality કન્ફિગરેશન કી Monado પરથી આવે છે. Copyright 2021 Jan Schmidt. SDL3.dll ની અંદર આવે છે. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL ફોર્કમાંની Windows Mixed Reality કન્ફિગરેશન કી Monado પરથી આવે છે. Copyright 2021 Jan Schmidt. SDL3.dll ની અંદર આવે છે.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL ફોર્કમાંનું Rift DK1 સેન્સર ફ્યુઝન OpenHMD ના ફ્યુઝનનું પોર્ટ છે. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll ની અંદર આવે છે. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL ફોર્કમાંનું Rift DK1 સેન્સર ફ્યુઝન OpenHMD ના ફ્યુઝનનું પોર્ટ છે. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll ની અંદર આવે છે.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote સ્પીકર પ્રોટોકોલ અને IR કૅલિબ્રેશન દસ્તાવેજીકરણ. માત્ર પ્રોટોકોલ તથ્યો માટે વાંચ્યું.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>araghon007 દ્વારા Xbox ઇમ્પલ્સ-ટ્રિગર 9-બાઇટ રિપોર્ટ અને તેનો રાઇટ પાથ. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>araghon007 દ્વારા Xbox ઇમ્પલ્સ-ટ્રિગર 9-બાઇટ રિપોર્ટ અને તેનો રાઇટ પાથ.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 હૅપ્ટિક PCM ફોર્મેટ, 3 kHz પર સાઇન્ડ 16-બિટ, જેણે સાઇન્ડ 8-બિટ Bluetooth હૅપ્ટિક્સ એન્કોડિંગ નક્કી કર્યું. AGPL-3.0, માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ AGPL કોડ આવતો નથી.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 હૅપ્ટિક PCM ફોર્મેટ, 3 kHz પર સાઇન્ડ 16-બિટ, જેણે સાઇન્ડ 8-બિટ Bluetooth હૅપ્ટિક્સ એન્કોડિંગ નક્કી કર્યું. માત્ર દસ્તાવેજીકરણ તરીકે વાંચ્યું, કોઈ AGPL કોડ આવતો નથી.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>કીબોર્ડ સ્ક્રીન</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech ના GamePanel કીબોર્ડ અને Mad Catz S.T.R.I.K.E. 7 માં બનેલી સ્ક્રીન પર, અને Logitech Arx Control દ્વારા ફોન પર દોરે છે: પ્રોફાઇલ, ઘડિયાળ, રમવાનો સમય, સ્ટોપવૉચ, ચિત્ર, અથવા DualShock 4 કે DualSense લાઇટબારનો રંગ. દરેક સ્ક્રીનને ઉપકરણો પૃષ્ઠ પર પોતાની હરોળ મળે છે, જ્યાં તમે તે શું બતાવે તે નક્કી કરો છો. સ્ક્રીનની બાજુની કી તેની હરોળના બટન છે.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>કીબોર્ડ સ્ક્રીન ચલાવો</value></data>
@@ -4464,6 +4641,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>પૅન</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>પૅન X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>પૅન Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>તે શું બતાવે તે પસંદ કરો. તમે સાચવો નહીં ત્યાં સુધી કંઈ બદલાતું નથી.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} પર સેટ કરી.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz નું S.T.R.I.K.E. 7 SDK ડાઉનલોડ થઈ રહ્યું છે…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 હવે {0} લોડ કરે છે.</value></data>
@@ -4603,8 +4781,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>શેર્ડ મેમરીમાંથી {0} વાંચી રહ્યું છે.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Assetto Corsa અથવા Assetto Corsa Competizione ની રાહ જોવાય છે.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>પોર્ટ {0} પર ફોરવર્ડ કરી રહ્યું છે.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>કસ્ટમ ટેલિમેટ્રી ફોર્મેટ</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ગેમ મોકલે છે તે પેકેટનું ફીલ્ડ પ્રમાણે વર્ણન કરો, અને PadForge તે ગેમને પણ વાંચશે. દરેક વેરિયેબલ ગેમ ટેલિમેટ્રી પંક્તિ પર એક અક્ષ અને કસ્ટમ અભિવ્યક્તિ ટ્રિગર માટે એક ચેનલ બને છે. ગેમ યાદીમાં ફોર્મેટને નામથી પસંદ કરો, અથવા ઓટો-ડિટેક્ટ તેને શોધે તે માટે લંબાઈ કે કી આપો.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>કસ્ટમ ફોર્મેટ</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>PadForge જેને ઓળખતું નથી તેવી ગેમના ટેલિમેટ્રી પેકેટનું વર્ણન કરો.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>ફોર્મેટ ઉમેરો</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>ફોર્મેટ {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>નામ</value></data>
@@ -4615,12 +4793,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>ફક્ત બરાબર આટલા બાઇટના પેકેટ આ ફોર્મેટથી વાંચવામાં આવે છે. 0 હોય તો કોઈપણ પેકેટ વાંચવામાં આવે છે, અને ઓટો-ડિટેક્ટ ફોર્મેટને છોડી દે છે, તેથી તેને નામથી પસંદ કરો.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>જરૂરી કી</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>આ કી ધરાવતા JSON પેકેટ જ આ ફોર્મેટથી વાંચવામાં આવે છે. ખાલી રાખો તો કોઈપણ પેકેટ વાંચવામાં આવે છે, અને ઓટો-ડિટેક્ટ ફોર્મેટને છોડી દે છે, તેથી તેને નામથી પસંદ કરો.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>બાઇટ ક્રમ</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>લિટલ-એન્ડિયન દરેક સંખ્યાનો સૌથી ઓછો મહત્વનો બાઇટ પહેલાં મૂકે છે, જેમ PC પરની ગેમ લગભગ હંમેશા કરે છે. બિગ-એન્ડિયન સૌથી વધુ મહત્વનો બાઇટ પહેલાં મૂકે છે.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>લિટલ-એન્ડિયન</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>બિગ-એન્ડિયન</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>પેકેટ દરેક સંખ્યા સૌથી મહત્ત્વના બાઇટથી શરૂ કરીને લખે છે. PC પરની ગેમ્સ લગભગ હંમેશાં સૌથી ઓછા મહત્ત્વના બાઇટથી શરૂ કરીને લખે છે.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>ગિયર મૂલ્યો</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>ગિયર ફીલ્ડમાં રિવર્સ અને ન્યુટ્રલ માટે પોતાની સંખ્યાઓ હોય છે, જેમ Forza ના 0 અને 11. આ બંધ હોય ત્યારે ઋણ ગિયર રિવર્સ છે અને 0 ન્યુટ્રલ છે.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>રિવર્સ</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>ન્યુટ્રલ</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON પેકેટ માટે જરૂરી કી, ગિયર મૂલ્યો</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>ફીલ્ડ</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>દરેક ફીલ્ડ તેના ઓફસેટ પરથી, અથવા JSON માં તેની કી હેઠળથી, એક સંખ્યા વાંચે છે (ડોટ્સ નેસ્ટેડ ઓબ્જેક્ટમાં પહોંચે છે) અને તેને સ્કેલથી ગુણે છે. સ્કેલ પછી, ઝડપ km/h માં છે, પેડલ 0 થી 1 સુધી ચાલે છે, અને સ્ટિયરિંગ પૂર્ણ ડાબે -1 થી પૂર્ણ જમણે 1 સુધી. વેરિયેબલનો અક્ષ આરામની સ્થિતિમાં તેના ન્યૂનતમથી પૂર્ણ સ્થિતિમાં તેના મહત્તમ સુધી ચાલે છે.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>માં વાંચે છે</value></data>
@@ -4704,4 +4885,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{1} પર {0}, બંધ ન થાય ત્યાં સુધી</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>{0} પર ટ્રિગર ઇફેક્ટ બંધ કરો</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>આ ઉપકરણની લાઇટિંગ નિયંત્રિત કરો, લાઇટિંગ પકડ</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>કનેક્ટ થયેલ</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>કનેક્ટ નથી</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>અન્ય ઇનપુટ</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>કોઈ ઉપકરણ મેળ ખાતું નથી.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>ઉપયોગમાં નથી</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>બેટરી {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>બેટરી {0}, ચાર્જ થઈ રહી છે</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>વપરાશકર્તા</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>નવું કંટ્રોલર</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>સેટિંગ્સ</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>દરેક અક્ષ, બટન અને સેન્સર</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>દબાવેલ: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, પાથ, ક્ષમતાઓ, રો જૉયસ્ટિક મોડ ફરજિયાત કરો</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, પાથ, ક્ષમતાઓ</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>વિગતો કૉપિ કરો</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>ઉત્પાદન</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>પ્રકાર</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>ક્ષમતાઓ</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>લિંક</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>બેટરી</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>પાથ</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>સિરિયલ નંબર</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ફર્મવેર</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>રિવિઝન</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>કંટ્રોલરને પણ વાઇબ્રેટ કરો, સૂચના ફરી બતાવો દર, પૂરું ચાર્જ થાય ત્યારે સૂચના આપો</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>જોવાની જરૂર છે</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>સરસ રીતે આયાત થયું</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>પાસવર્ડ સેટ કરો</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>રિમોટ લિંક અનલૉક કરો</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>પાસવર્ડ</value></data>
 </root>

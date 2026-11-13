@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Imewashwa</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Imezimwa</value></data>
   <data name="Common_More" xml:space="preserve"><value>Zaidi</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Ona Zote</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Imesakinishwa</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Haijasakinishwa</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Haipatikani kwenye ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Inasimamisha…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Inasimamisha injini…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Inaendesha kwenye {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Inaendesha (wateja {0})</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Inaendesha, vilivyounganishwa: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Inasikiliza kwenye :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Mlango {0} unatumika</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Ufikiaji umekataliwa kwa mlango {0} (endesha kama msimamizi)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Nje ya mtandao</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Haijulikani</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Chaguomsingi</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Vinjari...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Vinjari…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Endelea</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Simamisha</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Anzisha</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Inasafisha vidhibiti pepe vilivyobaki kutoka kwenye kipindi kilichopita.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> vifaa</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ongeza kidhibiti</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Ongeza Kidhibiti</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Chagua kile ambacho michezo inapaswa kuona. Kidhibiti huongezwa mara tu unapobofya.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Chanzo cha Ingizo</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Chagua Baadaye</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Za Kawaida</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Matokeo Mengine</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Mpangilio ambao michezo mingi ya PC hutarajia.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Kwa michezo yenye vitufe vya PlayStation, touchpad na lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Mpangilio wa vitufe vya Switch, kwa michezo na emulator zinazoutarajia.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Vitufe, kielekezi na kusogeza kutoka pedi.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Usukani, vijiti vya ndege na mipangilio maalum.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Noti na mabadiliko ya udhibiti kwa programu za muziki.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Vidhibiti pepe vya VR kupitia SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Ili kubadilisha aina baadaye, bofya chipu ya aina kwenye kidhibiti. Inahitaji mbofyo mmoja.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services haijibu. Tazama kadi yake kwenye Mipangilio.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Inahitaji SteamVR. Isakinishe kutoka kadi yake kwenye Mipangilio.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Tayari kuna kidhibiti cha VR. Kimoja huendesha mikono yote miwili.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge ina vidhibiti {0}, idadi ya juu inayoweza kuendesha. Futa kimoja ili kuongeza kingine.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Wasifu</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Tafuta mipangilio, vifaa na wasifu</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Tafuta</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Matokeo</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Juu</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Chini</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} kusogea</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} kufungua</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} popote</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Kurasa</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Vitendo</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Nyaraka</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>chini ya Zaidi</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>kwenye chaguo za safu</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Hakuna kitu kwenye PadForge kinacholingana na “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Tafuta “{0}” kwenye nyaraka</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Futa kidhibiti pepe</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Skrini nzima</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Onyesha PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Wasifu "{0}" umeundwa.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Wasifu "{0}" umefutwa.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Wasifu "{0}" umesasishwa.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Wasifu “{0}” sasa una mpangilio wa sasa.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Wasifu umepakiwa: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Wasifu umerudishwa kuwa Chaguomsingi</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" imekabidhiwa Kidhibiti pepe {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Wasifu umebadilishwa: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Wasifu umebadilishwa: Chaguomsingi</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Chaguomsingi</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Njia za mkato za wasifu</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Njia za Mkato</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Weka mchanganyiko wa vitufe vya kubadilisha wasifu kutoka kwa kidhibiti chochote.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Ongeza njia ya mkato</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Wasifu unaofuata</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Wasifu uliotangulia</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Wasifu maalum</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Washa au zima dirisha</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Washa au zima kuzimwa kwa vidhibiti pepe</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Onyesha au Ficha PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Washa au Zima Vidhibiti Pepe</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Kifaa chochote kilichounganishwa</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Rekodi</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Inarekodi...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Hakuna kifaa kilichochaguliwa.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Faharasa ya nafasi si sahihi: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Imeshindwa kukabidhi kifaa.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>wakati</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>kwenye</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" imekabidhiwa Kidhibiti pepe {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" imeondolewa kwenye Kidhibiti pepe {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Kifaa kimefichwa. (Kinaweza kurejeshwa kwenye faili ya mipangilio.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Kifaa kimeondolewa.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kidhibiti pepe {0} kimefutwa.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Mwanzo</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Vifaa vilivyounganishwa: {0}. Vidhibiti: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Michezo huona kila kidhibiti kilicho hai.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Injini imewashwa na hakuna kidhibiti kilicho hai.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Anzisha injini ili kurudisha vidhibiti vyako.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Kasi ya kusoma</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Vidhibiti hai</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Vifaa vilivyounganishwa</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Washa au zima kidhibiti hiki</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Huanza injini inapoanza.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Huanza kifaa hiki kinapounganishwa.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Huanza kimojawapo cha vifaa hivi kinapounganishwa.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Haijaunganishwa</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Inatuma ingizo sasa</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Betri {0}, chini</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Betri {0}, inachaji</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Vidhibiti</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Vipengele vya ziada vinavyotumika</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Onyesha QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} imeunganishwa na haitumiki.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Kitumie</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Michezo ione nini?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge hugeuza kidhibiti hiki kuwa kile ambacho michezo yako inatarajia. Chagua kimoja ili uanze. Unaweza kukibadilisha baadaye kwa mbofyo mmoja.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge hugeuza kidhibiti chako kuwa kile ambacho michezo yako inatarajia. Chagua kimoja ili uanze. Unaweza kukibadilisha baadaye kwa mbofyo mmoja.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Cheza michezo ya kibodi na kipanya kwa pedi.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Aina zaidi: [{0}, {1}, {2} na {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Vitufe, vijiti na vichochezi huwekewa ramani 1:1 kidhibiti kinapoundwa.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Oanisha kidhibiti cha Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Anza na wasifu uliotayarishwa</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Kimeunganishwa</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, betri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Betri {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Hakuna kidhibiti kilichounganishwa</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Kiunganishe kwa kebo au kupitia Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> vimepangwa, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> vimeunganishwa</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Injini inaendesha. Bofya ili kusimamisha.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Injini haifanyi kazi. Bofya ili kusimamisha.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Injini imesimamishwa. Bofya ili kuanza.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Sanidi kidhibiti hiki</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Washa tanuru</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Unganisha kidhibiti, chagua aina ya towe, na PadForge itaunda ingizo zako kuwa kidhibiti hicho. Ziara fupi inakuonyesha kila kitu kilipo.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Anza ziara</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Ruka</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Inayofuata</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Maliza</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Nafasi</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Kila kidhibiti pepe kiko hapa. Mwali unaonyesha nafasi zipi zinaunda sasa hivi.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Injini ya ingizo</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Tanuru yenyewe. Badilisha mwali ili kuanza au kusimamisha ukaguzi wote wa ingizo.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Vidhibiti pepe</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Chagua aina ya towe, lisha vifaa kwenye nafasi, kisha bofya kadi ili kuunda ramani zake.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Vipengele vya hiari viko hapa: kidhibiti cha wavuti cha simu, Remote Link, seva ya mwendo na zaidi.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Onyesha ziara ya kukaribisha</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Nafasi</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Kifaa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Chanzo cha ingizo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeza kifaa</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Chini</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Picha</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Orodha</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Matokeo: {0}</value></data>
@@ -328,11 +375,13 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Bonyezo lipi mchezo unaliona vitufe vyote viwili vya jozi vikishikiliwa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Hushikilia mkengeuko mdogo wa kijiti ili michezo iendelee kuonyesha vielekezo vya kidhibiti</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Inaunda</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Hai: {0} kati ya {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chagua makro kwenye orodha, au bonyeza + kando ya Makro ili kuunda mpya.</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Baridi</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Hakikisho</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Vipengele vya ziada</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Vipengele vya hiari. Kila kimoja hakikusumbui hadi utakapokiwasha.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>Zilizowashwa: {0} kati ya {1}</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Njia Zaidi za Kucheza</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Tuma Kwingine</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Kwenye Skrini</value></data>
@@ -340,17 +389,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Tazama pande zote kwa kifuatiliaji cha kichwa au kifaa cha VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Ramani ya kasi, kanyagio na gia kutoka kwenye michezo ya kuendesha.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Ruhusu watazamaji kubonyeza vitufe kwa kuandika kwenye gumzo.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Shiriki vidhibiti na PadForge kwenye kompyuta nyingine.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Endesha vidhibiti pepe kwenye kompyuta nyingine.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa vigezo vya michezo.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Pokea athari za vichochezi na taa kutoka kwa mod za michezo.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Onyesha menyu, tabaka na ubadilishaji wa wasifu unapocheza.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo inayotumia touchpad ya PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo ya touchpad ya PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Picha, kipima muda au saa juu ya madirisha mengine.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Mlango, anwani ya HTTP ya kawaida, msimbo wa ufikiaji</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Kuunganisha upya, mlango, ulinzi wa utambulisho, kuunganisha kwa anwani</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, mlango wa UDP, masafa ya kila mhimili</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Mlango, HTTP ya kawaida, msimbo wa ufikiaji</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Unganisha upya kiotomatiki, mlango, utambulisho wa kuoanisha, unganisha kwa anwani</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Mlango, mbadala wa DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Milango, kasi kamili, miundo maalum</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Milango, Kasi Kamili, Miundo Maalum</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Angalia pande zote kwa kifuatiliaji cha kichwa au headset ya VR huku vidole gumba vyote viwili vikibaki kwenye vitufe.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Weka ramani ya kasi, kanyagio na gia ambazo mchezo wa kuendesha hutuma, kama ingizo lolote.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa emulator zinazosoma chanzo cha mwendo cha DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Pokea athari za kichochezi badilifu na taa kutoka kwa mod za michezo zilizoandikwa kwa DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Washa towe la telemetria kwenye mchezo na uelekeze kwenye PC hii na mlango huu.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Kwenye emulator, ongeza chanzo cha mwendo kwenye anwani ya PC hii na mlango huu.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Athari za mod hufika kwa kila kidhibiti chenye maunzi yake.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Mkao wa kichwa ni safu ya Kifuatiliaji cha Kichwa kwenye [Vifaa]. Weka ramani ya yaw ya kichwa kwenye mhimili wa kijiti katika sehemu ya Vitufe ya kidhibiti.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Thamani ni safu ya Telemetria ya Michezo kwenye [Vifaa]. Ziwekee ramani katika sehemu ya Vitufe ya kidhibiti au zitumie kuanzisha makro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Mahali, ukubwa na uwazi wa menyu huwekwa kwenye menyu yenyewe, katika sehemu ya [Makro na Menyu] ya kidhibiti.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Vyanzo</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack na chochote kinachotuma umbizo lake la UDP</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Masafa</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Masafa ya Kila Mhimili. Sifuri hufuata masafa ya hapo juu.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Michezo Ambayo PadForge Haijui</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Kwa mod zinazotafuta DSX inayoendesha kabla ya kutuma</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kinachoonyeshwa</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Duara, gridi au upau wa menyu ikiwa wazi</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Jina la tabaka linaposhikiliwa tabaka la shift</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Jina la wasifu unapobadilika</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Nakili Anwani</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Weka Skrinini</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Unganisha Simu</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Weka simu kwenye mtandao uleule na PC hii.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Skani msimbo kwa kamera yake.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Chagua mpangilio wa kidhibiti.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Simu</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Hakuna simu zilizounganishwa.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Simu inayounganisha huonekana hapa na kwenye ukurasa wa Vifaa, ambako unaigawia kidhibiti.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Chaneli yako</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Maneno ya Watazamaji</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Mtazamaji huandika neno kama !a, na PadForge hubonyeza kile !a kimewekewa ramani kwenye safu ya Twitch Chat ya ukurasa wa Vifaa. Igawie safu hiyo kidhibiti kama kifaa chochote.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Ukiwa Moja kwa Moja</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Picha ya Matangazo Yako</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Hakuna PC zilizooanishwa.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Oanisha PC Nyingine</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Hakuna PC zisizooanishwa karibu.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Washa Remote Link kwenye PadForge ya PC nyingine. Inaonekana hapa, kisha mnalinganisha msimbo mfupi kwenye skrini zote mbili.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Mwonekano na Mahali</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Iburute kwa kitufe cha kulia cha kipanya au vidole vitatu ili kuisogeza.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Huonyesha</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Programu nyingine ikiwa mbele, mibofyo hupita kwenye overlay. PadForge ikiwa mbele, iburute kwa kitufe cha kulia cha kipanya na ubadilishe ukubwa kutoka kona yake. Makro inaweza kuonyesha au kuficha overlay kwa nambari yake.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Seva ya mwendo</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Seva ya itifaki ya DSU/CemuHook Motion Provider ya data ya gyro na accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Washa seva ya mwendo ya DSU (Itifaki ya CemuHook Motion Provider)</value></data>
@@ -391,10 +482,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>hakuna kidhibiti</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Aina {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Kidhibiti cha wavuti</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Hutumikia kiolesura cha gamepad kwa vivinjari kwenye mtandao wako wa ndani.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Tumia simu au tableti kama kidhibiti. Hakuna cha kusakinisha kwenye simu.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Washa seva ya kidhibiti cha wavuti</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Unganisha kutoka kwenye kivinjari cha simu au tableti ili kutumia kama gamepad.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Changanua kwa kamera ya simu, au fungua anwani hii kwenye kivinjari chake:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Anwani ya HTTP ya kawaida</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>Anwani ya pili isiyo na HTTPS, kwa vivinjari vinavyokataa cheti cha PadForge na kwa tunnel au reverse proxy inayoleta chake yenyewe. Mwendo wa simu unahitaji HTTPS, kwa hiyo hapa unafanya kazi tu kupitia tunnel au proxy inayotoa HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Hudumia HTTP ya kawaida pia</value></data>
@@ -404,30 +493,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Msimbo wa ufikiaji</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Anwani ya kawaida hufunguka tu kwa msimbo huu, na kiungo kilicho hapa chini kinaujumuisha. Msimbo mpya unakatisha muunganisho wa kila mtu kwenye anwani ya kawaida.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Msimbo mpya</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Anwani kwenye kompyuta hii:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Mtetemo (bofya ili kutambua kifaa hiki)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Hutetemesha kifaa hiki ili ujue ni kipi.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Shiriki vidhibiti na PadForge iliyooanishwa kwenye kompyuta nyingine, kwenye mtandao wako au kupitia intaneti.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Endesha vidhibiti pepe kwenye kompyuta nyingine. Baada ya kuoanisha mara moja, kompyuta inayoaminika huunganisha tena yenyewe.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Washa seva ya Remote Link</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Baada ya kuoanisha mara moja, kompyuta inayoaminika huunganisha tena yenyewe. Kompyuta iliyooanishwa inaweza kuendesha towe la gamepad la hii, na isipokuwa ukiweka kikomo, kibodi, kipanya, na makro zake pia.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Au unganisha kwa anwani (ya hali ya juu)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Kompyuta iliyooanishwa inaweza kuendesha towe la gamepad la hii, na isipokuwa ukiweka kikomo, kibodi, kipanya, na makro zake pia.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Unganisha kwa Anwani</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Oanisha / Unganisha</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Oanisha</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Unganisha</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Imeunganishwa</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Oanisha na kompyuta ya mbali</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Thibitisha kwamba msimbo huu unalingana kwenye skrini zote mbili, kisha Oanisha.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Oanisha na PC Nyingine?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Hakikisha skrini zote mbili zinaonyesha msimbo uleule.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Oanisha</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kataa</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Weka kikomo cha kompyuta hii kwa ingizo la gamepad pekee</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Gamepad Pekee</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Utambulisho</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Kompyuta iliyooanishwa inaweza kutuma ingizo la kibodi, kipanya, na makro kwa hii isipokuwa ukiweka kikomo kwa gamepad pekee.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Kompyuta iliyooanishwa inaweza kuendesha towe la gamepad la PC hii, na isipokuwa ukiweka kikomo, kibodi, kipanya, na makro zake pia.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Kompyuta zilizooanishwa</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Kompyuta ulizooanisha nazo kwa Remote Link. Batilisha moja ili isiunganishe. Italazimika kuoanisha tena.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Batilisha</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Batilisha zote</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Badili Jina</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Overlay ya touchpad</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa uigaji wa touchpad unaooana na PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo ya touchpad ya PlayStation, kwa skrini ya kugusa au kipanya.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Washa overlay ya touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Uwazi</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Weka upya mahali</value></data>
@@ -436,6 +525,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Mipangilio</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Jumla</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Ingizo</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Maunzi</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Viendeshi</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data na Faragha</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Tafuta mipangilio</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Hakuna mipangilio inayolingana na “{0}”.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Mwonekano</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Chagua mandhari ya kuonekana unayopendelea.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Mandhari</value></data>
@@ -444,6 +540,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Giza</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Injini ya ingizo</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Sanidi tabia ya ukaguzi na uchakataji wa chinichini.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Usaidizi wa Maunzi</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Anzisha injini kiotomatiki wakati wa kuzindua</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Endelea kukagua dirisha linapopoteza kipaumbele</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Muda wa ukaguzi (isipokuwa wasifu uubatilishe)</value></data>
@@ -500,16 +597,19 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ilisasishwa hadi {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Anza ikiwa imepunguzwa</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Anza wakati wa kuingia</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>Kiendeshi cha HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Ficha vifaa halisi kutoka kwa michezo ili kuzuia ingizo mara mbili.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Huficha vifaa halisi kutoka kwa michezo ili kuzuia ingizo mara mbili.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Chaguo za HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Ficha vifaa kutoka kwa michezo, Weka vifaa vimefichwa kati ya uzinduzi, Programu zilizoruhusiwa</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Programu zilizoruhusiwa</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Programu hizi bado zinaweza kuona vifaa vilivyofichwa. PadForge huruhusiwa kila wakati kiotomatiki.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ongeza...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Kiendeshi cha HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Injini ya kidhibiti pepe cha HID ya hali ya mtumiaji. Imepachikwa ndani ya PadForge.App. Husakinishwa kiotomatiki kidhibiti pepe cha kwanza kinapoundwa. Hubadilisha ViGEmBus na vJoy katika v3.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge husakinisha kiendeshi hiki pamoja na kidhibiti pepe cha kwanza unachounda. Uninstall huorodhesha kile HIDMaestro iliacha kwenye PC hii kabla ya kukiondoa.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Huunda vidhibiti pepe.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Ondoa usakinishaji wa HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Hii huondoa HIDMaestro kwenye kompyuta hii: vidhibiti vyake pepe, kiendeshi, cheti cha kusaini, funguo za rejista na faili. PadForge husimamisha injini yake kwanza. Programu nyingine zinazotumia HIDMaestro zitapoteza kiendeshi chake hadi zitakapoanza tena. PadForge huisakinisha tena itakapoanzisha kidhibiti pepe tena.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Ondoa pia usbip-win2 iliyosakinishwa kwa kisakinishi chake</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Hiki ndicho kitakachoondolewa kwenye PC hii. PadForge husakinisha HIDMaestro tena na kidhibiti pepe chake kijacho.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Ondoa pia usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Matoleo ya zamani ya PadForge yalisakinisha usbip-win2 kwa kisakinishi cha usbip-win2. Hii huondoa usakinishaji huo pia, pamoja na kichujio chake cha USB root hub, isipokuwa programu nyingine inatumia usbip-win2. Kuondoa kichujio huanzisha upya kila USB 3 root hub, kwa hiyo vifaa vya USB hukatika kwa muda mfupi.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Inasoma vilivyobaki vya HIDMaestro kwenye kompyuta hii…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro haikuacha chochote cha kuondoa kwenye kompyuta hii.</value></data>
@@ -518,10 +618,15 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Inabaki: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Haikuweza kusomwa: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Haikuondolewa: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Kiendeshi cha Bluetooth cha BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Imeondolewa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Imebaki</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Haikusomwa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Haikuondolewa</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Huruhusu vidhibiti vya PlayStation 3, PlayStation Move na kidhibiti cha Navigation kuunganishwa kupitia Bluetooth. Kimepachikwa ndani ya PadForge na husakinishwa mara ya kwanza kimoja kati ya hivyo kinapooanishwa.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Huunganisha vidhibiti vya PlayStation 3 kupitia Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Ondoa usakinishaji wa BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Hii huondoa BthPS3 kwenye kompyuta hii: viendeshi vyake, kichujio inachoongeza kwenye Bluetooth, na kiendeshi cha WinUSB ambacho PadForge iliweka kwa vidhibiti vya PlayStation 3 kwa ajili ya kuoanisha. PadForge husimamisha injini yake kwanza, na Bluetooth huzimika kwa muda viendeshi vinapoondolewa kwenye kumbukumbu. Vidhibiti vya PlayStation 3, Move na Navigation kisha vitafanya kazi kupitia USB pekee. Kuoanisha kimoja husakinisha BthPS3 tena.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Hiki ndicho kitakachoondolewa kwenye PC hii. Vidhibiti vya PlayStation 3, Move na Navigation kisha vitafanya kazi kupitia USB pekee, hadi kuoanisha kimoja kusakinishe BthPS3 tena.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Inasoma vilivyobaki vya BthPS3 kwenye kompyuta hii…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 haikuacha chochote cha kuondoa kwenye kompyuta hii.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini hutumia viendeshi hivi, kwa hivyo vinabaki ikiwa imesakinishwa.</value></data>
@@ -540,6 +645,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth haikuwashwa tena. Iwashe katika Mipangilio ya Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Milango pepe ya MIDI na ingizo la MIDI. Windows 11 25H2 inajumuisha API kutoka sasisho la mwishoni mwa Novemba 2026. Kompyuta nyingine hutumia runtime ya Windows MIDI Services, ambayo PadForge inaweza kusakinisha, au API ya zamani ya MIDI.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Milango pepe ya MIDI na ingizo la MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Imejengwa ndani ya Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Runtime ya App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Haipatikani</value></data>
@@ -557,6 +663,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Hii huondoa Windows MIDI Services Runtime and Tools za Microsoft, pamoja na programu ya MIDI Settings, koni ya MIDI, na moduli ya PowerShell. Microsoft haizitoi tena kwa kupakuliwa, kwa hiyo haziwezi kusakinishwa tena.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Runtime ya VR kwa vidhibiti pepe vya VR. Husakinishwa kutoka seva za Valve bila akaunti ya Steam wala mteja wa Steam (GB kadhaa).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Runtime ya VR kwa vidhibiti pepe vya VR.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Mahali pa kusakinisha</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Ondoa usakinishaji wa SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Hii huondoa usakinishaji wa SteamVR usiotumia Steam ulioko {0} na kuachilia GB kadhaa. Vidhibiti pepe vya VR havitafanya kazi hadi SteamVR isakinishwe tena.</value></data>
@@ -569,7 +676,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Uchunguzi</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Taarifa za toleo, pamoja na kumbukumbu za matukio ya injini kwa utatuzi.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Weka kumbukumbu ya uchunguzi</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Huandika matukio ya injini mfululizo kwenye diagnostics.log kwenye folda inayoonyeshwa hapa chini. Hubaki imewashwa baada ya kuanzisha upya. Faili ikifikia MB 8 huhamia diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Huandika matukio ya injini mfululizo kwenye diagnostics.log kwenye folda ya kumbukumbu, ambayo Open Log Folder huifungua. Hubaki imewashwa baada ya kuanzisha upya. Faili ikifikia MB 8 huhamia diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Hifadhi picha ya hali</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Huhifadhi matukio ya hivi karibuni ya injini kwenye faili mpya. Hufanya kazi hata kumbukumbu ya uchunguzi ikiwa imezimwa.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Fungua folda ya kumbukumbu</value></data>
@@ -582,53 +689,92 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Kuhusu</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Zana ya kupanga ramani ya vidhibiti</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Imesasishwa.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Nyaraka</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Angalia Masasisho</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Fork mpya ya x360ce, iliyojengwa upya kwa SDL3, WPF, na .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge hugeuza kifaa chochote cha ingizo kuwa kidhibiti pepe chochote. Gamepad, joystick, kibodi, kipanya, na skrini za kugusa hupangiwa ramani kuwa vidhibiti pepe vya michezo (Xbox, PlayStation, flight stick, usukani, gamepad za watu wengine) au towe la kibodi+kipanya / MIDI ambalo michezo hulichukulia kama vifaa halisi. Inaendeshwa na HIDMaestro na Windows MIDI Services. Hutumia SDL3 kwa ingizo la vidhibiti, Windows Raw Input kwa kibodi na kipanya, HidHide kwa kuficha vifaa kwa kila mchezo, na hutoa kiolesura cha Fluent Design cha kupanga ramani, deadzone, mikunjo ya unyeti, na force feedback.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Muhtasari</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Imejengwa kwa</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Tafuta shukrani</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Onyesha Shukrani Zote</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Onyesha Shukrani Chache</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Hakuna shukrani inayolingana na “{0}”.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime na mfumo wa WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime na mfumo wa WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Ingizo la vidhibiti na uorodheshaji. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Ingizo la vidhibiti na uorodheshaji.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Ingizo la kibodi na kipanya kwa kila kifaa</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Towe la kifaa pepe cha MIDI (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Towe la kifaa pepe cha MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Taswira ya 3D ya kidhibiti. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Taswira ya 3D ya kidhibiti.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Mfumo wa muundo wa Fluent 2 wa WPF. Wpf.Ui.dll ina VirtualizingWrapPanel, fonti za fluentui-system-icons, na msimbo kutoka WPF na microsoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Mfumo wa muundo wa Fluent 2 wa WPF. Wpf.Ui.dll ina VirtualizingWrapPanel, fonti za fluentui-system-icons, na msimbo kutoka WPF na microsoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm ya kuunganisha data. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm ya kuunganisha data.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikoni za kijiti na kichochezi zilizotokana na "Xbox Series Button Icons and Controls" na Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikoni za kijiti na kichochezi zilizotokana na "Xbox Series Button Icons and Controls" na Zacksly.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Kilinganishi cha violezo vya maumbo ya touchpad (Duara / Mraba / Pembetatu / Z / Alama ya tiki na ishara maalum zilizorekodiwa). Uandishi upya wa C# wa rejeleo la JavaScript na Magrofuoco, Vatavu, Anthony, na Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Kilinganishi cha violezo vya maumbo ya touchpad (Duara / Mraba / Pembetatu / Z / Alama ya tiki na ishara maalum zilizorekodiwa). Uandishi upya wa C# wa rejeleo la JavaScript na Magrofuoco, Vatavu, Anthony, na Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Nafasi za vitufe na vitufe vya tabaka la msingi vya kibodi ambazo onyesho la awali la Kibodi + Kipanya huchora, vilivyotengenezwa kutoka data ya mpangilio ya QMK na fork ya QMK ya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Nafasi za vitufe na vitufe vya tabaka la msingi vya kibodi ambazo onyesho la awali la Kibodi + Kipanya huchora, vilivyotengenezwa kutoka data ya mpangilio ya QMK na fork ya QMK ya Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Mbinu ya kupima pembe-pambizo inayoendesha pamoja na kilinganishi cha mawingu ya nukta kwenye maumbo ya kidole kimoja. Hutekeleza wazo la upimaji kutoka PointPatternAnalyzer ya GestureSign kwa C# asili. GPL-2.0, nyaraka pekee.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Mbinu ya kupima pembe-pambizo inayoendesha pamoja na kilinganishi cha mawingu ya nukta kwenye maumbo ya kidole kimoja. Hutekeleza wazo la upimaji kutoka PointPatternAnalyzer ya GestureSign kwa C# asili. Nyaraka pekee.</value></data>
   <data name="About_License" xml:space="preserve"><value>Leseni</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Programu hii imepewa leseni chini ya CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack na AL2009man (MIT) hutoa mali za 2D za kidhibiti. GestureSign na TransposonY (GPL-2.0) ilisomwa kama nyaraka za AngularMarginRecognizer, na hakuna msimbo wake unaosafirishwa. Handheld Companion (CC BY-NC-SA 4.0) hutoa miundo ya 3D ya Xbox 360 na Steam Deck ambayo PadForge hubadilisha. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services, na WPF UI zimepewa leseni chini ya Leseni ya MIT. OpenXInput husafirisha tu kanusho la alama ya biashara la upstream na inasambazwa upya kama ilivyo chini ya masharti yaleyale. $Q Recognizer na Magrofuoco, Vatavu, Anthony, na Wobbrock (BSD 3-Clause) ndio rejeleo la ShapeRecognizer ya touchpad, uandishi upya wa C#. SDL3 imepewa leseni chini ya Leseni ya zlib. x360ce (LGPL-3.0-or-later) ndiyo msimbo asili ambao PadForge ilitengwa kutoka kwake. Zergatul.Obs.InputOverlay na Igor Budzhak (MIT) hutoa mchoro wa kipanya.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (kipakiaji cha SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD ya mtindo</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Masharti ya leseni ya Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Masharti ya SDK ya Corsair</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Kanusho la alama ya biashara pekee</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Hakuna masharti yaliyotajwa</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Hakuna zilizochapishwa</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Leseni kadhaa</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Injini ya kidhibiti pepe cha HID ya hali ya mtumiaji (hubadilisha ViGEmBus na vJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Injini ya kidhibiti pepe cha HID ya hali ya mtumiaji (hubadilisha ViGEmBus na vJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Mbadala wa XInput wa kuchomeka moja kwa moja. Huchuja vidhibiti pepe vya PadForge visionekane kwake yenyewe. Kanusho la alama ya biashara la upstream, hakuna leseni ya OSS.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Mbadala wa XInput wa kuchomeka moja kwa moja. Huchuja vidhibiti pepe vya PadForge visionekane kwake yenyewe.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Kiendeshi cha kernel cha kuficha vifaa halisi kutoka kwa michezo. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kiendeshi cha kernel cha kuficha vifaa halisi kutoka kwa michezo.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Mwaliko</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“Na tunazungumza kuhusu Kristo, tunafurahia katika Kristo, tunahubiri kuhusu Kristo, tunatoa unabii kumhusu Kristo, na tunaandika kulingana na unabii wetu, ili watoto wetu wajue asili ya kutegemea msamaha wa dhambi zao.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Nefi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Utukufu, heshima, na sifa kwa Bwana Yesu Kristo, chanzo cha kweli yote na wokovu, milele na milele.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Unakaribishwa kwa furaha kutembelea ComeUntoChrist.org na kujifunza zaidi kumhusu Yeye na Kanisa la Yesu Kristo la Watakatifu wa Siku za Mwisho.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed ya Bauer ya stereophonic-hadi-binaural kwa towe la vipokea sauti vya kichwani. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed ya Bauer ya stereophonic-hadi-binaural kwa towe la vipokea sauti vya kichwani.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Kisimbaji cha Opus cha C# safi kinachoendesha sauti ya spika ya DualSense kupitia Bluetooth. Na Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Kisimbaji cha Opus cha C# safi kinachoendesha sauti ya spika ya DualSense kupitia Bluetooth. Na Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>Utafiti wa sauti ya Bluetooth ya DualSense na egormanga: usafirishaji wa pakiti ambao mtiririko wa spika ya kidhibiti hupitia. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Utafiti wa sauti ya Bluetooth ya DualSense na egormanga: usafirishaji wa pakiti ambao mtiririko wa spika ya kidhibiti hupitia. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Mapishi ya spika ya Bluetooth na awalol: uundaji wa fremu za Opus na mpangilio wa pakiti. Shukrani pia kwa TechAntohere kwa matokeo na majaribio waliyoshiriki. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Mapishi ya spika ya Bluetooth na awalol: uundaji wa fremu za Opus na mpangilio wa pakiti. Shukrani pia kwa TechAntohere kwa matokeo na majaribio waliyoshiriki.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Utekelezaji wa rejeleo wa upitishaji sauti wa kidhibiti cha USB. Na WujekFoliarz.</value></data>
 
@@ -673,8 +819,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Ucheleweshaji wa Herufi (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekunde kati ya herufi zinazoandikwa, hadi 1000. 0 huandika maandishi yote mara moja.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Kata Muunganisho Bila Shughuli</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Nguvu</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Taarifa za Kifaa</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Maelezo</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>dakika (0 = kamwe)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Katisha Bluetooth Inapochomekwa kwa USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Chaji ya Haraka. Kidhibiti hiki kikiripoti kuwa kinachaji kikiwa kimeunganishwa kupitia Bluetooth, kiungo cha Bluetooth hukatwa ili kichaji bila kuwasha redio. Chanzo chochote cha nguvu cha USB kinahesabika, ikiwemo chaja za ukutani. Ukiwasha Bluetooth tena huku kebo ikiwa bado imechomekwa, haiguswi hadi utakapoichomoa tena.</value></data>
@@ -698,10 +843,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Huuliza pedi hii ya PlayStation mielekeo yake moja kwa moja, ili kushoto na kulia, au juu na chini, vitambuliwe pamoja kwenye mkeka wa dansi tangu hatua ya kwanza. Huwasili kama vitufe vya Mshale wa Juu, Chini, Kushoto na Kulia, ambavyo firmware 3.34 pia hutuma yenyewe mara mielekeo iliyo kinyume inapokuwa imebonyezwa, na PadForge huacha kuuliza wakati huo. Hadi hapo adapta huruka usomaji wake mwingi wa pedi.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Shinikizo la DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nambari ya Mchezaji</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Adapta huhifadhi nambari hiyo na kuunganisha tena kama mchezaji huyo. Kisha Windows huona kifaa kipya, kwa hivyo weka ramani ya mlango tena utakaporudi.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Adapta huhifadhi nambari hiyo na kuunganisha tena, jambo ambalo Windows huliona kama kifaa kipya.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Mchezaji</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Weka Mchezaji</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Skrini ya Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Hakuna kinachofika kwenye mlango hadi uhifadhi.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Onyesha</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Picha ya Adapta</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Jina la Wasifu</value></data>
@@ -748,7 +894,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Inasoma Namco USIO kama ngoma mbili za Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Inasoma {0} kama kidhibiti cha iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Inasoma {0} kama kibodi tena.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Bunduki ya Mwanga</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Masafa chaguomsingi ya kulenga: X {0} hadi {1}, Y {2} hadi {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Masafa yaliyosawazishwa ya kulenga: X {0} hadi {1}, Y {2} hadi {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Usawazishaji wa Bunduki</value></data>
@@ -807,6 +952,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Kibodi Zote (Zimeunganishwa)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Vipanya Vyote (Vimeunganishwa)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Vifaa</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>vilivyounganishwa: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Tafuta vifaa</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Vyote</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Vidhibiti</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Kibodi na Vipanya</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Soma Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Soma Chatpad na Tableti za uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Soma Pedi za Michezo</value></data>
@@ -827,28 +977,21 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} imerudi kwenye kiendeshi chake cha Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Kiendeshi cha Windows cha {0} hakikuweza kurejeshwa.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ilirudisha {0} kwenye kiendeshi chake chenyewe. Kichague kwenye ukurasa wa Vifaa ili kukibadilisha tena.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> vimeunganishwa / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> kwa jumla</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Ondoa kifaa hiki na mipangilio yake</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Ondoa Kifaa</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} kitaondolewa kwenye orodha ya vifaa na mipangilio yake iliyohifadhiwa itasahaulika.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Buruta kifaa hadi kwenye kadi ya kidhibiti ya utepe wa pembeni ili kukigawia nafasi.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Bidhaa: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Buruta kifaa hadi kwenye kidhibiti kwenye utepe wa pembeni ili kukigawia.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Wasilisha Ramani ya Kifaa</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Ugawaji wa Kidhibiti Pepe</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Badilisha ugawaji</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Bado hakuna nafasi za kidhibiti pepe. Unda moja kwenye Dashibodi ili kugawa kifaa hiki.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Hali ya Ingizo</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Hugawia kifaa hiki kidhibiti hiki, au hukiondoa.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Lazimisha Hali Ghafi ya Joystick (Epuka Ramani ya Gamepad)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Soma viashiria ghafi vya HID badala ya ramani ya gamepad ya SDL. Tumia SDL inapotambua vibaya mpangilio wa vitufe na mihimili.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Ufichaji wa Ingizo</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Ficha Isionekane kwa Michezo (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Huficha kabisa kifaa hiki kisionekane na programu nyingine kupitia kiendeshi cha HidHide. PadForge inapoficha kidhibiti cha USB kilichokuwa tayari kimeunganishwa, hukiunganisha tena kwenye Windows, kwa hivyo chochote kilichokuwa kimekifungua hukipoteza. Kidhibiti cha Bluetooth, au kinachoshiriki kipokezi na kidhibiti kingine, hubaki na chochote kilichokifungua kabla hakijafichwa hadi kitakapounganishwa tena.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Sakinisha kiendeshi cha HidHide ili kuwezesha chaguo hili</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Tumia Ingizo Zilizo na Ramani (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Huzuia tu vitufe na vifungo maalum vilivyo na ramani, na kuacha ingizo zisizo na ramani zipite</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Hali Ghafi ya Ingizo</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Chagua kifaa ili kukagua ingizo lake ghafi.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Jaribu Ingizo</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Chagua kifaa ili kuona mipangilio yake na kujaribu ingizo lake.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Mihimili</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Vitufe</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Kibodi</value></data>
@@ -1124,27 +1267,25 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Kifaa kilichochaguliwa hakionyeshi mihimili, vitufe, wala hat za kunakili.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Nakili {0} kwenye nafasi hii kama upitishaji wa 1:1? Mpangilio utakuwa mihimili {1}, vitufe {2}, na POV {3}, na mistari ya kifaa hiki kwenye nafasi hubadilishwa na ingizo zake zenyewe.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kifaa hiki kina ingizo nyingi kuliko kidhibiti cha Extended kinavyoweza kubeba. Zimewekwa ramani mihimili {0} kati ya {1}, vitufe {2} kati ya {3}, na POV {4} kati ya {5}. Zilizobaki ziliachwa bila ramani.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Wasifu Ulioingizwa</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Wasifu wa HIDMaestro ulioingizwa na mtumiaji huhifadhiwa ndani ya PadForge.xml na huonekana kwenye orodha ya wasifu ya kila nafasi ya Extended. Nasa mpya kutoka kifaa kilichounganishwa hapa chini, au hamisha / futa uliopo.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Wasifu wako ulioingizwa ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Vifaa Vilivyounganishwa Vinavyoweza Kuingizwa</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Mipangilio ya Awali ya Kidhibiti</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Ongeza mpangilio wa awali wa kidhibiti ambacho PadForge haikisafirishi, kutoka faili au kutoka kwa kidhibiti chenyewe.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Vilivyoingizwa</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Ingiza kutoka Kifaa Kilichounganishwa</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Hamisha…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Futa</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Funga</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Hamisha JSON ya Wasifu</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Futa Wasifu Ulioingizwa?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Futa "{0}"? Nafasi yoyote inayotumia wasifu huu itarudi kwenye kipengee bandia cha Custom.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Futa Mpangilio wa Awali?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Kidhibiti chochote kinachotumia {0} hurudi kwenye kipengee cha Custom. Hili haliwezi kutenduliwa.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Imehamishwa hadi {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Kuhamisha kumeshindwa: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Imefutwa "{0}".</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ingiza kutoka kwenye Faili…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ingiza Kutoka kwa Faili…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Ingiza JSON ya Wasifu</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Imeingizwa kutoka {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Kusoma kumeshindwa: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ilikataa wasifu huu kwenye {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Wasifu huu hauna HID descriptor, kwa hivyo hakuna kidhibiti kinachoweza kuundwa kutoka kwake.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Hakuna kilichoingizwa. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Onyesha Upya</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ingiza</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(kifaa cha HID kisicho na jina)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Violesura {0} vya HID vimepatikana.</value></data>
@@ -1429,6 +1570,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Kituo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Marekebisho ya kituo, umbo la deadzone na thamani kwa kila mhimili, mkunjo kwa kila mhimili, masafa, usukani</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Masafa kwa nambari, thamani ghafi</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Masafa</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Fanya Usawazishaji wa Mpaka hupima ukingo ambao kijiti kinaweza kufikia na kuugeuza kuwa duara kamili. Vitelezi vinne huweka tu kikomo cha kila mwelekeo.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Inapima...</value></data>
@@ -1961,21 +2103,22 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Weka upya kizingiti cha ulinganifu wa umbo</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Rekodi ishara ya touchpad</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Chora ishara kwenye uso ulio hapa chini. Dirisha hunasa kila kidole unachoweka chini. Ukiondoa vidole vyote kwenye uso, sampuli hurekodiwa. Kuchora idadi tofauti ya vidole na sampuli zilizotangulia huweka upya rundo.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Inasubiri mguso wa kidole kwenye turubai</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Rekodi Ishara</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Chora umbo kwenye touchpad ya kidhibiti. Inakuwa ingizo unaloweza kuwekea ramani.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Chora ishara hapa.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Chora kwenye touchpad. Turubai huiakisi moja kwa moja.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Inarekodi kutoka {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>touchpad hii</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad haipatikani. Tumia turubai iliyo hapa chini kwa kipanya au mguso.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Touchpad haipatikani. Chora hapa kwa kipanya, kalamu au kidole.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Inachora…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Sampuli zote zimenaswa. Taja ishara kisha ubofye Hifadhi.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sampuli {0} kati ya {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Sampuli {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Sampuli za kunasa</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ndiyo kawaida. Sampuli nyingi = ulinganifu imara zaidi, chache = kurekodi kwa kasi zaidi.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Sampuli za kunasa</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ndiyo kawaida. Sampuli nyingi hutoa ulinganifu wa uhakika zaidi, na chache hurekodiwa kwa kasi zaidi.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Jina</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Jaribu tena</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Ipe ishara hii jina</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Jina linahitajika</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Jina ni refu mno (herufi 64 kwa juu)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Jina lina herufi zisizo halali</value></data>
@@ -2282,41 +2425,62 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Wasifu</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Usimamizi wa Wasifu</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Unda wasifu wa vidhibiti kwa kila programu unaobadilika kiotomatiki kulingana na mchezo unaotumika.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Badilisha Wasifu Kiotomatiki Kulingana na Programu ya Mbele</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Wasifu ni mpangilio mzima: vidhibiti vyake, ramani na urekebishaji.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Wasifu wa Kuanzia</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Wasifu uliotayarishwa kwa aina nzima ya michezo. Chagua mmoja, agiza kidhibiti chochote, kisha ucheze.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Badilisha Wasifu kwa Mchezo</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Ubadilishaji wa Kiotomatiki</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Mbele sasa: {0}, hakuna wasifu uliowekwa kwa ajili yake</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Mbele sasa: {0}, ambao hupakia {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Mbele sasa: {0}, na hakuna wasifu wenye mchezo uliowekwa bado</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Ruhusu Udhibiti wa Nje na Vizinduzi na Hati</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Hutoa bomba lenye jina la ndani, PadForge.Control, ili Playnite, LaunchBox, au hati iweze kuwasha na kuzima wasifu. Wasifu ulioamilishwa kwa njia hii unabaki hai hadi hati iuachilie au ubadilishe wasifu mwenyewe. Kompyuta hii pekee.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Udhibiti wa Nje</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Wasifu unaotumika:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Hakuna Nafasi</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Kubadilisha kiotomatiki: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Hakuna Vidhibiti</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Dondosha ili Kuleta Wasifu</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Mpya</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Dondosha faili ya wasifu hapa</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Wasifu Mpya</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Hifadhi Kama</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Hifadhi Mpangilio wa Sasa Hapa</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Hariri</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Pakia</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Hakuna Wasifu Wenye Faili ya Programu Bado</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Umejengewa ndani</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Chagua wasifu kwanza.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Wasifu wa Chaguomsingi uliojengewa ndani haiwezi kuhaririwa wala kufutwa.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Futa Wasifu</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Futa "{0}"? Muhtasari wake uliohifadhiwa wa nafasi na ramani utaharibiwa.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Hakuna mchezo uliowekwa</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Hupakia kwa {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Umewekwa kwa {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Unatumika</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zaidi kwa {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Futa {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Wasifu na kanuni yake ya kubadilisha kiotomatiki huondolewa. Hili haliwezi kutenduliwa.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Wasifu huondolewa. Hili haliwezi kutenduliwa.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Badilisha mpangilio uliohifadhiwa katika “{0}” na wa sasa? Jina lake na michezo yake hubaki.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Badilisha</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Hifadhi Kama Wasifu</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Hariri Wasifu</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Jina la Wasifu:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Wasifu Mpya</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Jina</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Wasifu Mpya</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Faili za programu (zinalinganishwa na dirisha la mbele):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Michezo Inayoupakia</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Kasi ya Kusoma</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Chaguomsingi (Mpangilio wa Jumla)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Imebatilishwa wakati wasifu “{0}” unatumika: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Huhifadhi ramani za kila nafasi na mipangilio ya kila kifaa chini ya jina moja. Programu zilizounganishwa hubadilisha kwenda kwake kiotomatiki.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Hubadilisha jina la wasifu na kusasisha programu zinazouwasha. Ramani na mipangilio iliyohifadhiwa haibadiliki.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Huhifadhi ramani na mipangilio ya kila kidhibiti chini ya jina moja. Hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Wasifu hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Huanza bila vidhibiti. Hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ongeza Mchezo Unaoendesha</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Hakuna programu nyingine yenye dirisha lililofunguliwa.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ondoa {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Kasi ya kusoma wasifu huu unapopakiwa</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Nakili Mipangilio Kutoka...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Chagua kifaa cha kunakili mipangilio yake:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Nakili Kutoka</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Badilisha ramani na mipangilio ya kila kifaa ya {0} na ya kidhibiti kingine.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Ongeza makro za kidhibiti kingine kwenye {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Haijagawiwa, huweka ramani za awali</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Chagua Programu ya Kuiruhusu</value></data>
@@ -2358,6 +2522,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Masafa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Bofya mara mbili kuongeza nukta. Bofya kulia kuondoa. Buruta kurekebisha.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>kihariri cha mkunjo</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mhimili wa Kichochezi</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2677,8 +2842,19 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Msingi</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Tabaka la Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Sanidi Msingi</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Jina, ikoni na rangi ya tabaka la Msingi kwenye Shift Layer Flyout na kwenye safu ya matabaka.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Jina la Tabaka</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Ingizo la Kianzishi</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Jina</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Hushikiliwa Kwa</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Hubonyezwa Kwa</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Tabaka Linalofuata Kwa</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Tabaka Lililotangulia Kwa</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Na Kwa</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Chagua Ingizo</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Vidhibiti Visivyo na Ramani</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Angukia Msingi</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Usifanye Chochote</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Hali, aina ya ingizo, muda na rangi</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Hali</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Shikilia</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Badilisha</value></data>
@@ -2705,14 +2881,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Ikichaguliwa, lengo la tabaka hili hubaki limezimwa badala ya kuangukia safu ya Msingi.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ucheleweshaji</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Muda ambao ingizo lazima lishikiliwe kabla tabaka halijaitikia. Kwa hali ya Shikilia hii huzuia mibonyezo ya haraka kupita kiasi. Kwa Badilisha, Funga na Nata, hufanya swichi iwe kubonyeza kwa muda mrefu: tabaka hubadilika mara moja shikilio linapopita muda huu, na kugusa kwa muda mfupi hakufanyi kitu. 0 huitikia papo hapo.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Ingizo la Pili la Chord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Kizingiti cha Mhimili</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Zungusha Katika Matabaka</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Ndani ya Tabaka Pekee</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Tabaka Lolote</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Ingizo huhesabiwa tu wakati tabaka lililochaguliwa liko amilifu. Ukaguzi hufanyika ingizo linaposhuka na hudumu kwa kubonyeza kote. Tabaka Lolote humaanisha ingizo huhesabiwa kila wakati. Weka njia za kutoka za kila tabaka kwenye tabaka hilo, kwa kianzishi kingine au makro ya Badilisha Tabaka.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Kitufe Kinachofuata</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Kitufe Kilichotangulia</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Rudi Mwanzo</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Ikiwashwa, kupita tabaka la mwisho hurudi kwenye la kwanza, na kupita la kwanza hurudi kwenye la mwisho. Ikizimwa, kielekezi husimama kwenye ncha.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Jumuisha Msingi</value></data>
@@ -2724,18 +2897,17 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Kubonyeza kitufe kimoja (au mwelekeo wa POV) huwasha tabaka.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Vitufe vyote viwili lazima vishikiliwe kwa wakati mmoja ili kuwasha. Chord ya vifaa tofauti inaruhusiwa.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Huwasha wakati mhimili wa analogi umepita thamani ya kizingiti.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Tabaka hubaki amilifu kianzishi kinaposhikiliwa. Huachilia ukiachia.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Ingizo lake likishikiliwa, ramani za tabaka hili hubadilisha za Msingi.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Gusa ili kuwasha. Gusa tena ili kuachilia. Tabaka hudumu kupitia mibonyezo mingi.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Bonyeza ili kufunga tabaka hili likiwa limewashwa na kulishikilia. Bonyeza tena ili kuachilia na kurudi kwenye Msingi. Kitufe tofauti cha Funga hubadilisha hadi tabaka lake lenyewe.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Kila kubonyeza huendelea kupitia orodha ya matabaka iliyopangwa. Hurudi kwenye Msingi mwishoni.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Gusa mara moja ili kuwasha. Kubonyeza kitufe kinachofuata chenye ramani hutekelezwa kwenye tabaka, kisha huachilia yenyewe.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Haina kitufe chake. Iongeze kwenye foleni ya kidhibiti cha Zungusha, na mzunguko utaifikia.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Rithi Malengo Yasiyo na Ramani kutoka Msingi</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Tekeleza Wakati wa Kuachilia</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Husubiri hadi kitufe kiachiliwe kabla kianzishi hiki kutekelezwa. Ikiwa ucheleweshaji wa shikilio umewekwa, kubonyeza lazima kudumu kwa muda huo ili kuachilia kuhesabiwe.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Tekeleza Pia Ramani ya Kianzishi Chenyewe</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Ikichaguliwa, kitufe cha kianzishi bado huendesha safu yoyote inayokitumia kama chanzo. Kubonyeza mara moja hubadilisha tabaka na kutekeleza ramani ya kitufe chenyewe. Isipochaguliwa (chaguomsingi), kubonyeza kianzishi hutumiwa na mabadiliko ya tabaka pekee.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Ikichaguliwa, malengo ambayo tabaka hili halina ramani yake wazi huangukia tabaka la Msingi. Isipochaguliwa (chaguomsingi), tabaka hubadilisha Msingi kabisa na malengo yasiyo na ramani hubaki yamezimwa.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Kwa Angukia Msingi, vidhibiti ambavyo tabaka hili halina ramani yake huweka ramani zao za Msingi. Kwa Usifanye Chochote, tabaka hubadilisha Msingi kabisa na vidhibiti hivyo hubaki vimezimwa.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Masafa ya Mzunguko</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Weka Masafa ya Mzunguko</value></data>
@@ -2936,15 +3108,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Kifaa kilichochaguliwa hakina spika iliyojengewa ndani. Sauti za makro za pedi hii huchezwa kwenye pato chaguomsingi la mfumo.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Weka Upya Pato la Sauti</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Mkusanyiko wa majaribio ya DualSense kwenye kivinjari wa Xuezhou Dai (daidr): rejeo la mpangilio wa CRC wa ripoti za vipengele za Sony na amri za majaribio za firmware ambazo PadForge huzipeleka kutoka pedi pepe hadi halisi. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Mkusanyiko wa majaribio ya DualSense kwenye kivinjari wa Xuezhou Dai (daidr): rejeo la mpangilio wa CRC wa ripoti za vipengele za Sony na amri za majaribio za firmware ambazo PadForge huzipeleka kutoka pedi pepe hadi halisi.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Rejeo la sauti ya Bluetooth ya DualShock 4 la nefarius: mpangilio wa ripoti kwa mtiririko wa spika ya DS4 ya PadForge. Kisimbaji cha SBC ni utekelezaji asili wa C# kutoka vipimo vya Bluetooth A2DP. Pamoja na nyaraka za itifaki kutoka ds4mac ya khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Rejeo la sauti ya Bluetooth ya DualShock 4 la nefarius: mpangilio wa ripoti kwa mtiririko wa spika ya DS4 ya PadForge. Kisimbaji cha SBC ni utekelezaji asili wa C# kutoka vipimo vya Bluetooth A2DP. Pamoja na nyaraka za itifaki kutoka ds4mac ya khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Safirisha…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Ingiza…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Wasifu "{0}" umesafirishwa.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Wasifu "{0}" umeingizwa (vifurushi {1} vya sauti vimesajiliwa).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Faili si wasifu wa PadForge unaosomeka.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Chagua sauti kutoka {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Vifurushi vya Sauti</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Faili za zip za sauti kwa makro za sauti</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Kifurushi cha sauti ni faili moja ya zip ya sauti yenye kiendelezi cha .pfsounds. Kiongeze hapa, kisha chagua sauti zake kwenye makro yoyote ya sauti. PadForge husoma moja kwa moja kutoka kwenye faili na haikifungui kamwe. Weka vifurushi karibu na PadForge.exe ili vibaki vinavyobebeka.</value></data>
@@ -2989,20 +3160,13 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Ulinzi wa Utambulisho</value>
+    <value>Utambulisho wa Kuoanisha</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Jinsi utambulisho wa uoanishaji wa PC hii unavyohifadhiwa. Chagua hali inayobebeka ili kubeba uoanishaji wako kwenye flash drive kati ya mashine.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Itaje PC Hii</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PC za Karibu (Hazijaoanishwa)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Weka Upya</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Nenosiri la Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpad ya PadForge</value>
@@ -3034,9 +3198,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>PC Iliyooanishwa</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Mtandaoni</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Nje ya Mtandao</value>
   </data>
@@ -3053,7 +3214,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
     <value>Fungua utambulisho wa sasa kabla ya kubadilisha ulinzi wake.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Weka nenosiri ili kulinda utambulisho wako unaobebeka. Utaliingiza ili kufungua Remote Link kwenye kila PC.</value>
+    <value>Nenosiri hulinda utambulisho wa kuoanisha wa PC hii.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Ulinzi wa utambulisho umesasishwa.</value>
@@ -3073,7 +3234,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Inaunganisha kwa {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Unganisha Upya Kiotomatiki</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Unganisha Upya Yenyewe</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Inasikiliza kwenye {0}</value>
   </data>
@@ -3092,65 +3253,70 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Mwenzi {0} ameunganishwa, vifaa {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Chagua sauti kutoka kwenye kifurushi kilichoongezwa, au vinjari faili.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Vinjari Faili…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Chagua Sauti</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Sauti huchezwa kupitia spika ya kidhibiti, au spika ya PC kikiwa hakina.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Tumia Sauti</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Cheza {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Unasaji wa loopback wa WASAPI kwa uakisi wa sauti ya kidhibiti na mtetemo wa kichochezi wa sauti-besi. NAudio.Midi, ambayo PadForge haijumuishi, pia ni rejeo la matamko ya WinMM ya API ya MIDI ya zamani na mfuatano wa milango, la kanuni kwamba Note On yenye velocity 0 ni Note Off, na la vidhibiti vya kuwasha/kuzima kama sustain. Na Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Unasaji wa loopback wa WASAPI kwa uakisi wa sauti ya kidhibiti na mtetemo wa kichochezi wa sauti-besi. NAudio.Midi, ambayo PadForge haijumuishi, pia ni rejeo la matamko ya WinMM ya API ya MIDI ya zamani na mfuatano wa milango, la kanuni kwamba Note On yenye velocity 0 ni Note Off, na la vidhibiti vya kuwasha/kuzima kama sustain. Na Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Kitambua usemi cha nje ya mtandao kinachosikia misemo ya makro za sauti. Na Alpha Cephei. Modeli imejumuishwa ndani ya PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Kitambua usemi cha nje ya mtandao kinachosikia misemo ya makro za sauti. Na Alpha Cephei. Modeli imejumuishwa ndani ya PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografia kwa uoanishaji na usafirishaji wa Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, leseni ya mtindo wa MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografia kwa uoanishaji na usafirishaji wa Remote Link (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>Viendeshi vilivyojumuishwa vya wasifu wa Bluetooth na kichujio cha PSM vya nefarius vinavyoruhusu DualShock 3 kuunganishwa kupitia redio ya pamoja. Husakinishwa ndani ya programu wakati wa kuoanisha. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Viendeshi vilivyojumuishwa vya wasifu wa Bluetooth na kichujio cha PSM vya nefarius vinavyoruhusu DualShock 3 kuunganishwa kupitia redio ya pamoja. Husakinishwa ndani ya programu wakati wa kuoanisha.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Rejeo la itifaki ya DualShock 3 la Benjamin Höglinger-Stelzer: ripoti za vipengele za sixpair, kiolezo cha ripoti ya pato ya Bluetooth, mpangilio wa kuwezesha, ramani ya betri. Utekelezaji wa PadForge ni C# asili. DualShock 3 (SIXAXIS): Full controller ya HIDMaestro hutumia kielezi cha ripoti cha hali ya SXS cha DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Rejeo la itifaki ya DualShock 3 la Benjamin Höglinger-Stelzer: ripoti za vipengele za sixpair, kiolezo cha ripoti ya pato ya Bluetooth, mpangilio wa kuwezesha, ramani ya betri. Utekelezaji wa PadForge ni C# asili. DualShock 3 (SIXAXIS): Full controller ya HIDMaestro hutumia kielezi cha ripoti cha hali ya SXS cha DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Usakinishaji wa duka la viendeshi, usajili wa kichujio cha daraja la Bluetooth, na kuzungusha mlango wa USB kwa usanidi wa BthPS3 ndani ya programu na kwa kuachilia kidhibiti cha USB kilichofichwa, na nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Usakinishaji wa duka la viendeshi, usajili wa kichujio cha daraja la Bluetooth, na kuzungusha mlango wa USB kwa usanidi wa BthPS3 ndani ya programu na kwa kuachilia kidhibiti cha USB kilichofichwa, na nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Ufikiaji wa USB kwa kiendeshi chenye waya cha Switch 2 Pro na vidhibiti ambavyo PadForge huviunganisha na WinUSB, husafirishwa kama libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Ufikiaji wa USB kwa kiendeshi chenye waya cha Switch 2 Pro na vidhibiti ambavyo PadForge huviunganisha na WinUSB, husafirishwa kama libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Kijiti cha kugusa katika Kidhibiti cha Wavuti cha simu, na Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Kijiti cha kugusa katika Kidhibiti cha Wavuti cha simu, na Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Hifadhidata ya jamii ya ramani za gamepad ambayo ramani zilizojumuishwa za PadForge huipanua. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Hifadhidata ya jamii ya ramani za gamepad ambayo ramani zilizojumuishwa za PadForge huipanua.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Utafiti wa LED ya kitufe cha Xbox Guide: mpangilio wa pakiti na mfuatano wa ugunduzi wa XboxGIP, na Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Utafiti wa LED ya kitufe cha Xbox Guide: mpangilio wa pakiti na mfuatano wa ugunduzi wa XboxGIP, na Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Hisabati ya usukani wa pembe-kujipinda na kuegemea, na JibbSmart na Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Hisabati ya usukani wa pembe-kujipinda na kuegemea, na JibbSmart na Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Ugeuzaji wa gyro wa nafasi-ya-mchezaji na nafasi-ya-dunia, na JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Ugeuzaji wa gyro wa nafasi-ya-mchezaji na nafasi-ya-dunia, na JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Mpangilio wa ripoti ya haptics ya Steam Controller (2015) na hisabati ya kipindi cha noti, na Pila na Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Mpangilio wa ripoti ya haptics ya Steam Controller (2015) na hisabati ya kipindi cha noti, na Pila na Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Mpangilio wa haptics wa toni za LFO wa Steam Controller 2026 na Steam Deck, na Pila, Crazy, na AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Mpangilio wa haptics wa toni za LFO wa Steam Controller 2026 na Steam Deck, na Pila, Crazy, na AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantiki za usafishaji wa SOCD kwa hali za Snap Tap, na valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantiki za usafishaji wa SOCD kwa hali za Snap Tap, na valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Mteja wa mtandao wa Steam anayepakua usanidi wa vidhibiti vya Steam Workshop kupitia kikao kisichojulikana, na Ryan Stecker na SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Kiserilishaji cha Protocol Buffers ambacho SteamKit2 hutumia kwa itifaki ya waya ya Steam, na Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Kiserilishaji cha Protocol Buffers ambacho SteamKit2 hutumia kwa itifaki ya waya ya Steam, na Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Upunguzaji wa Zstandard ambao SteamKit2 hutumia kwa vipande vya depo za Steam, toleo la C# la maktaba ya zstd na Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Upunguzaji wa Zstandard ambao SteamKit2 hutumia kwa vipande vya depo za Steam, toleo la C# la maktaba ya zstd na Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Nyaraka za sherehe ya kuoanisha Wii, ADPCM ya spika, mwelekeo wa Wii Remote wa pembeni na wima, modeli ya lango la kijiti na umbizo lake la hifadhi, na kanuni ya mhimili wa gyro. GPL-2.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaojumuishwa.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Nyaraka za sherehe ya kuoanisha Wii, ADPCM ya spika, mwelekeo wa Wii Remote wa pembeni na wima, modeli ya lango la kijiti na umbizo lake la hifadhi, na kanuni ya mhimili wa gyro. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaojumuishwa.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Nyaraka za tabia ya DualShock: kukatika kwa kutotumika, mipaka ya touchpad, usimbuaji wa betri, IOCTL ya kukatisha Bluetooth, biti za hali ya mtetemo za DualSense, mkunjo wa jitter ya gyro, kipimo cha kijiti-kama-kipanya, na mbegu ya CRC ya ripoti ya pato ya Bluetooth. Jedwali la misimbo ya vitufe vya kibodi yake pepe liliongoza la PadForge. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaojumuishwa.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Nyaraka za tabia ya DualShock: kukatika kwa kutotumika, mipaka ya touchpad, usimbuaji wa betri, IOCTL ya kukatisha Bluetooth, biti za hali ya mtetemo za DualSense, mkunjo wa jitter ya gyro, kipimo cha kijiti-kama-kipanya, na mbegu ya CRC ya ripoti ya pato ya Bluetooth. Jedwali la misimbo ya vitufe vya kibodi yake pepe liliongoza la PadForge. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaojumuishwa.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>Nyaraka za amri ya LED ya GIP zinazothibitisha xbledctl. GPL-2.0-or-later, nyaraka pekee.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Nyaraka za amri ya LED ya GIP zinazothibitisha xbledctl. Nyaraka pekee.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Nyaraka za tabia ya kamera ya IR ya Wii na Balance Board, na Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Nyaraka za tabia ya kamera ya IR ya Wii na Balance Board, na Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Nyaraka za umbizo la waya la mtetemo wa Joy-Con HD, na Sergey004. Zilisomwa kwa ukweli wa itifaki pekee.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Oanisha</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Oanisha Kidhibiti</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Oanisha Kidhibiti</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Oanisha Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Fungua kifuniko cha betri na ubonyeze kitufe chekundu cha SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Weka kidhibiti karibu na PC hii taa zake zinapomulika.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Oanisha DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Oanisha Kidhibiti cha Move au Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Ongeza Kidhibiti cha Serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Ongeza Kidhibiti cha DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Familia ya Kidhibiti</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Fungua kifuniko cha betri na ubonyeze kitufe chekundu cha SYNC. Endelea kuruhusu PadForge kutafuta hadi kidhibiti chako kionekane.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Kuoanisha kwa Muda (Shikilia 1 na 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Oanisha</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Inatafuta. Bonyeza kitufe cha SYNC sasa.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Inatafuta kidhibiti.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Vidhibiti Vilivyopatikana</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Hakuna vidhibiti vilivyopatikana bado. Hakikisha taa za buluu zinapepesa.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Imeoanishwa: {0}. Itaonekana kwenye orodha ya vifaa vyako.</value></data>
@@ -3160,7 +3326,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Imekamilika</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>API ya mteja ya OpenVR ya Valve (BSD 3-Clause): headset za VR na vidhibiti vya mwendo kama vyanzo vya ingizo. Runtime asili hupakiwa kutoka usakinishaji wako wa SteamVR.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API ya mteja ya OpenVR ya Valve: headset za VR na vidhibiti vya mwendo kama vyanzo vya ingizo. Runtime asili hupakiwa kutoka usakinishaji wako wa SteamVR.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Inaendesha</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Inaendesha, kiendeshi kimeunganishwa</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Inaendesha, vidhibiti vinafanya kazi</value></data>
@@ -3198,13 +3364,12 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Kuoanisha hakukukamilika. Hatua iliyoshindwa inaonyeshwa hapo juu.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Funga</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Tagi za NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Sajili Tagi</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Gusa tagi kwenye kisomaji ili kunasa UID yake.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(inasubiri)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Jina:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Gusa tagi kwenye kisomaji na uipe jina. Inakuwa kitufe unachoweza kuwekea ramani.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Gusa tagi kwenye kisomaji.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Jina</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Ipe tagi hii jina</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Sajili</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Tagi Zilizosajiliwa</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Zilizosajiliwa</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Hakuna kisomaji cha NFC kilichogunduliwa. Unganisha kisomaji cha PC/SC na ufungue tena.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tagi imenaswa. Weka jina na ubofye Sajili. Gusa tagi nyingine ili kuibadilisha.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Imesajiliwa "{0}." Gusa tagi nyingine ili kuongeza zaidi.</value></data>
@@ -3282,22 +3447,22 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Kumbukumbu iliyoshirikiwa ya FreeTrack haikuweza kufunguliwa pia.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Jifunze / Dhibiti Vitufe Vilivyofichwa</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Vitufe Vilivyofichwa</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Jifunze Kitufe</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Bonyeza kitufe kilichofichwa mara moja utakapoombwa. PadForge hutazama kibodi, kipanya, kila ripoti ya muuzaji, na kila tukio la mfumo kwenye mashine hii, na kurekodi lile ambalo kitufe kinabadilisha.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Mashine:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Anza Kujifunza</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Fundisha PadForge kitufe ambacho Windows haionyeshi kama kidhibiti. Kibonyeze utakapoombwa.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Usiguse. Inasoma hali ya kupumzika…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Bonyeza kitufe kilichofichwa sasa, kisha kiachilie…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Subiri kidogo…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Hakuna mabadiliko yaliyoonekana. Bonyeza kitufe wakati wa dirisha lililoangaziwa kisha ujaribu tena.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Bonyeza na ushikilie kitufe sasa.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Achia kitufe.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Hatua {0} ya {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Hakuna mabadiliko yaliyoonekana. Chagua Anza Upya, kisha ubonyeze na ushikilie kitufe utakapoombwa.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Imetazama ripoti {0} za muuzaji na madarasa {1} ya matukio. Wakati wa kubonyeza: ripoti {2}, matukio {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Kitufe kimenaswa. Weka jina kisha ubofye Sajili.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Chanzo:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Jina:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Chanzo</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Jina</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Ipe kitufe hiki jina</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Sajili</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Vitufe Vilivyojifunzwa</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Anza Upya</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Hakuna vitufe vilivyojifunzwa bado.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Imesajiliwa "{0}". Anza tena ili kujifunza kingine.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Vilivyojifunzwa kwenye {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Imesajiliwa "{0}". Chagua Anza Upya ili kujifunza kingine.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Vitufe: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Vitufe vilivyofichwa vimezimwa. Washa Vitufe vya PC ya Mkononi kwenye Mipangilio kwanza.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} inafanya kazi. Bado inaitikia vitufe hivi hadi uisimamishe.</value></data>
@@ -3446,6 +3611,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Usanidi wa Jumuiya</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Vinjari usanidi wa vidhibiti vya Steam Input uliotengenezwa na jumuiya na uutafsiri kuwa wasifu wa PadForge. PadForge huunganisha moja kwa moja kwenye seva za Steam tu unapotafuta, kufungua usanidi, au kukagua usanidi uliouleta kwa masasisho. Hutuma maandishi yako ya utafutaji, vitambulisho vya michezo, usanidi na waundaji wanaohusika, na toleo la PadForge. Uingiaji wa Steam bila jina pia hutuma toleo lako la Windows na kitambulisho cha mashine kilichotengenezwa kutoka kwa hashi za kitambulisho cha usakinishaji wa Windows, anwani za adapta za mtandao, na namba ya serial ya diski ya kuwasha. Hakuna telemetry, hakuna huduma ya mtu wa tatu, hakuna akaunti ya Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge huunganisha kwenye seva za Steam tu unapotafuta, kufungua usanidi, au kukagua usanidi uliouleta kwa masasisho. Hakuna telemetry, hakuna akaunti ya Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Kinachotumwa</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Washa Usanidi wa Jumuiya</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Onyesha Usanidi wa Zamani wa Workshop</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Baadhi ya usanidi wa zamani hauna faili inayoweza kupakuliwa kwenye CDN ya Steam. PadForge huuorodhesha ukiwa na beji ya Legacy na husoma nakala ambayo Steam huhifadhi ukishajiandikisha. Hadi hapo, hutoa kuufungua usanidi kwenye Steam Workshop.</value></data>
@@ -3453,18 +3620,21 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Kagua Wasifu Uliouletwa kwa Masasisho</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Kache ya Workshop imefutwa</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Vinjari Usanidi wa Jumuiya</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Vinjari Usanidi wa Jumuiya</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Wasifu · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Pata Wasifu</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Anza na wasifu uliotayarishwa, usanidi wa jumuiya au faili kutoka zana nyingine.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Za Kuanzia</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Jumuiya</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Ingiza Faili</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kuhifadhi huongeza wasifu wa kawaida unaoweza kuuhariri.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Forge Imepoa</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Kuvinjari usanidi wa jumuiya huunganisha PadForge moja kwa moja kwenye Steam, tu unapotafuta, kamwe wakati wa kuanza.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Washa Usanidi wa Jumuiya</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Tafuta Michezo</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Michezo {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Michezo</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Hakuna michezo iliyopatikana kwenye duka la Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Inatafuta kwenye Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Inasoma Usanidi kutoka Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Inasoma Usanidi kutoka Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>imepangwa kwa ukadiriaji</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Imepangwa Kwa</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Tafuta Kwenye Usanidi Huu</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Ukadiriaji</value></data>
@@ -3478,7 +3648,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} zimepatikana</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Inaonyesha {0} kati ya {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Usanidi {0}</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>usanidi wa jumuiya</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>usaidizi kamili wa kidhibiti</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>usaidizi wa sehemu wa kidhibiti</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Tafuta Michezo</value></data>
@@ -3497,8 +3666,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Jaribu Tena</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Usanidi huu wa enzi za 2016 ulitangulia CDN ya usanidi ya Steam. Jiandikishe kwake kwenye Steam, na PadForge huusoma kutoka folda yako ya Steam.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Fungua kwenye Steam Workshop</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chagua usanidi ili usome manifesto yake ya tafsiri.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>Ramani {0} zimesomwa</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chagua usanidi ili uone kinachovuka.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kinachovuka</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Huwa</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Huchagua kidhibiti pepe kitakachopokea vitufe na vijiti vya usanidi. Vitufe vyake vya kibodi na kipanya daima huenda kwa kidhibiti cha Kibodi + Kipanya.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Tabaka</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Safi</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Sehemu</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Zilizorukwa</value></data>
@@ -3563,7 +3735,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Inakagua Steam Workshop kwa masasisho…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Wasifu ulioletwa umesasishwa ({0} vimekaguliwa)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Masasisho ya Workshop</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Wasifu huu ulioletwa una matoleo mapya zaidi kwenye Steam Workshop. Viilete tena kutoka Vinjari Usanidi wa Jumuiya ili kupata mabadiliko.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Wasifu huu ulioletwa una matoleo mapya zaidi kwenye Steam Workshop. Viingize tena kutoka Pata Wasifu ili kupata mabadiliko.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Kwa Mbonyezo wa Muda Mrefu</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Kwa Mbonyezo Mfupi</value></data>
@@ -3711,7 +3883,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menyu {0} Seli {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay ya Menyu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlay</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Viashiria vya skrini ambavyo PadForge huonyesha unapocheza. Kuzima kimoja hakubadilishi tabia kamwe, ila tu kama kinatangazwa au la.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Viashiria vya skrini ambavyo PadForge huonyesha unapocheza. Kuzima kimoja hakubadilishi tabia kamwe, ila tu kama kinaonyeshwa au la.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Dirisha la Tabaka la Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay ya Kubadilisha Wasifu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Onyesha pete au gridi kwenye skrini wakati menyu ya mviringo au ya mguso inatumika. Menyu bado hutekelezwa ikiwa overlay imezimwa.</value></data>
@@ -3761,6 +3933,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Masafa ya toni ya chaneli hii, 20 hadi 120 Hz. Endesha frequency sweep ili kupata mahali bass shaker yako inapojibu kwa nguvu zaidi.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Sauti ya kituo hiki kabla ya master gain.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Gain</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frekwensi</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Jaribu</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Hucheza toni ya kituo hiki kwa sekunde 1.5 kwa gain yake iliyowekwa.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Weka Upya Motor ya Chini</value></data>
@@ -3803,16 +3976,16 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Mkunjo wa kasi ya kielekezi cha trackpad kwa matokeo ya touchpad-hadi-kipanya. Uhamishaji wa C# wa wasifu wa kasi ya touchpad wa libinput. MIT.</value>
+    <value>Mkunjo wa kasi ya kielekezi cha trackpad kwa matokeo ya touchpad-hadi-kipanya. Uhamishaji wa C# wa wasifu wa kasi ya touchpad wa libinput.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Miundo ya 3D ya vidhibiti (Xbox 360, Steam Deck) na msimbo wa muundo na uhuishaji wa mwonekano wa 3D, na CasperH2O, Lesueur Benjamin, trippyone. Pia ni rejeo la ripoti ya Steam Deck na usimbuaji wa haptic, ripoti ya kuzima ya Steam Controller (2015), orodha ya ufuatiliaji ya daemon ya kifaa cha mkononi, muda wa ukaguzi wa masasisho, na mzunguko wa mlango wa hub, kwa tofauti ya ms 500, unaounganisha tena kidhibiti cha USB kilichofichwa ili programu zilizokifungua kwanza zikipoteze. CC BY-NC-SA 4.0.</value>
+    <value>Miundo ya 3D ya vidhibiti (Xbox 360, Steam Deck) na msimbo wa muundo na uhuishaji wa mwonekano wa 3D, na CasperH2O, Lesueur Benjamin, trippyone. Pia ni rejeo la ripoti ya Steam Deck na usimbuaji wa haptic, ripoti ya kuzima ya Steam Controller (2015), orodha ya ufuatiliaji ya daemon ya kifaa cha mkononi, muda wa ukaguzi wa masasisho, na mzunguko wa mlango wa hub, kwa tofauti ya ms 500, unaounganisha tena kidhibiti cha USB kilichofichwa ili programu zilizokifungua kwanza zikipoteze.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>Michoro ya 2D ya vidhibiti (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), na AL2009man. MIT.</value>
+    <value>Michoro ya 2D ya vidhibiti (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), na AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>Nyaraka za itifaki ya sauti ya DualShock 4: vigezo vya SBC na mipangilio ya pakiti, na khallmark. GPL-2.0, nyaraka pekee.</value>
+    <value>Nyaraka za itifaki ya sauti ya DualShock 4: vigezo vya SBC na mipangilio ya pakiti, na khallmark. Nyaraka pekee.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Eneo-kazi</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Endesha Windows ukiwa kwenye kochi. Kielekezi, kusogeza, na mibofyo kwenye vichochezi.</value></data>
@@ -3826,10 +3999,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Mpangilio wa vitufe sita wenye usafishaji wa SOCD unaokubalika mashindanoni kwenye mihimili yote miwili.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Kibodi + Kipanya</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Vinjari Wasifu wa Kuanzia</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Wasifu wa Kuanzia</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Wasifu uliotayarishwa kwa aina nzima ya michezo. Chagua mmoja, agiza kidhibiti chochote, kisha ucheze. Kuhifadhi huongeza wasifu wa kawaida unaoweza kuuhariri.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Hifadhi Wasifu</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Wasifu wa kuanzia "{0}." umeongezwa.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Elekeza na Bofya</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Michezo ya matukio na kila kitu kinachoendeshwa kwa kielekezi na vitenzi viwili.</value></data>
@@ -3929,13 +4098,13 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Weka Upya Njia ya Matokeo</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Fuata Jeki ya Vipokea Sauti</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>Ramani ya baiti za ripoti ya matokeo ya DualSense na semantiki za Sony scePad, na WujekFoliarz, inayoegemeza vitendaji vya athari na sauti vya PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Ramani ya baiti za ripoti ya matokeo ya DualSense na semantiki za Sony scePad, na WujekFoliarz, inayoegemeza vitendaji vya athari na sauti vya PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mchoro wa uelekezaji wa sauti wa kugundua jeki, na SundayMoments, rejeo nyuma ya Fuata Jeki ya Vipokea Sauti. Husomwa kama nyaraka. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Mchoro wa uelekezaji wa sauti wa kugundua jeki, na SundayMoments, rejeo nyuma ya Fuata Jeki ya Vipokea Sauti. Husomwa kama nyaraka.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kisimbaji cha QR cha hali ya baiti kwa anwani za Kidhibiti cha wavuti, kilichohamishwa kutoka utekelezaji wa rejeo wa Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Kisimbaji cha QR cha hali ya baiti kwa anwani za Kidhibiti cha wavuti, kilichohamishwa kutoka utekelezaji wa rejeo wa Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Michoro ya kipanya kwenye taswira ya Kibodi + Kipanya, na Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Michoro ya kipanya kwenye taswira ya Kibodi + Kipanya, na Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Kasi Inayopimwa kwa Shinikizo</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Kasi ya kurudia hufuata ukali wa kubonyeza chanzo cha analogi kilichochaguliwa. Mbonyezo hafifu hurudia kwa Kipindi Polepole, mbonyezo kamili kwa Kipindi kilicho hapo juu, na kila kitu kati yake hubadilika taratibu.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Kipindi Polepole</value></data>
@@ -3950,7 +4119,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Inaunganisha kwa msimbo…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Haikuweza kufikia mwenzi moja kwa moja. Jaribu Unganisha kwa Anwani kupitia VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Msimbo wa PC Hii</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Badilishaneni misimbo na mtu mwingine: bandika wake kwenye kisanduku chako cha Unganisha huku yeye akibandika wako, kisha nyote mbofye Unganisha. Hilo hufungua njia ya moja kwa moja kupitia intaneti, bila VPN. Msimbo husasishwa Remote Link inapoendesha.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Badilishaneni misimbo na mtu mwingine: bandika wake kwenye Unganisha kwa Anwani, chini ya Zaidi, huku yeye akibandika wako, kisha nyote mbofye Oanisha / Unganisha. Hilo hufungua njia ya moja kwa moja kupitia intaneti, bila VPN. Msimbo husasishwa Remote Link inapoendesha.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Mtandao huu hauwezi kufanya miunganisho ya moja kwa moja (inaonekana kama hotspot ya simu au NAT ya kiwango cha mtoa huduma). Tumia VPN kama Tailscale, au unganisha kutoka broadband ya nyumbani.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Haikuweza kupata anwani ya umma ya PC hii (mtandao unaweza kuzuia trafiki inayohitajika). Miunganisho ya moja kwa moja haitafanya kazi hapa. Tumia VPN, au Unganisha kwa Anwani kwenye mtandao uleule.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Betri ya Kidhibiti Iko Chini</value></data>
@@ -3961,6 +4130,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Arifu Kwenye au Chini ya</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Tetemesha Kidhibiti Pia</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Jaribu Arifa</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Kagua Arifa</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Vidokezo vya Kuagiza</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kifaa kinapounganishwa huku ukurasa wa kidhibiti pepe ukiwa wazi, PadForge inaweza kutoa kukiagiza hapo, na Mwanzo inaweza kutoa kwa kifaa kipya kidhibiti pepe chake chenyewe. Hakuna kinachoagizwa hadi ukubali ofa. Kibodi, vipanya, touchpad, na vitufe vya midia havitolewi kamwe.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Toa Vifaa Vipya kwa Kidhibiti Pepe Kilicho Wazi</value></data>
@@ -3974,23 +4144,28 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Sio Sasa</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Kifungu Chochote</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Makro za Sauti</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Sema kifungu nacho hubonyeza kitufe unachoweza kuwekea ramani. Kila maikrofoni ambayo PadForge inaweza kufikia husikiliza.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Dhibiti Makro za Sauti</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Washa Makro za Sauti</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Huwasha usikilizaji. Ikiwa imewashwa, kila kifungu kilichosajiliwa ni kitufe kinachowaka ukikisema. Modeli ya utambuzi imejumuishwa ndani ya PadForge na hufanya kazi nje ya mtandao kabisa.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Usikilizaji</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Kila Wakati hufanya maikrofoni iwe wazi daima. Bonyeza Uzungumze husikiliza tu wakati makro ya Voice Listen iliyoambatishwa inashikiliwa.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Kusikiliza kuwashwa au kuzimwa, hali, uhakika</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Kila Wakati</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Bonyeza Uzungumze</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Uhakika wa Chini</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Kitambuzi lazima kiwe na uhakika kiasi gani kabla kifungu hakijawaka. Uongeze ikiwa hotuba ya nasibu huanzisha makro, uupunguze ikiwa vifungu vyako havitambuliwi.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Inasubiri hotuba. Utambuzi huonekana hapa pamoja na uhakika wake.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Imesikia "{0}" ({1:F2}). Imewaka.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Imesikia "{0}" ({1:F2}). Chini ya kiwango cha uhakika au kitufe cha kuzungumza kimeachiliwa.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Kusikiliza kumezimwa. Kiwashe chini ya Zaidi.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Imesikia {0} kwenye {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Imesikia {0} kwenye {1}. Ilikuwa chini ya kiwango cha uhakika, au kitufe cha kuzungumza kilikuwa juu.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Kifungu</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Kifungu cha kusema</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Jina</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Jina la kitufe</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Sajili</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Vifungu Vilivyosajiliwa</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>Kimesajiliwa "{0}." Kitamke ili kuwasha kitufe chake, na uambatishe makro kwake kwenye ukurasa wa Pad.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Vifungu</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Kimesajiliwa "{0}." Kitamke ili kuwasha kitufe chake, na ukiwekee ramani kwenye ukurasa wa kidhibiti.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Voice Listen (Inaposhikiliwa)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Bonyeza Uzungumze kwa Makro za Sauti: makro hii inaposhikiliwa, kitambuzi husikiliza. Weka Usikilizaji kuwa Bonyeza Uzungumze kwenye Dhibiti Makro za Sauti.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Maikrofoni</value></data>
@@ -3998,12 +4173,12 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Injini ya haptic na mtoa huduma wa Razer nyuma ya mtetemo wa safu ya Razer Sensa. HAR.dll na Interhaptics.RazerProvider.dll zimejumuishwa ndani ya PadForge, bila kubadilishwa kutoka Core SDK ya umma. Na Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Injini ya haptic na mtoa huduma wa Razer nyuma ya mtetemo wa safu ya Razer Sensa. HAR.dll na Interhaptics.RazerProvider.dll zimejumuishwa ndani ya PadForge, bila kubadilishwa kutoka Core SDK ya umma. Na Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Miundo ya 3D ya Steam Controller (2015) na Steam Controller (2026), iliyotengenezwa kwa mesh kutoka faili za STEP zilizochapishwa za Valve. Hakimiliki Valve Corporation. CC BY-NC-SA 4.0. PadForge haihusiani wala kuidhinishwa na Valve.</value>
+    <value>Miundo ya 3D ya Steam Controller (2015) na Steam Controller (2026), iliyotengenezwa kwa mesh kutoka faili za STEP zilizochapishwa za Valve. Hakimiliki Valve Corporation. PadForge haihusiani wala kuidhinishwa na Valve.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 runtime</value>
@@ -4020,7 +4195,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Uthibitisho wa muundo wa Razer Chroma REST API kwa taa za Razer, na Adam Hellberg na Brandon Scott. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Uthibitisho wa muundo wa Razer Chroma REST API kwa taa za Razer, na Adam Hellberg na Brandon Scott. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Marejeo ya Logitech LED SDK</value>
   </data>
@@ -4029,19 +4204,19 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Datagram ya kifuatiliaji cha UDP na mpangilio wa shared-memory wa FreeTrack 2.0 kwa ufuatiliaji wa kichwa. ISC. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value>
+    <value>Datagram ya kifuatiliaji cha UDP na mpangilio wa shared-memory wa FreeTrack 2.0 kwa ufuatiliaji wa kichwa. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Darasa la tukio la matumizi la Lenovo WMI ambalo kijifunzi cha kitufe kilichofichwa cha kifaa cha mkononi hujisajili kwake, na muundo wa seva ya IPC yenye ruhusa ya juu nyuma ya udhibiti wa wasifu wa nje. GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value>
+    <value>Darasa la tukio la matumizi la Lenovo WMI ambalo kijifunzi cha kitufe kilichofichwa cha kifaa cha mkononi hujisajili kwake, na muundo wa seva ya IPC yenye ruhusa ya juu nyuma ya udhibiti wa wasifu wa nje. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Mifuatano ya utambulisho wa PC za mkononi na maelezo ya ripoti za muuzaji yaliyokaguliwa mtambuka kwa kijifunzi cha kitufe kilichofichwa. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value>
+    <value>Mifuatano ya utambulisho wa PC za mkononi na maelezo ya ripoti za muuzaji yaliyokaguliwa mtambuka kwa kijifunzi cha kitufe kilichofichwa. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook na WiimoteHook</value>
@@ -4055,11 +4230,11 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Mfuatano wa miito ya WinMM nyuma ya API ya zamani ya MIDI: kufungua mlango, kutuma kwake, na kuufunga. Imesomwa kutoka PortMidi (MIT, na Ross Bencina, Phil Burk, na Roger B. Dannenberg) na RtMidi (leseni ya RtMidi ya mtindo wa MIT, na Gary P. Scavone). Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Marejeo ya Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Mpangilio wa neno la tukio nyuma ya ingizo la G-key unatoka LogitechGkeyLib.h kwenye SDK. Mpangilio wa utafutaji wa maktaba na kuzima hufuata GKey.cpp ya Mumble (BSD 3-Clause). PadForge hupakia nakala yoyote ya maktaba iliyo kwenye mashine na haisafirishi msimbo wa Logitech.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Mpangilio wa neno la tukio nyuma ya ingizo la G-key unatoka LogitechGkeyLib.h kwenye SDK. Mpangilio wa utafutaji wa maktaba na kuzima hufuata GKey.cpp ya Mumble. PadForge hupakia nakala yoyote ya maktaba iliyo kwenye mashine na haisafirishi msimbo wa Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup, na AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Marejeo ya Bliss-Box</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Usafirishaji wa USB na Vadym Hrynchyshyn kwa vidhibiti vya mchanganyiko vya USB vya HIDMaestro. HIDMaestro hubeba kiendeshi chake cha host controller kilichosainiwa na kukisakinisha mara ya kwanza kidhibiti cha mchanganyiko kinapoundwa. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Usafirishaji wa USB na Vadym Hrynchyshyn kwa vidhibiti vya mchanganyiko vya USB vya HIDMaestro. HIDMaestro hubeba kiendeshi chake cha host controller kilichosainiwa na kukisakinisha mara ya kwanza kidhibiti cha mchanganyiko kinapoundwa.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Chagua nusu zipi za nafasi hii zinafanya kazi. Kuzima nusu huficha safu zake na kuizuia kutuma, na huhifadhi ramani zake ili kuiwasha tena kuzirejeshe.</value>
   </data>
@@ -4127,13 +4302,15 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
     <value>Agiza Vifaa Vilivyoshirikiwa</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Maagizo kwenye {0}</value>
+    <value>Vifaa Vilivyoshirikiwa na {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Chagua kifaa kilichoshirikiwa na PC hii, kisha uchague vidhibiti pepe vyake kwenye PC nyingine.</value>
+    <value>Chagua kifaa, kisha vidhibiti vya PC hiyo ambavyo kinapaswa kuendesha.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Vinavyoshirikiwa Kutoka PC Hii</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Vidhibiti kwenye {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Wasifu: {0}</value>
+    <value>Wasifu unaotumika: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Kwenye PC nyingine, ruhusu mabadiliko ya maagizo ya mbali kwa PC hii chini ya Remote Link &gt; Paired PCs.</value>
@@ -4225,60 +4402,60 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS, na CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Kisimbuaji cha hotuba, maktaba ya transducer, na aljebra ya mstari ndani ya libvosk.dll. Kaldi na OpenFst: Apache-2.0. OpenBLAS na CLAPACK: BSD 3-Clause, pamoja na notisi tofauti za GotoBLAS2 ndani ya OpenBLAS na za runtime ya f2c.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mpangilio wa wasifu wa kuanzia wa Mkakati na Eneo-kazi, na tabia ya turbo ambayo turbo inayopimwa kwa shinikizo huiepuka. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mpangilio wa wasifu wa kuanzia wa Mkakati na Eneo-kazi, na tabia ya turbo ambayo turbo inayopimwa kwa shinikizo huiepuka. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rejeo la Antoine Aflalo kwa mpangilio wa kiolesura kisichoandikwa cha IPolicyConfig cha Windows, ambacho PadForge hutumia kuwasha tena sehemu ya mwisho ya sauti ya kidhibiti. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rejeo la Antoine Aflalo kwa mpangilio wa kiolesura kisichoandikwa cha IPolicyConfig cha Windows, ambacho PadForge hutumia kuwasha tena sehemu ya mwisho ya sauti ya kidhibiti. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Muundo wa wasifu wa parametric EQ ambao Parametric EQ ya kidhibiti huingiza, na Jaakko Pasanen. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Muundo wa wasifu wa parametric EQ ambao Parametric EQ ya kidhibiti huingiza, na Jaakko Pasanen. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Mbinu za SendInput nyuma ya makro za Text Block na ndoano ya mchanganyiko wa kibodi: uandishi wa Unicode, mipaka ya kundi, kitufe cha kuficha cha Win, na ingizo lililotiwa lebo. GPL-2.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Mbinu za SendInput nyuma ya makro za Text Block na ndoano ya mchanganyiko wa kibodi: uandishi wa Unicode, mipaka ya kundi, kitufe cha kuficha cha Win, na ingizo lililotiwa lebo. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Rejeo la itifaki ya DSU nyuma ya seva ya mwendo, na v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Rejeo la itifaki ya DSU nyuma ya seva ya mwendo, na v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Muundo wa fremu za ripoti ya matokeo ya Bluetooth ya DualShock 4, na Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Muundo wa fremu za ripoti ya matokeo ya Bluetooth ya DualShock 4, na Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Masafa ya betri ya DualShock 4, muda na hatua za nguvu ya mapigo ya haptic ya touchpad, na tabia ya fling ya touchpad. GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Masafa ya betri ya DualShock 4, muda na hatua za nguvu ya mapigo ya haptic ya touchpad, na tabia ya fling ya touchpad. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton fork)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Masafa ya sauti ya DualSense, sampuli za haptic za biti 8 zenye ishara, na mpangilio uliounganishwa wa usafirishaji wa Bluetooth. GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Masafa ya sauti ya DualSense, sampuli za haptic za biti 8 zenye ishara, na mpangilio uliounganishwa wa usafirishaji wa Bluetooth. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Chaguomsingi na kima cha chini cha urefu wa bafa ya sauti ya Bluetooth ya DualSense, na awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Chaguomsingi na kima cha chini cha urefu wa bafa ya sauti ya Bluetooth ya DualSense, na awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Thamani za mipangilio ya awali ya kichochezi badilifu cha GameCube, na Mxater. Imesomwa kwa ukweli pekee.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Ishara za mhimili wa mwendo wa DSU, zilizokaguliwa dhidi ya kisimbuaji chake cha UDP. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Ishara za mhimili wa mwendo wa DSU, zilizokaguliwa dhidi ya kisimbuaji chake cha UDP. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Mipangilio ya awali chaguomsingi ya Elite Dangerous nyuma ya wasifu wa kuanzia wa Simulizi ya Anga, na Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Mipangilio ya awali chaguomsingi ya Elite Dangerous nyuma ya wasifu wa kuanzia wa Simulizi ya Anga, na Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Mpangilio wa nibble za ADPCM za spika ya Wii Remote, na kisimbuaji cha SBC kilichokagua kisimbaji cha DualShock 4. LGPL-2.1-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa LGPL unaosafirishwa.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Mpangilio wa nibble za ADPCM za spika ya Wii Remote, na kisimbuaji cha SBC kilichokagua kisimbaji cha DualShock 4. Imesomwa kama nyaraka pekee, hakuna msimbo wa LGPL unaosafirishwa.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Mwelekeo wa dira uliorekebishwa kwa mwinamo kwa yaw ya dira, uliohamishiwa C#, na x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Mwelekeo wa dira uliorekebishwa kwa mwinamo kwa yaw ya dira, uliohamishiwa C#, na x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Kanuni ya arifa ya betri iliyo chini na mchoro wa mtetemo wa Identify, na Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Kanuni ya arifa ya betri iliyo chini na mchoro wa mtetemo wa Identify, na Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>Miundo ya 3D ya DualShock 4, DualSense, DualSense Edge, Xbox Series, na Switch 2 Pro Controller, iliyonunuliwa CGTrader. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>Miundo ya 3D ya DualShock 4, DualSense, DualSense Edge, Xbox Series, na Switch 2 Pro Controller, iliyonunuliwa CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>Muundo wa 3D wa DualShock 3, ulionunuliwa CGTrader na kugawanywa kuwa mesh za kila sehemu. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>Muundo wa 3D wa DualShock 3, ulionunuliwa CGTrader na kugawanywa kuwa mesh za kila sehemu.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Safu ya HID iliyokusanywa ndani ya SDL3.dll iliyojumuishwa, na Alan Ott, Signal 11 Software. Leseni ya mtindo wa BSD.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Safu ya HID iliyokusanywa ndani ya SDL3.dll iliyojumuishwa, na Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Vyanzo vya ikoni</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Alama ya mwali kutoka Material Design Icons (Pictogrammers, Apache-2.0), ikoni ya kawaida ya gamepad kutoka Ionicons (Ionic, MIT), joystick ya Extended kutoka Jam Icons (Michael Amprimo, MIT), na ikoni za Xbox na PlayStation kutoka SVG Repo, chini ya leseni iliyo kwenye ukurasa wa kila ikoni.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Itifaki ya relay nyuma ya njia mbadala ya Remote Link, inayozungumzwa na relay za umma za bure za n0.computer kama FlexInput inavyofanya. iroh: MIT OR Apache-2.0. FlexInput: MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Vihesabu vya kipanya cha macho vya Joy-Con 2 na delta za kuzunguka nyuma ya Mouse Motion X na Y, na coffincolors, Frano, na moutella. MIT. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Vihesabu vya kipanya cha macho vya Joy-Con 2 na delta za kuzunguka nyuma ya Mouse Motion X na Y, na coffincolors, Frano, na moutella. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Viendeshi vya kernel ya Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Ukweli wa itifaki za DualShock 3, Move, DualSense, Steam Deck na PID force-feedback, na mpangilio wa kizuizi cha ACPI WMI. PadForge husoma vielezi vya kibodi na kipanya kwa kanuni za hid-core. GPL-2.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Ukweli wa itifaki za DualShock 3, Move, DualSense, Steam Deck na PID force-feedback, na mpangilio wa kizuizi cha ACPI WMI. PadForge husoma vielezi vya kibodi na kipanya kwa kanuni za hid-core. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Ingizo la kidhibiti cha Windows, ikiwemo paddle za Xbox Elite. Kipakiaji cha SDK kimeunganishwa ndani ya SDL. MIT (kipakiaji cha SDK).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Ingizo la kidhibiti cha Windows, ikiwemo paddle za Xbox Elite. Kipakiaji cha SDK kimeunganishwa ndani ya SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Runtime ya C++ ambayo SDL3.dll inahitaji (msvcp140.dll, vcruntime140.dll na, kwenye toleo la x64, vcruntime140_1.dll), iliyojumuishwa ndani ya PadForge bila kubadilishwa. Masharti ya leseni ya Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Runtime ya C++ ambayo SDL3.dll inahitaji (msvcp140.dll, vcruntime140.dll na, kwenye toleo la x64, vcruntime140_1.dll), iliyojumuishwa ndani ya PadForge bila kubadilishwa.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Maelezo ya HID ya Joy-Con na Pro Controller, mtetemo wa HD, na LED ya nyumbani, na dekuNukem, pamoja na switch2_controller_research ya ndeadly kwa Switch 2. Imesomwa kwa ukweli wa itifaki pekee.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Mchoro wa kitenzi cha sasisho chenye ruhusa ya juu nyuma ya msaidizi wa kisasishaji ndani ya programu. LGPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa LGPL unaosafirishwa.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Mchoro wa kitenzi cha sasisho chenye ruhusa ya juu nyuma ya msaidizi wa kisasishaji ndani ya programu. Imesomwa kama nyaraka pekee, hakuna msimbo wa LGPL unaosafirishwa.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Sahihi za WinSCard na mfuatano wa miito ya ufuatiliaji wa kisomaji nyuma ya ingizo la lebo ya NFC, na Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Sahihi za WinSCard na mfuatano wa miito ya ufuatiliaji wa kisomaji nyuma ya ingizo la lebo ya NFC, na Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Mipangilio ya ripoti za PlayStation Move, usawazishaji wa kihisi, na mazungumzo ya awali ya nyongeza ya EXT, na Thomas Perl, yaliyokaguliwa mtambuka dhidi ya wiki ya moveonpc. Utekelezaji wa PadForge ni C# asilia. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Marejeo ya telemetria ya mbio</value></data>
@@ -4286,23 +4463,23 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Nyaraka za kuoanisha na ripoti za Bluetooth za DualShock 3. GPL-2.0 na GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Mpangilio wa ujumbe wa STUN na usimbuaji wa XOR-MAPPED-ADDRESS nyuma ya NAT traversal ya Remote Link, uliochukuliwa kutoka chanzo chake cha C#, na Aaron Clauson. BSD 3-Clause, pamoja na kizuizi cha matumizi katika sehemu ya 2 ya leseni yake.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Mpangilio wa ujumbe wa STUN na usimbuaji wa XOR-MAPPED-ADDRESS nyuma ya NAT traversal ya Remote Link, uliochukuliwa kutoka chanzo chake cha C#, na Aaron Clauson. Leseni yake inaongeza kizuizi cha matumizi katika sehemu ya 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Marejeo ya SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>Mpangilio wa ripoti ya 3Dconnexion, jedwali la vifaa, na kipimo cha mhimili, vilivyosomwa kutoka hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse na AndunHH (CC BY-NC-SA 4.0), na spacenavd (GPL-3.0-or-later). Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Kukatwa kwa kiungo cha Bluetooth kwa IOCTL ya mwenyeji, ordinali zilizofichwa za XInput za kuzima na uwezo, na chaguomsingi za mtetemo wa kichochezi cha DualSense. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Kukatwa kwa kiungo cha Bluetooth kwa IOCTL ya mwenyeji, ordinali zilizofichwa za XInput za kuzima na uwezo, na chaguomsingi za mtetemo wa kichochezi cha DualSense. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Marejeo ya itifaki ya Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Mibonyezo ya haptic ya kutelezesha, biti za kitufe za ripoti 0x42, amri ya kuzima, na relay ya dongle, vilivyosomwa kutoka OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0), na SteamlessController (MIT). Nyaraka pekee, hakuna msimbo wa GPL wala AGPL unaosafirishwa.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Deadzone za Kijiti</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Maumbo sita ya deadzone, na Minimuino. GFDL-1.3-or-later na GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Tabia ya kielekezi cha IR cha Wii Remote: kati ya jozi ya nukta, pambizo, kukabiliana kwa sensor-bar, ulainishaji, na mkunjo wa FPS Mouse, pamoja na fork za Ryochan7, Suegrini, na Trihy. GPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Tabia ya kielekezi cha IR cha Wii Remote: kati ya jozi ya nukta, pambizo, kukabiliana kwa sensor-bar, ulainishaji, na mkunjo wa FPS Mouse, pamoja na fork za Ryochan7, Suegrini, na Trihy. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Mipangilio ya athari za kichochezi badilifu cha DualSense na ufungashaji wa kanda, iliyozalishwa upya katika C#, na John "Nielk1" Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Mipangilio ya athari za kichochezi badilifu cha DualSense na ufungashaji wa kanda, iliyozalishwa upya katika C#, na John "Nielk1" Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Mpangilio wa DS4_REPORT_EX nyuma ya ripoti ya ingizo ya DualShock 4 pepe, na Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Mpangilio wa DS4_REPORT_EX nyuma ya ripoti ya ingizo ya DualShock 4 pepe, na Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton fork)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Safu ya upunguzaji wa 48 dB ya maikrofoni pepe ya DualSense. GPL-3.0-or-later, imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Safu ya upunguzaji wa 48 dB ya maikrofoni pepe ya DualSense. Imesomwa kama nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Marejeo ya itifaki ya usukani</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Ripoti za force feedback asilia na LED za mabadiliko ya RPM kwa usukani wa Fanatec, Thrustmaster, na Logitech, zilizosomwa kutoka hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), na thrustmaster-led-linux (GPL-3.0), na kukaguliwa mtambuka dhidi ya programu-jalizi ya SimHub LED na prodigal.knight (MIT) na tm-bt-led (MIT). Nyaraka pekee, hakuna msimbo wa GPL unaosafirishwa.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Marejeo ya I/O ya arcade</value></data>
@@ -4324,19 +4501,19 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="About_TrainControllerRefs" xml:space="preserve"><value>Marejeo ya vidhibiti vya treni</value></data>
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Marejeo ya vidhibiti vya Xbox</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Ufungashaji wa INF moja kwa kila kifaa na orodha ya vifaa nyuma ya muunganisho wa kiotomatiki wa WinUSB, na Pete Batard. Nyaraka pekee, hakuna msimbo unaosafirishwa. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Ufungashaji wa INF moja kwa kila kifaa na orodha ya vifaa nyuma ya muunganisho wa kiotomatiki wa WinUSB, na Pete Batard. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ombi la ripoti ya kipengele ya Bluetooth HID ambalo PadForge hutuma kutambua nyongeza ya PS Move, na Ricardo Quesada. Nyaraka pekee, hakuna msimbo unaosafirishwa. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ombi la ripoti ya kipengele ya Bluetooth HID ambalo PadForge hutuma kutambua nyongeza ya PS Move, na Ricardo Quesada. Nyaraka pekee, hakuna msimbo unaosafirishwa.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Ufunguo wa usanidi wa Windows Mixed Reality kwenye fork ya SDL unatoka Monado. Hakimiliki 2021 Jan Schmidt. Umejumuishwa ndani ya SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Ufunguo wa usanidi wa Windows Mixed Reality kwenye fork ya SDL unatoka Monado. Hakimiliki 2021 Jan Schmidt. Umejumuishwa ndani ya SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Mchanganyiko wa vihisi wa Rift DK1 kwenye fork ya SDL ni uhamishaji wa ule wa OpenHMD. Hakimiliki 2013 Fredrik Hultin, Jakob Bornecrantz. Umejumuishwa ndani ya SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Mchanganyiko wa vihisi wa Rift DK1 kwenye fork ya SDL ni uhamishaji wa ule wa OpenHMD. Hakimiliki 2013 Fredrik Hultin, Jakob Bornecrantz. Umejumuishwa ndani ya SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Nyaraka za itifaki ya spika ya Wii Remote na usawazishaji wa IR. Imesomwa kwa ukweli wa itifaki pekee.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Ripoti ya baiti 9 ya kichochezi cha msukumo cha Xbox na njia yake ya kuandika, na araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Ripoti ya baiti 9 ya kichochezi cha msukumo cha Xbox na njia yake ya kuandika, na araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Muundo wa PCM ya haptic ya PS5, biti 16 zenye ishara kwa 3 kHz, ulioamua usimbaji wa haptics wa Bluetooth wa biti 8 zenye ishara. AGPL-3.0, imesomwa kama nyaraka pekee, hakuna msimbo wa AGPL unaosafirishwa.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Muundo wa PCM ya haptic ya PS5, biti 16 zenye ishara kwa 3 kHz, ulioamua usimbaji wa haptics wa Bluetooth wa biti 8 zenye ishara. Imesomwa kama nyaraka pekee, hakuna msimbo wa AGPL unaosafirishwa.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Skrini za Kibodi</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Huchora kwenye skrini zilizojengewa ndani ya kibodi za GamePanel za Logitech na Mad Catz S.T.R.I.K.E. 7, na kwenye simu kupitia Logitech Arx Control: wasifu, saa, muda wa kucheza, stopwatch, picha, au rangi ya lightbar ya DualShock 4 au DualSense. Kila skrini ina safu yake kwenye ukurasa wa Vifaa, ambapo unaweka kinachoonyeshwa. Vitufe vilivyo kando ya skrini ni vitufe vya safu yake.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Endesha Skrini za Kibodi</value></data>
@@ -4404,6 +4581,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Sogeza</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Sogeza X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Sogeza Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Chagua kinachoonyeshwa. Hakuna kinachobadilika hadi uhifadhi.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} imewekwa kuwa {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Inapakua SDK ya Mad Catz ya S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 sasa inapakia {0}.</value></data>
@@ -4543,8 +4721,8 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Inasoma {0} kutoka shared memory.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Inasubiri Assetto Corsa au Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Inaelekeza kwenye mlango {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Miundo Maalum ya Telemetria</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Eleza pakiti ambazo mchezo hutuma, sehemu kwa sehemu, na PadForge itasoma mchezo huo pia. Kila kigeu huwa mhimili kwenye safu ya Telemetria ya Michezo na chaneli ya vianzishi vya Usemi Maalum. Chagua muundo kwa jina kwenye orodha ya Mchezo, au upe urefu au ufunguo ili Tambua Kiotomatiki uupate.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Miundo Maalum</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Eleza pakiti za telemetria za mchezo ambao PadForge haujui.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Ongeza Muundo</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Muundo {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Jina</value></data>
@@ -4555,12 +4733,15 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Pakiti zenye baiti hizi kamili pekee ndizo husomwa kwa muundo huu. Kwa 0, pakiti yoyote husomwa, na Tambua Kiotomatiki huacha muundo huu, kwa hiyo uchague kwa jina.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Ufunguo Unaohitajika</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Pakiti za JSON zenye ufunguo huu pekee ndizo husomwa kwa muundo huu. Ukiachwa wazi, pakiti yoyote husomwa, na Tambua Kiotomatiki huacha muundo huu, kwa hiyo uchague kwa jina.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Mpangilio wa Baiti</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian huweka baiti yenye uzito mdogo zaidi ya kila nambari kwanza, kama michezo ya PC karibu kila mara hufanya. Big-Endian huweka baiti yenye uzito mkubwa zaidi kwanza.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Big-Endian</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Pakiti huandika kila nambari kwa baiti yenye uzito mkubwa zaidi kwanza. Michezo ya Kompyuta karibu kila mara huandika baiti yenye uzito mdogo zaidi kwanza.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Thamani za Gia</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Sehemu ya gia ina nambari zake za kurudi nyuma na neutral, kama 0 na 11 za Forza. Hii ikiwa imezimwa, gia hasi ni kurudi nyuma na 0 ni neutral.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Kurudi Nyuma</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Ufunguo Unaohitajika kwa pakiti za JSON, thamani za gia</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Sehemu</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Kila sehemu husoma nambari kwenye ofseti yake, au chini ya ufunguo wake katika JSON (nukta huingia ndani ya vitu vilivyopachikwa), na kuizidisha kwa kipimo. Baada ya kipimo, kasi ni km/h, kanyagio huanzia 0 hadi 1, na usukani kutoka -1 kushoto kabisa hadi 1 kulia kabisa. Mhimili wa kigeu huanzia Kima cha Chini chake wakati wa kupumzika hadi Kima cha Juu chake kikiwa kamili.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Husomwa Kama</value></data>
@@ -4644,4 +4825,35 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} kwenye {1} hadi isimamishwe</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Simamisha athari ya kichochezi kwenye {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Dhibiti Taa za Kifaa Hiki, Ushikiliaji wa Taa</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Vilivyounganishwa</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Visivyounganishwa</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ingizo Nyingine</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Hakuna vifaa vinavyolingana.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Haitumiki</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>betri {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>betri {0}, inachaji</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Kinatumiwa Na</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Kidhibiti Kipya</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Mipangilio</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Kila mhimili, kitufe na kihisi</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Vilivyobonyezwa: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Vitambulisho, njia, uwezo, Lazimisha Hali Ghafi ya Joystick</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Vitambulisho, njia, uwezo</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Nakili Maelezo</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Bidhaa</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Aina</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Uwezo</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Muunganisho</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Betri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Njia</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nambari ya Serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Marekebisho</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Tetemesha Kidhibiti Pia, Rudia Arifa Kila, Arifu Ikichajiwa Kikamilifu</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Zinahitaji Kukaguliwa</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Zimeingizwa Vizuri</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Weka Nenosiri</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Fungua Remote Link</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Nenosiri</value></data>
 </root>

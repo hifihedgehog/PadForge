@@ -137,20 +137,18 @@
   <data name="Status_EngineStarted" xml:space="preserve"><value>Nanomboka ny motera.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Najanona ny motera.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hadisoana: {0}</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Raketo</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Mandrakitra...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Tsy misy fitaovana voafidy.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>rehefa</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>amin'ny</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Nesorina ny fitaovana.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Dashboard_Connected" xml:space="preserve"><value> mifandray</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Dingao</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Manaraka</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Vita</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Fitaovana</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hanampy fitaovana</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Ambany</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Sary</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lisitra</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} fivoahana</value></data>
@@ -185,7 +183,6 @@
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa, toy ny DSX, ny port {0}. Akatony izy na mifidiana port hafa.</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ity PC ity ihany</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Kaody vaovao</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Adiresy amin'ity PC ity:</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Mifandray</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Lavio</value></data>
@@ -193,6 +190,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Fikirakirana</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ankapobeny</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Fidirana</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Fitaovana ara-batana</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Pilote</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Angona sy tsiambaratelo</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Mitady fikirakirana</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Mazava</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Maizina</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Varavarankely</value></data>
@@ -203,8 +206,8 @@
   <data name="Update_Downloading_Format" xml:space="preserve"><value>Maka ny fanavaozana: {0}%</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Nohavaozina ho {0} ny PadForge.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Esory ny HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Manala ny HIDMaestro amin'ity PC ity izany: ireo contrôleur virtoaly, pilote, certificat fanaovan-tsonia, fanalahidy ao amin'ny registre ary rakitra. Ajanon'ny PadForge aloha ny moterany. Tsy manana ny pilote-ny intsony ireo programa hafa mampiasa ny HIDMaestro mandra-panombohany indray. Apetraky ny PadForge indray izy amin'ny manaraka hanombohany contrôleur virtoaly.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Esory koa ny usbip-win2 napetraky ny installer azy manokana</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ireto no hesorina amin'ity PC ity. Apetraky ny PadForge indray ny HIDMaestro amin'ny contrôleur virtoaly manaraka.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Esory koa ny usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Ireo kinova PadForge taloha dia nametraka ny usbip-win2 tamin'ny installer an'ny usbip-win2. Esorin'ity koa izany fametrahana izany, miaraka amin'ny filtre an'ny USB root hub, raha tsy misy programa hafa mampiasa ny usbip-win2. Ny fanesorana ny filtre dia mamerina manomboka ny USB 3 root hub rehetra, ka tapaka vetivety ny fitaovana USB.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Mamaky izay navelan'ny HIDMaestro teto amin'ity PC ity…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>Tsy nisy navelan'ny HIDMaestro teto amin'ity PC ity hesorina.</value></data>
@@ -213,10 +216,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Mijanona: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Tsy voavaky: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Tsy voaala: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Pilote Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Nesorina</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Notazonina</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Tsy voavaky</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Tsy nesorina</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Mamela ny contrôleur PlayStation 3, ny PlayStation Move ary ny contrôleur Navigation hifandray amin'ny Bluetooth. Tafiditra ao amin'ny PadForge ary apetraka rehefa ampifandraisina voalohany ny iray amin'izy ireo.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Mampifandray contrôleur PlayStation 3 amin'ny Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Esory ny BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Manala ny BthPS3 amin'ity PC ity izany: ireo pilote-ny, ny filtre ampiany amin'ny Bluetooth, ary ny pilote WinUSB nomen'ny PadForge ny contrôleur PlayStation 3 ho an'ny fampifandraisana. Ajanon'ny PadForge aloha ny moterany, ary maty vetivety ny Bluetooth mandritra ny fanalana ireo pilote. Amin'ny USB ihany no hiasan'ny contrôleur PlayStation 3, Move ary Navigation avy eo. Ny fampifandraisana ny iray amin'izy ireo dia mametraka indray ny BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ireto no hesorina amin'ity PC ity. Amin'ny USB ihany no hiasan'ny contrôleur PlayStation 3, Move ary Navigation avy eo, mandra-pametraky ny fampifandraisana ny iray amin'izy ireo indray ny BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Mamaky izay navelan'ny BthPS3 teto amin'ity PC ity…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>Tsy nisy navelan'ny BthPS3 teto amin'ity PC ity hesorina.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>Mampiasa ireo pilote ireo ny DsHidMini, koa mijanona izy ireo raha mbola voapetraka ny DsHidMini.</value></data>
@@ -250,7 +258,7 @@
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Toeran'ny bokotra fitendry sy bokotra fitendry amin'ny layer fototra amin'ireo fitendry aseho amin'ny topi-maso Keyboard + Mouse, novokarina avy amin'ny angon-drakitra momba ny layout an'ny QMK sy ny fork QMK an'ny Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Toeran'ny bokotra fitendry sy bokotra fitendry amin'ny layer fototra amin'ireo fitendry aseho amin'ny topi-maso Keyboard + Mouse, novokarina avy amin'ny angon-drakitra momba ny layout an'ny QMK sy ny fork QMK an'ny Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -280,7 +288,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Soraty «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(tsy misy lahatsoratra)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Lahatsoratra</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Herinaratra</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minitra (0 = tsy mihitsy)</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Vakio ho contrôleur iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Vakio ho fitendry</value></data>
@@ -289,6 +296,7 @@
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Laharan'ny mpilalao</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Mpilalao</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Efijerin'ny Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tsy misy tonga any amin'ny port mandra-pitehirizanao.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Asehoy</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Sarin'ny adaptateur</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Anaran'ny profil</value></data>
@@ -308,7 +316,6 @@
   <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>Tsy azo nampiasaina ilay rakitra: {0}</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Vakiana ho contrôleur iCade ny {0}.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Vakiana ho fitendry indray ny {0}.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Light gun</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Tondroy amin'ny lasibatra ny light gun ary tsindrio ny gâchette.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Lasibatra {0} amin'ny {1}</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A na B no manafoana.</value></data>
@@ -335,6 +342,9 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Fitendry rehetra (atambatra)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Totozy rehetra (atambatra)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Fitaovana</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>mifandray: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Mitady fitaovana</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Rehetra</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Avereno ny pilote Windows</value></data>
   <data name="Devices_DriverSwitch" xml:space="preserve"><value>Ovay ny pilote</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Esory ity fitaovana ity sy ny fikirakirany</value></data>
@@ -449,11 +459,9 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Bokotra</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Fafao</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Akatony</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Nolavin'ny HIDMaestro ity profil ity tao amin'ny {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Tsy manana descripteur HID ity profil ity, ka tsy afaka hanaovana contrôleur avy aminy.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Tsy nisy nampidirina. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Havaozy</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(fitaovana HID tsy misy anarana)</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -929,7 +937,7 @@
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Santionany {0} amin'ny {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} santionany</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Anarana</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Andramo indray</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Omeo anarana ity fihetsika ity</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Ilaina ny anarana</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Lava loatra ny anarana (64 litera farafahabetsany)</value></data>
   <data name="Recorder_Error_FingerCountMismatch" xml:space="preserve"><value>Niova ny isan'ny rantsan-tanana. Voafafa ny santionany.</value></data>
@@ -1013,24 +1021,25 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profil</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Fitantanana ny profil</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil ampiasaina:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tsy misy slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Vaovao</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tsy misy contrôleur</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profil vaovao</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Tehirizo amin'ny anarana hafa</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Tehirizo eto ny fandrindrana ankehitriny</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Ovay</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Mifidiana profil aloha.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Fafao ny profil</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Tehirizo ho profil</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Ovay ny profil</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Anaran'ny profil:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profil vaovao</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Anarana</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profil vaovao</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Par défaut (fikirakirana ankapobeny)</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Adikao ny fikirakirana avy amin'ny...</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Adikao avy amin'ny</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Soloy ny mapping sy ny fanitsiana isaky ny fitaovana an'ny contrôleur hafa ireo an'ny {0}.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Ampio amin'ny {0} ny macro an'ny contrôleur hafa.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -1263,6 +1272,17 @@
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Ampio layer</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Layer Shift</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Anaran'ny layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Anarana</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tazomina amin'ny</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Tsindriana amin'ny</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Layer manaraka amin'ny</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer teo aloha amin'ny</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Sy amin'ny</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Mifidiana fidirana</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Fanaraha tsy voatendry</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Arahina ny layer fototra</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tsy manao na inona na inona</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Fomba, karazana fidirana, fotoana ary loko</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tazomina</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Tsy misy bokotra</value></data>
@@ -1281,8 +1301,6 @@
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Hofafana ve ny layer "{0}" sy ny andalana mapping rehetra ao aminy? Tsy azo averina intsony izany.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Fahatarana</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil an'ny axe</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Bokotra manaraka</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Bokotra teo aloha</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Karazana activateur</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bokotra</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Ferao ny elanelan'ny fihodinana</value></data>
@@ -1359,7 +1377,6 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Voavoaka ny profil "{0}".</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Voaampiditra ny profil "{0}" (fonosana feo {1} voasoratra).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Tsy profil PadForge azo vakiana io rakitra io.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Misafidiana feo ao amin'ny {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Fonosana feo</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Rakitra zip misy feo ho an'ny macro feo</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Ampio fonosana…</value></data>
@@ -1396,12 +1413,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Omeo anarana ity PC ity</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Avereno</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Teny miafina Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpad PadForge</value>
@@ -1411,9 +1424,6 @@
   </data>
   <data name="RemoteLink_PasswordMismatch" xml:space="preserve">
     <value>Tsy mitovy ireo teny miafina.</value>
-  </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Mifandray</value>
   </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Tsy mifandray</value>
@@ -1427,7 +1437,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Mampifandray amin'ny {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Mifandray indray ho azy</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Fifandraisana indray ho azy</value></data>
   <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
     <value>Tsy nety ny fanombohana: {0}</value>
   </data>
@@ -1437,11 +1447,10 @@
   <data name="RemoteLink_StatusLinkRejected" xml:space="preserve">
     <value>Nolavina ny rohy: {0}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Misafidiana feo avy amin'ny fonosana nampiana, na tadiavo rakitra.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Tadiavo ny rakitra…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Misafidiana feo</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Mandeha amin'ny fanamafisam-peon'ny contrôleur ny feo, na amin'ny an'ny PC raha tsy manana izy.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Ampiasao ny feo</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1450,7 +1459,7 @@
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Joystick tactile ao amin'ny contrôleur web an'ny finday, nataon'i Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Joystick tactile ao amin'ny contrôleur web an'ny finday, nataon'i Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
@@ -1466,11 +1475,10 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Appairer</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Ampifandraiso contrôleur</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Sokafy ny saron'ny pila ary tsindrio ny bokotra mena SYNC. Avelao hitady ny PadForge mandra-piseho ny contrôleur-nao.</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Appairer</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Mitady. Tsindrio izao ny bokotra SYNC.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Mitady remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Contrôleur hita</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Mbola tsy misy contrôleur hita. Hamarino fa manjelanjelatra ireo jiro manga.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Tsy misy radio Bluetooth hita. Ampifandraiso adaptateur Bluetooth ary andramo indray.</value></data>
@@ -1498,8 +1506,8 @@
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Tsy misy DualShock 3 hita amin'ny USB. Ampifandraiso amin'ny tariby USB izy ary andramo indray.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Tsy vita ny appairage. Aseho etsy ambony ny dingana tsy nahomby.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Akatony</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(miandry)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Anarana:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Anarana</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Omeo anarana ity tag ity</value></data>
   <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Fihetsehan'ny rafitra</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Contrôleur VR</value></data>
@@ -1538,12 +1546,12 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Mandray amin'ny UDP avy amin'ny {0}.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa ny port UDP {0}.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Bokotra miafina</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Milina:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Atombohy ny fianarana</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tsindrio izao ny bokotra miafina, dia alefaso…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Andraso kely…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Loharano:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Anarana:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tsindrio ary tazony izao ny bokotra.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Alefaso ny bokotra.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Dingana {0} amin'ny {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Loharano</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Anarana</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Omeo anarana ity bokotra ity</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Bokotra fitendry: {0}</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Mandeha ny {0}. Mbola mamaly ireo bokotra ireo izy raha tsy ajanonao.</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Totozy</value></data>
@@ -1580,9 +1588,8 @@
   <data name="Pad_ResetTrimRate" xml:space="preserve">
     <value>Averina ho 100% isan-tsegondra ny hafainganan'ny trim.</value>
   </data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profil · Steam Workshop</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Mitady lalao</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} lalao</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Lalao</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Tsy nahitana lalao tao amin'ny fivarotana Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Mitady ao amin'ny Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Vaovao indrindra</value></data>
@@ -1615,6 +1622,7 @@
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activateur tsy fantatra {0}</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Mijery fanavaozana ao amin'ny Steam Workshop…</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Fanavaozana Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Manana dikan-teny vaovao kokoa ao amin'ny Steam Workshop ireo profil nampidirina ireo. Ampidiro indray avy amin'ny Mahazoa profil izy ireo mba hahazoana ny fiovana.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Amin'ny tsindry maharitra</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Amin'ny tsindry fohy</value></data>
@@ -1684,9 +1692,6 @@
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Lalao ady</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Fitendry + totozy</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Contrôleur</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Jereo ny profil fanombohana</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Profil fanombohana</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Tehirizo ny profil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Nampiana ny profil fanombohana "{0}".</value></data>
   <data name="Starter_Strategy_Name" xml:space="preserve"><value>Paikady</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Hazakazaka</value></data>
@@ -1762,7 +1767,7 @@
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (tsy ao amin'ity slot ity)</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profil: {0}</value>
+    <value>Profil ampiasaina: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Miandry ny PC hafa...</value>
@@ -1994,7 +1999,7 @@
   <data name="Telemetry_Status_PortInUse_Format" xml:space="preserve"><value>Ampiasain'ny programa hafa ny port UDP {0}.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Miandry Assetto Corsa na Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Mandefa any amin'ny port {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Format télémétrie manokana</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Format manokana</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Ampio format</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Format {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Anarana</value></data>
@@ -2035,10 +2040,20 @@
   <data name="Extras_Group_Play" xml:space="preserve"><value>Fomba hafa hilalaovana</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Alefaso any an-kafa</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Tendreo ny hafainganana, ny pedal ary ny vitesy avy amin'ny lalao fiara.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Zarao amin'ny PadForge ao amin'ny PC hafa ny contrôleur.</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Fifandraisana indray, port, fiarovana ny maha izy anao, fifandraisana amin'ny adiresy</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, hafainganana feno, format manokana</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Entino ny contrôleur virtoaly ao amin'ny PC hafa.</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Fifandraisana indray ho azy, port, maha izy azy amin'ny fampifandraisana, fifandraisana amin'ny adiresy</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Hafainganana feno, Format manokana</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Mitady fikirakirana, fitaovana ary profil</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Fikarohana</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Valiny</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Ambony</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Ambany</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} hifindra</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} hanokatra</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} avy na aiza na aiza</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Pejy</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Asa</value></data>
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Izay fanindriana hitan'ny lalao rehefa samy tazomina ny bokotra fitendry roa</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Mitazona deflection kely amin'ny stick mba hampisehoan'ny lalao foana ny famantarana contrôleur</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Famantarana rehefa tonga amin'ny fetrany ny stick amin'ny fomba familiana</value></data>
@@ -2056,7 +2071,21 @@
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Fivadihana, momentum, valiny, fanafainganana, fling</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Fitaovana fivoahana, fantsona, tanjaka, feo iray isaky ny motera</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Fiovan'ny teboka afovoany, endriky ny deadzone sy ny sandany isaky ny axe, fiolahana isaky ny axe, elanelana, familiana</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Fitaovana mifandray: {0}. Contrôleur: {1}.</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Elanelana amin'ny isa, sanda manta</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Hitan'ny lalao ny contrôleur rehetra mandeha.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Mandeha ny motera ary tsy misy contrôleur mandeha.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Atombohy ny motera hamerenana ny contrôleur-nao.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Taham-pakana</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Contrôleur mandeha</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Fitaovana mifandray</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Alefaso na vonoy ity contrôleur ity</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Manomboka izy rehefa manomboka ny motera.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Manomboka izy rehefa mifandray ity fitaovana ity.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Manomboka izy rehefa mifandray ny iray amin'ireo fitaovana ireo.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Tsy mifandray</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Mandefa fidirana izao</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, ambany</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, mameno</value></data>
   <data name="Pad_MidiOutput_Title" xml:space="preserve"><value>Fivoahana MIDI</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Ovay anarana</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu vaovao</value></data>
@@ -2076,4 +2105,95 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Havia</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Havanana</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Fafao ny mpanetsika</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tendreo toy ny fidirana hafa rehetra ny hafainganana, ny pedal ary ny vitesy alefan'ny lalao fiara.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Alefaso ao amin'ny lalao ny fandefasana télémétrie ary tondroy amin'ity PC ity sy ity port ity.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ny toeran'ny loha dia ny andalana Head Tracker ao amin'ny [Fitaovana]. Tendreo amin'ny axe stick ny fihodinan'ny loha ao amin'ny fizarana Bokotra an'ny contrôleur.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ny sanda dia ny andalana Télémétrie lalao ao amin'ny [Fitaovana]. Tendreo ao amin'ny fizarana Bokotra an'ny contrôleur izy ireo na ampiasao hanombohana macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ny toerana, ny habe ary ny hamangarahan'ny menu dia apetraka ao amin'ny menu ihany, ao amin'ny fizarana [Macro sy menu] an'ny contrôleur.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Lalao tsy fantatry ny PadForge</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Adikao ny adiresy</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Aseho eto sy ao amin'ny pejy Fitaovana ny finday mifandray, ary any no anendrenao azy ho an'ny contrôleur.</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Tsy misy PC mifandray.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Ampifandraiso PC hafa</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Tsy misy PC tsy mbola mifandray eo akaiky.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Alefaso ny Remote Link ao amin'ny PadForge amin'ilay PC hafa. Hiseho eto izy, ary ampitahainao ny kaody fohy eo amin'ny efijery roa.</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Fitendry sy totozy</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Mifandray</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Tsy mifandray</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Fidirana hafa</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Tsy ampiasaina</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateria {0}, mameno</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Ampiasain'ny</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Fikirakirana</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Ny axe, ny bokotra ary ny capteur rehetra</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Voatsindry: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Adikao ny antsipiriany</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Vokatra</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Karazana</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Fifandraisana</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Lalana</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Laharana serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Révision</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Fanampiny ho an'ny {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Hosoloina ny fandrindrana ankehitriny ve ny fandrindrana voatahiry ao amin'ny "{0}"? Tsy miova ny anarany sy ny lalaony.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Soloy</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Apetraho eto ny rakitra profil</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Mahazoa profil</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Fanombohana</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Ampidiro rakitra</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ny fitehirizana dia manampy profil tsotra azonao ovaina.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Lasa</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Ampihovitrovitra koa ny contrôleur, Avereno isaky ny, Ampahafantaro rehefa feno ny bateria</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Afeno amin'ny lalao ny fitaovana, Tazomy miafina ny fitaovana eo anelanelan'ny fanombohana, Rindranasa nekena</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Vaovao indrindra.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Torolalana</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Jereo ny fanavaozana</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Mitady fisaorana</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Tsy misy fisaorana mifanaraka amin'ny "{0}".</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Fidio izay hitan'ny lalao. Ampiana avy hatrany ny contrôleur rehefa manindry ianao.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Fidio any aoriana</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Mahazatra</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ny layout andrasan'ny ankamaroan'ny lalao PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Ho an'ny lalao misy marika PlayStation, touchpad ary lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Layout bokotra Switch, ho an'ny lalao sy emulator miandry azy.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota sy CC ho an'ny rindranasa mozika.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Contrôleur VR virtoaly amin'ny alalan'ny SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Raha hanova ny karazana any aoriana, tsindrio ny marika karazana eo amin'ny contrôleur. Tsindry iray ihany no ilaina.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Tsy mamaly ny Windows MIDI Services. Jereo ny karatra misy azy ao amin'ny Fikirakirana.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Mila SteamVR. Apetraho avy amin'ny karatra misy azy ao amin'ny Fikirakirana.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Efa misy contrôleur VR. Iray ihany no mitondra ny tanana roa.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Ampifandraiso contrôleur Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Atombohy amin'ny profil efa vonona</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Mifandray</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bateria {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bateria {0}</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Tsy misy ao amin'ny PadForge mifanaraka amin'ny "{0}".</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Tadiavo ao amin'ny torolalana ny "{0}"</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Hofafana ve ny {0}?</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Manomboka tsy misy contrôleur. Miditra ho azy izy rehefa eo anoloana ny iray amin'ireo lalaony.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tsy misy programa hafa manokatra varavarankely.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Esory ny {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ny anarana, ny kisary ary ny lokon'ny layer fototra ao amin'ny Shift Layer Flyout sy ao amin'ny andalan'ny layer.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Atombohy indray</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nianarana tamin'ny {0}</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Sokafy ny saron'ny bateria ary tsindrio ny bokotra mena SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Tazomy eo akaikin'ity PC ity ny remote raha mbola manjelanjelatra ny jirony.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Ampifandraiso DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Ampifandraiso contrôleur Move na Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Ampio contrôleur serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Ampio remote DJI</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Fidio izay asehony. Tsy misy miova mandra-pitehirizanao.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Mandeha: {0}/{1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Profil fanombohana</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Profil efa vonona ho an'ny karazana lalao iray manontolo. Fidio ny iray, tendreo amin'ny contrôleur rehetra, ary milalaova.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} amin'ny {1} no mandeha</value></data>
 </root>

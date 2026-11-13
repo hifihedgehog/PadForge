@@ -191,34 +191,28 @@ namespace PadForge.Tests
             Assert.False(row.CanCalibrateGun);
         }
 
-        /// <summary>The Light Gun section sits between Power and Raw Input
-        /// State. It always has exactly one rule above it (its own, or the
-        /// one under the sections above when Power is absent) and one below
-        /// it (the Raw Input State divider).</summary>
-        [Theory]
-        [InlineData(true, false, false)]
-        [InlineData(true, false, true)]
-        [InlineData(true, true, false)]
-        [InlineData(true, true, true)]
-        public void TheSection_HasOneRuleAboveAndOneBelow(bool gamepad, bool internalVirtual, bool power)
+        /// <summary>The gun's row (#574) stands in the Settings card: the card
+        /// shows for it, its Reset All puts the window back, and in the page
+        /// the gun's rows lie inside the card.</summary>
+        [Fact]
+        public void TheGunRow_StandsInTheSettingsCard()
         {
-            var row = new DeviceRowViewModel
-            {
-                DeviceTypeKey = gamepad ? "Gamepad" : "Keyboard",
-                DevicePath = internalVirtual ? "web://controller/1" : @"\?\usb#vid_0b9a&pid_016a",
-                ShowIdleDisconnect = power,
-                ShowGunCalibration = true,
-            };
-            bool upperSections = row.ShowInputModeOrHidingSection;
-            bool ruleUnderSections = upperSections;
-            bool own = row.ShowGunCalibrationDivider;
-            bool ruleDirectlyAbove = own || (ruleUnderSections && !row.ShowPowerSection);
-            Assert.True(ruleDirectlyAbove);
-            Assert.False(own && ruleUnderSections && !row.ShowPowerSection);
-            Assert.True(row.ShowRawInputDivider);
+            var vm = new DevicesViewModel();
+            var row = new DeviceRowViewModel { DeviceTypeKey = "Gamepad", DevicePath = "web://controller/1" };
+            vm.SelectedDevice = row;
+            Assert.False(vm.ShowSettingsCard, "control: a web pad with no gun has no Settings card");
+            row.ShowGunCalibration = true;
+            Assert.True(vm.ShowSettingsCard);
+            Assert.True(vm.HasResettableSettings);
+            Assert.Contains(nameof(DeviceRowViewModel.GunCalibration), DevicesViewModel.SettingsCardResets(row));
 
-            row.ShowGunCalibration = false;
-            Assert.False(row.ShowGunCalibrationDivider);
+            string page = RepoText("PadForge.App", "Views", "DevicesPage.xaml");
+            int card = page.IndexOf("x:Name=\"SettingsCard\"", StringComparison.Ordinal);
+            int gun = page.IndexOf("x:Name=\"GunRows\"", StringComparison.Ordinal);
+            // The card after Settings is Details: Test Inputs stands before it.
+            int next = page.IndexOf("x:Name=\"DetailsCard\"", StringComparison.Ordinal);
+            Assert.True(card > 0 && gun > card && next > gun, $"{card} {gun} {next}");
+            Assert.True(page.IndexOf("x:Name=\"TestCard\"", StringComparison.Ordinal) < card, "Test Inputs comes before Settings");
         }
 
         private static string RepoText(params string[] parts)

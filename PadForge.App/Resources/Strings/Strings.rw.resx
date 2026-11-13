@@ -72,6 +72,7 @@
   <data name="Common_On" xml:space="preserve"><value>Bifunguye</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Bifunze</value></data>
   <data name="Common_More" xml:space="preserve"><value>Ibindi</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Reba byose</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Byashyizweho</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Ntibyashyizweho</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Ntibiboneka kuri ARM64</value></data>
@@ -82,7 +83,7 @@
   <data name="Server_FailedToStart" xml:space="preserve"><value>Byanze gutangira</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ntibizwi</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Mburabuzi</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Shakisha...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Shakisha…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Komeza</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hagarika</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Tangiza</value></data>
@@ -130,6 +131,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Umwirondoro "{0}" wakozwe.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Umwirondoro "{0}" wasibwe.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Umwirondoro "{0}" wavuguruwe.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Umwirondoro “{0}” ubu ufite igenamiterere rikoreshwa ubu.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Ikosa mu gufungura igenamiterere: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Igenamiterere ryabitswe muri {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Ikosa mu kubika igenamiterere: {0}</value></data>
@@ -140,17 +142,14 @@
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Umwirondoro ukurikira</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Umwirondoro ubanziriza</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Igikoresho icyo ari cyo cyose gihujwe</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Nta gikoresho cyatoranyijwe.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Igikoresho cyakuweho.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Simbuka</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Ibikurikira</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Byarangiye</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Igikoresho</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeraho igikoresho</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Iri hasi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ishusho</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Urutonde</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Ibisohoka: {0}</value></data>
@@ -199,6 +198,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Igenamiterere</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Rusange</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Kwinjiza</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Ibyuma</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Amakuru n'ubuzima bwite</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Shakisha igenamiterere</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Imigaragarire</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Hitamo insanganyamatsiko ukunda.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Insanganyamatsiko</value></data>
@@ -218,8 +223,8 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge yavuguruwe kuri {0}.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ongeraho...</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Kuramo HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ibi bikura HIDMaestro kuri iyi PC: kontorola zayo z'ikoranabuhanga, driver, icyemezo cyo gusinya, imfunguzo za registry n'amadosiye. PadForge ibanza guhagarika engine yayo. Izindi porogaramu zikoresha HIDMaestro zibura driver yayo kugeza zongeye gutangira. PadForge yongera kuyishyiramo ubutaha itangije kontorola y'ikoranabuhanga.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Kuramo na usbip-win2 yashyizwemo na porogaramu yayo yo kuyishyiramo</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ibi ni byo bizakurwa kuri iyi PC. PadForge yongera gushyiramo HIDMaestro ubutaha itangije kontorola y'ikoranabuhanga.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Kuramo na usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Verisiyo za kera za PadForge zashyizemo usbip-win2 hakoreshejwe porogaramu yo kuyishyiramo ya usbip-win2. Ibi bikuraho n'iryo shyirwamo, harimo na filter yayo kuri USB root hub, keretse niba indi porogaramu ikoresha usbip-win2. Gukuraho filter bitangiza bundi bushya USB 3 root hub zose, bityo ibikoresho bya USB bigacika akanya gato.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Gusoma ibyo HIDMaestro yasize kuri iyi PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro nta kintu yasize kuri iyi PC cyo gukuraho.</value></data>
@@ -228,10 +233,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Bisigaraho: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Ntibyashobotse gusomwa: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ntibyakuweho: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver ya Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Byakuweho</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Byagumyeho</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ntibyasomwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ntibyakuweho</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ya BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ituma kontorola za PlayStation 3, PlayStation Move na kontorola ya Navigation bihuza binyuze kuri Bluetooth. Ibitswe muri PadForge kandi ishyirwamo ubwa mbere imwe muri zo ihujwe.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ihuza kontorola za PlayStation 3 binyuze kuri Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Kuramo BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ibi bikura BthPS3 kuri iyi PC: driver zayo, filter yongera kuri Bluetooth, na driver ya WinUSB PadForge yahaye kontorola za PlayStation 3 kugira ngo zihuzwe. PadForge ibanza guhagarika engine yayo, kandi Bluetooth irazima akanya gato mu gihe driver zivanwamo. Nyuma yaho kontorola za PlayStation 3, Move na Navigation zikora binyuze kuri USB gusa. Guhuza imwe muri zo byongera gushyiramo BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ibi ni byo bizakurwa kuri iyi PC. Nyuma yaho kontorola za PlayStation 3, Move na Navigation zikora binyuze kuri USB gusa, kugeza igihe guhuza imwe muri zo byongeye gushyiramo BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Gusoma ibyo BthPS3 yasize kuri iyi PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 nta kintu yasize kuri iyi PC cyo gukuraho.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini ikoresha izi driver, bityo zigumaho igihe cyose ishyizwemo.</value></data>
@@ -268,7 +278,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Imyanya y'imfunguzo n'imfunguzo z'urwego rw'ibanze bya mwandikisho zigaragazwa n'ishusho ya Keyboard + Mouse, byakuwe mu makuru y'imiterere ya QMK no muri fork ya QMK ya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Imyanya y'imfunguzo n'imfunguzo z'urwego rw'ibanze bya mwandikisho zigaragazwa n'ishusho ya Keyboard + Mouse, byakuwe mu makuru y'imiterere ya QMK no muri fork ya QMK ya Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_License" xml:space="preserve"><value>Uruhushya</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
@@ -312,7 +322,6 @@
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Hitamo ifoto ya {0}…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Kuraho ifoto y'umwirondoro</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Garura</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Light gun</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibration y'imbunda</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Calibration y'imbunda</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Intego {0} kuri {1}</value></data>
@@ -441,11 +450,9 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buto</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Siba</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Funga</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yanze uyu mwirondoro kuri {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Uyu mwirondoro nta HID descriptor ufite, bityo nta kontorola yakorwa uhereye kuri wo.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nta kintu cyinjijwe. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Vugurura</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(igikoresho cya HID kitagira izina)</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Hindura</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -514,6 +521,7 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Byihariye</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ihindagurika rya hagati, imiterere ya deadzone n'agaciro ka buri murongo, umurongo uhetamye kuri buri murongo, intera, kuyobora</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Intera mu mibare, agaciro k'umwimerere</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Hejuru</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Hasi</value></data>
@@ -792,7 +800,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>iyi touchpad</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Gushushanya…</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Izina</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Ongera ugerageze</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Ita iki kimenyetso izina</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Izina rirakenewe</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Izina ni rirerire cyane (inyuguti 64 ntarengwa)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Izina ririmo inyuguti zitemewe</value></data>
@@ -884,24 +892,31 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Imyirondoro</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Gucunga imyirondoro</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Kora imyirondoro ya kontorola kuri buri porogaramu, ihinduka yonyine hakurikijwe umukino uri gukoreshwa.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Hindura imyirondoro byikora hakurikijwe porogaramu iri imbere</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Umwirondoro ni igenamiterere ryuzuye: kontorola zawo, imihuzanyo n'iboneza.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Imyirondoro yo gutangiriraho</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Imyirondoro yateguwe ku bwoko bwose bw'imikino. Hitamo umwe, uhe kontorola iyo ari yo yose, maze ukine.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Hindura imyirondoro hakurikijwe umukino</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Guhindura byikora</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Iri imbere ubu: {0}, nta mwirondoro uyishyiriweho</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Iri imbere ubu: {0}, ifungura {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Iri imbere ubu: {0}, kandi nta mwirondoro urashyirirwaho umukino</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Umwirondoro ukora:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Nta myanya</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Guhindura byikora: {0}</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Gishya</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Nta kontorola</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Umwirondoro mushya</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Bika nka</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Bika igenamiterere ririho hano</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Hindura</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Banza uhitemo umwirondoro.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Umwirondoro "Mburabuzi" wubatswemo ntushobora guhindurwa cyangwa gusibwa.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Siba umwirondoro</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Gusiba "{0}"? Umwanya wawo wabitswe n'amahuza yawo bizasibwa burundu.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Gusiba {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Umwirondoro n'itegeko ryawo ryo guhindura byikora birakurwaho. Ibi ntibishobora gusubizwa inyuma.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Umwirondoro urakurwaho. Ibi ntibishobora gusubizwa inyuma.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Gusimbuza igenamiterere ryabitswe muri “{0}” irikoreshwa ubu? Izina ryawo n'imikino yawo bigumaho.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Simbuza</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Bika nk'umwirondoro</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Hindura umwirondoro</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Izina ry'umwirondoro:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Umwirondoro mushya</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Izina</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Umwirondoro mushya</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Mburabuzi (igenamiterere rusange)</value></data>
 
@@ -935,6 +950,7 @@
   <data name="Pad_YAxis" xml:space="preserve"><value>Umurongo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Kanda kabiri kugira ngo wongereho akadomo. Kanda iburyo kugira ngo ugakureho. Kurura kugira ngo uhindure.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>muhinduzi w'umurongo uhetamye</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Umurongo wa trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -1106,6 +1122,17 @@
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>amasegonda (0 = nta na rimwe)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Izina ry'urwego</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Izina</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ifashwe na</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Ikanzwe na</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Urwego rukurikira na</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Urwego rubanza na</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Na</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Hitamo icyinjizwa</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Ibitahujwe</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Koresha urwego rw'ibanze</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nta gikorwa</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Uburyo, ubwoko bw'icyinjizwa, igihe n'ibara</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Uburyo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Gufata</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Fungura/funga</value></data>
@@ -1121,10 +1148,8 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Siba urwego</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Gutinda</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Urwego urwo ari rwo rwose</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Buto ikurikira</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Buto ibanziriza</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Buto</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Urwego rukomeza gukora igihe igikora gifashwe. Ruhagarara iyo urekuye.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Igihe icyinjizwa cyarwo gifashwe, imihuzanyo y'uru rwego isimbura iy'urwego rw'ibanze.</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Kugena intera yo kuzunguruka</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Kuraho aka kamenyetso kugira ngo usigire ivolani na porogaramu yayo bwite kugena intera. Icyo gihe PadForge ntiyoherereza ivolani intera iyo ari yo yose.</value></data>
 
@@ -1196,7 +1221,6 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Ita iyi mudasobwa izina</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Subiza uko byari biri</value>
   </data>
@@ -1215,7 +1239,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Kwihuza na {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Ongera wihuze mu buryo bwikora</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Ongera wihuze byikora</value></data>
   <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
     <value>Gutangira byanze: {0}</value>
   </data>
@@ -1224,6 +1248,7 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Shakisha amadosiye…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Hitamo ijwi</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ijwi ricurangira mu ndangururamajwi ya kontorola, cyangwa iya PC iyo idafite.</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1247,11 +1272,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Huza</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Huza kontorola</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Huza kontorola</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Huza Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Fungura igipfundikizo cya bateri maze ukande buto itukura ya SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Gumisha remote hafi y'iyi PC mu gihe amatara yayo acyaka azima.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Huza DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Huza kontorola ya Move cyangwa Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Ongeraho kontorola ya serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Ongeraho remote ya DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Huza</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Irashakisha. Kanda buto ya SYNC ubu.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Irashakisha remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Kontorola zabonetse</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} yahujwe. Izagaragara ku rutonde rw'ibikoresho byawe.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Nta Bluetooth ibonetse. Huza adapter ya Bluetooth wongere ugerageze.</value></data>
@@ -1273,9 +1304,8 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Driver ya Bluetooth ya kontorola za PlayStation ntiyashoboye gushyirwamo.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Guhuza ntibyarangiye. Intambwe yanze igaragara hejuru.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Funga</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(gutegereza)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Izina:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Izina</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Ita iyi tag izina</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Andikisha</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Kontorola ya VR</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Mwandikisho ya analog</value></data>
@@ -1307,10 +1337,11 @@
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Buto zihishe</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Imashini:</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Akanya gato…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Inkomoko:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Izina:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Rekura buto.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Intambwe {0} kuri {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Inkomoko</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Izina</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Ita iyi buto izina</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Imfunguzo: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Imbeba</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ibimenyetso by'imbeba</value></data>
@@ -1339,10 +1370,9 @@
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Umuvuduko ntarengwa</value></data>
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Umuvuduko wo gutangira</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Shakisha imikino</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Imikino {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Imikino</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Nta mikino yabonetse mu iduka rya Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Gushakisha kuri Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>bitondetse hakurikijwe amanota</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Bitondetse hakurikijwe</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Amanota</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Ibishya</value></data>
@@ -1433,9 +1463,6 @@
   </data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Imikino yo kurwana</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Mwandikisho + imbeba</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Reba imyirondoro yo gutangiriraho</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Imyirondoro yo gutangiriraho</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Bika umwirondoro</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Hongewemo umwirondoro wo gutangiriraho "{0}".</value></data>
   <data name="Starter_Strategy_Name" xml:space="preserve"><value>Ingamba</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Isiganwa</value></data>
@@ -1464,10 +1491,13 @@
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Menyeshwa igihe bateri ya kontorola igiye gushira, mbere y'uko izima mu mukino.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Menyesha igihe bateri igiye gushira</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Gerageza imenyesha</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Reba imenyesha</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Interuro iyo ari yo yose</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Buri gihe</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Interuro</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Interuro yo kuvuga</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Izina</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Izina rya buto</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikoro</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (iyo macro ntibaho)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
@@ -1516,7 +1546,7 @@
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (ntiruri kuri uyu mwanya)</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ingano y'agashushondanga</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Umwirondoro: {0}</value>
+    <value>Umwirondoro ukora: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
     <value>Kora kontorola y'ikoranabuhanga kuri iyindi PC, hanyuma uvugurure.</value>
@@ -1725,9 +1755,11 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Byohereze ahandi</value></data>
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Reba hirya no hino ukoresheje agakoresho gakurikirana umutwe cyangwa ingofero ya VR.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Akira ingaruka za trigger n'iz'amatara ziturutse kuri mod z'imikino.</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime ya OpenXR, port ya UDP, intera ya buri murongo</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, igisimbura cya DSX.exe</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Umwirondoro</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Shakisha igenamiterere, ibikoresho n'imyirondoro</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Shakisha</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ibisubizo</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Ikimenyetso iyo agati ko kuyobora kageze ku iherezo</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Yohereza kunyeganyega kwa moteri nkuru kuri trigger</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Bass y'amajwi ya sisitemu itera trigger kunyeganyega</value></data>
@@ -1764,4 +1796,103 @@
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR iri gukora, driver yahujwe</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ibumoso</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Iburyo</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Reba hirya no hino ukoresheje head tracker cyangwa VR headset mu gihe ibikumwe byombi bigumye kuri buto.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Akira ingaruka za trigger zihinduka n'iz'amatara ziva muri mod z'imikino zandikiwe DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungura isohoka rya telemetry mu mukino maze uryerekeze kuri iyi PC n'iyi port.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ingaruka za mod zigera kuri buri kontorola ifite ibyuma bizikora.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Imiterere y'umutwe ni umurongo wa Head Tracker kuri [Ibikoresho]. Shyira yaw y'umutwe ku murongo wa stick mu gice cya Buto cya kontorola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Agaciro ni umurongo wa Game Telemetry kuri [Ibikoresho]. Kahuze mu gice cya Buto cya kontorola cyangwa ugakoreshe gutangiza macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Aho menu iri, ingano yayo n'ubugaragare bwayo bishyirwaho kuri menu ubwayo, mu gice cya [Macro na Menu] cya kontorola.</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Intera ya buri murongo. Zeru ikurikiza intera iri hejuru.</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Ku bwa mod zishaka DSX ikora mbere y'uko zohereza</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Telefone ihuye igaragara hano no ku rupapuro rwa Ibikoresho, aho uyiha kontorola.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Shakisha ibikoresho</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Byose</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Mwandikisho n'imbeba</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Bihujwe</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ibindi byinjiza</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateri {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateri {0}, irimo gusharijwa</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Bikoreshwa na</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Igenamiterere</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Buri murongo, buto na sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Byakanzwe: {0}</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Igicuruzwa</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Ubwoko</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ubushobozi</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Ihuza</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Inzira</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nimero y'uruhererekane</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Ivugurura</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Ufunguka kuri {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Washyiriweho {0}</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ibindi kuri {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Shyira hano dosiye y'umwirondoro</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>igihe</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>kuri</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Shaka imyirondoro</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Ibyo gutangiriraho</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Injiza dosiye</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kubika byongeraho umwirondoro usanzwe ushobora guhindura.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ihinduka</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Nyeganyeza na kontorola, Subiramo imenyesha buri, Menyesha iyo yuzuye</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hisha ibikoresho imikino, Komeza uhishe ibikoresho hagati y'itangizwa, Porogaramu zemewe</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Ni iya vuba.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Inyandiko</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Reba ivugurura</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Shakisha abashimwe</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Erekana abashimwe bose</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Erekana abashimwe bake</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Nta ushimwe uhuye na “{0}”.</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Hitamo icyo imikino igomba kubona. Kontorola yongerwaho ukimara gukanda.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Izisanzwe</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Ibindi bisohoka</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Imiterere imikino myinshi ya PC itegereje.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Ku mikino ifite ibimenyetso bya PlayStation, touchpad na lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Imiterere ya buto ya Switch, ku mikino na emulator biyitegereje.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Inota na control change ku porogaramu z'umuziki.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Kontorola za VR z'ikoranabuhanga binyuze kuri SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Kugira ngo uhindure ubwoko nyuma, kanda ku kimenyetso cy'ubwoko kuri kontorola. Bisaba gukanda rimwe.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Bisaba SteamVR. Yishyiremo uhereye ku ikarita yayo muri Igenamiterere.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Hari kontorola ya VR isanzweho. Imwe iyobora amaboko yombi.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Huza kontorola ya Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Tangirira ku mwirondoro wateguwe</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bateri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bateri {0}</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} kugira ngo wimuke</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} kugira ngo ufungure</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} aho ari ho hose</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Impapuro</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ibikorwa</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>munsi ya Ibindi</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>mu mahitamo y'umurongo</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Nta kintu muri PadForge gihuye na “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Shakisha “{0}” mu nyandiko</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Bikeneye kurebwa</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Utangira nta kontorola. Ufunguka ubwawo iyo umwe mu mikino yawo uri imbere.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ongeraho umukino urimo gukora</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nta yindi porogaramu ifite idirishya rifunguye.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuraho {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Izina, ikimenyetso n'ibara by'urwego rw'ibanze kuri Shift Layer Flyout no mu murongo w'inzego.</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Vuga interuro maze ikande buto ushobora guhuza. Buri mikoro PadForge ishobora kugeraho irumva.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Kumva bifunguye cyangwa bifunze, uburyo, icyizere</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Kumva birafunze. Bifungure muri Ibindi.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Ongera utangire</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Byizwe kuri {0}</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Urutonde rwa bytes</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Hitamo icyo igaragaza. Nta gihinduka kugeza ubitse.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Nta kigera kuri port kugeza ubitse.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Bikora: {0} kuri {1}</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kuri {1} bifunguye</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Iyi myirondoro yinjijwe ifite verisiyo nshya kuri Steam Workshop. Yongere winjize uhereye kuri Shaka imyirondoro kugira ngo ubone impinduka.</value></data>
 </root>

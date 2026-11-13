@@ -76,7 +76,7 @@
   <data name="Common_Running" xml:space="preserve"><value>E a šoma</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ga e tsebje</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Tlwaelo</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Phuruphutša...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Phuruphutša…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Tšwela pele</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Emiša</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Thoma</value></data>
@@ -108,15 +108,14 @@
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ godimo)</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Phošo: {0}</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Tlwaelo</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Ga go sedirišwa se se kgethilwego.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Sedirišwa se tlošitšwe.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Tlola</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Sedirišwa</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Oketša Sedirišwa</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Fase</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Port {0} e šomišwa ke lenaneo le lengwe, bjalo ka DSX. E tswalele goba o kgethe port ye nngwe.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Kopanya</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>E kopantšwe</value></data>
@@ -124,6 +123,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Dipeakanyo</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Kakaretšo</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Tsenyo</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Didraebara</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data le Sephiri</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Nyaka dipeakanyo</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Lefasetere</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Dimpshafatšo</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Lekola bjale</value></data>
@@ -136,10 +141,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>E a šala: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Ga e a kgona go balwa: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ga e a tlošwa: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Draebara ya Bluetooth ya BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>E tlošitšwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>E bolokilwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ga se ya balwa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ga se ya tlošwa</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ya BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E dumelela dikhontroulara tša PlayStation 3, PlayStation Move le khontroulara ya Navigation go kgokagana ka Bluetooth. E akareditšwe ka go PadForge gomme e tsenywa la mathomo ge ye nngwe ya tšona e kopanywa.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>E kgokaganya dikhontroulara tša PlayStation 3 ka Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Tloša BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Se se tloša BthPS3 go PC ye: didraebara tša yona, filthara yeo e e tsenyago go Bluetooth, le draebara ya WinUSB yeo PadForge e e filego dikhontroulara tša PlayStation 3 bakeng sa go kopanya. PadForge e thoma ka go emiša enjene ya yona, gomme Bluetooth e tingwa nakwana ge didraebara di ntšhwa. Ka morago dikhontroulara tša PlayStation 3, Move le Navigation di šoma ka USB fela. Go kopanya ye nngwe go tla tsenya BthPS3 gape.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Se ke seo se tlago go tlošwa go PC ye. Ka morago dikhontroulara tša PlayStation 3, Move le Navigation di šoma ka USB fela, go fihlela go kopanya ye nngwe go tsenya BthPS3 gape.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Go bala seo BthPS3 e se tlogetšego go PC ye…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 ga se ya tlogela selo sa go tlošwa go PC ye.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini e diriša didraebara tše, ka gona di a šala ge feela e tsentšwe.</value></data>
@@ -162,7 +172,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Maemo a dikhii le dikhii tša layer ya motheo tša dikhiipoto tšeo seswantšho sa Keyboard + Mouse se di bontšhago, di hlamilwe go tšwa go data ya peakanyo ya QMK le fork ya QMK ya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Maemo a dikhii le dikhii tša layer ya motheo tša dikhiipoto tšeo seswantšho sa Keyboard + Mouse se di bontšhago, di hlamilwe go tšwa go data ya peakanyo ya QMK le fork ya QMK ya Keychron.</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -181,12 +191,12 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ngwala "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ga go na sengwalwa)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Sengwalwa</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Maatla</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nomoro ya moraloki…</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Sekirini sa Dreamcast…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nomoro ya moraloki</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Moraloki</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Sekirini sa Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Ga go selo seo se fihlago portong go fihlela o boloka.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Bontšha</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Seswantšho sa adaptara</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Leina la profaele</value></data>
@@ -263,11 +273,9 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Oketša mmala</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Dikonope</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Phumola</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Tswalela</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e ganne profaele ye go {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profaele ye ga e na HID descriptor, ka gona ga go khontroulara yeo e ka dirwago ka yona.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ga go selo se se tsentšwego. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Mpshafatša</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Bušetša axis ye e swerwego</value></data>
@@ -435,7 +443,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>touchpad ye</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Leina</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Leka gape</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Fa sešupo se leina</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Leina le a nyakega</value></data>
 
   <data name="Mapping_MotionPitch" xml:space="preserve"><value>Pitch ya motion</value></data>
@@ -498,21 +506,19 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Diprofaele</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profaele ye e šomago:</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Ye mpsha</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profaele ye mpsha</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Boloka bjalo ka</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Boloka peakanyo ya bjale mo</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Lokiša</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Kgetha profaele pele.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Profaele ya "Tlwaelo" ye e agetšwego ka gare e ka se fetošwe goba ya phumolwa.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Phumola profaele</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Boloka bjalo ka profaele</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Lokiša profaele</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Leina la profaele:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profaele ye mpsha</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Leina</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profaele ye mpsha</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Kgetha sedirišwa seo o tlago kopiša dipeakanyo tša sona:</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -695,7 +701,19 @@
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Motheo</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Beakanya motheo</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Leina, aekhone le mmala wa layer ya Base go Shift Layer Flyout le mothalong wa di layer.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Leina la layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Leina</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>E swerwe ka</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>E tobeditšwe ka</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Layer ye e latelago ka</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer ye e fetilego ka</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Le ka</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Kgetha tsenyo</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Ditaolo tše di sa mapiwago</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Diriša layer ya Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Se dire selo</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mokgwa, mohuta wa tsenyo, nako le mmala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Swara</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -712,8 +730,6 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Phumola layer</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Tiego</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Layer efe goba efe</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Konope ye e latelago</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Konope ye e fetilego</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Konope</value></data>
 
   <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>Pele</value></data>
@@ -767,12 +783,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Thea PC ye leina</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Bušetša</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Phasewete ya Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpad ya PadForge</value>
@@ -788,6 +800,7 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Fetleka difaele…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Kgetha modumo</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Modumo o lla ka seboledi sa khontroulara, goba sa PC ge e se na sona.</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -811,8 +824,14 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Kopanya</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Kopanya khontroulara</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Kopanya khontroulara</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Kopanya Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Bula sekhurumelo sa beteri gomme o tobetše konope ye khubedu ya SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Boloka remote kgauswi le PC ye ge mabone a yona a benyabenya.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Kopanya DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Kopanya khontroulara ya Move goba Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Oketša khontroulara ya serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Oketša remote ya DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Kopanya</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
@@ -825,8 +844,8 @@
   <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC goba RC 2 (neteweke)</value></data>
   <data name="DjiPair_Address" xml:space="preserve"><value>Aterese</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tswalela</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Leina:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Leina</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Fa thege ye leina</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Ngwadiša</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Khontroulara ya VR</value></data>
@@ -845,14 +864,14 @@
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Port ya UDP {0} e šomišwa ke lenaneo le lengwe.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Dikonope tše di utilwego</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Ithute konope</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Motšhene:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Thoma go ithuta</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tobetša konope ye e utilwego bjale, ke moka o e lokolle…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Ema gannyane…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Mothopo:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Leina:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tobetša gomme o swarelele konope bjale.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lokolla konope.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Kgato {0} ya {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Mothopo</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Leina</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Fa konope ye leina</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Ngwadiša</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Thoma gape</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Dikhii: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mause</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Nngele</value></data>
@@ -864,7 +883,7 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Tloša seswantšho</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Bohlakahlaka</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Nyaka dipapadi</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Dipapadi tše {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Dipapadi</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Ga go papadi yeo e hweditšwego lebenkeleng la Steam.</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Nyaka dipapadi</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>lehono</value></data>
@@ -906,9 +925,6 @@
   <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD le mause</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Khiipoto + Mause</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Khontroulara</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Lebelela diprofaele tša go thoma</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Diprofaele tša go thoma</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Boloka profaele</value></data>
   <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Tlase</value></data>
   <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Magareng</value></data>
   <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Godimo</value></data>
@@ -968,7 +984,7 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profaele: {0}</value>
+    <value>Profaele ye e šomago: {0}</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motoro</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profaele</value></data>
@@ -1132,8 +1148,18 @@
   <data name="Extras_Title" xml:space="preserve"><value>Ditlaleletšo</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Ditsela tše dingwe tša go bapala</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Abela lebelo, dipedale le digiere go tšwa dipapading tša go otlela.</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Diport, lebelo ka botlalo, difomate tša go ikgethela</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Diport, Lebelo ka botlalo, Difomate tša go ikgethela</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaele</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Nyaka dipeakanyo, didirišwa le diprofaele</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Nyaka</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Dipoelo</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Godimo</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Fase</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} go šuthiša</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} go bula</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} go tšwa felo gohle</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Matlakala</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ditiro</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Dithupa le Ditrikara</value></data>
   <data name="Pad_Section_Rumble" xml:space="preserve"><value>Thothomelo le Kwagalo</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Motsamao le go Kgoma</value></data>
@@ -1169,4 +1195,77 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lanngele</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Lagoja</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapa lebelo, dipedala le digia tšeo papadi ya go otlela e di romelago, go swana le tsenyo efe goba efe.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bula go romela telemetry ka papading gomme o e lebiše go PC ye le port ye.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a hlogo ke mothalo wa Head tracker go [Didirišwa]. Mapa go retologa ga hlogo go axis ya stick karolong ya Dikonope ya khontroulara.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dipalo ke mothalo wa Telemetry ya papadi go [Didirišwa]. Di mape karolong ya Dikonope ya khontroulara goba o di diriše go thomiša dimakro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Lefelo, bogolo le go bonagala ga lelokelelo di beakanywa go lelokelelo leo, karolong ya [Dimakro le Malokelelo] ya khontroulara.</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiša aterese</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Mogala wo o kgokaganago o bonagala mo le letlakaleng la Didirišwa, moo o o abelago khontroulara.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Nyaka didirišwa</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Tšohle</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Di kgokagantšwe</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>E dirišwa ke</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Dipeakanyo</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Di axis, dikonope le disensara ka moka</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopiša dintlha</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Setšweletšwa</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Mohuta</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Kgokagano</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Beteri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Tsela</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nomoro ya serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Phetošo</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Tše dingwe tša {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Tšeela legato peakanyo ye e bolokilwego go "{0}" ka ya bjale? Leina la yona le dipapadi tša yona di a šala.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Tšeela legato</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ge</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>go</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Hwetša diprofaele</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Tša go thoma</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Go boloka go oketša profaele ya tlwaelo yeo o ka e lokišago.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>E fetoga</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Šikinya khontroulara gape, Boeletša tsebišo nako le nako, Tsebiša ge e tladitšwe ka botlalo</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Uta didirišwa go dipapadi, Boloka didirišwa di utilwe magareng ga go bulwa, Mananeo ao a dumeletšwego</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>E mpshafaditšwe.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Ditokumente</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Lekola dimpshafatšo</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Nyaka ditebogo</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ga go na tebogo yeo e swanago le “{0}”.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>E laolwa ke</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Kgetha ka morago</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Tše tlwaelegilego</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Peakanyo yeo dipapadi tše ntši tša PC di e letelago.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Bakeng sa dipapadi tše di nago le ditšhupo tša PlayStation, touchpad le lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Peakanyo ya dikonope ya Switch, bakeng sa dipapadi le di emulator tšeo di e letelago.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Dinoutu le di control change bakeng sa softwere ya mmino.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Dikhontroulara tša VR tša virtual ka SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Go fetoša mohuta ka morago, kgotla chip ya mohuta go khontroulara. Go nyaka kgotlo e tee fela.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Go nyakega SteamVR. E tsenye go tšwa karateng ya yona go Dipeakanyo.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Kopanya khontroulara ya Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Thoma ka profaele ye e šetšego e lokišitšwe</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, beteri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Beteri {0}</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Ga go selo go PadForge seo se swanago le “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Nyaka “{0}” ditokumenteng</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Phumola {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profaele le molao wa yona wa go fetoša ka bowona di a tlošwa. Se se ka se bušetšwe morago.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profaele e a tlošwa. Se se ka se bušetšwe morago.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>E thoma e se na dikhontroulara. E tsena ka bo yona ge e nngwe ya dipapadi tša yona e le ka pele.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Oketša papadi ye e šomago</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go na lenaneo le lengwe leo le nago le lefasetere le le bulegilego.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tloša {0}</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>E ithutilwe go {0}</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Kgetha seo e se bontšhago. Ga go selo seo se fetogago go fihlela o boloka.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>E phela: {0} ya {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Diprofaele tša go thoma</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Diprofaele tše di lokišitšwego bakeng sa mohuta ka moka wa dipapadi. Kgetha e tee, abela khontroulara efe goba efe, gomme o bapale.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ya {1} di butšwe</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diprofaele tše di tsentšhitšwego di na le diphetolelo tše mpsha go Steam Workshop. Di tsenye gape go tšwa go Hwetša diprofaele gore o hwetše diphetogo.</value></data>
 </root>

@@ -37,7 +37,8 @@ namespace PadForge.Views
             };
         }
 
-        /// <summary>Exposes the "Add Controller" card Border for popup placement.</summary>
+        /// <summary>The Add Controller tile, which takes the focus back when
+        /// Add a Controller closes.</summary>
         public Border AddControllerCardElement => AddControllerCard;
 
         /// <summary>Raised when the user clicks the "Add Controller" card.</summary>
@@ -63,11 +64,14 @@ namespace PadForge.Views
         /// <summary>Raised when the user clicks a slot card to navigate to that controller's page.</summary>
         public event EventHandler<int> SlotCardClicked;
 
+        /// <summary>Raised by Add Device on a card with no device mapped.</summary>
+        public event EventHandler AddDeviceRequested;
+
         /// <summary>Raised when the user clicks the engine power toggle.</summary>
         public event EventHandler EngineToggleRequested;
 
         /// <summary>Raised by Use It on the offer, with the device offered
-        /// and the button the type bar opens under.</summary>
+        /// and the button that takes the focus back.</summary>
         public event EventHandler<(Guid Device, FrameworkElement Anchor)> HomeOfferUseRequested;
 
         /// <summary>Raised by a click on an extra that is in use, with the
@@ -76,6 +80,42 @@ namespace PadForge.Views
 
         /// <summary>Raised by Open Extras.</summary>
         public event EventHandler OpenExtrasRequested;
+
+        /// <summary>Raised by a type tile of the first page, with its type.</summary>
+        public event EventHandler<VirtualControllerType> FirstRunTypeChosen;
+
+        /// <summary>Raised by the first page's link to the other types, with
+        /// the link, which takes the focus back when Add a Controller
+        /// closes.</summary>
+        public event EventHandler<IInputElement> FirstRunMoreTypesRequested;
+
+        /// <summary>Raised by the first page's pairing link.</summary>
+        public event EventHandler FirstRunPairRequested;
+
+        /// <summary>Raised by the first page's link to the ready-made
+        /// profiles.</summary>
+        public event EventHandler FirstRunProfileRequested;
+
+        private void FirstRunTile_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { DataContext: ViewModels.ControllerTypeChoice choice } && choice.IsAvailable)
+                FirstRunTypeChosen?.Invoke(this, choice.Type);
+        }
+
+        private void MoreTypes_Click(object sender, RoutedEventArgs e)
+            => FirstRunMoreTypesRequested?.Invoke(this, sender as IInputElement);
+
+        private void PairLink_Click(object sender, RoutedEventArgs e) => FirstRunPairRequested?.Invoke(this, EventArgs.Empty);
+
+        private void ProfileLink_Click(object sender, RoutedEventArgs e) => FirstRunProfileRequested?.Invoke(this, EventArgs.Empty);
+
+        // The first page's Start only ever starts: a click that lands as the
+        // engine starts some other way stops nothing.
+        private void FirstRunStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.DashboardViewModel vm && !vm.IsEngineOn)
+                EngineToggleRequested?.Invoke(this, EventArgs.Empty);
+        }
 
         // The flame and the worded button beside it are the one switch.
         private void EngineToggle_Click(object sender, RoutedEventArgs e)
@@ -104,6 +144,18 @@ namespace PadForge.Views
         {
             AddControllerRequested?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>The card's stage, from the keyboard or a screen reader.
+        /// A mouse click on the card is answered once, by OnDragEnd, which
+        /// handles the release before the stage hears it.</summary>
+        private void OpenSlot_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement stage && stage.Tag is int slotIndex)
+                SlotCardClicked?.Invoke(this, slotIndex);
+        }
+
+        private void AddDevice_Click(object sender, RoutedEventArgs e)
+            => AddDeviceRequested?.Invoke(this, EventArgs.Empty);
 
         private void DeleteSlot_Click(object sender, RoutedEventArgs e)
         {
@@ -135,8 +187,8 @@ namespace PadForge.Views
         private void TypeChip_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button chip || chip.Tag is not int slotIndex) return;
-            // The bar centers under the whole card, as Add Controller's does
-            // under its tile. The card root is the Border tagged with the slot.
+            // The bar centers under the whole card. The card root is the
+            // Border tagged with the slot.
             FrameworkElement card = chip;
             for (DependencyObject d = chip; d != null; d = VisualTreeHelper.GetParent(d))
             {
@@ -252,8 +304,11 @@ namespace PadForge.Views
             }
             else if (_dragSourceCard != null && _dragSourceCard.Tag is int padIndex)
             {
-                // No drag occurred — treat as a click to navigate.
+                // No drag occurred: a click, which opens the controller.
+                // The release is handled here, so the card's stage, which
+                // opens it too for the keyboard, does not answer it again.
                 SlotCardClicked?.Invoke(this, padIndex);
+                e.Handled = true;
             }
             _dragSourceCard = null;
         }

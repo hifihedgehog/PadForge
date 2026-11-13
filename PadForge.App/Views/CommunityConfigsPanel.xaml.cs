@@ -5,16 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -31,22 +27,26 @@ using PadForge.ViewModels;
 using EPublishedFileQueryType = SteamKit2.EPublishedFileQueryType;
 using SkPublishedFileDetails = SteamKit2.Internal.PublishedFileDetails;
 using SkQueryFilesResponse = SteamKit2.Internal.CPublishedFile_QueryFiles_Response;
+using VirtualControllerType = PadForge.Engine.VirtualControllerType;
 
 namespace PadForge.Views
 {
     /// <summary>
-    /// Browse Community Configs (#9): the Steam Workshop config browser per
-    /// the approved design artifact. Three states carry the flow: cold-forge
-    /// opt-in (gate off), game search (portrait shelf), and the game room
-    /// (hero art under the steel scrim, config list, translation manifest).
-    /// All network work is async, cache-first, and canceled on re-entry;
-    /// nothing here ever runs while the opt-in gate is off.
+    /// The community configs of Get Profiles (#9, #574): the Steam Workshop
+    /// config browser, the dialog's Community tab. Three states carry the
+    /// flow: cold (the opt-in is off), the games a search found, and a game's
+    /// configs beside What Comes Across, the translation of the picked one.
+    /// The dialog holds the search box and the buttons, and hands this panel
+    /// what is typed. All network work is async, cache-first, and canceled on
+    /// re-entry. Nothing here runs while the opt-in gate is off, and nothing
+    /// reaches Steam before the dialog attaches the panel on the tab's first
+    /// show.
     /// </summary>
-    public partial class WorkshopBrowseDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class CommunityConfigsPanel : UserControl
     {
         private enum WsState { Cold, Search, Browse }
 
-        private readonly SettingsViewModel _settings;
+        private SettingsViewModel _settings;
 
         private SteamWorkshopCache _cache;
         private SteamStoreClient _store;
@@ -66,7 +66,19 @@ namespace PadForge.Views
         private WorkshopConfigItem _selectedConfig;
         private SteamInputConfig _parsedConfig;
         private WorkshopTranslationOutcome _outcome;
-        private int _heroSwapVersion;
+        private WsState _state = WsState.Cold;
+
+        /// <summary>The virtual controller the config's gamepad half becomes
+        /// (#574): Xbox or PlayStation, Xbox at first.</summary>
+        private VirtualControllerType _becomes = VirtualControllerType.Xbox;
+
+        /// <summary>Set while the Becomes choices are put to the translation's
+        /// answer, so checking one there runs no translation.</summary>
+        private bool _syncingBecomes;
+
+        /// <summary>What the dialog's search box last held. The debounce
+        /// searches it.</summary>
+        private string _searchText = string.Empty;
 
         // ── Config-list paging (infinite scroll) ──
 
@@ -91,39 +103,29 @@ namespace PadForge.Views
         private bool _configsFetchBusy;
         private DateTime _configsRetryAtUtc;
 
-        /// <summary>Avatar images live on avatars CDN hosts (not the appid
-        /// store CDN the artwork client covers), so they get their own
-        /// slim fetch, cached under the art budget.</summary>
-        private static readonly Lazy<HttpClient> AvatarHttp = new Lazy<HttpClient>(() =>
-        {
-            var http = PadForge.Engine.Common.OutboundNetworkGate.NewHttpClient();
-            http.Timeout = TimeSpan.FromSeconds(15);
-            var version = typeof(WorkshopBrowseDialog).Assembly.GetName().Version?.ToString(3) ?? "1.0.0";
-            http.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("PadForge", version));
-            return http;
-        });
 
-        /// <summary>Response cap for avatar fetches, mirroring
-        /// SteamArtworkClient.MaxArtBytes.</summary>
-        private const long MaxAvatarBytes = 16L * 1024 * 1024;
-
-        /// <summary>Whole-body read budget, mirroring SteamArtworkClient:
-        /// HttpClient.Timeout stops applying once the headers are in under
-        /// ResponseHeadersRead (dotnet/runtime#36822), so a stalled avatar
-        /// body needs its own bound.</summary>
-        private static readonly TimeSpan AvatarBodyReadTimeout = TimeSpan.FromSeconds(30);
-
-        /// <summary>Set by MainWindow: registers the translated profile through
-        /// the same path as the .pfprofile Import button and returns the
-        /// deduped display name. Second arg loads it as the active profile.</summary>
+        /// <summary>Set by Get Profiles: registers the translated profile
+        /// through the same path as an imported file and returns the deduped
+        /// display name. Second arg loads it as the active profile.</summary>
         internal Func<Services.ProfileData, bool, string> ImportSink { get; set; }
 
-        /// <summary>Non-null after a successful import; MainWindow reads these
-        /// for the status line once the dialog closes.</summary>
-        internal string ImportedProfileName { get; private set; }
-        internal int ImportedClean { get; private set; }
-        internal int ImportedPartial { get; private set; }
-        internal int ImportedSkipped { get; private set; }
+        /// <summary>Whether the panel shows its cold state, the opt-in off.
+        /// The dialog hides its search box then.</summary>
+        internal bool IsCold => _state == WsState.Cold;
+
+        /// <summary>Whether the panel shows the games a search found, where
+        /// the dialog's search box holds the focus.</summary>
+        internal bool ShowsGames => _state == WsState.Search;
+
+        /// <summary>Raised when the panel's state changes, so the dialog shows
+        /// or hides its search box and puts the focus in it.</summary>
+        internal event EventHandler StateChanged;
+
+        /// <summary>Whether a translated config is ready to save.</summary>
+        internal bool CanSave => _outcome?.Profile != null;
+
+        /// <summary>Raised when what can be saved changes.</summary>
+        internal event EventHandler CanSaveChanged;
 
         public ObservableCollection<WorkshopGameItem> Games { get; } = new();
         public ObservableCollection<WorkshopConfigItem> Configs { get; } = new();
@@ -131,67 +133,61 @@ namespace PadForge.Views
         public ObservableCollection<WorkshopPresetChipItem> PresetChips { get; } = new();
         public ObservableCollection<object> ManifestRows { get; } = new();
 
-        public WorkshopBrowseDialog(SettingsViewModel settings)
+        public CommunityConfigsPanel()
         {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar.
-            //
-            // The guard is not optional. Standard controls (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled and so never
-            // reach here, but THIS dialog drives several bare Borders as
-            // buttons (the back chip, the tag chips, the preset chips) and a
-            // Border marks nothing. DragMove hands the mouse to the OS move
-            // loop, which swallows the release, so the MouseLeftButtonUp
-            // those Borders listen for never arrives and every one of them
-            // goes dead. That is exactly what shipped: "Search Games" stopped
-            // responding the moment this window became draggable.
-            MouseLeftButtonDown += (_, e) =>
-            {
-                if (PressLandedOnSomethingClickable(e.OriginalSource as DependencyObject)) return;
-                try { DragMove(); } catch { }
-            };
-
 
             ShelfList.ItemsSource = Games;
             ConfigList.ItemsSource = Configs;
             TagChipList.ItemsSource = TagChips;
             PresetChipList.ItemsSource = PresetChips;
             ManifestRowsList.ItemsSource = ManifestRows;
+            PresetChips.CollectionChanged += (_, _) =>
+                LayersRow.Visibility = PresetChips.Count >= 2 ? Visibility.Visible : Visibility.Collapsed;
             UpdateSortChips();
-
-            BuildScrims();
+            SetState(WsState.Cold);
 
             _searchDebounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             _searchDebounce.Tick += (s, e) =>
             {
                 _searchDebounce.Stop();
-                _ = RunSearchAsync(SearchBox.Text);
-            };
-
-            Loaded += (s, e) => ApplyGateState();
-            Closing += (s, e) =>
-            {
-                _searchDebounce.Stop();
-                _searchCts?.Cancel();
-                _gameCts?.Cancel();
-                _manifestCts?.Cancel();
+                _ = RunSearchAsync(_searchText);
             };
         }
 
-        protected override void OnClosed(EventArgs e)
+        /// <summary>Gives the panel its settings and shows the state the
+        /// opt-in calls for, once. Get Profiles calls it on the Community
+        /// tab's first show, so opening the dialog reaches no network.</summary>
+        internal void Attach(SettingsViewModel settings)
         {
-            base.OnClosed(e);
-            // The anonymous CM session lives for the dialog session only
-            // (recipe: connect on first search, disconnect on close).
+            if (_settings != null) return;
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            ApplyGateState();
+        }
+
+        /// <summary>The dialog is closing: the searches stop, every network
+        /// task is canceled, and the anonymous CM session, which lives for
+        /// the dialog's session only (recipe: connect on first search,
+        /// disconnect on close), is let go.</summary>
+        internal void Shutdown()
+        {
+            _searchDebounce.Stop();
+            _configSearchDebounce?.Stop();
+            _searchCts?.Cancel();
+            _gameCts?.Cancel();
+            _manifestCts?.Cancel();
             var client = _workshop;
             _workshop = null;
             if (client != null)
                 _ = client.DisposeAsync();
+        }
+
+        /// <summary>Puts the keyboard's focus where the panel starts: the
+        /// Enable Community Configs button while it is cold. Otherwise the
+        /// dialog focuses its own search box.</summary>
+        internal void FocusStart()
+        {
+            if (IsCold) EnableCommunityConfigsButton.Focus();
         }
 
         // ─────────────────────────────────────────────
@@ -203,9 +199,7 @@ namespace PadForge.Views
             if (_settings.EnableCommunityConfigLookup)
             {
                 EnsureClients();
-                LightTitleFlame();
                 SetState(WsState.Search);
-                SearchBox.Focus();
             }
             else
             {
@@ -213,13 +207,17 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>Cold shows the cold panel alone. Search shows the games
+        /// and the pane, Browse a game's configs and the pane. The dialog
+        /// hears of each change.</summary>
         private void SetState(WsState state)
         {
+            _state = state;
             ColdPanel.Visibility = state == WsState.Cold ? Visibility.Visible : Visibility.Collapsed;
-            SearchPanel.Visibility = state == WsState.Search ? Visibility.Visible : Visibility.Collapsed;
-            BrowsePanel.Visibility = state == WsState.Browse ? Visibility.Visible : Visibility.Collapsed;
-            if (state != WsState.Browse)
-                ArtLayer.Visibility = Visibility.Collapsed;
+            GamesColumn.Visibility = state == WsState.Search ? Visibility.Visible : Visibility.Collapsed;
+            ConfigsColumn.Visibility = state == WsState.Browse ? Visibility.Visible : Visibility.Collapsed;
+            ManifestPane.Visibility = state == WsState.Cold ? Visibility.Collapsed : Visibility.Visible;
+            StateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void EnsureClients()
@@ -234,15 +232,6 @@ namespace PadForge.Views
             _community = new SteamCommunityClient(gate);
         }
 
-        private void LightTitleFlame()
-        {
-            TitleFlame.Fill = TryFindResource("EmberBrush") as Brush ?? new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
-            TitleFlame.Stroke = null;
-            var glow = new DropShadowEffect { Color = Color.FromRgb(0xFF, 0x6B, 0x2C), BlurRadius = 8, ShadowDepth = 0, Opacity = 0.5 };
-            glow.Freeze();
-            TitleFlame.Effect = glow;
-        }
-
         /// <summary>The cold-forge enable action flips the same persisted
         /// setting the Settings card toggles (MainWindow's allowlist marks
         /// the settings document dirty on this property).</summary>
@@ -252,33 +241,39 @@ namespace PadForge.Views
             ApplyGateState();
         }
 
-        private void Dismiss_Click(object sender, RoutedEventArgs e) => Close();
-
         // ─────────────────────────────────────────────
         //  Game search (debounced, cache-first)
         // ─────────────────────────────────────────────
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        /// <summary>The dialog's search box changed: the games search runs
+        /// once the typing settles. Typing while a game is open goes back to
+        /// the games, which the search fills.</summary>
+        internal void SearchTextChanged(string text)
         {
-            SearchPlaceholder.Visibility = string.IsNullOrEmpty(SearchBox.Text)
-                ? Visibility.Visible : Visibility.Collapsed;
+            _searchText = text ?? string.Empty;
+            if (_state == WsState.Browse) ShowGames();
             _searchDebounce.Stop();
             _searchDebounce.Start();
         }
 
-        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        /// <summary>A key in the dialog's search box: Enter opens the picked
+        /// game (or the first), and Down moves into the games. True when the
+        /// panel took the key.</summary>
+        internal bool SearchKeyDown(Key key)
         {
-            if (e.Key == Key.Enter && Games.Count > 0)
+            if (_state != WsState.Search || Games.Count == 0) return false;
+            if (key == Key.Enter)
             {
                 _ = OpenGameAsync(ShelfList.SelectedItem as WorkshopGameItem ?? Games[0]);
-                e.Handled = true;
+                return true;
             }
-            else if (e.Key == Key.Down && Games.Count > 0)
+            if (key == Key.Down)
             {
                 ShelfList.SelectedIndex = Math.Max(ShelfList.SelectedIndex, 0);
                 (ShelfList.ItemContainerGenerator.ContainerFromIndex(ShelfList.SelectedIndex) as ListBoxItem)?.Focus();
-                e.Handled = true;
+                return true;
             }
+            return false;
         }
 
         private void ShelfList_KeyDown(object sender, KeyEventArgs e)
@@ -292,7 +287,7 @@ namespace PadForge.Views
 
         private void ShelfList_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Only a click that landed on a tile opens it; scrollbar clicks
+            // Only a click that landed on a tile opens it. Scrollbar clicks
             // bubble through this preview handler too.
             var dep = e.OriginalSource as DependencyObject;
             // TreeWalk, not VisualTreeHelper: a tile's formatted text can
@@ -345,7 +340,7 @@ namespace PadForge.Views
                         ControllerSupport = it.ControllerSupport,
                     });
                 }
-                GamesCountText.Text = string.Format(Strings.Instance.Workshop_GamesCount_Format, Games.Count);
+                GamesCountText.Text = string.Format(Strings.Instance.Workshop_Found_Format, Games.Count);
                 if (Games.Count == 0)
                 {
                     SearchHintText.Text = Strings.Instance.Workshop_NoGamesFound;
@@ -394,7 +389,8 @@ namespace PadForge.Views
             {
                 var art = await _art.GetPortraitAsync(g.AppId, ct);
                 if (art == null || ct.IsCancellationRequested) return;
-                var img = await Task.Run(() => DecodeBitmap(art.Data, 240), ct);
+                // A row's cover is 30 wide, so 90 holds it at three times.
+                var img = await Task.Run(() => DecodeBitmap(art.Data, 90), ct);
                 if (img == null || ct.IsCancellationRequested) return;
                 g.IsLetterbox = !string.Equals(art.File, "library_600x900.jpg", StringComparison.OrdinalIgnoreCase);
                 g.Portrait = img;
@@ -404,7 +400,7 @@ namespace PadForge.Views
             }
             catch (Exception)
             {
-                // Art is ambience; the steel initial tile stands in.
+                // Art is ambience. The steel initial tile stands in.
             }
         }
 
@@ -426,7 +422,7 @@ namespace PadForge.Views
                 catch (Exception)
                 {
                     // Counts are scent, not load-bearing. One failure means
-                    // the CM session isn't reachable; stop instead of paying
+                    // the CM session isn't reachable. Stop instead of paying
                     // the timeout once per shelf tile.
                     return;
                 }
@@ -437,44 +433,16 @@ namespace PadForge.Views
         //  Game room (hero art + config list)
         // ─────────────────────────────────────────────
 
-        /// <summary><para>True when a press landed on anything the user can
-        /// click, so the window drag must stand down and let the control have
-        /// its release.</para>
-        /// <para>Two tests, and both are needed. The standard controls are
-        /// named outright. Everything else is caught by the hand cursor,
-        /// which is this dialog's own convention for "this Border is a
-        /// button" and, more to the point, is what the USER is shown before
-        /// they click: if the pointer says the thing is pressable, pressing
-        /// it must not drag the window instead. All three of this dialog's
-        /// Border-buttons set it, two of them through their shared chip
-        /// styles, so a new chip inherits the exemption for free.</para>
-        /// </summary>
-        private static bool PressLandedOnSomethingClickable(DependencyObject hit)
-        {
-            for (var d = hit; d != null;)
-            {
-                if (d is System.Windows.Controls.Primitives.ButtonBase
-                    or System.Windows.Controls.Primitives.TextBoxBase
-                    or System.Windows.Controls.Primitives.Selector
-                    or System.Windows.Controls.Primitives.ScrollBar
-                    or System.Windows.Controls.Primitives.Thumb
-                    or ScrollViewer or ComboBox or Slider or MenuItem)
-                    return true;
-                if (d is FrameworkElement fe && fe.Cursor == Cursors.Hand)
-                    return true;
-                d = d is Visual ? VisualTreeHelper.GetParent(d) : LogicalTreeHelper.GetParent(d);
-            }
-            return false;
-        }
+        private void BackToSearch_Click(object sender, RoutedEventArgs e) => ShowGames();
 
-        private void BackToSearch_Click(object sender, RoutedEventArgs e)
+        /// <summary>Back to the games. The search state survives untouched
+        /// behind the game room (design: back returns without losing state),
+        /// and the dialog, told of the state, puts the focus in its box.</summary>
+        private void ShowGames()
         {
-            // Search state survives untouched behind the game room
-            // (design: back returns without losing state).
             _gameCts?.Cancel();
-            _manifestCts?.Cancel();
+            ClearManifest();
             SetState(WsState.Search);
-            SearchBox.Focus();
         }
 
         private async Task OpenGameAsync(WorkshopGameItem g)
@@ -490,113 +458,20 @@ namespace PadForge.Views
             SetState(WsState.Browse);
 
             GameNameText.Text = g.Name;
-            CapsuleInitial.Text = g.Initial;
-            CapsuleImage.Source = null;
-            UpdateGameMeta(g.ConfigCount);
+            UpdateGameCount(g.ConfigCount);
             TagChips.Clear();
             ClearManifest();
 
-            _ = SwapHeroAsync(g.AppId);
-            _ = FillCapsuleAsync(g);
             await LoadConfigsAsync(g, null);
         }
 
-        private async Task FillCapsuleAsync(WorkshopGameItem g)
+        /// <summary>The game head's count, "[n] configs", or nothing while
+        /// the game's total is not known.</summary>
+        private void UpdateGameCount(int? configTotal)
         {
-            try
-            {
-                var art = await _art.GetPortraitAsync(g.AppId, CancellationToken.None);
-                if (art == null || _selectedGame != g) return;
-                var img = await Task.Run(() => DecodeBitmap(art.Data, 240));
-                if (img == null || _selectedGame != g) return;
-                CapsuleImage.Stretch = string.Equals(art.File, "library_600x900.jpg", StringComparison.OrdinalIgnoreCase)
-                    ? Stretch.UniformToFill : Stretch.Uniform;
-                CapsuleImage.Source = img;
-            }
-            catch (Exception)
-            {
-                // Steel tile + initial stands in.
-            }
-        }
-
-        /// <summary>Hero backdrop swap. With art already on screen this is a
-        /// 240 ms crossfade through steel: fade to the ground, swap, fade
-        /// back, never art-to-art. With nothing showing, which is every swap
-        /// entered from the search or cold state because leaving browse
-        /// collapses the art layer, it is a straight 120 ms fade in. Honors
-        /// the Windows "show animations" setting with an instant cut.</summary>
-        private async Task SwapHeroAsync(int appId)
-        {
-            int version = ++_heroSwapVersion;
-            ImageSource src = null;
-            bool blurred = false;
-            try
-            {
-                var art = await _art.GetHeroAsync(appId, CancellationToken.None);
-                if (art != null)
-                {
-                    blurred = !string.Equals(art.File, "library_hero.jpg", StringComparison.OrdinalIgnoreCase);
-                    src = await Task.Run(() => BuildHeroBitmap(art.Data));
-                }
-            }
-            catch (Exception)
-            {
-                // Fall through to the flat-steel floor of the chain.
-            }
-            if (version != _heroSwapVersion || BrowsePanel.Visibility != Visibility.Visible) return;
-
-            void Apply()
-            {
-                HeroImage.Source = src;
-                // Fallback chain: library_hero → header blurred ×8 → flat steel.
-                HeroImage.Effect = src != null && blurred ? new BlurEffect { Radius = 8 } : null;
-                ArtLayer.Visibility = src != null ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            if (!SystemParameters.ClientAreaAnimation)
-            {
-                HeroImage.BeginAnimation(OpacityProperty, null);
-                HeroImage.Opacity = 1;
-                Apply();
-                return;
-            }
-
-            if (ArtLayer.Visibility != Visibility.Visible || HeroImage.Source == null)
-            {
-                Apply();
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(120));
-                HeroImage.BeginAnimation(OpacityProperty, fadeIn);
-                return;
-            }
-
-            var fadeOut = new DoubleAnimation(0, TimeSpan.FromMilliseconds(120));
-            fadeOut.Completed += (s, e) =>
-            {
-                if (version != _heroSwapVersion) return;
-                Apply();
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(120));
-                HeroImage.BeginAnimation(OpacityProperty, fadeIn);
-            };
-            HeroImage.BeginAnimation(OpacityProperty, fadeOut);
-        }
-
-        private void UpdateGameMeta(int? configTotal)
-        {
-            var cold = TryFindResource("ColdBrush") as Brush ?? new SolidColorBrush(Color.FromRgb(0x58, 0xB6, 0xE4));
-            GameMetaText.Inlines.Clear();
-            GameMetaText.Inlines.Add(new Run("appid "));
-            GameMetaText.Inlines.Add(new Run(_selectedGame.AppId.ToString(CultureInfo.InvariantCulture)) { Foreground = cold });
-            if (configTotal.HasValue)
-            {
-                GameMetaText.Inlines.Add(new Run(" · "));
-                GameMetaText.Inlines.Add(new Run(configTotal.Value.ToString(CultureInfo.InvariantCulture)) { Foreground = cold });
-                GameMetaText.Inlines.Add(new Run(" " + Strings.Instance.Workshop_CommunityConfigsSuffix));
-            }
-            string support = _selectedGame.ControllerSupport;
-            if (support == "full")
-                GameMetaText.Inlines.Add(new Run(" · " + Strings.Instance.Workshop_ControllerSupportFull));
-            else if (support == "partial")
-                GameMetaText.Inlines.Add(new Run(" · " + Strings.Instance.Workshop_ControllerSupportPartial));
+            GameCountText.Text = configTotal.HasValue
+                ? string.Format(Strings.Instance.Workshop_ConfigsCount_Format, configTotal.Value)
+                : string.Empty;
         }
 
         private void ConfigsRetry_Click(object sender, RoutedEventArgs e)
@@ -644,19 +519,19 @@ namespace PadForge.Views
                 _configsTotal = total;
                 UpdateConfigsFoundText();
                 // g.ConfigCount is a GAME-level stat that outlives this
-                // dialog and feeds the browse list. Steam's `total` is the
+                // panel and feeds the games list. Steam's `total` is the
                 // count for THIS query, so writing it while a tag filter is
                 // active turned a game's config count into a filter's count
                 // and kept it. Only an unfiltered query may set it, and the
-                // header meta line follows the same rule.
+                // game head's count follows the same rule.
                 if (requiredTag == null)
                 {
                     g.ConfigCount = total;
-                    UpdateGameMeta(total);
+                    UpdateGameCount(total);
                 }
                 else
                 {
-                    UpdateGameMeta(g.ConfigCount);
+                    UpdateGameCount(g.ConfigCount);
                 }
 
                 // Chips come from the unfiltered result's live tags and stay
@@ -749,7 +624,7 @@ namespace PadForge.Views
             return t;
         }
 
-        /// <summary>Enter searches immediately; Escape clears back to the
+        /// <summary>Enter searches immediately. Escape clears back to the
         /// full list.</summary>
         private void ConfigSearch_KeyDown(object sender, KeyEventArgs e)
         {
@@ -958,7 +833,7 @@ namespace PadForge.Views
             catch (Exception) when (!ct.IsCancellationRequested)
             {
                 // A mid-scroll failure keeps everything already on screen and
-                // pauses paging briefly; the next gesture near the bottom
+                // pauses paging briefly. The next gesture near the bottom
                 // retries from the same page instead of blanking the list.
                 _configsRetryAtUtc = DateTime.UtcNow.AddSeconds(5);
             }
@@ -986,8 +861,8 @@ namespace PadForge.Views
             // is applied straight from Steam's in-game config picker, and
             // nothing subscribes. So the count is real history where it
             // exists and a permanent zero on anything current, which is why
-            // it only renders when it has something to say. Same rule the
-            // vote bar beside it already follows.
+            // it only shows when it has something to say. Same rule the
+            // votes beside it already follow.
             ulong subs = Math.Max(d.subscriptions, d.lifetime_subscriptions);
             bool hasSubs = subs > 0;
 
@@ -1012,7 +887,6 @@ namespace PadForge.Views
                 TimeUpdated = d.time_updated,
                 IsLegacy = string.IsNullOrEmpty(d.file_url),
                 HasVotes = hasVotes,
-                VoteBarWidth = Math.Round(ratio * 64.0),
                 VotePercentText = hasVotes ? ((int)Math.Round(ratio * 100)).ToString(CultureInfo.InvariantCulture) + "%" : string.Empty,
                 // The vote COUNT, beside the percentage, because the list is
                 // ordered by neither. Steam ranks RankedByVote on its own
@@ -1081,16 +955,6 @@ namespace PadForge.Views
                     {
                         row.ByLine = string.Format(Strings.Instance.Workshop_ByLine_Format,
                             persona.PersonaName, RelativeTime(row.TimeUpdated));
-                        row.AvatarInitials = Initials(persona.PersonaName);
-                    }
-                    if (!string.IsNullOrEmpty(persona?.AvatarMediumUrl))
-                    {
-                        var bytes = await GetAvatarCachedAsync(row.CreatorId, persona.AvatarMediumUrl, ct);
-                        if (bytes != null && !ct.IsCancellationRequested)
-                        {
-                            var img = await Task.Run(() => DecodeBitmap(bytes, 68), ct);
-                            if (img != null) row.Avatar = img;
-                        }
                     }
                 }
                 catch (OperationCanceledException) when (ct.IsCancellationRequested)
@@ -1099,8 +963,8 @@ namespace PadForge.Views
                 }
                 catch (Exception)
                 {
-                    // Initials tile stands in (a per-creator timeout included);
-                    // move on to the next creator.
+                    // The by-line keeps its placeholder (a per-creator timeout
+                    // included); move on to the next creator.
                 }
             }
         }
@@ -1116,68 +980,6 @@ namespace PadForge.Views
             if (persona != null)
                 await Task.Run(() => _cache.PutJson(CacheCategory.Personas, key, persona), CancellationToken.None);
             return persona;
-        }
-
-        private async Task<byte[]> GetAvatarCachedAsync(ulong steamId, string url, CancellationToken ct)
-        {
-            string key = "avatar_" + steamId.ToString(CultureInfo.InvariantCulture);
-            var cached = await Task.Run(() =>
-                _cache.TryGetBytes(CacheCategory.Art, key, null, out var v) ? v : null, ct);
-            if (cached != null) return cached;
-
-            var bytes = await FetchAvatarAsync(url, ct);
-            if (bytes != null)
-                await Task.Run(() => _cache.PutBytes(CacheCategory.Art, key, bytes), CancellationToken.None);
-            return bytes;
-        }
-
-        /// <summary>SteamArtworkClient.GetRawAsync's hardening applied to the
-        /// avatar host: 16 MB response cap and an image-signature sniff. Null
-        /// for anything oversized or non-image (the initials tile stands in).</summary>
-        private static async Task<byte[]> FetchAvatarAsync(string url, CancellationToken ct)
-        {
-            using var response = await AvatarHttp.Value
-                .GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var declared = response.Content.Headers.ContentLength;
-            if (declared.HasValue && declared.Value > MaxAvatarBytes)
-                return null;
-
-            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            timeout.CancelAfter(AvatarBodyReadTimeout);
-            await using var stream = await response.Content.ReadAsStreamAsync(timeout.Token);
-            using var buffer = new MemoryStream();
-            var chunk = new byte[81920];
-            int read;
-            while ((read = await stream.ReadAsync(chunk.AsMemory(0, chunk.Length), timeout.Token)) > 0)
-            {
-                buffer.Write(chunk, 0, read);
-                if (buffer.Length > MaxAvatarBytes)
-                    return null; // oversized: treat as unusable
-            }
-
-            var bytes = buffer.ToArray();
-            return LooksLikeAvatarImage(bytes) ? bytes : null;
-        }
-
-        /// <summary>Mirrors SteamArtworkClient.LooksLikeImage.</summary>
-        private static bool LooksLikeAvatarImage(byte[] b)
-        {
-            if (b.Length < 4) return false;
-
-            // JPEG
-            if (b[0] == 0xFF && b[1] == 0xD8 && b[2] == 0xFF) return true;
-            // PNG
-            if (b[0] == 0x89 && b[1] == 0x50 && b[2] == 0x4E && b[3] == 0x47) return true;
-            // GIF
-            if (b[0] == 0x47 && b[1] == 0x49 && b[2] == 0x46) return true;
-            // WEBP (RIFF....WEBP)
-            if (b.Length >= 12 && b[0] == 0x52 && b[1] == 0x49 && b[2] == 0x46 && b[3] == 0x46 &&
-                b[8] == 0x57 && b[9] == 0x45 && b[10] == 0x42 && b[11] == 0x50) return true;
-
-            return false;
         }
 
         // ─────────────────────────────────────────────
@@ -1209,7 +1011,7 @@ namespace PadForge.Views
             }
             catch (Exception)
             {
-                // Browser launch is best-effort; the URL stays reachable from Steam.
+                // Browser launch is best-effort. The URL stays reachable from Steam.
             }
         }
 
@@ -1222,14 +1024,13 @@ namespace PadForge.Views
             _selectedConfig = null;
             _parsedConfig = null;
             _outcome = null;
-            ManifestHeaderRight.Text = string.Empty;
             ManifestRows.Clear();
             PresetChips.Clear();
             SetManifestPanel(ManifestIdlePanel);
         }
 
-        /// <summary>Shows exactly one manifest fill; the footer rides only
-        /// with the result.</summary>
+        /// <summary>Shows exactly one manifest fill. Becomes rides only with
+        /// the result, and the dialog hears whether there is one to save.</summary>
         private void SetManifestPanel(FrameworkElement active)
         {
             ManifestIdlePanel.Visibility = active == ManifestIdlePanel ? Visibility.Visible : Visibility.Collapsed;
@@ -1237,7 +1038,8 @@ namespace PadForge.Views
             ManifestLegacyPanel.Visibility = active == ManifestLegacyPanel ? Visibility.Visible : Visibility.Collapsed;
             ManifestErrorPanel.Visibility = active == ManifestErrorPanel ? Visibility.Visible : Visibility.Collapsed;
             ManifestResultPanel.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
-            ManifestFooter.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
+            BecomesGroup.Visibility = active == ManifestResultPanel ? Visibility.Visible : Visibility.Collapsed;
+            CanSaveChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private async Task SelectConfigAsync(WorkshopConfigItem item)
@@ -1250,7 +1052,6 @@ namespace PadForge.Views
             _selectedConfig = item;
             _parsedConfig = null;
             _outcome = null;
-            ManifestHeaderRight.Text = item.Title;
             ManifestRows.Clear();
             PresetChips.Clear();
 
@@ -1492,6 +1293,46 @@ namespace PadForge.Views
                 RunTranslationAndShow(_selectedConfig, _parsedConfig);
         }
 
+        /// <summary>A Becomes choice runs the translation again for the
+        /// virtual controller picked, as a layer chip does.</summary>
+        private void Becomes_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_syncingBecomes || sender is not FrameworkElement { Tag: string tag }) return;
+            if (!Enum.TryParse(tag, out VirtualControllerType picked)) return;
+            if (picked != VirtualControllerType.Xbox && picked != VirtualControllerType.PlayStation) return;
+            if (picked == _becomes) return;
+            _becomes = picked;
+            if (_selectedConfig != null && _parsedConfig != null)
+                RunTranslationAndShow(_selectedConfig, _parsedConfig);
+        }
+
+        /// <summary>Which Becomes choices are open and which is checked. A config
+        /// with a gamepad half can become Xbox or PlayStation, and keeps the last
+        /// pick of the two. A config with only keys and mouse becomes Keyboard +
+        /// Mouse and nothing else.</summary>
+        internal static (bool Xbox, bool PlayStation, bool KeyboardMouse, VirtualControllerType Checked)
+            BecomesState(bool needsGamepad, VirtualControllerType chosen)
+            => needsGamepad
+                ? (true, true, false, chosen == VirtualControllerType.PlayStation ? VirtualControllerType.PlayStation : VirtualControllerType.Xbox)
+                : (false, false, true, VirtualControllerType.KeyboardMouse);
+
+        /// <summary>Puts the Becomes choices to the translation's answer.</summary>
+        private void UpdateBecomes(bool needsGamepad)
+        {
+            var state = BecomesState(needsGamepad, _becomes);
+            _syncingBecomes = true;
+            try
+            {
+                Becomes_Xbox.IsEnabled = state.Xbox;
+                Becomes_PlayStation.IsEnabled = state.PlayStation;
+                Becomes_KeyboardMouse.IsEnabled = state.KeyboardMouse;
+                Becomes_Xbox.IsChecked = state.Checked == VirtualControllerType.Xbox;
+                Becomes_PlayStation.IsChecked = state.Checked == VirtualControllerType.PlayStation;
+                Becomes_KeyboardMouse.IsChecked = state.Checked == VirtualControllerType.KeyboardMouse;
+            }
+            finally { _syncingBecomes = false; }
+        }
+
         private void RunTranslationAndShow(WorkshopConfigItem item, SteamInputConfig parsed)
         {
             try
@@ -1502,8 +1343,7 @@ namespace PadForge.Views
                 StatCleanNum.Text = outcome.Clean.ToString(CultureInfo.InvariantCulture);
                 StatPartialNum.Text = outcome.Partial.ToString(CultureInfo.InvariantCulture);
                 StatSkippedNum.Text = outcome.Skipped.ToString(CultureInfo.InvariantCulture);
-                ManifestHeaderRight.Text = item.Title + " · " +
-                    string.Format(Strings.Instance.Workshop_BindingsRead_Format, outcome.BindingsRead);
+                UpdateBecomes(outcome.NeedsGamepad);
 
                 ManifestRows.Clear();
                 foreach (var row in outcome.Rows)
@@ -1535,7 +1375,7 @@ namespace PadForge.Views
         }
 
         /// <summary>Recipe error-matrix wording: connectivity resolves to the
-        /// design's one calm sentence; content rejections speak for
+        /// design's one calm sentence. Content rejections speak for
         /// themselves.</summary>
         private static string MapErrorMessage(Exception ex) => ex switch
         {
@@ -1551,23 +1391,23 @@ namespace PadForge.Views
         //  Import (Forge into Profile)
         // ─────────────────────────────────────────────
 
-        private void SaveProfile_Click(object sender, RoutedEventArgs e) => CompleteImport(applyAfter: false);
-
-        private void SaveAndApply_Click(object sender, RoutedEventArgs e) => CompleteImport(applyAfter: true);
-
-        private void CompleteImport(bool applyAfter)
+        /// <summary>Saves the translated config as a profile, and loads it
+        /// when <paramref name="applyAfter"/> is set. The status is the
+        /// message line's sentence: the profile's name and what came across.
+        /// False, with no status, when there is nothing to save.</summary>
+        internal bool TrySave(bool applyAfter, out string statusText)
         {
-            if (_outcome?.Profile == null || ImportSink == null) return;
+            statusText = null;
+            if (_outcome?.Profile == null || ImportSink == null) return false;
             // The materializer stamped ImportedAt when the manifest was
             // built (config selection). Re-stamp at the actual import so
             // time spent reading the dossier doesn't age the record.
             if (_outcome.Profile.WorkshopSource != null)
                 _outcome.Profile.WorkshopSource.ImportedAt = DateTime.UtcNow;
-            ImportedProfileName = ImportSink(_outcome.Profile, applyAfter);
-            ImportedClean = _outcome.Clean;
-            ImportedPartial = _outcome.Partial;
-            ImportedSkipped = _outcome.Skipped;
-            Close();
+            string name = ImportSink(_outcome.Profile, applyAfter);
+            statusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
+                name, _outcome.Clean, _outcome.Partial, _outcome.Skipped);
+            return true;
         }
 
         // ─────────────────────────────────────────────
@@ -1609,13 +1449,13 @@ namespace PadForge.Views
 
             return new WorkshopTranslationOutcome
             {
-                Profile = Services.WorkshopProfileMaterializer.Materialize(translated, provenance),
+                Profile = Services.WorkshopProfileMaterializer.Materialize(translated, provenance, _becomes),
                 Clean = report.CleanCount,
                 Partial = report.PartialCount,
-                // The dossier has three stat blocks; a config that errored a
+                // The dossier has three stat blocks. A config that errored a
                 // binding didn't carry it across, so errors count as skips.
                 Skipped = report.SkippedCount + report.ErrorCount,
-                BindingsRead = report.Entries.Count,
+                NeedsGamepad = translated.NeedsXboxSlot,
                 Rows = BuildManifestRows(report),
             };
         }
@@ -1698,12 +1538,6 @@ namespace PadForge.Views
                         TranslationStatus.Partial => WorkshopManifestRowItem.PartialBrush,
                         _ => WorkshopManifestRowItem.SkippedBrush,
                     },
-                    DotGlow = entry.Status switch
-                    {
-                        TranslationStatus.Clean => WorkshopManifestRowItem.CleanGlow,
-                        TranslationStatus.Partial => WorkshopManifestRowItem.PartialGlow,
-                        _ => null,
-                    },
                 });
             }
             return rows;
@@ -1763,7 +1597,7 @@ namespace PadForge.Views
         /// <para><c>Resolved</c> says which of the two branches ran, because
         /// the caller must treat them differently. A resolved descriptor is
         /// an ENGINE IDENTIFIER ("LeftStickX") and still needs the friendly-
-        /// name pass; the skip branch returns finished display prose and
+        /// name pass. The skip branch returns finished display prose and
         /// must not be put through that pass a second time.</para>
         private static (string Source, string Target, bool Resolved) SourceAndTarget(
             TranslationEntry entry)
@@ -1947,8 +1781,8 @@ namespace PadForge.Views
             {
                 if (sb.Length > 0) sb.Append(' ');
                 sb.Append(char.ToUpperInvariant(w[0]));
-                // Lower the tail only when the token was SCREAMING_SNAKE;
-                // a mixed-case word ("DPad") keeps the author's shape.
+                // Lower the tail only when the token was SCREAMING_SNAKE.
+                // A mixed-case word ("DPad") keeps the author's shape.
                 sb.Append(w.Length > 1
                     ? (w.ToUpperInvariant() == w ? w.Substring(1).ToLowerInvariant() : w.Substring(1))
                     : string.Empty);
@@ -1995,7 +1829,7 @@ namespace PadForge.Views
 
             string raw = Strings.Get(entry.ReasonKey);
             if (entry.ReasonArgs == null || entry.ReasonArgs.Count == 0) return raw;
-            // The localized sentence is prose; the arguments dropped into it
+            // The localized sentence is prose. The arguments dropped into it
             // are not. For the keys listed in TokenArgReasons those slots
             // carry Steam's own grammar, and a reason that reads "controller
             // action TOGGLE_MAGNIFIER not supported" hands the user a token
@@ -2079,42 +1913,6 @@ namespace PadForge.Views
         //  Art plumbing
         // ─────────────────────────────────────────────
 
-        /// <summary>Scrim gradients over the hero art, built from the live
-        /// theme ground so the art fades into the page on either ground:
-        /// vertical 18% → 66% at 46% → opaque at 78%, plus 72% side
-        /// vignettes (design art-system table).</summary>
-        private void BuildScrims()
-        {
-            var ground = (TryFindResource("ApplicationBackgroundBrush") as SolidColorBrush)?.Color
-                         ?? Color.FromRgb(0x0B, 0x0E, 0x14);
-
-            Color At(double alpha) => Color.FromArgb((byte)Math.Round(alpha * 255), ground.R, ground.G, ground.B);
-
-            var vertical = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(0, 1),
-            };
-            vertical.GradientStops.Add(new GradientStop(At(0.18), 0));
-            vertical.GradientStops.Add(new GradientStop(At(0.66), 0.46));
-            vertical.GradientStops.Add(new GradientStop(At(1.0), 0.78));
-            vertical.GradientStops.Add(new GradientStop(At(1.0), 1));
-            vertical.Freeze();
-            ScrimVertical.Fill = vertical;
-
-            var horizontal = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 0),
-            };
-            horizontal.GradientStops.Add(new GradientStop(At(0.72), 0));
-            horizontal.GradientStops.Add(new GradientStop(At(0), 0.3));
-            horizontal.GradientStops.Add(new GradientStop(At(0), 0.7));
-            horizontal.GradientStops.Add(new GradientStop(At(0.72), 1));
-            horizontal.Freeze();
-            ScrimHorizontal.Fill = horizontal;
-        }
-
         private static BitmapImage DecodeBitmap(byte[] data, int decodeWidth)
         {
             try
@@ -2135,47 +1933,6 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Hero treatment baked into the pixels (design: saturate
-        /// .82, brightness .8): WPF has no partial-saturation effect, so the
-        /// bitmap is adjusted once on a worker and frozen.</summary>
-        private static BitmapSource BuildHeroBitmap(byte[] data)
-        {
-            var decoded = DecodeBitmap(data, 1600);
-            if (decoded == null) return null;
-            try
-            {
-                var converted = new FormatConvertedBitmap(decoded, PixelFormats.Bgra32, null, 0);
-                int w = converted.PixelWidth;
-                int h = converted.PixelHeight;
-                int stride = w * 4;
-                var px = new byte[h * stride];
-                converted.CopyPixels(px, stride, 0);
-
-                const double saturation = 0.82;
-                const double brightness = 0.8;
-                for (int i = 0; i < px.Length; i += 4)
-                {
-                    double b = px[i];
-                    double g = px[i + 1];
-                    double r = px[i + 2];
-                    double luma = 0.299 * r + 0.587 * g + 0.114 * b;
-                    px[i] = ClampByte((luma + (b - luma) * saturation) * brightness);
-                    px[i + 1] = ClampByte((luma + (g - luma) * saturation) * brightness);
-                    px[i + 2] = ClampByte((luma + (r - luma) * saturation) * brightness);
-                }
-
-                var result = BitmapSource.Create(w, h, 96, 96, PixelFormats.Bgra32, null, px, stride);
-                result.Freeze();
-                return result;
-            }
-            catch (Exception)
-            {
-                return decoded;
-            }
-        }
-
-        private static byte ClampByte(double v) => (byte)Math.Clamp(v, 0, 255);
-
         // ─────────────────────────────────────────────
         //  Formatting helpers
         // ─────────────────────────────────────────────
@@ -2195,16 +1952,6 @@ namespace PadForge.Views
             if (string.IsNullOrWhiteSpace(name)) return "?";
             var trimmed = name.Trim();
             return trimmed.Substring(0, FirstElementLength(trimmed)).ToUpperInvariant();
-        }
-
-        private static string Initials(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name)) return "?";
-            var trimmed = name.Trim();
-            int take = FirstElementLength(trimmed);
-            if (take < trimmed.Length)
-                take += FirstElementLength(trimmed.Substring(take));
-            return trimmed.Substring(0, Math.Min(take, trimmed.Length)).ToUpperInvariant();
         }
 
         /// <summary>Retail names for Steam's controller tag namespace.
@@ -2376,7 +2123,7 @@ namespace PadForge.Views
                 return s.Length > 9 && s[9] == '1' ? "RightTouchpadClick" : "LeftTouchpadClick";
 
             // The mapping grid stores most physical inputs under the
-            // family prefix; art TargetNames are bare.
+            // family prefix. Art TargetNames are bare.
             if (s.StartsWith("Gamepad ", StringComparison.OrdinalIgnoreCase))
                 s = s.Substring("Gamepad ".Length);
 
@@ -2423,8 +2170,8 @@ namespace PadForge.Views
     //  List items
     // ─────────────────────────────────────────────
 
-    /// <summary>A game tile on the search shelf. Art and config count
-    /// lazy-fill after the shelf renders.</summary>
+    /// <summary>A game row of the search's games. Art and config count
+    /// lazy-fill after the list renders.</summary>
     public sealed class WorkshopGameItem : ObservableObject
     {
         public int AppId { get; init; }
@@ -2453,11 +2200,27 @@ namespace PadForge.Views
         public string CountText
         {
             get => _countText;
-            set => SetProperty(ref _countText, value);
+            set { if (SetProperty(ref _countText, value)) OnPropertyChanged(nameof(SubLine)); }
+        }
+
+        /// <summary>The row's second line: the config count and how fully
+        /// the game supports a controller, as Steam says, " · " between.</summary>
+        public string SubLine
+        {
+            get
+            {
+                string support = ControllerSupport switch
+                {
+                    "full" => Strings.Instance.Workshop_ControllerSupportFull,
+                    "partial" => Strings.Instance.Workshop_ControllerSupportPartial,
+                    _ => null,
+                };
+                return string.Join(" \u00B7 ", new[] { CountText, support }.Where(s => !string.IsNullOrEmpty(s)));
+            }
         }
     }
 
-    /// <summary>A config card: signals, not a spreadsheet.</summary>
+    /// <summary>A config row: its title and one line of signals, not a spreadsheet.</summary>
     public sealed class WorkshopConfigItem : ObservableObject
     {
         public ulong FileId { get; init; }
@@ -2468,7 +2231,6 @@ namespace PadForge.Views
         public uint TimeUpdated { get; init; }
         public bool IsLegacy { get; init; }
         public bool HasVotes { get; init; }
-        public double VoteBarWidth { get; init; }
         public string VotePercentText { get; init; }
         public string VotesText { get; init; }
         public bool HasSubs { get; init; }
@@ -2479,21 +2241,25 @@ namespace PadForge.Views
         public string ByLine
         {
             get => _byLine;
-            set => SetProperty(ref _byLine, value);
+            set { if (SetProperty(ref _byLine, value)) OnPropertyChanged(nameof(MetaLine)); }
         }
 
-        private string _avatarInitials;
-        public string AvatarInitials
+        /// <summary>The row's second line: who made it and when, then its
+        /// votes and their share when it has votes, then its subscribers
+        /// when it has any, " · " between.</summary>
+        public string MetaLine
         {
-            get => _avatarInitials;
-            set => SetProperty(ref _avatarInitials, value);
-        }
-
-        private ImageSource _avatar;
-        public ImageSource Avatar
-        {
-            get => _avatar;
-            set => SetProperty(ref _avatar, value);
+            get
+            {
+                var parts = new List<string> { ByLine };
+                if (HasVotes)
+                {
+                    parts.Add(VotesText);
+                    parts.Add(VotePercentText);
+                }
+                if (HasSubs) parts.Add(SubsText);
+                return string.Join(" \u00B7 ", parts.Where(s => !string.IsNullOrEmpty(s)));
+            }
         }
     }
 
@@ -2514,8 +2280,8 @@ namespace PadForge.Views
         }
     }
 
-    /// <summary>A preset chip in the dossier footer (these become shift
-    /// layers on import).</summary>
+    /// <summary>A preset chip on the Layers line (these become shift layers
+    /// on import).</summary>
     public sealed class WorkshopPresetChipItem : ObservableObject
     {
         public int Id { get; init; }
@@ -2554,24 +2320,9 @@ namespace PadForge.Views
             return brush;
         }
 
-        private static Effect FrozenGlow(byte r, byte g, byte b)
-        {
-            var glow = new DropShadowEffect
-            {
-                Color = Color.FromRgb(r, g, b),
-                BlurRadius = 6,
-                ShadowDepth = 0,
-                Opacity = 0.5,
-            };
-            glow.Freeze();
-            return glow;
-        }
-
         public static readonly Brush CleanBrush = Frozen(0x57, 0xC7, 0x84);
         public static readonly Brush PartialBrush = Frozen(0xE3, 0xB3, 0x41);
         public static readonly Brush SkippedBrush = Frozen(0x8B, 0x95, 0xA3);
-        public static readonly Effect CleanGlow = FrozenGlow(0x57, 0xC7, 0x84);
-        public static readonly Effect PartialGlow = FrozenGlow(0xE3, 0xB3, 0x41);
 
         public string Source { get; init; }
         public string Target { get; init; }
@@ -2583,8 +2334,6 @@ namespace PadForge.Views
         public string ArtAnchor { get; init; }
         public string Reason { get; init; }
         public Brush DotBrush { get; init; } = CleanBrush;
-        public Effect DotGlow { get; init; }
-
     }
 
     /// <summary>The translator's answer, adapted for the dossier: the
@@ -2595,7 +2344,10 @@ namespace PadForge.Views
         public int Clean { get; init; }
         public int Partial { get; init; }
         public int Skipped { get; init; }
-        public int BindingsRead { get; init; }
+
+        /// <summary>The translation has a gamepad half, so Becomes offers
+        /// Xbox and PlayStation.</summary>
+        public bool NeedsGamepad { get; init; }
         public List<object> Rows { get; init; } = new();
     }
 }

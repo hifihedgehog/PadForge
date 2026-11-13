@@ -75,6 +75,7 @@
   <data name="Common_On" xml:space="preserve"><value>オン</value></data>
   <data name="Common_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Common_More" xml:space="preserve"><value>その他</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>すべて表示</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>インストール済み</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>未インストール</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 では利用できません</value></data>
@@ -82,7 +83,7 @@
   <data name="Common_Stopped" xml:space="preserve"><value>停止</value></data>
   <data name="Common_Running" xml:space="preserve"><value>実行中</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} で実行中</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>実行中 ({0} クライアント)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>実行中、接続数: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} でリッスン中</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ポート {0} は使用中</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ポート {0} のアクセスが拒否されました (管理者として実行)</value></data>
@@ -96,7 +97,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>オフライン</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>不明</value></data>
   <data name="Common_Default" xml:space="preserve"><value>デフォルト</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>参照...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>参照…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>続行</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>停止</value></data>
   <data name="Common_Start" xml:space="preserve"><value>開始</value></data>
@@ -133,7 +134,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>前回のセッションから残った仮想コントローラーをクリーンアップしています。</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>コントローラーを追加</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>ゲームに見せる種類を選んでください。クリックするとすぐにコントローラーが追加されます。</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>入力元</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>あとで選ぶ</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth、{0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>よく使う種類</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>そのほかの出力</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>ほとんどの PC ゲームが想定するレイアウトです。</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>PlayStation のボタン表示、タッチパッド、ライトバーに対応するゲーム向けです。</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch のボタン配置を想定するゲームやエミュレーター向けです。</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>パッドからキー入力、カーソル、スクロール。</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>ホイール、フライトスティック、カスタムレイアウト。</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>音楽ソフト向けのノートとコントロールチェンジ。</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR 経由の仮想 VR コントローラー。</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>あとで種類を変えるには、コントローラーの種類チップをクリックします。クリック 1 回で変更できます。</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services が応答していません。設定のカードを確認してください。</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR が必要です。設定のカードからインストールしてください。</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR コントローラーはすでにあります。1 台で両手を操作します。</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge が扱えるコントローラーは最大 {0} 台で、上限に達しています。追加するには、1 台削除してください。</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>プロファイル</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>設定、デバイス、プロファイルを検索</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>検索</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>検索結果</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} で移動</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} で開く</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} でどこからでも開く</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>ページ</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>操作</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>ドキュメント</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>「その他」の中</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>行のオプション内</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>、 </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge に「{0}」に一致するものはありません。</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>ドキュメントで「{0}」を検索</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>全画面表示</value></data>
   <data name="Main_Minimize" xml:space="preserve"><value>最小化</value></data>
@@ -215,6 +251,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>プロファイル「{0}」を作成しました。</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>プロファイル「{0}」を削除しました。</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>プロファイル「{0}」を更新しました。</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>プロファイル「{0}」に現在の設定を保存しました。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>プロファイルを読み込みました: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>プロファイルをデフォルトに戻しました</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
@@ -238,29 +275,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>プロファイル切替: デフォルト</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>デフォルト</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>プロファイルショートカット</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>ショートカット</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>任意のコントローラーからプロファイルを切り替えるためのボタンの組み合わせを割り当てます。</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>ショートカットを追加</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>次のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>前のプロファイル</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>特定のプロファイル</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>ウィンドウの切替</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>仮想コントローラーの切替</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge の表示と非表示</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>仮想コントローラーのオンとオフ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>接続中の任意のデバイス</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>記録</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>記録中...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>デバイスが選択されていません。</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>無効なスロットインデックス: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>デバイスの割り当てに失敗しました。</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>で、ボタン</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>を押す、デバイス</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} から解除しました。</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>デバイスを非表示にしました。(設定ファイルで復元できます。)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>デバイスを削除しました。</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>ホーム</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>接続中のデバイス: {0}。コントローラー: {1}。</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>稼働中のコントローラーはすべてゲームから見えます。</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>エンジンはオンで、稼働中のコントローラーはありません。</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>エンジンを開始すると、コントローラーが戻ります。</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>ポーリングレート</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>稼働中のコントローラー</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>接続中のデバイス</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>このコントローラーのオンとオフを切り替え</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>エンジンの開始時に開始します。</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>このデバイスが接続されると開始します。</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>これらのデバイスのどれかが接続されると開始します。</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>未接続</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>入力を送信中</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>バッテリー {0}、低下</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>バッテリー {0}、充電中</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>コントローラー</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>使用中の追加機能</value></data>
@@ -270,6 +317,19 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR を表示</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} が接続されていますが、使用されていません。</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>使う</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>ゲームに何を見せますか？</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge は、このコントローラーを、ゲームが想定するコントローラーに変換します。1 つ選んで始めましょう。あとからクリック 1 回で変更できます。</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge は、お使いのコントローラーを、ゲームが想定するコントローラーに変換します。1 つ選んで始めましょう。あとからクリック 1 回で変更できます。</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>キーボードとマウスのゲームをパッドで遊べます。</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>そのほかの種類: [{0}、{1}、{2}、{3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>ボタン、スティック、トリガーは、コントローラーの作成時に 1:1 で割り当てられます。</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth コントローラーをペアリング</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>既製のプロファイルから始める</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>接続中</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth、バッテリー {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>バッテリー {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>コントローラーが接続されていません</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>ケーブルまたは Bluetooth で接続してください。</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 台がマッピング済み、</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 台が接続済み</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>エンジン実行中。クリックで停止します。</value></data>
@@ -316,11 +376,10 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>コントローラーなし</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>タイプ {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>スマートフォンやタブレットをコントローラーとして使えます。スマートフォンに何もインストールする必要はありません。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>スマートフォンやタブレットのブラウザから接続してゲームパッドとして使用できます。</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイ</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation 対応タッチパッドエミュレーション用の画面上タッチサーフェス。</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation のタッチパッドゲーム向けの画面上タッチサーフェス。タッチスクリーンまたはマウスで使えます。</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイを有効にする</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>不透明度</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>位置をリセット</value></data>
@@ -329,6 +388,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>設定</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>一般</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>入力</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>ハードウェア</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>ドライバー</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>データとプライバシー</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>設定を検索</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>「{0}」に一致する設定はありません。</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>外観</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>お好みのビジュアルテーマを選択してください。</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>テーマ</value></data>
@@ -337,6 +403,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>ダーク</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>入力エンジン</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ポーリング動作とバックグラウンド処理を設定します。</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>ハードウェア対応</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>起動時にエンジンを自動開始する</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ウィンドウがフォーカスを失ってもポーリングを継続する</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>ポーリング間隔（プロファイルが上書きしない限り）</value></data>
@@ -391,16 +458,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge を {0} にアップデートしました。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>最小化状態で起動する</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ログイン時に起動する</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide ドライバー</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>二重入力を防ぐため、物理デバイスをゲームから隠します。</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>物理デバイスをゲームから隠し、二重入力を防ぎます。</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide のオプション</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ゲームからデバイスを隠す、起動間でデバイスを隠したままにする、ホワイトリスト登録済みアプリケーション</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>ホワイトリスト登録済みアプリケーション</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>これらのアプリケーションは非表示のデバイスを引き続き認識できます。PadForge は常に自動的にホワイトリストに登録されます。</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>追加...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro ドライバー</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモード仮想 HID コントローラーエンジン。PadForge.App に組み込まれており、最初の仮想コントローラー作成時に自動的にインストールされます。v3 で ViGEmBus と vJoy を置き換えます。</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge は、最初の仮想コントローラーを作成するときにこのドライバーをインストールします。アンインストールでは、HIDMaestro がこの PC に残したものを一覧表示してから削除します。</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>仮想コントローラーを作成します。</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro をアンインストール</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>この PC から HIDMaestro を削除します。対象は仮想コントローラー、ドライバー、署名証明書、レジストリキー、ファイルです。PadForge は先にエンジンを停止します。HIDMaestro を使用している他のプログラムは、次に起動するまでそのドライバーを使えなくなります。PadForge は、次に仮想コントローラーを開始するときに再びインストールします。</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 独自のインストーラーでセットアップしたものも削除する</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>この PC から削除される内容です。PadForge は、次の仮想コントローラーの作成時に HIDMaestro を再びインストールします。</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 も削除する</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>以前のバージョンの PadForge は、usbip-win2 のインストーラーで usbip-win2 をセットアップしていました。他のプログラムが usbip-win2 を使用していない場合は、USB ルートハブのフィルターを含め、そのセットアップも削除します。フィルターを削除すると、すべての USB 3 ルートハブが再起動されるため、USB デバイスが一時的に切断されます。</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>この PC に HIDMaestro が残したものを読み取っています…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>この PC には、HIDMaestro が残した削除対象はありません。</value></data>
@@ -409,10 +479,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>残る項目: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>読み取れませんでした: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>削除されませんでした: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth ドライバー</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>削除済み</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>保持</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>未読み取り</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>削除できず</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 コントローラー、PlayStation Move、Navigation コントローラーを Bluetooth で接続できるようにします。PadForge に組み込まれており、これらのいずれかを初めてペアリングするときにインストールされます。</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 コントローラーを Bluetooth で接続します。</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3 をアンインストール</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>この PC から BthPS3 を削除します。対象はドライバー、BthPS3 が Bluetooth に追加するフィルター、およびペアリングのために PadForge が PlayStation 3 コントローラーに割り当てた WinUSB ドライバーです。PadForge は先にエンジンを停止します。ドライバーのアンロード中は、Bluetooth が一時的にオフになります。その後、PlayStation 3、Move、Navigation コントローラーは USB でのみ動作します。いずれかをペアリングすると、BthPS3 が再びインストールされます。</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>この PC から削除される内容です。その後、PlayStation 3、Move、Navigation コントローラーは、ペアリングによって BthPS3 が再びインストールされるまで USB でのみ動作します。</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>この PC に BthPS3 が残したものを読み取っています…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>この PC には、BthPS3 が残した削除対象はありません。</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini がこれらのドライバーを使用しているため、DsHidMini がインストールされている間は残ります。</value></data>
@@ -431,6 +506,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth が再びオンになりませんでした。Windows の設定でオンにしてください。</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>仮想 MIDI ポートと MIDI 入力です。2026 年 11 月下旬の更新プログラムから Windows 11 25H2 に API が組み込まれます。その他の PC では、PadForge がインストールできる Windows MIDI Services ランタイム、または従来の MIDI API を使用します。</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>仮想 MIDI ポートと MIDI 入力です。</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows に組み込み</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK ランタイム</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>利用不可</value></data>
@@ -448,6 +524,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Microsoft の Windows MIDI Services Runtime and Tools を、MIDI Settings アプリ、MIDI コンソール、PowerShell モジュールとともに削除します。Microsoft は配布を終了しているため、再インストールできません。</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>仮想 VR コントローラー用の VR ランタイム。Steam アカウントも Steam クライアントも不要で、Valve のサーバーからインストールされます（数 GB）。</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>仮想 VR コントローラー用の VR ランタイムです。</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>インストール先</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR をアンインストール</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>{0} にある Steam 不要の SteamVR インストールを削除し、数 GB を解放します。SteamVR を再インストールするまで、仮想 VR コントローラーは動作しません。</value></data>
@@ -460,7 +537,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>診断情報</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>バージョン情報と、トラブルシューティング用のエンジンイベントログ。</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>診断ログを記録する</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>エンジンイベントを下記フォルダーの diagnostics.log に継続的に書き込みます。再起動後も有効のままです。8 MB に達すると diagnostics.log.old にローテーションします。</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>エンジンイベントをログフォルダーの diagnostics.log に継続的に書き込みます。ログフォルダーは「ログフォルダーを開く」で開きます。再起動後も有効のままです。8 MB に達すると diagnostics.log.old にローテーションします。</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>スナップショットを保存</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>直近のエンジンイベントを新しいファイルに保存します。診断ログが無効でも動作します。</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ログフォルダーを開く</value></data>
@@ -473,26 +550,65 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>PadForge について</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>コントローラーマッピングユーティリティ</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>最新です。</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}。{1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>ドキュメント</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>更新を確認</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce のモダンフォーク。SDL3、WPF、.NET 10 で再構築</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge は、あらゆる入力デバイスをあらゆる仮想コントローラーに変換します。ゲームパッド、ジョイスティック、キーボード、マウス、タッチスクリーンを、仮想ゲームコントローラー (Xbox、PlayStation、フライトスティック、ステアリングホイール、サードパーティ製ゲームパッド) またはキーボード + マウス / MIDI 出力にマッピングし、HIDMaestro と Windows MIDI Services によってゲームから実際のハードウェアとして認識させます。コントローラー入力には SDL3、キーボードとマウスには Windows Raw Input、ゲームごとのデバイス非表示には HidHide を使用し、マッピング、デッドゾーン、感度カーブ、フォースフィードバック用のモダンな Fluent Design インターフェースを提供します。</value></data>
   <data name="About_Overview" xml:space="preserve"><value>概要</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>使用技術</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>クレジットを検索</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>すべてのクレジットを表示</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>表示するクレジットを減らす</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>「{0}」に一致するクレジットはありません。</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク。MIT。</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>ランタイムおよび WPF フレームワーク。</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>コントローラー入力および列挙。zlib。</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>コントローラー入力および列挙。</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>デバイスごとのキーボードおよびマウス入力</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力 (Windows MIDI Services)。MIT。</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>仮想 MIDI デバイス出力 (Windows MIDI Services)。</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D コントローラービジュアライゼーション。MIT。</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D コントローラービジュアライゼーション。</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 用 Fluent 2 デザインシステム。Wpf.Ui.dll には VirtualizingWrapPanel、fluentui-system-icons のフォント、WPF と microsoft-ui-xaml のコードが含まれます。MIT。</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF 用 Fluent 2 デザインシステム。Wpf.Ui.dll には VirtualizingWrapPanel、fluentui-system-icons のフォント、WPF と microsoft-ui-xaml のコードが含まれます。</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm。MIT。</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>データバインディング用の CommunityToolkit.Mvvm。</value></data>
   <data name="About_License" xml:space="preserve"><value>ライセンス</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>本ソフトウェアは CC BY-NC-SA 4.0 (Creative Commons 表示-非営利-継承 4.0 国際) の下でライセンスされています。Gamepad-Asset-Pack (AL2009man 作、MIT) が 2D コントローラーアセットを提供しています。GestureSign (TransposonY 作、GPL-2.0) は AngularMarginRecognizer のためのドキュメントとしてのみ参照し、そのコードは含まれていません。Handheld Companion (CC BY-NC-SA 4.0) が PadForge で調整した Xbox 360 と Steam Deck の 3D モデルの元になっています。HelixToolkit、HidHide、HIDMaestro、Windows MIDI Services、および WPF UI は MIT ライセンスの下でライセンスされています。OpenXInput は上流プロジェクトの商標免責事項のみを含み、同条件のもとでそのまま再配布されます。$Q Recognizer (Magrofuoco、Vatavu、Anthony、Wobbrock 作、BSD 3-Clause) はタッチパッドの ShapeRecognizer の参照元で、C# で再導出しています。SDL3 は zlib ライセンスの下でライセンスされています。x360ce (LGPL-3.0-or-later) は PadForge のフォーク元となった元のコードベースです。Zergatul.Obs.InputOverlay (Igor Budzhak 作、MIT) がマウスのイラストを提供しています。</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK ローダー)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD 系</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ライセンス条項</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK 条件</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>商標の免責事項のみ</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>条件の記載なし</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>公開なし</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>複数のライセンス</value></data>
 
   <!-- ═══ Device Types ═══ -->
   <data name="DeviceType_Gamepad" xml:space="preserve"><value>ゲームパッド</value></data>
@@ -510,6 +626,36 @@
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>すべてのマウス (統合)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>すべてのタッチパッド (統合)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>デバイス</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} 台接続中</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>デバイスを検索</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>すべて</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>コントローラー</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>キーボードとマウス</value></data>
+  <data name="Devices_Filter_Other" xml:space="preserve"><value>その他</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>接続中</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>未接続</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>その他の入力</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>一致するデバイスはありません。</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>未使用</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>バッテリー {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>バッテリー {0}、充電中</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>使用先</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>新しいコントローラー</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>設定</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>すべての軸、ボタン、センサー</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>押下中: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID、パス、対応機能、強制 Raw ジョイスティックモード</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID、パス、対応機能</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>詳細をコピー</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>製品</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>種類</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>対応機能</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>接続</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>バッテリー</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>パス</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>シリアル番号</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ファームウェア</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>リビジョン</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>チャットパッドを読み取る</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>チャットパッドと uDraw タブレットを読み取る</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ゲームパッドを読み取る</value></data>
@@ -553,9 +699,9 @@
   <data name="Devices_DriverKeepTitle" xml:space="preserve"><value>このキーボードを PadForge で使い続けますか?</value></data>
   <data name="Devices_DriverKeepTitle_Mouse" xml:space="preserve"><value>このマウスを PadForge で使い続けますか?</value></data>
   <data name="Devices_TouchpadKeepTitle" xml:space="preserve"><value>このタッチパッドを PadForge で使い続けますか?</value></data>
-  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows は {0} を文字入力に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
-  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows は {0} をポインターの操作に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
-  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows は {0} をポインターの操作に使用しなくなりました。使えるキーボードやマウスがなくなった場合は、何もしないでください。カウントダウンが終わると、PadForge が Windows に戻します。</value></data>
+  <data name="Devices_DriverKeepMessage_Format" xml:space="preserve"><value>Windows は {0} で文字を入力しなくなりました。意図した操作でない場合は、何もしないでください。元に戻ります。</value></data>
+  <data name="Devices_DriverKeepMessage_Mouse_Format" xml:space="preserve"><value>Windows は {0} でポインターを動かさなくなりました。意図した操作でない場合は、何もしないでください。元に戻ります。</value></data>
+  <data name="Devices_TouchpadKeepMessage_Format" xml:space="preserve"><value>Windows は {0} でポインターを動かさなくなりました。意図した操作でない場合は、何もしないでください。元に戻ります。</value></data>
   <data name="Devices_DriverKeepCountdown_Format" xml:space="preserve"><value>{0} 秒後に元に戻します</value></data>
   <data name="Devices_DriverKeep" xml:space="preserve"><value>使い続ける</value></data>
   <data name="Devices_DriverGiveBack" xml:space="preserve"><value>元に戻す</value></data>
@@ -571,27 +717,20 @@
   <data name="Status_TouchpadNeedsHidHide" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、HidHide をインストールしてください。</value></data>
   <data name="Status_TouchpadNeedsInputHiding" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、設定で「ゲームからデバイスを隠す」をオンにしてください。</value></data>
   <data name="Status_TouchpadNeedsEngine" xml:space="preserve"><value>タッチパッドを PadForge だけで使うには、エンジンを起動してください。</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> 台がオンライン / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> 台</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>デバイスを削除</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} はデバイス一覧から削除され、保存された設定も破棄されます。</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>デバイスをサイドバーのコントローラーカードにドラッグすると割り当てられます。</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>製品: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>デバイスをサイドバーのコントローラーにドラッグすると割り当てられます。</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>デバイスマッピングを送信</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>仮想コントローラー割り当て</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>割り当てを切り替え</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>仮想コントローラースロットがまだありません。ダッシュボードで作成すると、このデバイスを割り当てられます。</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>入力モード</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>このデバイスをこのコントローラーに割り当てるか、割り当てを外します。</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>強制 Raw ジョイスティックモード (ゲームパッドリマッピングをバイパス)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL のゲームパッドマッピングの代わりに生の HID インデックスを読み取ります。SDL がボタン/軸レイアウトを誤認識する場合に使用してください。</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>入力の非表示</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>ゲームから隠す (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ドライバー経由でこのデバイスを他のアプリケーションから完全に隠します。すでに接続されていた USB コントローラーを隠すと、PadForge は Windows 上でそれを接続し直すため、開いていたものはそれを失います。Bluetooth コントローラーや、別のコントローラーとレシーバーを共有しているコントローラーは、隠す前に開いていたものが、コントローラーが次に接続するまで保持し続けます。</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>このオプションを有効にするには HidHide ドライバーをインストールしてください</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>マッピング済み入力を消費する (フック)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>マッピングされた特定のキー/ボタンのみを抑制し、マッピングされていない入力はそのまま通過させます</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Raw 入力の状態</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>入力テスト</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>軸</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>キーボード</value></data>
@@ -636,27 +775,25 @@
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>インポート済みプロファイル…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Extended コントローラー</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルを管理します。接続されたデバイスから新しく取り込む、既存のものを JSON にエクスポート、または不要になったものを削除します。</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>インポート済みプロファイル</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルは PadForge.xml 内に保存され、すべての Extended スロットのプロファイルドロップダウンに表示されます。以下の接続デバイスから新しく取り込むか、既存のものをエクスポート／削除できます。</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>インポート済みのプロファイル ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>インポート可能な接続デバイス</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>コントローラープリセット</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge に含まれないコントローラーのプリセットを、ファイルまたはコントローラー本体から追加します。</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>インポート済み</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>接続中のデバイスからインポート</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>削除</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>閉じる</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>プロファイル JSON をエクスポート</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>インポートしたプロファイルを削除しますか？</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>「{0}」を削除しますか？このプロファイルを使用しているスロットは合成 Custom エントリに戻ります。</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>プリセットを削除しますか？</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} を使用しているコントローラーは、カスタムの項目に戻ります。この操作は元に戻せません。</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} にエクスポートしました</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>エクスポートに失敗しました: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>「{0}」を削除しました。</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ファイルからインポート…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ファイルから取り込む…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プロファイル JSON をインポート</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} からインポートしました。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro はこのプロファイルを {1} で拒否しました: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>このプロファイルには HID ディスクリプタがないため、コントローラーを作成できません。</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>何もインポートされませんでした。{0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>更新</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(名前なしの HID デバイス)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} 個の HID インターフェースが見つかりました。</value></data>
@@ -874,6 +1011,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>中心</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>中心点のオフセット、デッドゾーン形状と軸ごとの値、軸ごとのカーブ、範囲、ステアリング</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>範囲の数値入力、生の値</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>範囲</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>「境界を調整」は、スティックが届く縁を計測して完全な円に整えます。4つのスライダーは各方向の上限を設定するだけです。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
@@ -1107,41 +1245,63 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>プロファイル</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>プロファイル管理</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>アクティブなゲームに基づいて自動切り替えされるアプリケーション別コントローラープロファイルを作成します。</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>フォアグラウンドアプリケーションに基づいてプロファイルを自動切り替えする</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>プロファイルは、コントローラー、マッピング、調整をまとめた完全なセットアップです。</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>スタータープロファイル</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>ジャンルまるごとに対応する既製プロファイルです。1 つ選んで任意のコントローラーを割り当てれば使えます。</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>ゲームでプロファイルを切り替える</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>自動切り替え</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>前面のアプリ: {0}、プロファイル未設定</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>前面のアプリ: {0}、読み込むプロファイル: {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>前面のアプリ: {0}、ゲームを設定したプロファイルはまだありません</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>ランチャーやスクリプトによる外部制御を許可</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ローカルの名前付きパイプ PadForge.Control を公開し、Playnite、LaunchBox、スクリプトからプロファイルを有効・無効にできます。この方法で有効にしたプロファイルは、スクリプトが解除するか自分で切り替えるまで有効のままです。ローカル専用。</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>外部制御</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>アクティブなプロファイル:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>スロットなし</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自動切り替え: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>コントローラーなし</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ドロップしてプロファイルをインポート</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>新規</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>プロファイルファイルをここにドロップ</value></data>
+  <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge、reWASD、DS4Windows のいずれか</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>新規プロファイル</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>名前を付けて保存</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>現在の設定をここに保存</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>編集</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>読み込み</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>実行ファイルが設定されたプロファイルはまだありません</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>組み込み</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>先にプロファイルを選択してください。</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>組み込みのプロファイル「デフォルト」は編集も削除もできません。</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>プロファイルを削除</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>「{0}」を削除しますか？保存されたスロットとマッピングのスナップショットは破棄されます。</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ゲーム未設定</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} 用に読み込み</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} 用に設定</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>使用中</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} のその他の操作</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} を削除しますか？</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>プロファイルと、その自動切り替えルールが削除されます。この操作は元に戻せません。</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>プロファイルが削除されます。この操作は元に戻せません。</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>「{0}」に保存されている設定を、現在の設定で置き換えますか？名前とゲームはそのままです。</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>置き換える</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>プロファイルとして保存</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>プロファイルを編集</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>プロファイル名:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>新規プロファイル</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>名前</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>新規プロファイル</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>実行ファイル (フォアグラウンドウィンドウと照合):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>読み込むゲーム</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ポーリングレート</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>既定（グローバル設定）</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>プロファイル「{0}」が有効な間は上書きされます: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>各スロットのマッピングとデバイスごとの設定を 1 つの名前でスナップショットとして保存します。関連付けられた実行ファイルは自動的にこのプロファイルへ切り替わります。</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>プロファイルの名前を変更し、それを有効化する実行ファイルを更新します。保存済みのマッピングと設定は変更されません。</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>すべてのコントローラーのマッピングと設定を 1 つの名前で保存します。ゲームのどれかが前面に来ると、自動的に読み込まれます。</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>プロファイルは、ゲームのどれかが前面に来ると自動的に読み込まれます。</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>コントローラーなしで始まります。ゲームのどれかが前面に来ると、自動的に読み込まれます。</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>実行中のゲームを追加</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ウィンドウを開いているほかのプログラムはありません。</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} を削除</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>このプロファイルの読み込み中のポーリングレート</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>設定のコピー元...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>設定をコピーするデバイスを選択してください:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>コピー元</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>{0} のマッピングとデバイスごとの調整を、別のコントローラーのものに置き換えます。</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>別のコントローラーのマクロを {0} に追加します。</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>未割り当て、以前のマッピングを維持</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>ホワイトリストに追加するアプリケーションを選択</value></data>
@@ -1191,6 +1351,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>範囲</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>アンチデッドゾーン</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>カーブエディター</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>モーターごとのゲイン、トリガー振動、ステアリング角度による振動、定常フォース</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン</value></data>
@@ -1780,21 +1941,21 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>マッピングされたすべてのデバイスがオフラインのときに、仮想コントローラーが破棄されるまでの秒数。0 で無効になります。残った同じ種類のコントローラーは隙間を埋めるために上にシフトし、低いスロットに再バインドされます。</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>秒 (0 = 無効)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)。MIT。</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>ユーザーモードの仮想 HID コントローラーエンジン (ViGEmBus と vJoy を置き換え)。</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>ゲームから物理デバイスを隠すカーネルドライバー。MIT。</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>ゲームから物理デバイスを隠すカーネルドライバー。</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します。上流の商標に関する免責事項のみ、OSS ライセンスなし。</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します。</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zackslyアイコンパック</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>「Xbox Series Button Icons and Controls」(Zacksly、CC BY 3.0) を基にしたスティックおよびトリガーのアイコン</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>「Xbox Series Button Icons and Controls」(Zacksly) を基にしたスティックおよびトリガーのアイコン。</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>ヘッドホン出力向けの Bauer ステレオ・バイノーラル・クロスフィード。MIT。</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>ヘッドホン出力向けの Bauer ステレオ・バイノーラル・クロスフィード。</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth経由のDualSenseスピーカー音声を支える純C#製Opusエンコーダー。Logan Stromberg作。BSD 3-Clause。</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth経由のDualSenseスピーカー音声を支える純C#製Opusエンコーダー。Logan Stromberg作。</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormangaによるDualSense Bluetooth音声の研究。コントローラースピーカーのストリームが利用するパケットトランスポート。apps.sdore.me/SAxense。MPL-2.0。</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormangaによるDualSense Bluetooth音声の研究。コントローラースピーカーのストリームが利用するパケットトランスポート。apps.sdore.me/SAxense。</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalolによるBluetoothスピーカーのレシピ。Opusフレーミングとパケットレイアウト。知見の共有とテストを提供したTechAntohereにも感謝。MIT。</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalolによるBluetoothスピーカーのレシピ。Opusフレーミングとパケットレイアウト。知見の共有とテストを提供したTechAntohereにも感謝。</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USBコントローラー音声パススルーの参照実装。WujekFoliarz作。</value></data>
   <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>アダプティブトリガー</value></data>
@@ -2091,8 +2252,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>ベース</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift レイヤー</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ベースを構成</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>シフトレイヤーフライアウトとレイヤー一覧に表示されるベースレイヤーの名前、アイコン、色です。</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>レイヤー名</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>アクティベーター入力</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>押し続ける入力</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>押す入力</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>次のレイヤーの入力</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>前のレイヤーの入力</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>もう 1 つの入力</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>入力を選択</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>未割り当てのコントロール</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ベースに引き継ぐ</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>何もしない</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>モード、入力の種類、タイミング、色</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ホールド</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>トグル</value></data>
@@ -2119,7 +2291,6 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーが反応するまでに入力を押し続ける必要がある時間。ホールド モードではデバウンスとして働きます。トグル、固定、スティッキーでは切り替えが長押しになり、押し続けた時間がこの値を超えた瞬間にレイヤーが 1 回切り替わり、それより短いタップでは何も起こりません。0 なら即座に反応します。</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>レイヤーをサイクル</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>指定レイヤー内のみ</value></data>
@@ -2132,18 +2303,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>単一ボタン (または POV 方向) の押下でレイヤーを有効化します。</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>有効化するには両ボタンを同時に押し続ける必要があります。デバイス間コードに対応。</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>アナログ軸がしきい値を超えている間、有効化します。</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>アクティベーターを押している間レイヤーは有効のまま。離すと解除されます。</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>入力を押している間、このレイヤーのマッピングがベースのマッピングに置き換わります。</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>タップで有効化。再タップで解除。レイヤーは多くの押下を超えて持続します。</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>押すとこのレイヤーを固定して保持します。もう一度押すとベースに戻ります。別の固定ボタンはそれぞれのレイヤーに切り替えます。</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>各押下で順序付きレイヤー リストを進めます。ベースに戻ります。</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>1 回タップで有効化。次にマッピング済みボタンを押すとレイヤー上で発火し、自動的に解除されます。</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>専用のボタンはありません。サイクルコントロールのキューに追加すると、サイクルがこのレイヤーに到達します。</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>未割り当てターゲットをベースから継承</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>離したときに発動</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ボタンを離すまでこのアクティベーターは発動しません。ホールド遅延が設定されている場合、その時間以上押していないと離しても発動しません。</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します。1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーが明示的に割り当てていないターゲットはベース レイヤーにフォールスルーします。オフ(既定)にすると、レイヤーはベースを完全に置き換え、未割り当てターゲットはオフのままになります。</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>「ベースに引き継ぐ」では、このレイヤーが割り当てていないコントロールはベースの割り当てを維持します。「何もしない」では、レイヤーがベースを完全に置き換え、それらのコントロールはオフのままです。</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>インパルストリガー</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>トリガーごとのゲイン、モーターの入れ替え、アダプティブトリガーの振動、トリガー定常力</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>仮想コントローラーから割り当てられた物理 Xbox One / Elite / Series コントローラーへ、トリガーごとのモーターコマンド（Xbox インパルストリガー）を転送します。ゲームが発するトリガー振動は自動的に通過します。下のコントロールでトリガーごとの強度を調整できます。</value></data>
@@ -2396,21 +2566,22 @@
   <data name="Pad_ResetTouchpadStickInnerDeadzone" xml:space="preserve"><value>内側デッドゾーンをリセット</value></data>
   <data name="Pad_ResetTouchpadStickDPadMode" xml:space="preserve"><value>方向キーモードをリセット</value></data>
   <data name="Pad_ResetTouchpadStickDPadActivationThreshold" xml:space="preserve"><value>方向キー作動をリセット</value></data>
-  <data name="Recorder_Title" xml:space="preserve"><value>タッチパッドジェスチャーを記録</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>下のサーフェスにジェスチャーを描いてください。ダイアログは置いたすべての指を取り込みます。すべての指をサーフェスから離した時点でサンプルが記録されます。前回までと異なる指本数で描いた場合、サンプルスタックはリセットされます。</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>サーフェスへの指の接触を待機中</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>ジェスチャーを記録</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>コントローラーのタッチパッドに形を描いてください。割り当てられる入力になります。</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>ここにジェスチャーを描いてください。</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>タッチパッドに描いてください。サーフェスにリアルタイムで反映されます。</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>{0}（タッチパッド {1}）から記録中</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>このタッチパッド</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>タッチパッドが使用できません。下のサーフェスをマウスまたはタッチで使用してください。</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>タッチパッドを使用できません。ここにマウス、ペン、指で描いてください。</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>描画中…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>すべてのサンプルを取得しました。ジェスチャーに名前を付けて保存をクリックしてください。</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>サンプル {0} / {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} サンプル</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>取得するサンプル数</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準は 3 です。サンプル数が多いほど判定が安定し、少ないほど記録が速く終わります。</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>取り込むサンプル数</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>標準は 3 です。サンプル数が多いほど判定が確実になり、少ないほど記録が速く終わります。</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>名前</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>やり直す</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>このジェスチャーの名前</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>名前は必須です</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>名前が長すぎます (最大 64 文字)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>名前に使用できない文字が含まれています</value></data>
@@ -2575,22 +2746,21 @@
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。BSD 3-Clause。</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>キーボード + マウスのプレビューが描画するキーボードのキー位置とベースレイヤーのキー。QMK のレイアウトデータと Keychron の QMK フォークから生成。GPL-2.0-or-later。</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>キーボード + マウスのプレビューが描画するキーボードのキー位置とベースレイヤーのキー。QMK のレイアウトデータと Keychron の QMK フォークから生成。</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSign の PointPatternAnalyzer のスコアリングの考え方を独自の C# で実装。GPL-2.0、ドキュメントのみ。</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSign の PointPatternAnalyzer のスコアリングの考え方を独自の C# で実装。ドキュメントのみ。</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>サウンド出力をリセット</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefariusによるDualShock 4 Bluetooth音声リファレンス。PadForgeのDS4スピーカーストリームのレポートフレーミング。SBCエンコーダーはBluetooth A2DP仕様に基づく独自のC#実装。プロトコル文書はkhallmarkのds4macより。MIT。</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefariusによるDualShock 4 Bluetooth音声リファレンス。PadForgeのDS4スピーカーストリームのレポートフレーミング。SBCエンコーダーはBluetooth A2DP仕様に基づく独自のC#実装。プロトコル文書はkhallmarkのds4macより。</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>インポート…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>プロファイル「{0}」をエクスポートしました。</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>プロファイル「{0}」をインポートしました（サウンドパッケージ {1} 件を登録）。</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>このファイルは読み取り可能なPadForgeプロファイルではありません。</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} からサウンドを選択</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>サウンドパッケージ</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>サウンドマクロ用のサウンドの ZIP ファイル</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>サウンドパッケージは、拡張子 .pfsounds の 1 つの ZIP ファイルにまとめたサウンド集です。ここに追加すると、どのサウンドマクロでもその中のサウンドを選べます。PadForge はファイルから直接読み取り、展開は行いません。パッケージを PadForge.exe と同じフォルダーに置けば、フォルダーごと持ち運べます。</value></data>
@@ -2635,24 +2805,18 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>アイデンティティ保護</value>
+    <value>ペアリング ID</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>この PC のペアリング ID の保存方法。ポータブル モードを選ぶと、ペアリング情報を USB メモリに入れて別のマシンへ持ち運べます。</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve">
-    <value>この PC の名前</value>
-  </data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>近くの PC（未ペアリング）</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>リセット</value>
   </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Remote Link のパスワード</value>
-  </data>
-  <data name="RemoteLink_PasswordConfirm" xml:space="preserve"><value>パスワードの確認</value></data>
+  <data name="RemoteLink_PasswordConfirm" xml:space="preserve"><value>もう一度入力</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>パスワードを設定</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Remote Link のロックを解除</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>パスワード</value></data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge タッチパッド</value>
   </data>
@@ -2683,9 +2847,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>ペアリング済みの PC</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>オンライン</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>オフライン</value>
   </data>
@@ -2702,7 +2863,7 @@
     <value>保護を変更する前に、現在のIDのロックを解除してください。</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>ポータブルIDを保護するパスワードを設定してください。各PCでRemote Linkのロックを解除する際に入力します。</value>
+    <value>パスワードは、この PC のペアリング ID を保護します。</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>IDの保護を更新しました。</value>
@@ -2723,7 +2884,7 @@
     <value>{0}:{1} に接続中…</value>
   </data>
   <data name="RemoteLink_AutoReconnect" xml:space="preserve">
-    <value>自動的に再接続する</value>
+    <value>自動再接続</value>
   </data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
     <value>Remote Link サーバーを有効にする</value>
@@ -2732,16 +2893,16 @@
     <value>Remote Link</value>
   </data>
   <data name="Dashboard_RemoteLinkConnect" xml:space="preserve">
-    <value>またはアドレスを指定して接続（詳細設定）</value>
+    <value>アドレスを指定して接続</value>
   </data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve">
     <value>ペアリング / 接続</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>ペアリング済みの別の PC の PadForge とコントローラーを共有します。同じネットワークでもインターネット経由でも利用できます。</value>
+    <value>別の PC の仮想コントローラーを操作します。一度ペアリングすれば、信頼済みの PC は自動的に再接続します。</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
-    <value>一度ペアリングすれば、信頼済みの PC は自動的に再接続します。ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
+    <value>ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
   </data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
     <value>ペアリング</value>
@@ -2753,10 +2914,10 @@
     <value>接続済み</value>
   </data>
   <data name="RemoteLink_ConsentWarning" xml:space="preserve">
-    <value>ゲームパッドのみに制限しない限り、ペアリング済みの PC はこの PC にキーボード・マウス・マクロの入力を送信できます。</value>
+    <value>ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
   </data>
   <data name="RemoteLink_GamepadOnly" xml:space="preserve">
-    <value>この PC をゲームパッド入力のみに制限する</value>
+    <value>ゲームパッドのみ</value>
   </data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>アイデンティティ</value>
@@ -2771,10 +2932,10 @@
     <value>Remote Link でペアリングした PC の一覧です。接続を止めるには解除します。再接続するには、もう一度ペアリングが必要になります。</value>
   </data>
   <data name="RemoteLink_PairPrompt" xml:space="preserve">
-    <value>両方の画面でこのコードが一致していることを確認してから、ペアリングしてください。</value>
+    <value>両方の画面に同じコードが表示されていることを確認してください。</value>
   </data>
   <data name="RemoteLink_PairTitle" xml:space="preserve">
-    <value>リモート PC とペアリング</value>
+    <value>別の PC とペアリングしますか？</value>
   </data>
   <data name="RemoteLink_Reject" xml:space="preserve">
     <value>拒否</value>
@@ -2785,6 +2946,7 @@
   <data name="RemoteLink_RevokeAll" xml:space="preserve">
     <value>すべて解除</value>
   </data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>名前を変更</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>{0} で待機中</value>
   </data>
@@ -2803,19 +2965,19 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>PC {0} が接続しました、デバイス {1} 台</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>追加済みパッケージからサウンドを選ぶか、ファイルを参照します。</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>ファイルを参照…</value>
   </data>
   <data name="PickSound_Title" xml:space="preserve"><value>サウンドを選択</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>サウンドはコントローラーのスピーカーから再生され、スピーカーがない場合は PC から再生されます。</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>このサウンドを使う</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>{0} を再生</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>コントローラー音声のミラーリングと低音トリガーランブルを支えるWASAPIループバックキャプチャ。PadForge が同梱しない NAudio.Midi は、従来の MIDI API の WinMM 宣言とポートの呼び出し手順、ベロシティ 0 のノートオンをノートオフとする規則、サステインなどのオン/オフ型コントローラーの参照元でもあります。Mark Heath作。MIT。</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>コントローラー音声のミラーリングと低音トリガーランブルを支えるWASAPIループバックキャプチャ。PadForge が同梱しない NAudio.Midi は、従来の MIDI API の WinMM 宣言とポートの呼び出し手順、ベロシティ 0 のノートオンをノートオフとする規則、サステインなどのオン/オフ型コントローラーの参照元でもあります。Mark Heath作。</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>音声マクロのフレーズを認識するオフライン音声認識器。Alpha Cephei 製。モデルは PadForge に同梱されています。Apache-2.0。</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>音声マクロのフレーズを認識するオフライン音声認識器。Alpha Cephei 製。モデルは PadForge に同梱されています。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link のペアリングと通信を支える暗号処理（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle ライセンス（MIT 系）。</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link のペアリングと通信を支える暗号処理（X25519、Ed25519、ChaCha20-Poly1305）。</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>記録中「{0}」: 「上」方向の入力を押してください...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>記録中「{0}」: 次に「下」方向の入力を押してください...</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>複製</value></data>
@@ -2826,20 +2988,23 @@
   <data name="Status_MacroClipboardInvalid" xml:space="preserve"><value>クリップボードにコピーされたマクロがありません。</value></data>
   <data name="Status_MacroCopiedFrom" xml:space="preserve"><value>選択した仮想コントローラーからマクロをコピーしました。</value></data>
   <data name="Status_MacroNoSource" xml:space="preserve"><value>コピーできるマクロを持つ他の仮想コントローラーがありません。</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>次へボタン</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>前へボタン</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>折り返し</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>オンにすると、最後のレイヤーの次で最初に戻り、最初の前で最後に移動します。オフにすると、カーソルは両端で止まります。</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>ベースを含める</value></data>
   <data name="Pad_Shift_CycleIncludeBase_Tooltip" xml:space="preserve"><value>オンにすると、シフトなしのベースも循環の停止位置になり、切り替えでベースに戻れます。オフにすると、カーソルは選択したレイヤーだけを巡り、ベースへは別のアクティベーターで戻ります。</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>ペアリング</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>コントローラーをペアリング</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>コントローラーをペアリング</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii リモコンをペアリング</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>電池カバーを開き、赤い SYNC ボタンを押します。</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>ライトが点滅している間、リモコンをこの PC の近くに置いてください。</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3 をペアリング</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move または Navigation コントローラーをペアリング</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>シリアルコントローラーを追加</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI リモコンを追加</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>コントローラーの種類</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>電池カバーを開けて赤いSYNCボタンを押してください。コントローラーが表示されるまでPadForgeに検索させてください。</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>一時的なペアリング（1と2を長押し）</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>ペアリング</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>検索中です。今すぐSYNCボタンを押してください。</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>リモコンを探しています。</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>見つかったコントローラー</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>まだコントローラーが見つかりません。青いランプが点滅していることを確認してください。</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} をペアリングしました。デバイス一覧に表示されます。</value></data>
@@ -2850,13 +3015,12 @@
   <data name="Common_Close" xml:space="preserve"><value>閉じる</value></data>
   <data name="Common_ResizePanes" xml:space="preserve"><value>ペインのサイズ変更</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFCタグ</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>タグを登録</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>タグをリーダーにかざしてUIDを取得します。</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(待機中)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>名前:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>タグをリーダーにかざして名前を付けます。割り当てられるボタンになります。</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>タグをリーダーにかざしてください。</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>このタグの名前</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>登録</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>登録済みのタグ</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>登録済み</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFCリーダーが検出されませんでした。PC/SCリーダーを接続して開き直してください。</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>タグを取得しました。名前を入力して「登録」をクリックしてください。別のタグをかざすと置き換えられます。</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のタグをかざすと追加できます。</value></data>
@@ -2934,29 +3098,29 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack の共有メモリも開けませんでした。</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>隠しボタンを学習 / 管理</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>隠しボタン</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>ボタンを学習</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>求められたら隠しボタンを一度押してください。PadForge はこのマシンのキーボード、マウス、すべてのベンダー レポート、すべてのシステム イベントを監視し、ボタンが変化させたものを記録します。</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>マシン:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>学習を開始</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Windows がコントローラーとして表示しないボタンを、PadForge に覚えさせます。求められたら押してください。</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>手を離してください。待機状態を読み取り中…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>今すぐ隠しボタンを押して、離してください…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>しばらくお待ちください…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>変化が検出されませんでした。表示された時間内にボタンを押して、もう一度お試しください。</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>今すぐボタンを押し続けてください。</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>ボタンを離してください。</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>ステップ {0} / {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>変化は検出されませんでした。「やり直す」を選び、求められたらボタンを押し続けてください。</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} 個のベンダー レポートと {1} 個のイベント クラスを監視しました。押下中: レポート {2} 件、イベント {3} 件。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ボタンを取得しました。名前を入力して「登録」をクリックしてください。</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ソース:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>名前:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>ソース</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>このボタンの名前</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>登録</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>学習済みボタン</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>やり直す</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>まだ学習したボタンはありません。</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のボタンを学習するには再度開始してください。</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>{0} で学習済み</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のボタンを学習するには「やり直す」を選びます。</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>キー: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>隠しボタンはオフです。まず設定で携帯型 PC ボタンを有効にしてください。</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} が実行中です。停止するまでこれらのボタンに反応し続けます。</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="MapKeyLights_ManageButton" xml:space="preserve"><value>キーライトを割り当て</value></data>
   <data name="MapKeyLights_Title" xml:space="preserve"><value>キーライトを割り当て</value></data>
-  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge はキーライトを1つずつ点灯します。点灯したライトの下のキーを押して名前を付けてください。名前は同じモデルのすべてのキーボードに保存され、キーのカラーやキーカラーのマクロが正しいキーに反映されます。</value></data>
+  <data name="MapKeyLights_Intro" xml:space="preserve"><value>PadForge はライトを 1 つずつ点灯します。その下にあるキーを押してください。</value></data>
   <data name="MapKeyLights_DeviceLabel" xml:space="preserve"><value>デバイス:</value></data>
   <data name="MapKeyLights_Progress_Format" xml:space="preserve"><value>名前を付けたキー: {0} / {1}</value></data>
   <data name="MapKeyLights_NoLights" xml:space="preserve"><value>このデバイスには、PadForge が名前を学習できるキーライトがありません。</value></data>
@@ -2970,7 +3134,7 @@
   <data name="MapKeyLights_Forget" xml:space="preserve"><value>削除</value></data>
   <data name="MapKeyLights_Forget_Tooltip" xml:space="preserve"><value>点灯中のライトに学習した名前を削除します。</value></data>
   <data name="MapKeyLights_Stop" xml:space="preserve"><value>停止</value></data>
-  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>ライトが点灯しない場合は、Windowsの設定でこのデバイスの動的ライティングをオフにするか、専用のライティングソフトを閉じてから、もう一度「開始」を押してください。</value></data>
+  <data name="MapKeyLights_NoLightHint" xml:space="preserve"><value>ライトが点灯しない場合は、Windows の動的ライティングまたはメーカーのソフトウェアがデバイスを使用している可能性があります。</value></data>
   <data name="MapKeyLights_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="MapKeyLights_Import" xml:space="preserve"><value>インポート…</value></data>
   <data name="MapKeyLights_ForgetAll" xml:space="preserve"><value>すべて削除</value></data>
@@ -3007,8 +3171,7 @@
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>作業ディレクトリ</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>任意。プログラムが現在のディレクトリとして使用するフォルダーです。プログラムファイルがある場所ではありません。空欄にすると既定値が使われます。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>デバイス情報</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>詳細</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分 (0 = しない)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB接続時にBluetoothを切断</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>クイックチャージ。Bluetooth接続中にこのコントローラーが充電中と報告すると、Bluetoothリンクを切断し、無線に電力を使わずに充電します。壁の充電器を含め、あらゆるUSB電源が対象です。ケーブルを挿したままBluetoothを再接続した場合は、次にケーブルを抜くまでそのままにします。</value></data>
@@ -3032,10 +3195,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>この PlayStation コントローラーに方向を直接問い合わせ、ダンスマットで左右や上下の同時押しを最初のステップから検出できるようにします。方向は上・下・左・右矢印ボタンとして届きます。ファームウェア 3.34 は、逆方向が同時に押されたあとは同じボタンを自分でも送り、PadForge はそこで問い合わせをやめます。それまでアダプターは、自身によるコントローラーの読み取りの大半を省きます。</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 の感圧</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>プレイヤー番号</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>アダプターは番号を保存し、そのプレイヤーとして再接続します。Windows からは新しいデバイスに見えるため、ポートが戻ったら割り当てをやり直してください。</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>アダプターは番号を保存して再接続し、Windows はそれを新しいデバイスとして認識します。</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>プレイヤー</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>プレイヤーを設定</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast 画面</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>保存するまでポートには何も送られません。</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>表示</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>アダプターの画像</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>プロファイル名</value></data>
@@ -3082,7 +3246,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO を太鼓の達人の太鼓 2 台として読み取っています。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} を iCade コントローラーとして読み取っています。</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} を再びキーボードとして読み取っています。</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>ライトガン</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>既定の照準範囲: X {0}～{1}、Y {2}～{3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>調整済みの照準範囲: X {0}～{1}、Y {2}～{3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>ガンのキャリブレーション</value></data>
@@ -3139,42 +3302,42 @@
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>ブックマーク</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>コンシューマー {0}</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>DualShock 3 を共有無線経由で接続できるようにする、nefarius 製の Bluetooth プロファイルおよび PSM フィルタードライバー一式。ペアリング時にアプリ内でインストールされます。BSD 3-Clause。</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>DualShock 3 を共有無線経由で接続できるようにする、nefarius 製の Bluetooth プロファイルおよび PSM フィルタードライバー一式。ペアリング時にアプリ内でインストールされます。</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer による DualShock 3 プロトコルのリファレンス。sixpair のフィーチャーレポート、Bluetooth 出力レポートのテンプレート、有効化の順序、バッテリーマップを収録。PadForge の実装は独自の C# です。HIDMaestro の DualShock 3 (SIXAXIS): Full コントローラーは DsHidMini の SXS モードのレポート記述子を使用します。BSD 3-Clause。</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer による DualShock 3 プロトコルのリファレンス。sixpair のフィーチャーレポート、Bluetooth 出力レポートのテンプレート、有効化の順序、バッテリーマップを収録。PadForge の実装は独自の C# です。HIDMaestro の DualShock 3 (SIXAXIS): Full コントローラーは DsHidMini の SXS モードのレポート記述子を使用します。</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>アプリ内での BthPS3 セットアップと、隠した USB コントローラーの解放に用いる、ドライバーストアへのインストール、Bluetooth クラスフィルターの登録、USB ポートの再接続処理。nefarius 製。MIT。</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>アプリ内での BthPS3 セットアップと、隠した USB コントローラーの解放に用いる、ドライバーストアへのインストール、Bluetooth クラスフィルターの登録、USB ポートの再接続処理。nefarius 製。</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro 有線ドライバーと、PadForge が WinUSB に割り当てるコントローラー用の USB アクセス。libusb-1.0.dll として同梱。LGPL-2.1-or-later。</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro 有線ドライバーと、PadForge が WinUSB に割り当てるコントローラー用の USB アクセス。libusb-1.0.dll として同梱。</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>スマートフォンの Web Controller 内のタッチジョイスティック。Yoann Moinet 製。MIT。</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>スマートフォンの Web Controller 内のタッチジョイスティック。Yoann Moinet 製。</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge に同梱のマッピングが拡張する、コミュニティ製ゲームパッドマッピングデータベース。zlib。</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge に同梱のマッピングが拡張する、コミュニティ製ゲームパッドマッピングデータベース。</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox ガイドボタン LED の調査: XboxGIP パケットレイアウトと検出シーケンス。Leclowndu93150 製。MIT。</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox ガイドボタン LED の調査: XboxGIP パケットレイアウトと検出シーケンス。Leclowndu93150 製。</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>巻き角ステアリングとリーンの計算。JibbSmart および Electronicks 製。MIT。</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>巻き角ステアリングとリーンの計算。JibbSmart および Electronicks 製。</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>プレイヤー空間およびワールド空間へのジャイロ変換。JibbSmart 製。MIT。</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>プレイヤー空間およびワールド空間へのジャイロ変換。JibbSmart 製。</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) のハプティックレポートレイアウトと音符周期の計算。Pila および Roboron3042 製。BSD 3-Clause。</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) のハプティックレポートレイアウトと音符周期の計算。Pila および Roboron3042 製。</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 と Steam Deck の LFO トーンハプティックレイアウト。Pila、Crazy、AAGaming 製。BSD 3-Clause。</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 と Steam Deck の LFO トーンハプティックレイアウト。Pila、Crazy、AAGaming 製。</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap モード向けの SOCD クリーニングのセマンティクス。valignatev 製。MIT。</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap モード向けの SOCD クリーニングのセマンティクス。valignatev 製。</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii のペアリング手順、スピーカー ADPCM、Wii リモコンの横持ちと縦持ちの向き、スティックゲートのモデルとその保存形式、ジャイロ軸の規約に関するドキュメント。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii のペアリング手順、スピーカー ADPCM、Wii リモコンの横持ちと縦持ちの向き、スティックゲートのモデルとその保存形式、ジャイロ軸の規約に関するドキュメント。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock の動作ドキュメント: アイドル切断、タッチパッドの境界、バッテリーのデコード、Bluetooth 切断の IOCTL、DualSense の振動モードビット、ジャイロのジッターカーブ、スティックのマウス化スケール、Bluetooth 出力レポートの CRC シード。その仮想キーボードのキーテーブルは PadForge のキーテーブルの手本になりました。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock の動作ドキュメント: アイドル切断、タッチパッドの境界、バッテリーのデコード、Bluetooth 切断の IOCTL、DualSense の振動モードビット、ジャイロのジッターカーブ、スティックのマウス化スケール、Bluetooth 出力レポートの CRC シード。その仮想キーボードのキーテーブルは PadForge のキーテーブルの手本になりました。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl を裏付ける GIP LED コマンドのドキュメント。GPL-2.0-or-later、ドキュメントのみ。</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl を裏付ける GIP LED コマンドのドキュメント。ドキュメントのみ。</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR カメラとバランスボードの動作ドキュメント。Brian Peek 製。MIT。</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR カメラとバランスボードの動作ドキュメント。Brian Peek 製。</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD 振動のワイヤーフォーマットのドキュメント。Sergey004 製。プロトコルの事実確認のためにのみ参照。</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>スロット</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>停止中</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、その生入力を確認できます。</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>デバイスを選択すると、設定を確認して入力をテストできます。</value></data>
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>利用できる Bluetooth アダプターがありません。Bluetooth をオンにしてやり直してください。ペアリングはワイヤレス接続にのみ必要で、ケーブル接続なら不要です。</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>ペアリングは完了しませんでした。失敗した手順は上に表示されています。</value></data>
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation コントローラー用の Bluetooth ドライバーをインストールできませんでした。</value></data>
@@ -3184,12 +3347,7 @@
   <data name="Ds3Pair_Success" xml:space="preserve"><value>準備完了です。ケーブルを抜き、PS ボタンを押してください。デバイス一覧に表示されます。</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>コントローラーを設定中です。USB 接続のままにしてください。</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>鍛造中</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>ツアーを開始</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>コントローラーを接続して出力タイプを選ぶと、PadForge が入力をその形へ鍛え上げます。各機能の場所は、短いツアーでご案内します。</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>完了</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>次へ</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>スキップ</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>炉に火を入れる</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>稼働中: {0} / {1}</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>出力</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>リストでマクロを選択するか、「マクロ」の横の + を押して新規作成してください。</value></data>
@@ -3197,6 +3355,7 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>入力元</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>デバイスを追加</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>低下</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>画像</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>リスト</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} 個の出力</value></data>
@@ -3234,6 +3393,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>プレビュー</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>追加機能</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>オプション機能です。オンにするまで邪魔になりません。</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{1} 件中 {0} 件がオン</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>さまざまな遊び方</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>ほかの場所へ送る</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>画面表示</value></data>
@@ -3241,29 +3401,63 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>ヘッドトラッカーや VR ヘッドセットで見回します。</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>ドライビングゲームの速度、ペダル、ギアをマッピングします。</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>視聴者がチャットに入力してボタンを押せるようにします。</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>別の PC の PadForge とコントローラーを共有します。</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>別の PC の仮想コントローラーを操作します。</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>コントローラーのモーションをエミュレーターに送ります。</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>ゲーム MOD からトリガーとライトのエフェクトを受け取ります。</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>プレイ中にメニュー、レイヤー、プロファイルの切り替えを表示します。</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation のタッチパッドを使うゲーム向けの画面上タッチサーフェスです。</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation のタッチパッドゲーム向けの画面上タッチサーフェスです。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>他のウィンドウの前面に画像、タイマー、時計を表示します。</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>ポート、暗号化なしの HTTP アドレス、アクセス コード</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>再接続、ポート、アイデンティティ保護、アドレスを指定して接続</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR ランタイム、UDP ポート、軸ごとの範囲</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>ポート、暗号化なしの HTTP、アクセス コード</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動再接続、ポート、ペアリング ID、アドレスを指定して接続</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ポート、DSX.exe の代替プログラム</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ポート、最高速度、カスタム形式</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ポート、「最高速度」、「カスタム形式」</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ヘッドトラッカーや VR ヘッドセットで周囲を見回しながら、両手の親指はボタンに置いたままにできます。</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>運転ゲームが送る速度、ペダル、ギアを、ほかの入力と同じように割り当てます。</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU モーションソースを読み取るエミュレーターに、コントローラーのモーションを送ります。</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX 向けに作られたゲーム MOD から、アダプティブトリガーとライトのエフェクトを受け取ります。</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ゲーム側でテレメトリー出力をオンにし、この PC とポートを送信先に指定してください。</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>エミュレーター側で、この PC のアドレスとこのポートを指定してモーションソースを追加してください。</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>MOD のエフェクトは、対応するハードウェアを持つすべてのコントローラーに届きます。</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭の姿勢は、[デバイス]の「ヘッド トラッカー」行です。コントローラーのボタンセクションで、頭のヨーをスティック軸に割り当てます。</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>値は、[デバイス]の「ゲームテレメトリー」行です。コントローラーのボタンセクションで割り当てるか、マクロのトリガーに使います。</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>メニューの位置、サイズ、不透明度は、コントローラーの[マクロとメニュー]セクションで、メニューごとに設定します。</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>入力元</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack と、その UDP 形式を送信するすべてのもの</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>可動範囲</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>軸ごとの範囲。0 にすると上の範囲に従います。</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge が知らないゲーム</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>送信前に DSX の実行を確認する MOD 向け</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>表示する内容</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>メニューを開いている間のリング、グリッド、バー</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>シフトレイヤーを押している間のレイヤー名</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>プロファイルが切り替わったときのプロファイル名</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>アドレスをコピー</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>画面上の位置</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>スマートフォンを接続</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>スマートフォンをこの PC と同じネットワークに接続します。</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>スマートフォンのカメラでコードを読み取ります。</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>コントローラーのレイアウトを選びます。</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>スマートフォン</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>接続中のスマートフォンはありません。</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>接続したスマートフォンはこことデバイスページに表示され、そこでコントローラーに割り当てます。</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>あなたのチャンネル</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>視聴者が入力できる言葉</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>視聴者が !a のような言葉を入力すると、PadForge は、デバイスページの「Twitch チャット」行で !a に割り当てられた入力を押します。この行は、通常のデバイスと同様にコントローラーへ割り当ててください。</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>配信中の操作</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>配信用の画像</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>ペアリング済みの PC はありません。</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>別の PC をペアリング</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>近くにペアリングされていない PC はありません。</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>もう一方の PC の PadForge で Remote Link をオンにしてください。その PC がここに表示されたら、両方の画面で短いコードを照合します。</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>見た目と位置</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>マウスの右ボタンまたは 3 本指でドラッグすると移動できます。</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>オーバーレイ {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>表示内容</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ほかのプログラムが前面にある間は、クリックがオーバーレイを通り抜けます。PadForge が前面にある間は、マウスの右ボタンでドラッグして移動し、角でサイズを変更できます。マクロでは、番号を指定してオーバーレイを表示または非表示にできます。</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>マッピング注釈</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>ようこそツアーを表示</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>出力タイプを選び、スロットにデバイスを割り当て、カードをクリックしてマッピングを設定します。</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>スマホ用の Web コントローラー、Remote Link、モーションサーバーなど、オプション機能はここにあります。</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>仮想コントローラー</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>炉そのものです。炎を切り替えて、すべての入力ポーリングを開始・停止します。</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>入力エンジン</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>各仮想コントローラーはここにあります。炎は、今どのスロットが鍛造中かを示します。</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>スロット</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve の OpenVR クライアント API（BSD 3-Clause）。VR ヘッドセットとモーションコントローラーを入力ソースとして利用。ネイティブランタイムはお使いの SteamVR から読み込まれます。</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve の OpenVR クライアント API。VR ヘッドセットとモーションコントローラーを入力ソースとして利用。ネイティブランタイムはお使いの SteamVR から読み込まれます。</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>実行中</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>実行中、ドライバー接続済み</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>実行中、コントローラー動作中</value></data>
@@ -3512,6 +3706,8 @@
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam のサーバーに直接接続するのは、検索したとき、コンフィグを開いたとき、インポートしたコンフィグの更新を確認したときだけです。送信されるのは検索テキスト、関係するゲーム・コンフィグ・作成者の ID、PadForge のバージョンです。匿名の Steam ログオンでは、Windows のバージョンと、Windows のインストール ID、ネットワークアダプターのアドレス、起動ディスクのシリアル番号のハッシュから作られるマシン ID も送信されます。テレメトリーなし、サードパーティサービスなし、Steam アカウント不要です。</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge が Steam のサーバーに接続するのは、検索したとき、コンフィグを開いたとき、インポートしたコンフィグの更新を確認したときだけです。テレメトリーなし、Steam アカウント不要です。</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>送信される内容</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>レガシーワークショップコンフィグを表示</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>一部の古いコンフィグには Steam の CDN にダウンロード可能なファイルがありません。PadForge はレガシーバッジ付きで一覧に表示し、サブスクライブ後に Steam が保存するコピーを読み込みます。それまでは、Steam ワークショップでコンフィグを開くよう案内します。</value></data>
@@ -3519,18 +3715,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>インポート済みプロファイルの更新を確認</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>ワークショップキャッシュをクリアしました</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>プロファイル · Steam ワークショップ</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>プロファイルを入手</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>既製のプロファイル、コミュニティコンフィグ、ほかのツールのファイルから始められます。</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>スターター</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>コミュニティ</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>ファイルをインポート</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>保存すると、編集できる通常のプロファイルが追加されます。</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>炉は冷えています</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>コミュニティコンフィグの閲覧時のみ PadForge は Steam に直接接続します。検索したときだけで、起動時には接続しません。</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ゲームを検索</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} 件のゲーム</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>ゲーム</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam ストアでゲームが見つかりませんでした。</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam を検索しています…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>評価順</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>並べ替え</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>これらのコンフィグを検索</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>評価</value></data>
@@ -3544,7 +3743,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} 件中 {0} 件を表示</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>件のコミュニティコンフィグ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>フルコントローラーサポート</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分的なコントローラーサポート</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>ゲームを検索</value></data>
@@ -3563,8 +3761,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>再試行</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>この 2016 年前後のコンフィグは Steam のコンフィグ CDN より前のものです。Steam でサブスクライブすると、PadForge が Steam フォルダーから読み込みます。</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam ワークショップで開く</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選択すると変換マニフェストを読み込みます。</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} 件のバインドを読み込みました</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選ぶと、反映される内容を確認できます。</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>反映される内容</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>変換先</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>コンフィグのボタンとスティックを受け取る仮想コントローラーを選びます。キーとマウスは常に キーボード + マウス のコントローラーに送られます。</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>レイヤー</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>完全</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>部分</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>スキップ</value></data>
@@ -3613,14 +3814,14 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam ワークショップの更新を確認しています…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>インポート済みプロファイルは最新です ({0} 件確認)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>ワークショップの更新</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>これらのインポート済みプロファイルには Steam ワークショップに新しいバージョンがあります。「コミュニティコンフィグを閲覧」から再インポートすると変更を取り込めます。</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>これらのインポート済みプロファイルには Steam ワークショップに新しいバージョンがあります。「プロファイルを入手」からもう一度インポートすると変更を取り込めます。</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>匿名セッションで Steam ワークショップのコントローラーコンフィグを取得する Steam ネットワーククライアント。Ryan Stecker と SteamRE Team による。LGPL-2.1-or-later (license.txt)、LGPL-2.1-only (NuGet)。</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 が Steam の通信プロトコルに使用する Protocol Buffers シリアライザー。Marc Gravell による。Apache-2.0。</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 が Steam の通信プロトコルに使用する Protocol Buffers シリアライザー。Marc Gravell による。</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。MIT。</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(任意のデバイス)</value></data>
   <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (左半分)</value></data>
   <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (右半分)</value></data>
@@ -3900,7 +4101,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>オーバーレイ</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>プレイ中に PadForge が表示する画面インジケーター。オフにしても動作は変わらず、表示されるかどうかだけが変わります。</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>プレイ中に PadForge が表示する画面インジケーター。オフにしても動作は変わらず、画面に表示されるかどうかだけが変わります。</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>シフト レイヤー フライアウト</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>プロファイル切り替えオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
@@ -3950,6 +4151,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>このチャンネルのトーン周波数（20〜120 Hz）。周波数スイープでシェイカーが最も強く反応する所を探せます。</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>マスターゲイン前のこのチャンネルの音量です。</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>ゲイン</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>周波数</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>テスト</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>このチャンネルのトーンを設定ゲインで 1.5 秒再生します。</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>低周波モーターをリセット</value></data>
@@ -3992,18 +4194,18 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>タッチパッドからマウス出力用のポインター加速カーブ。libinput のタッチパッド加速プロファイルの C# 移植。MIT。</value>
+    <value>タッチパッドからマウス出力用のポインター加速カーブ。libinput のタッチパッド加速プロファイルの C# 移植。</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D コントローラーモデル (Xbox 360、Steam Deck) と 3D ビューのモデルおよびアニメーションのコード。CasperH2O、Lesueur Benjamin、trippyone による。Steam Deck のレポートと触覚のデコード、Steam Controller (2015) の電源オフレポート、監視するハンドヘルド常駐プロセスの一覧、アップデート確認のタイミング、そして隠した USB コントローラーを接続し直して先に開いていたプログラムから切り離すハブポートの再起動 (間隔 500 ms) の参照元でもあります。CC BY-NC-SA 4.0。</value>
+    <value>3D コントローラーモデル (Xbox 360、Steam Deck) と 3D ビューのモデルおよびアニメーションのコード。CasperH2O、Lesueur Benjamin、trippyone による。Steam Deck のレポートと触覚のデコード、Steam Controller (2015) の電源オフレポート、監視するハンドヘルド常駐プロセスの一覧、アップデート確認のタイミング、そして隠した USB コントローラーを接続し直して先に開いていたプログラムから切り離すハブポートの再起動 (間隔 500 ms) の参照元でもあります。</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D コントローラー図（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense）。作者: AL2009man。MIT。</value>
+    <value>2D コントローラー図（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense）。作者: AL2009man。</value>
   </data>
   <data name="About_ForgePlay" xml:space="preserve"><value>ForgePlay</value></data>
-  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch チャット行のコマンド文法とターン制ルール（C# に移植）、および Web コントローラーの WLG フィニッシュ。作者: Yuriy (KLAVIATURKIN)。ISC。</value></data>
+  <data name="About_ForgePlayDesc" xml:space="preserve"><value>Twitch チャット行のコマンド文法とターン制ルール（C# に移植）、および Web コントローラーの WLG フィニッシュ。作者: Yuriy (KLAVIATURKIN)。</value></data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。GPL-2.0、ドキュメントのみ。</value>
+    <value>DualShock 4 オーディオプロトコルの資料。SBC パラメーターとパケットレイアウト。作者: khallmark。ドキュメントのみ。</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>デスクトップ</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>ソファから Windows を操作します。カーソル、スクロール、トリガーでのクリック。</value></data>
@@ -4017,10 +4219,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>6 ボタン配置と、両軸でトーナメント準拠の SOCD クリーニング。</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>キーボード + マウス</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ゲームパッド</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>スタータープロファイルを見る</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>スタータープロファイル</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>ジャンルまるごとに対応する既製プロファイルです。1 つ選んで任意のコントローラーを割り当てれば使えます。保存すると編集可能な通常のプロファイルが追加されます。</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>プロファイルを保存</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>スタータープロファイル「{0}」を追加しました。</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>ポイントアンドクリック</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>アドベンチャーと、カーソルと 2 つの操作で進むゲーム向け。</value></data>
@@ -4120,13 +4318,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>出力パスをリセット</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>ヘッドホン端子に追従</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarzによるDualSense出力レポートのバイトマップとSony scePadセマンティクス。PadForgeのエフェクト・オーディオ処理の基礎。MIT。</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarzによるDualSense出力レポートのバイトマップとSony scePadセマンティクス。PadForgeのエフェクト・オーディオ処理の基礎。</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照。</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Web コントローラーのアドレス用のバイトモード QR エンコーダー。Nayuki のリファレンス実装からの移植。MIT。</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Web コントローラーのアドレス用のバイトモード QR エンコーダー。Nayuki のリファレンス実装からの移植。</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>キーボードとマウスのビジュアライゼーションのマウスアート。Igor Budzhak 作。MIT。</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>キーボードとマウスのビジュアライゼーションのマウスアート。Igor Budzhak 作。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>感圧レート</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>選択したアナログソースの押し込みの強さに連射レートが追従します。軽く押すと低速インターバル、深く押すと上のインターバルで連射し、その間は連続的に変化します。</value></data>
@@ -4142,10 +4340,9 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>コードで接続中…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>相手に直接接続できませんでした。VPN経由のアドレス接続をお試しください。</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>このPCのコード</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>相手とコードを交換します。相手のコードを自分の接続欄に貼り付け、相手もあなたのコードを貼り付けたら、両者が接続をクリックします。これでVPNなしにインターネット越しの直接経路が開きます。コードはRemote Linkの実行中に更新されます。</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>相手とコードを交換します。相手のコードを「その他」の「アドレスを指定して接続」に貼り付け、相手もあなたのコードを貼り付けたら、両者が「ペアリング / 接続」をクリックします。これで VPN なしにインターネット越しの直接経路が開きます。コードは Remote Link の実行中に更新されます。</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>このネットワークは直接接続に対応していません（モバイルホットスポットまたはキャリアグレードNATのようです）。Tailscaleなどの VPN を使うか、自宅の固定回線から接続してください。</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>このPCの公開アドレスが見つかりませんでした（必要な通信がブロックされている可能性があります）。ここでは直接接続はできません。VPN を使うか、同じネットワーク内でアドレス接続を使ってください。</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>スマートフォンのカメラで読み取るか、ブラウザーでこのアドレスを開きます:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>暗号化なしの HTTP アドレス</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>HTTPS を使わない 2 つ目のアドレスです。PadForge の証明書を受け付けないブラウザーや、独自の証明書を持つトンネルやリバース プロキシ向けです。スマートフォンのモーションには HTTPS が必要なため、このアドレスでは HTTPS を提供するトンネルやプロキシ経由でのみ機能します。</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>暗号化なしの HTTP も提供する</value></data>
@@ -4155,8 +4352,7 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>アクセス コード</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>暗号化なしのアドレスは、このコードがあるときだけ開きます。下のリンクにはコードが含まれています。新しいコードにすると、暗号化なしのアドレスで接続中の全員が切断されます。</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>新しいコード</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>この PC 上のアドレス:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>振動（クリックしてこのデバイスを識別）</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>このデバイスを振動させて、どれかを確認できます。</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>コントローラーのバッテリー残量低下</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: バッテリー残量 {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>バッテリー通知</value></data>
@@ -4165,8 +4361,10 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知するしきい値</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>コントローラーを振動させる</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>通知をテスト</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>通知を確認</value></data>
   <data name="Settings_BatteryNotifyRepeat" xml:space="preserve"><value>通知を繰り返す間隔</value></data>
   <data name="Settings_BatteryNotifyFull" xml:space="preserve"><value>充電完了時に通知</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>コントローラーを振動させる、通知を繰り返す間隔、充電完了時に通知</value></data>
   <data name="Battery_FullTitle" xml:space="preserve"><value>コントローラーの充電完了</value></data>
   <data name="Battery_FullText_Format" xml:space="preserve"><value>{0}: 充電完了</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>割り当ての提案</value></data>
@@ -4182,23 +4380,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>今はしない</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>すべてのフレーズ</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>音声マクロ</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>フレーズを話すと、割り当てられるボタンが押されます。PadForge が使えるすべてのマイクが聞き取ります。</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>音声マクロを管理</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>音声マクロを有効化</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>聴取をオンにします。有効な間、登録した各フレーズがボタンとして働き、発話すると発火します。認識モデルは PadForge に同梱されており、完全にオフラインで動作します。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>待ち受け</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>「常時」はマイクを開いたままにします。「プッシュトゥトーク」は、割り当てた聞き取りマクロを押している間だけ聞き取ります。</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>聞き取りのオン/オフ、モード、信頼度</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>常時</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>プッシュトゥトーク</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>最小信頼度</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>フレーズが作動するまでに認識エンジンへ求める確信度です。雑談でマクロが作動する場合は上げ、フレーズが拾われない場合は下げてください。</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>音声を待っています。認識結果は信頼度とともにここに表示されます。</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>「{0}」を認識（{1:F2}）。作動しました。</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>「{0}」を認識（{1:F2}）。最小信頼度未満か、送話キーが押されていません。</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>聞き取りはオフです。「その他」でオンにしてください。</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>{1} で「{0}」を認識</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>{1} で「{0}」を認識しましたが、信頼度のしきい値未満か、送話キーが押されていませんでした。</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>フレーズ</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>話すフレーズ</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>ボタン名</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>登録</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>登録済みフレーズ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>「{0}」を登録しました。発話するとボタンが作動します。マクロはパッドページで割り当ててください。</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>フレーズ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>「{0}」を登録しました。話すとそのボタンが押されます。割り当てはコントローラーのページで行います。</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>音声聞き取り（押下中）</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>音声マクロのプッシュトゥトーク：このマクロを押している間、認識エンジンが聞き取ります。「音声マクロを管理」で待ち受けを「プッシュトゥトーク」に設定してください。</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>マイク</value></data>
@@ -4206,12 +4409,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa の行の振動を支えるハプティクスエンジンと Razer プロバイダー。HAR.dll と Interhaptics.RazerProvider.dll は公開 Core SDK から無変更で PadForge に同梱されています。Wyvrn 製。Wyvrn EULA。</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa の行の振動を支えるハプティクスエンジンと Razer プロバイダー。HAR.dll と Interhaptics.RazerProvider.dll は公開 Core SDK から無変更で PadForge に同梱されています。Wyvrn 製。</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Valve が公開した STEP ファイルからメッシュ化した Steam Controller (2015) と Steam Controller (2026) の 3D モデル。Copyright Valve Corporation。CC BY-NC-SA 4.0。PadForge は Valve と提携しておらず、Valve の承認も受けていません。</value>
+    <value>Valve が公開した STEP ファイルからメッシュ化した Steam Controller (2015) と Steam Controller (2026) の 3D モデル。Copyright Valve Corporation。PadForge は Valve と提携しておらず、Valve の承認も受けていません。</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 runtime</value>
@@ -4228,7 +4431,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer ライティング向けの Razer Chroma REST API フレーミングの裏付け。Adam Hellberg と Brandon Scott による。MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer ライティング向けの Razer Chroma REST API フレーミングの裏付け。Adam Hellberg と Brandon Scott による。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK references</value>
   </data>
@@ -4237,19 +4440,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>ヘッドトラッキング用の UDP トラッカーデータグラムと FreeTrack 2.0 共有メモリのレイアウト。ISC。ドキュメントのみ参照、コードは同梱しません。</value>
+    <value>ヘッドトラッキング用の UDP トラッカーデータグラムと FreeTrack 2.0 共有メモリのレイアウト。ドキュメントのみ参照、コードは同梱しません。</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>ハンドヘルドの隠しボタン学習が購読する Lenovo WMI ユーティリティイベントクラスと、外部プロファイル制御を支える昇格 IPC サーバーのパターン。GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value>
+    <value>ハンドヘルドの隠しボタン学習が購読する Lenovo WMI ユーティリティイベントクラスと、外部プロファイル制御を支える昇格 IPC サーバーのパターン。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>隠しボタン学習のために照合したハンドヘルド PC の識別文字列とベンダーレポートのメモ。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value>
+    <value>隠しボタン学習のために照合したハンドヘルド PC の識別文字列とベンダーレポートのメモ。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook and WiimoteHook</value>
@@ -4264,13 +4467,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>従来の MIDI API を支える WinMM の呼び出し手順 (ポートを開く、ポートへ送る、ポートを閉じる)。PortMidi (MIT、Ross Bencina、Phil Burk、Roger B. Dannenberg 製) と RtMidi (MIT に準じた RtMidi ライセンス、Gary P. Scavone 製) から読み取りました。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK の参照元</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G キー入力を支えるイベントワードのレイアウトは、SDK の LogitechGkeyLib.h に基づきます。ライブラリの検索順序と終了処理は Mumble の GKey.cpp (BSD 3-Clause) に従います。PadForge はマシン上にあるライブラリを読み込み、Logitech のコードは同梱しません。</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G キー入力を支えるイベントワードのレイアウトは、SDK の LogitechGkeyLib.h に基づきます。ライブラリの検索順序と終了処理は Mumble の GKey.cpp に従います。PadForge はマシン上にあるライブラリを読み込み、Logitech のコードは同梱しません。</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup と AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>アナログキーボード入力は、HallJoy のキーボードルート、キー表、モデルカタログを C# に移植し（AGPL-3.0、PashOK7）、Soup と AnalogSense JavaScript SDK（MIT、Calamity, Inc.）に従い、Wooting Analog SDK（MPL-2.0）と照合しています。その他のキーボードは AnalogKeys（MIT、Nisayera）、KeyAxis（MIT、RigZeeel）、HallEffectAnalogMapper（MIT、Ricards Mironovs）、libhmk と hmkconf（GPL-3.0-or-later、peppapighs）、および DenkiSuki、LeiterConsulting、paysdelest による Soup のフォーク（MIT）に従っています。レポート形式とキー表は、Razer の Synapse Web と NuPhy の NuPhyIO の設定ソフト、OpenRazer（GPL-2.0-or-later）、Abbytech の razer-analog-keyboard、TinyUSB（MIT）、Sainan のキャプチャメモにも基づいています。</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box の参照元</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>「Bliss-Box アダプターを読み取る」の Bliss-Box API は、Bliss-Box LLC の API Tool（BSD 形式、再配布は無償）と DeviceBuddy（ソース公開、Bliss-Box LLC）から読み取り、ボタン名は SteveFox1620 による retroarch-joypad-autoconfig のフォークにある Bliss-Box 用ファイル、コントローラパックのチェックサムは libdragon（Unlicense）と照合し、PlayStation コントローラーの応答は psx-spx と Linux の psxpad-spi ドライバー（GPL-2.0-or-later）に基づいています。コントローラー名の一部と対応状況の注記は Bliss-Box LLC の互換性リストに基づき、アダプターの動作はそのファームウェアで確認しています。資料のみで、コードは同梱していません。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro の複合 USB コントローラー用の USB トランスポート (Vadym Hrynchyshyn 作)。HIDMaestro は署名済みのホストコントローラードライバーを自身で保持し、複合コントローラーを初めて作成するときにインストールします。BSD 2-Clause。</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro の複合 USB コントローラー用の USB トランスポート (Vadym Hrynchyshyn 作)。HIDMaestro は署名済みのホストコントローラードライバーを自身で保持し、複合コントローラーを初めて作成するときにインストールします。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>このスロットで有効にする面を選びます。無効にした面は行が非表示になり送信も止まりますが、割り当ては保持されるため再度有効にすると元に戻ります。</value>
   </data>
@@ -4338,13 +4541,15 @@
     <value>共有デバイスを割り当て</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} の割り当て</value>
+    <value>{0} と共有するデバイス</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>このPCが共有するデバイスを選択し、接続先PCの仮想コントローラーを選んでください。</value>
+    <value>デバイスを選び、そのデバイスで操作する相手の PC のコントローラーを選んでください。</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>この PC から共有</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} のコントローラー</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>プロファイル: {0}</value>
+    <value>使用中のプロファイル: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>接続先PCの Remote Link &gt; ペアリング済みPC で、このPCからのリモート割り当て変更を許可してください。</value>
@@ -4438,67 +4643,67 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS and CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll に含まれる音声デコーダー、トランスデューサー ライブラリ、線形代数ライブラリ。Kaldi と OpenFst は Apache-2.0。OpenBLAS と CLAPACK は BSD 3-Clause で、OpenBLAS に含まれる GotoBLAS2 と f2c ランタイムにはそれぞれ独自の告知があります。</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ストラテジーとデスクトップのスタータープロファイルの配置、および感圧ターボが避けるターボの挙動。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>ストラテジーとデスクトップのスタータープロファイルの配置、および感圧ターボが避けるターボの挙動。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows の文書化されていない IPolicyConfig インターフェイスのレイアウトに関する Antoine Aflalo のリファレンス。PadForge はこれを使ってコントローラーのオーディオエンドポイントを再度有効にします。MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows の文書化されていない IPolicyConfig インターフェイスのレイアウトに関する Antoine Aflalo のリファレンス。PadForge はこれを使ってコントローラーのオーディオエンドポイントを再度有効にします。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>コントローラーの「パラメトリック EQ」が読み込むパラメトリック EQ プロファイルの形式。Jaakko Pasanen 製。MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>コントローラーの「パラメトリック EQ」が読み込むパラメトリック EQ プロファイルの形式。Jaakko Pasanen 製。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>テキストブロックマクロとキーボードのコードフックを支える SendInput の手法。Unicode 入力、バッチ上限、Win キーのマスクキー、タグ付きの注入入力。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>テキストブロックマクロとキーボードのコードフックを支える SendInput の手法。Unicode 入力、バッチ上限、Win キーのマスクキー、タグ付きの注入入力。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>モーションサーバーを支える DSU プロトコルのリファレンス。v1993 製。Unlicense。</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>モーションサーバーを支える DSU プロトコルのリファレンス。v1993 製。</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 の Bluetooth 出力レポートのフレーミング。Christopher Rosell 製。MIT。</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 の Bluetooth 出力レポートのフレーミング。Christopher Rosell 製。</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 のバッテリー範囲、タッチパッドの触覚パルスのタイミングと強度段階、およびタッチパッドのフリック挙動。GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 のバッテリー範囲、タッチパッドの触覚パルスのタイミングと強度段階、およびタッチパッドのフリック挙動。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton のフォーク)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense オーディオの音量範囲、符号付き 8 ビットの触覚サンプル、および複合 Bluetooth トランスポートのレイアウト。GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense オーディオの音量範囲、符号付き 8 ビットの触覚サンプル、および複合 Bluetooth トランスポートのレイアウト。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense の Bluetooth オーディオバッファー長の既定値と下限。awalol 製。MIT。</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense の Bluetooth オーディオバッファー長の既定値と下限。awalol 製。</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>アダプティブトリガーの GameCube プリセットの値。Mxater 製。事実確認のためにのみ参照。</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU モーションの軸の符号。同プロジェクトの UDP デコーダーで照合。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU モーションの軸の符号。同プロジェクトの UDP デコーダーで照合。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>スタータープロファイル「宇宙シミュレーター」の元になった Elite Dangerous の既定プリセット。Richard Buckle 製。MIT。</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>スタータープロファイル「宇宙シミュレーター」の元になった Elite Dangerous の既定プリセット。Richard Buckle 製。</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii リモコンのスピーカーの ADPCM ニブル順序と、DualShock 4 エンコーダーの検証に使った SBC デコーダー。LGPL-2.1-or-later、ドキュメントとしてのみ参照、LGPL コードは同梱しません。</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii リモコンのスピーカーの ADPCM ニブル順序と、DualShock 4 エンコーダーの検証に使った SBC デコーダー。ドキュメントとしてのみ参照、LGPL コードは同梱しません。</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>コンパスによるヨーのための傾き補償済みコンパス方位。C# に移植。x-io Technologies 製。MIT。</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>コンパスによるヨーのための傾き補償済みコンパス方位。C# に移植。x-io Technologies 製。</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>低残量通知のルールと、識別用の振動パターン。Lukas Frühstück 製。MIT。</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>低残量通知のルールと、識別用の振動パターン。Lukas Frühstück 製。</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4、DualSense、DualSense Edge、Xbox Series、Switch 2 Pro コントローラーの 3D モデル。CGTrader で購入。CGTrader Royalty Free License。</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4、DualSense、DualSense Edge、Xbox Series、Switch 2 Pro コントローラーの 3D モデル。CGTrader で購入。</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 の 3D モデル。CGTrader で購入し、パーツごとのメッシュに分割。CGTrader Royalty Free License。</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 の 3D モデル。CGTrader で購入し、パーツごとのメッシュに分割。</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>同梱の SDL3.dll に組み込まれた HID レイヤー。Alan Ott（Signal 11 Software）製。BSD 系ライセンス。</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>同梱の SDL3.dll に組み込まれた HID レイヤー。Alan Ott（Signal 11 Software）製。</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>アイコンの出典</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>炎のグリフは Material Design Icons（Pictogrammers、Apache-2.0）、汎用ゲームパッドのアイコンは Ionicons（Ionic、MIT）、Extended のジョイスティックは Jam Icons（Michael Amprimo、MIT）、Xbox と PlayStation のアイコンは SVG Repo から。SVG Repo のアイコンは各ページに記載のライセンスに従います。</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Remote Link のフォールバック経路を支えるリレープロトコル。FlexInput と同じく n0.computer の無料公開リレーと通信します。iroh: MIT OR Apache-2.0。FlexInput: MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>マウス移動 X と Y を支える Joy-Con 2 の光学マウスカウンターとラップアラウンド差分。coffincolors、Frano、moutella 製。MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>マウス移動 X と Y を支える Joy-Con 2 の光学マウスカウンターとラップアラウンド差分。coffincolors、Frano、moutella 製。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux カーネルドライバー</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3、Move、DualSense、Steam Deck、PID フォースフィードバックのプロトコル仕様、および ACPI WMI ブロックのレイアウト。PadForge は hid-core の規則に従ってキーボードとマウスのディスクリプターを読み取ります。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3、Move、DualSense、Steam Deck、PID フォースフィードバックのプロトコル仕様、および ACPI WMI ブロックのレイアウト。PadForge は hid-core の規則に従ってキーボードとマウスのディスクリプターを読み取ります。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite のパドルを含む Windows のコントローラー入力。SDK ローダーは SDL にリンクされています。MIT（SDK ローダー）。</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Xbox Elite のパドルを含む Windows のコントローラー入力。SDK ローダーは SDL にリンクされています。</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll が必要とする C++ ランタイム（msvcp140.dll、vcruntime140.dll、x64 版では vcruntime140_1.dll も）を無変更で PadForge に同梱。Microsoft Visual Studio のライセンス条項。</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll が必要とする C++ ランタイム（msvcp140.dll、vcruntime140.dll、x64 版では vcruntime140_1.dll も）を無変更で PadForge に同梱。</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con と Pro コントローラーの HID、HD 振動、HOME ボタン LED に関するノート。dekuNukem 製。Switch 2 については ndeadly の switch2_controller_research。プロトコルの事実確認のためにのみ参照。</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
-  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge が直接駆動するライティングファミリーの検出ルール、レポートフレーム、LED テーブル、キーレイアウト（OpenRGB から移植および生成）と、DualSense と DualShock 4 のライトバーのバイト。 GPL-2.0-or-later.</value></data>
+  <data name="About_OpenRgbDesc" xml:space="preserve"><value>PadForge が直接駆動するライティングファミリーの検出ルール、レポートフレーム、LED テーブル、キーレイアウト（OpenRGB から移植および生成）と、DualSense と DualShock 4 のライトバーのバイト。</value></data>
   <data name="About_LightingRefs" xml:space="preserve"><value>ライティングの参考資料</value></data>
   <data name="About_LightingRefsDesc" xml:space="preserve"><value>ダイレクトライティングファミリーのレポートフレーム、キー名、プログラム名の参照元: SignalRGB plugins (facts only), qmk-plugins (GPL-2.0), SRGBmods plugins, uchroma (LGPL-3.0), Polychromatic (GPL-3.0), ckb-next (GPL-2.0), libratbag (MIT), tuxedo-drivers, vial-qmk (GPL-2.0-or-later), ite8291r3-ctl (GPL-2.0), libcmmk (LGPL-3.0), Eruption (GPL-3.0-or-later), roccat-vulcan-api-rs, cherryrgb-rs, node-lib (MIT), wooting-rgb-sdk, asusctl (MPL-2.0), g-helper, Lenovo Legion Toolkit, LenovoLegionToolkit-Team, L5P-Keyboard-RGB, OmenMon, Kaleidoscope, Dygmalab/Kaleidoscope, Bazecor, mouse_m908, Nexus-Manager (GPL-3.0), legion-spectrum-control, alienfx-tools, msi-perkeyrgb, Aurora, Colore, cooler_master_sdk, BlinkyTape_Arduino, LuxaforOnAir, elgatosf/cli, OpenRGB.NET, CSDK_ChromaModSample, WyvrnChroma, Annemone (MIT), blink1-tool (CC BY-SA 4.0), RGB.NET (LGPL-2.1), mystic-light-sdk, Blink1Control2 (Apache-2.0), python-elgato-streamdeck, stb_image_write, hidapi (BSD-3-Clause).</value></data>
   <data name="About_IcueSdk" xml:space="preserve"><value>iCUE SDK</value></data>
-  <data name="About_IcueSdkDesc" xml:space="preserve"><value>PadForge に同梱される Corsair のライブラリで、iCUE の実行中に Corsair デバイスを点灯します。Corsair の SDK 条件が適用されます。</value></data>
+  <data name="About_IcueSdkDesc" xml:space="preserve"><value>PadForge に同梱される Corsair のライブラリで、iCUE の実行中に Corsair デバイスを点灯します。</value></data>
   <data name="About_MysticLightSdk" xml:space="preserve"><value>Mystic Light SDK</value></data>
-  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>PadForge に同梱される MSI のライブラリで、Mystic Light の実行中に MSI デバイスを点灯します。MSI のダウンロードには条件の記載がありません。</value></data>
+  <data name="About_MysticLightSdkDesc" xml:space="preserve"><value>PadForge に同梱される MSI のライブラリで、Mystic Light の実行中に MSI デバイスを点灯します。</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>アプリ内アップデーターのヘルパーを支える、昇格した update 動詞のパターン。LGPL-3.0、ドキュメントとしてのみ参照、LGPL コードは同梱しません。</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>アプリ内アップデーターのヘルパーを支える、昇格した update 動詞のパターン。ドキュメントとしてのみ参照、LGPL コードは同梱しません。</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC タグ入力を支える WinSCard のシグネチャーとリーダー監視の呼び出し手順。Daniel Mueller 製。BSD 2-Clause。</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC タグ入力を支える WinSCard のシグネチャーとリーダー監視の呼び出し手順。Daniel Mueller 製。</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move のレポートレイアウト、センサーキャリブレーション、EXT アクセサリーのハンドシェイク。Thomas Perl 製。moveonpc wiki と照合。PadForge の実装は独自の C# です。BSD 2-Clause。</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>レーステレメトリーの参照元</value></data>
@@ -4506,23 +4711,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 の Bluetooth ペアリングとレポートに関するドキュメント。GPL-2.0 および GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Remote Link の NAT 越えを支える STUN メッセージのレイアウトと XOR-MAPPED-ADDRESS のデコード。C# ソースから取り込み。Aaron Clauson 製。BSD 3-Clause（ライセンス第 2 節の使用制限付き）。</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Remote Link の NAT 越えを支える STUN メッセージのレイアウトと XOR-MAPPED-ADDRESS のデコード。C# ソースから取り込み。Aaron Clauson 製。そのライセンスは第 2 節で使用制限を加えています。</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse の参照元</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion のレポートレイアウト、デバイス一覧、軸スケール。hid.spacemouse (MIT)、PySpaceMouse (MIT)、AndunHH の spacemouse (CC BY-NC-SA 4.0)、spacenavd (GPL-3.0-or-later) から読み取り。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>ホスト IOCTL による Bluetooth リンクの切断、XInput の非公開の電源オフおよび機能取得の序数、DualSense のトリガー振動の既定値。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>ホスト IOCTL による Bluetooth リンクの切断、XInput の非公開の電源オフおよび機能取得の序数、DualSense のトリガー振動の既定値。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller プロトコルの参照元</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>スワイプハプティクスのティック、レポート 0x42 のボタンビット、電源オフコマンド、ドングルのリレー。OpenPuck (AGPL-3.0)、sc2-research (MIT)、steam_controller_tools (GPL-2.0)、SteamlessController (MIT) から読み取り。ドキュメントのみ参照、GPL および AGPL のコードは同梱しません。</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>6 種類のデッドゾーン形状。Minimuino 製。GFDL-1.3-or-later および GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii リモコンの IR ポインターの挙動。点ペアの中点、マージン、センサーバーのオフセット、スムージング、FPSマウスのカーブ。Ryochan7、Suegrini、Trihy のフォークも参照。GPL-3.0、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii リモコンの IR ポインターの挙動。点ペアの中点、マージン、センサーバーのオフセット、スムージング、FPSマウスのカーブ。Ryochan7、Suegrini、Trihy のフォークも参照。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense のアダプティブトリガー効果のレイアウトとゾーンのパッキング。C# で再現。John "Nielk1" Klein 製。MIT。</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense のアダプティブトリガー効果のレイアウトとゾーンのパッキング。C# で再現。John "Nielk1" Klein 製。</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>仮想 DualShock 4 の入力レポートを支える DS4_REPORT_EX のレイアウト。Benjamin Höglinger-Stelzer 製。MIT。</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>仮想 DualShock 4 の入力レポートを支える DS4_REPORT_EX のレイアウト。Benjamin Höglinger-Stelzer 製。</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton のフォーク)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>仮想 DualSense マイクの 48 dB の減衰範囲。GPL-3.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>仮想 DualSense マイクの 48 dB の減衰範囲。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>ステアリングホイールのプロトコルの参照元</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec、Thrustmaster、Logitech のホイール向けのネイティブなフォースフィードバックと RPM シフト LED のレポート。hid-fanatecff (GPL-2.0)、hid-tmff2 (GPL-2.0-or-later)、new-lg4ff (GPL-2.0-or-later)、oversteer (GPL-3.0)、thrustmaster-led-linux (GPL-3.0) から読み取り、prodigal.knight の SimHub LED プラグイン (MIT) と tm-bt-led (MIT) で照合。ドキュメントのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>アーケード I/O の参照元</value></data>
@@ -4552,37 +4757,37 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox コントローラーの参照元</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL フォークの初代 Xbox、Steel Battalion、Xbox 360 チャットパッド、Xbox 360 uDraw 用ドライバーと、PadForge が Windows 標準ドライバーに割り当てる Xbox 360 受信機の背後にあるプロトコル。brandonw.net、Chatpad Super Driver (MIT)、Cxbx-Reloaded (GPL-2.0-or-later)、ITO Takayuki の euc.jp、JoypadOS (Apache-2.0)、libSteelBattalion、libsteelbat、Linux (GPL-2.0-or-later)、ogx360 (GPL-3.0-or-later)、s-config.com、SBC (MIT)、Spivey's Corner、steel-battalion-net (LGPL-3.0)、SteelBattalionController (Apache-2.0)、SteelBattalionDriver (GPL-3.0)、SteelBattalionMapper (GPL-3.0-or-later)、tusb_xinput (MIT)、uDrawTablet、Xb2XInput (GPL-3.0)、xb360ChatpadToKM (GPL-3.0)、xbox360wirelesschatpad、xboxdevwiki、xboxdrv (GPL-3.0-or-later)、xemu (LGPL-2.0-or-later) から読み取り。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>WinUSB の自動割り当ての背後にある、デバイスごとに 1 つの INF を作るパッケージ方式とデバイス列挙。Pete Batard 製。ドキュメントのみ参照、コードは同梱しません。LGPL-3.0-or-later。</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>WinUSB の自動割り当ての背後にある、デバイスごとに 1 つの INF を作るパッケージ方式とデバイス列挙。Pete Batard 製。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge が PS Move のアクセサリーを識別するために送る Bluetooth HID フィーチャーレポート要求。Ricardo Quesada 製。ドキュメントのみ参照、コードは同梱しません。Apache-2.0。</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge が PS Move のアクセサリーを識別するために送る Bluetooth HID フィーチャーレポート要求。Ricardo Quesada 製。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL フォークの Windows Mixed Reality 設定キーは Monado 由来。Copyright 2021 Jan Schmidt。SDL3.dll に同梱。BSL-1.0。</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL フォークの Windows Mixed Reality 設定キーは Monado 由来。Copyright 2021 Jan Schmidt。SDL3.dll に同梱。</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL フォークの Rift DK1 センサーフュージョンは OpenHMD からの移植。Copyright 2013 Fredrik Hultin, Jakob Bornecrantz。SDL3.dll に同梱。BSL-1.0。</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL フォークの Rift DK1 センサーフュージョンは OpenHMD からの移植。Copyright 2013 Fredrik Hultin, Jakob Bornecrantz。SDL3.dll に同梱。</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii リモコンのスピーカープロトコルと IR キャリブレーションのドキュメント。プロトコルの事実確認のためにのみ参照。</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox インパルストリガーの 9 バイトのレポートとその書き込み経路。araghon007 製。MIT。</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox インパルストリガーの 9 バイトのレポートとその書き込み経路。araghon007 製。</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 の触覚 PCM 形式 (符号付き 16 ビット、3 kHz)。Bluetooth 触覚の符号付き 8 ビット エンコードを確定させました。AGPL-3.0、ドキュメントとしてのみ参照、AGPL コードは同梱しません。</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 の触覚 PCM 形式 (符号付き 16 ビット、3 kHz)。Bluetooth 触覚の符号付き 8 ビット エンコードを確定させました。ドキュメントとしてのみ参照、AGPL コードは同梱しません。</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>DSX ゲーム MOD の参照元</value></data>
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>ゲーム MOD を支える UDP の命令、応答、ポートファイル、トリガーエフェクトのバイト列は、Paliverse の公式 DSX v3.1 と DualSenseX v2 の MOD サンプル、DualSenseY の両バージョンと DualSense4Rockstar (ライセンス未公開)、DSZ と pydualsense (MIT)、Wujek Dualsense API と hbashton の DS4Windows フォークにある DSX サーバー (GPL-3.0) から読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>DualShock 4 ヘッドセットの参照元</value></data>
   <data name="About_Ds4HeadsetRefsDesc" xml:space="preserve"><value>DualShock 4 の Bluetooth オーディオを支えるヘッドホンとスピーカーのルーティング、音量の上限、マイクのフレーミング、レポートモードは、DS4-Sound-Link (MIT)、ds4mac (GPL-2.0)、ds4drv (MIT)、hbashton の DS4Windows フォーク (GPL-3.0) から読み取り、SBC デコーダーの合成ウィンドウは Google の libsbc (Apache-2.0) と照合し、第2モデルと Sony のアダプターの USB ヘッドセットは DJm00n の ControllersInfo のディスクリプターダンプ (ライセンス未公開) と linux-hardware.org の LsUSB プローブ (CC BY 4.0) から読み取りました。有線接続の DualShock 4 のスピーカー経路は Controllers Wiki (CC BY-SA) と mihaits の NFSU2-SplitScreen (MIT) によります。資料のみで、コードは同梱していません。</value></data>
   <data name="About_TwitchChatRefs" xml:space="preserve"><value>Twitch チャットの参照元</value></data>
-  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>サインインせずにチャットを読み取る方法と ! コマンドの規則は tmi.js (MIT) と ComfyJS (MIT) から、最新の 20 件のコマンドだけを保持する方法は DougDoug の TwitchPlays (MIT) テンプレートから読み取りました。資料のみで、コードは同梱していません。</value></data>
+  <data name="About_TwitchChatRefsDesc" xml:space="preserve"><value>サインインせずにチャットを読み取る方法と ! コマンドの規則は tmi.js と ComfyJS から、最新の 20 件のコマンドだけを保持する方法は DougDoug の TwitchPlays テンプレートから読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_KeyboardScreenRefs" xml:space="preserve"><value>キーボード画面の参照元</value></data>
   <data name="About_KeyboardScreenRefsDesc" xml:space="preserve"><value>キーボード画面を支えるライブラリ、フレーム、キーは、Logitech の LCD SDK と Arx Control SDK、Mad Catz の S.T.R.I.K.E. 7 SDK から読み取り、logitech-lcd (MIT または Apache-2.0)、dcspy (MIT)、foo_logitech_lcd (LGPL-2.1)、LogitechStuff と ArxWidgetManager (ライセンス未公開)、Linux の hid-lg-g15 ドライバー (GPL-2.0-or-later)、libg15、G15Interface、lcdproc (GPL-2.0)、gnome15 (GPL-3.0)、G19USB (Apache-2.0) と照合しました。PadForge は Logitech Gaming Software のライブラリと、ダウンロードまたは選択した Strike7API.dll を読み込み、これらのコードは一切同梱しません。</value></data>
   <data name="About_FalconRefs" xml:space="preserve"><value>Novint Falcon の参照元</value></data>
   <data name="About_FalconRefsDesc" xml:space="preserve"><value>Novint Falcon 対応を支えるライブラリ呼び出し、操作感、ゲームフォースは、Force Dimension の SDK ヘッダー、ドキュメント、サンプルから読み取り、ジョイスティックの操作感は FalconJoystick、エイムの操作感とランブルは FalconJoyForce (どちらも Cyclops-11B 作、ライセンス未公開) から取り、CHAI3D (BSD 3-Clause) と libnifalcon (BSD) と照合しました。PadForge はお使いの環境にインストールされた Force Dimension のライブラリを読み込みます。そのライセンスには再配布の権利がないためで、これらのコードは一切同梱しません。</value></data>
   <data name="About_DualSenseWindows" xml:space="preserve"><value>DualSense-Windows</value></data>
-  <data name="About_DualSenseWindowsDesc" xml:space="preserve"><value>Ludwig Füchsl による、DualSense のプレイヤーライトにバッテリー残量を表示するためのプレイヤーライトのビット順序。MIT。資料のみで、コードは同梱していません。</value></data>
+  <data name="About_DualSenseWindowsDesc" xml:space="preserve"><value>Ludwig Füchsl による、DualSense のプレイヤーライトにバッテリー残量を表示するためのプレイヤーライトのビット順序。資料のみで、コードは同梱していません。</value></data>
   <data name="About_Kodi" xml:space="preserve"><value>Kodi</value></data>
-  <data name="About_KodiDesc" xml:space="preserve"><value>ジョイスティックのキーマップにある全画面ビデオの操作。メディアリモコンのスタータープロファイルの基になっています。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_KodiDesc" xml:space="preserve"><value>ジョイスティックのキーマップにある全画面ビデオの操作。メディアリモコンのスタータープロファイルの基になっています。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_MenuRefs" xml:space="preserve"><value>メニューの参照元</value></data>
   <data name="About_MenuRefsDesc" xml:space="preserve"><value>スクリーンキーボードのホイールレイアウトと最初の3つの文字セットは daisywheeljs (MIT) から、ラジアルメニューの選択を開始および解除するスティックの傾きは sc-controller (GPL-2.0) から。GPL コードは同梱しません。</value></data>
   <data name="About_ObsBrowser" xml:space="preserve"><value>obs-browser</value></data>
-  <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS のブラウザーは信頼しない証明書のページを取り消すため、OBS ブラウザーソース用のコントローラー画像ページは通常のアドレスで配信されます。GPL-2.0-or-later、ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
+  <data name="About_ObsBrowserDesc" xml:space="preserve"><value>OBS のブラウザーは信頼しない証明書のページを取り消すため、OBS ブラウザーソース用のコントローラー画像ページは通常のアドレスで配信されます。ドキュメントとしてのみ参照、GPL コードは同梱しません。</value></data>
   <data name="About_ProfileImportRefs" xml:space="preserve"><value>プロファイルインポートの参照元</value></data>
   <data name="About_ProfileImportRefsDesc" xml:space="preserve"><value>reWASD のプロファイル形式は hcn1z1 の shunt スキーマダンプ (MIT)、DatMoshu の reWASD-Powertools ドキュメント (MIT)、reWASD のヘルプから、DS4Windows のプロファイル形式は Schmaldeo の DS4Windows フォーク (GPL-3.0-or-later) から読み取りました。資料のみで、コードは同梱していません。</value></data>
   <data name="About_ScreenColorRefs" xml:space="preserve"><value>画面の色の参照元</value></data>
@@ -4654,6 +4859,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>パン</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>パン X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>パン Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>表示する内容を選びます。保存するまで何も変わりません。</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} を {1} に設定しました。</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz の S.T.R.I.K.E. 7 SDK をダウンロードしています…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 は {0} を読み込むようになりました。</value></data>
@@ -4787,7 +4993,7 @@
   <data name="Dashboard_GameTelemetryFooter" xml:space="preserve"><value>各ゲームでテレメトリー出力をオンにし、この PC とこのポートを指定してください。F1、Codemasters のゲーム、EA SPORTS WRC は変更しない限り 20777、Project CARS 2 と Automobilista 2 は常に 5606、MrHokss 氏のトラックシミュレーター用プラグインは 49001 を使います。Assetto Corsa と ACC にポートは不要です。</value></data>
   <data name="TwitchChat_AnyCommand" xml:space="preserve"><value>任意のコマンド</value></data>
   <data name="Dashboard_TwitchChat" xml:space="preserve"><value>Twitch チャット</value></data>
-  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>配信を見ている人が、チャットに入力してプレイできるようにします。視聴者が !a のようなコマンドを入力すると、PadForge は、デバイスページの「Twitch チャット」行で !a に割り当てられた入力を押します。この行は、通常のコントローラーと同様にスロットへ割り当ててください。PadForge はサインインせずにチャットを読み取り、チャットに投稿することはありません。</value></data>
+  <data name="Dashboard_TwitchChatDescription" xml:space="preserve"><value>配信を見ている人が、チャットに入力してプレイできるようにします。PadForge はサインインせずにチャットを読み取り、チャットに投稿することはありません。</value></data>
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Twitch チャットを読み取る</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>チャンネル</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>チャンネル名、または twitch.tv のアドレスを入力します。</value></data>
@@ -4811,13 +5017,15 @@
   <data name="TwitchChat_Status_Retrying_Format" xml:space="preserve"><value>{0} のチャットに接続できませんでした。再試行しています。</value></data>
   <data name="TwitchChat_Status_NoChat_Format" xml:space="preserve"><value>Twitch に {0} のチャットはありません。チャンネル名を確認してください。</value></data>
   <data name="TwitchChat_Status_Paused" xml:space="preserve"><value>一時停止中です。</value></data>
-  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>配信用のコントローラー画像です。次のアドレスを OBS のブラウザーソースに追加してください:</value></data>
-  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>配信用のコントローラー画像には、Web コントローラーと暗号化なしの HTTP アドレスが必要です。Web コントローラーのカードで「暗号化なしの HTTP も提供する」をオンにしてください。この PC 上の OBS で使うなら「この PC のみ」で足ります。</value></data>
-  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>視聴者は !claim で順番に操作でき、承認は上の設定に従います。!skip でコマンドをスキップするには、視聴者 2 人またはモデレーター 1 人が必要です。待機列に残るのは最新の 20 件のみで、1 つのコマンドの実行は最長 10 秒です。</value></data>
+  <data name="Dashboard_TwitchChatDisplay" xml:space="preserve"><value>このアドレスを OBS のブラウザーソースに追加してください。</value></data>
+  <data name="Dashboard_TwitchChatDisplayOff" xml:space="preserve"><value>画像には、Web コントローラーと暗号化なしの HTTP アドレスが必要です。Web コントローラーのページの「その他」で、「暗号化なしの HTTP も提供する」をオンにしてください。この PC 上の OBS で使うなら「この PC のみ」で足ります。</value></data>
+  <data name="Dashboard_TwitchChatFooter" xml:space="preserve"><value>視聴者は !claim で順番に操作し、!skip でコマンドをスキップできます。待機列に残るのは最新の 20 件で、1 つのコマンドの実行は最長 10 秒です。</value></data>
   <data name="TwitchChat_ManageButton" xml:space="preserve"><value>チャットコマンドを管理</value></data>
   <data name="TwitchChat_DialogTitle" xml:space="preserve"><value>チャットコマンド</value></data>
+  <data name="TwitchChat_DialogSubtitle" xml:space="preserve"><value>それぞれの言葉は、Twitch チャット行のボタンです。視聴者は先頭に感嘆符を付けて入力します。</value></data>
   <data name="TwitchChat_DialogHint" xml:space="preserve"><value>視聴者は配信のチャットに ! と単語を入力します (例: !jump)。各単語は Twitch チャット行のボタンで、通常の入力と同様にマッピングします。!a500ms は A を 500 ms 押し続け、!a+b は両方を同時に押し、!a b は順番に押します。</value></data>
   <data name="TwitchChat_WordLabel" xml:space="preserve"><value>単語</value></data>
+  <data name="TwitchChat_WordPlaceholder" xml:space="preserve"><value>ジャンプ</value></data>
   <data name="TwitchChat_AddButton" xml:space="preserve"><value>追加</value></data>
   <data name="TwitchChat_ListHeader" xml:space="preserve"><value>単語</value></data>
   <data name="TwitchChat_RestoreButton" xml:space="preserve"><value>標準の単語を復元</value></data>
@@ -4845,8 +5053,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>共有メモリーから {0} を読み取り中です。</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Assetto Corsa または Assetto Corsa Competizione を待っています。</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>ポート {0} に転送中です。</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>カスタムテレメトリー形式</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>ゲームが送信するパケットをフィールドごとに記述すると、PadForge がそのゲームも読み取れるようになります。各変数は、ゲームテレメトリー行の軸と、カスタム式トリガーのチャンネルになります。ゲームの一覧で名前を選ぶか、長さまたはキーを設定して自動検出で見つかるようにしてください。</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>カスタム形式</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>PadForge が知らないゲームのテレメトリーパケットを記述します。</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>形式を追加</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>形式 {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>名前</value></data>
@@ -4857,12 +5065,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>ちょうどこのバイト数のパケットだけが、この形式で読み取られます。0 の場合はどのパケットも読み取られ、自動検出はこの形式を対象にしないため、名前で選んでください。</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>必須キー</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>このキーを含む JSON パケットだけが、この形式で読み取られます。空欄の場合はどのパケットも読み取られ、自動検出はこの形式を対象にしないため、名前で選んでください。</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>バイトオーダー</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>リトルエンディアンは、各数値の最下位バイトを先に置きます。PC のゲームではほぼ常にこの順序です。ビッグエンディアンは、最上位バイトを先に置きます。</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>リトルエンディアン</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>ビッグエンディアン</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>パケットは、各数値を最上位バイトから順に書き込みます。PC のゲームはほとんどの場合、最下位バイトから書き込みます。</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>ギアの値</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>ギアのフィールドが、Forza の 0 と 11 のように、リバースとニュートラルに独自の数値を使います。オフの場合、負のギアはリバース、0 はニュートラルです。</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>リバース</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>ニュートラル</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON パケット用の必須キー、ギアの値</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>フィールド</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>各フィールドは、オフセットの位置にある数値 (JSON ではキーの下にある数値。ドットで入れ子のオブジェクトに入れます) を読み取り、スケールを掛けます。スケール適用後、速度は km/h、ペダルは 0 から 1、ステアリングは左いっぱいの -1 から右いっぱいの 1 になります。変数の軸は、静止時の最小値から最大時の最大値までを動きます。</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>読み取り先</value></data>
@@ -4973,7 +5184,7 @@
   <data name="Pad_Lighting_KeyColors_OtherGroup" xml:space="preserve"><value>その他</value></data>
   <data name="Pad_Lighting_KeyColors_LightOrder_Format" xml:space="preserve"><value>{0}、{1}番目</value></data>
   <data name="Dashboard_ScreenOverlay" xml:space="preserve"><value>画面オーバーレイ</value></data>
-  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>画像、タイマー、時刻、またはライトバーの色を他のウィンドウの前面に表示します。キーボード画面は不要です。他のプログラムが前面にある間は、クリックが通り抜けます。PadForge が前面にある間は、マウスの右ボタンでドラッグして移動し、角でサイズを変更できます。</value></data>
+  <data name="Dashboard_ScreenOverlayDescription" xml:space="preserve"><value>画像、タイマー、時刻、またはライトバーの色を他のウィンドウの前面に表示します。キーボード画面は不要です。</value></data>
   <data name="Dashboard_EnableScreenOverlay" xml:space="preserve"><value>画面オーバーレイを有効にする</value></data>
   <data name="Dashboard_ScreenOverlayChoose" xml:space="preserve"><value>表示内容を選択…</value></data>
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 画面オーバーレイ</value></data>
@@ -5001,9 +5212,12 @@
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>画面オーバーレイ {0} の切り替え</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} の画像を表示: {1} × {2} ms、次の表示またはモードのマクロまで</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>プロファイルをインポート</value></data>
-  <data name="Import_Source_Format" xml:space="preserve"><value>{0}、{1}ファイル</value></data>
-  <data name="Import_ProfileName_Format" xml:space="preserve"><value>プロファイル「{0}」として追加されます。</value></data>
+  <data name="Import_Source_Format" xml:space="preserve"><value>{0} は {1} のファイルです。</value></data>
+  <data name="Import_ProfileName_Format" xml:space="preserve"><value>プロファイル名は {0} になります。</value></data>
   <data name="Import_Confirm" xml:space="preserve"><value>インポート</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>要確認</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>問題なくインポート</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}。{1}</value></data>
   <data name="Import_NothingToImport" xml:space="preserve"><value>このファイルには、PadForgeで使えるマッピングがありません。</value></data>
   <data name="Import_NoteController" xml:space="preserve"><value>このプロファイルを読み込んだら、デバイスページでコントローラーをスロットに割り当ててください。</value></data>
   <data name="Import_NoteAssignsOne_Format" xml:space="preserve"><value>読み込み時に、{0}をスロットに割り当てます。</value></data>

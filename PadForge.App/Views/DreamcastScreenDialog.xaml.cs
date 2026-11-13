@@ -14,7 +14,7 @@ namespace PadForge.Views
     /// The preview is drawn from the same composition the screen service
     /// writes, so it shows what the chosen mode puts on the VMU.
     /// </summary>
-    public partial class DreamcastScreenDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class DreamcastScreenDialog : DialogWindow
     {
         private readonly DreamcastScreenService _service;
         private readonly BlissBoxPort _port;
@@ -26,10 +26,9 @@ namespace PadForge.Views
         private bool _saved;
 
         private DreamcastScreenDialog(DreamcastScreenService service, BlissBoxPort port, BlissBoxPortData current,
-            string profileName, string profilePicture, string detail)
+            string profileName, string profilePicture)
         {
             InitializeComponent();
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             _service = service;
             _port = port;
             _profileName = profileName ?? string.Empty;
@@ -39,8 +38,6 @@ namespace PadForge.Views
             _profilePicture = profilePicture;
 
             var s = Strings.Instance;
-            Title = s.DreamcastScreen_Title;
-            DetailText.Text = detail ?? string.Empty;
             // A long profile name is cut short in the button and read whole
             // in its tooltip.
             string choose = string.Format(System.Globalization.CultureInfo.CurrentCulture,
@@ -58,9 +55,9 @@ namespace PadForge.Views
         public sealed record Result(DreamcastScreenMode Mode, string Picture, string ProfilePicture);
 
         internal static Result Show(Window owner, DreamcastScreenService service, BlissBoxPort port,
-            BlissBoxPortData current, string profileName, string profilePicture, string detail)
+            BlissBoxPortData current, string profileName, string profilePicture)
         {
-            var dialog = new DreamcastScreenDialog(service, port, current, profileName, profilePicture, detail);
+            var dialog = new DreamcastScreenDialog(service, port, current, profileName, profilePicture);
             if (owner != null) dialog.Owner = owner;
             else dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
@@ -109,9 +106,9 @@ namespace PadForge.Views
         private void Refresh()
         {
             HintText.Text = ModeHint(_mode);
-            ChoosePictureButton.Visibility = _mode == DreamcastScreenMode.Picture ? Visibility.Visible : Visibility.Collapsed;
+            PictureRow.Visibility = _mode == DreamcastScreenMode.Picture ? Visibility.Visible : Visibility.Collapsed;
             bool profile = _mode == DreamcastScreenMode.ProfilePicture;
-            ChooseProfilePictureButton.Visibility = profile ? Visibility.Visible : Visibility.Collapsed;
+            ProfilePicturePanel.Visibility = profile ? Visibility.Visible : Visibility.Collapsed;
             RemoveProfilePictureButton.Visibility = profile && !string.IsNullOrEmpty(_profilePicture)
                 ? Visibility.Visible : Visibility.Collapsed;
 

@@ -49,7 +49,7 @@ namespace PadForge.Tests
             {
                 CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(tag);
                 var expected = (names.Length == 0 ? Array.Empty<string>() : names.Split(',')).Append("english");
-                Assert.Equal(expected, WorkshopBrowseDialog.PreferredConfigLanguages());
+                Assert.Equal(expected, CommunityConfigsPanel.PreferredConfigLanguages());
             }
             finally
             {
@@ -63,12 +63,12 @@ namespace PadForge.Tests
         [Fact]
         public void EverySteamLanguageIsReachedFromItsRow()
         {
-            foreach (var entry in WorkshopBrowseDialog.SteamLanguageNames)
+            foreach (var entry in CommunityConfigsPanel.SteamLanguageNames)
             {
                 Assert.True(LanguageCatalog.Find(entry.Key)?.Tag == entry.Key, entry.Key + " is not a row of the language table");
                 Assert.All(entry.Value, name => Assert.Contains(name, SteamLanguages));
             }
-            var reached = WorkshopBrowseDialog.SteamLanguageNames.Values.SelectMany(v => v).ToHashSet();
+            var reached = CommunityConfigsPanel.SteamLanguageNames.Values.SelectMany(v => v).ToHashSet();
             Assert.All(SteamLanguages.Where(n => n != "english"), name => Assert.Contains(name, reached));
         }
     }

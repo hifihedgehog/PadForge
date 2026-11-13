@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-                    xmlns:controls="clr-namespace:PadForge.Controls">
+                    xmlns:controls="clr-namespace:PadForge.Controls"
+                    xmlns:common="clr-namespace:PadForge.Common">
 
     <!-- ═══════════════════════════════════════════
          The shell (#574): the sidebar's line icons and the two templates
@@ -18,15 +19,72 @@
     <Geometry x:Key="NavSettingsGeometry">M4 7 h8 M18 7 h2 M4 12 h2 M12 12 h8 M4 17 h10 M13 7 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M7 12 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0 M15 17 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0</Geometry>
     <Geometry x:Key="NavAboutGeometry">M3.5 12 a8.5 8.5 0 1 0 17 0 a8.5 8.5 0 1 0 -17 0 M12 11 v5 M12 8 h0.01</Geometry>
     <Geometry x:Key="PlusLineGeometry">M12 5 v14 M5 12 h14</Geometry>
+    <Geometry x:Key="CloseLineGeometry">M6 6 L18 18 M18 6 L6 18</Geometry>
+    <!-- The Bluetooth rune, for a device that is linked that way. -->
+    <Geometry x:Key="BluetoothLineGeometry">M7 7 L17 17 L12 22 V2 L17 7 L7 17</Geometry>
+    <!-- The controller page's sections: a button with its letter, a
+         rumble motor with its waves, a turn for motion, a lamp and a
+         bolt. Sticks & Triggers wears the stick's own shape, which is
+         filled, so it is no line icon. -->
+    <Geometry x:Key="SectionButtonsGeometry">M3.5 12 a8.5 8.5 0 1 0 17 0 a8.5 8.5 0 1 0 -17 0 M9.5 15.5 L12 8.5 l2.5 7 M10.4 13.4 h3.2</Geometry>
+    <Geometry x:Key="SectionRumbleGeometry">M10 5 h4 a2 2 0 0 1 2 2 v10 a2 2 0 0 1 -2 2 h-4 a2 2 0 0 1 -2 -2 v-10 a2 2 0 0 1 2 -2 z M4.5 9 v6 M2 10.5 v3 M19.5 9 v6 M22 10.5 v3</Geometry>
+    <Geometry x:Key="SectionMotionGeometry">M20 12 a8 8 0 1 1 -2.6 -5.9 M20 4 v4 h-4</Geometry>
+    <Geometry x:Key="SectionLightsGeometry">M9.5 18 h5 M10.5 21 h3 M12 3 a6 6 0 0 0 -3.5 10.9 c0.6 0.5 1 1.2 1 2 V16 h5 v-0.1 c0 -0.8 0.4 -1.5 1 -2 A6 6 0 0 0 12 3 z</Geometry>
+    <Geometry x:Key="SectionMacrosGeometry">M13 3 L5 13.5 h5.5 L10 21 l8.5 -11 H13 z</Geometry>
     <Geometry x:Key="SearchLineGeometry">M5 11 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M16 16 l4 4</Geometry>
+    <!-- Get Profiles' arrow into a tray, the boards' own, and the chevron
+         that goes back (#574). The X that closes or clears is
+         CloseLineGeometry above. -->
+    <Geometry x:Key="DownloadLineGeometry">M12 4 v11 M7.5 11 L12 15.5 L16.5 11 M5 19.5 h14</Geometry>
+    <Geometry x:Key="BackLineGeometry">M14.5 6 L8.5 12 L14.5 18</Geometry>
+    <!-- The Settings board's own (#574, the world-class pass): a chip for
+         the Hardware group, a shield for Data and Privacy, and the check
+         in a ring that says this build is the newest. -->
+    <Geometry x:Key="ChipLineGeometry">M8 6 h8 a2 2 0 0 1 2 2 v8 a2 2 0 0 1 -2 2 h-8 a2 2 0 0 1 -2 -2 v-8 a2 2 0 0 1 2 -2 z M9 3 v3 M15 3 v3 M9 18 v3 M15 18 v3 M3 9 h3 M3 15 h3 M18 9 h3 M18 15 h3</Geometry>
+    <Geometry x:Key="ShieldLineGeometry">M12 3 L5 6 v5 c0 4.5 3 8 7 10 c4 -2 7 -5.5 7 -10 V6 z</Geometry>
+    <Geometry x:Key="CheckCircleGeometry">M3.5 12 a8.5 8.5 0 1 0 17 0 a8.5 8.5 0 1 0 -17 0 M8.5 12.3 l2.4 2.4 l4.6 -5</Geometry>
+
+    <!-- A key as Search draws it (#574): a small outlined label, the key's
+         name in the telemetry face. -->
+    <Style x:Key="KeyChip" TargetType="Border">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+        <Setter Property="Padding" Value="6,1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="KeyChipText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+    </Style>
+
+    <!-- The title bar's search box (#574): the profile pill's box, 34 tall
+         with the pill's edge and fill, lifting one step under the pointer as
+         the pill does, so the two boxes of the bar answer the pointer
+         alike. -->
+    <Style x:Key="TitleSearchBox" TargetType="{x:Type controls:ClickBorder}">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="12,0,10,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <!-- One entry of the sidebar: a rounded row with its icon and its
-         words. The selected one takes the raised fill and an ember icon,
-         and its words come forward through the style in MainWindow.xaml.
-         The fills are the wpf-ui keys, so an entry that shadows them in its
-         own resources (a controller's pill, which shows its selection
-         itself) stays clear. An entry with no icon gives its whole width to
-         its content. -->
+         words. The selected one takes the raised fill, an ember icon and a
+         short ember bar at its leading edge, and its words come forward
+         through the style in MainWindow.xaml. The fills are the wpf-ui
+         keys, so an entry that shadows them in its own resources (a
+         controller's pill, which shows its selection itself) stays clear.
+         An entry with no icon gives its whole width to its content and has
+         no bar. -->
     <ControlTemplate x:Key="PadNavigationViewItemTemplate" TargetType="{x:Type ui:NavigationViewItem}">
         <Border x:Name="MainBorder"
                 MinHeight="{TemplateBinding MinHeight}"
@@ -38,8 +96,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <Border x:Name="PickBar" Grid.ColumnSpan="3" Width="3" Height="18" CornerRadius="1.5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Background="{DynamicResource EmberBrush}" Visibility="Collapsed"/>
                 <ContentPresenter x:Name="IconContentPresenter" Grid.Column="0"
-                                  Margin="12,0,0,0" VerticalAlignment="Center"
+                                  Margin="14,0,0,0" VerticalAlignment="Center"
                                   Content="{TemplateBinding Icon}" Focusable="False"
                                   TextElement.Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 <ContentPresenter x:Name="ElementContentPresenter" Grid.Column="1"
@@ -60,10 +121,12 @@
             <Trigger Property="IsActive" Value="True">
                 <Setter TargetName="MainBorder" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelected}"/>
                 <Setter TargetName="IconContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                <Setter TargetName="PickBar" Property="Visibility" Value="Visible"/>
             </Trigger>
             <Trigger Property="Icon" Value="{x:Null}">
                 <Setter TargetName="IconContentPresenter" Property="Visibility" Value="Collapsed"/>
                 <Setter TargetName="ElementContentPresenter" Property="Margin" Value="0"/>
+                <Setter TargetName="PickBar" Property="Visibility" Value="Collapsed"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="MainBorder" Property="Opacity" Value="0.5"/>
@@ -72,14 +135,16 @@
     </ControlTemplate>
 
     <!-- The sidebar and the page beside it. The sidebar is one column on
-         the pane's fill with a hairline at its edge. Its entries, the
-         entries wpf-ui calls footer entries (Settings and About) and the
-         engine's row follow one another from the top and scroll together.
-         The page takes the rest, flat on the ground. The three parts
-         wpf-ui's NavigationView asks its template for are here under
-         their names (NavigationView.TemplateParts.cs): the two entry lists
-         and the page presenter. The back button, the pane toggle and the
-         search button are not: this sidebar has none. -->
+         the pane's fill with a hairline at its edge. Its entries scroll in
+         the room over the foot. The entries wpf-ui calls footer entries
+         (Settings and About) and the engine's block are the foot: they
+         stand at the pane's lower edge and stay there however many
+         controllers there are. The page takes the rest, flat on the
+         ground. The three parts wpf-ui's NavigationView asks its template
+         for are here under their names (NavigationView.TemplateParts.cs):
+         the two entry lists and the page presenter. The back button, the
+         pane toggle and the search button are not: this sidebar has
+         none. -->
     <ControlTemplate x:Key="PadNavigationViewTemplate" TargetType="{x:Type ui:NavigationView}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -90,16 +155,28 @@
                     Width="{TemplateBinding OpenPaneLength}"
                     Background="{DynamicResource SteelPaneBrush}"
                     BorderBrush="{DynamicResource SteelPaneLineBrush}" BorderThickness="0,0,1,0">
-                <ui:DynamicScrollViewer x:Name="PART_ScrollViewer"
-                                        CanContentScroll="False"
-                                        HorizontalScrollBarVisibility="Disabled"
-                                        VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="10,12,10,16">
+                <Grid Margin="12,14,12,14">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <!-- The list runs the pane's whole width, and its
+                         entries keep the pane's 12 of inset inside it. A
+                         scrolling list clips what it holds: while it was
+                         as wide as its entries, the light around a
+                         controller's pill stopped dead at the pill's two
+                         ends (the owner, 2026-11-13). The light reaches 12
+                         (MainWindow.PillLightReach), so it fades out where
+                         the pane ends. -->
+                    <ui:DynamicScrollViewer x:Name="PART_ScrollViewer" Margin="-12,0,-12,0"
+                                            CanContentScroll="False"
+                                            HorizontalScrollBarVisibility="Disabled"
+                                            VerticalScrollBarVisibility="Auto">
                         <!-- The two lists are NavItemsControls: an entry of
                              one offers Invoke and SelectionItem to UI
                              Automation, which a plain ItemsControl's item
                              does not. -->
-                        <controls:NavItemsControl x:Name="PART_MenuItemsItemsControl"
+                        <controls:NavItemsControl x:Name="PART_MenuItemsItemsControl" Margin="12,0,12,0"
                                       AutomationProperties.AutomationId="NavigationItems"
                                       Focusable="False"
                                       KeyboardNavigation.DirectionalNavigation="Contained"
@@ -111,11 +188,10 @@
                                 </ItemsPanelTemplate>
                             </controls:NavItemsControl.ItemsPanel>
                         </controls:NavItemsControl>
-                        <!-- The hairline between the controllers and
-                             Settings. It is drawn here and is no entry of
-                             either list, so UI Automation has no item for
-                             it and a screen reader never stops on it. -->
-                        <Border Height="1" Margin="4,14,4,10" Background="{DynamicResource SteelPaneLineBrush}"/>
+                    </ui:DynamicScrollViewer>
+                    <!-- The foot. It comes after the list in the markup, so
+                         the keyboard reaches it after the controllers. -->
+                    <StackPanel Grid.Row="1" Margin="0,12,0,0">
                         <controls:NavItemsControl x:Name="PART_FooterMenuItemsItemsControl"
                                       AutomationProperties.AutomationId="NavigationFooterItems"
                                       Focusable="False"
@@ -130,11 +206,16 @@
                         </controls:NavItemsControl>
                         <ContentPresenter Content="{TemplateBinding PaneFooter}"/>
                     </StackPanel>
-                </ui:DynamicScrollViewer>
+                </Grid>
             </Border>
             <Border Grid.Column="1" Background="{DynamicResource NavigationViewContentBackground}">
                 <Grid>
+                    <!-- The navigation view's own frame. The pages stand in
+                         the overlay beside it, so it holds nothing, and a
+                         Frame takes keyboard focus: UI Automation listed a
+                         focusable pane with no name. -->
                     <ui:NavigationViewContentPresenter x:Name="PART_NavigationViewContentPresenter"
+                                                       Focusable="False" IsTabStop="False"
                                                        Padding="{TemplateBinding Padding}"
                                                        Transition="{TemplateBinding Transition}"
                                                        TransitionDuration="{TemplateBinding TransitionDuration}"/>
@@ -143,4 +224,83 @@
             </Border>
         </Grid>
     </ControlTemplate>
+
+    <!-- ═══════════════════════════════════════════
+         The search field (#574)
+         ═══════════════════════════════════════════ -->
+
+    <!-- The search field's input: no chrome of its own, the text color, and
+         the ember selection the app's text boxes take. -->
+    <Style x:Key="SearchFieldInput" TargetType="TextBox">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+        <Setter Property="SelectionOpacity" Value="0.35"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- A search field as the boards draw it: 34 tall, corners 6, the
+         field's fill inside the control line, which takes the tertiary text
+         color under the pointer and the cold edge while the input has the
+         keyboard, as the value boxes do. The magnifier stands 8 before a
+         borderless input, and the placeholder lies under the input while the
+         field is empty. The text crosses into the input both ways, and so do
+         the field's name and AutomationId, since the field itself is no
+         automation element. -->
+    <Style TargetType="{x:Type controls:SearchField}">
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SearchField}">
+                    <Border x:Name="Bd" MinHeight="{TemplateBinding MinHeight}" CornerRadius="6" Padding="10,0"
+                            Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <controls:DecorativeStrokeIcon Data="{StaticResource SearchLineGeometry}" Size="14" StrokeWidth="2"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock x:Name="PlaceholderText" Grid.Column="1" IsHitTestVisible="False" Visibility="Collapsed"
+                                       FontSize="14" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       common:BidiText.Text="{Binding Placeholder, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <TextBox x:Name="PART_Input" Grid.Column="1" Style="{StaticResource SearchFieldInput}"
+                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     AutomationProperties.Name="{Binding Placeholder, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=''}"
+                                     AutomationProperties.AutomationId="{Binding (AutomationProperties.AutomationId), RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="PlaceholderText" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter TargetName="PlaceholderText" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

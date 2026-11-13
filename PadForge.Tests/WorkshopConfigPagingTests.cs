@@ -7,8 +7,8 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Browse Community Configs paging (#9 follow-up): QueryFiles is
-    /// page-based (page/numperpage, total on the response), and the dialog
+    /// Community config paging (#9 follow-up): QueryFiles is
+    /// page-based (page/numperpage, total on the response), and the panel
     /// streams pages as the scroll nears the bottom instead of stopping at
     /// the top 30. The pure decisions live in WorkshopConfigListPager;
     /// these tests pin the page cursor, the cross-page dedupe on

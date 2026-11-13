@@ -219,8 +219,7 @@ namespace PadForge.Tests
             // The Bluetooth-pathed shape shows with any serial.
             Assert.True(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(bt, 0x054C, 0x0CE6, ""));
 
-            // The view model: Quick Charge alone still draws the section
-            // and the rule under it.
+            // The view model: Quick Charge alone still shows the Power rows.
             var vm = new PadForge.ViewModels.DeviceRowViewModel
             {
                 DeviceTypeKey = "Gamepad",
@@ -229,7 +228,6 @@ namespace PadForge.Tests
                 ShowQuickCharge = true,
             };
             Assert.True(vm.ShowPowerSection);
-            Assert.True(vm.ShowRawInputDivider);
             vm.ShowQuickCharge = false;
             Assert.False(vm.ShowPowerSection);
         }

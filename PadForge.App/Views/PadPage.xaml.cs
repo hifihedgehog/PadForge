@@ -102,6 +102,8 @@ namespace PadForge.Views
             InitializeComponent();
             Loaded += PadPage_Loaded;
             Unloaded += PadPage_Unloaded;
+            // Held weakly by Strings, so no unsubscribe is owed.
+            Strings.CultureChanged += SizeFirstRows;
             DataContextChanged += OnDataContextChanged;
             // Each picture says when a control it draws has moved, and the
             // ring on the picked control moves with it (#574). It says which
@@ -130,6 +132,53 @@ namespace PadForge.Views
         public void BindSteamVrState(SettingsViewModel settings)
         {
             SteamVrStateHost.DataContext = settings;
+        }
+
+        // ─────────────────────────────────────────────
+        //  The first rows of a stick's and a trigger's card (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The label column of a stick's and a trigger's first
+        /// rows: the board's 96 at the least and 150 at the most, where a
+        /// label wraps. The rest of such a row (a slider at its least, a
+        /// value box, a unit and a reset) takes 204, and the column grows
+        /// by 60 before the curve beside it takes the room.</summary>
+        internal const double FirstRowLabelLeast = 96, FirstRowLabelMost = 150, FirstRowRest = 204, FirstRowGrowth = 60;
+
+        /// <summary>The label column's width for labels of these widths: the
+        /// widest and two more, so a label never wraps for the part of a
+        /// pixel the text was measured short by, within the two bounds.</summary>
+        internal static double FirstRowLabelWidth(IEnumerable<double> labelWidths)
+        {
+            double widest = 0;
+            foreach (double width in labelWidths) widest = Math.Max(widest, width);
+            return Math.Clamp(Math.Ceiling(widest + 2), FirstRowLabelLeast, FirstRowLabelMost);
+        }
+
+        /// <summary>Sizes that column to the language. The five labels are
+        /// measured in the section's own face and size, and the section's
+        /// three numbers (FirstRowLabelWidth and the two after it in
+        /// PadPage.xaml) are set from the widest. It runs when the page is
+        /// shown and when the language changes. English keeps the board's
+        /// 96, 300 and 360.</summary>
+        private void SizeFirstRows()
+        {
+            var s = Strings.Instance;
+            var typeface = new Typeface(System.Windows.Documents.TextElement.GetFontFamily(SticksSectionScroll),
+                FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+            double size = System.Windows.Documents.TextElement.GetFontSize(SticksSectionScroll);
+            double dip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+            var widths = new List<double>();
+            foreach (string label in new[] { s.Pad_Sticks_Section_DeadZone, s.Macro_Sensitivity, s.Pad_Stick_Center, s.Pad_Range, s.Pad_AntiDeadZone })
+            {
+                if (string.IsNullOrEmpty(label)) continue;
+                var text = new FormattedText(label, CultureInfo.CurrentUICulture, FlowDirection, typeface, size, Brushes.Black, dip);
+                widths.Add(text.WidthIncludingTrailingWhitespace);
+            }
+            double width = FirstRowLabelWidth(widths);
+            SticksSectionScroll.Resources["FirstRowLabelWidth"] = width;
+            SticksSectionScroll.Resources["FirstRowSettingsBasis"] = width + FirstRowRest;
+            SticksSectionScroll.Resources["FirstRowSettingsMost"] = width + FirstRowRest + FirstRowGrowth;
         }
 
         // ─────────────────────────────────────────────
@@ -277,6 +326,7 @@ namespace PadForge.Views
 
         private void PadPage_Loaded(object sender, RoutedEventArgs e)
         {
+            SizeFirstRows();
             ApplyViewMode();
             SyncSectionSelection();
             SyncExtendedConfigBar();
@@ -1123,26 +1173,36 @@ namespace PadForge.Views
             EnsureSelectedTabAvailable();
         }
 
+        /// <summary>Each group of a stacked section by its x:Name, with the tab
+        /// that shows it. The page finds a tab's group here, and Search (#574)
+        /// places what it reads from this page's markup by the same table.</summary>
+        internal static readonly IReadOnlyDictionary<string, int> TabOfGroupName = new Dictionary<string, int>(StringComparer.Ordinal)
+        {
+            ["TabSticks"] = 3,
+            ["TabTriggers"] = 4,
+            ["TabForceFeedback"] = 5,
+            ["TabAdaptiveTriggers"] = 6,
+            ["TabLighting"] = 7,
+            ["TabGyro"] = 8,
+            ["TabImpulseTriggers"] = 9,
+            ["TabTouchpad"] = 10,
+            ["TabWheel"] = 11,
+            ["TabAudio"] = PadViewModel.AudioTabIndex,
+            ["TabPointer"] = 13,
+            ["TabMouse"] = 14,
+            ["TabBassShakers"] = PadViewModel.BassShakersTabIndex,
+        };
+
         /// <summary>The group that holds a tab's content in its section, null
         /// for the tabs that are parts of Buttons and of Macros and
         /// Menus.</summary>
-        private FrameworkElement GroupOfTab(int tab) => tab switch
+        private FrameworkElement GroupOfTab(int tab)
         {
-            3 => TabSticks,
-            4 => TabTriggers,
-            5 => TabForceFeedback,
-            6 => TabAdaptiveTriggers,
-            7 => TabLighting,
-            8 => TabGyro,
-            9 => TabImpulseTriggers,
-            10 => TabTouchpad,
-            11 => TabWheel,
-            PadViewModel.AudioTabIndex => TabAudio,
-            13 => TabPointer,
-            14 => TabMouse,
-            PadViewModel.BassShakersTabIndex => TabBassShakers,
-            _ => null,
-        };
+            foreach (var (name, of) in TabOfGroupName)
+                if (of == tab)
+                    return FindName(name) as FrameworkElement;
+            return null;
+        }
 
         /// <summary>The scrolling column of a stacked section, null for
         /// Buttons and for Macros and Menus.</summary>
@@ -1174,7 +1234,7 @@ namespace PadForge.Views
         /// gate's own change notice, which can come before the binding moves
         /// the element. Every other tab is a group whose visibility
         /// SyncTabVisibility set.</summary>
-        private bool IsTabAvailable(int tab)
+        internal bool IsTabAvailable(int tab)
         {
             if (DataContext is not PadViewModel vm) return tab == 0;
             if (tab == PadViewModel.OutputTabIndex) return vm.OutputTabVisible;
@@ -1187,7 +1247,7 @@ namespace PadForge.Views
         /// <summary>The first tab of a section that has something to show,
         /// in page order, or -1 when the section is empty for this
         /// controller.</summary>
-        private int FirstAvailableTab(int section)
+        internal int FirstAvailableTab(int section)
         {
             foreach (int tab in PadViewModel.TabsOfSection(section))
                 if (IsTabAvailable(tab))
@@ -1869,6 +1929,28 @@ namespace PadForge.Views
                 GoToTab(vm, idx, keepScroll: true);
         }
 
+        /// <summary>Opens a section as its header button does, for Search
+        /// (#574).</summary>
+        internal void OpenSection(int section) => GoToSection(section);
+
+        /// <summary>Jumps to a tab for Search (#574): its section opens on it,
+        /// and a group of a stacked section is brought to the top.</summary>
+        internal void OpenTab(int tab)
+        {
+            if (DataContext is PadViewModel vm)
+                GoToTab(vm, tab, keepScroll: false);
+        }
+
+        /// <summary>A section's name as its header button shows it, for
+        /// Search's where line.</summary>
+        internal string SectionName(int section)
+            => (ButtonOfSection(section)?.Content as TextBlock)?.Text ?? string.Empty;
+
+        /// <summary>Whether a section's header button shows for this
+        /// controller: the section has something to show.</summary>
+        internal bool IsSectionShown(int section)
+            => ButtonOfSection(section) is { Visibility: Visibility.Visible };
+
         /// <summary>Opens a section where it was left: on the part it last
         /// showed, and at the place its column was scrolled to. A part or
         /// group that has since gone gives way to the section's first one
@@ -2217,18 +2299,20 @@ namespace PadForge.Views
             var packages = PadForge.Common.SoundPackageManager.Packages;
             if (packages.Count > 0)
             {
+                // Each sound with its package beside it, and a Play button
+                // that sounds it on this controller at the action's volume.
                 var items = new System.Collections.Generic.List<PickSoundDialog.Item>();
                 foreach (var p in packages)
                     foreach (var entry in PadForge.Common.SoundPackageManager.ListSounds(p.Name))
                         items.Add(new PickSoundDialog.Item(
-                            $"{System.IO.Path.GetFileName(entry)}  —  {p.Name}",
+                            System.IO.Path.GetFileName(entry), p.Name,
                             PadForge.Common.SoundPackageManager.MakeRef(p.Name, entry)));
 
                 if (items.Count > 0)
                 {
-                    var picker = new PickSoundDialog(
-                        PadForge.Resources.Strings.Strings.Instance.Macro_Sound_Pick_Description,
-                        items, allowBrowse: true, preselectValue: action.SoundFilePath)
+                    var picker = new PickSoundDialog(items, allowBrowse: true,
+                        previewSlot: _currentPadVm?.PadIndex ?? 0, previewVolume: action.SoundVolume,
+                        preselectValue: action.SoundFilePath)
                     { Owner = Window.GetWindow(this) };
                     if (picker.ShowDialog() != true) return;
                     if (!picker.BrowseRequested)
@@ -2272,25 +2356,25 @@ namespace PadForge.Views
                 if (pkg == null) return;
                 var sounds = PadForge.Common.SoundPackageManager.ListSounds(pkg);
                 if (sounds.Count == 0) return;
-                string entry = sounds.Count == 1
-                    ? sounds[0]
-                    : PromptPickFromList(
-                        string.Format(PadForge.Resources.Strings.Strings.Instance.Macro_Sound_PickFromPackage_Format, pkg),
-                        sounds);
-                if (entry != null)
-                    action.SoundFilePath = PadForge.Common.SoundPackageManager.MakeRef(pkg, entry);
+                string picked = sounds.Count == 1
+                    ? PadForge.Common.SoundPackageManager.MakeRef(pkg, sounds[0])
+                    : PromptPickFromList(pkg, sounds, action);
+                if (picked != null)
+                    action.SoundFilePath = picked;
                 return;
             }
 
             action.SoundFilePath = dlg.FileName;
         }
 
-        /// <summary>Modal list picker (package sound selection). Returns
-        /// the chosen item or null. FluentWindow chrome, same as the other
-        /// dialogs.</summary>
-        private string PromptPickFromList(string title, System.Collections.Generic.List<string> items)
+        /// <summary>The sounds inside one package, in the Pick a Sound
+        /// window. Returns the chosen sound's reference into the package, or
+        /// null.</summary>
+        private string PromptPickFromList(string package, System.Collections.Generic.IReadOnlyList<string> items,
+            PadForge.ViewModels.MacroAction action)
         {
-            var dlg = new PickSoundDialog(title, items) { Owner = Window.GetWindow(this) };
+            var dlg = new PickSoundDialog(package, items, _currentPadVm?.PadIndex ?? 0, action.SoundVolume)
+            { Owner = Window.GetWindow(this) };
             return dlg.ShowDialog() == true ? dlg.SelectedSound : null;
         }
 
@@ -2687,7 +2771,15 @@ namespace PadForge.Views
             {
                 Owner = Window.GetWindow(this),
             };
-            if (dlg.ShowDialog() != true || dlg.Result == null) return;
+            if (dlg.ShowDialog() != true) return;
+            // Delete Layer in the window closes it with nothing to save.
+            // The delete asks first, as the layer bar's own does.
+            if (dlg.DeleteRequested)
+            {
+                ConfirmAndDeleteLayer(existing.LayerMask);
+                return;
+            }
+            if (dlg.Result == null) return;
 
             // Apply edits in-place. LayerMask may change when the user
             // renames; if so, retag every MappingRow on the old mask to
@@ -3125,10 +3217,15 @@ namespace PadForge.Views
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
 
-        private async void ShiftLayer_Delete_Click(object sender, RoutedEventArgs e)
+        private void ShiftLayer_Delete_Click(object sender, RoutedEventArgs e)
+            => ConfirmAndDeleteLayer(TagToLayerMask(sender));
+
+        /// <summary>Asks before a layer is deleted, then deletes it. A
+        /// layer's Delete on the layer bar comes here, and so does the Shift
+        /// Layer window's Delete Layer.</summary>
+        private void ConfirmAndDeleteLayer(string mask)
         {
             if (_currentPadVm == null) return;
-            string mask = TagToLayerMask(sender);
             if (string.IsNullOrEmpty(mask)) return;
 
             var slotMs = GetSlotMappingSet(_currentPadVm.PadIndex);
@@ -3138,10 +3235,6 @@ namespace PadForge.Views
             if (activator == null) return;
 
             string layerName = string.IsNullOrEmpty(activator.LayerName) ? activator.LayerMask : activator.LayerName;
-            // Use Wpf.Ui's themed MessageBox instead of the classic Win32
-            // MessageBox.Show — the Mica-styled host clashes with the
-            // legacy gray system dialog and breaks the visual continuity
-            // the rest of PadForge keeps.
             // The Base-mask delete HEALS (removes only the bogus legacy
             // activator, never rows or macros), so it gets its own honest
             // confirm text; the standard string promises row deletion
@@ -3149,26 +3242,22 @@ namespace PadForge.Views
             string confirmText = string.Equals(mask, "Base", StringComparison.Ordinal)
                 ? string.Format(Strings.Instance.Pad_Shift_DeleteConfirmBase_Format, layerName)
                 : string.Format(Strings.Instance.Pad_Shift_DeleteConfirm_Format, layerName);
-            var dialog = new Wpf.Ui.Controls.MessageBox
-            {
-                Title = Strings.Instance.Pad_Shift_DeleteConfirmTitle,
-                Content = confirmText,
-                PrimaryButtonText = Strings.Instance.Pad_Shift_Delete,
-                CloseButtonText = Strings.Instance.Common_Cancel,
-            };
-            // Capture the pad VM BEFORE the await (audit 2026-07-25 round
-            // four, R20): the confirm is not application-modal, so the user
-            // can switch slots while it is up, and _currentPadVm would then
-            // point at the NEW slot while slotMs still belongs to the old
-            // one. Everything after the await targets this capture.
+            // Capture the pad VM BEFORE the confirm (audit 2026-07-25 round
+            // four, R20). The confirm is modal, so no click reaches the page
+            // while it is up, but its ShowDialog runs the dispatcher: queued
+            // work still lands, an automatic profile switch among it, and
+            // _currentPadVm can then point at another slot while slotMs
+            // still belongs to the old one. Everything after the confirm
+            // targets this capture.
             var padVmAtOpen = _currentPadVm;
 
-            var result = await dialog.ShowDialogAsync();
-            if (result != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
+            if (!ConfirmDialog.Show(Window.GetWindow(this), Strings.Instance.Pad_Shift_DeleteConfirmTitle,
+                    confirmText, Strings.Instance.Pad_Shift_Delete))
+                return;
 
-            // Re-validate after the await (R20): a Configure or a second
-            // delete may have removed or renamed the activator while the
-            // confirm was up. The activator REFERENCE is the identity; a
+            // Re-validate after the confirm (R20): the activator may have
+            // been removed or renamed while the confirm was up. The
+            // activator REFERENCE is the identity. A
             // stale mask capture must not sweep rows or macros.
             // The captured set can itself be stale: a profile switch while
             // the confirm was up replaces SlotMappingSets entries with
@@ -4245,7 +4334,7 @@ namespace PadForge.Views
             double baseH = isDs4 ? Models2D.DS4Layout.BaseHeight : Models2D.DualSenseLayout.BaseHeight;
 
             var scene = new Canvas { Width = baseW, Height = baseH };
-            var baseImg = new Image
+            var baseImg = new PadForge.Controls.DecorativeImage
             {
                 Source = isDs4 ? _lightbarDs4Base : _lightbarDs5Base,
                 Width = baseW,
@@ -4314,7 +4403,7 @@ namespace PadForge.Views
                     continue;
                 // A missing bitmap leaves the part empty, the soft degradation
                 // the strips and the 2D view use.
-                var part = new Image
+                var part = new PadForge.Controls.DecorativeImage
                 {
                     Source = EmbeddedBitmaps.Load($"2DModels/{folder}/{ov.ImageFile}"),
                     Width = ov.Width,
@@ -5003,7 +5092,7 @@ namespace PadForge.Views
         /// slot; the confirmation states the counts and any inputs left unmapped
         /// past the Extended caps.
         /// </summary>
-        private async void ExtendedCloneBtn_Click(object sender, RoutedEventArgs e)
+        private void ExtendedCloneBtn_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not PadViewModel vm) return;
             if (vm.OutputType != Engine.VirtualControllerType.Extended) return;
@@ -5016,12 +5105,8 @@ namespace PadForge.Views
             var sel = vm.SelectedMappedDevice;
             if (sel == null || sel.InstanceGuid == Guid.Empty)
             {
-                await new Wpf.Ui.Controls.MessageBox
-                {
-                    Title = Strings.Instance.Pad_ExtendedClone_Title,
-                    Content = Strings.Instance.Pad_ExtendedClone_NoDevice,
-                    CloseButtonText = Strings.Instance.Common_Close,
-                }.ShowDialogAsync();
+                ConfirmDialog.Notice(Window.GetWindow(this), Strings.Instance.Pad_ExtendedClone_Title,
+                    Strings.Instance.Pad_ExtendedClone_NoDevice);
                 return;
             }
 
@@ -5034,12 +5119,8 @@ namespace PadForge.Views
             var clone = Engine.Data.PassthroughCloneGenerator.Generate(ud);
             if (clone.Rows.Count == 0)
             {
-                await new Wpf.Ui.Controls.MessageBox
-                {
-                    Title = Strings.Instance.Pad_ExtendedClone_Title,
-                    Content = Strings.Instance.Pad_ExtendedClone_NoInputs,
-                    CloseButtonText = Strings.Instance.Common_Close,
-                }.ShowDialogAsync();
+                ConfirmDialog.Notice(Window.GetWindow(this), Strings.Instance.Pad_ExtendedClone_Title,
+                    Strings.Instance.Pad_ExtendedClone_NoInputs);
                 return;
             }
 
@@ -5055,24 +5136,20 @@ namespace PadForge.Views
                     clone.ButtonsMapped, clone.ButtonsAvailable,
                     clone.PovsMapped, clone.PovsAvailable);
 
-            var confirm = new Wpf.Ui.Controls.MessageBox
-            {
-                Title = Strings.Instance.Pad_ExtendedClone_Title,
-                Content = content,
-                PrimaryButtonText = Strings.Instance.Pad_ExtendedClone_Apply,
-                CloseButtonText = Strings.Instance.Common_Cancel,
-            };
             var cfgAtOpen = vm.ExtendedConfig;
-            if (await confirm.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary)
+            if (!ConfirmDialog.Show(Window.GetWindow(this), Strings.Instance.Pad_ExtendedClone_Title, content,
+                    Strings.Instance.Pad_ExtendedClone_Apply, kind: ConfirmKind.Primary))
                 return;
 
             // Re-validate everything the apply depends on, the discipline the
-            // layer-delete confirm on this page already follows. This confirm
-            // is not application-modal, so while it is up the user can switch
-            // slots, change the slot's type, apply a profile that replaces the
-            // config instance, or unassign the device. The apply writes both
-            // the page's own controls and the slot's layout, so landing it on
-            // a different slot rewrites a configuration nobody asked about.
+            // layer-delete confirm on this page already follows. The confirm
+            // is modal, so no click reaches the page while it is up, but its
+            // ShowDialog runs the dispatcher: queued work still lands, and an
+            // automatic profile switch among it can replace the config
+            // instance, change the slot's type or take the device away. The
+            // apply writes both the page's own controls and the slot's
+            // layout, so landing it on a different slot rewrites a
+            // configuration nobody asked about.
             if (!ReferenceEquals(DataContext, vm)) return;
             if (vm.OutputType != Engine.VirtualControllerType.Extended) return;
             if (!ReferenceEquals(vm.ExtendedConfig, cfgAtOpen)) return;

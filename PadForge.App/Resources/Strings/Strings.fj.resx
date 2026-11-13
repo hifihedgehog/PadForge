@@ -98,8 +98,6 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Cala: {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Next" xml:space="preserve"><value>Tarava</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Oti</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Semata</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Sa semati</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Cakitaka</value></data>
@@ -114,8 +112,13 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>E vo: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>E sega ni rawa ni wiliki: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>E sega ni kau tani: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver Bluetooth ni BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Sa kau tani</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Vo</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Sega ni wiliki</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Sega ni kau tani</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ni BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E rawa kina ni sema ena Bluetooth na controller ni PlayStation 3, na PlayStation Move kei na Navigation controller. E tu ena loma ni PadForge, ka install ena imatai ni gauna e pair kina e dua vei ira.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>E semata ena Bluetooth na controller ni PlayStation 3.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Bokoca na BthPS3</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Wilika tiko na ka e biuta na BthPS3 ena PC qo…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>E sega ni dua na ka e biuta na BthPS3 ena PC qo me kau tani.</value></data>
@@ -193,7 +196,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Rarama</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Vakuria e dua na roka</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Bokoca</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Sogota</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>E cakitaka na HIDMaestro na profile qo ena {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E sega ni tiko ena profile qo e dua na HID descriptor, sa sega kina ni rawa ni caka mai kina e dua na controller.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>E sega ni dua na ka e vakacurumi. {0}</value></data>
@@ -300,7 +302,7 @@
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Yaca</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Tovolea tale</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Vakayacana na gesture qo</value></data>
 
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
@@ -341,13 +343,11 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profile e vakayagataki tiko:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sega na slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Vou</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Digitaka e dua na profile taumada.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Bokoca na profile</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sega na Controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profile Vou</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Yaca ni profile:</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Yaca</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profile vou</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -473,6 +473,17 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor imatau</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Yaca ni layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Yaca</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Taura ena</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Taqara ena</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Layer Tarava ena</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer Liu ena</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Kei na</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Digitaka e Dua na Input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Controls e Sega ni Mapped</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Muria na Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kakua ni Cakava e Dua na Ka</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, mataqali input, gauna kei na roka</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Taura</value></data>
 
   <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>I liu</value></data>
@@ -495,6 +506,7 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Digitaka e dua na rorogo</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>E rogo na domo ena speaker ni controller, se ena nona PC ke sega.</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -523,15 +535,14 @@
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Sogota</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(wawa tiko)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Yaca:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Yaca</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Vakayacana na tag qo</value></data>
   <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Rarama</value></data>
   <data name="Dashboard_HeadTrackingAxisYaw" xml:space="preserve"><value>Yaw</value></data>
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Waraka mada…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Yaca:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Sereka na bulukau.</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Yaca</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mawi</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Matau</value></data>
@@ -542,8 +553,8 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Kauta laivi na iyaloyalo</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Rarama</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Totolo</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profile · Steam Workshop</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Vakasaqara na qito</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Qito</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Vou duadua</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Vakasaqara na qito</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>nikua</value></data>
@@ -708,6 +719,9 @@
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Kaukauwa B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Gauna</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Vakasaqara na setting, iyaya kei na profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Vakasaqara</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ka e kunei</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Stick kei na Trigger</value></data>
   <data name="Pad_Section_Motion" xml:space="preserve"><value>Yavala kei na Tara</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Rarama kei na Rorogo</value></data>
@@ -736,4 +750,54 @@
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Dauqito se Vuravura</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Imawi</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Imatau</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Na vanua, na levu kei na matata ni dua na menu e tuvai ena menu ga, ena iwasewase [Macro kei na Menu] ni dua na controller.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Vakasaqara na iyaya</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Kece</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Sa semati</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Na axis, na bulukau kei na sensor kece</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Sala</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Naba ni serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Vakavoui</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Veisosomitaka na setup e maroroi ena "{0}" ena setup qo? E na vo ga na yacana kei na nona qito.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Veisosomitaka</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ni</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ena</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Taura na Profile</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ni o maroroya, e vakurai kina e dua na profile ni veisiga o rawa ni veisautaka.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Me yaco me</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>iTukutuku kei na Maroroi</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Vakasaqara na setting</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Also Vibrate the Controller, Repeat the Notice Every, Notify When Fully Charged</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hide Devices from Games, Keep Devices Cloaked Between Launches, Whitelisted Applications</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Vakasaqara na vakavinavinaka</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Vakawasoma</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Na ituvatuva e vakanamata kina e levu na qito ni PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Me baleta na qito e tu kina na ivakatakilakila ni PlayStation, na touchpad kei na lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Na ituvatuva ni bulukau ni Switch, me baleta na qito kei na emulator e vakanamata kina.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Na iVakatagi kei na control change me baleta na parokaramu ni sere.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Na controller VR vakaivakarau ena SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Mo veisautaka na mataqali e muri, kiliki ena type chip ena controller. E dua ga na kiliki.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>E sega ni sauma tiko na Windows MIDI Services. Raica na kena kadi ena Settings.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>E gadrevi na SteamVR. Install mai na kena kadi ena Settings.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sa tu e dua na controller VR. E dua ga e liutaka na liga ruarua.</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} me toso</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} me dola</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} mai vei kece</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Bokoca na {0}?</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kauta tani na {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Na yaca, ivakatakilakila kei na roka ni Base layer ena Shift Layer Flyout kei na laini ni layer.</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Dolava na ubi ni battery ka taqara na bulukau damudamu SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Biuta voleka ni PC qo na remote ni se cila tiko na nona rarama.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair e Dua na DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Pair e Dua na Move se Navigation Controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Vakuria e Dua na Serial Controller</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Vakuria e Dua na DJI Remote</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Digitaka na ka e vakaraitaka. E sega ni dua na ka e veisau me yacova ni o maroroya.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>E sega ni dua na ka e yaco ki na port me yacova ni o maroroya.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>E tu ena Steam Workshop na veiyaga vou ni profile e vakacurumi qo. Vakacuruma tale mai na Taura na Profile mo taura kina na veisau.</value></data>
 </root>

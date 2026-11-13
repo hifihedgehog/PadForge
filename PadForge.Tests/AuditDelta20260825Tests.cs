@@ -388,7 +388,7 @@ namespace PadForge.Tests
         }
 
         [Theory]
-        [InlineData("ManageProfiles_DeleteTitle", "Excluir Perfil Importado?")]
+        [InlineData("ManageProfiles_DeleteTitle", "Excluir a Predefinição?")]
         [InlineData("Pad_Combine_XOR_Name", "Apenas Uma")]
         [InlineData("Pad_Formula_Preset_AUnlessIdle_Name", "a a Menos que Ocioso")]
         public void ThePtBrTitleCaseSweepCoversTheseKeys(string key, string expected)

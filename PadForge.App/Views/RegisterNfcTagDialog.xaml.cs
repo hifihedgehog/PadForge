@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shapes;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services;
@@ -15,7 +16,7 @@ namespace PadForge.Views
     /// to <see cref="NfcReaderService.TagDetected"/> directly while open and
     /// marshals to the UI thread; the event fires on the monitor thread.
     /// </summary>
-    public partial class RegisterNfcTagDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class RegisterNfcTagDialog : DialogWindow
     {
         private readonly NfcReaderService _svc;
         private Action<string, string> _handler;
@@ -25,14 +26,6 @@ namespace PadForge.Views
         public RegisterNfcTagDialog()
         {
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             _svc = NfcReaderService.Active;
             RefreshList();
@@ -55,12 +48,12 @@ namespace PadForge.Views
                 _svc.TagDetected += _handler;
             }
 
-            // Status: name whichever source(s) can capture. With neither a
-            // PC/SC reader nor (potentially) a controller, the old "no
-            // reader" text still stands, but a controller can arrive later,
-            // so the wait text is the honest default when a reader is absent.
-            StatusText.Text = _svc != null ? Strings.Instance.Nfc_Waiting : Strings.Instance.Nfc_WaitingController;
+            // The line names the source that can capture: the reader when
+            // there is one, and a Switch controller when there is not, since
+            // a controller can arrive while the dialog is open.
+            StatusText.Text = _svc != null ? Strings.Instance.Nfc_TapPrompt : Strings.Instance.Nfc_WaitingController;
 
+            Loaded += (_, _) => NameBox.Focus();
             Closed += (s, e) => Unsubscribe();
         }
 
@@ -91,6 +84,8 @@ namespace PadForge.Views
                 UidText.Text = _capturedUid;
                 RegisterBtn.IsEnabled = !string.IsNullOrEmpty(_capturedUid);
                 StatusText.Text = Strings.Instance.Nfc_TagCaptured;
+                // The flame is ember while a read tag waits for its name.
+                LiveFlame.SetResourceReference(Shape.FillProperty, RegisterBtn.IsEnabled ? "EmberBrush" : "WaitBrush");
                 if (string.IsNullOrWhiteSpace(NameBox.Text)) NameBox.Focus();
             }));
         }
@@ -101,7 +96,9 @@ namespace PadForge.Views
             string name = NfcTagRegistry.Register(_capturedUid, NameBox.Text);
             StatusText.Text = string.Format(Strings.Instance.Nfc_RegisteredFormat, name);
             NameBox.Text = string.Empty;
-            UidText.Text = Strings.Instance.Nfc_Waiting;
+            // Waiting again: no UID shows, and the flame is the wait color.
+            UidText.Text = string.Empty;
+            LiveFlame.SetResourceReference(Shape.FillProperty, "WaitBrush");
             _capturedUid = null;
             RegisterBtn.IsEnabled = false;
             RefreshList();
@@ -113,6 +110,9 @@ namespace PadForge.Views
             {
                 NfcTagRegistry.Remove(uid);
                 RefreshList();
+                // The row and its button are gone, so the focus they held
+                // goes to the name.
+                NameBox.Focus();
             }
         }
 
@@ -125,12 +125,11 @@ namespace PadForge.Views
             }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshList()
         {
-            Unsubscribe();
-            Close();
+            var tags = NfcTagRegistry.Tags;
+            TagListBox.ItemsSource = tags;
+            TagsBlock.Visibility = tags.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        private void RefreshList() => TagListBox.ItemsSource = NfcTagRegistry.Tags;
     }
 }

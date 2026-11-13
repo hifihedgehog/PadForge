@@ -1,151 +1,159 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.RegisterVoicePhraseDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.RegisterVoicePhraseDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
         Title="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="620" Width="640"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-             xmlns:reset="clr-namespace:PadForge.Controls">
+        Subtitle="{Binding Voice_Subtitle, Source={x:Static strings:Strings.Instance}}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- Voice Macros (#317, #574), as the Record board draws it: a live
+         line with what was last heard, the phrase to add with the name of
+         its button, and the phrases registered so far. Listening on or
+         off, its mode and the confidence a phrase needs are under More,
+         which opens by itself when one of them is off its usual value.
+         There is no microphone picker: every microphone PadForge can reach
+         listens. -->
+    <views:DialogWindow.Resources>
+        <!-- A row is read by its phrase, and takes the picked fill for a
+             moment when its phrase is heard and fires. -->
+        <Style x:Key="PhraseItem" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItem}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Phrase, TargetNullValue=''}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </views:DialogWindow.Resources>
 
-        <!-- Dialog head: same chrome as the NFC registration dialog. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <StackPanel>
+        <!-- What was last heard, the phrase set apart, with how sure the
+             recognizer was at the line's end. A live region. -->
+        <Border Style="{StaticResource DialogLiveBox}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CloseButton_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
+                <reset:GlyphText Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"
+                                 Foreground="{DynamicResource ColdBrush}"/>
+                <TextBlock x:Name="HeardText" Grid.Column="1" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Center"
+                           common:LiveText.Polite="True"/>
+                <TextBlock x:Name="HeardConfidence" Grid.Column="2" FontSize="12" VerticalAlignment="Center"
+                           FontFamily="{DynamicResource TelemetryFontFamily}"
+                           Foreground="{DynamicResource ColdBrush}"/>
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Master switch + listening mode. No source picker: phrases
-                 live on the devices that carry the microphones, and every
-                 reachable microphone listens. -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <CheckBox x:Name="EnabledBox" Content="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}"
-                          ToolTip="{Binding Voice_EnableTooltip, Source={x:Static strings:Strings.Instance}}"
-                          Checked="Setting_Changed" Unchecked="Setting_Changed" Margin="0,0,16,0"/>
-                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Enabled" Visibility="{Binding Visibility, ElementName=EnabledBox}" IsEnabled="{Binding IsEnabled, ElementName=EnabledBox}" SettingLabel="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_EnabledBox_64" Margin="4,0,8,0"/>
-                <TextBlock Text="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <ComboBox x:Name="ModeBox" MinWidth="150" SelectionChanged="Setting_Changed"
-                          ToolTip="{Binding Voice_ModeTooltip, Source={x:Static strings:Strings.Instance}}">
-                    <ComboBoxItem Content="{Binding Voice_ModeAlways, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBoxItem Content="{Binding Voice_ModePushToTalk, Source={x:Static strings:Strings.Instance}}"/>
-                </ComboBox>
-                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_67"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <Slider x:Name="ConfidenceSlider" Minimum="0.5" Maximum="0.99" Width="200"
-                        SmallChange="0.01" LargeChange="0.05" VerticalAlignment="Center"
-                        ValueChanged="Setting_Changed"
-                        ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Confidence" Visibility="{Binding Visibility, ElementName=ConfidenceSlider}" IsEnabled="{Binding IsEnabled, ElementName=ConfidenceSlider}" SettingLabel="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ConfidenceSlider_78" Margin="4,0,8,0"/>
-                <TextBlock x:Name="ConfidenceText" VerticalAlignment="Center" Margin="8,0,0,0"
-                           FontFamily="{StaticResource TelemetryFontFamily}"/>
-            </StackPanel>
-
-            <!-- Live readout, naming which microphone heard it. -->
-            <TextBlock Grid.Row="2" x:Name="HeardText"
-                       Text="{Binding Voice_ListeningIdle, Source={x:Static strings:Strings.Instance}}"
-                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       Margin="0,0,0,12" TextWrapping="Wrap"/>
-
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="{Binding Voice_PhraseLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBox x:Name="PhraseBox" Width="180" VerticalAlignment="Center" Margin="0,0,8,0"
-                         KeyDown="PhraseBox_KeyDown"/>
-                <TextBlock Text="{Binding Voice_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBox x:Name="NameBox" Width="130" VerticalAlignment="Center" Margin="0,0,8,0"
-                         KeyDown="PhraseBox_KeyDown"/>
-                <Button x:Name="RegisterBtn" Content="{Binding Voice_RegisterButton, Source={x:Static strings:Strings.Instance}}" Click="RegisterButton_Click"
-                        MinWidth="90"
-                        Style="{StaticResource EmberAccentButton}"/>
-            </StackPanel>
-
-            <TextBlock Grid.Row="4" Text="{Binding Voice_RegisteredHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
-
-            <ListBox Grid.Row="5" x:Name="PhraseListBox" MinHeight="100">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource EmberSelectListItem}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="8,6"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                <TextBlock Text="{Binding Name}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding Phrase}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            </StackPanel>
-                            <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
-                                    Style="{StaticResource EmberDestructiveButton}"
-                                    Tag="{Binding Phrase}" MinWidth="72" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
-            </StackPanel>
+        <!-- The phrase to say and the name of the button it presses. Enter
+             in either box registers. -->
+        <Grid Margin="0,8,0,0" MinHeight="44">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ui:TextBox x:Name="PhraseBox" Style="{StaticResource DialogTextBox}" VerticalAlignment="Center"
+                        PlaceholderText="{Binding Voice_PhrasePlaceholder, Source={x:Static strings:Strings.Instance}}"
+                        AutomationProperties.Name="{Binding Voice_PhraseLabel, Source={x:Static strings:Strings.Instance}}"
+                        KeyDown="PhraseBox_KeyDown"/>
+            <ui:TextBox x:Name="NameBox" Grid.Column="2" Style="{StaticResource DialogTextBox}" VerticalAlignment="Center"
+                        PlaceholderText="{Binding Voice_NamePlaceholder, Source={x:Static strings:Strings.Instance}}"
+                        AutomationProperties.Name="{Binding Voice_NameLabel, Source={x:Static strings:Strings.Instance}}"
+                        KeyDown="PhraseBox_KeyDown"/>
+            <Button x:Name="RegisterBtn" Grid.Column="3" Style="{StaticResource DialogPrimaryButton}" Margin="10,0,0,0"
+                    Content="{Binding Voice_RegisterButton, Source={x:Static strings:Strings.Instance}}"
+                    Click="RegisterButton_Click"/>
         </Grid>
-    </Grid>
-</ui:FluentWindow>
+
+        <!-- The registered phrases. With none, the heading and the list are
+             left out. -->
+        <StackPanel x:Name="PhrasesBlock">
+            <TextBlock Style="{StaticResource DialogHead3}"
+                       Text="{Binding Voice_RegisteredHeader, Source={x:Static strings:Strings.Instance}}"/>
+            <Border Style="{StaticResource DialogList}">
+                <ListBox x:Name="PhraseListBox" Style="{StaticResource DialogListBox}" MaxHeight="240"
+                         ItemContainerStyle="{StaticResource PhraseItem}"
+                         AutomationProperties.Name="{Binding Voice_RegisteredHeader, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Phrase}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Grid.Column="1" Margin="12,0" Text="{Binding Name}" Style="{StaticResource DialogNote}"
+                                           VerticalAlignment="Center" TextWrapping="NoWrap"/>
+                                <Button Grid.Column="2" Style="{StaticResource DialogSmallQuietButton}"
+                                        Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                        Click="RemoveButton_Click" Tag="{Binding Phrase}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </StackPanel>
+
+        <controls:MoreRow x:Name="VoiceMore" Style="{StaticResource DialogMoreRow}"
+                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                          Hint="{Binding Voice_MoreHint, Source={x:Static strings:Strings.Instance}}">
+            <StackPanel>
+                <!-- The master switch. While it is on, each phrase is a
+                     button that fires when it is said. -->
+                <controls:SettingRow MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
+                               Text="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Voice_EnableTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <CheckBox x:Name="EnabledBox" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                              ToolTip="{Binding Voice_EnableTooltip, Source={x:Static strings:Strings.Instance}}"
+                              AutomationProperties.Name="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}"
+                              Checked="Setting_Changed" Unchecked="Setting_Changed"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Enabled" Visibility="{Binding Visibility, ElementName=EnabledBox}" IsEnabled="{Binding IsEnabled, ElementName=EnabledBox}" SettingLabel="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_EnabledBox_64"/>
+                </controls:SettingRow>
+                <!-- Always keeps the microphones open. Push to Talk listens
+                     only while a Voice Listen macro is held. -->
+                <controls:SettingRow MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
+                               Text="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Voice_ModeTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="ModeBox" Style="{StaticResource DialogSelect}" MinWidth="170" SelectionChanged="Setting_Changed"
+                              ToolTip="{Binding Voice_ModeTooltip, Source={x:Static strings:Strings.Instance}}"
+                              AutomationProperties.Name="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}">
+                        <ComboBoxItem Content="{Binding Voice_ModeAlways, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding Voice_ModePushToTalk, Source={x:Static strings:Strings.Instance}}"/>
+                    </ComboBox>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_67"/>
+                </controls:SettingRow>
+                <!-- How sure the recognizer has to be before a phrase fires. -->
+                <controls:SettingRow MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
+                               Text="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider x:Name="ConfidenceSlider" Style="{StaticResource EmberSlider}" Minimum="0.5" Maximum="0.99" MaxWidth="280"
+                            SmallChange="0.01" LargeChange="0.05" VerticalAlignment="Center"
+                            ValueChanged="Setting_Changed"
+                            ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock x:Name="ConfidenceText" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"
+                               FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Confidence" Visibility="{Binding Visibility, ElementName=ConfidenceSlider}" IsEnabled="{Binding IsEnabled, ElementName=ConfidenceSlider}" SettingLabel="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ConfidenceSlider_78"/>
+                </controls:SettingRow>
+            </StackPanel>
+        </controls:MoreRow>
+    </StackPanel>
+</views:DialogWindow>

@@ -53,6 +53,53 @@ namespace PadForge.Tests
             Assert.Equal(new double[] { 100, 100 }, FlexLinePanel.Share(new double[] { 100, 100 }, new double[] { 1, 1 }, double.PositiveInfinity, 20));
         }
 
+        /// <summary>A part stops at its most, and what it leaves goes to the
+        /// line's other growing parts. A trigger's card is such a line: its
+        /// settings grow from 300 to 360 and no more, and its chart takes
+        /// the rest. Before, the settings took their whole share of the
+        /// line and stood in the start of it.</summary>
+        [Fact]
+        public void APartStopsAtItsMost_AndTheRestGoesToTheOthers()
+        {
+            double[] bases = { 300, 380 }, grows = { 1, 2 };
+            double[] none = { double.PositiveInfinity, double.PositiveInfinity };
+            double[] mosts = { 360, double.PositiveInfinity };
+            // No most: the shares alone.
+            Assert.Equal(new double[] { 400, 580 }, FlexLinePanel.Share(bases, grows, 1002, 22));
+            Assert.Equal(new double[] { 400, 580 }, FlexLinePanel.Share(bases, grows, 1002, 22, none));
+            // The first stops at 360 and the second takes the 40 it left.
+            Assert.Equal(new double[] { 360, 620 }, FlexLinePanel.Share(bases, grows, 1002, 22, mosts));
+            // Under its most it shares as before.
+            Assert.Equal(new double[] { 330, 440 }, FlexLinePanel.Share(bases, grows, 792, 22, mosts));
+            // Every growing part at its most: the line keeps what is left.
+            Assert.Equal(new double[] { 360, 500 }, FlexLinePanel.Share(bases, grows, 1002, 22, new double[] { 360, 500 }));
+            // A basis over the most is kept, and takes no share.
+            Assert.Equal(new double[] { 300, 680 }, FlexLinePanel.Share(bases, grows, 1002, 22, new double[] { 250, double.PositiveInfinity }));
+            // Three parts of 100 with 300 over: the first stops at 120, the
+            // second at 150, and the third takes all that the two left.
+            Assert.Equal(new double[] { 120, 150, 330 },
+                FlexLinePanel.Share(new double[] { 100, 100, 100 }, new double[] { 1, 1, 1 }, 600, 0, new double[] { 120, 150, double.PositiveInfinity }));
+        }
+
+        /// <summary>A part's most is its MaxWidth, which the panel reads.</summary>
+        [Fact]
+        public void ThePanelReadsAPartsMaxWidth()
+        {
+            RunSta(() =>
+            {
+                var panel = new FlexLinePanel { Gap = 22, LineGap = 16 };
+                var settings = Part(132, 300, 1);
+                settings.MaxWidth = 360;
+                var chart = Part(190, 380, 2);
+                panel.Children.Add(settings);
+                panel.Children.Add(chart);
+                panel.Measure(new Size(1002, double.PositiveInfinity));
+                panel.Arrange(new Rect(panel.DesiredSize));
+                Assert.Equal(new Rect(0, 0, 360, 190), Place(settings, panel));
+                Assert.Equal(new Rect(382, 0, 620, 190), Place(chart, panel));
+            });
+        }
+
         /// <summary>A part alone on a line narrower than its basis gets the
         /// line's width, so nothing is cut off.</summary>
         [Fact]

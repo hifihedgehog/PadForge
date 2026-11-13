@@ -157,13 +157,11 @@ namespace PadForge.Tests
         ///
         /// <para>They first shipped in a grid of their own, so their label
         /// column was sized by their own longest label and every box and
-        /// reset started at a different x than the rows above. One grid
-        /// fixed that. On the Head Tracking page (#574) the two ranges show
-        /// first and the per-axis ranges sit under More, so they are two
-        /// grids again, and what lines them up is one shared size group on
-        /// both label columns, inside one scope on the card. Either grid
-        /// losing the group, or the card losing the scope, puts the boxes
-        /// back at two different x.</para>
+        /// reset started at a different x than the rows above. On the Head
+        /// Tracking page (#574) every range is a row of its own whose label
+        /// is the page's one label column, DzLabel, 300 wide as the page's
+        /// board draws it: the two ranges show first in the Range card, and
+        /// the UDP port and the six axes sit under More.</para>
         /// </summary>
         [Fact]
         public void ThePerAxisRangesShareTheLabelColumnOfTheRangesAboveThem()
@@ -174,34 +172,37 @@ namespace PadForge.Tests
             Assert.True(page > 0 && end > page, "the Head Tracking page was not found");
             string card = xaml[page..end];
 
-            int scope = card.IndexOf("<StackPanel Grid.IsSharedSizeScope=\"True\">", StringComparison.Ordinal);
             int first = card.IndexOf("HeadTrackingRotationRange, Mode=TwoWay", StringComparison.Ordinal);
             int more = card.IndexOf("<controls:MoreRow x:Name=\"HeadTrackingMore\"", StringComparison.Ordinal);
-            int last = card.IndexOf("HeadTrackingRangeZ, Mode=TwoWay", StringComparison.Ordinal);
-            Assert.True(scope > 0 && first > scope && more > first && last > more,
-                "the two ranges show first and the per-axis ranges sit under More, all inside the card's size scope");
-
-            // Each range row's grid opens with the shared label column.
-            const string Shared = "<ColumnDefinition Width=\"Auto\" SharedSizeGroup=\"HeadTrackingLabel\"/>";
-            foreach (int row in new[] { first, last })
-            {
-                int grid = card.LastIndexOf("<Grid Margin=", row, StringComparison.Ordinal);
-                int columns = card.IndexOf("<ColumnDefinition ", grid, StringComparison.Ordinal);
-                Assert.True(grid > scope && columns > grid && columns < row, "a range row is not in a grid of its own columns");
-                Assert.True(string.CompareOrdinal(card, columns, Shared, 0, Shared.Length) == 0,
-                    "a range grid's label column is not in the shared size group, so its boxes cannot line up with the other grid's");
-            }
-
-            // The six per-axis rows and the port are still one grid.
             int port = card.IndexOf("{Binding HeadTrackingUdpPort,", StringComparison.Ordinal);
-            Assert.True(port > more && port < last, "the UDP port row is not under More");
-            Assert.False(card[port..last].Contains("</Grid>", StringComparison.Ordinal),
-                "the per-axis ranges are in a different grid from the port above them");
+            int last = card.IndexOf("HeadTrackingRangeZ, Mode=TwoWay", StringComparison.Ordinal);
+            Assert.True(first > 0 && more > first && port > more && last > port,
+                "the two ranges show first, and the port and then the per-axis ranges sit under More");
+
+            // The page's label column is 300 wide, the board's.
+            System.Xml.Linq.XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+            var doc = System.Xml.Linq.XDocument.Parse(xaml);
+            var panel = doc.Descendants().Single(e => (string)e.Attribute(x + "Name") == "HeadTrackingPage");
+            var label = panel.Elements().Single(e => e.Name.LocalName == "StackPanel.Resources").Elements()
+                .Single(e => (string)e.Attribute(x + "Key") == "DzLabel");
+            Assert.Equal("300", (string)label.Elements().Single(s => (string)s.Attribute("Property") == "Width").Attribute("Value"));
+
+            // Each range row, and the port's, opens with that label.
+            var boxes = panel.Descendants().Where(e => e.Name.LocalName == "NumberBox").ToList();
+            Assert.Equal(9, boxes.Count);
+            foreach (var box in boxes)
+            {
+                var row = box.Parent!;
+                Assert.Equal("SettingRow", row.Name.LocalName);
+                Assert.Equal("{StaticResource DzLabel}", (string)row.Elements().First().Attribute("Style"));
+                Assert.Equal("72", (string)box.Attribute("Width"));
+            }
         }
 
         /// <summary>The same holds on the Game Telemetry page: the game
         /// picker shows first, the ports and Full Speed sit under More, and
-        /// one shared size group lines their boxes up.</summary>
+        /// every one of them is a row whose label is the page's label
+        /// column. The picker and the three rows follow the switch.</summary>
         [Fact]
         public void TheGameTelemetryRowsShareOneLabelColumn()
         {
@@ -211,16 +212,27 @@ namespace PadForge.Tests
             Assert.True(page > 0 && end > page, "the Game Telemetry page was not found");
             string card = xaml[page..end];
 
-            int scope = card.IndexOf("<StackPanel Grid.IsSharedSizeScope=\"True\">", StringComparison.Ordinal);
             int game = card.IndexOf("x:Name=\"GameTelemetryGameCombo\"", StringComparison.Ordinal);
             int more = card.IndexOf("<controls:MoreRow x:Name=\"GameTelemetryMore\"", StringComparison.Ordinal);
             int speed = card.IndexOf("{Binding GameTelemetryFullSpeed,", StringComparison.Ordinal);
-            Assert.True(scope > 0 && game > scope && more > game && speed > more,
-                "the game picker shows first and Full Speed sits under More, all inside the card's size scope");
-            const string Shared = "<ColumnDefinition Width=\"Auto\" SharedSizeGroup=\"GameTelemetryLabel\"/>";
-            Assert.Equal(2, card.Split(new[] { Shared }, StringSplitOptions.None).Length - 1);
-            // Both grids still follow the switch.
-            Assert.Equal(2, card.Split(new[] { "<Grid Margin=\"0,0,0,8\" IsEnabled=\"{Binding EnableGameTelemetry}\">" }, StringSplitOptions.None).Length - 1);
+            Assert.True(game > 0 && more > game && speed > more, "the game picker shows first and Full Speed sits under More");
+
+            System.Xml.Linq.XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+            var doc = System.Xml.Linq.XDocument.Parse(xaml);
+            var panel = doc.Descendants().Single(e => (string)e.Attribute(x + "Name") == "GameTelemetryPage");
+            var combo = panel.Descendants().Single(e => (string)e.Attribute(x + "Name") == "GameTelemetryGameCombo");
+            Assert.Equal("SettingRow", combo.Parent!.Name.LocalName);
+            Assert.Equal("{Binding EnableGameTelemetry}", (string)combo.Parent.Attribute("IsEnabled"));
+            var boxes = panel.Descendants().Where(e => e.Name.LocalName == "NumberBox").ToList();
+            Assert.Equal(3, boxes.Count);
+            foreach (var box in boxes)
+            {
+                var row = box.Parent!;
+                Assert.Equal("SettingRow", row.Name.LocalName);
+                Assert.Equal("{StaticResource DzLabel}", (string)row.Elements().First().Attribute("Style"));
+                // The three rows follow the switch through the panel around them.
+                Assert.Equal("{Binding EnableGameTelemetry}", (string)row.Parent!.Attribute("IsEnabled"));
+            }
         }
 
         /// <summary>A SettingResetButton's label is the setting's NAME. Feed

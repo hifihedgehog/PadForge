@@ -1,0 +1,176 @@
+<UserControl x:Class="PadForge.Views.SearchPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:search="clr-namespace:PadForge.Search"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             PreviewKeyDown="Panel_PreviewKeyDown">
+    <UserControl.Resources>
+        <!-- A result's line, as the Search board draws it: 48 tall at least,
+             12 at the sides, rounded 8. Under the pointer it lifts one step,
+             and the picked one is warm with an ember edge. The edge is there
+             at rest too, clear, so nothing moves when the pick does. -->
+        <Style x:Key="SearchResultItem" TargetType="ListBoxItem">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="AutomationProperties.Name" Value="{Binding AutomationName, TargetNullValue='', FallbackValue=''}"/>
+            <EventSetter Event="MouseLeftButtonUp" Handler="Result_MouseUp"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" MinHeight="48" Padding="12,6" CornerRadius="8" BorderThickness="1"
+                                Background="Transparent" BorderBrush="Transparent" SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource EmberEdgeBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- The title, the qualifier after it in the quieter color, where it
+             is under them, and the value at the right in the telemetry face.
+             The title's two runs sit on one line of markup, since a line
+             break between runs adds a space. -->
+        <DataTemplate x:Key="SearchResultTemplate" DataType="{x:Type search:SearchResult}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock FontSize="14" TextTrimming="CharacterEllipsis" LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"><Run Text="{Binding Title, Mode=OneWay}"/><Run Text="{Binding QualifierText, Mode=OneWay}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
+                    <TextBlock Text="{Binding Where}" FontSize="13" TextTrimming="CharacterEllipsis" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                               Visibility="{Binding Where, Converter={StaticResource StringToVisibility}}"/>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding Value}" Margin="12,0,0,0" VerticalAlignment="Center"
+                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                           Foreground="{DynamicResource ColdBrush}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!-- Search (#574), as its board draws it: the query, the results under
+         their group labels, and a foot of key hints. MainWindow hosts it in a
+         ShellDialog over the page area and answers its events. -->
+    <DockPanel>
+        <!-- The query row: the magnifier, the words, and the Esc key that
+             closes. A hairline under it. -->
+        <Border x:Name="QueryRow" DockPanel.Dock="Top" Padding="16,14" BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}">
+            <DockPanel>
+                <controls:DecorativeStrokeIcon Data="{StaticResource SearchLineGeometry}" Size="18" StrokeWidth="1.8"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <controls:ClickBorder x:Name="SearchCloseChip" DockPanel.Dock="Right" Style="{StaticResource KeyChip}"
+                                      Margin="12,0,0,0" Cursor="Hand" Click="CloseChip_Click"
+                                      AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                                      AutomationProperties.AutomationId="SearchCloseChip">
+                    <TextBlock Style="{StaticResource KeyChipText}"
+                               Text="{Binding Key_Escape, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:ClickBorder>
+                <Grid>
+                    <TextBlock x:Name="SearchPlaceholder" FontSize="17" VerticalAlignment="Center" Margin="2,0,0,0"
+                               IsHitTestVisible="False" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                               Text="{Binding Search_Placeholder, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Query}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBox x:Name="SearchQueryBox" Height="32" FontSize="17" Padding="0" BorderThickness="0"
+                             Background="Transparent" VerticalContentAlignment="Center"
+                             Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                             CaretBrush="{DynamicResource TextFillColorPrimaryBrush}"
+                             Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                             AutomationProperties.Name="{Binding Search_Placeholder, Source={x:Static strings:Strings.Instance}}"
+                             AutomationProperties.AutomationId="SearchQueryBox">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" Margin="0"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
+                </Grid>
+            </DockPanel>
+        </Border>
+
+        <!-- The foot: three hints, 20 apart and 8 between lines. Its hairline
+             goes while there is no result, so one line divides the two. -->
+        <Border x:Name="SearchFoot" DockPanel.Dock="Bottom" Padding="16,12" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasResults}" Value="False">
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <controls:FlexLinePanel Gap="20" LineGap="8">
+                <controls:KeyHint x:Name="MoveHint" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                  Format="{Binding Search_Hint_Move_Format, Source={x:Static strings:Strings.Instance}}"
+                                  Key0="{Binding Search_Key_Up, Source={x:Static strings:Strings.Instance}}"
+                                  Key1="{Binding Search_Key_Down, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:KeyHint x:Name="OpenHint" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                  Format="{Binding Search_Hint_Open_Format, Source={x:Static strings:Strings.Instance}}"
+                                  Key0="{Binding Key_Enter, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:KeyHint x:Name="AnywhereHint" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                  Format="{Binding Search_Hint_Anywhere_Format, Source={x:Static strings:Strings.Instance}}"
+                                  Key0="{Binding ShortcutText}"/>
+            </controls:FlexLinePanel>
+        </Border>
+
+        <!-- The results, or the line that says nothing matches over the
+             documentation's one result. -->
+        <StackPanel>
+            <TextBlock x:Name="SearchNoResults" Text="{Binding NoResultsText}" Margin="20,14,20,0" FontSize="13" TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Visibility="{Binding HasNoResultsText, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <ListBox x:Name="SearchResultsList" Padding="8,4,8,10" BorderThickness="0" Background="Transparent"
+                     ItemsSource="{Binding ResultsView}" SelectedItem="{Binding SelectedResult}"
+                     ItemContainerStyle="{StaticResource SearchResultItem}"
+                     ItemTemplate="{StaticResource SearchResultTemplate}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Visibility="{Binding HasResults, Converter={StaticResource BoolToVisibilityConverter}}"
+                     AutomationProperties.Name="{Binding Search_Results, Source={x:Static strings:Strings.Instance}}"
+                     AutomationProperties.AutomationId="SearchResultsList">
+                <ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Margin="12,14,12,6" FontSize="12" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+            </ListBox>
+            <!-- Tells a screen reader which result is picked while the focus
+                 stays in the query box. -->
+            <TextBlock x:Name="SearchAnnouncement" Width="1" Height="1" Opacity="0" common:LiveText.Polite="True"
+                       Text="{Binding SelectedAnnouncement}"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

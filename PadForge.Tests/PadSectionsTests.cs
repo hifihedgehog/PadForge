@@ -429,7 +429,7 @@ namespace PadForge.Tests
                         Assert.Equal("MacrosSectionScroll", Name(content));
                         Assert.Equal("{Binding " + sectionKeys[section] + ", Source={x:Static strings:Strings.Instance}}",
                             (string)content.Attribute("AutomationProperties.Name"));
-                        Assert.Equal("32,0", (string)content.Attribute("Padding"));
+                        Assert.Equal("36,0", (string)content.Attribute("Padding"));
                         Assert.Equal("Disabled", (string)content.Attribute("HorizontalScrollBarVisibility"));
                         // The section holds the look of its rows beside its
                         // two cards.
@@ -624,7 +624,9 @@ namespace PadForge.Tests
         /// <summary>The page's code names each group by the tab it was, with
         /// the same pairs as the markup, and gives each stacked section its
         /// column. A pair missing here is a group whose rule the eviction
-        /// and the section's button cannot read.</summary>
+        /// and the section's button cannot read. The pairs are one table,
+        /// PadPage.TabOfGroupName, which Search places what it finds by too
+        /// (#574).</summary>
         [Fact]
         public void TheCodeBehindNamesEveryGroup()
         {
@@ -634,10 +636,8 @@ namespace PadForge.Tests
                 if (!PadViewModel.IsStackedSection(section)) continue;
                 foreach (int tab in PadViewModel.TabsOfSection(section))
                 {
-                    string key = tab == PadViewModel.AudioTabIndex ? "PadViewModel.AudioTabIndex"
-                        : tab == PadViewModel.BassShakersTabIndex ? "PadViewModel.BassShakersTabIndex"
-                        : tab.ToString();
-                    Assert.Contains("            " + key + " => " + Tabs[tab].Name + ",", code);
+                    Assert.True(PadForge.Views.PadPage.TabOfGroupName.TryGetValue(Tabs[tab].Name, out int named) && named == tab,
+                        Tabs[tab].Name + " is not named for tab " + tab);
                 }
             }
             foreach (string pair in new[]
@@ -698,9 +698,33 @@ namespace PadForge.Tests
             // The first section is named for what the slot's picture holds
             // (Buttons, Keys & Mouse, Notes & Controls, Hands), the rest by
             // their own strings.
-            Assert.Equal(new[] { "{Binding FirstSectionName}" }.Concat(new[] { "Sticks", "Rumble", "Motion", "Lights", "Macros" }
-                    .Select(k => "{Binding Pad_Section_" + k + ", Source={x:Static strings:Strings.Instance}}")),
-                buttons.Select(b => (string)Assert.Single(b.Elements()).Attribute("Text")));
+            var names = new[] { "{Binding FirstSectionName}" }.Concat(new[] { "Sticks", "Rumble", "Motion", "Lights", "Macros" }
+                    .Select(k => "{Binding Pad_Section_" + k + ", Source={x:Static strings:Strings.Instance}}")).ToList();
+            // A tab is its icon and its name in a row (the world-class
+            // pass), so the tab says its name itself: a panel has none.
+            var rows = buttons.Select(b => Assert.Single(b.Elements())).ToList();
+            Assert.All(rows, r => Assert.Equal("StackPanel", r.Name.LocalName));
+            Assert.Equal(names, rows.Select(r => (string)Assert.Single(r.Elements(), e => e.Name.LocalName == "TextBlock").Attribute("Text")));
+            Assert.Equal(new[] { "{Binding FirstSectionName, TargetNullValue='', FallbackValue=''}" }.Concat(names.Skip(1)),
+                buttons.Select(b => (string)b.Attribute("AutomationProperties.Name")));
+            // Each has one icon before its name: a line icon, and for
+            // Sticks & Triggers the stick's own filled shape.
+            Assert.All(rows, r => Assert.Equal(2, r.Elements().Count()));
+            Assert.Equal(new[] { "SectionButtonsGeometry", null, "SectionRumbleGeometry", "SectionMotionGeometry", "SectionLightsGeometry", "SectionMacrosGeometry" },
+                rows.Select(r => r.Elements().First().Name.LocalName == "DecorativeStrokeIcon"
+                    ? ((string)r.Elements().First().Attribute("Data")).Replace("{StaticResource ", string.Empty).TrimEnd('}')
+                    : null));
+            var stick = rows[1].Elements().First();
+            Assert.Equal("Path", stick.Name.LocalName);
+            Assert.Equal("{StaticResource ZackslyStickGeometry}", (string)stick.Attribute("Data"));
+            Assert.Equal("{StaticResource SectionIconShape}", (string)stick.Attribute("Style"));
+            Assert.Equal("LeftToRight", (string)stick.Attribute("FlowDirection"));
+            // The icon is ember on the tab whose section shows, and the
+            // tab stands on a lit underline.
+            string markup = ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml");
+            Assert.Equal(2, markup.Split(new[] { "<DataTrigger Binding=\"{Binding IsChecked, RelativeSource={RelativeSource AncestorType=RadioButton}}\" Value=\"True\">" }, StringSplitOptions.None).Length - 1);
+            Assert.Contains("<controls:Halo x:Name=\"UnderLight\" CornerRadius=\"1\" Radius=\"9\" Strength=\"0.32\"", markup);
+            Assert.Contains("<Setter TargetName=\"UnderLight\" Property=\"IsLit\" Value=\"True\"/>", markup);
 
             // The strip is in the header, above the content.
             var content = Sections(page)[0].Parent;
@@ -748,10 +772,28 @@ namespace PadForge.Tests
             var power = Named(page, "SlotPowerButton");
             Assert.Equal("StateToggleButton", power.Name.LocalName);
             Assert.Equal("Pad_SlotPower", Id(power));
-            Assert.Equal("{Binding SelectedSlotSummary}", (string)power.Attribute("DataContext"));
+            // The summary is set on the light around the button, which is
+            // the button's parent, so it reaches both.
+            var light = power.Parent;
+            Assert.Equal("Halo", light.Name.LocalName);
+            Assert.Equal("SlotPowerHalo", Name(light));
+            Assert.Equal("{Binding SelectedSlotSummary}", (string)light.Attribute("DataContext"));
+            Assert.Null(power.Attribute("DataContext"));
             Assert.Equal("{Binding IsEnabled}", (string)power.Attribute("IsOn"));
             Assert.Equal("SlotPower_Click", (string)power.Attribute("Click"));
             Assert.Contains(Named(page, "SlotPowerHost"), power.Ancestors());
+            // The pill is the cards' own, a step larger, and its words are
+            // the state's, in full in its tooltip over what a click does.
+            var pillStyle = Assert.Single(power.Descendants(), e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "Button");
+            Assert.Equal("{StaticResource StatePill}", (string)pillStyle.Attribute("BasedOn"));
+            Assert.Equal("{Binding StateWord}", (string)Named(page, "SlotStateWord").Attribute("Text"));
+            Assert.Equal("{Binding StateWord, Mode=OneWay, TargetNullValue='', FallbackValue=''}", (string)power.Attribute("AutomationProperties.HelpText"));
+            var tip = Assert.Single(power.Elements(), e => e.Name.LocalName == "Button.ToolTip");
+            Assert.Equal(new[] { "{Binding StateWord}", "{Binding Home_Card_Power, Source={x:Static strings:Strings.Instance}}" },
+                tip.Descendants().Where(e => e.Name.LocalName == "TextBlock").Select(e => (string)e.Attribute("Text")));
+            // The type tile and the pill's light read the same summary.
+            Assert.Equal(3, ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml")
+                .Split(new[] { "{Binding DataContext.Heat, ElementName=SlotPowerButton}" }, StringSplitOptions.None).Length - 1);
             // The host the window binds starts with no data. Left to
             // inherit, it would take the page's view model, which has no
             // SelectedSlotSummary, and fail every binding until the window
@@ -760,7 +802,6 @@ namespace PadForge.Tests
             Assert.DoesNotContain("SelectedSlotSummary", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.cs"));
             var word = Named(page, "SlotStateWord");
             Assert.Contains(power, word.Ancestors());
-            Assert.Equal("{Binding StatusText}", (string)word.Attribute("Text"));
             Assert.Equal("True", word.Attributes().Single(a => a.Name.LocalName == "LiveText.Polite").Value);
 
             // Driven by, a pill for each device, Add Device. The pills are a
@@ -781,14 +822,63 @@ namespace PadForge.Tests
                     && (string)e.Attribute("Property") == "AutomationProperties.Name").Attribute("Value"));
             Assert.Same(pills, Assert.Single(page.Descendants(),
                 e => (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}"));
-            // A pill shows its name, its link written out where it is
-            // Bluetooth, and its battery, as the board draws it: no glyph.
+            // A pill as its board draws it (the world-class pass): a light
+            // that is ember while the device sends input, its name, and for
+            // a connected device a hairline, the mark of a Bluetooth link
+            // and its battery, a meter of the level before the percentage
+            // (the first board wrote the number alone, and the owner asked
+            // for the picture back on 2026-11-13) with the word Low at or
+            // under the level Settings names. A device that is not
+            // connected says so.
             var pill = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "DataTemplate");
-            Assert.Equal(new[] { "{Binding Name}", "{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}", "{Binding BatteryText}" },
+            const string source = ", Source={x:Static strings:Strings.Instance}}";
+            Assert.Equal(new[] { "{Binding Name}", "{Binding BatteryText}", "{Binding Pad_Battery_Low" + source, "{Binding Home_Device_NotConnected" + source },
                 pill.Descendants().Select(e => (string)e.Attribute("Text")).Where(t => t != null));
+            var lamp = Assert.Single(pill.Descendants(), e => e.Name.LocalName == "Halo");
+            Assert.Equal("{Binding IsSending}", (string)lamp.Attribute("IsLit"));
+            Assert.Equal("Ellipse", Assert.Single(lamp.Elements()).Name.LocalName);
+            var meter = Assert.Single(pill.Descendants(), e => e.Name.LocalName == "BatteryMeter");
+            Assert.Equal("{Binding BatteryPercent}", (string)meter.Attribute("Percent"));
+            Assert.Equal("{Binding BatteryCharging}", (string)meter.Attribute("Charging"));
+            Assert.Equal("{Binding BatteryLow}", (string)meter.Attribute("Low"));
+            var percent = pill.Descendants().Single(e => (string)e.Attribute("Text") == "{Binding BatteryText}");
+            Assert.Contains(meter, percent.ElementsBeforeSelf());
+            Assert.Equal("{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}", (string)percent.Attribute("Visibility"));
+            Assert.Equal("{Binding BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}", (string)percent.Attribute("AutomationProperties.Name"));
+            Assert.Equal("{Binding BatteryLow, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)pill.Descendants().Single(e => (string)e.Attribute("Text") == "{Binding Pad_Battery_Low" + source).Attribute("Visibility"));
+            var link = Assert.Single(pill.Descendants(), e => e.Name.LocalName == "DecorativeStrokeIcon");
+            Assert.Equal("{StaticResource BluetoothLineGeometry}", (string)link.Attribute("Data"));
+            Assert.Equal("{Binding IsBluetooth, Converter={StaticResource BoolToVisibilityConverter}}", (string)link.Attribute("Visibility"));
+            Assert.Equal("{Binding Pad_Transport_Bluetooth" + source, (string)link.Attribute("ToolTip"));
+            // The link is a mark, so a screen reader is told it in words,
+            // and the hairline shows only before a link or a battery.
+            Assert.Contains("<DataTrigger Binding=\"{Binding IsBluetooth}\" Value=\"True\">\r\n                                                <Setter Property=\"AutomationProperties.HelpText\" Value=\"{Binding Pad_Transport_Bluetooth" + source + "\"/>", text);
+            Assert.Equal("{Binding HasLinkOrBattery, Converter={StaticResource BoolToVisibilityConverter}}",
+                (string)Assert.Single(pill.Descendants(), e => e.Name.LocalName == "Rectangle").Attribute("Visibility"));
             Assert.DoesNotContain(pill.Descendants(), e => e.Name.LocalName == "GlyphText");
-            Assert.Equal("{Binding HasTransportGlyph, Converter={StaticResource BoolToVisibilityConverter}}",
-                (string)pill.Descendants().Single(e => (string)e.Attribute("Text") == "{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}").Attribute("Visibility"));
+            // The selected device is filled and in the text's own color,
+            // one that is not connected stands in a dashed outline, and a
+            // low battery has a gold edge.
+            var container = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "ControlTemplate" && (string)e.Attribute("TargetType") == "ListBoxItem");
+            Assert.Single(container.Descendants(), e => Name(e) == "Dash" && (string)e.Attribute("StrokeDashArray") == "4 3");
+            Assert.Equal(new[] { "IsSelected", "IsMouseOver" },
+                container.Descendants().Where(e => e.Name.LocalName == "Trigger").Select(e => (string)e.Attribute("Property")));
+            Assert.Equal(new[] { "{Binding BatteryLow}", "{Binding IsOnline}", "{Binding IsBluetooth}" },
+                container.Descendants().Where(e => e.Name.LocalName == "DataTrigger").Select(e => (string)e.Attribute("Binding")));
+            // A device with a link or a battery says so, for the hairline.
+            var device = new PadViewModel.MappedDeviceInfo();
+            Assert.False(device.HasLinkOrBattery);
+            var raised = new List<string>();
+            device.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            device.TransportGlyph = "\uE702";
+            Assert.True(device.HasLinkOrBattery);
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.HasLinkOrBattery), raised);
+            device.TransportGlyph = string.Empty;
+            raised.Clear();
+            device.SetBattery(50, false, 15);
+            Assert.True(device.HasLinkOrBattery);
+            Assert.Contains(nameof(PadViewModel.MappedDeviceInfo.HasLinkOrBattery), raised);
             var add = Named(page, "AddDeviceButton");
             Assert.Equal("Pad_AddDevice", Id(add));
             Assert.Equal("AddDevice_Click", (string)add.Attribute("Click"));
@@ -994,7 +1084,12 @@ namespace PadForge.Tests
             var page = Page();
             var more = Named(page, "PadMoreButton");
             Assert.Equal("Pad_More", Id(more));
-            Assert.Equal("{Binding Common_More" + s, (string)more.Attribute("AutomationProperties.Name"));
+            // It reads the word More and then the controller it acts on,
+            // since a list on the page has a More of its own
+            // (ScreenReaderPassTests.AListUnderAHeading_ReadsTheHeading).
+            Assert.Null(more.Attribute("AutomationProperties.Name"));
+            var spoken = more.Elements().Single(e => e.Name.LocalName == "AutomationProperties.Name").Elements().Single();
+            Assert.Equal("{}{0}, {1} #{2}", (string)spoken.Attribute("StringFormat"));
             Assert.Equal("{Binding Common_More" + s, (string)more.Attribute("ToolTip"));
             Assert.Equal("MoreMenu_Click", (string)more.Attribute("Click"));
             // It shows in every section, so it has no visibility of its own.
@@ -1081,18 +1176,54 @@ namespace PadForge.Tests
             var ranges = scroll.Descendants().Where(e => e.Name.LocalName == "RangeSlider").ToList();
             Assert.Contains(ranges, r => r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True") && r.Attribute("Width") == null);
 
-            // The stick card: a title row, the two columns, then More.
+            // The stick card, as the Sticks board of the world-class pass
+            // draws it: a title row, its three parts (the settings, the
+            // curve, the live view) on one line while the card is wide
+            // (ThreePartPanelTests), then More.
             var more = Assert.Single(page.Descendants(), e => Id(e) == "Pad_More_Stick");
             var card = more.Parent!;
             Assert.Equal("StackPanel", card.Name.LocalName);
             Assert.Equal("{StaticResource CardBorder}", (string)card.Parent!.Attribute("Style"));
-            Assert.Equal(new[] { "DockPanel", "Grid", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
-            var columns = card.Elements().ElementAt(1);
-            var left = Assert.Single(columns.Elements(), e => (string)e.Attribute("Grid.Column") == "0");
-            var view = Assert.Single(columns.Elements(), e => (string)e.Attribute("Grid.Column") == "1");
-            Assert.Contains(left.Descendants(), e => Id(e) == "SensitivityBothChart");
-            Assert.DoesNotContain(view.Descendants(), e => e.Name.LocalName == "CurveEditor");
+            Assert.Equal(new[] { "DockPanel", "ThreePartPanel", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
+            var line = card.Elements().ElementAt(1);
+            Assert.Equal("22", (string)line.Attribute("Gap"));
+            Assert.Equal(new[] { "StackPanel", "StackPanel", "Border" }, line.Elements().Select(e => e.Name.LocalName));
+            var left = line.Elements().ElementAt(0);
+            var curve = line.Elements().ElementAt(1);
+            var view = line.Elements().ElementAt(2);
+            string Flex(XElement e, string name) => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "FlexLinePanel." + name);
+            // The settings: a column that grows by 60 and no more, so a
+            // reset stands beside its control.
+            Assert.Equal("{DynamicResource FirstRowSettingsBasis}", Flex(left, "Basis"));
+            Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)left.Attribute("MaxWidth"));
+            Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow", "SettingRow" }, left.Elements().Select(e => e.Name.LocalName));
+            Assert.All(left.Elements(), r => Assert.Equal("{StaticResource DzFirstLabel}", (string)r.Elements().First().Attribute("Style")));
+            Assert.Contains(left.Descendants(), e => Id(e) == "StickDeadZoneBothSlider");
+            Assert.Contains(left.Descendants(), e => Id(e) == "SensitivityBothCombo");
+            Assert.Contains(left.Descendants(), e => (string)e.Attribute("Click") == "CalibrateCenter_Click");
+            // The curve takes the room that is left, and the live view
+            // keeps its own width at the line's end.
+            Assert.Equal("330", Flex(curve, "Basis"));
+            Assert.Equal("720", (string)curve.Attribute("MaxWidth"));
+            Assert.Contains(curve.Descendants(), e => Id(e) == "SensitivityBothChart");
+            Assert.Null(Flex(view, "Basis"));
+            Assert.DoesNotContain(left.Descendants().Concat(view.Descendants()), e => e.Name.LocalName == "CurveEditor");
             Assert.DoesNotContain("ChartSize=\"96\"", PageText());
+            // The label column is the language's: the three numbers are
+            // English's, and the page sets them when it is shown.
+            XElement Number(string key) => Assert.Single(own.Elements(), e => (string)e.Attribute(X + "Key") == key);
+            Assert.Equal("96", Number("FirstRowLabelWidth").Value);
+            Assert.Equal("300", Number("FirstRowSettingsBasis").Value);
+            Assert.Equal("360", Number("FirstRowSettingsMost").Value);
+            Assert.Equal("{DynamicResource FirstRowLabelWidth}", Setter(Style("DzFirstLabel"), "Width"));
+            Assert.Equal("{StaticResource DzLabel}", (string)Style("DzFirstLabel").Attribute("BasedOn"));
+            // The head: the mark at 28, the name in the display face, the
+            // numbers in a text of their own, and Reset All.
+            var head = card.Elements().First();
+            Assert.Equal(new[] { "LabeledShapeIcon", "TextBlock", "Button", "TextBlock" }, head.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal("28", (string)head.Elements().First().Attribute("Width"));
+            Assert.Equal("{StaticResource HeroCardTitle}", (string)head.Elements().ElementAt(1).Attribute("Style"));
+            Assert.Equal("{Binding Title}", (string)head.Elements().ElementAt(1).Attribute("Text"));
 
             // Under More: two columns of groups, then the two axes' curves.
             var body = Assert.Single(more.Elements());
@@ -1115,10 +1246,27 @@ namespace PadForge.Tests
             // No rule between the groups: each has its label.
             Assert.DoesNotContain(body.Descendants().Take(400), e => e.Name.LocalName == "Separator" && e.Parent == body);
 
-            // A trigger's card: its three settings, the chart with its hint
-            // under it, and no More row.
+            // A trigger's card: its three settings beside the chart with its
+            // hint and the live meter under it, then More, where the range
+            // is typed and the raw values stand.
             var triggers = Named(page, "TabTriggers");
-            Assert.DoesNotContain(triggers.Descendants(), e => e.Name.LocalName == "MoreRow");
+            var triggerMore = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "MoreRow");
+            Assert.Equal("Pad_More_Trigger", Id(triggerMore));
+            var triggerCard = triggerMore.Parent!;
+            Assert.Equal(new[] { "DockPanel", "FlexLinePanel", "MoreRow" }, triggerCard.Elements().Select(e => e.Name.LocalName));
+            var triggerLine = triggerCard.Elements().ElementAt(1);
+            Assert.Equal(new[] { "StackPanel", "StackPanel" }, triggerLine.Elements().Select(e => e.Name.LocalName));
+            var triggerRows = triggerLine.Elements().First();
+            Assert.Equal("{DynamicResource FirstRowSettingsBasis}", Flex(triggerRows, "Basis"));
+            Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow" }, triggerRows.Elements().Select(e => e.Name.LocalName));
+            // The range's row reads its two ends beside the slider and has
+            // no box: the boxes are under More.
+            var rangeRow = triggerRows.Elements().First();
+            Assert.Equal(new[] { "TextBlock", "RangeSlider", "TextBlock", "Button" }, rangeRow.Elements().Select(e => e.Name.LocalName));
+            var typed = triggerMore.Descendants().Where(e => e.Name.LocalName == "TextBox").Select(e => ((string)e.Attribute("Text")).Split(',')[0]).ToArray();
+            Assert.Equal(new[] { "{Binding DeadZone", "{Binding MaxRange", "{Binding DeadZoneDigit", "{Binding MaxRangeDigit", "{Binding AntiDeadZoneDigit" }, typed);
+            Assert.Single(triggerMore.Descendants(), e => e.Name.LocalName == "TextBox" && ((string)e.Attribute("Text")).Contains("AntiDeadZoneDigit"));
+            Assert.DoesNotContain(triggerLine.Descendants(), e => e.Name.LocalName == "TextBox" && ((string)e.Attribute("Text")).Contains("Digit"));
             Assert.DoesNotContain(triggers.Descendants(), e => e.Name.LocalName == "Separator");
             var preset = Assert.Single(triggers.Descendants(), e => Id(e) == "TriggerPresetCombo");
             Assert.Equal("{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}",
@@ -1394,8 +1542,14 @@ namespace PadForge.Tests
             var wraps = lightbar.Descendants().Where(e => e.Name.LocalName == "WrapPanel"
                 && e.Elements().Any(b => b.Descendants().Any(d => d.Name.LocalName == "ColorPickerControl"))).ToList();
             Assert.Equal(new[] { 2, 3 }, wraps.Select(w => w.Elements().Count()));
-            Assert.All(wraps.SelectMany(w => w.Elements()), block =>
+            Assert.All(wraps.SelectMany(w => w.Elements()), group =>
             {
+                // Each block stands in a group that reads its color's name and
+                // draws nothing (ScreenReaderPassTests.AColorsBox_...).
+                Assert.Equal("GroupBox", group.Name.LocalName);
+                Assert.Equal("{StaticResource BareGroupBox}", (string)group.Attribute("Style"));
+                Assert.Null(group.Attribute("Margin"));
+                var block = Assert.Single(group.Elements());
                 Assert.Equal("Border", block.Name.LocalName);
                 Assert.Equal("0,0,8,8", (string)block.Attribute("Margin"));
                 Assert.Null(block.Attribute("Grid.Column"));
@@ -1550,14 +1704,10 @@ namespace PadForge.Tests
             }
             Assert.Equal(18, seen.Count);
 
-            // It opens a slot from its Home card by the card's title, and
-            // picks a slot's device among the Driven by pills, each by an
-            // id. The card's title was the word "Slot" until Home, and the
-            // script kept looking for the word.
-            Assert.Contains("Find-UIA -Parent $Card -Aid \"Dash_SlotTitle\"", script);
+            // It picks a slot's device among the Driven by pills by an id
+            // (TheCaptureScriptOpensAControllerPageThroughItsSidebarEntry
+            // holds how it opens the slot's page).
             Assert.DoesNotContain("-eq 'Slot'", script);
-            Assert.Contains("AutomationProperties.AutomationId=\"Dash_SlotTitle\"",
-                ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml"));
             Assert.Contains("Find-UIA -Parent $padPage -Aid \"Pad_DrivenByList\"", script);
             Assert.Single(page.Descendants(), e => Id(e) == "Pad_DrivenByList"
                 && (string)e.Attribute("SelectedItem") == "{Binding SelectedMappedDevice, Mode=TwoWay}");
@@ -1573,6 +1723,215 @@ namespace PadForge.Tests
             // any more: the first of them is the Buttons section now.
             Assert.DoesNotContain("$tabs[0]", script);
             Assert.DoesNotContain("Controller Tab\"", script);
+        }
+
+        /// <summary>Where the screenshot script frames each scrolled shot
+        /// of the controller page: a row of its anchor table names a
+        /// scrolled view and an element in it, by an id or by the English
+        /// word the page shows there. A row whose id the page dropped, or
+        /// whose element moved to another view, would lose its shot.</summary>
+        [Fact]
+        public void TheCaptureScriptsAnchorTable_NamesWhatThePageHas()
+        {
+            string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1").Replace("\r\n", "\n");
+            int at = script.IndexOf("$script:PadAnchors = @{\n", StringComparison.Ordinal);
+            Assert.True(at > 0, "no anchor table");
+            string table = script.Substring(at, script.IndexOf("\n}\n", at, StringComparison.Ordinal) - at);
+            var rows = System.Text.RegularExpressions.Regex.Matches(table,
+                @"^    ""(?<shot>[a-z0-9-]+)""\s+= @\{ Column = ""(?<column>\w+)""; (?:Aid = ""(?<aid>\w+)""|Name = ""(?<name>[^""]+)""; Type = ""(?<type>\w+)""(?:; Within = ""(?<within>\w+)"")?)(?:; At = (?<at>[0-9.]+))? \}$",
+                System.Text.RegularExpressions.RegexOptions.Multiline);
+            // Positive control: every row of the table was read.
+            Assert.True(rows.Count >= 20, "only " + rows.Count + " rows read");
+            Assert.Equal(table.Split('\n').Count(l => l.StartsWith("    \"", StringComparison.Ordinal)), rows.Count);
+
+            var page = Page();
+            var english = XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"))
+                .Root.Elements("data").ToLookup(d => (string)d.Element("value"), d => (string)d.Attribute("name"));
+            XElement Find(string id) => Assert.Single(page.Descendants(), e => Id(e) == id || Name(e) == id);
+            foreach (System.Text.RegularExpressions.Match row in rows)
+            {
+                string shot = row.Groups["shot"].Value;
+                XElement column = Find(row.Groups["column"].Value);
+                Assert.Equal("ScrollViewer", column.Name.LocalName);
+                if (row.Groups["aid"].Success)
+                {
+                    XElement el = Find(row.Groups["aid"].Value);
+                    Assert.True(el.Ancestors().Contains(column), shot + ": " + row.Groups["aid"].Value + " is not in " + row.Groups["column"].Value);
+                    continue;
+                }
+                Assert.Equal("Text", row.Groups["type"].Value);
+                XElement scope = column;
+                if (row.Groups["within"].Success)
+                {
+                    scope = Find(row.Groups["within"].Value);
+                    Assert.True(scope.Ancestors().Contains(column), shot + ": " + row.Groups["within"].Value + " is not in " + row.Groups["column"].Value);
+                }
+                var keys = english[row.Groups["name"].Value].ToList();
+                Assert.True(keys.Count > 0, shot + ": no string reads '" + row.Groups["name"].Value + "'");
+                Assert.True(scope.Descendants().Any(e => e.Name.LocalName == "TextBlock"
+                        && keys.Any(k => ((string)e.Attribute("Text") ?? "").StartsWith("{Binding " + k + ",", StringComparison.Ordinal))),
+                    shot + ": no text in its view shows '" + row.Groups["name"].Value + "'");
+            }
+        }
+
+        /// <summary>The screenshot script opens a controller's page through
+        /// its sidebar entry, selected by pattern: the entry holds a power
+        /// switch and a type chip, and a click on its middle can land on
+        /// either. It finds the entry by the slot's type, read from the
+        /// settings file, and opens no page from a Home card.</summary>
+        [Fact]
+        public void TheCaptureScriptOpensAControllerPageThroughItsSidebarEntry()
+        {
+            string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1").Replace("\r\n", "\n");
+            string Body(string name)
+            {
+                int start = script.IndexOf("\nfunction " + name + " {\n", StringComparison.Ordinal);
+                Assert.True(start >= 0, "no function " + name);
+                return script.Substring(start, script.IndexOf("\n}\n", start, StringComparison.Ordinal) - start);
+            }
+            string open = Body("Open-SlotPage");
+            Assert.Contains("$pad = Get-SlotPadIndex $Type", open);
+            Assert.Contains("$tag = \"Pad\" + ($pad + 1)", open);
+            Assert.Contains("if (Nav $tag) {", open);
+            Assert.Contains("(Find-SidebarEntry $tag).GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern)", open);
+            Assert.DoesNotContain("Click-", open);
+            string index = Body("Get-SlotPadIndex");
+            Assert.Contains("Read-SettingsXml $PadForgeXml", index);
+            Assert.Contains("SelectNodes(\"SlotCreated/*\")", index);
+            Assert.Contains("SelectNodes(\"SlotControllerTypes/*\")", index);
+            Assert.DoesNotContain("Save-SettingsXml", index);
+            Assert.Contains("Select-El $el -Label $Name", Body("Nav"));
+            foreach (string gone in new[] { "Open-SlotCard", "SlotsItemsControl", "Dash_SlotTitle" })
+                Assert.DoesNotContain(gone, script);
+            // What it rests on: a controller entry's tag, and the id made of it.
+            Assert.Contains("public string Tag => $\"Pad{PadIndex + 1}\";", ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "MainViewModel.cs"));
+            Assert.Contains("SetNavAutomationId(menuItem, navItem.Tag);", ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs"));
+            // Positive control: the passes open their pages this way.
+            Assert.True(System.Text.RegularExpressions.Regex.Matches(script, "Open-SlotPage -Type ").Count >= 25);
+        }
+
+        /// <summary>The page's two rows of tabs are gone, and so is every
+        /// point the screenshot script had measured on them: fractions of
+        /// the window that fall in the header now, where a click picks
+        /// another device, leaves for the Devices page or opens the Preset
+        /// list. Gone with them are the helpers that only those points
+        /// used.</summary>
+        [Fact]
+        public void NoControllerPageRecipeClicksWhereTheOldPageHadAControl()
+        {
+            string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1");
+            foreach (string gone in new[]
+            {
+                "0.1174", "0.0755", "0.2879", "0.02538", "0.0441", "0.6897", "0.4278", "0.3981", "0.3495", "0.3775",
+                "0.7635", "0.4363", "0.232 *", "0.226 *", "0.175 *", "0.669 *", "0.7246 *", "0.5072 *", "0.925 *",
+                "Left + 431", "Right - 53", "ModelViewPart", "Find-LowestTextBandY", "Get-ScreenBrightCount", "Get-ScreenBytes",
+                "Select-Preset", "Select-ListRowByName", "MenuItemsHost", "$tabsSp[0]", "$tabsV[0]",
+                "Open-MappingRow", "Open-MenuEditor", "Capture-MenuStyleShots", "Expand-DisconnectTarget",
+            })
+                Assert.DoesNotContain(gone, script);
+        }
+
+        /// <summary>No wheel turns on the controller page or on an extra's
+        /// page. A wheel there changes what the pointer rests on: the 3D
+        /// view zooms and keeps the zoom, a closed picker with the focus
+        /// takes its next choice, an EQ handle changes its Q. The script's
+        /// wheel helpers refuse while such a page shows, those pages scroll
+        /// through a view's own scroll pattern, and the recipes that run on
+        /// them call no wheel helper.</summary>
+        [Fact]
+        public void TheWheelStaysOffTheControllerAndExtrasPages()
+        {
+            string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1").Replace("\r\n", "\n");
+            string Body(string name)
+            {
+                int start = script.IndexOf("\nfunction " + name + " {\n", StringComparison.Ordinal);
+                Assert.True(start >= 0, "no function " + name);
+                return script.Substring(start, script.IndexOf("\n}\n", start, StringComparison.Ordinal) - start);
+            }
+            string[] wheel = { "ScrollContent", "Scroll-ToAnchor", "Scroll-ToAnchors", "ScrollPane", "Scroll-PaneToAnchor", "Scroll-AnchorToTop" };
+            foreach (string helper in wheel)
+            {
+                string body = Body(helper);
+                int guard = body.IndexOf("if (-not (Test-WheelSafe)) { return", StringComparison.Ordinal);
+                Assert.True(guard > 0, helper + " does not ask whether a wheel is safe");
+                foreach (string turn in new[] { "[Win32]::ScrollAt(", "[Win32]::MoveTo(", "ScrollContent -Clicks", "ScrollPane -" })
+                {
+                    int first = body.IndexOf(turn, StringComparison.Ordinal);
+                    Assert.True(first < 0 || first > guard, helper + " turns the wheel before it asks");
+                }
+            }
+            string safe = Body("Test-WheelSafe");
+            Assert.Contains("$script:StateFailures +=", safe);
+            Assert.Contains("$script:WheelUnsafe = \"the controller page\"", Body("Open-SlotPage"));
+            Assert.Contains("$script:WheelUnsafe = \"an extra's page\"", Body("Open-Extra"));
+            Assert.Contains("$script:WheelUnsafe = $null", Body("Nav"));
+            Assert.Contains("$script:WheelUnsafe = $null", Body("Wait-PadForgeReady"));
+
+            // Every wheel event is sent from a helper, or from a recipe of
+            // the Devices or the Settings page.
+            string[] lines = script.Split('\n');
+            string inside = null;
+            int sent = 0;
+            foreach (string line in lines)
+            {
+                var head = System.Text.RegularExpressions.Regex.Match(line, @"^function ([\w-]+) \{");
+                if (head.Success) inside = head.Groups[1].Value;
+                if (!line.Contains("[Win32]::ScrollAt(", StringComparison.Ordinal) || line.TrimStart().StartsWith("#", StringComparison.Ordinal)) continue;
+                sent++;
+                Assert.Contains(inside, new[] { "ScrollContent", "ScrollPane", "Scroll-AnchorToTop", "Capture-UpdatesCard", "Select-DeviceByName36" });
+            }
+            // Positive control: the scan saw the wheel being sent.
+            Assert.True(sent >= 5, "only " + sent + " wheel sends were found");
+
+            // The recipes of the controller page and of the Extras pages.
+            foreach (string recipe in new[]
+            {
+                "Tab", "Wait-PadTab", "Open-PickedRow", "Select-MappingRow", "Show-PadAnchor", "Scroll-PadGroupToTop",
+                "Capture-SourcePicker", "Capture-IconPicker", "Capture-MotionRow", "Capture-MenuShots", "Capture-MacroShots",
+                "Capture-RowOptionShots", "Capture-PeripheralTabs", "Capture-FalconPadShots", "Capture-ScreenColorLighting",
+                "Capture-Ds3Preset", "Capture-Colorways", "Capture-AnnotationOverlay",
+                "Open-Extra", "Show-ExtraAnchors", "Capture-ExtrasPages", "Capture-ExtrasCatalog", "Capture-WebPlainSection",
+                "Capture-GameModsCard", "Capture-GameTelemetryCard", "Capture-TelemetryFormatEditor", "Capture-ScreenOverlayCard",
+            })
+            {
+                string body = Body(recipe);
+                foreach (string helper in wheel)
+                    Assert.False(System.Text.RegularExpressions.Regex.IsMatch(body, @"(?<![\w-])" + System.Text.RegularExpressions.Regex.Escape(helper) + @"(?![\w-])"),
+                        recipe + " calls " + helper);
+                Assert.DoesNotContain("[Win32]::ScrollAt(", body);
+            }
+        }
+
+        /// <summary>The Macros list and the Menus list carry ids, so the
+        /// screenshot script picks a macro or a menu in any language and
+        /// does not take the part switch of the same name for the list. A
+        /// macro's steps and a menu's cells are lists it finds by name.</summary>
+        [Fact]
+        public void TheMacroAndMenuLists_CarryTheIdsTheCaptureScriptPicksThemBy()
+        {
+            var page = Page();
+            foreach (var (id, key) in new[] { ("MacroList", "Pad_Macros"), ("MenuList", "Pad_Menus") })
+            {
+                XElement list = Assert.Single(page.Descendants(), e => Id(e) == id);
+                Assert.Equal("ListBox", list.Name.LocalName);
+                Assert.Equal("{Binding " + key + ", Source={x:Static strings:Strings.Instance}}", (string)list.Attribute("AutomationProperties.Name"));
+                Assert.Equal("{StaticResource PartList}", (string)list.Attribute("Style"));
+            }
+            foreach (string name in new[] { "ActionsList", "CellsList" })
+                Assert.Equal("ListBox", Named(page, name).Name.LocalName);
+            string script = ExtrasPageTests.RepoText("tools", "capture_all.ps1");
+            foreach (string id in new[] { "MacroList", "MenuList", "ActionsList", "CellsList" })
+                Assert.Contains("Select-PadListItem -ListAid \"" + id + "\"", script);
+            // A control picked through its list row stays picked, so each
+            // recipe that picks one ends on a fresh process.
+            Assert.Contains("$script:RowPicked = $true", script);
+            foreach (string recipe in new[] { "function Capture-RowOptionShots {", "function Capture-MotionRow {", "function Capture-SourcePickerSet {" })
+            {
+                int start = script.IndexOf(recipe, StringComparison.Ordinal);
+                Assert.True(start > 0, recipe);
+                string body = script.Substring(start, script.IndexOf("\n}", start, StringComparison.Ordinal) - start);
+                Assert.Contains("Drop-RowPick | Out-Null", body);
+            }
         }
 
         /// <summary>The eight strings the header and the sections added are

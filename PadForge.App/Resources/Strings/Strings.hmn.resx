@@ -74,6 +74,7 @@
   <data name="Common_On" xml:space="preserve"><value>Qhib</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Kaw</value></data>
   <data name="Common_More" xml:space="preserve"><value>Ntxiv</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Saib tag nrho</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Nruab lawm</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Tsis tau nruab</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Npaj txhij</value></data>
@@ -84,7 +85,7 @@
   <data name="Server_FailedToStart" xml:space="preserve"><value>Pib tsis tau</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tsis paub</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Neej ntawd</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Nrhiav...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Nrhiav…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Mus ntxiv</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Nres</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Pib</value></data>
@@ -128,17 +129,14 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Yuam kev: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} tsim tsis tau.</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Neej ntawd</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Tsis tau xaiv khoom siv.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Tshem khoom siv tawm lawm.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Hla</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Tom ntej</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Tiav lawm</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Khoom siv</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Tswj los ntawm</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ntxiv khoom siv</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Tsawg</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Duab</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Teev npe</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
@@ -177,6 +175,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Kev teeb tsa</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Dav dav</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Cov driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Ntaub ntawv thiab kev ceev ntiag tug</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Nrhiav kev teeb tsa</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Kaj</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tsaus</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Kev hloov tshiab</value></data>
@@ -197,10 +201,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Tseem nyob: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Nyeem tsis tau: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Tsis tau tshem tawm: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Tshem tawm lawm</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Khaws cia</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Nyeem tsis tau</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Tshem tsis tau</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Cia PlayStation 3 controller, PlayStation Move thiab Navigation controller txuas tau los ntawm Bluetooth. Nws nyob hauv PadForge thiab raug nruab thawj zaug uas ib lub ntawm cov no pair nrog lub PC.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Txuas PlayStation 3 controller los ntawm Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Tshem tawm BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Qhov no tshem BthPS3 tawm ntawm lub PC no: nws cov driver, lub filter uas nws ntxiv rau Bluetooth, thiab WinUSB driver uas PadForge muab rau PlayStation 3 controller kom pair tau. PadForge yuav nres nws lub engine ua ntej, thiab Bluetooth yuav kaw ib pliag thaum cov driver nres. Tom qab ntawd, PlayStation 3, Move thiab Navigation controller tsuas ua haujlwm tau los ntawm USB xwb. Thaum pair ib lub dua, BthPS3 yuav raug nruab dua.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Qhov no yog yam uas yuav raug tshem tawm ntawm lub PC no. Tom qab ntawd, PlayStation 3, Move thiab Navigation controller tsuas ua haujlwm tau los ntawm USB xwb, mus txog thaum pair ib lub dua thiab BthPS3 raug nruab dua.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Tab tom nyeem seb BthPS3 tseg dab tsi rau ntawm lub PC no…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 tsis tau tseg dab tsi rau ntawm lub PC no kom tshem tawm.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini siv cov driver no, yog li lawv tseem nyob ntev li DsHidMini tseem nruab nyob.</value></data>
@@ -235,7 +244,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ntaus "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(tsis muaj ntawv)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ntawv</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Fais fab</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Khaws Controller Pak cia…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Tus lej tus ua si</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Tus ua si</value></data>
@@ -251,7 +259,6 @@
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Xaiv duab…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Xaiv duab rau {0}…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Tshem duab profile</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Light gun</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibration phom</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Calibration phom</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Fais fab</value></data>
@@ -380,7 +387,6 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Cov POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Cov khawm</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Rho tawm</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Kaw</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro tsis lees txais profile no ntawm {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profile no tsis muaj HID descriptor, yog li ua tsis tau ib lub controller los ntawm nws.</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(khoom siv HID tsis muaj npe)</value></data>
@@ -410,6 +416,7 @@
   <data name="Pad_Formula_Chip_Divide" xml:space="preserve"><value>Faib</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Kev txav nruab nrab, duab thiab nqi deadzone txhua axis, kab nkhaus rau txhua axis, range, kev tsav</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Range ua tus lej, raw value</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_ScrollUp" xml:space="preserve"><value>Nce</value></data>
   <data name="Pad_ScrollDown" xml:space="preserve"><value>Nqis</value></data>
@@ -575,7 +582,7 @@
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>lub touchpad no</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Tab tom kos…</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Npe</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Sim dua</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Muab npe rau gesture no</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Yuav tsum muaj npe</value></data>
 
   <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Kov stick sab laug</value></data>
@@ -651,21 +658,20 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Cov profile</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profile uas siv tam sim no:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tsis muaj slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Tshiab</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tsis muaj controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profile tshiab</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Kho</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Xaiv ib qho profile ua ntej.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Tsis tuaj yeem kho lossis rho tawm profile “Neej ntawd” uas los nrog PadForge.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Rho tawm profile</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Kho profile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Lub npe profile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profile tshiab</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Npe</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profile tshiab</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Theej kev teeb tsa los ntawm...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Xaiv ib qho khoom siv los theej nws cov kev teeb tsa:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Theej los ntawm</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Hloov cov mapping thiab kev kho raws khoom siv ntawm {0} nrog lwm lub controller li.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Ntxiv lwm lub controller cov macro rau {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -880,6 +886,17 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor sab xis</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Npe ntawm layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Npe</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tuav nrog</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Nias nrog</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Txheej tom ntej nrog</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Txheej dhau los nrog</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Thiab nrog</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Xaiv ib qho input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Cov control tsis tau map</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Siv txheej Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tsis ua dab tsi</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Hom, hom input, sijhawm thiab xim</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Hom</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Nias tuav</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -891,8 +908,6 @@
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Rov teeb tsa dua rau neej ntawd (⇧)</value></data>
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Rho tawm layer</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ncua sij hawm</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Khawm tom ntej</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Khawm dhau los</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Khawm</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Teeb tsa range ntawm kev tig</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Tshem tus cim no kom tso range rau lub wheel thiab nws tus kheej software. Ces PadForge yuav tsis xa range rau lub wheel.</value></data>
@@ -935,7 +950,6 @@
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Rov teeb tsa dua rau 250 Hz</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Xaiv ib lub suab ntawm {0}</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_Icon_None" xml:space="preserve"><value>Tsis muaj icon</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Xaiv ib lub icon</value></data>
@@ -953,12 +967,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Muab npe rau lub PC no</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Rov teeb tsa dua</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Lo lus zais Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge Touchpad</value>
@@ -980,6 +990,9 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Nrhiav ntaub ntawv…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Xaiv ib lub suab</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Lub suab nrov los ntawm lub controller lub speaker, lossis lub PC li thaum nws tsis muaj.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Siv suab</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Tso {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1003,11 +1016,10 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Pair</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Pair ib lub controller</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Qhib lub hau roj teeb thiab nias lub khawm SYNC liab. Cia PadForge nrhiav mus txog thaum koj lub controller tshwm.</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Pair</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Tab tom nrhiav. Nias lub khawm SYNC tam sim no.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Tab tom nrhiav ib lub remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Cov controller uas nrhiav tau</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Tseem nrhiav tsis tau ib lub controller. Saib kom cov teeb xiav tab tom ntsais.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Pair {0} lawm. Nws yuav tshwm rau hauv koj daim ntawv teev khoom siv.</value></data>
@@ -1027,9 +1039,8 @@
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Npaj txhij lawm. Rho txoj hlua tawm ntawm lub controller thiab nias lub khawm PS. Nws yuav tshwm rau hauv koj daim ntawv teev khoom siv.</value></data>
   <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nrhiav tsis tau DualShock 3 ntawm USB. Txuas nws nrog ib txoj hlua USB thiab sim dua.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Kaw</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(tab tom tos)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Npe:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Npe</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Muab npe rau tag no</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Sau npe</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Controller VR</value></data>
@@ -1058,14 +1069,14 @@
   <data name="Dashboard_HeadTrackingAxisX" xml:space="preserve"><value>Qaij sab laug thiab sab xis</value></data>
   <data name="Dashboard_HeadTrackingAxisZ" xml:space="preserve"><value>Qaij rau pem hauv ntej thiab tom qab</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Khawm zais</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Kawm ib lub khawm</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Tshuab:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Pib kawm</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Tos ib pliag…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Npe:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Tso lub khawm.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Kauj ruam {0} ntawm {1}</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Npe</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Muab npe rau lub khawm no</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Sau npe</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Khawm uas kawm lawm</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Pib dua</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Tseem tsis tau kawm ib lub khawm li.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Kawm ntawm {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Key: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Sab laug</value></data>
@@ -1079,7 +1090,7 @@
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Kev ci</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Kev ceev</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Nrhiav game</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} game</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Cov game</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Nrhiav tsis tau game hauv Steam store.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Tab tom nrhiav hauv Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Tshiab tshaj</value></data>
@@ -1139,9 +1150,6 @@
   </data>
   <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD thiab mouse</value></data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Kev ua si sib ntaus</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Saib starter profile</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Starter profile</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Khaws cia profile</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Ntxiv starter profile "{0}" lawm.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Sib tw tsheb</value></data>
   <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Hotkey</value></data>
@@ -1171,6 +1179,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Ceeb toom thaum txog lossis qis dua</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Ua rau controller co thiab</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Sim ceeb toom</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Saib qhov ceeb toom</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Mloog</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Ib txwm</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Npe</value></data>
@@ -1209,7 +1218,7 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profile: {0}</value>
+    <value>Profile siv tam sim no: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Tos lwm lub PC...</value>
@@ -1398,6 +1407,9 @@
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Saum lub vijtsam</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Qhia cov menu, cov txheej thiab kev hloov profile thaum koj ua si.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Nrhiav kev teeb tsa, khoom siv thiab profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Nrhiav</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Cov txiaj ntsig</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Cov khawm</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Cov key thiab mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Cov note thiab control</value></data>
@@ -1438,4 +1450,101 @@
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR tab tom khiav, driver txuas lawm</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Sab laug</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Sab xis</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Txoj kev tig ntawm lub taub hau yog kab Head Tracker hauv [Cov khoom siv]. Map yaw ntawm lub taub hau rau ib txoj axis ntawm stick hauv ntu Cov khawm ntawm ib lub controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Cov nqi no yog kab Game Telemetry hauv [Cov khoom siv]. Map lawv hauv ntu Cov khawm ntawm ib lub controller lossis siv lawv los pib macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ib lub menu qhov chaw, qhov loj thiab qhov pom tseeb teeb tsa rau ntawm lub menu, hauv ntu [Cov macro thiab menu] ntawm ib lub controller.</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yam uas tshwm</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Theej chaw nyob</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Lub xov tooj uas txuas los yuav tshwm ntawm no thiab hauv nplooj Cov khoom siv, qhov uas koj muab nws rau ib lub controller.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Nrhiav khoom siv</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Tag nrho</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Txuas lawm</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Tsis muaj khoom siv twg phim.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>roj teeb {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>roj teeb {0}, tab tom them</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Siv los ntawm</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Kev teeb tsa</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Txhua axis, khawm thiab sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Nias: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Theej cov ntsiab lus</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Khoom</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Hom</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Peev xwm</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Kev txuas</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Roj teeb</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Tus lej serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Tsab kho</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ntxiv rau {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Khaws qhov teeb tsa tam sim no rau ntawm no</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Hloov qhov teeb tsa uas khaws cia hauv “{0}” nrog qhov tam sim no? Nws lub npe thiab nws cov game tseem nyob.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Hloov</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>thaum</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ntawm</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Tau cov profile</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Starter</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kev khaws cia yuav ntxiv ib lub profile ib txwm uas koj kho tau.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Dhau los ua</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Ua rau controller co thiab, Rov ceeb toom txhua, Ceeb toom thaum them puv</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Zais cov khoom siv ntawm cov game, Zais cov khoom siv ntawm txhua zaus qhib, Cov program uas tso cai</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Tshiab tshaj lawm.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Cov ntaub ntawv qhia</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Kuaj xyuas update</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Nrhiav cov credit</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Qhia tag nrho cov credit</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Qhia cov credit tsawg dua</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Tsis muaj credit twg phim “{0}”.</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Xaiv yam uas cov game yuav pom. Lub controller raug ntxiv tam sim thaum koj nias.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Tswj los ntawm</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Feem ntau</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Output ntxiv</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Qhov layout uas feem ntau PC game xav tau.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Rau cov game uas muaj PlayStation cov cim khawm, touchpad thiab lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Layout khawm Switch, rau cov game thiab emulator uas xav tau nws.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Cov note thiab control change rau software suab paj nruag.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>VR controller virtual los ntawm SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Yog xav hloov hom tom qab, nias lub type chip ntawm lub controller. Nias ib zaug xwb.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Twb muaj ib lub VR controller lawm. Ib lub tswj tau ob txhais tes.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Pair ib lub Bluetooth controller</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Pib los ntawm ib lub profile npaj txhij</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, roj teeb {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Roj teeb {0}</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} los txav</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} los qhib</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} ntawm txhua qhov chaw</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Cov nplooj</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Cov kev ua</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>hauv Ntxiv</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>hauv ib kab cov kev xaiv</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Tsis muaj dab tsi hauv PadForge phim “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Nrhiav “{0}” hauv cov ntaub ntawv qhia</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Rho tawm {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Lub profile thiab nws txoj cai hloov tus kheej raug tshem tawm. Qhov no rov ua tsis tau.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Lub profile raug tshem tawm. Qhov no rov ua tsis tau.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Pib tsis muaj controller. Nws thauj nws tus kheej thaum ib qho ntawm nws cov game nyob tom hauv ntej.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ntxiv ib qho game uas tab tom khiav</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tsis muaj lwm qhov program qhib qhov rais.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tshem tawm {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Txheej Base lub npe, icon thiab xim ntawm Shift Layer Flyout thiab hauv kab cov txheej.</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Qhib lub hau roj teeb thiab nias lub khawm SYNC liab.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Cia lub remote nyob ze lub PC no thaum nws cov teeb ntsais.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair ib lub DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Pair ib lub Move lossis Navigation controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Ntxiv ib lub serial controller</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Ntxiv ib lub DJI remote</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Xaiv yam uas nws qhia. Tsis muaj dab tsi hloov mus txog thaum koj khaws cia.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tsis muaj dab tsi mus txog lub port kom txog thaum koj khaws cia.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>tus kho kab nkhaus</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Khiav: {0} ntawm {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Starter profile</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Cov profile npaj txhij rau ib hom game tag nrho. Xaiv ib qho, muab rau ib lub controller twg los tau, thiab ua si.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ntawm {1} qhib</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Cov profile uas tau import no muaj version tshiab dua hauv Steam Workshop. Import lawv dua los ntawm Tau cov profile kom tau cov kev hloov.</value></data>
 </root>

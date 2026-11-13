@@ -57,13 +57,13 @@ namespace PadForge
         public SettingsService SettingsService => _settingsService;
         private RecorderService _recorderService;
         private DeviceService _deviceService;
-        private Popup _controllerTypePopup;
-        private DateTime _popupClosedAt;
+        private Popup _typeBar;
+        private DateTime _typeBarClosedAt;
         // The anchor of the type bar that closed last, so the click that closed
         // it reopens nothing while a click on another card's chip still opens.
-        private UIElement _popupClosedAnchor;
+        private UIElement _typeBarClosedAnchor;
         // Profile switcher flyout (#175 item 8): own open/close-debounce
-        // pair so it never cross-suppresses the controller-type popup.
+        // pair so it never cross-suppresses the type bar.
         private Popup _profileSwitcherPopup;
         private DateTime _profilePopupClosedAt;
 
@@ -224,8 +224,9 @@ namespace PadForge
             // in Light.
             UpdateSteelLayer();
 
-            // First-run welcome (#175): shown once, marker-gated.
-            Loaded += MaybeShowFirstRun;
+            // Pre-v4 builds kept a marker file beside the exe. Nothing reads it,
+            // and only PadForge.xml and crash.log belong there.
+            try { System.IO.File.Delete(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.firstrun")); } catch { }
 
             // wpfui's TitleBarButton fires its Command twice on a finger tap
             // because two paths converge: a Win32 hwnd hook catches WM_NCLBUTTONUP
@@ -326,10 +327,10 @@ namespace PadForge
                     ActivateNavItem(nvi);
             }));
 
-            // Close Add Controller popup on window events.
-            LocationChanged += (_, _) => CloseControllerPopup();
-            SizeChanged += (_, _) => CloseControllerPopup();
-            Deactivated += (_, _) => CloseControllerPopup();
+            // Close the type bar on window events.
+            LocationChanged += (_, _) => CloseTypeBar();
+            SizeChanged += (_, _) => CloseTypeBar();
+            Deactivated += (_, _) => CloseTypeBar();
 
             // Create root ViewModel.
             _viewModel = new MainViewModel();
@@ -338,7 +339,7 @@ namespace PadForge
             // NavigationView and no child of this window until wpf-ui's
             // template takes it in. Handing it the view model by name keeps
             // its bindings from waiting on that.
-            EngineFoot.DataContext = _viewModel;
+            EngineFootHalo.DataContext = _viewModel;
 
             // Set child DataContexts.
             HomePageView.DataContext = _viewModel.Dashboard;
@@ -347,6 +348,9 @@ namespace PadForge
             DevicesPageView.DataContext = _viewModel.Devices;
             SettingsPageView.DataContext = _viewModel.Settings;
             ProfilesPageView.DataContext = _viewModel.Settings;
+            // The About page shows the version and the update state the
+            // Settings page holds, and runs the same update commands (#574).
+            AboutPageView.DataContext = _viewModel.Settings;
             // PadPage too: the pages are instantiated eagerly (visibility-
             // toggled, not navigated), so PadPage's whole binding tree
             // evaluates at window realization. Without a pad context it
@@ -389,9 +393,13 @@ namespace PadForge
             Views.SettingsPage.InputService = _inputService;
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
-            // Drop-zone import (#175): dropped .pfprofile files run the same
-            // consumer as the Import button's file dialog.
+            // Drop-zone import (#175): dropped profile files run the same
+            // consumer as Get Profiles' Import a File.
             ProfilesPageView.ImportProfileFile = ImportProfileFromFile;
+            // A starter's tile on the page adds its profile as Get
+            // Profiles' Save Profile does, and the message line says so.
+            ProfilesPageView.AddStarter = info => _viewModel.StatusText = string.Format(
+                Strings.Instance.Status_StarterImported_Format, AddWorkshopProfile(info.Build(), false));
             _inputService.ToggleMainWindow = () => Dispatcher.Invoke(() =>
             {
                 var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
@@ -549,12 +557,11 @@ namespace PadForge
             _viewModel.Settings.SaveAsProfileRequested += OnSaveAsProfile;
             _viewModel.Settings.DeleteProfileRequested += OnDeleteProfile;
             _viewModel.Settings.ExportProfileRequested += OnExportProfile;
-            _viewModel.Settings.ImportProfileRequested += OnImportProfile;
+            _viewModel.Settings.SaveSetupHereRequested += OnSaveSetupHere;
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
-            _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
-            _viewModel.Settings.BrowseStarterProfilesRequested += OnBrowseStarterProfiles;
+            _viewModel.Settings.GetProfilesRequested += (_, tab) => ShowGetProfiles(tab);
             _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
             _viewModel.Settings.CheckWorkshopUpdatesRequested += OnCheckWorkshopUpdates;
 
@@ -887,9 +894,6 @@ namespace PadForge
                 _inputService.RefreshMappingDropdowns();
                 _viewModel.Settings.RefreshDriverGuards();
             };
-
-            // After assigning a device to a slot, navigate to that controller page.
-            _deviceService.NavigateToSlotRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
 
             // Engine signaled an HM virtual controller's inactivity timeout
             // fired (all mapped devices offline past the configured threshold).
@@ -2279,10 +2283,32 @@ namespace PadForge
             // Build the sidebar navigation items dynamically.
             BuildNavigationItems();
 
-            // Wire Home's "Add Controller" to show type-selection popup.
-            HomePageView.AddControllerRequested += (s, e) =>
+            // Add a Controller (#574): its tiles make a controller driven by
+            // the device Driven By names, and the X and Escape close it. Home's
+            // tile opens it, Use It on Home's offer opens it for that device,
+            // and Home's first page makes a controller from its own tiles for
+            // the controller it names, or opens it from the link to the other
+            // types. The first page's foot opens the Devices page and Get
+            // Profiles on its ready-made starters.
+            AddControllerView.TypeChosen += (s, type) => CreateController(type,
+                (AddControllerView.DataContext as AddControllerViewModel)?.SelectedDevice ?? Guid.Empty);
+            AddControllerView.CloseRequested += (s, e) => CloseAddController(returnFocus: true, restoreNav: true);
+            AddControllerHost.CloseRequested += (s, e) => CloseAddController(returnFocus: true, restoreNav: true);
+            HomePageView.AddControllerRequested += (s, e) => OpenAddController(Guid.Empty, HomePageView.AddControllerCardElement);
+            HomePageView.HomeOfferUseRequested += (s, args) => OpenAddController(args.Device, args.Anchor);
+            HomePageView.FirstRunTypeChosen += (s, type) => CreateController(type, _viewModel.Dashboard.FirstRunDeviceGuid);
+            HomePageView.FirstRunMoreTypesRequested += (s, opener) => OpenAddController(_viewModel.Dashboard.FirstRunDeviceGuid, opener);
+            HomePageView.FirstRunPairRequested += (s, e) => SelectNavItemByTag("Devices");
+            HomePageView.FirstRunProfileRequested += (s, e) => ShowGetProfiles(GetProfilesTab.Starters);
+            // Search (#574): the title bar's box, Ctrl+K and the dialog.
+            WireSearch();
+
+            // Home turns back to its first page when the last controller goes:
+            // it names a controller at once, not at the next device walk.
+            _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
-                ShowControllerTypePopup(HomePageView.AddControllerCardElement, PlacementMode.Bottom);
+                if (e.PropertyName == nameof(DashboardViewModel.IsFirstRun) && _viewModel.Dashboard.IsFirstRun)
+                    _inputService?.ReEvaluateFirstRunDevice();
             };
 
             // Wire the active-profile pill (#175 item 8): click opens the
@@ -2305,12 +2331,10 @@ namespace PadForge
             _inputService.AutoProfileSwitchApplied += () =>
                 TitleProfilePill.Flare();
 
-            // Home's offer (#574): Use It opens the type bar under its own
-            // button, and the controller made there takes the device. The
-            // offer stays up until the device is on a virtual controller,
-            // so a bar closed with nothing picked leaves it standing.
-            HomePageView.HomeOfferUseRequested += (s, args) =>
-                ShowControllerTypePopup(args.Anchor, PlacementMode.Bottom, deviceForNewSlot: args.Device);
+            // The Devices page's Use It and New Controller (#574): Add a
+            // Controller opens with the device picked to drive the new
+            // controller, as Home's offer opens it.
+            DevicesPageView.NewControllerRequested += (s, args) => OpenAddController(args.Device, args.Anchor);
 
             // An extra that is in use opens its own page, and Open Extras
             // opens the catalog, which is where arriving at Extras from
@@ -2321,6 +2345,14 @@ namespace PadForge
                 ExtrasPageView.Show(key);
             };
             HomePageView.OpenExtrasRequested += (s, e) => SelectNavItemByTag("Extras");
+            // Add Device on a card with none mapped: the Devices page, as
+            // the controller page's own Add Device opens.
+            HomePageView.AddDeviceRequested += (s, e) => SelectNavItemByTag("Devices");
+            // The notes under an extra's cards (#574): Devices, where the Head
+            // Tracker and Game Telemetry rows are, and Macros & Menus, where a
+            // menu's own place, size and opacity are set.
+            ExtrasPageView.OpenDevicesRequested += (s, e) => SelectNavItemByTag("Devices");
+            ExtrasPageView.OpenMenusRequested += (s, e) => OpenFirstControllerMenus();
 
             // Home's delete and toggle events. The X on a controller's
             // card and Delete in the pad page's More menu (#574) delete it
@@ -2373,7 +2405,7 @@ namespace PadForge
             // A Home card's type chip opens the type bar under its card
             // (discussion #543), and the bar runs ChangeSlotType.
             HomePageView.SlotTypeChipClicked += (s, args) =>
-                ShowControllerTypePopup(args.Card, PlacementMode.Bottom, args.SlotIndex, args.Chip);
+                ShowTypeBar(args.Card, PlacementMode.Bottom, args.SlotIndex, args.Chip);
 
             HomePageView.SlotSwapRequested += (s, args) =>
             {
@@ -3268,6 +3300,7 @@ namespace PadForge
             // With the commit count and hash a dev build is named by, so a
             // report from one says exactly which build it came from (#457).
             _viewModel.Settings.ApplicationVersion = Services.BuildIdentity.Display;
+            _viewModel.Settings.VersionNumber = Services.BuildIdentity.VersionText(Services.BuildIdentity.Version);
             _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
 
             // Check SDL3.dll availability.
@@ -3327,22 +3360,14 @@ namespace PadForge
                 if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
                 Activate();
 
-                var dialog = new Wpf.Ui.Controls.MessageBox
-                {
-                    Title = Strings.Instance.LegacyCleanup_Title,
-                    Content = string.Format(
-                        Strings.Instance.LegacyCleanup_Prompt_Format, string.Join(", ", found)),
-                    PrimaryButtonText = Strings.Instance.Common_Uninstall,
-                    CloseButtonText = Strings.Instance.Common_KeepLegacyDrivers,
-                };
-
-                var result = await dialog.ShowDialogAsync();
-                if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
+                if (Views.ConfirmDialog.Show(this, Strings.Instance.LegacyCleanup_Title,
+                        string.Format(Strings.Instance.LegacyCleanup_Prompt_Format, string.Join(", ", found)),
+                        Strings.Instance.Common_Uninstall, cancelText: Strings.Instance.Common_KeepLegacyDrivers))
                 {
                     // Both uninstalls used to run right here, on the UI thread.
                     // This method is entered via Dispatcher.BeginInvoke and the
-                    // continuation after ShowDialogAsync resumes on the
-                    // dispatcher, so a driver removal (elevation prompt, service
+                    // modal confirm returns on the dispatcher's thread, so a
+                    // driver removal (elevation prompt, service
                     // stop, device-node teardown) froze the whole window with no
                     // overlay and no progress until it returned. Route them
                     // through the same helper every other driver operation uses:
@@ -3379,15 +3404,10 @@ namespace PadForge
 
                     if (cleanupErrors.Count > 0)
                     {
-                        var err = new Wpf.Ui.Controls.MessageBox
-                        {
-                            Title = Strings.Instance.LegacyCleanup_Title,
-                            Content = string.Format(
-                                Strings.Instance.LegacyCleanup_Failed_Format,
+                        Views.ConfirmDialog.Notice(this, Strings.Instance.LegacyCleanup_Title,
+                            string.Format(Strings.Instance.LegacyCleanup_Failed_Format,
                                 string.Join(Environment.NewLine, cleanupErrors)),
-                            CloseButtonText = Strings.Instance.Common_OK,
-                        };
-                        _ = await err.ShowDialogAsync();
+                            closeText: Strings.Instance.Common_OK);
                     }
                 }
 
@@ -3799,8 +3819,10 @@ namespace PadForge
             }
 
             // Restore selection AFTER the guard is cleared so
-            // NavView_SelectionChanged processes it normally.
-            if (!string.IsNullOrEmpty(selectedTag))
+            // NavView_SelectionChanged processes it normally. While Add a
+            // Controller is open no entry is drawn as the current one, and
+            // its close gives the sidebar back its current entry.
+            if (!ShellDialogOpen && !string.IsNullOrEmpty(selectedTag))
             {
                 // Styling only: the rebuild restores which item looks
                 // selected and must not re-navigate. Falls back to the
@@ -3891,6 +3913,21 @@ namespace PadForge
             grid.Children.Add(flame);
             return grid;
         }
+
+        /// <summary>The corner of a controller's pill: half its height.</summary>
+        internal const double PillCorner = 19;
+
+        /// <summary>How far the light around a forging pill reaches: the
+        /// pane's inset at the pill's two ends (Shell.xaml, the 12 of the
+        /// sidebar's grid), so the light is gone where the pane ends and
+        /// nothing of it is cut.</summary>
+        internal const double PillLightReach = 12;
+
+        /// <summary>The brush of a pill's outline while it is not the
+        /// selected one: soft ember while forging, gold while waiting, the
+        /// pill's own hairline while cold.</summary>
+        internal static string PillOutlineKey(bool lit, bool cooling)
+            => lit ? "EmberRingSoftBrush" : cooling ? "WaitRingBrush" : "SteelPillLineBrush";
 
         /// <summary>Reduced motion (#175 item 98): one gate for every
         /// code-driven Forever animation in this window. Mirrors the OS
@@ -4089,8 +4126,8 @@ namespace PadForge
             // 2026-10-30). The seven-tile switcher left the card: its buttons
             // covered the row, so only the two numbers opened the slot's page,
             // and a stray click changed the type outright. The active tile
-            // stays as a chip, and a click on it opens the type bar Add
-            // Controller uses (ShowControllerTypePopup). The chip draws the
+            // stays as a chip, and a click on it opens the type bar
+            // (ShowTypeBar). The chip draws the
             // type's own logo or MDL2 glyph at 13px. While the controller
             // runs the chip is ember with dark ink. Otherwise it is steel
             // with the text's color (#574).
@@ -4150,7 +4187,7 @@ namespace PadForge
             typeChip.Click += (s, e) =>
             {
                 e.Handled = true; // Prevent NavigationView selection change.
-                ShowControllerTypePopup(menuItem, PlacementMode.Right, navItem.PadIndex, typeChip);
+                ShowTypeBar(menuItem, PlacementMode.Right, navItem.PadIndex, typeChip);
             };
             row.Children.Add(typeChip);
 
@@ -4193,20 +4230,22 @@ namespace PadForge
 
             // The pill (#574): a full-round outline around the row, as wide
             // as the sidebar's entries. The selected controller's pill takes
-            // an ember outline and a warm fill. The others rest clear on the
-            // sidebar and lift one step under the pointer. Heat is the
-            // flame's color and the chip's fill, and nothing glows. The
-            // Border is also the drag, drop and click surface.
+            // an ember outline and a warm fill. Of the others, a forging one
+            // has a soft ember outline and wash, a waiting one a gold
+            // outline, and a cold one the pill's own hairline, and each
+            // lifts one step under the pointer. A forging pill stands in a
+            // soft light, stronger for the selected one (the world-class
+            // pass). The Border is also the drag, drop and click surface.
             bool picked = IsControllerTagSelected(navItem.Tag);
             var card = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(18),
-                MinHeight = 36,
-                Padding = new Thickness(4, 0, 10, 0),
+                CornerRadius = new CornerRadius(PillCorner),
+                MinHeight = 38,
+                Padding = new Thickness(4, 0, 12, 0),
                 BorderThickness = new Thickness(1),
                 Tag = navItem.PadIndex,
-                // With the entry's own 2 under it, 6 between pills.
-                Margin = new Thickness(0, 0, 0, 4)
+                // With the entry's own 2 under it, 8 between pills.
+                Margin = new Thickness(0, 0, 0, 6)
             };
             if (picked)
             {
@@ -4215,11 +4254,17 @@ namespace PadForge
             }
             else
             {
-                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "SteelPillLineBrush");
-                card.Background = System.Windows.Media.Brushes.Transparent;
+                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty,
+                    PillOutlineKey(lit, cooling));
+                void Rest()
+                {
+                    if (lit) card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "EmberWashBrush");
+                    else card.Background = System.Windows.Media.Brushes.Transparent;
+                }
+                Rest();
                 card.MouseEnter += (s, e) => card.SetResourceReference(
                     System.Windows.Controls.Border.BackgroundProperty, "SteelPaneHoverBrush");
-                card.MouseLeave += (s, e) => card.Background = System.Windows.Media.Brushes.Transparent;
+                card.MouseLeave += (s, e) => Rest();
             }
 
             if (!navItem.IsEnabled)
@@ -4258,6 +4303,22 @@ namespace PadForge
                 cardDeleteBtn.LostKeyboardFocus += (s, e) => Show(card.IsMouseOver);
                 surface.Children.Add(deleteHost);
             }
+            // The light around a forging pill. It is the first of the
+            // pill's children, so the row is drawn over it, and its margin
+            // takes it out to the pill's own outline, past the padding and
+            // the edge. It draws only outside that outline. It reaches as
+            // far as the pane's inset and no farther, so it fades out at
+            // the pane's two edges, where anything past them is cut.
+            surface.Children.Insert(0, new PadForge.Controls.Halo
+            {
+                IsHitTestVisible = false,
+                CornerRadius = PillCorner,
+                Radius = PillLightReach,
+                Strength = picked ? 0.18 : 0.07,
+                Rim = picked ? 0.35 : 0,
+                Margin = new Thickness(-5, -1, -13, -1),
+                IsLit = lit,
+            });
             card.Child = surface;
 
             // The Preset scrolls on the same card hover that reveals the X.
@@ -4285,16 +4346,19 @@ namespace PadForge
             }
         }
 
-        /// <summary>Opens what a sidebar entry stands for: the Add Controller
-        /// popup, or the entry's page, marked active. A click, a key press
-        /// and UI Automation's Invoke all come here.</summary>
+        /// <summary>Opens what a sidebar entry stands for: Add a Controller,
+        /// or the entry's page, marked active. A click, a key press and UI
+        /// Automation's Invoke all come here. Any other entry closes Add a
+        /// Controller.</summary>
         private void ActivateNavItem(NavigationViewItem nvi)
         {
             var tag = nvi.Tag.ToString();
             if (tag == "AddController")
-                ShowControllerTypePopup(nvi);
+                OpenAddController(Guid.Empty, nvi);
             else if (!_rebuildingControllerSection)
             {
+                CloseAddController(returnFocus: false, restoreNav: false);
+                CloseSearch(returnFocus: false, restoreNav: false);
                 // Clear active state on all items, set on clicked one.
                 foreach (var mi in NavView.MenuItems)
                     if (mi is NavigationViewItem other) other.IsActive = false;
@@ -4374,7 +4438,7 @@ namespace PadForge
         /// <summary>True when this tag is the focused controller page (a "PadN"
         /// tag equal to the app-wide selection).</summary>
         private bool IsControllerTagSelected(string tag)
-            => tag != null && tag.StartsWith("Pad") && tag == _viewModel.SelectedNavTag;
+            => !ShellDialogOpen && tag != null && tag.StartsWith("Pad") && tag == _viewModel.SelectedNavTag;
 
         // The controller tag whose pill is drawn as selected (null when a
         // page that is not a controller's is open), so a selection change
@@ -4387,7 +4451,8 @@ namespace PadForge
         private void RefreshControllerSelectionVisuals()
         {
             if (_navHome == null) return;
-            string sel = _viewModel.SelectedNavTag;
+            // No pill is ringed while a dialog stands over the page area.
+            string sel = ShellDialogOpen ? null : _viewModel.SelectedNavTag;
             if (sel == null || !sel.StartsWith("Pad")) sel = null;
             if (sel == _pickedControllerTag) return;
             string prev = _pickedControllerTag;
@@ -5252,31 +5317,26 @@ namespace PadForge
         }
 
         /// <summary>
-        /// Shows a popup anchored to the given element with controller type buttons.
-        /// With no slot it is Add Controller's: a click creates a new slot of that
-        /// type and navigates to it. With a slot it is that card's type chip's
-        /// (discussion #543): the slot's type is lit, and a click runs
-        /// ChangeSlotType. The opener takes the keyboard focus back when the bar
-        /// closes, and defaults to the anchor. With a device it is Home's offer's
-        /// (#574): the new slot takes that device, by the entry point a device
-        /// dropped on a slot takes.
+        /// Shows the type bar under a controller's type chip (discussion #543):
+        /// the slot's type is lit, and a click on another runs ChangeSlotType.
+        /// The opener takes the keyboard focus back when the bar closes, and
+        /// defaults to the anchor.
         /// </summary>
-        private void ShowControllerTypePopup(UIElement anchor, PlacementMode placement = PlacementMode.Right,
-            int retypeSlot = -1, UIElement opener = null, Guid deviceForNewSlot = default)
+        private void ShowTypeBar(UIElement anchor, PlacementMode placement, int slot, UIElement opener)
         {
-            // If the popup is already open, close it instead of opening a duplicate.
-            if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
+            // If the bar is already open, close it instead of opening a duplicate.
+            if (_typeBar != null && _typeBar.IsOpen)
             {
-                _controllerTypePopup.IsOpen = false;
-                _controllerTypePopup = null;
+                _typeBar.IsOpen = false;
+                _typeBar = null;
                 return;
             }
 
-            // Suppress reopening if this anchor's popup was just dismissed within
+            // Suppress reopening if this anchor's bar was just dismissed within
             // the same click cycle. Another anchor opens at once, so a click on a
             // second card's type chip opens that card's bar.
-            if (ReferenceEquals(_popupClosedAnchor, anchor)
-                && (DateTime.UtcNow - _popupClosedAt).TotalMilliseconds < 300)
+            if (ReferenceEquals(_typeBarClosedAnchor, anchor)
+                && (DateTime.UtcNow - _typeBarClosedAt).TotalMilliseconds < 300)
                 return;
 
             var popup = new Popup
@@ -5288,13 +5348,13 @@ namespace PadForge
             };
             popup.Closed += (s, e) =>
             {
-                _controllerTypePopup = null;
-                _popupClosedAt = DateTime.UtcNow;
-                _popupClosedAnchor = anchor;
+                _typeBar = null;
+                _typeBarClosedAt = DateTime.UtcNow;
+                _typeBarClosedAnchor = anchor;
             };
-            _controllerTypePopup = popup;
+            _typeBar = popup;
 
-            // Center the popup horizontally below the anchor when using Bottom placement.
+            // Center the bar horizontally below the anchor when using Bottom placement.
             if (placement == PlacementMode.Bottom && anchor is FrameworkElement fe)
             {
                 popup.Opened += (s, e) =>
@@ -5309,13 +5369,15 @@ namespace PadForge
                 };
             }
 
-            // Separate shadow element pattern: shadow on empty border behind,
+            // Separate shadow element pattern: shadow on an empty border behind,
             // content border on top without Effect (avoids corner artifacts).
+            // Both are the raised steel surface, with the pill's edge (#574).
+            // Resource references follow a change of theme while the bar is open.
             var container = new System.Windows.Controls.Grid { Margin = new Thickness(10) };
 
             var shadowBorder = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
+                CornerRadius = new CornerRadius(10),
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     BlurRadius = 8,
@@ -5323,19 +5385,20 @@ namespace PadForge
                     ShadowDepth = 2
                 }
             };
+            shadowBorder.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SteelRaisedBrush");
             container.Children.Add(shadowBorder);
 
             var border = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
+                CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(6),
-                // 1px stroke (#175): flyouts carry the same edge as cards.
                 BorderThickness = new Thickness(1)
             };
-            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
+            border.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SteelRaisedBrush");
+            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "SteelPillLineBrush");
             container.Children.Add(border);
 
-            // Dismiss on any click outside the popup content.
+            // Dismiss on any click outside the bar.
             System.Windows.Input.MouseButtonEventHandler dismissHandler = (s, e) =>
             {
                 if (!popup.IsOpen) return;
@@ -5346,7 +5409,7 @@ namespace PadForge
                     {
                         if (parent == border) return;
                         // TreeWalk, not VisualTreeHelper: this fires for any
-                        // click in the window while the popup is open, and
+                        // click in the window while the bar is open, and
                         // OriginalSource can be an inline Run (#333).
                         parent = PadForge.Common.TreeWalk.Parent(parent);
                     }
@@ -5356,343 +5419,12 @@ namespace PadForge
             PreviewMouseDown += dismissHandler;
             popup.Closed += (s, e) => PreviewMouseDown -= dismissHandler;
 
-            // Theme-aware popup background.
-            void ApplyPopupTheme()
-            {
-                bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
-                    == Wpf.Ui.Appearance.ApplicationTheme.Dark;
-                // Raised steel (#175): the flyout sits one step above the card fill.
-                var color = dark ? System.Windows.Media.Color.FromRgb(0x1B, 0x23, 0x33)
-                                 : System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
-                var brush = new System.Windows.Media.SolidColorBrush(color);
-                shadowBorder.Background = brush;
-                border.Background = brush;
-            }
-            ApplyPopupTheme();
-
-            // Live-update if theme changes while popup is open.
-            void OnThemeChangedWhileOpen(Wpf.Ui.Appearance.ApplicationTheme currentTheme, System.Windows.Media.Color _)
-                => Dispatcher.BeginInvoke(ApplyPopupTheme);
-            Wpf.Ui.Appearance.ApplicationThemeManager.Changed += OnThemeChangedWhileOpen;
-            popup.Closed += (s, e) =>
-            {
-                Wpf.Ui.Appearance.ApplicationThemeManager.Changed -= OnThemeChangedWhileOpen;
-            };
-
             var stack = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
-
-            if (retypeSlot >= 0)
-            {
-                AddRetypeButtons(stack, popup, retypeSlot);
-                OpenTypePopup();
-                return;
-            }
-
-            // Total active slots is the binding constraint (MaxPads = 16
-            // across all six groups). When the global total is at the cap
-            // every "Add" button disables uniformly. Per-type counts are
-            // kept for the at-capacity tooltip text.
-            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0, vrCount = 0;
-            int totalActive = 0;
-            for (int i = 0; i < InputManager.MaxPads; i++)
-            {
-                if (!SettingsManager.SlotCreated[i]) continue;
-                totalActive++;
-                switch (_viewModel.Pads[i].OutputType)
-                {
-                    case VirtualControllerType.Xbox: xboxCount++; break;
-                    case VirtualControllerType.PlayStation: playstationCount++; break;
-                    case VirtualControllerType.Nintendo: nintendoCount++; break;
-                    case VirtualControllerType.Extended: extendedCount++; break;
-                    case VirtualControllerType.Midi: midiCount++; break;
-                    case VirtualControllerType.KeyboardMouse: kbmCount++; break;
-                    case VirtualControllerType.Vr: vrCount++; break;
-                }
-            }
-            bool globalAtCapacity = totalActive >= InputManager.MaxPads;
-
-            // Xbox button — theme-aware icon fill. Uses the Xbox 360 SVG
-            // asset to represent the Xbox family in the UI.
-            var xboxPopupPath = new System.Windows.Shapes.Path
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            xboxPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool xboxAtCapacity = xboxCount >= SettingsManager.MaxXbox360Slots;
-            bool xboxDisabled = globalAtCapacity || xboxAtCapacity;
-            if (xboxDisabled) xboxPopupPath.Opacity = 0.35;
-            var xboxBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !xboxDisabled,
-                Content = xboxPopupPath,
-                ToolTip = xboxAtCapacity
-                        ? string.Format(Strings.Instance.Main_Xbox_Max_Format, SettingsManager.MaxXbox360Slots)
-                        : Strings.Instance.ControllerType_Xbox,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = xboxDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(xboxBtn, "AddXbox360Btn");
-            // Named by its type. When the type is unavailable the tooltip
-            // gives the reason, as help text, and the peer reports the
-            // entry unavailable.
-            System.Windows.Automation.AutomationProperties.SetName(xboxBtn, Strings.Instance.ControllerType_Xbox);
-            xboxBtn.Click += (s, e) =>
-            {
-                if (xboxDisabled) return;
-                CreateFromBar(VirtualControllerType.Xbox);
-            };
-            stack.Children.Add(xboxBtn);
-
-            // PlayStation button — theme-aware icon fill. Uses the DS4 SVG
-            // asset to represent the PlayStation family in the UI.
-            var playstationPopupPath = new System.Windows.Shapes.Path
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            playstationPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool playstationAtCapacity = playstationCount >= SettingsManager.MaxPlayStationSlots;
-            bool playstationDisabled = globalAtCapacity || playstationAtCapacity;
-            if (playstationDisabled) playstationPopupPath.Opacity = 0.35;
-            var playstationBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !playstationDisabled,
-                Content = playstationPopupPath,
-                ToolTip = playstationAtCapacity
-                        ? string.Format(Strings.Instance.Main_PlayStation_Max_Format, SettingsManager.MaxPlayStationSlots)
-                        : Strings.Instance.ControllerType_PlayStation,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = playstationDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            // AutomationId kept as "AddDS4Btn" for stable UI-automation hookup.
-            System.Windows.Automation.AutomationProperties.SetAutomationId(playstationBtn, "AddDS4Btn");
-            System.Windows.Automation.AutomationProperties.SetName(playstationBtn, Strings.Instance.ControllerType_PlayStation);
-            playstationBtn.Click += (s, e) =>
-            {
-                if (playstationDisabled) return;
-                CreateFromBar(VirtualControllerType.PlayStation);
-            };
-            stack.Children.Add(playstationBtn);
-
-            // Nintendo button, theme-aware icon fill. Uses the Switch logo
-            // to represent the Nintendo family in the UI.
-            var nintendoPopupPath = new System.Windows.Shapes.Path
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                Data = System.Windows.Media.Geometry.Parse(SwitchSvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            nintendoPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool nintendoAtCapacity = nintendoCount >= SettingsManager.MaxNintendoSlots;
-            bool nintendoDisabled = globalAtCapacity || nintendoAtCapacity;
-            if (nintendoDisabled) nintendoPopupPath.Opacity = 0.35;
-            var nintendoBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !nintendoDisabled,
-                Content = nintendoPopupPath,
-                ToolTip = nintendoAtCapacity
-                        ? string.Format(Strings.Instance.Main_Nintendo_Max_Format, SettingsManager.MaxNintendoSlots)
-                        : Strings.Instance.ControllerType_Nintendo,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = nintendoDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(nintendoBtn, "AddNintendoBtn");
-            System.Windows.Automation.AutomationProperties.SetName(nintendoBtn, Strings.Instance.ControllerType_Nintendo);
-            nintendoBtn.Click += (s, e) =>
-            {
-                if (nintendoDisabled) return;
-                CreateFromBar(VirtualControllerType.Nintendo);
-            };
-            stack.Children.Add(nintendoBtn);
-
-            // Extended button — theme-aware icon fill.
-            var extendedPopupPath = new System.Windows.Shapes.Path
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                Data = System.Windows.Media.Geometry.Parse(ExtendedSvgPath),
-                Width = 28,
-                Height = 28,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            extendedPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            bool extendedAtCapacity = extendedCount >= SettingsManager.MaxExtendedSlots;
-            bool extendedDisabled = globalAtCapacity || extendedAtCapacity;
-            if (extendedDisabled) extendedPopupPath.Opacity = 0.35;
-            var extendedBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !extendedDisabled,
-                Content = extendedPopupPath,
-                ToolTip = extendedAtCapacity
-                        ? string.Format(Strings.Instance.Main_Extended_Max_Format, SettingsManager.MaxExtendedSlots)
-                        : Strings.Instance.ControllerType_Extended,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = extendedDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(extendedBtn, "AddRawBtn");
-            System.Windows.Automation.AutomationProperties.SetName(extendedBtn, Strings.Instance.ControllerType_Extended);
-            extendedBtn.Click += (s, e) =>
-            {
-                if (extendedDisabled) return;
-                CreateFromBar(VirtualControllerType.Extended);
-            };
-            stack.Children.Add(extendedBtn);
-
-            // Keyboard+Mouse button — MDL2 glyph E961, theme-aware foreground.
-            var kbmPopupIcon = new PadForge.Controls.GlyphText
-            {
-                Text = "\uE961",
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 28,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            kbmPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
-            bool kbmAtCapacity = kbmCount >= SettingsManager.MaxKeyboardMouseSlots;
-            bool kbmDisabled = globalAtCapacity || kbmAtCapacity;
-            if (kbmDisabled) kbmPopupIcon.Opacity = 0.35;
-            var kbmPopupBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !kbmDisabled,
-                Content = kbmPopupIcon,
-                ToolTip = kbmAtCapacity ? string.Format(Strings.Instance.Main_KBM_Max_Format, SettingsManager.MaxKeyboardMouseSlots)
-                        : Strings.Instance.ControllerType_KeyboardMouse,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = kbmDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(kbmPopupBtn, "AddKeyboardMouseBtn");
-            System.Windows.Automation.AutomationProperties.SetName(kbmPopupBtn, Strings.Instance.ControllerType_KeyboardMouse);
-            kbmPopupBtn.Click += (s, e) =>
-            {
-                if (kbmDisabled) return;
-                CreateFromBar(VirtualControllerType.KeyboardMouse);
-            };
-            stack.Children.Add(kbmPopupBtn);
-
-            // MIDI button — theme-aware icon fill.
-            var midiPopupIcon = new PadForge.Controls.GlyphText
-            {
-                Text = "\uE8D6",
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 28,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            midiPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
-            bool midiAvailable = _viewModel.Settings.IsMidiAvailable;
-            bool midiAtCapacity = midiCount >= SettingsManager.MaxMidiSlots;
-            bool midiDisabled = !midiAvailable || globalAtCapacity || midiAtCapacity;
-            if (midiDisabled) midiPopupIcon.Opacity = 0.35;
-            string midiTooltip = !midiAvailable ? Strings.Instance.Main_MIDI_NotRunning
-                               : midiAtCapacity ? string.Format(Strings.Instance.Main_MIDI_Max_Format, SettingsManager.MaxMidiSlots)
-                               : Strings.Instance.ControllerType_MIDI;
-            var midiBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !midiDisabled,
-                Content = midiPopupIcon,
-                ToolTip = midiTooltip,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = midiDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(midiBtn, "AddMidiBtn");
-            System.Windows.Automation.AutomationProperties.SetName(midiBtn, Strings.Instance.ControllerType_MIDI);
-            midiBtn.Click += (s, e) =>
-            {
-                if (midiDisabled) return;
-                CreateFromBar(VirtualControllerType.Midi);
-            };
-            stack.Children.Add(midiBtn);
-
-            // VR button. Theme-aware icon fill.
-            var vrPopupIcon = new PadForge.Controls.GlyphText
-            {
-                Text = "",
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 28,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            vrPopupIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
-            bool vrAvailable = PadForge.Common.Input.HMaestroVRController.IsAvailable();
-            bool vrAtCapacity = vrCount >= SettingsManager.MaxVrSlots;
-            bool vrDisabled = !vrAvailable || globalAtCapacity || vrAtCapacity;
-            if (vrDisabled) vrPopupIcon.Opacity = 0.35;
-            string vrTooltip = !vrAvailable ? Strings.Instance.Main_VR_RequiresSteamVR
-                             : vrAtCapacity ? string.Format(Strings.Instance.Main_VR_Max_Format, SettingsManager.MaxVrSlots)
-                             : Strings.Instance.ControllerType_VR;
-            var vrBtn = new PadForge.Controls.AvailabilityButton
-            {
-                IsAvailable = !vrDisabled,
-                Content = vrPopupIcon,
-                ToolTip = vrTooltip,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(8),
-                MinWidth = 0,
-                Cursor = vrDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
-            };
-            System.Windows.Automation.AutomationProperties.SetAutomationId(vrBtn, "AddVrBtn");
-            System.Windows.Automation.AutomationProperties.SetName(vrBtn, Strings.Instance.ControllerType_VR);
-            vrBtn.Click += (s, e) =>
-            {
-                if (vrDisabled) return;
-                CreateFromBar(VirtualControllerType.Vr);
-            };
-            stack.Children.Add(vrBtn);
-
-            OpenTypePopup();
-
-            void OpenTypePopup()
-            {
-                border.Child = stack;
-                popup.Child = container;
-                PadForge.Common.KeyboardPopup.Wire(popup, opener ?? anchor, container);
-                popup.IsOpen = true;
-            }
-
-            // What a click on an available type does, for all seven: the bar
-            // closes, a slot of that type is made, and its page opens. Opened
-            // by Home's offer, the slot first takes the offered device, and
-            // the offer is looked at again so it goes at once.
-            void CreateFromBar(VirtualControllerType type)
-            {
-                popup.IsOpen = false;
-                int newSlot = _deviceService.CreateSlot(type);
-                if (newSlot < 0) return;
-                if (deviceForNewSlot != Guid.Empty)
-                {
-                    _deviceService.AssignDeviceToSlot(deviceForNewSlot, newSlot);
-                    _inputService.ReEvaluateHomeOffer();
-                }
-                int nav = FindLastSlotOfType(type);
-                Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
-            }
+            AddRetypeButtons(stack, popup, slot);
+            border.Child = stack;
+            popup.Child = container;
+            PadForge.Common.KeyboardPopup.Wire(popup, opener ?? anchor, container);
+            popup.IsOpen = true;
         }
 
         /// <summary>Fills the type bar with one slot's choices (discussion
@@ -5710,7 +5442,6 @@ namespace PadForge
             bool hasSteamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
             bool vrRoom = SettingsManager.CanSlotTakeType(VirtualControllerType.Vr,
                 pi => _viewModel.Pads[pi].OutputType, padIndex);
-            var litColor = System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8);
 
             UIElement Logo(string data, bool active)
             {
@@ -5722,10 +5453,7 @@ namespace PadForge
                     Height = 28,
                     Stretch = System.Windows.Media.Stretch.Uniform
                 };
-                if (active)
-                    path.Fill = new System.Windows.Media.SolidColorBrush(litColor);
-                else
-                    path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+                path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, active ? "EmberInkBrush" : "TextFillColorPrimaryBrush");
                 return path;
             }
 
@@ -5739,10 +5467,7 @@ namespace PadForge
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center
                 };
-                if (active)
-                    icon.Foreground = new System.Windows.Media.SolidColorBrush(litColor);
-                else
-                    icon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
+                icon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, active ? "EmberInkBrush" : "TextFillColorPrimaryBrush");
                 return icon;
             }
 
@@ -5751,7 +5476,7 @@ namespace PadForge
                 bool active = type == current;
                 bool offered = available || active;
                 var content = icon(active);
-                // An unavailable choice dims its icon, as Add Controller's do.
+                // An unavailable choice dims its icon.
                 if (!offered) content.Opacity = 0.35;
                 var choice = new PadForge.Controls.SegmentButton
                 {
@@ -5769,14 +5494,15 @@ namespace PadForge
                 System.Windows.Controls.ToolTipService.SetShowOnDisabled(choice, true);
                 System.Windows.Automation.AutomationProperties.SetAutomationId(choice, "RetypeBtn_" + id);
                 System.Windows.Automation.AutomationProperties.SetName(choice, name);
-                // The lit choice wears the chip's tile. The others take
-                // the plain Button style Add Controller's buttons wear,
-                // which SegmentButton reaches through BaseStyle, its lift
-                // under the pointer included (owner, 2026-10-30).
+                // The lit choice wears the chip's tile, flat ember with dark
+                // ink as every type chip the bar opens from (#574). The others
+                // take the plain Button style, which SegmentButton reaches
+                // through BaseStyle, its lift under the pointer included
+                // (owner, 2026-10-30).
                 if (active)
                 {
                     choice.SetResourceReference(FrameworkElement.StyleProperty, "MiniTypeButtonActiveStyle");
-                    choice.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberSegGradient");
+                    choice.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "EmberBrush");
                 }
                 else
                     choice.Background = System.Windows.Media.Brushes.Transparent;
@@ -5813,7 +5539,7 @@ namespace PadForge
 
         /// <summary>
         /// Shows the profile switcher flyout (#175 item 8) anchored at a
-        /// profile pill. Mirrors ShowControllerTypePopup's construction
+        /// profile pill. Mirrors ShowTypeBar's construction
         /// (raised-steel surface, separate shadow element, outside-click
         /// dismiss, live theme tracking); rows list every profile with a
         /// lit flame on the active one, and a click runs the same path as
@@ -6041,6 +5767,264 @@ namespace PadForge
             SelectNavItemByTag($"Pad{slotIndex + 1}");
         }
 
+        /// <summary>The Overlays page's link to Macros &amp; Menus (#574): the
+        /// first controller in the sidebar, on that section with the menus
+        /// showing. With no controller, Home, where one is added.</summary>
+        private void OpenFirstControllerMenus()
+        {
+            var first = _viewModel.NavControllerItems.FirstOrDefault();
+            if (first == null)
+            {
+                SelectNavItemByTag("Home");
+                return;
+            }
+            if (first.PadIndex >= 0 && first.PadIndex < _viewModel.Pads.Count)
+                _viewModel.Pads[first.PadIndex].SelectedConfigTab = PadViewModel.MenusTabIndex;
+            NavigateToSlot(first.PadIndex);
+        }
+
+        // While Add a Controller is open no sidebar entry is drawn as the
+        // current one, as its board draws the sidebar. Search's board draws
+        // it the same.
+        private bool _addControllerOpen;
+        private bool _searchOpen;
+
+        /// <summary>Whether a dialog stands over the page area.</summary>
+        private bool ShellDialogOpen => _addControllerOpen || _searchOpen;
+
+        private PadForge.Search.SearchService _searchService;
+        private SearchViewModel _searchVm;
+        private PadForge.Search.SearchNavigator _searchNavigator;
+
+        /// <summary>The page Search reads for each of its sources.</summary>
+        private FrameworkElement SearchPageOf(PadForge.Search.SearchPage page) => page switch
+        {
+            PadForge.Search.SearchPage.Pad => PadPageView,
+            PadForge.Search.SearchPage.Settings => SettingsPageView,
+            PadForge.Search.SearchPage.Extras => ExtrasPageView,
+            PadForge.Search.SearchPage.Devices => DevicesPageView,
+            PadForge.Search.SearchPage.Profiles => ProfilesPageView,
+            _ => null,
+        };
+
+        /// <summary>Makes Search's service, view model and navigator, and
+        /// wires the title bar's box, Ctrl+K and the dialog. The index is
+        /// built once the window has loaded and is idle.</summary>
+        private void WireSearch()
+        {
+            _searchService = new PadForge.Search.SearchService(_viewModel, SearchPageOf);
+            _searchVm = new SearchViewModel(_searchService.Query);
+            _searchNavigator = new PadForge.Search.SearchNavigator(_searchService, SearchPageOf, _viewModel,
+                tag => SelectNavItemByTag(tag), NavigateToSlot, () => OpenAddController(Guid.Empty, TitleSearchBox));
+            SearchPanelView.DataContext = _searchVm;
+            _searchVm.OpenRequested += (s, result) =>
+            {
+                CloseSearch(returnFocus: false, restoreNav: true);
+                _searchNavigator.Open(result);
+            };
+            _searchVm.CloseRequested += (s, e) => CloseSearch(returnFocus: true, restoreNav: true);
+            SearchHost.CloseRequested += (s, e) => CloseSearch(returnFocus: true, restoreNav: true);
+            SearchHost.SizeChanged += (s, e) => SearchPanelView.FitTo(SearchHost.ActualHeight);
+            // Until the index is built Search answers with pages, controllers,
+            // devices, profiles and the documentation. Settings and actions
+            // join an open Search the moment it is.
+            _searchService.IndexBuilt += (s, e) =>
+            {
+                if (!_searchOpen) return;
+                _searchService.RefreshAvailability();
+                _searchVm.Run();
+            };
+            TitleSearchBox.Click += (s, e) => OpenSearch();
+            PreviewKeyDown += Window_SearchKey;
+            PreviewMouseDown += Window_SearchOutsidePress;
+            Loaded += (s, e) => Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle,
+                new Action(() => _searchService.BuildIndex(Dispatcher)));
+            ShowSearchShortcut();
+            Strings.CultureChanged += ShowSearchShortcut;
+        }
+
+        /// <summary>The title bar box's key label and its shortcut, in the
+        /// language's own Ctrl.</summary>
+        private void ShowSearchShortcut()
+        {
+            TitleSearchShortcut.Text = Strings.Instance.Key_Control + " K";
+            System.Windows.Automation.AutomationProperties.SetAcceleratorKey(TitleSearchBox, Strings.Instance.Key_Control + "+K");
+        }
+
+        /// <summary>Ctrl+K opens Search from anywhere in the window. While it
+        /// is open the panel's own handler selects the query's words.</summary>
+        private void Window_SearchKey(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.K || System.Windows.Input.Keyboard.Modifiers != System.Windows.Input.ModifierKeys.Control) return;
+            if (_searchOpen) return;
+            OpenSearch();
+            e.Handled = true;
+        }
+
+        /// <summary>A press outside Search's dialog, on the sidebar or the
+        /// title bar, closes it and goes on to what was pressed. A press on
+        /// the title bar's box keeps it open, and the box's click puts the
+        /// focus back in the query. The dialog's own ground closes it
+        /// itself.</summary>
+        private void Window_SearchOutsidePress(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!_searchOpen || e.OriginalSource is not DependencyObject source) return;
+            for (var at = source; at != null; at = PadForge.Common.TreeWalk.Parent(at))
+                if (at == SearchHost || at == TitleSearchBox) return;
+            CloseSearch(returnFocus: false, restoreNav: true);
+        }
+
+        /// <summary>Opens Search (#574), from the title bar's box or Ctrl+K.
+        /// Refused while an input is being recorded and while an overlay
+        /// covers the window. The controller page is bound to a made slot
+        /// first when it is not, so its settings can be found. Which entries
+        /// show is read now, and the last query of the session runs
+        /// again.</summary>
+        internal void OpenSearch()
+        {
+            if (_recorderService?.IsRecording == true) return;
+            if (DriverOverlay.Visibility == Visibility.Visible || ShutdownOverlay.Visibility == Visibility.Visible
+                || StartupOverlay.Visibility == Visibility.Visible)
+                return;
+            if (_searchOpen)
+            {
+                SearchPanelView.FocusQuery();
+                return;
+            }
+            CloseAddController(returnFocus: false, restoreNav: true);
+            CloseTypeBar();
+            if (PadPageView.DataContext is not PadViewModel bound || bound.PadIndex < 0 || bound.PadIndex >= InputManager.MaxPads
+                || !SettingsManager.SlotCreated[bound.PadIndex])
+            {
+                foreach (var navItem in _viewModel.NavControllerItems)
+                {
+                    if (navItem.PadIndex < 0 || navItem.PadIndex >= _viewModel.Pads.Count || !SettingsManager.SlotCreated[navItem.PadIndex]) continue;
+                    BindPadPage(_viewModel.Pads[navItem.PadIndex]);
+                    break;
+                }
+            }
+            _searchService.RefreshAvailability();
+            _searchVm.Run();
+            SearchHost.Open(System.Windows.Input.Keyboard.FocusedElement);
+            _searchOpen = true;
+            SetNavActiveByTag(null);
+            RefreshControllerSelectionVisuals();
+            SetPagesTabStop(false);
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, new Action(() =>
+            {
+                SearchPanelView.FitTo(SearchHost.ActualHeight);
+                SearchPanelView.FocusQuery();
+            }));
+        }
+
+        /// <summary>Closes Search. A result that opens takes the focus to
+        /// its place, so only Escape, the Esc key label and the ground give
+        /// it back to where it was.</summary>
+        private void CloseSearch(bool returnFocus, bool restoreNav)
+        {
+            if (!_searchOpen) return;
+            SearchHost.Close(returnFocus);
+            _searchOpen = false;
+            SetPagesTabStop(true);
+            if (restoreNav) SetNavActiveByTag(_viewModel.SelectedNavTag);
+            RefreshControllerSelectionVisuals();
+        }
+
+        /// <summary>Opens Add a Controller (#574). <paramref name="device"/> is
+        /// the device the new controller takes, or Empty to offer the connected
+        /// game controllers no controller uses. <paramref name="opener"/> takes
+        /// the focus back when it closes.</summary>
+        internal void OpenAddController(Guid device, IInputElement opener)
+        {
+            CloseTypeBar();
+            CloseSearch(returnFocus: false, restoreNav: true);
+            if (AddControllerHost.IsOpen) return;
+            AddControllerView.DataContext = BuildAddController(device);
+            AddControllerHost.Open(opener);
+            _addControllerOpen = true;
+            SetNavActiveByTag(null);
+            RefreshControllerSelectionVisuals();
+            SetPagesTabStop(false);
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
+                new Action(AddControllerView.FocusFirstChoice));
+        }
+
+        /// <summary>Closes Add a Controller. A close that navigates leaves the
+        /// sidebar to the navigation. The X and Escape give it back its
+        /// current entry.</summary>
+        private void CloseAddController(bool returnFocus, bool restoreNav)
+        {
+            if (!AddControllerHost.IsOpen) return;
+            AddControllerHost.Close(returnFocus);
+            _addControllerOpen = false;
+            SetPagesTabStop(true);
+            if (restoreNav) SetNavActiveByTag(_viewModel.SelectedNavTag);
+            RefreshControllerSelectionVisuals();
+            AddControllerView.DataContext = null;
+        }
+
+        /// <summary>Makes a controller of <paramref name="type"/>, driven by
+        /// <paramref name="device"/> when it is not Empty, and opens its page:
+        /// what the popup's buttons did, for Add a Controller and for Home's
+        /// first page. The close gives the sidebar back its current entry, so
+        /// a create that fails leaves it as it was, and the new controller's
+        /// page then takes it.</summary>
+        private void CreateController(VirtualControllerType type, Guid device)
+        {
+            CloseAddController(returnFocus: false, restoreNav: true);
+            int newSlot = _deviceService.CreateSlot(type);
+            if (newSlot < 0) return;
+            if (device != Guid.Empty)
+            {
+                _deviceService.AssignDeviceToSlot(device, newSlot);
+                _inputService.ReEvaluateHomeOffer();
+            }
+            int nav = FindLastSlotOfType(type);
+            Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+        }
+
+        /// <summary>What Add a Controller shows: the device given, or every
+        /// unused game controller, and the seven types counted as the popup
+        /// counted them.</summary>
+        private AddControllerViewModel BuildAddController(Guid device)
+        {
+            var guids = device != Guid.Empty ? new List<Guid> { device } : _inputService.UnusedGameControllers();
+            var choices = new List<DrivenByChoice>();
+            foreach (var guid in guids)
+            {
+                var row = _viewModel.Devices.FindByGuid(guid);
+                var ud = SettingsManager.FindDeviceByInstanceGuid(guid);
+                string name = (ud != null ? InputService.LocalizedDeviceName(ud) ?? ud.ResolvedName : null) ?? row?.DeviceName;
+                choices.Add(DrivenByChoice.For(guid, name, row?.IsBluetoothLink == true,
+                    row?.HasBattery == true ? row.BatteryText : null, choices.Count, row?.BatteryGlyph));
+            }
+            var counts = new Dictionary<VirtualControllerType, int>();
+            int total = 0;
+            for (int i = 0; i < InputManager.MaxPads; i++)
+            {
+                if (!SettingsManager.SlotCreated[i]) continue;
+                total++;
+                var type = _viewModel.Pads[i].OutputType;
+                counts[type] = counts.TryGetValue(type, out int n) ? n + 1 : 1;
+            }
+            return AddControllerViewModel.Build(choices, t => counts.TryGetValue(t, out int c) ? c : 0, total,
+                _viewModel.Settings.IsMidiAvailable, PadForge.Common.Input.HMaestroVRController.IsAvailable());
+        }
+
+        /// <summary>Takes the pages out of the Tab order while a dialog stands
+        /// over them, and puts them back after. They stay drawn under its
+        /// ground rather than collapsed: a collapsed controller page unloads
+        /// its views, and loading them again is slow.</summary>
+        private void SetPagesTabStop(bool on)
+        {
+            foreach (var page in new FrameworkElement[] { HomePageView, PadPageView, DevicesPageView, ExtrasPageView,
+                         SettingsPageView, ProfilesPageView, AboutPageView })
+            {
+                if (on) page.ClearValue(System.Windows.Input.KeyboardNavigation.TabNavigationProperty);
+                else System.Windows.Input.KeyboardNavigation.SetTabNavigation(page, System.Windows.Input.KeyboardNavigationMode.None);
+            }
+        }
+
         /// <summary>
         /// Returns the slot at the TAIL of the type's group order list, or -1
         /// if none. Used after CreateSlot to navigate to the newly added slot,
@@ -6151,7 +6135,7 @@ namespace PadForge
         /// <summary>
         /// Handles clicks on non-selectable NavigationView items (e.g. "Add Controller").
         /// SelectsOnInvoked=false prevents the blue indicator from moving to these items,
-        /// but ItemInvoked still fires so we can show the popup.
+        /// but ItemInvoked still fires, and re-sends the current page's tag.
         /// </summary>
         private void NavView_ItemInvoked(NavigationView sender,
             RoutedEventArgs args)
@@ -6173,12 +6157,12 @@ namespace PadForge
             }
         }
 
-        private void CloseControllerPopup()
+        private void CloseTypeBar()
         {
-            if (_controllerTypePopup != null && _controllerTypePopup.IsOpen)
+            if (_typeBar != null && _typeBar.IsOpen)
             {
-                _controllerTypePopup.IsOpen = false;
-                _controllerTypePopup = null;
+                _typeBar.IsOpen = false;
+                _typeBar = null;
             }
         }
 
@@ -6628,7 +6612,7 @@ namespace PadForge
         private void NavView_SelectionChanged(NavigationView sender,
             RoutedEventArgs args)
         {
-            CloseControllerPopup();
+            CloseTypeBar();
 
             if (_rebuildingControllerSection)
                 return;
@@ -6639,6 +6623,15 @@ namespace PadForge
 
         private void NavigateToTag(string tag)
         {
+            // A change of page closes Add a Controller. Only a change: the
+            // sidebar re-sends the current page's tag on every click in it
+            // (NavView_ItemInvoked), the click on Add Controller included.
+            if (tag != _viewModel.SelectedNavTag)
+            {
+                CloseAddController(returnFocus: false, restoreNav: false);
+                CloseSearch(returnFocus: false, restoreNav: false);
+            }
+
             // Update ViewModel navigation state.
             _viewModel.SelectedNavTag = tag;
 
@@ -6671,29 +6664,32 @@ namespace PadForge
             _viewModel.Dashboard?.SetSelectedPad(selectedPadIndex);
 
             // Update PadPage DataContext to the selected pad.
-            if (isPad)
-            {
-                var padVm = _viewModel.SelectedPad;
-                if (padVm != null)
-                {
-                    // The page shows the stored rows. Copying them into its
-                    // view changes nothing, so it marks nothing changed: it
-                    // did, and each visit to a controller's page saved the
-                    // settings file and raised the saved message.
-                    if (_settingsService != null)
-                        _settingsService.MirrorOnly(() => InputService.RefreshMappingsToViewModel(padVm));
-                    else
-                        InputService.RefreshMappingsToViewModel(padVm);
-                    var selected = padVm.SelectedMappedDevice;
-                    if (selected != null && selected.InstanceGuid != Guid.Empty)
-                        _inputService.RefreshAvailableInputsForSlot(padVm);
-                    PadPageView.DataContext = padVm;
-                }
-            }
+            if (isPad && _viewModel.SelectedPad is { } padVm)
+                BindPadPage(padVm);
 
             // Notify InputService which pages are visible (for optimization).
             _inputService.IsDevicesPageVisible = tag == "Devices";
             _inputService.IsPadPageVisible = isPad;
+        }
+
+        /// <summary>Binds the controller page to a controller: navigation's
+        /// step, and Search's when it opens on a page that is no
+        /// controller's.</summary>
+        private void BindPadPage(PadViewModel padVm)
+        {
+            if (padVm == null) return;
+            // The page shows the stored rows. Copying them into its
+            // view changes nothing, so it marks nothing changed: it
+            // did, and each visit to a controller's page saved the
+            // settings file and raised the saved message.
+            if (_settingsService != null)
+                _settingsService.MirrorOnly(() => InputService.RefreshMappingsToViewModel(padVm));
+            else
+                InputService.RefreshMappingsToViewModel(padVm);
+            var selected = padVm.SelectedMappedDevice;
+            if (selected != null && selected.InstanceGuid != Guid.Empty)
+                _inputService.RefreshAvailableInputsForSlot(padVm);
+            PadPageView.DataContext = padVm;
         }
 
         // ─────────────────────────────────────────────
@@ -6716,6 +6712,7 @@ namespace PadForge
         private void OnNewProfile(object sender, EventArgs e)
         {
             var dialog = new Views.ProfileDialog { Owner = this };
+            dialog.ForNew();
             if (dialog.ShowDialog() != true) return;
 
             string name = dialog.ProfileName;
@@ -6767,10 +6764,15 @@ namespace PadForge
             // Destructive-verb guard (#175 phase 2 item 1c): deleting a
             // profile destroys its saved slot/mapping snapshot, so ask
             // first through the shared confirm.
+            // The title is the question and names the profile, as the
+            // board writes it. The line under it names the auto-switch rule
+            // only for a profile that has games.
             bool confirmed = Views.ConfirmDialog.Show(
                 this,
-                Strings.Instance.Profiles_DeleteConfirmTitle,
-                string.Format(Strings.Instance.Profiles_DeleteConfirm_Format, selected.Name),
+                string.Format(Strings.Instance.Profiles_DeleteConfirmTitle_Format, selected.Name),
+                string.IsNullOrEmpty(selected.ExecutablePaths)
+                    ? Strings.Instance.Profiles_DeleteConfirmNoGames
+                    : Strings.Instance.Profiles_DeleteConfirmGames,
                 Strings.Instance.Common_Delete);
             if (!confirmed) return;
 
@@ -6781,6 +6783,30 @@ namespace PadForge
                 _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileDeleted_Format, selected.Name);
+        }
+
+        /// <summary>Save Current Setup Here (#574): asks, then the live setup
+        /// replaces what the card's profile holds, and its card shows the new
+        /// controllers. The profile keeps its name, games, polling override
+        /// and screen pictures.</summary>
+        private void OnSaveSetupHere(object sender, EventArgs e)
+        {
+            var selected = _viewModel.Settings.SelectedProfile;
+            // The command's CanExecute already refuses Default and the active
+            // profile. The gate stays here too so no other invoker can
+            // overwrite them.
+            if (selected == null || selected.IsDefault || selected.IsActive) return;
+            bool confirmed = Views.ConfirmDialog.Show(
+                this,
+                Strings.Instance.Profiles_SaveHere,
+                string.Format(Strings.Instance.Profiles_SaveHereConfirm_Format, selected.Name),
+                Strings.Instance.Profiles_SaveHereConfirm_Action);
+            if (!confirmed) return;
+            var stored = _inputService.SaveCurrentSetupInto(selected.Id);
+            if (stored == null) return;
+            SettingsService.UpdateTopologyCounts(selected, stored.SlotCreated, stored.SlotControllerTypes);
+            _settingsService.MarkDirty();
+            _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileSetupSaved_Format, selected.Name);
         }
 
         /// <summary>Exports the selected profile (with its referenced
@@ -6858,45 +6884,64 @@ namespace PadForge
             }
         }
 
-        /// <summary>Imports a .pfprofile, or another tool's config through
-        /// ImportForeignConfig (#561). A .pfprofile's bundled sound packages land next
-        /// to the exe and register. The profile joins the registry under a
-        /// name no other profile has. The user activates it via the existing
-        /// Load button.</summary>
-        private void OnImportProfile(object sender, EventArgs e)
+        /// <summary>Opens Get Profiles on a tab (#574): starter profiles, community
+        /// configs and files from another tool in one window. What lands goes
+        /// through AddWorkshopProfile or ImportProfileFile, so a starter, a
+        /// config or a file becomes an ordinary editable profile through
+        /// identical steps (name dedup, registry add, list item with its type
+        /// chips, MarkDirty), and the message line says what came in. With the
+        /// community opt-in off, the Community tab opens on its cold state and
+        /// its enable action flips the same persisted setting the Settings
+        /// card toggles.</summary>
+        internal void ShowGetProfiles(ViewModels.GetProfilesTab tab)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog
-            {
-                Title = Strings.Instance.Profiles_Import,
-                Filter = $"{Strings.Instance.Profiles_ImportFilterAll} (*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml)|*{PadForge.Common.ProfileTransfer.FileExtension};*.rewasd;*.xml"
-                    + "|" + string.Format(Strings.Instance.FileDialog_ProfileFilter_Format, PadForge.Common.ProfileTransfer.FileExtension)
-                    + "|" + Strings.Instance.FileDialog_ForeignProfileFilter
-                    + "|" + Strings.Instance.FileDialog_AllFilesFilter,
-                CheckFileExists = true,
-            };
-            foreach (string folder in PadForge.Common.ConfigImport.ForeignConfigImporter.ProfileFolders())
-                dlg.CustomPlaces.Add(new Microsoft.Win32.FileDialogCustomPlace(folder));
-            if (dlg.ShowDialog() != true) return;
-
-            ImportProfileFromFile(dlg.FileName);
+            var dlg = new Views.GetProfilesDialog(_viewModel.Settings, tab) { Owner = this };
+            dlg.ProfileSink = AddWorkshopProfile;
+            dlg.FileImporter = ImportProfileFile;
+            dlg.ShowDialog();
+            if (!string.IsNullOrEmpty(dlg.StatusText))
+                _viewModel.StatusText = dlg.StatusText;
         }
 
-        /// <summary>File-consuming half of profile import, shared by the
-        /// Import button's dialog and the Profiles page drop zone (#175).</summary>
+        /// <summary>The Profiles page's drop (#175): one file read and
+        /// registered as Get Profiles reads it. A refusal stays on the message
+        /// line until the next message.</summary>
         private void ImportProfileFromFile(string filePath)
+        {
+            var result = ImportProfileFile(filePath, this);
+            if (!string.IsNullOrEmpty(result.Problem))
+                _viewModel.SetStatus(result.Problem, persist: true);
+            else if (!string.IsNullOrEmpty(result.StatusText))
+                _viewModel.StatusText = result.StatusText;
+        }
+
+        /// <summary>Reads one profile file and registers it (#561, #574). A
+        /// .pfprofile's bundled sound packages land next to the exe and
+        /// register, and the profile joins the registry under a name no other
+        /// profile has. Another tool's config translates, and Import Profile
+        /// shows what it comes to over <paramref name="owner"/>: the profile
+        /// lands through the Workshop's sink when the user accepts. The active
+        /// profile stays as it was either way.</summary>
+        internal Views.ProfileFileResult ImportProfileFile(string filePath, Window owner)
         {
             if (!filePath.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase))
             {
-                ImportForeignConfig(filePath);
-                return;
+                var result = PadForge.Common.ConfigImport.ForeignConfigImporter.Translate(filePath);
+                if (result.Refused)
+                    return new Views.ProfileFileResult(null, Strings.Get(result.RefusedKey));
+
+                var dlg = new Views.ImportConfigDialog(filePath, result) { Owner = owner ?? this };
+                dlg.ImportSink = AddWorkshopProfile;
+                dlg.ShowDialog();
+                return dlg.ImportedProfileName == null
+                    ? new Views.ProfileFileResult(null, null)
+                    : new Views.ProfileFileResult(string.Format(Strings.Instance.Status_WorkshopImported_Format,
+                        dlg.ImportedProfileName, result.Report.CleanCount, result.Report.PartialCount, result.Report.SkippedCount), null);
             }
 
             var profile = PadForge.Common.ProfileTransfer.Import(filePath, out var packages);
             if (profile == null)
-            {
-                _viewModel.SetStatus(Strings.Instance.Status_ProfileImportFailed, persist: true);
-                return;
-            }
+                return new Views.ProfileFileResult(null, Strings.Instance.Status_ProfileImportFailed);
 
             // Dedup the display name against existing profiles.
             profile.Name = SettingsManager.UniqueProfileName(profile.Name);
@@ -6912,65 +6957,8 @@ namespace PadForge
             SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
-            _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
-        }
-
-        /// <summary>Reads another tool's config and shows what it comes to
-        /// (#561). The profile lands through the Workshop's sink when the user
-        /// accepts, and the active profile stays as it was, as a .pfprofile
-        /// import leaves it.</summary>
-        private void ImportForeignConfig(string filePath)
-        {
-            var result = PadForge.Common.ConfigImport.ForeignConfigImporter.Translate(filePath);
-            if (result.Refused)
-            {
-                _viewModel.SetStatus(Strings.Get(result.RefusedKey), persist: true);
-                return;
-            }
-
-            var dlg = new Views.ImportConfigDialog(filePath, result) { Owner = this };
-            dlg.ImportSink = AddWorkshopProfile;
-            dlg.ShowDialog();
-            if (dlg.ImportedProfileName != null)
-            {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
-                    dlg.ImportedProfileName, result.Report.CleanCount, result.Report.PartialCount, result.Report.SkippedCount);
-            }
-        }
-
-        /// <summary>Opens the Steam Workshop browse dialog (#9). Always opens:
-        /// with the opt-in off, the dialog presents its cold-forge state and
-        /// the enable action flips the same persisted setting the Settings
-        /// card toggles.</summary>
-        private void OnBrowseCommunityConfigs(object sender, EventArgs e)
-        {
-            var dlg = new Views.WorkshopBrowseDialog(_viewModel.Settings) { Owner = this };
-            dlg.ImportSink = AddWorkshopProfile;
-            dlg.ShowDialog();
-            // Post-import, the dossier summary rides the status line
-            // (design flow step 4: what came across, in one line).
-            if (dlg.ImportedProfileName != null)
-            {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
-                    dlg.ImportedProfileName, dlg.ImportedClean, dlg.ImportedPartial, dlg.ImportedSkipped);
-            }
-        }
-
-        /// <summary>Opens the starter-profile gallery (#256). Saving routes
-        /// through the same sink the Workshop import uses, so a starter lands
-        /// as an ordinary editable profile through identical steps (name
-        /// dedup, registry add, list item with topology counts, MarkDirty).
-        /// Nothing about it stays special after the save.</summary>
-        private void OnBrowseStarterProfiles(object sender, EventArgs e)
-        {
-            var dlg = new Views.StarterProfilesDialog { Owner = this };
-            dlg.SaveSink = AddWorkshopProfile;
-            dlg.ShowDialog();
-            if (dlg.SavedProfileName != null)
-            {
-                _viewModel.StatusText = string.Format(
-                    Strings.Instance.Status_StarterImported_Format, dlg.SavedProfileName);
-            }
+            return new Views.ProfileFileResult(
+                string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count), null);
         }
 
         /// <summary>Purges the Workshop cache directory (Settings card button).</summary>
@@ -6997,7 +6985,7 @@ namespace PadForge
         /// GetPublishedFileDetails over the stored SteamWorkshopSource ids
         /// and compares time_updated. Results ride the status line, except
         /// when something is stale, which gets a dialog listing the profiles
-        /// and offering Browse Community Configs as the re-import route.
+        /// and offering Get Profiles' Community tab as the re-import route.
         /// With the opt-in off this never touches the network.</summary>
         private async void OnCheckWorkshopUpdates(object sender, EventArgs e)
         {
@@ -7063,16 +7051,11 @@ namespace PadForge
                 }
 
                 _viewModel.StatusText = string.Empty;
-                var dialog = new Wpf.Ui.Controls.MessageBox
-                {
-                    Title = Strings.Instance.Workshop_UpdatesTitle,
-                    Content = Strings.Instance.Workshop_UpdatesBody + "\n\n" + string.Join("\n", stale),
-                    PrimaryButtonText = Strings.Instance.Profiles_BrowseCommunity,
-                    CloseButtonText = Strings.Instance.Common_Close,
-                };
-                var result = await dialog.ShowDialogAsync();
-                if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
-                    OnBrowseCommunityConfigs(this, EventArgs.Empty);
+                if (Views.ConfirmDialog.Show(this, Strings.Instance.Workshop_UpdatesTitle,
+                        Strings.Instance.Workshop_UpdatesBody, Strings.Instance.Profiles_BrowseCommunity,
+                        detail: string.Join("\n", stale), kind: Views.ConfirmKind.Primary,
+                        cancelText: Strings.Instance.Common_Close))
+                    ShowGetProfiles(ViewModels.GetProfilesTab.Community);
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
@@ -7102,7 +7085,7 @@ namespace PadForge
 
         /// <summary>Registers a Workshop-translated profile through the same
         /// steps the .pfprofile Import path takes (name dedup, registry add,
-        /// list item with topology counts, MarkDirty), then optionally loads
+        /// list item with its type chips, MarkDirty), then optionally loads
         /// it as the active profile. Returns the deduped display name.</summary>
         private string AddWorkshopProfile(Services.ProfileData profile, bool applyAfter)
         {
@@ -7123,8 +7106,8 @@ namespace PadForge
 
             if (applyAfter)
             {
-                // Applying from the browse dialog is a manual switch, the same
-                // as the Load button and the status-bar switcher: it records
+                // Applying from Get Profiles is a manual switch, the same
+                // as the Load button and the title bar's switcher: it records
                 // the override and releases any scripted hold. This lane was
                 // the one that did not.
                 _inputService.NoteManualProfileSwitch();
@@ -7636,188 +7619,6 @@ namespace PadForge
             bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                         == Wpf.Ui.Appearance.ApplicationTheme.Dark;
             SteelLayer.Visibility = dark ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        // ─────────────────────────────────────────────
-        //  First-run welcome + spotlight tour (#175)
-        // ─────────────────────────────────────────────
-
-        /// <summary>Pre-v4 builds tracked tour completion with a marker
-        /// file beside the exe. The flag lives in PadForge.xml now (the
-        /// single settings file); this path exists only to honor and
-        /// delete a leftover marker on upgrade.</summary>
-        private static string LegacyFirstRunMarkerPath =>
-            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.firstrun");
-
-        private int _tourStep = -1;
-
-        private (FrameworkElement Target, string Title, string Body)[] BuildTourStops() => new[]
-        {
-            ((FrameworkElement)HomePageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
-            (HomePageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
-            (NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),
-            (_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),
-        };
-
-        private void MaybeShowFirstRun(object sender, RoutedEventArgs e)
-        {
-            Loaded -= MaybeShowFirstRun;
-            // Upgrade migration: a pre-v4 marker file means the tour was
-            // already completed. Fold it into the settings flag and remove
-            // the file from disk.
-            try
-            {
-                if (System.IO.File.Exists(LegacyFirstRunMarkerPath))
-                {
-                    if (!_viewModel.Settings.FirstRunTourCompleted)
-                    {
-                        _viewModel.Settings.FirstRunTourCompleted = true;
-                        _settingsService?.MarkDirty();
-                    }
-                    System.IO.File.Delete(LegacyFirstRunMarkerPath);
-                }
-            }
-            catch { }
-            if (!_viewModel.Settings.FirstRunTourCompleted)
-                FirstRunOverlay.Visibility = Visibility.Visible;
-        }
-
-        /// <summary>Re-runs the welcome tour (Settings button).</summary>
-        public void StartFirstRunTour()
-        {
-            // Navigate AND restyle, through the one helper that clears the
-            // other items first. The hand-rolled loop this replaces set
-            // the first page active without clearing anything and scanned
-            // only MenuItems, so starting the tour from Settings (whose item
-            // lives in FooterMenuItems) left two rail items wearing the
-            // active bar at once (discussion #340).
-            SelectNavItemByTag("Home");
-            WelcomePanel.Visibility = Visibility.Visible;
-            TourCanvas.Visibility = Visibility.Collapsed;
-            // Welcome state dims everything: no cutout until a step runs.
-            TourDimHole.Rect = Rect.Empty;
-            FirstRunOverlay.Visibility = Visibility.Visible;
-        }
-
-        private void FirstRunBegin_Click(object sender, RoutedEventArgs e)
-        {
-            // The tour's first two stops live on Home, and the sidebar's
-            // two show beside it. Make sure it is the visible page even if
-            // the user navigated away before clicking Begin.
-            NavigateToTag("Home");
-            WelcomePanel.Visibility = Visibility.Collapsed;
-            TourCanvas.Visibility = Visibility.Visible;
-            ShowTourStep(0);
-        }
-
-        private void FirstRunSkip_Click(object sender, RoutedEventArgs e) => CompleteFirstRun();
-
-        private void TourNext_Click(object sender, RoutedEventArgs e) => ShowTourStep(_tourStep + 1);
-
-        private void ShowTourStep(int index)
-        {
-            var stops = BuildTourStops();
-            if (index >= stops.Length)
-            {
-                CompleteFirstRun();
-                return;
-            }
-            _tourStep = index;
-            var (target, title, body) = stops[index];
-            TourStepLabel.Text = $"{index + 1} / {stops.Length}";
-            TourTitle.Text = title;
-            TourBody.Text = body;
-            TourNextBtn.Content = index == stops.Length - 1
-                ? Strings.Instance.FirstRun_Done
-                : Strings.Instance.FirstRun_Next;
-            target.BringIntoView();
-            // Position after the BringIntoView scroll has been laid out.
-            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded,
-                new Action(() => PositionTourStep(target)));
-        }
-
-        private void PositionTourStep(FrameworkElement target)
-        {
-            try
-            {
-                double w = target.ActualWidth, h = target.ActualHeight;
-                var origin = target.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0));
-                if (ReferenceEquals(target, NavView))
-                {
-                    // Highlight only the pane strip, not the whole view.
-                    w = NavView.OpenPaneLength;
-                    h = NavView.ActualHeight;
-                }
-
-                double ow = FirstRunOverlay.ActualWidth, oh = FirstRunOverlay.ActualHeight;
-
-                // Every edge of the ring stays on-screen. Edge-flush targets
-                // (the nav pane) and taller-than-viewport ones (the slot
-                // grid) used to push ring sides past the window, which cut
-                // them off. With the status bar gone (#574) the window's
-                // own lower edge is the bound.
-                double left = Math.Max(origin.X - 4, 2);
-                double top = Math.Max(origin.Y - 4, 2);
-                double right = Math.Min(origin.X + w + 4, ow - 2);
-                double bottom = Math.Min(origin.Y + h + 4, oh - 2);
-                System.Windows.Controls.Canvas.SetLeft(TourHighlight, left);
-                System.Windows.Controls.Canvas.SetTop(TourHighlight, top);
-                TourHighlight.Width = Math.Max(0, right - left);
-                TourHighlight.Height = Math.Max(0, bottom - top);
-
-                // Cut the spotlight out of the dim so the target renders at
-                // full brightness inside the ring (Discord feedback: the
-                // full-window scrim left the highlighted area unreadable).
-                TourDimHole.Rect = new Rect(left, top,
-                    Math.Max(0, right - left), Math.Max(0, bottom - top));
-
-                double tipX = origin.X + w + 14;
-                double tipY = origin.Y;
-                if (tipX + 332 > ow)
-                {
-                    tipX = Math.Max(12, Math.Min(origin.X, ow - 332));
-                    tipY = origin.Y + h + 12;
-                }
-                if (tipY + 200 > oh) tipY = Math.Max(12, oh - 212);
-                if (tipY < 12) tipY = 12;
-                System.Windows.Controls.Canvas.SetLeft(TourTip, tipX);
-                System.Windows.Controls.Canvas.SetTop(TourTip, tipY);
-            }
-            catch
-            {
-                // Target not laid out yet; keep the previous position.
-            }
-        }
-
-        /// <summary>Keeps the dim sized to the window, and the cutout plus
-        /// ring glued to the current target across window resizes. Also the
-        /// path that gives the dim its initial size the first time the
-        /// overlay lays out.</summary>
-        private void FirstRunOverlay_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            TourDimFull.Rect = new Rect(0, 0,
-                FirstRunOverlay.ActualWidth, FirstRunOverlay.ActualHeight);
-            if (_tourStep >= 0 && TourCanvas.Visibility == Visibility.Visible)
-            {
-                var stops = BuildTourStops();
-                if (_tourStep < stops.Length)
-                    PositionTourStep(stops[_tourStep].Target);
-            }
-        }
-
-        private void CompleteFirstRun()
-        {
-            FirstRunOverlay.Visibility = Visibility.Collapsed;
-            WelcomePanel.Visibility = Visibility.Visible;
-            TourCanvas.Visibility = Visibility.Collapsed;
-            // Welcome state dims everything: no cutout until a step runs.
-            TourDimHole.Rect = Rect.Empty;
-            _tourStep = -1;
-            // Persisted in PadForge.xml (the one-time-gate pattern
-            // LegacyDriverCleanupOffered established): set at the mutation
-            // site, then MarkDirty schedules the save.
-            _viewModel.Settings.FirstRunTourCompleted = true;
-            _settingsService?.MarkDirty();
         }
 
         // ─────────────────────────────────────────────
@@ -8387,33 +8188,21 @@ namespace PadForge
             }
         }
 
-        /// <summary>Formats a slot as the Copy From dialog's VC label, e.g.
-        /// "Virtual Controller 3 — Xbox 2". Shared by the mapping and macro Copy From
-        /// pickers (#112) so they read identically.</summary>
-        private static string FormatVcSlotName(int slotIndex, VirtualControllerType outputType)
-        {
-            int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(slotIndex);
-            // Same documented fallback the identity writers use. Without it a
-            // slot that is created and assigned but absent from every group's
-            // order list renders as "Virtual Controller 0".
-            if (globalNum <= 0) globalNum = slotIndex + 1;
-            int inGroupNum = SettingsManager.SlotOrders.GetOrderFor(outputType).IndexOf(slotIndex) + 1;
-            string typeName = ControllerTypeDisplayName(outputType);
-            string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());
-            return inGroupNum > 0 ? $"{vcWord} — {typeName} {inGroupNum}" : $"{vcWord} — {typeName}";
-        }
+        /// <summary>A controller as a Copy From row and its subtitle name it:
+        /// the pair its own page shows in its header, "Xbox #1". The mapping
+        /// and the macro Copy From read the same (#112).</summary>
+        internal static string CopyFromSlotName(PadViewModel pad) => $"{pad.OutputTypeDisplayName} #{pad.TypeInstanceLabel}";
 
-        private static string ControllerTypeDisplayName(VirtualControllerType t) => t switch
+        /// <summary>A device's name for a Copy From row: the name the user
+        /// gave it, else its product's, else nothing.</summary>
+        private static string CopyFromDeviceName(Guid device)
         {
-            VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
-            VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
-            VirtualControllerType.Nintendo      => Strings.Instance.ControllerType_Nintendo,
-            VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
-            VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
-            VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
-            VirtualControllerType.Vr            => Strings.Instance.ControllerType_VR,
-            _ => t.ToString(),
-        };
+            if (device == Guid.Empty) return string.Empty;
+            var ud = SettingsManager.FindDeviceByInstanceGuid(device);
+            string name = ud?.InstanceName;
+            if (string.IsNullOrEmpty(name)) name = ud?.ProductName;
+            return name ?? string.Empty;
+        }
 
         /// <summary>The slot Paste's macro leg. Internal so the tests can drive
         /// it without the clipboard; the rules it applies are the ones the
@@ -8458,8 +8247,8 @@ namespace PadForge
         /// this VC pastes with that trigger unresolved (re-record it), same as Paste.</summary>
         private void OnCopyMacroFrom(PadViewModel padVm)
         {
-            // Same dialog, naming, and GUID display as the Mappings-tab Copy From, but
-            // listing virtual controllers that have macros rather than mappings (#112).
+            // Same dialog and naming as the mappings' Copy From, but listing
+            // virtual controllers that have macros rather than mappings (#112).
             var entries = new List<CopyFromDialog.DeviceEntry>();
             for (int i = 0; i < _viewModel.Pads.Count; i++)
             {
@@ -8471,9 +8260,8 @@ namespace PadForge
                     ?? (src.MappedDevices.FirstOrDefault()?.InstanceGuid ?? Guid.Empty);
                 entries.Add(new CopyFromDialog.DeviceEntry
                 {
-                    Name = FormatVcSlotName(i, src.OutputType),
-                    SlotLabel = donor != Guid.Empty ? $"{donor:D}" : string.Empty,
-                    LayoutLabel = string.Empty,
+                    Name = CopyFromSlotName(src),
+                    Detail = CopyFromDeviceName(donor),
                     InstanceGuid = donor,
                     SourceSlot = i,
                 });
@@ -8485,7 +8273,8 @@ namespace PadForge
                 return;
             }
 
-            var dialog = new CopyFromDialog(entries) { Owner = this };
+            var dialog = new CopyFromDialog(entries,
+                string.Format(Strings.Instance.CopyFrom_MacrosSubtitle_Format, CopyFromSlotName(padVm))) { Owner = this };
             if (dialog.ShowDialog() != true || dialog.SelectedEntry == null) return;
 
             int srcSlot = dialog.SelectedEntry.SourceSlot;
@@ -8535,8 +8324,8 @@ namespace PadForge
             var entries = new List<CopyFromDialog.DeviceEntry>();
             // Mappings are stored per-slot (in the slot's MappingSet) since the
             // multi-source merge, so Copy From lists one entry per source slot
-            // rather than one per assigned device — a slot with N devices used
-            // to surface N duplicates with the same SlotLabel. Per-device tuning
+            // rather than one per assigned device: a slot with N devices used
+            // to surface N duplicates of the same row. Per-device tuning
             // (deadzones / FFB / sensitivity) still differs; we pick the slot's
             // currently-selected device as the tuning donor for each entry.
             // Unmapped devices (MapTo < 0) keep one entry per device since they
@@ -8636,30 +8425,29 @@ namespace PadForge
                         or VirtualControllerType.Nintendo;
                 }
 
-                // Primary line identifies the SLOT, not the device. The
-                // mappings copy is per-slot since the multi-source merge,
-                // so the dialog reads as: "Virtual Controller {global#} —
-                // {Type} {in-group#}" (e.g. "Virtual Controller 3 — Xbox 2").
-                // Unmapped UserSettings (rare; MapTo < 0) fall back to the
-                // device name since they have no slot identity.
-                string primary;
-                if (us.MapTo >= 0)
+                // The first line names the controller, not the device: the
+                // mappings copy is per controller since the multi-source
+                // merge, so a row reads as its page's header does, "Xbox #1",
+                // over the device that drives it. A device on no controller
+                // (MapTo < 0) has no controller to name, so its own name
+                // leads and the second line says it is not assigned.
+                string device = CopyFromDeviceName(us.InstanceGuid);
+                string primary, detail;
+                if (us.MapTo >= 0 && us.MapTo < _viewModel.Pads.Count)
                 {
-                    primary = FormatVcSlotName(us.MapTo, outputType);
+                    primary = CopyFromSlotName(_viewModel.Pads[us.MapTo]);
+                    detail = device;
                 }
                 else
                 {
-                    var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
-                    primary = ud?.InstanceName;
-                    if (string.IsNullOrEmpty(primary)) primary = ud?.ProductName;
-                    if (string.IsNullOrEmpty(primary)) primary = us.InstanceGuid.ToString();
+                    primary = string.IsNullOrEmpty(device) ? us.InstanceGuid.ToString() : device;
+                    detail = Strings.Instance.CopyFrom_Unassigned;
                 }
 
                 list.Add(new CopyFromDialog.DeviceEntry
                 {
                     Name = primary,
-                    SlotLabel = us.InstanceGuid == Guid.Empty ? string.Empty : $"{us.InstanceGuid:D}",
-                    LayoutLabel = string.Empty,
+                    Detail = detail,
                     InstanceGuid = us.InstanceGuid,
                     PadSetting = ps,
                     OutputType = outputType,
@@ -8674,7 +8462,8 @@ namespace PadForge
                 return;
             }
 
-            var dialog = new CopyFromDialog(entries) { Owner = this };
+            var dialog = new CopyFromDialog(entries,
+                string.Format(Strings.Instance.CopyFrom_Subtitle_Format, CopyFromSlotName(padVm))) { Owner = this };
             if (dialog.ShowDialog() == true && dialog.SelectedEntry != null)
             {
                 var srcEntry = dialog.SelectedEntry;

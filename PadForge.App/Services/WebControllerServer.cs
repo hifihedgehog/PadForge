@@ -64,6 +64,11 @@ namespace PadForge.Services
         internal Func<int, int> DisplayShownNumber { get; set; }
         private const string WebAssetPrefix = "PadForge.WebAssets.";
 
+        /// <summary>The PadForge icon the phone's home page shows beside its
+        /// name (#574), the title bar's own picture, served from the image
+        /// cache at /img/ like the controller art.</summary>
+        internal const string HomeMarkPath = "Resources/PadForge-icon.png";
+
         private IWebControllerListener _listener;
         private readonly object _lifecycleLock = new();
         private readonly Func<int, IDisposable> _prepareEndpoint;
@@ -2010,6 +2015,9 @@ namespace PadForge.Services
                             Load(WithFinish($"2DModels/{def.Folder}/{ov.ImageFile}", finish));
                 }
             }
+
+            // The home page's PadForge icon (#574).
+            Load(HomeMarkPath);
 
             return cache;
         }

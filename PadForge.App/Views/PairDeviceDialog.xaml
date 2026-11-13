@@ -1,225 +1,213 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.PairDeviceDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.PairDeviceDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        FontFamily="{StaticResource BodyFontFamily}"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        Title="{Binding WiiPair_Title, Source={x:Static strings:Strings.Instance}}"
-        Width="460" SizeToContent="Height"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-             xmlns:reset="clr-namespace:PadForge.Controls"
-             xmlns:common="clr-namespace:PadForge.Common">
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        Title="{Binding WiiPair_Title, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- Pairing and adding controllers Windows cannot find by itself (#116,
+         #277, #33, #574), as the Links board draws Pair a Wii Remote: what
+         to do, a live line that says what PadForge is doing, and Cancel
+         while it works. The Devices page has one button for five families
+         of controller, so the family is the dialog's first row, and the
+         code-behind titles the dialog for the family chosen. Pair, or Add
+         for the two families that are named and not searched for, shows
+         until a search runs and comes back when one ends with nothing
+         paired. -->
+    <views:DialogWindow.Resources>
+        <!-- An added serial controller's row is read by its words. -->
+        <Style x:Key="SerialRow" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemLinks}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Display, TargetNullValue=''}"/>
+        </Style>
+    </views:DialogWindow.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="DismissButton" Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                    Click="Dismiss_Click"/>
+            <Button x:Name="PairButton" Style="{StaticResource DialogPrimaryButton}"
+                    Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"
+                    Click="Pair_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
+    <StackPanel common:InitialFocus.First="True">
+        <controls:SettingRow MinHeight="44">
+            <TextBlock Style="{StaticResource DialogLabel}"
+                       Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"/>
+            <ComboBox x:Name="FamilyCombo" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True" SelectedIndex="0"
+                      SelectionChanged="Family_SelectionChanged"
+                      AutomationProperties.Name="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}">
+                <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding SerialPair_Family, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBoxItem Content="{Binding DjiPair_Family, Source={x:Static strings:Strings.Instance}}"/>
+            </ComboBox>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="Family" Visibility="{Binding Visibility, ElementName=FamilyCombo}" IsEnabled="{Binding IsEnabled, ElementName=FamilyCombo}" SettingLabel="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FamilyCombo_75"/>
+        </controls:SettingRow>
+
+        <!-- A Wii Remote is paired in two steps, which the board numbers. -->
+        <StackPanel x:Name="WiiSteps" Margin="0,8,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="1."/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap"
+                           Text="{Binding WiiPair_Step1, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+            <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="2."/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap"
+                           Text="{Binding WiiPair_Step2, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- The other families say what to do in one paragraph. -->
+        <TextBlock x:Name="InstructionsText" Margin="0,8,0,0" TextWrapping="Wrap" Visibility="Collapsed"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+        <!-- A Wii Remote paired for now only, by holding 1 and 2. -->
+        <controls:SettingRow MinHeight="44" Margin="0,4,0,0" Visibility="{Binding Visibility, ElementName=TemporaryCheck}">
+            <CheckBox x:Name="TemporaryCheck" VerticalAlignment="Center" Margin="-11,0,0,0"
+                      Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="Temporary" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" IsEnabled="{Binding IsEnabled, ElementName=TemporaryCheck}" SettingLabel="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_TemporaryCheck_88"/>
+        </controls:SettingRow>
+
+        <!-- Serial controllers (#33): an adapter says nothing about the
+             device behind it, so the user names the port and the
+             controller. -->
+        <StackPanel x:Name="SerialPickers" Visibility="Collapsed" Margin="0,4,0,0">
+            <controls:SettingRow MinHeight="44">
+                <TextBlock Style="{StaticResource DialogLabel}"
+                           Text="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox x:Name="PortCombo" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True"
+                          DropDownOpened="PortCombo_DropDownOpened"
+                          AutomationProperties.Name="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="SerialPort" IsEnabled="{Binding IsEnabled, ElementName=PortCombo}" SettingLabel="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PortCombo"/>
+            </controls:SettingRow>
+            <controls:SettingRow MinHeight="44">
+                <TextBlock Style="{StaticResource DialogLabel}"
+                           Text="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox x:Name="ControllerCombo" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True" SelectedIndex="0"
+                          AutomationProperties.Name="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="SerialController" IsEnabled="{Binding IsEnabled, ElementName=ControllerCombo}" SettingLabel="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ControllerCombo"/>
+            </controls:SettingRow>
+        </StackPanel>
+
+        <!-- DJI RC and RC 2 over the network (#33 Part 6): the remote
+             serves its sticks on a TCP port, so the user names its
+             address. -->
+        <StackPanel x:Name="DjiPickers" Visibility="Collapsed" Margin="0,4,0,0">
+            <controls:SettingRow MinHeight="44">
+                <TextBlock Style="{StaticResource DialogLabel}"
+                           Text="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}"/>
+                <ui:TextBox x:Name="DjiAddressBox" Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True"
+                            AutomationProperties.Name="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="DjiAddress" IsEnabled="{Binding IsEnabled, ElementName=DjiAddressBox}" SettingLabel="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_DjiAddressBox"/>
+            </controls:SettingRow>
+        </StackPanel>
+
+        <!-- The live line, while there is something to say. The flame is
+             the wait color while PadForge works and ember once a
+             controller is paired or added. The step before a verdict stays
+             over it: a failure's text says the failing step is shown
+             above, and a bug report needs that step (discussion #283
+             arrived with none). -->
+        <Border x:Name="StatusPanel" Style="{StaticResource DialogLiveBox}" Margin="0,14,0,0" Visibility="Collapsed">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="Dismiss_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
+                <Path x:Name="LiveFlame" FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
+                      Width="13" Height="16" Stretch="Uniform" VerticalAlignment="Center"
+                      Fill="{DynamicResource WaitBrush}"/>
+                <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="LastStepText" TextWrapping="Wrap" FontSize="13" Margin="0,0,0,2" Visibility="Collapsed"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    <TextBlock x:Name="StatusText" TextWrapping="Wrap" common:LiveText.Polite="True"/>
+                </StackPanel>
             </Grid>
         </Border>
 
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="20,16,20,16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <!-- The Wii Remotes a search has found so far. -->
+        <StackPanel x:Name="FoundPanel" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource DialogHead3}"
+                       Text="{Binding WiiPair_Found, Source={x:Static strings:Strings.Instance}}"/>
+            <Border Style="{StaticResource DialogList}">
+                <ListBox x:Name="FoundList" Style="{StaticResource DialogListBox}" MaxHeight="126"
+                         ItemContainerStyle="{StaticResource DialogListItemLinks}"
+                         AutomationProperties.Name="{Binding WiiPair_Found, Source={x:Static strings:Strings.Instance}}"/>
+            </Border>
+        </StackPanel>
 
-            <!-- Controller family picker (one entry today, room to extend) -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                <TextBlock Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=FamilyCombo}" HorizontalAlignment="Stretch">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Family" Visibility="{Binding Visibility, ElementName=FamilyCombo}" IsEnabled="{Binding IsEnabled, ElementName=FamilyCombo}" SettingLabel="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FamilyCombo_75"/>
-                    <ComboBox x:Name="FamilyCombo" SelectedIndex="0"
-                              SelectionChanged="Family_SelectionChanged">
-                        <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding SerialPair_Family, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding DjiPair_Family, Source={x:Static strings:Strings.Instance}}"/>
-                    </ComboBox>
-                </DockPanel>
-            </StackPanel>
-
-            <TextBlock Grid.Row="1" x:Name="InstructionsText"
-                       Text="{Binding WiiPair_Instructions, Source={x:Static strings:Strings.Instance}}"
-                       TextWrapping="Wrap" Margin="0,0,0,12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-            <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" Grid.Row="2" Margin="0,0,0,12">
-                <CheckBox VerticalAlignment="Center" x:Name="TemporaryCheck"
-                          Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
-                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Temporary" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" IsEnabled="{Binding IsEnabled, ElementName=TemporaryCheck}" SettingLabel="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_TemporaryCheck_88"/>
-            </StackPanel>
-
-            <!-- Serial controllers (#33): an adapter says nothing about the
-                 device behind it, so the user names the port and the
-                 controller. It shares row 2 with the Wii-only checkbox, and
-                 the two are never shown together. -->
-            <StackPanel Grid.Row="2" x:Name="SerialPickers" Visibility="Collapsed" Margin="0,0,0,12">
-                <TextBlock Text="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <DockPanel LastChildFill="True" Margin="0,0,0,10">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="SerialPort" IsEnabled="{Binding IsEnabled, ElementName=PortCombo}" SettingLabel="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PortCombo"/>
-                    <ComboBox x:Name="PortCombo" DropDownOpened="PortCombo_DropDownOpened"/>
-                </DockPanel>
-                <TextBlock Text="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <DockPanel LastChildFill="True">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="SerialController" IsEnabled="{Binding IsEnabled, ElementName=ControllerCombo}" SettingLabel="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ControllerCombo"/>
-                    <ComboBox x:Name="ControllerCombo" SelectedIndex="0"/>
-                </DockPanel>
-            </StackPanel>
-
-            <!-- DJI RC and RC 2 over the network (#33 Part 6): the remote
-                 serves its sticks on a TCP port, so the user names its
-                 address. Row 2 again, never shown with the others. -->
-            <StackPanel Grid.Row="2" x:Name="DjiPickers" Visibility="Collapsed" Margin="0,0,0,12">
-                <TextBlock Text="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <DockPanel LastChildFill="True">
-                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="DjiAddress" IsEnabled="{Binding IsEnabled, ElementName=DjiAddressBox}" SettingLabel="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_DjiAddressBox"/>
-                    <TextBox x:Name="DjiAddressBox"/>
-                </DockPanel>
-            </StackPanel>
-
-            <!-- Live status while an inquiry pass runs -->
-            <Grid Grid.Row="3" Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <ui:ProgressRing x:Name="ScanRing" Grid.Column="0" Width="20" Height="20"
-                                 IsIndeterminate="True" Visibility="Collapsed"
-                                 Margin="0,0,10,0" VerticalAlignment="Center"/>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <!-- The last narration line survives the verdict. The
-                         failure text says the failing step is shown above,
-                         and it was not: one TextBlock carried both, so the
-                         error erased the only clue a bug report could
-                         carry (discussion #283 arrived with none). -->
-                    <TextBlock x:Name="LastStepText" TextWrapping="Wrap"
-                               Visibility="Collapsed" Margin="0,0,0,2"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <TextBlock x:Name="StatusText" TextWrapping="Wrap"/>
-                </StackPanel>
-            </Grid>
-
-            <!-- Found-controller list -->
-            <StackPanel Grid.Row="4" x:Name="FoundPanel" Margin="0,0,0,12" Visibility="Collapsed">
-                <TextBlock Text="{Binding WiiPair_Found, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <ListBox x:Name="FoundList" MaxHeight="120"
-                         ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                         Background="{DynamicResource ControlFillColorDefaultBrush}"/>
-            </StackPanel>
-
-            <!-- The serial controllers added so far, each with its remove
-                 button. Removing one closes its port. -->
-            <StackPanel Grid.Row="5" x:Name="SerialAddedPanel" Margin="0,0,0,12" Visibility="Collapsed">
-                <TextBlock Text="{Binding SerialPair_Added, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <ItemsControl x:Name="SerialAddedList">
-                    <ItemsControl.ItemTemplate>
+        <!-- The serial controllers added so far, each with its Remove.
+             Removing one closes its port. -->
+        <StackPanel x:Name="SerialAddedPanel" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource DialogHead3}"
+                       Text="{Binding SerialPair_Added, Source={x:Static strings:Strings.Instance}}"/>
+            <Border Style="{StaticResource DialogList}">
+                <ListBox x:Name="SerialAddedList" Style="{StaticResource DialogListBox}" MaxHeight="168"
+                         ItemContainerStyle="{StaticResource SerialRow}"
+                         AutomationProperties.Name="{Binding SerialPair_Added, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Margin="0,2">
-                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource EmberIconButton}"
-                                           VerticalAlignment="Center" Click="SerialRemove_Click" Tag="{Binding}"
-                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
-                                    <reset:GlyphText Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                                </ui:Button>
-                                <TextBlock Text="{Binding Display}" VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
-                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Display}" VerticalAlignment="Center" Margin="0,0,12,0"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <Button Grid.Column="1" Style="{StaticResource DialogSmallQuietButton}"
+                                        Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                        Click="SerialRemove_Click" Tag="{Binding}"/>
+                            </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </StackPanel>
 
-            <!-- The DJI remotes added so far, each with its remove button.
-                 Removing one closes its link. -->
-            <StackPanel Grid.Row="5" x:Name="DjiAddedPanel" Margin="0,0,0,12" Visibility="Collapsed">
-                <TextBlock Text="{Binding DjiPair_Added, Source={x:Static strings:Strings.Instance}}"
-                           Margin="0,0,0,4"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <ItemsControl x:Name="DjiAddedList">
-                    <ItemsControl.ItemTemplate>
+        <!-- The DJI remotes added so far, each with its Remove. Removing
+             one closes its link. -->
+        <StackPanel x:Name="DjiAddedPanel" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource DialogHead3}"
+                       Text="{Binding DjiPair_Added, Source={x:Static strings:Strings.Instance}}"/>
+            <Border Style="{StaticResource DialogList}">
+                <ListBox x:Name="DjiAddedList" Style="{StaticResource DialogListBox}" MaxHeight="168"
+                         ItemContainerStyle="{StaticResource DialogListItemLinks}"
+                         AutomationProperties.Name="{Binding DjiPair_Added, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Margin="0,2">
-                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource EmberIconButton}"
-                                           VerticalAlignment="Center" Click="DjiRemove_Click" Tag="{Binding}"
-                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
-                                    <reset:GlyphText Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                                </ui:Button>
-                                <TextBlock Text="{Binding}" VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
-                            </DockPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="0,0,12,0"
+                                           FontFamily="{DynamicResource TelemetryFontFamily}" FontSize="13"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <Button Grid.Column="1" Style="{StaticResource DialogSmallQuietButton}"
+                                        Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                        Click="DjiRemove_Click" Tag="{Binding}"/>
+                            </Grid>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-
-            <!-- Footer band (#175 dialog language): Pair is the dialog's
-                 primary affirmative and wears the ember accent. -->
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                <ui:Button x:Name="PairButton" MinWidth="90" Margin="0,0,8,0"
-                           Style="{StaticResource EmberPrimaryButton}"
-                           Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"
-                           Click="Pair_Click"/>
-                <Button x:Name="DismissButton" MinWidth="90" IsCancel="True"
-                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                        Click="Dismiss_Click"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </StackPanel>
+    </StackPanel>
+</views:DialogWindow>

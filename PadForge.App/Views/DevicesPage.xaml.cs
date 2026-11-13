@@ -1,13 +1,25 @@
 using System;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
 using NavigationView = Wpf.Ui.Controls.NavigationView;
 using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
+    /// <summary>The Devices page (#574): a title with the count of devices
+    /// connected, a search and the Show segments, one list card (a table of
+    /// the devices connected now, then the other inputs and the ones
+    /// PadForge remembers, each folded to a line), and the selected device's
+    /// panel of four cards: the device's picture, facts and the controllers
+    /// that use it, its test, its settings and tools, and its details. Wide, the list and the panel scroll
+    /// on their own. Narrower than the two need, the panel stands under the
+    /// list and the page scrolls whole.</summary>
     public partial class DevicesPage : UserControl
     {
         /// <summary>Static InputService reference wired by MainWindow at
@@ -21,6 +33,290 @@ namespace PadForge.Views
         {
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
+            SizeChanged += (_, e) => ApplyLayout(IsStacked(e.NewSize.Width));
+            IsVisibleChanged += OnIsVisibleChanged;
+            // A list's rows change when its view arrives through the
+            // binding, when the segment or the search filters it, and when
+            // a row moves to another list. The lists live as long as the
+            // page.
+            foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+                ((INotifyCollectionChanged)list.Items).CollectionChanged += OnListViewChanged;
+            // The Used By chips are numbered each time their containers are made.
+            UsedByChips.ItemContainerGenerator.StatusChanged += (_, _) =>
+            {
+                if (UsedByChips.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+                    NumberUsedBy();
+            };
+        }
+
+        /// <summary>Numbers the Used By chips for a screen reader: a chip's
+        /// place among the chips and how many there are, the New Controller
+        /// button among them while it shows. The label that leads the chips
+        /// is one of the list's items, so that it wraps with them, and is
+        /// not counted.</summary>
+        internal void NumberUsedBy()
+        {
+            bool canAdd = (DataContext as ViewModels.DevicesViewModel)?.CanAddController == true;
+            PadForge.Common.ListItemPeers.Number(UsedByChips,
+                item => !ReferenceEquals(item, UsedByLabel) && (canAdd || !ReferenceEquals(item, NewControllerChip.Parent)));
+        }
+
+        /// <summary>Raised by Use It on a row and by New Controller under Used
+        /// By, with the device and the button that asked. MainWindow answers
+        /// by opening Add a Controller with the device picked to drive the
+        /// new controller, as for Home's offer.</summary>
+        public event EventHandler<(Guid Device, FrameworkElement Anchor)> NewControllerRequested;
+
+        // ── Layout ──
+
+        internal const double PageSide = 36, PageFoot = 36, ListMin = 520, BodyGap = 16, PanelWidth = 372;
+
+        /// <summary>The board's wrap: the list (basis 520) and the panel (372)
+        /// share a line while the content, the page less 36 a side, holds both
+        /// and the 16 between.</summary>
+        internal static bool IsStacked(double pageWidth) => pageWidth - 2 * PageSide < ListMin + BodyGap + PanelWidth;
+
+        /// <summary>The search box's width: basis 220, at most 320. Beside the
+        /// segments it takes what the line leaves, and alone on its line it
+        /// takes the line, up to 320.</summary>
+        internal static double SearchWidth(double rowWidth, double segmentWidth)
+            => rowWidth >= 220 + 16 + segmentWidth ? Math.Min(320, rowWidth - 16 - segmentWidth) : Math.Min(320, Math.Max(0, rowWidth));
+
+        /// <summary>The idle row's unit width. The label with the box (the
+        /// label's text, 12 and the box's 60) and the unit start at the widths
+        /// their text asks, beside 10 either side of the unit and the reset's
+        /// 32. What the row lacks comes off the unit first, down to two lines
+        /// of its text, so the label stays on one line: in the panel's 338 the
+        /// row lacks 14, and sharing that between the two wrapped both
+        /// (seen 2026-11-13). What it still lacks then comes off the two in
+        /// proportion to their widths. The unit is never wider than its
+        /// text.</summary>
+        internal static double IdleUnitWidth(double rowWidth, double labelText, double unitText)
+        {
+            double lead = labelText + 12 + 60;
+            double over = lead + unitText - (rowWidth - 10 - 10 - 32);
+            if (over <= 0) return unitText;
+            // Two lines of the unit's text, with a little for a word that
+            // ends past the middle.
+            double twoLines = unitText / 2 + 8;
+            double first = Math.Min(over, Math.Max(0, unitText - twoLines));
+            double unit = unitText - first;
+            double still = over - first;
+            return still <= 0 ? unit : Math.Max(0, unit - still * unit / (lead + unit));
+        }
+
+        /// <summary>A text's width on one line in its block's face and size.</summary>
+        private static double TextWidth(TextBlock block)
+        {
+            var text = new FormattedText(block.Text ?? string.Empty, System.Globalization.CultureInfo.CurrentUICulture,
+                block.FlowDirection, new Typeface(block.FontFamily, block.FontStyle, block.FontWeight, block.FontStretch),
+                block.FontSize, Brushes.Black, VisualTreeHelper.GetDpi(block).PixelsPerDip);
+            return Math.Ceiling(text.WidthIncludingTrailingWhitespace);
+        }
+
+        /// <summary>The least width of the list card that holds Link and
+        /// Battery as columns of the table: the columns and the row's
+        /// insets take 446, which leaves a name 214.</summary>
+        internal const double TableMin = 660;
+
+        /// <summary>Whether a list card of this width shows Link and Battery
+        /// as columns. Narrower, each row shows the two after its type.</summary>
+        internal static bool IsWide(double listWidth) => listWidth >= TableMin;
+
+        /// <summary>Whether the list is wide enough for the table's Link and
+        /// Battery columns. The list card sets it by its own width, and
+        /// every row and the table's head read it.</summary>
+        public static readonly DependencyProperty IsWideTableProperty = DependencyProperty.RegisterAttached(
+            "IsWideTable", typeof(bool), typeof(DevicesPage),
+            new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+
+        public static bool GetIsWideTable(DependencyObject element) => (bool)element.GetValue(IsWideTableProperty);
+
+        public static void SetIsWideTable(DependencyObject element, bool value) => element.SetValue(IsWideTableProperty, value);
+
+        /// <summary>The list card's width decides the table's form. The
+        /// card's width is the page's, whatever its rows hold, so the form
+        /// cannot change the width that chose it.</summary>
+        private void ListCard_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!e.WidthChanged) return;
+            bool wide = IsWide(e.NewSize.Width);
+            if (GetIsWideTable(DeviceListCard) != wide) SetIsWideTable(DeviceListCard, wide);
+        }
+
+        private bool? _stacked;
+
+        /// <summary>The two layouts. Wide, the list and the panel each scroll in
+        /// their own column under the fixed title and filter row, and each
+        /// scroll bar lies in a padding, never on a card. Stacked, the panel
+        /// stands under the list and the body scrolls whole.</summary>
+        private void ApplyLayout(bool stacked)
+        {
+            if (_stacked == stacked) return;
+            _stacked = stacked;
+            BodyScroll.VerticalScrollBarVisibility = stacked ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled;
+            BodyScroll.Padding = stacked ? new Thickness(PageSide, 0, PageSide, PageFoot) : new Thickness(0);
+            PanelColumn.Width = new GridLength(stacked ? 0 : PanelWidth + PageSide);
+            ListRow.Height = stacked ? GridLength.Auto : new GridLength(1, GridUnitType.Star);
+            StackGapRow.Height = new GridLength(stacked ? BodyGap : 0);
+            PanelRow.Height = stacked ? GridLength.Auto : new GridLength(0);
+            ListScroll.VerticalScrollBarVisibility = stacked ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
+            ListScroll.Padding = stacked ? new Thickness(0) : new Thickness(PageSide, 0, BodyGap, PageFoot);
+            Grid.SetRow(PanelScroll, stacked ? 2 : 0);
+            Grid.SetColumn(PanelScroll, stacked ? 0 : 1);
+            PanelScroll.VerticalScrollBarVisibility = stacked ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto;
+            PanelScroll.Padding = stacked ? new Thickness(0) : new Thickness(0, 0, PageSide, PageFoot);
+        }
+
+        private void FilterRow_SizeChanged(object sender, SizeChangedEventArgs e)
+            => DeviceSearchBox.Width = SearchWidth(FilterRow.ActualWidth, ShowSegments.ActualWidth);
+
+        private void IdleRow_SizeChanged(object sender, SizeChangedEventArgs e) => ShareIdleRow(e.NewSize.Width);
+
+        /// <summary>A new language changes the texts and not the row's width.</summary>
+        private void IdleRow_TextUpdated(object sender, DataTransferEventArgs e) => ShareIdleRow(IdleRow.ActualWidth);
+
+        private void ShareIdleRow(double rowWidth)
+        {
+            if (rowWidth <= 0) return;
+            double unit = TextWidth(IdleUnitText);
+            double share = IdleUnitWidth(rowWidth, TextWidth(IdleLabel), unit);
+            IdleUnitText.Width = share >= unit ? double.NaN : share;
+        }
+
+        // ── The lists ──
+
+        /// <summary>A Show segment's Tag is the filter it picks.</summary>
+        private void Filter_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement segment && segment.Tag is string tag
+                && Enum.TryParse(tag, out ViewModels.DeviceFilter filter)
+                && DataContext is ViewModels.DevicesViewModel vm)
+                vm.Filter = filter;
+        }
+
+        private bool _syncingSelection;
+
+        /// <summary>A pick in any of the three lists is the selected device.
+        /// In the stacked layout the panel's first card comes into view.</summary>
+        private void DeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_syncingSelection || DataContext is not ViewModels.DevicesViewModel vm) return;
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is ViewModels.DeviceRowViewModel row)
+            {
+                vm.SelectedDevice = row;
+                if (_stacked == true) IdentityCard.BringIntoView();
+            }
+        }
+
+        /// <summary>The three lists share one selection, the view model's: the
+        /// list that holds the selected device shows it picked, and the others
+        /// show nothing picked. A list's SelectedItem is set here, never bound
+        /// two ways.</summary>
+        private void SyncListSelection()
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            _syncingSelection = true;
+            try
+            {
+                foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+                {
+                    object want = vm.SelectedDevice != null && list.Items.Contains(vm.SelectedDevice) ? vm.SelectedDevice : null;
+                    if (!ReferenceEquals(list.SelectedItem, want)) list.SelectedItem = want;
+                }
+            }
+            finally
+            {
+                _syncingSelection = false;
+            }
+        }
+
+        /// <summary>Brings a device to the page, for a search result that
+        /// names it (#574): the segment and the search box stop hiding it,
+        /// it becomes the selected device, the folded list that holds it
+        /// opens, and its row comes into view.</summary>
+        internal void ShowDevice(ViewModels.DeviceRowViewModel row)
+        {
+            if (row == null || DataContext is not ViewModels.DevicesViewModel vm) return;
+            vm.EnsureListViews();
+            if (ListOf(row) == null)
+            {
+                vm.SearchText = string.Empty;
+                vm.Filter = ViewModels.DeviceFilter.All;
+            }
+            vm.SelectedDevice = row;
+            // The lists take a changed filter at the next layout, so the
+            // row is found then.
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var list = ListOf(row);
+                if (list == null) return;
+                if (ReferenceEquals(list, NotConnectedList)) NotConnectedFold.IsExpanded = true;
+                else if (ReferenceEquals(list, OtherInputsList)) OtherInputsFold.IsExpanded = true;
+                SyncListSelection();
+                list.UpdateLayout();
+                list.ScrollIntoView(row);
+            }));
+        }
+
+        /// <summary>The list that holds a device's row now, or null while the
+        /// segment or the search hides it.</summary>
+        private ListBox ListOf(ViewModels.DeviceRowViewModel row)
+        {
+            foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+                if (list.Items.Contains(row)) return list;
+            return null;
+        }
+
+        /// <summary>A list's rows changed: its view arrived, the segment or the
+        /// search filtered it, or a row moved to another list and left its old
+        /// list's pick behind. The picks are set again once the lists have
+        /// their rows.</summary>
+        private void OnListViewChanged(object sender, NotifyCollectionChangedEventArgs e)
+            => Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(SyncListSelection));
+
+        /// <summary>The page shown with no device selected selects the first
+        /// connected one, as the board draws a selected device.</summary>
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is not true || DataContext is not ViewModels.DevicesViewModel vm
+                || vm.SelectedDevice != null || vm.ConnectedView == null)
+                return;
+            foreach (object item in vm.ConnectedView)
+            {
+                if (item is ViewModels.DeviceRowViewModel row)
+                {
+                    vm.SelectedDevice = row;
+                    return;
+                }
+            }
+        }
+
+        /// <summary>Use It on a row: the type bar under the button, and the
+        /// controller made there takes the row's device.</summary>
+        private void UseIt_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement button && button.DataContext is ViewModels.DeviceRowViewModel row)
+                NewControllerRequested?.Invoke(this, (row.InstanceGuid, button));
+        }
+
+        /// <summary>New Controller under Used By, for the selected device.</summary>
+        private void NewController_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement button && DataContext is ViewModels.DevicesViewModel { SelectedDevice: { } row })
+                NewControllerRequested?.Invoke(this, (row.InstanceGuid, button));
+        }
+
+        /// <summary>The full readout is the Test Inputs card's body, or for a
+        /// device in the gamepad layout it stands under More, below the
+        /// compact test. Its parts keep their names, so the dot updaters and
+        /// the MIDI previews reach them wherever it stands.</summary>
+        private void PlaceRawView(bool gamepad)
+        {
+            Border host = gamepad ? RawMoreHost : RawPlainHost;
+            if (ReferenceEquals(RawFullView.Parent, host)) return;
+            if (RawFullView.Parent is Border old) old.Child = null;
+            host.Child = RawFullView;
         }
 
         // v3.3 — gyro UI moved to the Pad page's Gyro tab. The Calibrate
@@ -34,11 +330,37 @@ namespace PadForge.Views
             if (e.OldValue is ViewModels.DevicesViewModel oldVm)
                 oldVm.PropertyChanged -= OnVmPropertyChanged;
             if (e.NewValue is ViewModels.DevicesViewModel newVm)
+            {
                 newVm.PropertyChanged += OnVmPropertyChanged;
+                // The views are made here, on the page's thread.
+                newVm.EnsureListViews();
+                // A CollectionContainer is outside the tree, so a binding could
+                // not reach the chips: they are handed over here, as Home hands
+                // its controller cards.
+                UsedByContainer.Collection = newVm.ActiveSlotItems;
+                PlaceRawView(newVm.ShowGamepadTest);
+                SyncListSelection();
+            }
         }
 
         private void OnVmPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ViewModels.DevicesViewModel.SelectedDevice))
+            {
+                SyncListSelection();
+                return;
+            }
+            if (e.PropertyName == nameof(ViewModels.DevicesViewModel.ShowGamepadTest))
+            {
+                if (DataContext is ViewModels.DevicesViewModel shown)
+                    PlaceRawView(shown.ShowGamepadTest);
+                return;
+            }
+            if (e.PropertyName == nameof(ViewModels.DevicesViewModel.CanAddController))
+            {
+                NumberUsedBy();
+                return;
+            }
             if (e.PropertyName == nameof(ViewModels.DevicesViewModel.IsMidiDevice))
             {
                 var vm = DataContext as ViewModels.DevicesViewModel;
@@ -169,104 +491,85 @@ namespace PadForge.Views
             if (Pad2Dot4 != null) { Canvas.SetLeft(Pad2Dot4, vm.Pad2X4 * w - 7); Canvas.SetTop(Pad2Dot4, vm.Pad2Y4 * h - 7); }
         }
 
-        /// <summary>The rumble capability chip's click (a Border, so a mouse
-        /// handler rather than a Button Click).</summary>
-        private void IdentifyChip_Click(object sender, RoutedEventArgs e)
-            => IdentifyDevice_Click(sender, e);
-
-        /// <summary>Identify buzz (#293): route through InputService, which
-        /// picks the sole-writer lane for mapped devices and the direct train
-        /// for unmapped ones.</summary>
+        /// <summary>Test Rumble, the identify buzz (#293): route through
+        /// InputService, which picks the sole-writer lane for mapped devices
+        /// and the direct train for unmapped ones.</summary>
         private void IdentifyDevice_Click(object sender, RoutedEventArgs e)
         {
-            // The button lives in the details pane, so the target is the
-            // SELECTED device (the pane's whole context), not a row.
+            // The button is on the panel's first card, so the target is the
+            // SELECTED device (the panel's whole context), not a row.
             if (DataContext is ViewModels.DevicesViewModel vm && vm.SelectedDevice != null)
                 InputService?.IdentifyDevice(vm.SelectedDevice.InstanceGuid);
         }
 
+        /// <summary>Remove Device, in the Details card: the selected device. The
+        /// device is selected again before the command runs, so the one the
+        /// confirm named is the one removed.</summary>
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn &&
-                btn.DataContext is ViewModels.DeviceRowViewModel device)
+            if (DataContext is not ViewModels.DevicesViewModel vm || vm.SelectedDevice is not { } device)
+                return;
+
+            // Destructive-verb guard (#175 phase 2 item 1b): one click
+            // deleted the device record plus its settings. Same shared
+            // confirm as the Dashboard slot X. The body names the device
+            // the row holds and states the settings are forgotten.
+            bool confirmed = ConfirmDialog.Show(
+                Window.GetWindow(this),
+                Strings.Instance.Devices_RemoveConfirmTitle,
+                string.Format(Strings.Instance.Devices_RemoveConfirm_Format, device.DeviceName),
+                Strings.Instance.Common_Remove);
+            if (!confirmed) return;
+
+            bool isDs3 =
+                device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
+                device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID;
+            // PS Move family (#277): the Move and Navigation controllers
+            // live in the Bluetooth stack the same way the DS3 does, so
+            // "forget" must clear their pairing too.
+            bool isMoveFamily =
+                device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
+                (device.ProductId == PadForge.Services.Ds3PairingService.MOVE_PID ||
+                 device.ProductId == PadForge.Services.Ds3PairingService.NAV_PID);
+
+            // Detach a live pad before pulling its row, so the still-connected
+            // pad can't blip back into the list while its pairing is cleared.
+            if (isDs3) PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+            if (isMoveFamily)
             {
-                var vm = DataContext as ViewModels.DevicesViewModel;
-                if (vm != null)
-                {
-                    // Destructive-verb guard (#175 phase 2 item 1b): one click
-                    // deleted the device record plus its settings. Same shared
-                    // confirm as the Dashboard slot X; the body names the
-                    // device the VM row holds and states the settings are
-                    // forgotten.
-                    bool confirmed = ConfirmDialog.Show(
-                        Window.GetWindow(this),
-                        Strings.Instance.Devices_RemoveConfirmTitle,
-                        string.Format(Strings.Instance.Devices_RemoveConfirm_Format, device.DeviceName),
-                        Strings.Instance.Common_Remove);
-                    if (!confirmed) return;
-
-                    bool isDs3 =
-                        device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
-                        device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID;
-                    // PS Move family (#277): the Move and Navigation controllers
-                    // live in the Bluetooth stack the same way the DS3 does, so
-                    // "forget" must clear their pairing too.
-                    bool isMoveFamily =
-                        device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
-                        (device.ProductId == PadForge.Services.Ds3PairingService.MOVE_PID ||
-                         device.ProductId == PadForge.Services.Ds3PairingService.NAV_PID);
-
-                    // Detach a live pad before pulling its row, so the still-connected
-                    // pad can't blip back into the list while its pairing is cleared.
-                    if (isDs3) PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
-                    if (isMoveFamily)
-                    {
-                        PadForge.Common.Input.PsMoveDirectService.SuppressAndRelease();
-                        PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
-                    }
-
-                    try
-                    {
-                        vm.SelectedDevice = device;
-                        if (vm.RemoveDeviceCommand.CanExecute(null))
-                            vm.RemoveDeviceCommand.Execute(null);
-                    }
-                    finally
-                    {
-                        // A DualShock 3 lives on in the Bluetooth stack after its row is
-                        // removed (BthPS3 remembered-device record + link key), so it
-                        // would silently reconnect. "Forget" should mean forgotten:
-                        // clear its pairing too. Background thread - the clear cycles
-                        // the radio. Runs even if the row removal threw, because
-                        // UnpairAllDs3's finally is the ONLY thing that releases the
-                        // suppress gate set above; skipping it would strand every DS3
-                        // unable to reconnect for the process lifetime.
-                        if (isDs3)
-                        {
-                            System.Threading.Tasks.Task.Run(
-                                () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
-                        }
-                        else if (isMoveFamily)
-                        {
-                            // Adopts and releases BOTH suppress claims taken above
-                            // (UnpairAllMoveFamily's finally), mirroring the DS3 contract.
-                            System.Threading.Tasks.Task.Run(
-                                () => new PadForge.Services.Ds3PairingService().UnpairAllMoveFamily());
-                        }
-                    }
-                }
+                PadForge.Common.Input.PsMoveDirectService.SuppressAndRelease();
+                PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
             }
-        }
 
-        /// <summary>Facet chip click (#175 phase 2 item 13): filters the
-        /// device list by type family. Chips are Border tokens (PipelineChip
-        /// precedent); Tag carries the locale-neutral facet token.</summary>
-        private void FacetChip_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is FrameworkElement fe && fe.Tag is string facet &&
-                DataContext is ViewModels.DevicesViewModel vm)
+            try
             {
-                vm.SetFacet(facet);
+                vm.SelectedDevice = device;
+                if (vm.RemoveDeviceCommand.CanExecute(null))
+                    vm.RemoveDeviceCommand.Execute(null);
+            }
+            finally
+            {
+                // A DualShock 3 lives on in the Bluetooth stack after its row is
+                // removed (BthPS3 remembered-device record + link key), so it
+                // would silently reconnect. "Forget" should mean forgotten:
+                // clear its pairing too, on a background thread, since the
+                // clear cycles the radio. Runs even if the row removal threw,
+                // because UnpairAllDs3's finally is the ONLY thing that
+                // releases the suppress gate set above. Skipping it would
+                // strand every DS3, unable to reconnect for the process
+                // lifetime.
+                if (isDs3)
+                {
+                    System.Threading.Tasks.Task.Run(
+                        () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
+                }
+                else if (isMoveFamily)
+                {
+                    // Adopts and releases BOTH suppress claims taken above
+                    // (UnpairAllMoveFamily's finally), mirroring the DS3 contract.
+                    System.Threading.Tasks.Task.Run(
+                        () => new PadForge.Services.Ds3PairingService().UnpairAllMoveFamily());
+                }
             }
         }
 
@@ -446,10 +749,14 @@ namespace PadForge.Views
             content.Children.Add(messageText);
             content.Children.Add(buttonPanel);
 
+            // The flyout's style sets 20 by 20, and inside a setting's row
+            // those 20 would narrow the label while the flyout is open.
             var flyout = new Wpf.Ui.Controls.Flyout
             {
                 Content = content,
-                Placement = System.Windows.Controls.Primitives.PlacementMode.Top
+                Placement = System.Windows.Controls.Primitives.PlacementMode.Top,
+                MinWidth = 0,
+                MinHeight = 0,
             };
 
             // Add flyout to the visual tree near the target, then open it.
@@ -612,19 +919,16 @@ namespace PadForge.Views
             dlg.ShowDialog();
         }
 
-        // ── Device dossier copy (#175 competitor item 7) ──
+        // ── Copy Details (#175 competitor item 7) ──
 
         /// <summary>
-        /// Copies the dossier block as plain mono text. Locale-neutral token
-        /// lines mirroring the on-screen card, in card order: the full
-        /// identity superset now that the dossier is the single identity
-        /// block (PRODUCT, TYPE, CAPS, APP GUID, SDL GUID, PATH, VID:PID,
-        /// LINK, SERIAL, BATT). Fields the engine holds only, absent facts
-        /// omitted, no placeholders. CAPS is the on-card capabilities
-        /// summary line, which already names rumble/gyro/accel/touchpad,
-        /// so the chip row adds no extra copy line. Same try/catch +
-        /// status-bar confirmation shape as the settings/macro copy
-        /// handlers.
+        /// Copies the device's details as plain mono text, in locale-neutral
+        /// token lines (PRODUCT, TYPE, CAPS, APP GUID, SDL GUID, PATH,
+        /// VID:PID, LINK, SERIAL, FIRMWARE, REV, BATT). Fields the engine
+        /// holds only, absent facts omitted, no placeholders. CAPS is the
+        /// capabilities line, which already names rumble, gyro, accel and
+        /// touchpad. Same try/catch and status-bar confirmation shape as the
+        /// settings and macro copy handlers.
         /// </summary>
         private void CopyDossier_Click(object sender, RoutedEventArgs e)
         {
@@ -668,7 +972,7 @@ namespace PadForge.Views
             }
         }
 
-        // ── Device card drag (to sidebar controller cards) ──
+        // ── A row's drag (to a controller in the sidebar) ──
 
         private Point _deviceDragStart;
         private bool _deviceDragStarted;

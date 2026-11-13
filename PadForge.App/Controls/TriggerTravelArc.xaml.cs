@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -16,6 +17,12 @@ namespace PadForge.Controls
     /// </summary>
     public partial class TriggerTravelArc : UserControl
     {
+        /// <summary>The gauge draws the two values the RAW and OUT bars
+        /// beside it give UI Automation as numbers. A UserControl reads as a
+        /// custom control with no name, so the gauge keeps out of the control
+        /// view.</summary>
+        protected override AutomationPeer OnCreateAutomationPeer() => new DecorativeIconPeer(this);
+
         // ── Dependency Properties ──
 
         /// <summary>Raw pull, 0..1 (pre-pipeline).</summary>

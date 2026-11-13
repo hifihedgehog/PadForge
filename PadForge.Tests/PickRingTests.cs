@@ -158,15 +158,14 @@ namespace PadForge.Tests
         /// <summary>The pick rings the control its bar is about: one row's
         /// control, or with a D-pad direction or a stick's axis picked,
         /// every row's of that control. A direction's own name picks its
-        /// row. The picture opens with its first control picked (#574), and
-        /// a pick that names no control goes back to it. Nothing is ringed
-        /// with nothing picked, which only the list allows.</summary>
+        /// row. Nothing is ringed with nothing picked, as the picture
+        /// opens, and a pick that names no control rings nothing.</summary>
         [Fact]
         public void ThePickRingsEveryRowOfAStickOrADPad()
         {
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
-            Assert.Equal(new[] { "ButtonA" }, vm.PickedTargets());
+            Assert.Empty(vm.PickedTargets());
 
             vm.PickedTarget = "ButtonB";
             Assert.Equal(new[] { "ButtonB" }, vm.PickedTargets());
@@ -189,8 +188,8 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "LeftTrigger" }, vm.PickedTargets());
 
             vm.PickedTarget = "NoSuchControl";
-            Assert.Equal(new[] { "ButtonA" }, vm.PickedTargets());
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+            Assert.Empty(vm.PickedTargets());
+            vm.PickedTarget = "LeftTrigger";
             vm.PickedTarget = null;
             Assert.Empty(vm.PickedTargets());
         }
@@ -784,12 +783,16 @@ namespace PadForge.Tests
         /// <summary>A control under the pointer is ringed as a pick is: a
         /// stick or a D-pad as the whole control, from any of its rows or
         /// directions. The picked control takes no hover ring, and a name
-        /// with no row takes none.</summary>
+        /// with no row takes none. With nothing picked, as the picture
+        /// opens, every control takes the hover ring.</summary>
         [Fact]
         public void AHoverRingsTheControlUnderThePointer_UnlessItIsThePickedOne()
         {
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
+            Assert.Empty(vm.PickedTargets());
+            Assert.Equal(new[] { "ButtonA" }, vm.HoveredTargets("ButtonA"));
+            vm.PickedTarget = "ButtonA";
             Assert.Equal(new[] { "ButtonA" }, vm.PickedTargets());
             Assert.Equal(new[] { "ButtonB" }, vm.HoveredTargets("ButtonB"));
             Assert.Empty(vm.HoveredTargets("ButtonA"));

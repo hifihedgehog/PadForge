@@ -1,104 +1,41 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.TouchpadGestureRecorderDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.TouchpadGestureRecorderDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
         Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="660" Width="640"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-             xmlns:reset="clr-namespace:PadForge.Controls"
-             xmlns:common="clr-namespace:PadForge.Common">
+        Subtitle="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}">
 
-    <!-- No local ThemesDictionary. The App.xaml's ThemesDictionary is
-         theme-aware (ApplicationThemeManager.Apply mutates it on theme
-         change). A local copy here would lock the dialog to whichever
-         theme was hardcoded in XAML regardless of the user's actual
-         light/dark choice. Inheriting from Application.Resources gives
-         the dialog correct theme colors on both modes. -->
+    <!-- Record a Gesture (#574), as the Links board draws it: the stroke
+         as it is drawn, then the gesture's name. With a touchpad to record
+         from, the surface mirrors the fingers on it. With none, the
+         surface itself is drawn on with the mouse, a pen or a finger.
+         Clear leads the foot and starts the samples over. How many
+         samples to take is under More. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="TryAgainBtn" Style="{StaticResource DialogQuietButton}"
+                    Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                    Click="TryAgainBtn_Click"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="SaveBtn" Style="{StaticResource DialogPrimaryButton}" IsEnabled="False"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    Click="SaveBtn_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
+    <StackPanel common:InitialFocus.First="True">
+        <!-- The drawing surface. The line in its corner says where the
+             strokes come from, and takes no clicks. -->
+        <Border CornerRadius="8" Height="220" BorderThickness="1"
+                Background="{DynamicResource SteelFieldBrush}"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CancelBtn_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
-
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Subtitle -->
-            <TextBlock Grid.Row="0"
-                       Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                       TextWrapping="Wrap" Margin="0,0,0,12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-            <!-- Device / pad target -->
-            <TextBlock Grid.Row="1"
-                       x:Name="DeviceLabel"
-                       FontSize="13" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                       Margin="0,0,0,6"/>
-
-            <!-- Status + samples-captured counter -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
-                <TextBlock x:Name="StatusText"
-                           Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
-                           FontSize="13" VerticalAlignment="Center"/>
-                <TextBlock x:Name="SamplesText"
-                           FontFamily="{StaticResource TelemetryFontFamily}"
-                           FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-            </StackPanel>
-
-            <!-- Drawing surface: mirrors live device finger paths when a
-                 real touchpad target is wired; accepts mouse / touch /
-                 stylus on itself when no live device is targeted. -->
-            <Border Grid.Row="3"
-                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4"
-                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
                 <Canvas FlowDirection="LeftToRight" x:Name="DrawingCanvas"
                         Background="Transparent"
                         IsManipulationEnabled="True"
@@ -110,70 +47,57 @@
                         MouseMove="DrawingCanvas_MouseMove"
                         MouseUp="DrawingCanvas_MouseUp"
                         StylusDown="DrawingCanvas_StylusDown"/>
-            </Border>
-
-            <!-- Name field + validation -->
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
-                <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
-                         TextChanged="NameBox_TextChanged"/>
-                <TextBlock x:Name="ValidationText"
-                           Foreground="{DynamicResource SystemFillColorCriticalBrush}"
-                           FontSize="12"
-                           VerticalAlignment="Center" Margin="12,0,0,0"/>
-            </StackPanel>
-
-            <!-- Sample-count picker. A Grid, not a horizontal stack: a
-                 horizontal stack measures its children against infinite width,
-                 so the hint's wrap attribute never fired and the line ran off
-                 the right edge of a 640 window that cannot be resized. MEASURED
-                 with tools/rowmeasure: the label, picker and reset take 251 of
-                 the 608 usable, and the hint needs 546 on one line in French,
-                 so it cannot fit. The star column gives it the 357 that remain,
-                 which every locale wraps into. -->
-            <Grid Grid.Row="5" Margin="0,8,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <ComboBox Grid.Column="1" x:Name="SampleCountBox" Width="60" SelectedIndex="1"
-                          VerticalAlignment="Center"
-                          SelectionChanged="SampleCountBox_SelectionChanged"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ComboBoxItem Content="1"/>
-                    <ComboBoxItem Content="3"/>
-                    <ComboBoxItem Content="5"/>
-                </ComboBox>
-                <reset:SettingResetButton Grid.Column="2" Click="ResetSampleCount_Click" Tag="" Visibility="{Binding Visibility, ElementName=SampleCountBox}" IsEnabled="{Binding IsEnabled, ElementName=SampleCountBox}" SettingLabel="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_SampleCountBox_132" Margin="4,0,8,0"/>
-                <TextBlock Grid.Column="3" Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
-                           TextWrapping="Wrap"/>
+                <TextBlock x:Name="DeviceLabel" Margin="10" FontSize="12" IsHitTestVisible="False"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
             </Grid>
+        </Border>
 
-            <!-- Footer band (#175 dialog language): Save is the dialog's
-                 primary affirmative and wears the ember accent. Try Again
-                 just restarts the capture, so it stays neutral. -->
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                <Button x:Name="TryAgainBtn"
-                        Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" Margin="0,0,8,0"
-                        Click="TryAgainBtn_Click"/>
-                <Button x:Name="SaveBtn"
-                        Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                        Style="{StaticResource EmberAccentButton}"
-                        MinWidth="90" Margin="0,0,8,0"
-                        IsEnabled="False"
-                        Click="SaveBtn_Click"/>
-                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90"
-                        IsCancel="True" Click="CancelBtn_Click"/>
-            </StackPanel>
+        <!-- What to do next, and how many samples are taken. -->
+        <Grid Margin="0,6,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="StatusText" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center"
+                       common:LiveText.Polite="True"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBlock x:Name="SamplesText" Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource DialogMonoNote}"/>
         </Grid>
-    </Grid>
-</ui:FluentWindow>
+
+        <controls:SettingRow MinHeight="44" Margin="0,8,0,0">
+            <TextBlock Style="{StaticResource DialogLabelNarrow}"
+                       Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"/>
+            <ui:TextBox x:Name="NameBox" Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True"
+                        PlaceholderText="{Binding Recorder_NamePlaceholder, Source={x:Static strings:Strings.Instance}}"
+                        AutomationProperties.Name="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
+                        TextChanged="NameBox_TextChanged"/>
+        </controls:SettingRow>
+        <!-- Why the gesture cannot be saved yet. It takes no room while it
+             says nothing. -->
+        <TextBlock x:Name="ValidationText" common:LiveText.Polite="True" Margin="70,2,0,0" FontSize="13" TextWrapping="Wrap"
+                   Foreground="{DynamicResource WaitBrush}" Visibility="Collapsed"/>
+
+        <controls:MoreRow x:Name="GestureMore" Style="{StaticResource DialogMoreRow}"
+                          Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                          Hint="{Binding Recorder_MoreHint, Source={x:Static strings:Strings.Instance}}">
+            <StackPanel>
+                <controls:SettingRow MinHeight="44">
+                    <TextBlock Style="{StaticResource DialogLabel}"
+                               Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="SampleCountBox" Style="{StaticResource DialogSelect}" MinWidth="72" SelectedIndex="1"
+                              SelectionChanged="SampleCountBox_SelectionChanged"
+                              AutomationProperties.Name="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}">
+                        <ComboBoxItem Content="1"/>
+                        <ComboBoxItem Content="3"/>
+                        <ComboBoxItem Content="5"/>
+                    </ComboBox>
+                    <reset:SettingResetButton Click="ResetSampleCount_Click" Tag="" Visibility="{Binding Visibility, ElementName=SampleCountBox}" IsEnabled="{Binding IsEnabled, ElementName=SampleCountBox}" SettingLabel="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_SampleCountBox_132"/>
+                </controls:SettingRow>
+                <TextBlock Style="{StaticResource DialogNote}"
+                           Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"/>
+            </StackPanel>
+        </controls:MoreRow>
+    </StackPanel>
+</views:DialogWindow>

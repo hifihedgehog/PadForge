@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using HIDMaestro;
 using Microsoft.Win32;
 using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
-    public partial class ManageProfilesDialog : Wpf.Ui.Controls.FluentWindow
+    /// <summary>
+    /// Controller Presets (#574): the HIDMaestro presets the user added,
+    /// each with its own Export and Delete, and the two ways to add one,
+    /// from a file or from a controller that is connected now.
+    /// </summary>
+    public partial class ManageProfilesDialog : DialogWindow
     {
         /// <summary>Row model for the imported-profiles list.</summary>
         public sealed class ImportedProfileRow
@@ -21,12 +25,16 @@ namespace PadForge.Views
             /// <summary>Why the profile is not in the pickers, or null when
             /// it is (HMaestroProfileCatalog.GetUserProfileProblem).</summary>
             public string Problem { get; init; }
+
+            public override string ToString() => Name;
         }
 
         /// <summary>Row model for the connected-devices list.</summary>
         public sealed class DeviceRow
         {
             public HMHidDeviceInfo Info { get; init; }
+
+            public override string ToString() => DisplayName;
 
             public string DisplayName => string.IsNullOrWhiteSpace(Info?.ProductString)
                 ? Strings.Instance.ImportFromDevice_UnnamedDevice
@@ -74,19 +82,12 @@ namespace PadForge.Views
         {
             _settingsService = settingsService;
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             Loaded += (_, _) =>
             {
                 RefreshImportedList();
-                PopulateDevices();
+                PopulateDevices(sayCount: true);
+                ImportFromFileButton.Focus();
             };
         }
 
@@ -94,24 +95,19 @@ namespace PadForge.Views
         //  Imported profiles (top list)
         // ─────────────────────────────────────────────
 
+        /// <summary>The presets added so far. With none, their heading and
+        /// list are left out.</summary>
         private void RefreshImportedList()
         {
             var rows = _settingsService.GetUserProfileRows();
             ImportedList.ItemsSource = rows;
-            ImportedHeaderText.Text = string.Format(
-                Strings.Instance.ManageProfiles_YourProfiles_Format, rows.Count);
+            ImportedBlock.Visibility = rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void ImportedList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>A row's Export writes its preset to a file.</summary>
+        private void ExportRow_Click(object sender, RoutedEventArgs e)
         {
-            bool hasSelection = ImportedList.SelectedItem is ImportedProfileRow;
-            ExportButton.IsEnabled = hasSelection;
-            DeleteButton.IsEnabled = hasSelection;
-        }
-
-        private void ExportButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ImportedList.SelectedItem is not ImportedProfileRow row) return;
+            if ((sender as FrameworkElement)?.Tag is not ImportedProfileRow row) return;
 
             var dlg = new SaveFileDialog
             {
@@ -134,20 +130,23 @@ namespace PadForge.Views
             }
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>A row's Delete asks, then removes its preset. The row
+        /// and its buttons go with it, so the focus they held goes to
+        /// Import From File.</summary>
+        private void DeleteRow_Click(object sender, RoutedEventArgs e)
         {
-            if (ImportedList.SelectedItem is not ImportedProfileRow row) return;
+            if ((sender as FrameworkElement)?.Tag is not ImportedProfileRow row) return;
 
-            var confirm = MessageBox.Show(this,
-                string.Format(Strings.Instance.ManageProfiles_DeleteConfirm_Format, row.Name),
-                Strings.Instance.ManageProfiles_DeleteTitle,
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (confirm != MessageBoxResult.Yes) return;
+            if (!ConfirmDialog.Show(this, Strings.Instance.ManageProfiles_DeleteTitle,
+                    string.Format(Strings.Instance.ManageProfiles_DeleteConfirm_Format, row.Name),
+                    Strings.Instance.ManageProfiles_Delete))
+                return;
 
             _settingsService.RemoveUserProfile(row.Id);
             RefreshImportedList();
             StatusText.Text = string.Format(
                 Strings.Instance.ManageProfiles_StatusDeleted_Format, row.Name);
+            ImportFromFileButton.Focus();
         }
 
         private void ImportFromFileButton_Click(object sender, RoutedEventArgs e)
@@ -191,7 +190,13 @@ namespace PadForge.Views
         //  Connected devices (bottom list)
         // ─────────────────────────────────────────────
 
-        private void PopulateDevices()
+        /// <summary>Fills the picker with the devices connected now. The
+        /// pick stays on the device it was on when that device is still
+        /// listed, and otherwise goes to the first joystick, gamepad or
+        /// multi-axis device, else the first device. The count is said as
+        /// the dialog opens. A refill as the picker opens says nothing
+        /// unless it fails, so the line keeps what the last action said.</summary>
+        private void PopulateDevices(bool sayCount)
         {
             try
             {
@@ -201,17 +206,14 @@ namespace PadForge.Views
                     .ThenBy(d => d.TopLevelUsage)
                     .Select(d => new DeviceRow { Info = d })
                     .ToList();
+                var before = (DeviceList.SelectedItem as DeviceRow)?.Info;
                 DeviceList.ItemsSource = devices;
+                int pick = PickAfterRefill(devices.Select(KeyOf).ToList(), before == null ? null : KeyOf(before));
+                DeviceList.SelectedItem = pick >= 0 ? devices[pick] : null;
 
-                var preferred = devices.FirstOrDefault(r =>
-                    r.Info.TopLevelUsagePage == 0x01 &&
-                    (r.Info.TopLevelUsage == 0x04 ||
-                     r.Info.TopLevelUsage == 0x05 ||
-                     r.Info.TopLevelUsage == 0x08));
-                DeviceList.SelectedItem = preferred ?? devices.FirstOrDefault();
-
-                StatusText.Text = string.Format(
-                    Strings.Instance.ImportFromDevice_StatusFound_Format, devices.Count);
+                if (sayCount)
+                    StatusText.Text = string.Format(
+                        Strings.Instance.ImportFromDevice_StatusFound_Format, devices.Count);
             }
             catch (Exception ex)
             {
@@ -220,19 +222,38 @@ namespace PadForge.Views
             }
         }
 
+        private static (ushort Vendor, ushort Product, ushort Page, ushort Usage) KeyOf(DeviceRow row) => KeyOf(row.Info);
+
+        private static (ushort Vendor, ushort Product, ushort Page, ushort Usage) KeyOf(HMHidDeviceInfo info)
+            => (info.VendorId, info.ProductId, info.TopLevelUsagePage, info.TopLevelUsage);
+
+        /// <summary>Which device to pick after the list was read again, by
+        /// its place in the list: the device picked before when it is still
+        /// there (same vendor, product and top-level usage), else the first
+        /// joystick, gamepad or multi-axis device, else the first device,
+        /// and -1 with no device at all.</summary>
+        internal static int PickAfterRefill(
+            IReadOnlyList<(ushort Vendor, ushort Product, ushort Page, ushort Usage)> devices,
+            (ushort Vendor, ushort Product, ushort Page, ushort Usage)? picked)
+        {
+            if (picked != null)
+                for (int i = 0; i < devices.Count; i++)
+                    if (devices[i] == picked.Value) return i;
+            for (int i = 0; i < devices.Count; i++)
+                if (devices[i].Page == 0x01 && (devices[i].Usage == 0x04 || devices[i].Usage == 0x05 || devices[i].Usage == 0x08))
+                    return i;
+            return devices.Count > 0 ? 0 : -1;
+        }
+
         private void DeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ImportButton.IsEnabled = DeviceList.SelectedItem is DeviceRow;
         }
 
-        private void DeviceList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (DeviceList.SelectedItem is DeviceRow) TryImport();
-        }
+        // A controller plugged in since the dialog opened is in the list.
+        private void DeviceList_DropDownOpened(object sender, EventArgs e) => PopulateDevices(sayCount: false);
 
         private void ImportButton_Click(object sender, RoutedEventArgs e) => TryImport();
-
-        private void RefreshButton_Click(object sender, RoutedEventArgs e) => PopulateDevices();
 
         /// <summary>Reports whether anything was imported, rather than a flat
         /// false. The two import lanes end differently on purpose: the device

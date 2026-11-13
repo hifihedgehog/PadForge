@@ -1005,15 +1005,20 @@ namespace PadForge.Tests
         /// <summary>The bar's row is the one the pick names. On a gamepad a
         /// stick's axes and the D-pad's directions are one control with the
         /// group's name, and any other control is its own row. The bar
-        /// shows under the picture, which always has a control picked, the
-        /// first at the start (#574), and its options when they are
-        /// opened.</summary>
+        /// shows under the picture once a control is picked, none being
+        /// picked at the start, and its options when they are opened.</summary>
         [Fact]
         public void TheBarIsOnThePickedRow()
         {
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
+            Assert.Null(vm.PickedRow);
+            Assert.Equal(string.Empty, vm.PickedName);
+            Assert.Equal(string.Empty, vm.PickedKind);
+            Assert.False(vm.ShowPictureBar);
+            Assert.False(vm.ShowPickedOptions);
             var a = vm.Mappings.First(m => m.TargetSettingName == "ButtonA");
+            vm.PickedTarget = "ButtonA";
             Assert.Same(a, vm.PickedRow);
             Assert.Equal(a.TargetLabel, vm.PickedName);
             Assert.True(vm.ShowPictureBar);
@@ -1056,15 +1061,15 @@ namespace PadForge.Tests
             vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
             Assert.True(vm.ShowPictureBar);
 
-            // With nothing picked, which only the list allows, the bar has
-            // no row and no name.
+            // With nothing picked the bar has no row and no name, and does
+            // not show.
             var held = vm.PickedTarget;
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
             vm.PickedTarget = null;
             Assert.Null(vm.PickedRow);
             Assert.Equal(string.Empty, vm.PickedName);
+            Assert.False(vm.ShowPictureBar);
             vm.PickedTarget = held;
-            vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+            Assert.True(vm.ShowPictureBar);
 
             // Rows built again are new objects: the bar is on the new one.
             var before = vm.PickedRow;
@@ -1104,10 +1109,11 @@ namespace PadForge.Tests
             Assert.Contains("string name = MidiSlotConfig.PitchName(midiNote);",
                 ExtrasPageTests.RepoText("PadForge.App", "Views", "MidiPreviewView.xaml.cs"));
 
-            // A pick of none under the picture goes back to the first row.
+            // A pick of none under the picture is none: no row is picked
+            // in its place, and the bar goes.
             vm.PickedTarget = null;
-            Assert.Same(cc, vm.PickedRow);
-            Assert.True(vm.ShowPictureBar);
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
         }
 
         /// <summary>A stick's click is a button in the list and one of
@@ -1217,8 +1223,8 @@ namespace PadForge.Tests
             var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
             vm.RebuildMappings();
             vm.ApplyMappingPickerFilter();
-            // The picture opens with the first row the slot shows picked.
-            Assert.Equal(new[] { "KbmMBtn0" }, vm.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
+            // The picture opens with nothing picked, so the bar holds no row.
+            Assert.Empty(vm.PickedRowsView.Cast<MappingItem>());
             vm.PickedTarget = "KbmKey57";
             Assert.Equal(new[] { "KbmKey57" }, vm.PickedRowsView.Cast<MappingItem>().Select(m => m.TargetSettingName));
             vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
@@ -1228,8 +1234,11 @@ namespace PadForge.Tests
             vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
             vm.RebuildMappings();
             Assert.Same(vm.PickedRow, Assert.Single(vm.PickedRowsView.Cast<MappingItem>()));
-            // In the list nothing need be picked, and then the bar holds
-            // no row.
+            // With the pick taken away, in the list or under the picture,
+            // the bar holds no row.
+            vm.PickedTarget = null;
+            Assert.Empty(vm.PickedRowsView.Cast<MappingItem>());
+            vm.PickedTarget = "KbmKey57";
             vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
             vm.PickedTarget = null;
             Assert.Empty(vm.PickedRowsView.Cast<MappingItem>());
@@ -1249,7 +1258,10 @@ namespace PadForge.Tests
 
             var pad = new PadViewModel(0);
             Assert.Equal(string.Empty, pad.KindOf(null));
-            // The picture opens with its first control, A, picked (#574).
+            // Nothing is picked as the picture opens, so the bar names no
+            // kind until a control is picked.
+            Assert.Equal(string.Empty, pad.PickedKind);
+            pad.PickedTarget = "ButtonA";
             Assert.Equal(s.Pad_Kind_FaceButton, pad.PickedKind);
             Assert.All(new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY" }, t => Assert.Equal(s.Pad_Kind_FaceButton, Kind(pad, t)));
             Assert.All(new[] { "LeftShoulder", "RightShoulder" }, t => Assert.Equal(s.Pad_Kind_ShoulderButton, Kind(pad, t)));

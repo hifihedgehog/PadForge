@@ -43,8 +43,9 @@ PadForge.sln
 │
 ├── PadForge.App/             (WPF Application -- net10.0-windows10.0.26100.0)
 │   ├── App.xaml / .cs             Entry point, WPF-UI resources, converter registration
-│   ├── MainWindow.xaml / .cs      Shell: title bar with the profile switcher, NavigationView with
-│   │                              the engine state at its foot, page switching, the message line
+│   ├── MainWindow.xaml / .cs      Shell: title bar with the search box and the profile switcher,
+│   │                              NavigationView with the engine state at its foot, page switching,
+│   │                              the message line, the in-window dialogs for Add a Controller and Search
 │   │
 │   ├── Common/
 │   │   ├── SettingsManager.cs     Static: device/setting collections, assignment, defaults
@@ -70,12 +71,16 @@ PadForge.sln
 │   │       └── MidiBackend*.cs                The three MIDI APIs behind one interface
 │   │
 │   ├── Views/
-│   │   ├── HomePage.xaml / .cs              Engine state, slot cards, the extras in use, the offer for a new device
+│   │   ├── HomePage.xaml / .cs              Engine state, slot cards, the extras in use, the offer for a new device, and, while no controller exists, the first page
 │   │   ├── PadPage.xaml / .cs               A controller's page: its header and six sections (buttons, sticks, rumble, motion, lights, macros)
-│   │   ├── DevicesPage.xaml / .cs           Card-based device list + visual raw input state
+│   │   ├── AddControllerView.xaml / .cs     Add a Controller: the type tiles and the device that drives the new controller
+│   │   ├── SearchPanel.xaml / .cs           Search: the query, the grouped results and the key hints
+│   │   ├── DevicesPage.xaml / .cs           Connected, Not Connected and Other Inputs lists, and the selected device's settings, test and details
 │   │   ├── ExtrasPage.xaml / .cs            Optional features: a catalog of tiles and a page for each
-│   │   ├── ProfilesPage.xaml / .cs          Per-app profile management and auto-switching
-│   │   ├── SettingsPage.xaml / .cs          Theme, engine, drivers, diagnostics
+│   │   ├── ProfilesPage.xaml / .cs          The profile cards, automatic switching, shortcuts and external control
+│   │   ├── GetProfilesDialog.xaml / .cs     Starter profiles, community configs and file import in one dialog
+│   │   ├── CommunityConfigsPanel.xaml / .cs The Steam Workshop config browser, Get Profiles' Community tab
+│   │   ├── SettingsPage.xaml / .cs          Five groups (General, Input, Hardware, Drivers, Data & Privacy), a search box, each group's cards
 │   │   ├── AboutPage.xaml / .cs             App info, technology list, license
 │   │   ├── ControllerModelView.xaml / .cs   3D interactive HelixToolkit viewport
 │   │   ├── ControllerModel2DView.xaml / .cs 2D Canvas-based schematic with PNG overlays
@@ -110,9 +115,13 @@ PadForge.sln
 │   │   ├── PadViewModel.cs             Per-slot: visualizer, mappings, deadzones, macros, and which section of the page shows
 │   │   ├── MappingItem.cs              Single mapping row: target, source, recording, options
 │   │   ├── MacroItem.cs                Macro: trigger, actions, timing, button style, extended targets
-│   │   ├── DevicesViewModel.cs         Device list, raw state display, slot assignment
+│   │   ├── DevicesViewModel.cs         Device lists, filter and search, the gamepad test, slot assignment
+│   │   │   ├── DevicesViewModel.List.cs    The three lists, the Show segments, the search and the counts
+│   │   │   └── DevicesViewModel.Test.cs    The Test Inputs card's sticks, triggers and held buttons
 │   │   ├── DeviceRowViewModel.cs       Single device: identity, status, capabilities
-│   │   └── SettingsViewModel.cs        App settings: theme, engine, drivers, diagnostics
+│   │   ├── SettingsViewModel.cs        App settings, the Settings page's group and search, drivers, diagnostics
+│   │   ├── AddControllerViewModel.cs   Add a Controller's types and the devices that can drive the new controller
+│   │   └── SearchViewModel.cs          Search's query, results and pick
 │   │
 │   ├── Services/
 │   │   ├── InputService.cs             Engine <-> UI bridge: 30Hz DispatcherTimer, state sync
@@ -123,8 +132,11 @@ PadForge.sln
 │   │   ├── ForegroundMonitorService.cs Per-app profile switching via foreground detection
 │   │   └── WebControllerServer.cs     Embedded HTTP+WebSocket server for browser virtual controllers
 │   │
+│   ├── Search/                         Search's index of the pages' markup, its matching, its results and its landing
+│   │
 │   ├── WebAssets/
-│   │   ├── index.html                Landing page (controller layouts, touchpad, custom, browser gamepad)
+│   │   ├── index.html                The phone's home page: the last layout, four common ones, the rest under More Layouts
+│   │   ├── js/home_client.js         The home page's script: the pick, its finish and the layout used last
 │   │   ├── controller.html           Controller UI shell (dynamic PNG overlay layout)
 │   │   ├── css/controller.css        Dark responsive touch-optimized styles
 │   │   ├── js/controller_client.js   WebSocket client + touch input handling
@@ -132,7 +144,9 @@ PadForge.sln
 │   │
 │   ├── Converter/                      WPF value converters (bool, axis, visibility, etc.)
 │   ├── Controls/
-│   │   └── RangeSlider.cs              Custom deadzone range slider control
+│   │   ├── RangeSlider.cs              Custom deadzone range slider control
+│   │   ├── ShellDialog.cs              A dialog drawn inside the window over the page area
+│   │   └── KeyHint.cs                  A hint with keys drawn as key labels
 │   │
 │   ├── Resources/
 │   │   ├── ControllerIcons.xaml        XAML icon resource dictionary

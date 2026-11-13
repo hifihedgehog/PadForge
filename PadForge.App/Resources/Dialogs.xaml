@@ -1,0 +1,682 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:uictrl="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+                    xmlns:views="clr-namespace:PadForge.Views"
+                    xmlns:controls="clr-namespace:PadForge.Controls"
+                    xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ═══════════════════════════════════════════
+         The dialogs of PadForge 6 (#574): the frame every dialog is, and
+         the parts the dialog boards repeat. DialogWindow merges this
+         dictionary into each dialog's own resources, never App.xaml: its
+         styles build on App.xaml's own button styles, which a dictionary
+         merged into App.xaml would be read ahead of. Every brush and font
+         is a DynamicResource, so a switch of theme recolors an open dialog.
+         ═══════════════════════════════════════════ -->
+
+    <!-- ── Buttons: the boards' .btn, 36 tall with 16 at each side and
+         corners of 6. In a foot, the buttons stand at its end by their
+         style, and a quiet button leads. ── -->
+    <Style x:Key="DialogFootPanel" TargetType="controls:FlexLinePanel">
+        <Setter Property="Gap" Value="10"/>
+        <Setter Property="LineGap" Value="10"/>
+        <Setter Property="EndsApart" Value="True"/>
+    </Style>
+    <Style x:Key="DialogButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="controls:FlexLinePanel.AtEnd" Value="True"/>
+    </Style>
+    <Style x:Key="DialogPrimaryButton" TargetType="Button" BasedOn="{StaticResource EmberAccentButton}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="controls:FlexLinePanel.AtEnd" Value="True"/>
+    </Style>
+    <Style x:Key="DialogDangerButton" TargetType="Button" BasedOn="{StaticResource EmberDestructiveButton}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="controls:FlexLinePanel.AtEnd" Value="True"/>
+    </Style>
+    <Style x:Key="DialogQuietButton" TargetType="Button" BasedOn="{StaticResource QuietPlainButton}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="controls:FlexLinePanel.AtEnd" Value="False"/>
+    </Style>
+    <Style x:Key="DialogSmallQuietButton" TargetType="Button" BasedOn="{StaticResource DialogQuietButton}">
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="10,0"/>
+    </Style>
+    <!-- A quiet action that removes something (Delete under the custom
+         formats, Forget All in Map Key Lights, a preset's Delete): the quiet
+         button with its words in the danger ink, which it keeps under the
+         pointer and while pressed. The button's template takes its words'
+         color in those two states from the keys shadowed here. -->
+    <Style x:Key="DialogQuietDangerButton" TargetType="Button" BasedOn="{StaticResource DialogQuietButton}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFB08A"/>
+            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFB08A"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
+            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
+        </Style.Resources>
+        <Setter Property="Foreground" Value="{DynamicResource DangerInkBrush}"/>
+    </Style>
+    <!-- The head's X and a row's Play: 32 square, clear at rest, the raised
+         fill and the text color under the pointer. A reset docks right,
+         and these sit in a row's flow, so they dock left. -->
+    <Style x:Key="DialogIconButton" TargetType="uictrl:Button" BasedOn="{StaticResource QuietResetButton}">
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="DockPanel.Dock" Value="Left"/>
+    </Style>
+    <!-- The Record board's Clear, after its field. -->
+    <Style x:Key="DialogClearButton" TargetType="uictrl:Button" BasedOn="{StaticResource QuietResetButton}">
+        <Setter Property="Margin" Value="10,0,0,0"/>
+        <Setter Property="DockPanel.Dock" Value="Left"/>
+    </Style>
+    <!-- The record button: the pages' own, the ember dot and the word, with
+         the dialog boards' corners. -->
+    <Style x:Key="DialogRecordButton" TargetType="uictrl:Button" BasedOn="{StaticResource RecordButton}">
+        <Setter Property="CornerRadius" Value="6"/>
+    </Style>
+    <!-- An input chip's remove: a round 22 with a small X in the button's
+         own color, 6 after the chip's words. -->
+    <Style x:Key="DialogChipRemove" TargetType="uictrl:Button" BasedOn="{StaticResource QuietResetButton}">
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="CornerRadius" Value="11"/>
+        <Setter Property="Margin" Value="6,0,0,0"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Path FlowDirection="LeftToRight" Data="M 3,3 L 9,9 M 9,3 L 3,9" Width="12" Height="12"
+                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                          StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ── Text and fields ── -->
+    <Style x:Key="DialogLabel" TargetType="TextBlock">
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+    </Style>
+    <Style x:Key="DialogLabelNarrow" TargetType="TextBlock" BasedOn="{StaticResource DialogLabel}">
+        <Setter Property="Width" Value="60"/>
+    </Style>
+    <Style x:Key="DialogHead3" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="Margin" Value="0,12,0,8"/>
+        <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
+    </Style>
+    <Style x:Key="DialogNote" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style x:Key="DialogMonoNote" TargetType="TextBlock" BasedOn="{StaticResource DialogNote}">
+        <Setter Property="FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <!-- The note that leads a foot and takes the room its buttons leave. -->
+    <Style x:Key="DialogFootNote" TargetType="TextBlock" BasedOn="{StaticResource DialogNote}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="controls:FlexLinePanel.Grow" Value="1"/>
+        <Setter Property="controls:FlexLinePanel.Basis" Value="160"/>
+    </Style>
+    <Style x:Key="DialogTextBox" TargetType="uictrl:TextBox" BasedOn="{StaticResource {x:Type uictrl:TextBox}}">
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+        <Setter Property="ClearButtonEnabled" Value="False"/>
+    </Style>
+    <Style x:Key="DialogPasswordBox" TargetType="PasswordBox" BasedOn="{StaticResource {x:Type PasswordBox}}">
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+    </Style>
+    <!-- A picker keeps the app's padding of 8 and 6: the part a click opens
+         the list through is as tall as the words and their padding, so no
+         padding above and below would leave only the words to click. -->
+    <Style x:Key="DialogSelect" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Border.CornerRadius" Value="6"/>
+    </Style>
+    <!-- A picker drawn as an input chip, as the Shift Layer board draws its inputs. -->
+    <Style x:Key="DialogInputChipCombo" TargetType="ComboBox" BasedOn="{StaticResource DialogSelect}">
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Border.CornerRadius" Value="15"/>
+        <Setter Property="Padding" Value="12,0,8,0"/>
+        <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputChipEdgeBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputChipTextBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MaxWidth" Value="240"/>
+    </Style>
+    <!-- A value typed in place, as the controller page's rows hold one: the
+         mono digits at rest, the raised fill under the pointer, and the
+         field's fill with a cold edge with the keyboard's focus. -->
+    <Style x:Key="DialogValueEdit" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="8,0,0,0"/>
+        <Setter Property="Padding" Value="3,2,0,2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- A unit takes its label's color and follows its value at the value
+         box's own inset. -->
+    <Style x:Key="DialogUnit" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Margin" Value="3,0,0,0"/>
+    </Style>
+
+    <!-- ── Lists, boxes and More ── -->
+    <Style x:Key="DialogList" TargetType="Border">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+    <!-- A list's items in a scroll view of its own. Every item counts for
+         the first row's missing top line. -->
+    <Style x:Key="DialogListBox" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="AlternationCount" Value="1000000"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- A row of a list: a line over it but the first, and the row-hover
+         fill under the pointer. The picked rows' fill comes after the
+         pointer's, so a picked row keeps it. A plain row's fill is the
+         row's own, clear unless a dialog lights the row (a phrase just
+         heard). -->
+    <ControlTemplate x:Key="DialogListItemTemplate" TargetType="ListBoxItem">
+        <Border x:Name="Bd" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SteelPaneLineBrush}"
+                Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter TargetName="Bd" Property="BorderThickness" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="DialogPickListItemTemplate" TargetType="ListBoxItem">
+        <Border x:Name="Bd" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SteelPaneLineBrush}"
+                Background="Transparent" Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter TargetName="Bd" Property="BorderThickness" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="DialogRadioListItemTemplate" TargetType="ListBoxItem">
+        <Border x:Name="Bd" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SteelPaneLineBrush}"
+                Background="Transparent" Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- The app's radio button keeps room for its words, 120 at
+                     the least. This one has none: the row's words follow
+                     it, 12 after the mark, of which the button's own edge
+                     is 8. -->
+                <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                             IsHitTestVisible="False" Focusable="False" IsTabStop="False"
+                             MinWidth="0" Padding="0"
+                             VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <ContentPresenter Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter TargetName="Bd" Property="BorderThickness" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="DialogListItem" TargetType="ListBoxItem">
+        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="Padding" Value="12,0,6,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Template" Value="{StaticResource DialogListItemTemplate}"/>
+    </Style>
+    <Style x:Key="DialogListItemTall" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItem}">
+        <Setter Property="MinHeight" Value="46"/>
+        <Setter Property="Padding" Value="12,6"/>
+    </Style>
+    <Style x:Key="DialogListItemLinks" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItem}">
+        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="Padding" Value="12,4"/>
+    </Style>
+    <Style x:Key="DialogPickListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemTall}">
+        <Setter Property="Template" Value="{StaticResource DialogPickListItemTemplate}"/>
+    </Style>
+    <Style x:Key="DialogRadioListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemTall}">
+        <Setter Property="Template" Value="{StaticResource DialogRadioListItemTemplate}"/>
+    </Style>
+    <Style x:Key="DialogRadioListItemLinks" TargetType="ListBoxItem" BasedOn="{StaticResource DialogRadioListItem}">
+        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="Padding" Value="12,4"/>
+    </Style>
+    <!-- A choice the Dialogs board draws as a card of its own: clear at
+         rest, the row-hover fill under the pointer, and the picked fill
+         inside the picked edge once chosen. -->
+    <Style x:Key="DialogOptionItem" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="14,12"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd" CornerRadius="8" BorderThickness="1" BorderBrush="Transparent"
+                            Background="Transparent" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource EmberEdgeBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- An item of a removal's list (the HIDMaestro and BthPS3 uninstalls):
+         what it is over where it is, why it stays or could not be read
+         when it does, and what becomes of it at the row's end, quiet when
+         the removal takes it and in the wait color when it does not. -->
+    <DataTemplate x:Key="DialogRemovalRow">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Location}" FontSize="13" TextWrapping="Wrap"
+                           FontFamily="{DynamicResource TelemetryFontFamily}"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                <TextBlock Text="{Binding Detail}" FontSize="13" TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Detail}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <TextBlock Grid.Column="1" Margin="12,0,0,0" FontSize="13" VerticalAlignment="Center" Text="{Binding Outcome}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsRemoved}" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+    <!-- A tag is the pages' chip, and an input chip the pages' input chip. -->
+    <Style x:Key="DialogTag" TargetType="Border" BasedOn="{StaticResource PillChip}"/>
+    <Style x:Key="DialogChip" TargetType="Border" BasedOn="{StaticResource InputChip}"/>
+    <Style x:Key="DialogSegmentRadio" TargetType="RadioButton" BasedOn="{StaticResource SegmentRadio}">
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="14,0"/>
+    </Style>
+    <Style x:Key="DialogLiveBox" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+    </Style>
+    <Style x:Key="DialogWaitBox" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="Background" Value="{DynamicResource WaitWellBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WaitEdgeBrush}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource WaitTextBrush}"/>
+    </Style>
+    <Style x:Key="DialogCodeBox" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="14"/>
+        <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+        <Setter Property="TextElement.FontSize" Value="28"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ColdBrush}"/>
+    </Style>
+    <Style x:Key="DialogStatTile" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="14,10"/>
+        <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+    </Style>
+    <Style x:Key="DialogStatTileWait" TargetType="Border" BasedOn="{StaticResource DialogStatTile}">
+        <Setter Property="Background" Value="{DynamicResource WaitWellBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WaitEdgeBrush}"/>
+    </Style>
+    <!-- A countdown: a track 6 tall, the field's fill inside a hairline,
+         with a wait-gold fill for the time left. -->
+    <Style x:Key="DialogCountdownBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border Background="{DynamicResource SteelFieldBrush}"
+                                BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="3"/>
+                        <Rectangle x:Name="PART_Track" Margin="1"/>
+                        <Border x:Name="PART_Indicator" Margin="1" HorizontalAlignment="Left"
+                                Background="{TemplateBinding Foreground}" CornerRadius="2"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- The line of a dialog's More: an edged row that opens the rest under
+         itself. -->
+    <Style x:Key="DialogMoreToggle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="Bd" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                            Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                            MinHeight="{TemplateBinding MinHeight}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- A dialog's More: the page's More row in the dialog's look. Nothing
+         about a dialog is stored, so it carries no StateKey. -->
+    <Style x:Key="DialogMoreRow" TargetType="controls:MoreRow">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:MoreRow">
+                    <StackPanel>
+                        <ToggleButton x:Name="HeaderSite" Style="{StaticResource DialogMoreToggle}"
+                                      IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                      AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                      AutomationProperties.HelpText="{TemplateBinding Hint}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path x:Name="Chevron" FlowDirection="LeftToRight" Data="M 3.5,5.25 L 7,8.75 L 10.5,5.25"
+                                      Width="14" Height="14" Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.2"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                      RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header" VerticalAlignment="Center"
+                                                  TextElement.FontSize="14"/>
+                                <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}" FontSize="13"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </ToggleButton>
+                        <Border x:Name="ExpandSite" Visibility="Collapsed" Padding="0,8,0,0">
+                            <ContentPresenter/>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Chevron" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ── The window: Wpf.Ui's own window template (an AdornerDecorator
+         around a ClientAreaBorder that takes the window's background and
+         edge) with the dialog's parts inside the border. The head holds the
+         title, the line under it and the X. The body holds the dialog's
+         content and scrolls once the window reaches its cap. The foot holds
+         the buttons over a hairline. ── -->
+    <ControlTemplate x:Key="DialogWindowTemplate" TargetType="{x:Type views:DialogWindow}">
+        <AdornerDecorator>
+            <uictrl:ClientAreaBorder Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="{TemplateBinding BorderThickness}">
+                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="PART_Head" Margin="{TemplateBinding HeadPadding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock x:Name="PART_Title" Text="{TemplateBinding Title}" FontSize="18" FontWeight="SemiBold"
+                                           TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                           AutomationProperties.HeadingLevel="Level1"/>
+                                <ContentPresenter x:Name="PART_Subtitle" Content="{TemplateBinding Subtitle}" Margin="0,6,0,0"
+                                                  TextElement.FontSize="14" TextElement.Foreground="{DynamicResource SubRowTextBrush}">
+                                    <ContentPresenter.Resources>
+                                        <DataTemplate DataType="{x:Type sys:String}">
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                                        </DataTemplate>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </StackPanel>
+                            <ui:Button x:Name="PART_Close" Grid.Column="1" Style="{StaticResource DialogIconButton}" Margin="16,0,0,0"
+                                       VerticalAlignment="Top" Visibility="Collapsed" AutomationProperties.AutomationId="DialogCloseButton"
+                                       ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                                       AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                                <Path FlowDirection="LeftToRight" Data="M 4,4 L 12,12 M 12,4 L 4,12" Width="16" Height="16"
+                                      StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"/>
+                            </ui:Button>
+                        </Grid>
+                        <ScrollViewer x:Name="PART_BodyScroll" Grid.Row="1" Focusable="False"
+                                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ContentPresenter x:Name="PART_Body" Margin="{TemplateBinding BodyPadding}"/>
+                        </ScrollViewer>
+                        <Border x:Name="PART_Foot" Grid.Row="2" BorderThickness="0,1,0,0"
+                                BorderBrush="{DynamicResource SteelLineSoftBrush}" Padding="{TemplateBinding FootPadding}">
+                            <ContentPresenter Content="{TemplateBinding Foot}"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </uictrl:ClientAreaBorder>
+        </AdornerDecorator>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsWide" Value="True">
+                <Setter TargetName="PART_Title" Property="FontSize" Value="20"/>
+                <Setter TargetName="PART_Subtitle" Property="Margin" Value="0,4,0,0"/>
+                <Setter TargetName="PART_Subtitle" Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </Trigger>
+            <Trigger Property="ShowClose" Value="True">
+                <Setter TargetName="PART_Close" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="Subtitle" Value="{x:Null}">
+                <Setter TargetName="PART_Subtitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Subtitle" Value="">
+                <Setter TargetName="PART_Subtitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Foot" Value="{x:Null}">
+                <Setter TargetName="PART_Foot" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="ScrollsBody" Value="False">
+                <Setter TargetName="PART_BodyScroll" Property="VerticalScrollBarVisibility" Value="Disabled"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- The base is the app's window style, whose height, width and floors
+         this one sets anew: a dialog sizes to its content, so a short
+         confirm is not held to a 320 floor. Standard dialogs are 560 wide
+         and Wide ones 680. Mica stays: the card fill covers it in the dark
+         theme and lets it through in the light one, as the main window
+         does. An owned dialog takes no taskbar button. -->
+    <Style TargetType="{x:Type views:DialogWindow}" BasedOn="{StaticResource {x:Type uictrl:FluentWindow}}">
+        <Setter Property="FontFamily" Value="{DynamicResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="ExtendsContentIntoTitleBar" Value="True"/>
+        <Setter Property="WindowBackdropType" Value="Mica"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="ShowInTaskbar" Value="False"/>
+        <Setter Property="SizeToContent" Value="Height"/>
+        <Setter Property="Width" Value="560"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Template" Value="{StaticResource DialogWindowTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsWide" Value="True">
+                <Setter Property="Width" Value="680"/>
+                <Setter Property="HeadPadding" Value="24,22,24,0"/>
+                <Setter Property="BodyPadding" Value="0"/>
+                <Setter Property="FootPadding" Value="24,16,24,16"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

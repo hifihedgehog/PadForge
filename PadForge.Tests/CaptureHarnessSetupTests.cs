@@ -698,7 +698,6 @@ namespace PadForge.Tests
         [InlineData("diag-sweep.ps1", "if (-not (InFront))", "Click-At ([int]($r.X")]
         [InlineData("capture_all.ps1", "if ($front -ne $own)", "[Win32]::ClickAt($X, $Y)")]
         [InlineData("a11y_uia_audit.ps1", "if (-not (Front)) { return 'not in front' }", "[A11yWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
-        [InlineData("a11y_nvda_tab_pass.ps1", "elseif ([NvdaPassWin]::GetForegroundWindow() -ne $h)", "[NvdaPassWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
         [InlineData("add_slots_via_ui.ps1", "if ([AddSlotsWin]::GetForegroundWindow() -ne $proc.MainWindowHandle)", "[AddSlotsWin]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)")]
         [InlineData("probe_macro_list.ps1", "if ([PW]::GetForegroundWindow() -ne $hwnd)", "[PW]::ClickAt([int]($r.X")]
         public void EveryToolThatClicks_AsksWhoHoldsTheFocusFirst(string script, string guard, string click)
@@ -707,6 +706,23 @@ namespace PadForge.Tests
             int asked = text.IndexOf(guard, StringComparison.Ordinal);
             int clicked = text.IndexOf(click, StringComparison.Ordinal);
             Assert.True(asked > 0 && clicked > asked, $"{script}: {asked} {clicked}");
+        }
+
+        /// <summary>The NVDA Tab pass makes no click and moves no pointer: it
+        /// selects a page, a section or a group through the SelectionItem
+        /// pattern, and the only keys it sends are Tabs, each after asking
+        /// who holds the focus.</summary>
+        [Fact]
+        public void TheNvdaTabPass_ClicksNothing_AndAsksWhoHoldsTheFocusBeforeEachTab()
+        {
+            string text = AuditDelta20261002Tests.RepoText("tools", "a11y_nvda_tab_pass.ps1");
+            Assert.DoesNotContain("mouse_event", text);
+            Assert.DoesNotContain("SetCursorPos", text);
+            Assert.Contains("$el.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select()", text);
+            int asked = text.IndexOf("if ([NvdaPassWin]::GetForegroundWindow() -ne $h) { \"lost focus at tab $i\" | Add-Content $status; break }", StringComparison.Ordinal);
+            int tabbed = text.IndexOf("[System.Windows.Forms.SendKeys]::SendWait('{TAB}')", StringComparison.Ordinal);
+            Assert.True(asked > 0 && tabbed > asked, $"{asked} {tabbed}");
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(text, @"SendKeys\]::SendWait"));
         }
 
         /// <summary>A sweep that stopped short says so. The word PASS on a
@@ -1313,8 +1329,12 @@ namespace PadForge.Tests
             Assert.Contains("$script:ColorwayScenes = @(", script, StringComparison.Ordinal);
 
             // Both passes run the same recipes: the focused pass and the full
-            // run each call the popup's, the web pages' and the colorways'.
-            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-AddControllerPopup\s*$", RegexOptions.Multiline).Count);
+            // run each call Add a Controller's, Home's first page's, the web
+            // pages' and the colorways'.
+            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-AddController\s*$", RegexOptions.Multiline).Count);
+            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-HomeFirstRun\s*$", RegexOptions.Multiline).Count);
+            Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-Search\s*$", RegexOptions.Multiline).Count);
+            Assert.DoesNotContain("FirstRunTourCompleted", script, StringComparison.Ordinal);
             Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-WebShots\s*$", RegexOptions.Multiline).Count);
             Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-Colorways\s*$", RegexOptions.Multiline).Count);
             Assert.Equal(2, Regex.Matches(script, @"^\s*Capture-StarterGallery\s*$", RegexOptions.Multiline).Count);
@@ -1434,6 +1454,43 @@ namespace PadForge.Tests
         }
 
         /// <summary>
+        /// The pointer rests beside the title bar's search box, never on
+        /// it. PadForge 6 put the search box at the middle of the title
+        /// bar, where the pointer rested and the run's first click landed:
+        /// every frame would show the box lit, and that click opens Search.
+        /// Only the box takes the pointer, and the bar between it and the
+        /// profile pill is empty caption, so both points are halfway
+        /// between the two, read from the window each time.
+        /// </summary>
+        [Fact]
+        public void ThePointerRestsBesideTheSearchBox()
+        {
+            string script = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("tools", "capture_all.ps1"))).Replace("\r\n", "\n");
+            string Body(string name)
+            {
+                int at = script.IndexOf("\nfunction " + name + " {\n", StringComparison.Ordinal);
+                Assert.True(at >= 0, "no function " + name);
+                return script.Substring(at, script.IndexOf("\n}\n", at, StringComparison.Ordinal) - at);
+            }
+            string rest = Body("Get-TitleRestX");
+            Assert.Contains("\"TitleSearchBox\"", rest, StringComparison.Ordinal);
+            Assert.Contains("\"ProfilePillStatusBar\"", rest, StringComparison.Ordinal);
+            // The rectangles are read at each call: a right-to-left language mirrors the bar.
+            Assert.Contains("$box = Get-Rect $parts.Box", rest, StringComparison.Ordinal);
+            Assert.Contains("$pill = Get-Rect $parts.Pill", rest, StringComparison.Ordinal);
+            Assert.Contains("if ($target -eq $main) { $px = Get-TitleRestX $tr }", Body("Park-Pointer"), StringComparison.Ordinal);
+            Assert.Contains("Click-At (Get-TitleRestX $wr) (($wr.Top + 30))", script, StringComparison.Ordinal);
+            Assert.DoesNotContain("Click-At ([int](($wr.Left + $wr.Right) / 2)) (($wr.Top + 30))", script, StringComparison.Ordinal);
+
+            // The two parts it reads are in the title bar, the box in its
+            // middle part and the pill in its end part.
+            var window = System.Xml.Linq.XDocument.Parse(File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(Path.Combine("PadForge.App", "MainWindow.xaml"))));
+            System.Xml.Linq.XElement ById(string id) => Assert.Single(window.Descendants(), e => (string)e.Attribute("AutomationProperties.AutomationId") == id);
+            Assert.Contains(ById("TitleSearchBox").Ancestors(), a => a.Name.LocalName == "TitleBar.CenterContent");
+            Assert.Contains(ById("ProfilePillStatusBar").Ancestors(), a => a.Name.LocalName == "TitleBar.TrailingContent");
+        }
+
+        /// <summary>
         /// The frames after the Workshop recipe show the staged slots. The
         /// recipe applies the profile it imports, which brings only the slots
         /// of the config it came from, and on 2026-10-23 every frame after it
@@ -1452,8 +1509,14 @@ namespace PadForge.Tests
             Assert.True(restore > cap && (next < 0 || restore < next), "the Default profile is not loaded back before the next frame");
             string before = script.Substring(Math.Max(0, cap - 400), Math.Min(400, cap));
             Assert.Contains("$script:ExpectedSlots = 0", before, StringComparison.Ordinal);
-            // That frame is the only place inside the run that turns the check off.
-            Assert.Single(Regex.Matches(script, @"^[ \t]+\$script:ExpectedSlots = 0\s*$", RegexOptions.Multiline));
+            // Two frames inside the run turn the check off: that one, and
+            // Home's first page (#574), whose scene has no slot at all.
+            var off = Regex.Matches(script, @"^[ \t]+\$script:ExpectedSlots = 0\s*$", RegexOptions.Multiline);
+            Assert.Equal(2, off.Count);
+            int first = script.IndexOf("function Capture-HomeFirstRun {", StringComparison.Ordinal);
+            int firstEnd = script.IndexOf("\nfunction ", first + 1, StringComparison.Ordinal);
+            Assert.True(first >= 0 && firstEnd > first, "no Capture-HomeFirstRun function");
+            Assert.Contains(off, m => m.Index > first && m.Index < firstEnd);
         }
 
         /// <summary>

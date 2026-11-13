@@ -104,6 +104,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Nhyehyɛe</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ne nyinaa mu</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Drivers</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data ne Kokoamsɛm</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Hwehwɛ nhyehyɛe</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hann</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Esum</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Yi HIDMaestro fi hɔ</value></data>
@@ -112,6 +118,10 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Aka hɔ: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Wɔantumi ankenkan: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Wɔanyi: {0}</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Wɔayi</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Wɔakora</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Wɔankenkan</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Wɔanyi</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Yi BthPS3 fi hɔ</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Yɛrekenkan nea BthPS3 gyaw wɔ PC yi so…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 annyaw biribiara wɔ PC yi so a wobɛyi.</value></data>
@@ -199,7 +209,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Hann</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Fa ahosuo ka ho</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Popa</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>To mu</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ampene profile yi so wɔ {1}: {0}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Wɔamfa biribiara amma. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -288,7 +297,7 @@
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Din</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Sɔ hwɛ bio</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>To gesture yi din</value></data>
 
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Kura</value></data>
   <data name="Settings_GyroEngageStickDirection_XNeg" xml:space="preserve"><value>Benkum (X-)</value></data>
@@ -322,8 +331,7 @@
   <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_New" xml:space="preserve"><value>Foforo</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Di kan paw profile bi.</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profile Foforo</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
 
@@ -506,17 +514,17 @@
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="Common_Close" xml:space="preserve"><value>To mu</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Din:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Din</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>To tag yi din</value></data>
   <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Kanea</value></data>
   <data name="HeadTracker_StatusOpenXr_Format" xml:space="preserve"><value>Ɛrekenkan {0}</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Button a ahintaw</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Sua button bi</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Hyɛ ase sua</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Mia button a ahintaw no seesei, na afei gyae…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Twɛn kakra…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Fibea:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Din:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Mia button no na kura mu seesei.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Gyae button no mu.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Anammɔn {0} wɔ {1} mu</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Fibea</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Din</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>To button yi din</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Key ahorow: {0}</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Benkum</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Nifa</value></data>
@@ -528,6 +536,7 @@
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Hann</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Ntɛmpɛ</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Hwehwɛ agodie</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Agodie</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Ɛrehwehwɛ Steam so…</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Hwehwɛ agodie</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>nnɛ</value></data>
@@ -609,7 +618,7 @@
     <value>Mouse</value>
   </data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profile: {0}</value>
+    <value>Profile a ɛreyɛ adwuma: {0}</value>
   </data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Benkum stick X</value></data>
   <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Benkum stick Y</value></data>
@@ -727,4 +736,52 @@
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player anaa Wiase</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Benkum</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Nifa</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Hwehwɛ devices</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Ne nyinaa</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Nhyehyɛe</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button ne sensor biara</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sesa</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>sɛ</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>wɔ</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Nya Profiles</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Sɛ wokora a, ɛde profile a wobɛtumi asesa ka ho.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Ɛdan</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Also Vibrate the Controller, Repeat the Notice Every, Notify When Fully Charged</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hide Devices from Games, Keep Devices Cloaked Between Launches, Whitelisted Applications</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Hwehwɛ wɔn a wɔboaa</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Paw Akyiri yi</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Nea wɔtaa paw</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Nhyehyɛe a PC agodie dodow no ara hwehwɛ.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Ma agodie a ɛwɔ PlayStation nsɛnkyerɛnne, touchpad ne lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch button nhyehyɛe, ma agodie ne emulators a ɛhwehwɛ no.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes ne control changes ma nnwom software.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>VR controllers a ɛnyɛ ankasa denam SteamVR so.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Sɛ wopɛ sɛ wosesa type no akyiri yi a, klik type chip a ɛwɔ controller no so. Ɛhwehwɛ klik biako pɛ.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ɛhwehwɛ SteamVR. Fa ne card a ɛwɔ Nhyehyɛe mu no hyɛ mu.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR controller bi wɔ hɔ dedaw. Biako di nsa mmienu nyinaa so.</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Hwehwɛ nhyehyɛe, devices ne profiles</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Hwehwɛ</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Nea efi mu ba</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} de kɔ</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} de bue</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} fi baabiara</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Pepa {0}?</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Fa Nnyigyei Yi</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Yi {0} fi mu</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Fi Ase Bio</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Wɔsuaa wɔ {0} so</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Bue battery kata no na mia SYNC button kɔkɔɔ no.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Ma remote no nkɔ PC yi ho mmɛn bere a ne kanea rebɔ.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Ka DualShock 3 Bɔ Mu</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Ka Move anaa Navigation Controller Bɔ Mu</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Fa Serial Controller Ka Ho</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Fa DJI Remote Ka Ho</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Paw nea ɛbɛkyerɛ. Biribiara nsesa kosi sɛ wobɛkora.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Biribiara nkɔ port no so kosi sɛ wobɛkora.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ɛrekɔ so: {0} wɔ {1} mu</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} wɔ {1} mu abue</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profiles a wɔde aba yi wɔ nea ɛyɛ foforo wɔ Steam Workshop so. San fa wɔn bra bio fi Nya Profiles mu na nsakrae no nka ho.</value></data>
 </root>

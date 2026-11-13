@@ -73,6 +73,7 @@
   <data name="Common_On" xml:space="preserve"><value>Nakasindi</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Naiddep</value></data>
   <data name="Common_More" xml:space="preserve"><value>Ad-adu pay</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Kitaen amin</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Naikabil</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Saan a naikabil</value></data>
   <data name="Common_Ready" xml:space="preserve"><value>Nakasagana</value></data>
@@ -114,9 +115,6 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Biddut: {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Laktawan</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Sumaruno</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Nalpasen</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Dagiti game mod</value></data>
   <data name="Dashboard_EnableGameMods" xml:space="preserve"><value>Awaten dagiti DSX game mod</value></data>
   <data name="Dashboard_GameModPort" xml:space="preserve"><value>Port ti game mod</value></data>
@@ -128,7 +126,7 @@
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Nalawag</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Nasipnget</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Ikkaten ti HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Ikkaten met ti usbip-win2 a naikabil babaen ti bukodna nga installer</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Ikkaten met ti usbip-win2</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Basbasaen no ania ti imbati ti HIDMaestro iti daytoy a PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>Awan ti imbati ti HIDMaestro iti daytoy a PC a maikkat.</value></data>
   <data name="HIDMaestroUninstall_Blocked" xml:space="preserve"><value>Us-usaren dagitoy a programa ti HIDMaestro. Irikep dagitoy, sa piliem ti Pabaruen.</value></data>
@@ -136,10 +134,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Mabati: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Saan a mabasa: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Saan a naikkat: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 a Bluetooth driver</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Naikkat</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Naidulin</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Saan a nabasa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Saan a naikkat</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Pagbalinenna a makakonekta babaen ti Bluetooth dagiti controller ti PlayStation 3, ti PlayStation Move ken ti Navigation controller. Adda iti uneg ti PadForge ken maikabil inton umuna a ma-pair ti maysa kadakuada.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Mangisilpo kadagiti controller ti PlayStation 3 babaen ti Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Ikkaten ti BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Daytoy ti mangikkat iti BthPS3 iti daytoy a PC: dagiti driver-na, ti filter nga inkabilna iti Bluetooth, ken ti WinUSB driver nga inted ti PadForge kadagiti controller ti PlayStation 3 para iti panag-pair. Isardeng nga umuna ti PadForge ti engine-na, ket agiddep ti Bluetooth iti apagbiit bayat a maikkat dagiti driver. Kalpasanna, babaen laeng ti USB nga agandar dagiti controller ti PlayStation 3, Move ken Navigation. No i-pair ti maysa, maikabil manen ti BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Daytoy ti maikkat iti daytoy a PC. Kalpasanna, babaen laeng ti USB nga agandar dagiti controller ti PlayStation 3, Move ken Navigation, agingga a maikabil manen ti BthPS3 no i-pair ti maysa.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Basbasaen no ania ti imbati ti BthPS3 iti daytoy a PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>Awan ti imbati ti BthPS3 iti daytoy a PC a maikkat.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>Usaren ti DsHidMini dagitoy a driver, isu a mabatida bayat a naikabil dayta.</value></data>
@@ -168,7 +171,7 @@
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Dagiti posision ti key ken dagiti key ti base-layer dagiti keyboard iti preview ti Keyboard + Mouse, naaramid manipud iti layout data ti QMK ken iti QMK fork ti Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Dagiti posision ti key ken dagiti key ti base-layer dagiti keyboard iti preview ti Keyboard + Mouse, naaramid manipud iti layout data ti QMK ken iti QMK fork ti Keychron.</value></data>
   <data name="About_License" xml:space="preserve"><value>Lisensia</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -205,7 +208,6 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Ikkaten ti ladawan ti profile</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Isubli ti Controller Pak</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Isubli</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Light gun</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Kalibrasion ti paltog</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Kalibrasion ti paltog</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
@@ -223,7 +225,6 @@
   <data name="Devices_Title" xml:space="preserve"><value>Dagiti device</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Ikkaten daytoy a device ken dagiti settings-na</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Ikkaten ti device</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Mode ti input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Ilemmeng kadagiti ay-ayam (HidHide)</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Dagiti axis</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Dagiti butones</value></data>
@@ -329,11 +330,9 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Dagiti POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Dagiti butones</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ikkaten</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Irikep</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Saan nga inawat ti HIDMaestro daytoy a profile iti {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Awan ti HID descriptor daytoy a profile, isu nga awan ti controller a maaramid manipud iti daytoy.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Awan ti na-import. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>I-refresh</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
@@ -514,7 +513,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>daytoy a touchpad</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nagan</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Padasem manen</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Naganan daytoy a gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Kasapulan ti nagan</value></data>
 
   <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Sagid ti kannigid a stick</value></data>
@@ -568,15 +567,14 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Dagiti profile</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktibo a profile:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Awan ti slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Baro</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Awan ti controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Baro a profile</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>I-edit</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Mangpili nga umuna iti profile.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Ikkaten ti profile</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>I-edit ti profile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nagan ti profile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Baro a profile</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nagan</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Baro a profile</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -728,7 +726,6 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Ikkaten ti layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Ikkaten ti layer a "{0}" ken amin a mapping-na? Saan a mabalin nga isubli daytoy.</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Uray ania a layer</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Sumaruno a butones</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Butones</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Ikkatem ti tsek daytoy tapno ti wheel ken ti bukodna a software ti mangikeddeng iti range. Saanton a mangipatulod ti PadForge iti aniaman a range iti wheel.</value></data>
 
@@ -797,6 +794,8 @@
     <value>Saan a husto ti password ti Remote Link.</value>
   </data>
   <data name="PickSound_Title" xml:space="preserve"><value>Agpili iti uni</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Agtukar ti uni babaen ti speaker ti controller, wenno ti speaker ti PC no awan ti speaker-na.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Usaren ti uni</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -821,7 +820,7 @@
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Agbirbirok. Ipindut ti butones a SYNC ita.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Agbirbirok iti remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Dagiti nasarakan a controller</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Nalpas</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
@@ -829,9 +828,8 @@
   <data name="SerialPair_Added" xml:space="preserve"><value>Dagiti nainayon a controller</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Awan ti COM port.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Irikep</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(agur-uray)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nagan:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nagan</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Naganan daytoy a tag</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Yaw ti ulo</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Pitch ti ulo</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Roll ti ulo</value></data>
@@ -854,15 +852,15 @@
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Nailemmeng a butones</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Adalen ti maysa a butones</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Makina:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Rugian ti panagadal</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Apagbiit…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Taudan:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nagan:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Ibulos ti button.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Addang {0} iti {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Taudan</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nagan</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Naganan daytoy a button</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Irehistro</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Naadal a butones</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Irugi manen</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Awan pay ti naadal a butones.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nasursuro iti {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Dagiti key: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Kanigid</value></data>
@@ -876,9 +874,8 @@
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Lawag</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Kapardas</value></data>
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Kangatoan a kapardas</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Dagiti profile · Steam Workshop</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Agsapul kadagiti ay-ayam</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} nga ay-ayam</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Dagiti ay-ayam</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Awan ti nasarakan nga ay-ayam iti tienda ti Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Agsapsapul iti Steam…</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Kabarbaruan</value></data>
@@ -1170,8 +1167,11 @@
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ti kapardas, pedal ken gear manipud kadagiti game ti panagmaneho.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Alaen dagiti epekto ti trigger ken silaw manipud kadagiti game mod.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, kasukat ti DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Dagiti port, kapardas, dagiti bukod a format</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Dagiti port, Naan-anay a kapardas, Dagiti bukod a format</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Agsapul kadagiti setting, device ken profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Agsapul</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Dagiti resulta</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Dagiti button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Dagiti key ken mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dagiti nota ken kontrol</value></data>
@@ -1244,4 +1244,95 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kannigid</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kannawan</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Dalusan ti trigger</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ti kapardas, dagiti pedal ken gear nga ipatulod ti game ti panagmaneho, kas iti aniaman nga input.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Alaen dagiti epekto ti adaptive trigger ken silaw manipud kadagiti mod ti game a naaramid para iti DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Isindi ti telemetry output iti game ket iturongmo iti daytoy a PC ken port.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ti posision ti ulo ket ti row a Head Tracker iti [Dagiti device]. I-map ti yaw ti ulo iti axis ti stick iti seksion a Dagiti button ti maysa a controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dagiti value ket ti row a Game Telemetry iti [Dagiti device]. I-map dagitoy iti seksion a Dagiti button ti maysa a controller wenno usarem a pangrugi kadagiti macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ti bukod a lugar, kadakkel ken opacity ti maysa a menu ket maikabil iti menu, iti seksion a [Dagiti macro ken menu] ti maysa a controller.</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiaen ti address</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ti telepono a sumilpo ket agparang ditoy ken iti panid a Dagiti device, a pangisaadam kenkuana iti maysa a controller.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Agsapul kadagiti device</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Amin</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard ken mouse</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Dadduma nga input</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Awan ti device a maitutop.</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>baterya {0}, agkarkarga</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Tunggal axis, button ken sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Naipindut: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopiaen dagiti detalye</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Dagiti kabaelan</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Dalan</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serial number</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebision</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ad-adu pay para iti {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Idulin ditoy ti agdama a setup</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Sukatan ti setup a naidulin iti "{0}" iti agdama? Agtalinaed ti nagan ken dagiti ay-ayamna.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sukatan</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>no</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>iti</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Mangala kadagiti profile</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ti panangidulin ket mangnayon iti gagangay a profile a mabalinmo nga i-edit.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Agbalin a</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Sapasap</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Dagiti driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data ken privacy</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Agsapul kadagiti setting</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Also Vibrate the Controller, Repeat the Notice Every, Notify When Fully Charged</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Hide Devices from Games, Keep Devices Cloaked Between Launches, Whitelisted Applications</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Agsapul kadagiti kredito</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Ipakita amin a kredito</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Ipakita ti basbassit a kredito</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Awan ti kredito a maitutop iti “{0}”.</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Pilien no ania ti makita dagiti ay-ayam. Mainayon ti controller apaman nga i-click-mo.</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Pilien no madamdama</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Gagangay</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Ad-adu pay nga output</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ti layout a namnamaen ti kaaduan nga ay-ayam ti PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Para kadagiti ay-ayam nga addaan prompt, touchpad ken lightbar ti PlayStation.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Layout dagiti button ti Switch, para kadagiti ay-ayam ken emulator a mangnamnama iti dayta.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Dagiti nota ken control change para iti software ti musika.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtual a controller ti VR babaen ti SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Tapno baliwam ti kita no madamdama, i-click ti chip ti kita iti controller. Maysa laeng nga click.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Saan a sumungsungbat ti Windows MIDI Services. Kitaem ti card-na iti Settings.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Masapul ti SteamVR. Ikabil daytoy manipud iti card-na iti Settings.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Adda metten ti controller ti VR. Ti maysa ket mangiturong iti dua nga ima.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>I-pair ti Bluetooth a controller</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} tapno umakar</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} tapno lukatan</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} manipud iti sadinoman</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Dagiti panid</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Dagiti aksion</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>iti sirok ti Ad-adu pay</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>kadagiti pagpilian ti row</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Awan ti aniaman iti PadForge a maitutop iti “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Agsapul iti dokumentasion para iti “{0}”</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ikkaten ti {0}?</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Mangrugi nga awan ti controller. Bukodna nga agkarga no adda iti sango ti maysa kadagiti ay-ayamna.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Awan ti sabali a programa nga addaan iti nakalukat a window.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ikkaten ti {0}</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Lukatan ti kalub ti baterya ket ipindut ti nalabaga a button a SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Ikabil ti remote iti asideg daytoy a PC bayat nga agkurkurimed dagiti silawna.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>I-pair ti DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>I-pair ti Move wenno Navigation a controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Inayon ti serial a controller</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Inayon ti remote ti DJI</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Urnos ti byte</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilien no ania ti ipakitana. Awan ti agbaliw agingga a idulinmo.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Awan ti dumanon iti port agingga a idulinmo.</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterya</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Live: {0} iti {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Dagiti panangrugi a profile</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Nakasagana a profile para iti intero a genre. Agpili iti maysa, isaad ti aniaman a controller, ket agay-ayam.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} iti {1} ti nakasindi</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Dagitoy a naiyalis a profile ket addaan kadagiti baro a bersion iti Steam Workshop. Iyalis manen dagitoy manipud iti Mangala kadagiti profile tapno maala dagiti panagbaliw.</value></data>
 </root>

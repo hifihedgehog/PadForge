@@ -231,6 +231,11 @@
     <Resource Include="2DModels\**\*.png" />
     <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
     <EmbeddedResource Include="WebAssets\**\*" />
+    <!-- Search (#574) builds its index from the pages' own markup, read at
+         run time, so the index can never fall behind a page. An item may be
+         a Page and an EmbeddedResource at once. -->
+    <EmbeddedResource Include="Views\PadPage.xaml;Views\SettingsPage.xaml;Views\ExtrasPage.xaml;Views\DevicesPage.xaml;Views\ProfilesPage.xaml"
+                      LogicalName="PadForge.SearchSources.%(Filename)%(Extension)" WithCulture="false" />
     <!-- Offline voice recognition (#317). The model ships INSIDE the exe.
          It used to download on first use, which made voice macros unusable
          on a machine with no internet and wrote 68 MB into LocalAppData,

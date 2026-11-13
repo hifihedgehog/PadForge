@@ -163,22 +163,27 @@ namespace PadForge.Tests
             Assert.Contains("<WrapPanel Orientation=\"Horizontal\"/>", xaml.Substring(hats, end - hats));
         }
 
-        /// <summary>A device's pill is as wide as its name asks and 320 at
-        /// most, and the name in it trims at 220. A device's name has no
-        /// limit of its own, so without the two a long one would take a
-        /// line to itself and run past the edge. The glyphs and the
-        /// battery beside a name at its 220 fit inside the 320.</summary>
+        /// <summary>A device's pill is as wide as its name asks and 460 at
+        /// most, and the name in it trims at 220, or at 128 while the
+        /// device is not connected. A device's name has no limit of its
+        /// own, so without the two a long one would take a line to itself
+        /// and run past the edge. The light, the link's mark, the meter,
+        /// the percentage and the word Low beside a name at its 220 fit
+        /// inside the 460.</summary>
         [Fact]
         public void ADevicesPillHasACeiling()
         {
             var page = XDocument.Parse(PadPage());
             var pills = Named(page, "DrivenByList");
             var pill = Assert.Single(pills.Descendants(), e => (string)e.Attribute(X + "Name") == "Pill");
-            Assert.Equal("320", (string)pill.Attribute("MaxWidth"));
+            Assert.Equal("460", (string)pill.Attribute("MaxWidth"));
+            Assert.Equal("34", (string)pill.Attribute("MinHeight"));
             var name = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "TextBlock"
                 && (string)e.Attribute("Text") == "{Binding Name}");
-            Assert.Equal("220", (string)name.Attribute("MaxWidth"));
             Assert.Equal("CharacterEllipsis", (string)name.Attribute("TextTrimming"));
+            var widths = name.Descendants().Where(e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "MaxWidth")
+                .Select(e => (string)e.Attribute("Value")).ToList();
+            Assert.Equal(new[] { "220", "128" }, widths);
         }
 
         /// <summary>The power button and the More button sit at the right
@@ -199,17 +204,18 @@ namespace PadForge.Tests
             Assert.Equal("1", (string)host.Attribute("Grid.Column"));
             var columns = host.Parent!.Element(host.Parent.Name.Namespace + "Grid.ColumnDefinitions")!.Elements().ToList();
             Assert.Equal(new[] { "*", "Auto", "Auto" }, columns.Select(c => (string)c.Attribute("Width")));
-            // More is the third column's, 34 wide and 14 after the power
-            // button, as the header board spaces its line (#574), with the
-            // board's three dots.
+            // More is the third column's, 40 wide and 38 tall as the pill
+            // is, 14 after the power button, as the header board spaces
+            // its line, with the board's three dots.
             var more = Named(page, "PadMoreButton");
             Assert.Same(host.Parent, more.Parent);
             Assert.Equal("2", (string)more.Attribute("Grid.Column"));
-            Assert.Equal("34", (string)more.Attribute("Width"));
+            Assert.Equal("40", (string)more.Attribute("Width"));
+            Assert.Equal("38", (string)more.Attribute("Height"));
             Assert.Equal("14,0,0,0", (string)more.Attribute("Margin"));
             var dots = Assert.Single(more.Elements(), e => e.Name.LocalName == "Path");
-            Assert.Equal("12.9", (string)dots.Attribute("Width"));
-            Assert.Equal("2.4", (string)dots.Attribute("Height"));
+            Assert.Equal("16.2", (string)dots.Attribute("Width"));
+            Assert.Equal("3.2", (string)dots.Attribute("Height"));
         }
 
         /// <summary>The title stays beside the type chip and ends in an
@@ -225,9 +231,16 @@ namespace PadForge.Tests
             Assert.Equal("DockPanel", title.Parent!.Name.LocalName);
             Assert.Same(title, title.Parent.Elements().Last());
             Assert.Null(title.Parent.Attribute("LastChildFill"));
+            // The tile stands in its light, which is what the panel docks.
             var chip = title.Parent.Elements().First();
+            Assert.Equal("Halo", chip.Name.LocalName);
             Assert.Equal("Left", chip.Attributes().Single(a => a.Name.LocalName == "DockPanel.Dock").Value);
-            Assert.Equal("34", (string)chip.Attribute("Width"));
+            Assert.Equal("0,0,16,0", (string)chip.Attribute("Margin"));
+            var tile = Named(page, "PadTypeTile");
+            Assert.Same(chip, tile.Parent);
+            Assert.Equal("46", (string)tile.Attribute("Width"));
+            Assert.Equal("46", (string)tile.Attribute("Height"));
+            Assert.Equal("28", (string)title.Attribute("FontSize"));
         }
 
         /// <summary>The Preset is a grid whose middle column holds the
@@ -259,26 +272,29 @@ namespace PadForge.Tests
         }
 
         /// <summary>The device line as the header board draws it (#574): a
-        /// pill 12 from the next, and Add Device 12 after the last pill with
-        /// its plus 6 before its words. The button's padding draws it out 8
-        /// to the start, and its template keeps 8 after an icon, of which
-        /// the plus takes 2 back. The width tool measures the same.</summary>
+        /// pill 10 from the next, and Add Device after the last pill with
+        /// its plus 6 before its words. The button's padding is 10, of
+        /// which its margin takes 2 back at the start, and its template
+        /// keeps 8 after an icon, of which the plus takes 2 back. The
+        /// width tool measures the same.</summary>
         [Fact]
         public void TheDeviceLineIsSpacedAsTheBoardDrawsIt()
         {
             var page = XDocument.Parse(PadPage());
             var pills = Named(page, "DrivenByList");
             var margin = Assert.Single(pills.Descendants(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "Margin");
-            Assert.Equal("0,2,12,2", (string)margin.Attribute("Value"));
+            Assert.Equal("0,4,10,4", (string)margin.Attribute("Value"));
             var add = Named(page, "AddDeviceButton");
-            Assert.Equal("-8,2,0,2", (string)add.Attribute("Margin"));
-            Assert.Equal("8,0", (string)add.Attribute("Padding"));
+            Assert.Equal("-2,4,0,4", (string)add.Attribute("Margin"));
+            Assert.Equal("10,0", (string)add.Attribute("Padding"));
+            Assert.Equal("34", (string)add.Attribute("MinHeight"));
             var plus = Assert.Single(add.Descendants(), e => e.Name.LocalName == "DecorativeStrokeIcon");
             Assert.Equal("0,0,-2,0", (string)plus.Attribute("Margin"));
             string prog = File.ReadAllText(Path.Combine(RepoRoot(), "tools", "rowmeasure", "Program.cs"));
-            Assert.Contains("Margin = new Thickness(-8, 2, 0, 2),", prog);
-            Assert.Contains("const double pill = 320 + 12;", prog);
-            Assert.Contains("const double more = 34 + 14;", prog);
+            Assert.Contains("Margin = new Thickness(-2, 4, 0, 4),", prog);
+            Assert.Contains("const double pill = 460 + 10;", prog);
+            Assert.Contains("const double more = 40 + 14;", prog);
+            Assert.Contains("const double chip = 46 + 16;", prog);
         }
 
         /// <summary>The measurement harness carries the header, so the next
@@ -303,9 +319,10 @@ namespace PadForge.Tests
             // reports against.
             Assert.Contains("const double wordCap = 204,", prog);
             // And the line it reports against is the header's: the window
-            // less the sidebar and the header's margin of 32 a side.
-            Assert.Contains("(\"a 900 window\", 900.0 - 248 - 64)", prog);
-            Assert.Contains("<StackPanel Grid.Row=\"0\" Margin=\"32,24,32,0\">", PadPage());
+            // less the sidebar's 264 and the header's margin of 36 a side.
+            Assert.Contains("(\"a 900 window\", 900.0 - 264 - 72)", prog);
+            Assert.Contains("OpenPaneLength=\"264\"", File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "MainWindow.xaml")));
+            Assert.Contains("<StackPanel Grid.Row=\"0\" Margin=\"36,22,36,0\">", PadPage());
         }
     }
 }

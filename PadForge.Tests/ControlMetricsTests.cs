@@ -60,9 +60,7 @@ namespace PadForge.Tests
         /// the app's says that its setters mirror the app's, and they do.
         /// Left as they were, those pages kept the old 30 and 32.</summary>
         [Theory]
-        [InlineData("DevicesPage.xaml")]
         [InlineData("ExtrasPage.xaml")]
-        [InlineData("ProfilesPage.xaml")]
         [InlineData("SettingsPage.xaml")]
         public void APagesOwnStylesMirrorTheApps(string file)
         {
@@ -86,6 +84,57 @@ namespace PadForge.Tests
                     Assert.Equal(Setter(Implicit(app, type), property), Setter(own, property));
             }
             Assert.True(found >= 2, file + " gives fewer of the types a style of its own than it did");
+        }
+
+        /// <summary>The rebuilt Devices and Profiles pages have no style of
+        /// their own for a button, a picker or a check box: each takes the
+        /// app's, so it has nothing to keep in step with them.</summary>
+        [Theory]
+        [InlineData("DevicesPage.xaml")]
+        [InlineData("ProfilesPage.xaml")]
+        public void ARebuiltPageTakesTheAppsControlStyles(string file)
+        {
+            var resources = Doc("PadForge.App", "Views", file).Root!.Elements()
+                .Single(e => e.Name.LocalName == "UserControl.Resources");
+            Assert.DoesNotContain(resources.Elements(), e => e.Name.LocalName == "Style"
+                && e.Attribute(Xaml + "Key") == null
+                && (string)e.Attribute("TargetType") is "Button" or "ComboBox" or "CheckBox");
+        }
+
+        /// <summary>No dictionary declares a key twice. WPF reads a merged
+        /// dictionary's keys as the app starts and stops at the second of a
+        /// pair ("Item has already been added"), so the app does not open,
+        /// and a page's own dictionary does the same to its page. The build
+        /// passes both. Two parts of #574 each added CloseLineGeometry to
+        /// Shell.xaml and each moved DzLabel to App.xaml (2026-11-12).</summary>
+        [Fact]
+        public void NoDictionaryDeclaresAKeyTwice()
+        {
+            var dir = new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            string app = System.IO.Path.Combine(dir!.FullName, "PadForge.App");
+            var twice = new System.Collections.Generic.List<string>();
+            int files = 0;
+            foreach (string path in System.IO.Directory.GetFiles(app, "*.xaml", System.IO.SearchOption.AllDirectories))
+            {
+                string inApp = System.IO.Path.GetRelativePath(app, path).Replace('\\', '/');
+                if (inApp.StartsWith("bin/") || inApp.StartsWith("obj/")) continue;
+                files++;
+                foreach (var holder in XDocument.Parse(System.IO.File.ReadAllText(path)).Descendants())
+                {
+                    // A style with no key is keyed by its type.
+                    var keys = holder.Elements()
+                        .Select(e => (string)e.Attribute(Xaml + "Key")
+                                     ?? (e.Name.LocalName == "Style" && e.Attribute("TargetType") != null ? "style of " + (string)e.Attribute("TargetType") : null))
+                        .Where(k => k != null);
+                    foreach (var pair in keys.GroupBy(k => k).Where(g => g.Count() > 1))
+                        twice.Add(inApp + ": " + pair.Key + " in " + holder.Name.LocalName);
+                }
+            }
+            Assert.True(files > 40, "the walk found " + files + " XAML files");
+            Assert.Empty(twice);
         }
 
         /// <summary>A byte setting read in percent, as the Rumble board

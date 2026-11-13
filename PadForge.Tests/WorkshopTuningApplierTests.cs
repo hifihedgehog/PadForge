@@ -50,11 +50,13 @@ namespace PadForge.Tests
         public void EveryDeviceAssignmentPathAppliesTheStamps()
         {
             // Grep-as-a-test, and it exists because the first cut wired the
-            // applier into ONE of the two assignment paths. The runtime
-            // overlays it replaced applied on every path by construction, so
-            // an entry point that assigns a device without folding the stamps
-            // silently drops the imported tuning for whichever path the user
-            // takes. A third path added later fails here on arrival.
+            // applier into ONE of the two assignment paths there were then.
+            // The runtime overlays it replaced applied on every path by
+            // construction, so an entry point that assigns a device without
+            // folding the stamps silently drops the imported tuning for
+            // whichever path the user takes. One path is left
+            // (AssignDeviceToSlot), and a path added later fails here on
+            // arrival.
             var src = System.IO.File.ReadAllText(
                 System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Services", "DeviceService.cs"));
 
@@ -67,8 +69,8 @@ namespace PadForge.Tests
             var assigners = methods
                 .Where(m => m.Contains("SettingsManager.AssignDeviceToSlot("))
                 .ToList();
-            Assert.True(assigners.Count >= 2,
-                "expected at least 2 assignment paths, found " + assigners.Count);
+            Assert.True(assigners.Count >= 1,
+                "expected at least 1 assignment path, found " + assigners.Count);
 
             var unguarded = assigners
                 .Where(m => !m.Contains("WorkshopTuningApplier.ApplyToAssignedDevice"))

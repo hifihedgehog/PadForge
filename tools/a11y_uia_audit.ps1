@@ -3,11 +3,15 @@
   Runtime screen-reader audit of the running PadForge.
 
 .DESCRIPTION
-  Attaches to the PadForge window, selects each sidebar page by its
-  AutomationId (Nav_Dashboard, Nav_Profiles, Nav_Devices, Nav_Pad<N>,
-  Nav_Settings, Nav_About), selects each tab on a page that has tabs, opens
-  each ComboBox once so its items exist, then walks the UI Automation control
-  view and reports:
+  Attaches to the PadForge window and selects each sidebar page by its
+  AutomationId (Nav_Dashboard, Nav_Devices, Nav_Profiles, Nav_Extras,
+  Nav_Pad<N>, Nav_Settings, Nav_About). On Extras it opens each extra's page
+  through its tile and goes back. On Settings it selects each group, and on a
+  controller's page each of the six sections with its parts (Picture and
+  List, Macros and Menus). It opens Add a Controller and Search, which sit
+  inside the window, and closes each again. In every view it opens each
+  ComboBox once so its items exist, opens the fold cards and More rows to
+  read what they hold, then walks the UI Automation control view and reports:
     FOCUSABLE_NO_NAME  a keyboard-focusable element with an empty name
     GLYPH_NAME         a name holding a private-use character, U+E000 to U+F8FF
     TYPE_NAME          a name shaped like a .NET type name (PadForge.ViewModels.X),
@@ -15,8 +19,24 @@
                        Nefarius.Utilities.DeviceManagement is shown text
     INPUT_NO_NAME      an Edit, ComboBox or Slider without a name
     ITEM_NO_NAME       a Button, ListItem or DataItem without a name
+    METER_NO_NAME      a ProgressBar without a name
+    SAME_NAME          two focusable elements under one parent with the same
+                       name and control type, which a screen reader cannot
+                       tell apart. Items of a list are left out: a list reads
+                       each item with its place, and two devices of one model
+                       are two rows that read alike
+    ITEM_EMPTY         an item of a plain list that shows on screen and holds
+                       nothing: its content never reached UI Automation
+                       (PadForge.Common.ListItemPeers)
   It covers the UI built in C# (the sidebar cards, the Add Controller entry),
   which the static XAML audit in AccessibilityXamlTests cannot see.
+
+  With -Outline it also writes each view as a screen reader meets it, with
+  the folds open, into outline-<stamp>\<view>.txt: every element of the
+  control view in reading order with its type, its name, its help text and
+  the groups and items it sits in. F marks an element that takes keyboard
+  focus. A combo box's items and the parts of a slider or a scroll bar are
+  left out.
 
   One pass per verification point. The pass waits on conditions, never on
   fixed pauses: a click waits until UIA shows the new page or tab content, a
@@ -29,13 +49,13 @@
   the deploy recipe, since a PadForge started from inside an elevated script
   exits when that script's process tree ends. The window is brought forward
   only when another window is in front, restored only when minimized and
-  never resized, because PadForge saves its size and state. Pages are
-  selected by a click at the entry's center: the entry's UIA node is WPF's
-  DataItem wrapper, which exposes no selection or invoke pattern
-  (ItemAutomationPeer.GetPattern). The controller page's tabs are clicked too:
-  they are RadioButtons whose Click handler switches the content, and a UIA
-  Select checks one without raising Click. Nothing else is clicked, typed or
-  selected, so no setting changes.
+  never resized, because PadForge saves its size and state. Pages, sections,
+  parts and groups are selected through their SelectionItem pattern, and
+  tiles and the two in-window dialogs through Invoke, as a screen reader
+  works them. A click at an element's center is only the fallback for one
+  that offers no pattern. Fold cards and More rows are opened and then closed
+  again, last first, so the fold state PadForge stores ends as it began.
+  Nothing is typed and no value is changed, so no setting changes.
 
   Reports go to OutDir (default %LOCALAPPDATA%\PadForgeA11y), never beside
   PadForge.exe. Exit code: the number of findings, -1 when PadForge is not
@@ -46,18 +66,27 @@
 #>
 param(
     [string]$OutDir = (Join-Path $env:LOCALAPPDATA 'PadForgeA11y'),
-    # Page tags to audit (Dashboard, Profiles, Devices, Pad1, Settings, About).
-    # Default: every page in the sidebar.
+    # Page tags to audit (Dashboard, Devices, Profiles, Extras, Pad1, Settings,
+    # About). Default: every page in the sidebar.
     [string[]]$Pages,
+    # Leave out each extra's page, the Settings groups and the controller
+    # page's sections: the pages as they open only.
     [switch]$NoTabs,
     [switch]$NoCombos,
+    # Leave the fold cards and More rows as they are.
+    [switch]$NoFolds,
+    # Leave out Add a Controller and Search.
+    [switch]$NoDialogs,
+    # Also write each view in reading order (see the description).
+    [switch]$Outline,
     # Also scan each page and tab with the Axe.Windows CLI, built from
     # microsoft/axe-windows src/CLI. Its exit code is 0 for no errors, 1 for
     # errors and 2 for a failed scan (ReturnValueChooser.cs).
     [switch]$Axe,
-    # Also scan each controller tab with Axe. Each scan reads the whole
-    # process and takes about 20 s, so by default Axe covers the window and
-    # the pages, and the UIA walk alone covers the tabs.
+    # Also scan each extra's page, Settings group and controller section with
+    # Axe. Each scan reads the whole process and takes about 20 s, so by
+    # default Axe covers the window and the pages, and the UIA walk alone
+    # covers the rest.
     [switch]$AxeTabs,
     [string]$AxeCli = (Join-Path $env:LOCALAPPDATA 'PadForgeStudio\tooling\axe-cli\AxeWindowsCLI.exe')
 )
@@ -111,22 +140,51 @@ public sealed class A11yView {
     public List<A11yFinding> Findings = new List<A11yFinding>();
     public List<AutomationElement> Combos = new List<AutomationElement>();
     public List<AutomationElement> NavItems = new List<AutomationElement>();
-    public List<AutomationElement> TabButtons = new List<AutomationElement>();
-    public AutomationElement TabContent;
+    // The radio buttons a page switches its content with: a controller's
+    // sections and parts, the Settings groups.
+    public List<AutomationElement> Choices = new List<AutomationElement>();
+    // The Extras catalog's tiles.
+    public List<AutomationElement> Tiles = new List<AutomationElement>();
+    // The fold cards and More rows that are closed.
+    public List<AutomationElement> Folds = new List<AutomationElement>();
+    // The view in reading order, one element a line.
+    public List<string> Outline = new List<string>();
 }
 
 public static class A11yWalk {
     static readonly Regex TypeName = new Regex(@"^[A-Za-z_]\w*(\.[A-Za-z_]\w*)+$");
-    static readonly Regex TabId = new Regex(@"^Tab[A-Z]\w*$|^\w+Tab$");
+    static readonly Regex ChoiceId = new Regex(@"^Section_\w+$|^Settings_Group_\w+$|^TabController$|^MappingsTab$|^MacrosTab$|^MenusTab$");
 
     sealed class Item {
         public AutomationElement El; public string Path; public string ParentAid;
-        public Item(AutomationElement el, string path, string parentAid) { El = el; Path = path; ParentAid = parentAid; }
+        // The groups and items above the element, and whether it is a part
+        // of a combo box, a slider or a scroll bar, which the outline skips.
+        public string Groups; public bool Part;
+        public Item(AutomationElement el, string path, string parentAid, string groups, bool part) {
+            El = el; Path = path; ParentAid = parentAid; Groups = groups; Part = part;
+        }
+    }
+
+    static string Short(string s, int max) {
+        s = (s ?? "").Replace("\r", " ").Replace("\n", " ");
+        return s.Length <= max ? s : s.Substring(0, max) + "...";
     }
 
     static bool HasGlyph(string s) {
         foreach (char ch in s) if (ch >= '\uE000' && ch <= '\uF8FF') return true;
         return false;
+    }
+
+    static bool Selects(AutomationElement el) {
+        object can = el.GetCachedPropertyValue(AutomationElement.IsSelectionItemPatternAvailableProperty, true);
+        return can is bool && (bool)can;
+    }
+
+    static bool IsClosedFold(AutomationElement el) {
+        object can = el.GetCachedPropertyValue(AutomationElement.IsExpandCollapsePatternAvailableProperty, true);
+        if (!(can is bool) || !(bool)can) return false;
+        object state = el.GetCachedPropertyValue(ExpandCollapsePattern.ExpandCollapseStateProperty, true);
+        return state is ExpandCollapseState && (ExpandCollapseState)state == ExpandCollapseState.Collapsed;
     }
 
     public static CacheRequest Request() {
@@ -140,6 +198,10 @@ public static class A11yWalk {
         cr.Add(AutomationElement.IsEnabledProperty);
         cr.Add(AutomationElement.HelpTextProperty);
         cr.Add(AutomationElement.RuntimeIdProperty);
+        cr.Add(AutomationElement.IsExpandCollapsePatternAvailableProperty);
+        cr.Add(ExpandCollapsePattern.ExpandCollapseStateProperty);
+        cr.Add(AutomationElement.IsSelectionItemPatternAvailableProperty);
+        cr.Add(AutomationElement.BoundingRectangleProperty);
         cr.TreeScope = TreeScope.Subtree;
         cr.TreeFilter = Automation.ControlViewCondition;
         cr.AutomationElementMode = AutomationElementMode.Full;
@@ -150,7 +212,7 @@ public static class A11yWalk {
         AutomationElement root = live.GetUpdatedCache(Request());
         var v = new A11yView();
         var stack = new Stack<Item>();
-        stack.Push(new Item(root, "", ""));
+        stack.Push(new Item(root, "", "", "", false));
         while (stack.Count > 0) {
             Item it = stack.Pop();
             AutomationElement el = it.El;
@@ -169,6 +231,13 @@ public static class A11yWalk {
             if (!empty && type != "Text" && type != "Hyperlink" && TypeName.IsMatch(name)) rules.Add("TYPE_NAME");
             if (empty && (type == "Edit" || type == "ComboBox" || type == "Slider")) rules.Add("INPUT_NO_NAME");
             if (empty && (type == "Button" || type == "ListItem" || type == "DataItem")) rules.Add("ITEM_NO_NAME");
+            if (empty && type == "ProgressBar" && !c.IsOffscreen) rules.Add("METER_NO_NAME");
+            AutomationElementCollection kids = el.CachedChildren;
+            // A plain list's item that shows and holds nothing: a card is
+            // never empty, so its content did not reach UI Automation.
+            if (type == "DataItem" && (c.ClassName ?? "") == "ItemsControlItem" && !c.IsOffscreen
+                && (kids == null || kids.Count == 0) && !c.BoundingRectangle.IsEmpty
+                && c.BoundingRectangle.Width > 40 && c.BoundingRectangle.Height > 20) rules.Add("ITEM_EMPTY");
             if (rules.Count > 0) {
                 int[] rid = (int[])el.GetCachedPropertyValue(AutomationElement.RuntimeIdProperty);
                 string ridText = rid == null ? "" : string.Join(".", rid);
@@ -181,15 +250,59 @@ public static class A11yWalk {
             }
 
             if (type == "ComboBox" && c.IsEnabled && !c.IsOffscreen) v.Combos.Add(el);
-            if (type == "DataItem" && aid.StartsWith("Nav_", StringComparison.Ordinal)) v.NavItems.Add(el);
-            if (type == "RadioButton" && TabId.IsMatch(aid) && c.IsEnabled && !c.IsOffscreen) v.TabButtons.Add(el);
-            if (type == "Pane" && it.ParentAid == "PadPageView") v.TabContent = el;
+            // A sidebar entry is a ListItem of NavItemsControl. It was a
+            // DataItem while wpf-ui's navigation view drew the sidebar.
+            // An item of the sidebar that selects nothing is no page: the
+            // word Controllers over the slots is an item of the list too.
+            if ((type == "ListItem" || type == "DataItem") && aid.StartsWith("Nav_", StringComparison.Ordinal) && Selects(el)) v.NavItems.Add(el);
+            if (type == "RadioButton" && ChoiceId.IsMatch(aid) && c.IsEnabled) v.Choices.Add(el);
+            if (type == "Button" && aid.StartsWith("Extras_Open_", StringComparison.Ordinal)) v.Tiles.Add(el);
+            // A fold card and a More row are Expanders, which read as groups
+            // that expand. A group box is a group too, and expands nothing.
+            if (type == "Group" && c.IsEnabled && IsClosedFold(el)) v.Folds.Add(el);
 
             string label = !empty ? name : (aid.Length > 0 ? "#" + aid : (c.ClassName ?? ""));
             string childPath = it.Path.Length > 0 ? it.Path + " > " + label : label;
-            AutomationElementCollection kids = el.CachedChildren;
+
+            // The outline: groups and panes name where an element sits, and
+            // every other element is a line.
+            bool holder = type == "Group" || type == "Pane" || type == "Window";
+            if (!it.Part && !holder) {
+                string state = (c.IsEnabled ? "" : " (disabled)") + (c.IsOffscreen ? " (off screen)" : "");
+                string help = !string.IsNullOrEmpty(c.HelpText) && c.HelpText != name ? "  help='" + Short(c.HelpText, 70) + "'" : "";
+                v.Outline.Add(string.Format("{0} {1,-11} '{2}'{3}{4}   [{5}]", c.IsKeyboardFocusable ? "F" : "-", type, Short(name, 110), help, state, it.Groups));
+            }
+            string groups = it.Groups;
+            if ((holder || type == "ListItem" || type == "DataItem" || type == "TabItem" || type == "TreeItem") && (!empty || aid.Length > 0)) {
+                string step = !empty ? Short(name, 40) : "#" + aid;
+                groups = groups.Length > 0 ? groups + " > " + step : step;
+            }
+            bool part = it.Part || type == "ComboBox" || type == "Slider" || type == "ScrollBar";
+
             if (kids == null) continue;
-            for (int i = kids.Count - 1; i >= 0; i--) stack.Push(new Item(kids[i], childPath, aid));
+            // Two focusable elements of one parent that read alike. An
+            // item of a list reads with its place in the list.
+            var alike = new Dictionary<string, int>();
+            foreach (AutomationElement kid in kids) {
+                AutomationElement.AutomationElementInformation k = kid.Cached;
+                if (!k.IsKeyboardFocusable || k.IsOffscreen || string.IsNullOrWhiteSpace(k.Name) || k.ControlType == null) continue;
+                if (k.ControlType == ControlType.ListItem || k.ControlType == ControlType.DataItem || k.ControlType == ControlType.TreeItem || k.ControlType == ControlType.TabItem) continue;
+                string key = k.ControlType.ProgrammaticName + "|" + k.Name;
+                int n; alike.TryGetValue(key, out n); alike[key] = n + 1;
+            }
+            foreach (AutomationElement kid in kids) {
+                AutomationElement.AutomationElementInformation k = kid.Cached;
+                if (!k.IsKeyboardFocusable || k.IsOffscreen || string.IsNullOrWhiteSpace(k.Name) || k.ControlType == null) continue;
+                int n;
+                if (!alike.TryGetValue(k.ControlType.ProgrammaticName + "|" + k.Name, out n) || n < 2) continue;
+                int[] rid = (int[])kid.GetCachedPropertyValue(AutomationElement.RuntimeIdProperty);
+                var f = new A11yFinding();
+                f.Page = page; f.Rule = "SAME_NAME"; f.Type = k.ControlType.ProgrammaticName.Replace("ControlType.", ""); f.Name = k.Name;
+                f.Aid = k.AutomationId ?? ""; f.Class = k.ClassName ?? ""; f.Help = k.HelpText ?? ""; f.Offscreen = false;
+                f.Path = childPath; f.Rid = rid == null ? "" : string.Join(".", rid);
+                v.Findings.Add(f);
+            }
+            for (int i = kids.Count - 1; i >= 0; i--) stack.Push(new Item(kids[i], childPath, aid, groups, part));
         }
         return v;
     }
@@ -200,6 +313,7 @@ $AE = [System.Windows.Automation.AutomationElement]
 $Walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
 $SIP = [System.Windows.Automation.SelectionItemPattern]::Pattern
 $ECP = [System.Windows.Automation.ExpandCollapsePattern]::Pattern
+$INV = [System.Windows.Automation.InvokePattern]::Pattern
 
 $pf = Get-Process PadForge -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1
 if (-not $pf) { Note 'PadForge is not running. Start it with the deploy recipe first.'; Save; exit -1 }
@@ -258,9 +372,9 @@ function Click-Center($el) {
 }
 
 # The child of a parent with the given AutomationId, read live, or null. The
-# pages sit in the navigation view's content overlay, one visible at a time,
-# and the overlay Grid has no peer, so the visible page is a child of the
-# window (DashboardPageView, PadPageView and so on, MainWindow.xaml).
+# pages sit in one host Grid, one visible at a time, and the Grid has no
+# peer, so the visible page is a child of the window (DashboardPageView,
+# PadPageView and so on, MainWindow.xaml).
 function Find-Child($parent, [string]$aid) {
     try {
         $ch = $Walker.GetFirstChild($parent)
@@ -302,8 +416,14 @@ function Open-Combos($list) {
         try {
             $p = $cb.GetCurrentPattern($ECP)
             $p.Expand()
+            # An item is named as it first takes a size, a moment after it
+            # exists, so the wait is for the first item's name.
             $sw = [Diagnostics.Stopwatch]::StartNew()
-            while ($sw.ElapsedMilliseconds -lt 400 -and -not $Walker.GetFirstChild($cb)) { Start-Sleep -Milliseconds 15 }
+            while ($sw.ElapsedMilliseconds -lt 600) {
+                $item = $Walker.GetFirstChild($cb)
+                if ($item -and $item.Current.Name) { break }
+                Start-Sleep -Milliseconds 15
+            }
             $p.Collapse()
             $n++
         } catch { }
@@ -331,65 +451,181 @@ function Audit-View($root, [string]$where, [bool]$scan = $true) {
         $seen[$k] = $true; $findings.Add($f); $new++
     }
     Note ("{0}: {1} elements, {2} combo boxes opened, {3} new findings, {4} ms" -f $where, $v.Count, $opened, $new, ($clock.ElapsedMilliseconds - $start))
-    if ($Axe -and $scan) {
-        $dir = Join-Path $OutDir "axe-$stamp"
-        New-Item -ItemType Directory -Force $dir | Out-Null
-        $scanId = $where -replace '[^\w\-]+', '_'
-        $out = & $AxeCli --processid $pf.Id --outputdirectory $dir --scanid $scanId --verbosity verbose --alwayssavetestfile 2>&1
-        $code = $LASTEXITCODE
-        $out | Set-Content -Path (Join-Path $dir "$scanId.txt") -Encoding UTF8
-        $summary = ($out | Where-Object { "$_" -match 'error.* found|no errors' }) -join ' '
-        Note ("  axe {0}: exit {1}, {2}" -f $where, $code, $summary)
-        $out | ForEach-Object { if ("$_" -match '^Error \d+: (.+)$') { $Matches[1] } } | Group-Object |
-            Sort-Object Count -Descending | ForEach-Object { Note ("    {0} x {1}" -f $_.Count, $_.Name) }
+    if ($scan) { Scan-Axe $where }
+    return $v
+}
+
+# Writes a walk's outline, when -Outline asks for it.
+function Write-Outline($v, [string]$where) {
+    if (-not $Outline -or -not $v) { return }
+    $dir = Join-Path $OutDir "outline-$stamp"
+    New-Item -ItemType Directory -Force $dir | Out-Null
+    $file = Join-Path $dir (($where -replace '[^\w\-]+', '_') + '.txt')
+    [System.IO.File]::WriteAllLines($file, $v.Outline, (New-Object System.Text.UTF8Encoding($false)))
+}
+
+# Scans the window as it stands with the Axe.Windows CLI, when -Axe asks for
+# it, and notes its errors by rule.
+function Scan-Axe([string]$where) {
+    if (-not $Axe) { return }
+    $dir = Join-Path $OutDir "axe-$stamp"
+    New-Item -ItemType Directory -Force $dir | Out-Null
+    $scanId = $where -replace '[^\w\-]+', '_'
+    $out = & $AxeCli --processid $pf.Id --outputdirectory $dir --scanid $scanId --verbosity verbose --alwayssavetestfile 2>&1
+    $code = $LASTEXITCODE
+    $out | Set-Content -Path (Join-Path $dir "$scanId.txt") -Encoding UTF8
+    $summary = ($out | Where-Object { "$_" -match 'error.* found|no errors' }) -join ' '
+    Note ("  axe {0}: exit {1}, {2}" -f $where, $code, $summary)
+    $out | ForEach-Object { if ("$_" -match '^Error \d+: (.+)$') { $Matches[1] } } | Group-Object |
+        Sort-Object Count -Descending | ForEach-Object { Note ("    {0} x {1}" -f $_.Count, $_.Name) }
+}
+
+# The first element under a root with the given AutomationId, read live, or
+# null.
+function Find-Under($root, [string]$aid) {
+    try {
+        return $root.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
+            (New-Object System.Windows.Automation.PropertyCondition($AE::AutomationIdProperty, $aid)))
+    } catch { return $null }
+}
+
+function Is-Selected($el) {
+    try { return [bool]$el.GetCurrentPattern($SIP).Current.IsSelected } catch { return $false }
+}
+
+# Selects a sidebar entry, a section, a part or a Settings group by its
+# SelectionItem pattern, which the window answers as it answers a click
+# (NavItemsControl's peer, and a RadioButton's Checked handler). A click at
+# the element's center is the fallback. True once the element reads selected.
+function Select-Item($el) {
+    try {
+        $p = $el.GetCurrentPattern($SIP)
+        if (-not $p.Current.IsSelected) { $p.Select() }
+        if ((Wait-For { Is-Selected $el } 2000) -ge 0) { return $true }
+    } catch { }
+    return ((Click-Center $el) -eq $true)
+}
+
+# Invokes a tile, a sidebar entry or a button by its Invoke pattern, with a
+# click at its center as the fallback.
+function Invoke-Item($el) {
+    try { $el.GetCurrentPattern($INV).Invoke(); return $true } catch { }
+    return ((Click-Center $el) -eq $true)
+}
+
+# Audits the view under $root, then what it keeps folded: fold cards and More
+# rows are opened a level at a time, since a fold can hold another, and each
+# level is walked. Axe scans the view once, with everything open, so it reads
+# what the folds hold too. What was opened is closed again, last first, so
+# the fold state PadForge stores ends as it began. Returns the last walk.
+function Audit-Deep($root, [string]$where, [bool]$scan = $true) {
+    if ($NoFolds) { $plain = Audit-View $root $where $scan; Write-Outline $plain $where; return $plain }
+    $v = Audit-View $root $where $false
+    $openedFolds = New-Object System.Collections.Generic.List[object]
+    for ($level = 1; $level -le 4 -and $v.Folds.Count -gt 0; $level++) {
+        $n = 0
+        foreach ($fold in $v.Folds) {
+            try { $fold.GetCurrentPattern($ECP).Expand(); $openedFolds.Add($fold); $n++ } catch { }
+        }
+        if ($n -eq 0) { break }
+        Start-Sleep -Milliseconds 300
+        $v = Audit-View $root "$where, folds opened ($level)" $false
+    }
+    if ($scan) { Scan-Axe $where }
+    Write-Outline $v $where
+    for ($i = $openedFolds.Count - 1; $i -ge 0; $i--) {
+        try { $openedFolds[$i].GetCurrentPattern($ECP).Collapse() } catch { }
     }
     return $v
 }
 
-# The whole window once, for the sidebar, the title bar and the first page.
+# Selects a sidebar page and returns its view, or null. The pages sit in one
+# host, one visible at a time, so the visible page is a child of the window:
+# DashboardPageView for Home, PadPageView for every controller, and
+# <Tag>PageView for the rest (MainWindow.xaml).
+function Open-Page([string]$tag) {
+    $entry = Find-Under $win "Nav_$tag"
+    if (-not $entry) { Note "Nav_${tag}: not found"; return $null }
+    if (-not (Select-Item $entry)) { Note "Nav_${tag}: could not be selected"; return $null }
+    $viewId = if ($tag -like 'Pad*') { 'PadPageView' } else { "${tag}PageView" }
+    $script:pageEl = $null
+    $waited = Wait-For { $script:pageEl = Find-Child $win $viewId; $null -ne $script:pageEl }
+    if ($waited -lt 0) { Note "${tag}: $viewId did not appear within 4 s"; return $null }
+    return $script:pageEl
+}
+
+# The whole window once, for the title bar, the sidebar and the page in front.
 $first = Audit-View $win 'Window'
-$nav = @{}
-foreach ($n in $first.NavItems) { $nav[$n.Cached.AutomationId] = $n }
+Write-Outline $first 'Window'
 $tags = @($first.NavItems | ForEach-Object { $_.Cached.AutomationId.Substring(4) } | Where-Object { $_ -ne 'AddController' })
 # -File passes "Devices,Pad1" as one string, so names are split on commas.
 if ($Pages) { $tags = @($Pages | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ }) }
 Note "pages: $($tags -join ', ')"
 
 foreach ($tag in $tags) {
-    $entry = $nav["Nav_$tag"]
-    if (-not $entry) { Note "Nav_${tag}: not found"; continue }
-    $viewId = if ($tag -like 'Pad*') { 'PadPageView' } else { "${tag}PageView" }
-    $clicked = Click-Center $entry
-    if ($clicked -ne $true) {
-        # The sidebar can rebuild an entry after the first view read it, which
-        # leaves the cached element with no rectangle. Find it again, live.
-        $live = $win.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
-            (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::AutomationIdProperty, "Nav_$tag")))
-        if ($live) { $clicked = Click-Center $live }
-    }
-    if ($clicked -ne $true) { Note "Nav_${tag}: could not click ($clicked)"; continue }
-    $script:pageEl = $null
-    $waited = Wait-For { $script:pageEl = Find-Child $win $viewId; $null -ne $script:pageEl }
-    if ($waited -lt 0) { Note "${tag}: $viewId did not appear within 4 s"; continue }
-    $page = Audit-View $script:pageEl $tag
-    if ($NoTabs -or -not $page.TabContent) { continue }
+    $pageEl = Open-Page $tag
+    if (-not $pageEl) { continue }
 
-    $pane = $page.TabContent
-    $tabs = $page.TabButtons
-    $open = $tabs | Where-Object { try { $_.GetCurrentPattern($SIP).Current.IsSelected } catch { $false } } | Select-Object -First 1
-    foreach ($tab in $tabs) {
-        $tabName = $tab.Cached.Name
-        $wasSelected = $false
-        try { $wasSelected = $tab.GetCurrentPattern($SIP).Current.IsSelected } catch { }
-        $beforeTab = First-Child $pane
-        if ((Click-Center $tab) -ne $true) { continue }
-        if (-not $wasSelected) {
-            $waitedTab = Wait-For { (First-Child $pane)[0] -ne $beforeTab[0] }
-            if ($waitedTab -lt 0) { Note "$tag / ${tabName}: the tab content did not change within 4 s" }
+    if ($tag -eq 'Extras') {
+        # The catalog, then each extra's own page through its tile, and back.
+        $page = Audit-Deep $pageEl 'Extras'
+        if ($NoTabs) { continue }
+        $keys = @($page.Tiles | ForEach-Object { $_.Cached.AutomationId.Substring(12) })
+        foreach ($key in $keys) {
+            $tile = Find-Under $pageEl "Extras_Open_$key"
+            if (-not $tile -or -not (Invoke-Item $tile)) { Note "Extras / ${key}: its tile would not open"; continue }
+            if ((Wait-For { $null -ne (Find-Under $pageEl "Extras_Back_$key") }) -lt 0) { Note "Extras / ${key}: its page did not open within 4 s"; continue }
+            Audit-Deep $pageEl "Extras / $key" $AxeTabs.IsPresent | Out-Null
+            $back = Find-Under $pageEl "Extras_Back_$key"
+            if ($back) { Invoke-Item $back | Out-Null }
+            if ((Wait-For { $null -ne (Find-Under $pageEl "Extras_Open_$key") }) -lt 0) { Open-Page 'Extras' | Out-Null }
         }
-        Audit-View $pane "$tag / $tabName" $AxeTabs.IsPresent | Out-Null
+        continue
     }
-    if ($open) { Click-Center $open | Out-Null }
+
+    $page = Audit-Deep $pageEl $tag
+    if ($NoTabs) { continue }
+    # A controller's page has six sections and Settings five groups, each a
+    # radio button of the page's own switch. Two sections have parts: Picture
+    # and List under Buttons, Macros and Menus under Macros & Menus.
+    $choices = @($page.Choices | Where-Object { $_.Cached.AutomationId -like 'Section_*' -or $_.Cached.AutomationId -like 'Settings_Group_*' })
+    if ($choices.Count -eq 0) { continue }
+    $open = $choices | Where-Object { Is-Selected $_ } | Select-Object -First 1
+    foreach ($choice in $choices) {
+        $name = $choice.Cached.Name
+        if (-not (Select-Item $choice)) { Note "$tag / ${name}: would not open"; continue }
+        Start-Sleep -Milliseconds 400
+        $view = Audit-Deep $pageEl "$tag / $name" $AxeTabs.IsPresent
+        $parts = @($view.Choices | Where-Object { @('TabController', 'MappingsTab', 'MacrosTab', 'MenusTab') -contains $_.Cached.AutomationId })
+        $openPart = $parts | Where-Object { Is-Selected $_ } | Select-Object -First 1
+        foreach ($part in $parts) {
+            if (Is-Selected $part) { continue }
+            if (-not (Select-Item $part)) { Note "$tag / $name / $($part.Cached.Name): would not open"; continue }
+            Start-Sleep -Milliseconds 400
+            Audit-Deep $pageEl "$tag / $name / $($part.Cached.Name)" $false | Out-Null
+        }
+        if ($openPart) { Select-Item $openPart | Out-Null }
+    }
+    if ($open) { Select-Item $open | Out-Null }
+}
+
+# Add a Controller and Search open inside the window, and opening either
+# changes no setting. Each is audited and closed by its own close button.
+if (-not $NoDialogs) {
+    $panels = @(
+        @{ Name = 'Add a Controller'; Opener = 'Nav_AddController'; Panel = 'AddControllerDialog'; Close = 'AddController_Close' },
+        @{ Name = 'Search';           Opener = 'TitleSearchBox';    Panel = 'SearchPanel';         Close = 'SearchCloseChip' }
+    )
+    foreach ($p in $panels) {
+        $opener = Find-Under $win $p.Opener
+        if (-not $opener -or -not (Invoke-Item $opener)) { Note "$($p.Name): $($p.Opener) would not open it"; continue }
+        $script:panelEl = $null
+        if ((Wait-For { $script:panelEl = Find-Under $win $p.Panel; $null -ne $script:panelEl }) -lt 0) { Note "$($p.Name): $($p.Panel) did not appear within 4 s"; continue }
+        Write-Outline (Audit-View $script:panelEl $p.Name) $p.Name
+        $close = Find-Under $win $p.Close
+        if ($close) { Invoke-Item $close | Out-Null } else { Note "$($p.Name): no $($p.Close) to close it with" }
+        Wait-For { $null -eq (Find-Under $win $p.Panel) } 2000 | Out-Null
+    }
 }
 
 $byRule = $findings | Group-Object Rule | Sort-Object Name | ForEach-Object { "{0}={1}" -f $_.Name, $_.Count }

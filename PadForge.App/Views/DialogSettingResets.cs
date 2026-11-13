@@ -13,7 +13,7 @@ namespace PadForge.Views
                 case "Mode": ModeCombo.SelectedValue = "Hold"; break;
                 case "AxisThreshold": AxisThresholdSlider.Value = 0.5; break;
                 case "HostLayer": HostLayerCombo.SelectedValue = ""; break;
-                case "InheritUnmapped": InheritUnmappedBox.IsChecked = false; break;
+                case "InheritUnmapped": InheritUnmappedCombo.SelectedIndex = 1; break;
                 case "FireOnRelease": FireOnReleaseBox.IsChecked = false; break;
                 case "PostponeMapping": PostponeMappingBox.IsChecked = false; break;
                 case "CycleWrap": CycleWrapBox.IsChecked = true; break;

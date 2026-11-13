@@ -83,6 +83,16 @@
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge a poputá…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Apachaatá eú controller</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Apachaatá eú controller</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Fili met urumwot repwe kúna. Ewe controller epwe tolong lupwen chok ka click.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Emmwen seni</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Fili mwirin</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Mi chómmóng</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Pwal ekkóch output</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ewe layout chómmóng urumwot lón PC ra ápilúkú.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Fán iten urumwot mi néúnéú PlayStation prompts, touchpad me lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Ewe Switch button layout, fán iten urumwot me emulator mi ápilúkú.</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Amóeló ewe virtual controller</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Pwári PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw</value></data>
@@ -95,7 +105,6 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Osukosuk: {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Done" xml:space="preserve"><value>A wes</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Sókkun {0}</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Ei PC chék</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Esor device</value></data>
@@ -270,7 +279,7 @@
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Iit</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Sótuni sefál</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Átiti itan ei gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>A lamot eú iit</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>A kon ttam ewe iit (esap lap seni 64 mak)</value></data>
 
@@ -286,20 +295,20 @@
   <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Esor slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Minefé</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Esor controller</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Minefen profile</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Siwili</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Akkomw fili eú profile.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Amóeló ewe profile</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Siwili ewe profile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Iten ewe profile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Minefen profile</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Iit</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profile minefé</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Kapiini ekkewe settings seni...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Fili eú device pwe kopwe kapiini an kewe settings:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Kapiini seni</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Siwili ekkewe mapping me tuning fán iten eú me eú device lón {0} ngeni an pwal eú controller.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Apachaatá an pwal eú controller kewe macro ngeni {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Executables (*.exe)|*.exe|File meinisin (*.*)|*.*</value></data>
@@ -379,6 +388,17 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor peliemwán</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Iten ewe layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Iit</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mi kamwéch ren</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Mi tiki ren</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Ewe layer mwirin ren</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Ewe layer mwmwan ren</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Me ren</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Fili eú input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Controls esor mapping</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Feiló ngeni Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ese fori mettóch</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, sókkun input, fansoun me color</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>A lamot iten ewe layer.</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Siwili iten ewe layer…</value></data>
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Amóeló ewe layer</value></data>
@@ -392,7 +412,6 @@
   <data name="MacroAction_Type_SoundStop" xml:space="preserve"><value>Aúkú ekkewe sound</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Fili eú sound seni {0}</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Apachaatá eú package…</value></data>
   <data name="Pad_Audio_Packages_Create" xml:space="preserve"><value>Féri eú package…</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Esor sound package.</value></data>
@@ -410,7 +429,6 @@
   <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Féri eú package…</value></data>
   <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>Esor icon package.</value></data>
   <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>Fili ekkewe sasing fán iten ewe package</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Iten ei PC</value></data>
   <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
     <value>Makkeei eú password.</value>
   </data>
@@ -424,6 +442,7 @@
     <value>Ese tongeni poputá: {0}</value>
   </data>
   <data name="PickSound_Title" xml:space="preserve"><value>Fili eú sound</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ewe ngingi epwe tolong ren an ewe controller speaker, ika ren an ewe PC ika esor.</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -454,15 +473,14 @@
   <data name="Vr_Status_Running" xml:space="preserve"><value>A angang</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Esor COM port.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(witiwit)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Iit:</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Witiwit ekis…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Iit:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Iit</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Átiti itan ei tag</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Mutaló ewe button.</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Iit</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Sasing</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Apachaatá eú sasing…</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Kútta urumwot</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} urumwot</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Urumwot</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Esor urumwot lón ewe Steam store.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>A kútta lón Steam…</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Kútta lón ekkeei config</value></data>
@@ -498,7 +516,6 @@
     <value>ds4mac</value>
   </data>
   <data name="Starter_Wasd_Name" xml:space="preserve"><value>WASD me mouse</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Isoni ewe profile</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>A apachaatá ewe starter profile "{0}".</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Sókkun</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
@@ -617,6 +634,7 @@
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Kúkkún</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Chechchech seni bass lon ngingiin ewe system</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Atoto chechchechen ekkewe motor mi lap ngeni ekkewe trigger</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ataraka ekkewe gesture won ei touchpad</value></data>
@@ -639,4 +657,59 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR a angang</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Peliefefin</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Peliemwán</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kapiini ewe address</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kútta device</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Meinisin</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Minefen controller</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button me sensor meinisin</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kapiini ekkewe details</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Pisek</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Sókkun</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Riri</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Battery</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Isoni ewe setup iei ikei</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Kopwe siwili ewe setup mi isoon lón “{0}” ngeni ewe setup iei? Itan me an kewe urumwot repwe nómottiw.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Siwiliti</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Angei profile</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ika ka isoni, epwe apachaatá eú profile kopwe tongeni siwili.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Epwe wiliti</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Kútta settings</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Pwal amúmúsúnú ewe controller, Áliwini ewe esinesin iteiten, Esinesin lupwen a unusen charge</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Ipeti device seni urumwot, Ipeti device lefilen poputá, Ekkewe application mi mwúmmwútá</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Kútta credits</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Esor credit a fich ngeni “{0}”.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes me control changes fán iten music software.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Virtual VR controller ren SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Ika kopwe siwili ewe sókkun mwirin, click ewe type chip won ewe controller. Eú chok click.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>A namwot SteamVR. Install seni an card lón Settings.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>A fen wor eú VR controller. Eú chok epwe emweni ruupw paw.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge a wor {0} controller, ewe ukukun mi tongeni. Amóeló eú pwe kopwe apachaatá pwal eú.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Pwal ekkóch sókkun: [{0}, {1}, {2} me {3}]</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, battery {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Battery {0}</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Kútta settings, device me profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Kútta</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Mi kúna</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} pwe kopwe mwékút</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} pwe kopwe suuki</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} seni ia meinisin</value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Esor mettóch lón PadForge a fich ngeni “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Kútta lón ewe documentation fán iten “{0}”</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Amóeló {0}?</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>A poputá nge esor controller. Epwe load pwisin lupwen eú me lein an kewe urumwot a nóm mwmwan.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Esor pwal eú program a wor an window mi suuk.</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Iten, icon me color an ewe Base layer won ewe Shift Layer Flyout me lón ewe órun layer.</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Suuki ewe kuffun battery me tiki ewe SYNC button mi par.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Ánómu ewe remote arap ngeni ei PC lupwen an kewe saram ra mwékút.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair eú DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Pair eú Move ika Navigation Controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Apachaatá eú serial controller</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Apachaatá eú DJI remote</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Fili met epwe pwáláló. Esor mettóch epwe siwil tori ka isoni.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Esor mettóch epwe tori ewe port tori ka isoni.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Live: {0} me lein {1}</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ekkeei profile mi import a wor minefen version won ewe Steam Workshop. Import pwal seni Angei profile pwe kopwe angei ekkewe siwil.</value></data>
 </root>

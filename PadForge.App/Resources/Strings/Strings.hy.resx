@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Միացված</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Անջատված</value></data>
   <data name="Common_More" xml:space="preserve"><value>Ավելին</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Տեսնել բոլորը</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Տեղադրված</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Տեղադրված չէ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Հասանելի չէ ARM64-ում</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Կանգնեցվում է…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Մեխանիզմը կանգնեցվում է…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Աշխատում է՝ {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Աշխատում է ({0} հաճախորդ)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Աշխատում է, միացված՝ {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Լսում է :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>{0} պորտը զբաղված է</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>{0} պորտի հասանելիությունը մերժվեց (գործարկեք որպես ադմինիստրատոր)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Անցանց</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Անհայտ</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Լռելյայն</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Ընտրել...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Ընտրել…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Շարունակել</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Կանգնեցնել</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Սկսել</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Մաքրվում են նախորդ սեսիայից մնացած վիրտուալ կառավարիչները։</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> սարք</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ավելացնել կառավարիչ</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Ավելացնել կառավարիչ</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Ընտրեք, թե ինչ պետք է տեսնեն խաղերը։ Կառավարիչն ավելանում է սեղմելուն պես։</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Ազդանշանի աղբյուր</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Ընտրել ավելի ուշ</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Տարածված</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Այլ ելքեր</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Դասավորությունը, որը սպասում են համակարգչային խաղերի մեծ մասը։</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Խաղերի համար PlayStation հուշումներով, հպահարթակով և լուսային գծով։</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch-ի կոճակների դասավորություն՝ խաղերի և էմուլյատորների համար, որոնք դա սպասում են։</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Ստեղներ, ցուցիչ և ոլորում կառավարիչից։</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Ղեկեր, թռիչքի ջոյստիկներ և հարմարեցված դասավորություններ։</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Նոտաներ և Control Change հաղորդագրություններ երաժշտական ծրագրերի համար։</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Վիրտուալ VR կառավարիչներ SteamVR-ով։</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Տեսակը հետո փոխելու համար սեղմեք կառավարչի տեսակի չիպը։ Դա մեկ սեղմում է։</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services-ը չի արձագանքում։ Տես նրա քարտը Կարգավորումներում։</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Պետք է SteamVR։ Տեղադրեք այն Կարգավորումներում նրա քարտից։</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR կառավարիչ արդեն կա։ Մեկը կառավարում է երկու ձեռքերը։</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge-ում կա {0} կառավարիչ՝ առավելագույնը, որ կարող է աշխատել։ Ջնջեք մեկը՝ մյուսն ավելացնելու համար։</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Պրոֆիլ</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Որոնել կարգավորումներ, սարքեր և պրոֆիլներ</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Որոնում</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Արդյունքներ</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Վերև</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Ներքև</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1}՝ շարժվելու համար</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0}՝ բացելու համար</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0}՝ ցանկացած էջից</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Էջեր</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Գործողություններ</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Փաստաթղթեր</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>Ավելին բաժնում</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>տողի ընտրանքներում</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge-ում ոչինչ չի համընկնում «{0}» հետ։</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Որոնել փաստաթղթերում «{0}»</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Ջնջել վիրտուալ կառավարիչը</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Լրիվ էկրան</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ցույց տալ PadForge-ը</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>«{0}» պրոֆիլը ստեղծվեց։</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>«{0}» պրոֆիլը ջնջվեց։</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>«{0}» պրոֆիլը թարմացվեց։</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>«{0}» պրոֆիլն այժմ պարունակում է ընթացիկ կարգավորումը։</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Պրոֆիլը բեռնվեց՝ {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Պրոֆիլը վերադարձվեց Լռելյայնին</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>«{0}» սարքը նշանակվեց Վիրտուալ կառավարիչ {1}-ին։</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Պրոֆիլը փոխվեց՝ {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Պրոֆիլը փոխվեց՝ Լռելյայն</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Լռելյայն</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Պրոֆիլի դյուրանցումներ</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Դյուրանցումներ</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Նշանակեք կոճակների համակցություններ՝ ցանկացած կառավարիչից պրոֆիլները փոխելու համար։</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Ավելացնել դյուրանցում</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Հաջորդ պրոֆիլ</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Նախորդ պրոֆիլ</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Որոշակի պրոֆիլ</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Փոխանջատել պատուհանը</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Փոխանջատել վիրտուալ կառավարիչների անջատումը</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Ցույց տալ կամ թաքցնել PadForge-ը</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Միացնել կամ անջատել վիրտուալ կառավարիչները</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Ցանկացած միացված սարք</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Գրանցել</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Գրանցվում է...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Սարք ընտրված չէ։</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Սլոթի անվավեր ինդեքս՝ {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Չհաջողվեց սարքը նշանակել։</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>երբ</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>սարքում</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}» սարքը նշանակվեց Վիրտուալ կառավարիչ {1}-ին։</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» սարքը հանվեց Վիրտուալ կառավարիչ {1}-ից։</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Սարքը թաքցված է։ (Կարելի է վերականգնել կարգավորումների ֆայլում։)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Սարքը հեռացվեց։</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Վիրտուալ կառավարիչ {0}-ը ջնջվեց։</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Գլխավոր</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Միացված սարքեր: {0}։ Կառավարիչներ: {1}։</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Խաղերը տեսնում են յուրաքանչյուր աշխատող կառավարիչ։</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Մեխանիզմը միացված է, և ոչ մի կառավարիչ չի աշխատում։</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Մեկնարկեք մեխանիզմը՝ ձեր կառավարիչները վերադարձնելու համար։</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Հարցման հաճախականություն</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Աշխատող կառավարիչներ</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Միացված սարքեր</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Միացնել կամ անջատել այս կառավարիչը</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Այն սկսվում է մեխանիզմի հետ։</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Այն սկսվում է, երբ այս սարքը միանում է։</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Այն սկսվում է, երբ այս սարքերից մեկը միանում է։</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Միացված չէ</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Մուտք է ուղարկվում հիմա</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Մարտկոց {0}, ցածր</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Մարտկոց {0}, լիցքավորվում է</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Մուտքի մեխանիզմ</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Օգտագործվող հավելումներ</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Ցույց տալ QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0}-ը միացված է և չի օգտագործվում։</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Օգտագործել</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ի՞նչ պետք է տեսնեն խաղերը</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge-ը այս կառավարիչը դարձնում է այն, ինչ սպասում են ձեր խաղերը։ Ընտրեք մեկը՝ սկսելու համար։ Կարող եք փոխել այն հետո՝ մեկ սեղմումով։</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge-ը ձեր կառավարիչը դարձնում է այն, ինչ սպասում են ձեր խաղերը։ Ընտրեք մեկը՝ սկսելու համար։ Կարող եք փոխել այն հետո՝ մեկ սեղմումով։</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Խաղացեք ստեղնաշարով և մկնիկով խաղեր կառավարիչով։</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Այլ տեսակներ՝ [{0}, {1}, {2} և {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Կոճակները, ձողերն ու ձգանները կապակցվում են 1:1՝ կառավարիչը ստեղծվելու պահից։</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Զուգակցել Bluetooth կառավարիչ</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Սկսել պատրաստի պրոֆիլից</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Միացված</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, մարտկոց {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Մարտկոց {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Կառավարիչ միացված չէ</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Միացրեք մեկը մալուխով կամ Bluetooth-ով։</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> կապակցված, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> միացված</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Մեխանիզմն աշխատում է։ Սեղմեք՝ կանգնեցնելու համար։</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Մեխանիզմը անգործուն է։ Սեղմեք՝ կանգնեցնելու համար։</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Մեխանիզմը կանգնեցված է։ Սեղմեք՝ մեկնարկելու համար։</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Կարգավորել այս կառավարիչը</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Վառեք դարբնոցը</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Միացրեք կառավարիչ, ընտրեք ելքի տեսակը, և PadForge-ը ձեր մուտքերը դարբնելով կվերածի դրան։ Կարճ շրջայցը ցույց կտա, թե ինչը որտեղ է։</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Սկսել շրջայցը</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Բաց թողնել</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Հաջորդը</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Պատրաստ է</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Սլոթներ</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Յուրաքանչյուր վիրտուալ կառավարիչ ապրում է այստեղ։ Բոցը ցույց է տալիս, թե որ սլոթներն են հիմա դարբնում։</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Մուտքի մեխանիզմ</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Հենց դարբնոցը։ Բոցը փոխանջատեք՝ մուտքի ողջ հարցումը մեկնարկելու կամ կանգնեցնելու համար։</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Վիրտուալ կառավարիչներ</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Ընտրեք ելքի տեսակը, սնուցեք սլոթի սարքերը և սեղմեք քարտին՝ դրա կապակցումները ձևավորելու համար։</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ընտրովի գործառույթներն այստեղ են՝ հեռախոսի վեբ կառավարիչը, Հեռակա կապը, շարժման սերվերը և այլն։</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Ցույց տալ ողջույնի շրջայցը</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Սլոթ</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Սարք</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ազդանշանի աղբյուր</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ավելացնել սարք</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Ցածր</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ելք</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Որ սեղմումը կտեսնեն խաղերը, երբ զույգի երկու ստեղները սեղմված են</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Պահում է ձողի փոքր շեղում, որպեսզի խաղերը շարունակեն ցույց տալ կառավարիչի հուշումները</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Դարբնում է</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Աշխատում է {0}՝ {1}-ից</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Ընտրեք մակրո ցանկից կամ սեղմեք «Մակրոներ»-ի կողքի + կոճակը՝ նորը ստեղծելու համար։</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Նախադիտում</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Հավելումներ</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Ընտրովի գործառույթներ։ Յուրաքանչյուրը չի խանգարում, քանի դեռ չեք միացրել այն։</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{1}-ից {0}-ը միացված</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Խաղալու այլ եղանակներ</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ուղարկել այլ տեղ</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Էկրանին</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Նայեք շուրջը գլխի հետևիչով կամ վիրտուալ իրականության ականջակալով։</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Կապակցեք վարորդական խաղերի արագությունը, ոտնակներն ու փոխանցումները։</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Թույլ տվեք դիտողներին կոճակներ սեղմել՝ չաթում գրելով։</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Կիսվեք կառավարիչներով մեկ այլ համակարգչի PadForge-ի հետ։</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Կառավարեք վիրտուալ կառավարիչները մեկ այլ համակարգչում։</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ուղարկեք կառավարչի շարժումը էմուլյատորներին։</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ստացեք ձգանների և լույսերի էֆեկտներ խաղի մոդերից։</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ցուցադրեք ընտրացանկեր, շերտեր և պրոֆիլի փոխարկումներ խաղալու ընթացքում։</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Էկրանային հպման մակերես այն խաղերի համար, որոնք օգտագործում են PlayStation-ի հպահարթակը։</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հպահարթակով խաղերի համար։</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Նկար, ժմչփ կամ ժամացույց մյուս պատուհանների վրա։</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Պորտ, պարզ HTTP հասցե, մուտքի կոդ</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Վերամիացում, պորտ, ինքնության պաշտպանություն, միացում հասցեով</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP պորտ, միջակայք ըստ առանցքի</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Պորտ, պարզ HTTP, մուտքի կոդ</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ինքնավերամիացում, պորտ, զուգակցման ինքնություն, միանալ հասցեով</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Պորտ, DSX.exe փոխարինող</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Պորտեր, լրիվ արագություն, հարմարեցված ձևաչափեր</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Պորտեր, Լրիվ արագություն, Հարմարեցված ձևաչափեր</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Նայեք շուրջը գլխի հետագծիչով կամ VR գլխադիրով, մինչ երկու բութ մատները մնում են կոճակների վրա։</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Կապակցեք մրցարշավային խաղի ուղարկած արագությունը, ոտնակները և փոխանցումները ինչպես ցանկացած մուտք։</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ուղարկեք կառավարչի շարժումը էմուլյատորներին, որոնք կարդում են DSU շարժման աղբյուր։</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Ստացեք հարմարվող ձգանի և լույսի էֆեկտները DSX-ի համար գրված խաղային մոդերից։</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Միացրեք հեռաչափության ելքը խաղում և ուղղեք այն այս համակարգչին ու պորտին։</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Էմուլյատորում ավելացրեք շարժման աղբյուր այս համակարգչի հասցեով և այս պորտով։</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Մոդի էֆեկտները հասնում են բոլոր կառավարիչներին, որոնք ունեն դրանց համար սարքավորում։</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Գլխի դիրքը [Սարքեր] էջի Head Tracker տողն է։ Գլխի շրջումը կապակցեք ձողի առանցքին կառավարչի Կոճակներ բաժնում։</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Արժեքները [Սարքեր] էջի Game Telemetry տողն են։ Կապակցեք դրանք կառավարչի Կոճակներ բաժնում կամ օգտագործեք մակրոներ գործարկելու համար։</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ընտրացանկի սեփական տեղը, չափը և թափանցիկությունը սահմանվում են հենց ընտրացանկում՝ կառավարչի [Մակրոներ և ընտրացանկեր] բաժնում։</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Աղբյուրներ</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack և ցանկացած ծրագիր, որ ուղարկում է իր UDP ձևաչափը</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Ընդգրկույթ</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Միջակայք ըստ առանցքի։ Զրոն օգտագործում է վերևի ընդգրկույթը։</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Խաղեր, որոնք PadForge-ը չի ճանաչում</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Մոդերի համար, որոնք ուղարկելուց առաջ որոնում են աշխատող DSX</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ինչ է երևում</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ընտրացանկի օղակը, ցանցը կամ գոտին՝ բաց լինելու ժամանակ</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, մինչ տեղաշարժի շերտը պահված է</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Պրոֆիլի անունը, երբ պրոֆիլը փոխվում է</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճենել հասցեն</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Տեղը էկրանին</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Միացրեք հեռախոսը</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Հեռախոսը միացրեք այս համակարգչի հետ նույն ցանցին։</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Սկանավորեք կոդը նրա տեսախցիկով։</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Ընտրեք կառավարչի դասավորություն։</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Հեռախոսներ</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Հեռախոս միացված չէ։</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Միացած հեռախոսը երևում է այստեղ և Սարքեր էջում, որտեղ այն վերագրում եք կառավարչի։</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Ձեր ալիքը</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Բառեր, որ հանդիսատեսը կարող է գրել</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Հանդիսատեսը գրում է !a նման բառ, և PadForge-ը սեղմում է այն, ինչին այդ բառը կապակցված է Սարքեր էջի Twitch Chat տողում։ Այդ տողը վերագրեք կառավարչի ինչպես ցանկացած սարք։</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Ուղիղ եթերի ընթացքում</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Նկար ձեր հեռարձակման համար</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Զուգակցված համակարգիչներ չկան։</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Զուգակցել մեկ այլ համակարգիչ</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Չզուգակցված համակարգիչներ մոտակայքում չկան։</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Մյուս համակարգչում PadForge-ում միացրեք Հեռակա կապը։ Այն երևում է այստեղ, և երկու էկրաններին համեմատում եք կարճ կոդ։</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Տեսք և դիրք</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Այն տեղափոխելու համար քաշեք մկնիկի աջ կոճակով կամ երեք մատով։</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Վերադիր {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Ցուցադրում</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Երբ մեկ այլ ծրագիր առջևում է, սեղմումները անցնում են վերադիրի միջով։ Երբ PadForge-ը առջևում է, քաշեք այն մկնիկի աջ կոճակով և չափը փոխեք անկյունից։ Մակրոն կարող է ցուցադրել կամ թաքցնել վերադիրը իր համարով։</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Շարժման սերվեր</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider արձանագրության սերվեր՝ գիրոյի և արագացուցաչափի տվյալների համար։</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Միացնել DSU շարժման սերվերը (CemuHook Motion Provider Protocol)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>կառավարիչ չկա</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Տիպ {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Վեբ կառավարիչ</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Տրամադրել խաղային վահանակի ինտերֆեյս ձեր տեղական ցանցի բրաուզերներին։</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Օգտագործեք հեռախոսը կամ պլանշետը որպես կառավարիչ։ Հեռախոսում ոչինչ տեղադրել պետք չէ։</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Միացնել վեբ կառավարչի սերվերը</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Միացեք հեռախոսի կամ պլանշետի բրաուզերից՝ այն որպես խաղային վահանակ օգտագործելու համար։</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Սկանավորեք հեռախոսի տեսախցիկով կամ բացեք այս հասցեն դրա բրաուզերում՝</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Պարզ HTTP հասցե</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>Երկրորդ հասցե առանց HTTPS-ի՝ այն բրաուզերների համար, որոնք մերժում են PadForge-ի վկայականը, և թունելի կամ հակադարձ պրոքսիի համար, որն իր սեփականն է բերում։ Հեռախոսի շարժումը պահանջում է HTTPS, ուստի այստեղ այն աշխատում է միայն HTTPS մատուցող թունելի կամ պրոքսիի միջոցով։</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Մատուցել նաև պարզ HTTP</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Մուտքի կոդ</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Պարզ հասցեն բացվում է միայն այս կոդով, և ներքևի հղումը ներառում է այն։ Նոր կոդը անջատում է պարզ հասցեում բոլորին։</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Նոր կոդ</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Հասցեն այս համակարգչում՝</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Թրթռոց (սեղմեք՝ այս սարքը նույնականացնելու համար)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Թրթռացնում է այս սարքը, որպեսզի իմանաք, թե որն է այն։</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Հեռակա կապ</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Կիսվեք կառավարիչներով մեկ այլ համակարգչի զուգակցված PadForge-ի հետ՝ ձեր ցանցում կամ ինտերնետով։</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Կառավարեք վիրտուալ կառավարիչները մեկ այլ համակարգչում։ Մեկանգամյա զուգակցումից հետո վստահելի համակարգիչը վերամիանում է ինքնաշխատ։</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Միացնել Հեռակա կապի սերվերը</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Մեկանգամյա զուգակցումից հետո վստահելի համակարգիչը վերամիանում է ինքնաշխատ։ Զուգակցված համակարգիչը կարող է կառավարել սրա խաղային վահանակի ելքը, իսկ եթե չսահմանափակեք՝ նաև ստեղնաշարը, մկնիկը և մակրոները։</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Կամ միացեք հասցեով (առաջադեմ)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Զուգակցված համակարգիչը կարող է կառավարել սրա խաղային վահանակի ելքը, իսկ եթե չսահմանափակեք՝ նաև ստեղնաշարը, մկնիկը և մակրոները։</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Միանալ հասցեով</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Զուգակցել / Միանալ</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Զուգակցել</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Միանալ</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Միացված է</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Զուգակցում հեռավոր համակարգչի հետ</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Համոզվեք, որ կոդը երկու էկրաններին էլ համընկնում է, ապա սեղմեք Զուգակցել։</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Զուգակցե՞լ մեկ այլ համակարգչի հետ</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Ստուգեք, որ երկու էկրաններն էլ նույն կոդն են ցույց տալիս։</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Զուգակցել</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Մերժել</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Սահմանափակել այս համակարգիչը միայն խաղային վահանակի մուտքով</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Միայն խաղային վահանակ</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Ինքնություն</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Զուգակցված համակարգիչը կարող է ստեղնաշարի, մկնիկի և մակրոյի մուտք ուղարկել սրան, եթե չսահմանափակեք միայն խաղային վահանակի մուտքով։</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Զուգակցված համակարգիչը կարող է կառավարել այս համակարգչի խաղային վահանակի ելքը, իսկ եթե չսահմանափակեք՝ նաև ստեղնաշարը, մկնիկը և մակրոները։</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Զուգակցված համակարգիչներ</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Համակարգիչներ, որոնց հետ զուգակցել եք Հեռակա կապի համար։ Հետ կանչեք մեկի թույլտվությունը, որպեսզի այն այլևս չկարողանա միանալ։ Նրան նորից պետք կլինի զուգակցվել։</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Հետ կանչել</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Հետ կանչել բոլորը</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Վերանվանել</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Հպահարթակի վերադիր</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հետ համատեղելի հպահարթակի էմուլյացիայի համար։</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հպահարթակով խաղերի համար՝ հպէկրանի կամ մկնիկի համար։</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Միացնել հպահարթակի վերադիրը</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Անթափանցելիություն</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Վերականգնել դիրքը</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Կարգավորումներ</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ընդհանուր</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Մուտք</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Սարքավորում</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Դրայվերներ</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Տվյալներ և գաղտնիություն</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Որոնել կարգավորումներ</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Ոչ մի կարգավորում չի համընկնում «{0}» հետ։</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Արտաքին տեսք</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Ընտրեք ձեր նախընտրած տեսողական թեման։</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Թեմա</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Մուգ</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Մուտքի մեխանիզմ</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Կարգավորեք հարցման վարքը և ֆոնային մշակումը։</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Սարքավորման աջակցություն</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Մեխանիզմի ինքնամեկնարկ գործարկման ժամանակ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Շարունակել հարցումը, երբ պատուհանը կորցնում է կիզակետը</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Հարցման միջակայք (եթե պրոֆիլը չի վերագրում)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge-ը թարմացվեց մինչև {0}։</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Մեկնարկել ծալված</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Մեկնարկել մուտքի ժամանակ</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide դրայվեր</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Թաքցրեք ֆիզիկական սարքերը խաղերից՝ կրկնակի մուտքը կանխելու համար։</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Թաքցնում է ֆիզիկական սարքերը խաղերից՝ կրկնակի մուտքը կանխելու համար։</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide-ի ընտրանքներ</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Թաքցնել սարքերը խաղերից, Թողնել սարքերը քողարկված գործարկումների միջև, Սպիտակ ցուցակի ծրագրեր</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Սպիտակ ցուցակի ծրագրեր</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Այս ծրագրերը դեռ կարող են տեսնել թաքցված սարքերը։ PadForge-ը միշտ ինքնաշխատ ավելացվում է սպիտակ ցուցակ։</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Ավելացնել...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro դրայվեր</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Օգտատիրոջ ռեժիմի վիրտուալ HID կառավարիչների մեխանիզմ։ Ներկառուցված է PadForge.App-ում։ Տեղադրվում է ինքնաշխատ առաջին վիրտուալ կառավարիչը ստեղծելիս։ v3-ում փոխարինում է ViGEmBus-ին և vJoy-ին։</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge-ը տեղադրում է այս դրայվերը ձեր ստեղծած առաջին վիրտուալ կառավարչի հետ։ Հեռացումը ցուցակագրում է, թե ինչ է HIDMaestro-ն թողել այս համակարգչում, նախքան այն հեռացնելը։</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Ստեղծում է վիրտուալ կառավարիչները։</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Ապատեղադրել HIDMaestro-ն</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Սա հեռացնում է HIDMaestro-ն այս համակարգչից՝ նրա վիրտուալ կառավարիչները, դրայվերը, ստորագրման վկայագիրը, ռեեստրի բանալիներն ու ֆայլերը։ PadForge-ը նախ կանգնեցնում է իր մեխանիզմը։ HIDMaestro-ն օգտագործող այլ ծրագրեր կորցնում են նրա դրայվերը մինչև հաջորդ գործարկումը։ PadForge-ը նորից տեղադրում է այն հաջորդ անգամ վիրտուալ կառավարիչ գործարկելիս։</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Հեռացնել նաև usbip-win2-ը, որը տեղադրվել է իր սեփական տեղադրիչով</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Սա այն է, ինչ կհեռացվի այս համակարգչից։ PadForge-ը HIDMaestro-ն նորից տեղադրում է իր հաջորդ վիրտուալ կառավարչի հետ։</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Հեռացնել նաև usbip-win2-ը</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge-ի հին տարբերակները usbip-win2-ը տեղադրել են նրա սեփական տեղադրիչով։ Սա հեռացնում է նաև այդ տեղադրումը՝ ներառյալ նրա USB արմատային հանգույցի զտիչը, եթե usbip-win2-ն այլ ծրագրեր չեն օգտագործում։ Զտիչը հեռացնելը վերագործարկում է USB 3 բոլոր արմատային հանգույցները, ուստի USB սարքերը մի պահ անջատվում են։</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Ընթերցվում է, թե HIDMaestro-ն ինչ է թողել այս համակարգչում…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro-ն այս համակարգչում հեռացնելու ոչինչ չի թողել։</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Մնում է՝ {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Չհաջողվեց կարդալ՝ {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Չհեռացվեց՝ {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth դրայվեր</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Հեռացվել է</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Պահվել է</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Չի կարդացվել</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Չի հեռացվել</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Թույլ է տալիս PlayStation 3 կառավարիչներին, PlayStation Move-ին և Navigation կառավարիչին միանալ Bluetooth-ով։ Ներկառուցված է PadForge-ում և տեղադրվում է դրանցից որևէ մեկի առաջին զուգակցման ժամանակ։</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Միացնում է PlayStation 3 կառավարիչները Bluetooth-ով։</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Ապատեղադրել BthPS3-ը</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Սա հեռացնում է BthPS3-ը այս համակարգչից՝ նրա դրայվերները, Bluetooth-ին ավելացրած զտիչը և WinUSB դրայվերը, որ PadForge-ը տվել էր PlayStation 3 կառավարիչներին զուգակցման համար։ PadForge-ը նախ կանգնեցնում է իր մեխանիզմը, իսկ դրայվերների բեռնաթափման ընթացքում Bluetooth-ը կարճ ժամանակ անջատվում է։ PlayStation 3, Move և Navigation կառավարիչներն այնուհետև աշխատում են միայն USB-ով։ Դրանցից որևէ մեկի զուգակցումը BthPS3-ը նորից է տեղադրում։</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Սա այն է, ինչ կհեռացվի այս համակարգչից։ PlayStation 3, Move և Navigation կառավարիչներն այնուհետև աշխատում են միայն USB-ով, քանի դեռ դրանցից որևէ մեկի զուգակցումը BthPS3-ը նորից չի տեղադրել։</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Ընթերցվում է, թե BthPS3-ը ինչ է թողել այս համակարգչում…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3-ը այս համակարգչում հեռացնելու ոչինչ չի թողել։</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini-ն օգտագործում է այս դրայվերները, ուստի դրանք մնում են, քանի դեռ այն տեղադրված է։</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth-ը նորից չմիացավ։ Միացրեք այն Windows-ի Կարգավորումներում։</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Վիրտուալ MIDI պորտեր և MIDI մուտք։ Windows 11 25H2-ը ներառում է API-ն 2026 թվի նոյեմբերի վերջի թարմացումից։ Մյուս համակարգիչները օգտագործում են Windows MIDI Services runtime-ը, որը PadForge-ը կարող է տեղադրել, կամ հին MIDI API-ն։</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Վիրտուալ MIDI պորտեր և MIDI մուտք։</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Ներկառուցված է Windows-ում</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK Runtime</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Հասանելի չէ</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Սա հեռացնում է Microsoft-ի Windows MIDI Services Runtime-ը և գործիքները՝ MIDI Settings հավելվածով, MIDI կոնսոլով և PowerShell մոդուլով։ Microsoft-ն այլևս չի առաջարկում դրանք ներբեռնման համար, ուստի դրանք չեն կարող նորից տեղադրվել։</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>VR runtime վիրտուալ VR կառավարիչների համար։ Տեղադրվում է Valve-ի սերվերներից՝ առանց Steam հաշվի կամ Steam հաճախորդի (մի քանի ԳԲ)։</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>VR runtime վիրտուալ VR կառավարիչների համար։</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Տեղադրման վայր</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Ապատեղադրել SteamVR-ը</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Սա հեռացնում է {0}-ում SteamVR-ի առանց Steam-ի տեղադրումը և ազատում է մի քանի ԳԲ։ VR վիրտուալ կառավարիչները չեն աշխատի, մինչև SteamVR-ը նորից տեղադրվի։</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Ախտորոշում</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Տարբերակի տվյալներ և մեխանիզմի իրադարձությունների մատյան՝ խնդիրների լուծման համար։</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Վարել ախտորոշման մատյան</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Անընդհատ գրում է մեխանիզմի իրադարձությունները ներքևում նշված թղթապանակի diagnostics.log-ում։ Մնում է միացված վերամեկնարկերի միջև։ Երբ ֆայլը հասնում է 8 ՄԲ-ի, այն տեղափոխվում է diagnostics.log.old։</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Անընդհատ գրում է մեխանիզմի իրադարձությունները diagnostics.log-ում՝ մատյանի թղթապանակում, որը բացում է Բացել մատյանի թղթապանակը։ Մնում է միացված վերամեկնարկերի միջև։ Երբ ֆայլը հասնում է 8 ՄԲ-ի, այն տեղափոխվում է diagnostics.log.old։</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Պահել ակնթարթային պատկեր</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Պահում է մեխանիզմի վերջին իրադարձությունները նոր ֆայլում։ Աշխատում է նույնիսկ երբ ախտորոշման մատյանն անջատված է։</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Բացել մատյանի թղթապանակը</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Մասին</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Կառավարիչների կապակցման կոմունալ ծրագիր</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Տարբերակը թարմ է։</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}։ {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Փաստաթղթեր</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Ստուգել թարմացումները</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>x360ce-ի ֆորկ, վերակառուցված SDL3-ով, WPF-ով և .NET 10-ով</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge-ը ցանկացած մուտքի սարք վերածում է ցանկացած վիրտուալ կառավարիչի։ Խաղային վահանակները, ջոյստիկները, ստեղնաշարերը, մկնիկները և հպէկրանները կապակցվում են վիրտուալ խաղային կառավարիչներին (Xbox, PlayStation, թռիչքի ձողեր, ղեկեր, երրորդ կողմի խաղային վահանակներ) կամ ստեղնաշար+մկնիկ / MIDI ելքին, որը խաղերն ընդունում են որպես իրական սարքավորում։ Աշխատում է HIDMaestro-ով և Windows MIDI Services-ով։ Կառավարիչների մուտքի համար օգտագործում է SDL3, ստեղնաշարի և մկնիկի համար՝ Windows Raw Input, յուրաքանչյուր խաղի համար սարքերի քողարկման համար՝ HidHide, և տրամադրում է Fluent Design ինտերֆեյս կապակցումների, մեռյալ գոտիների, զգայունության կորերի և հետադարձ ուժի համար։</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Ակնարկ</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Օգտագործված տեխնոլոգիաներ</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Որոնել հեղինակներին</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Ցույց տալ բոլոր հեղինակներին</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Ցույց տալ ավելի քիչ հեղինակներ</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ոչ մի հեղինակ չի համընկնում «{0}» հետ։</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime և WPF շրջանակ։ MIT։</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime և WPF շրջանակ։</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Կառավարիչների մուտք և թվարկում։ zlib։</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Կառավարիչների մուտք և թվարկում։</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Սարքի առանձին ստեղնաշարի և մկնիկի մուտք</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Վիրտուալ MIDI սարքի ելք (Windows MIDI Services)։ MIT։</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Վիրտուալ MIDI սարքի ելք (Windows MIDI Services)։</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D կառավարիչի վիզուալիզացիա։ MIT։</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D կառավարիչի վիզուալիզացիա։</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 դիզայնի համակարգ WPF-ի համար։ Wpf.Ui.dll-ը ներառում է VirtualizingWrapPanel-ը, fluentui-system-icons տառատեսակները և WPF-ի ու microsoft-ui-xaml-ի կոդ։ MIT։</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 դիզայնի համակարգ WPF-ի համար։ Wpf.Ui.dll-ը ներառում է VirtualizingWrapPanel-ը, fluentui-system-icons տառատեսակները և WPF-ի ու microsoft-ui-xaml-ի կոդ։</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm՝ տվյալների կապակցման համար։ MIT։</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm՝ տվյալների կապակցման համար։</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ձողի և ձգանի պատկերակներ, ստացված Zacksly-ի «Xbox Series Button Icons and Controls»-ից (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ձողի և ձգանի պատկերակներ, ստացված Zacksly-ի «Xbox Series Button Icons and Controls»-ից։</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Հպահարթակի ձևերի կաղապարների համընկնեցնող (Շրջան / Քառակուսի / Եռանկյուն / Z / Նշան և սեփական գրանցված ժեստեր)։ Magrofuoco, Vatavu, Anthony և Wobbrock-ի JavaScript հղումային իրականացման վերածնում C#-ով։ BSD 3-Clause։</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Հպահարթակի ձևերի կաղապարների համընկնեցնող (Շրջան / Քառակուսի / Եռանկյուն / Z / Նշան և սեփական գրանցված ժեստեր)։ Magrofuoco, Vatavu, Anthony և Wobbrock-ի JavaScript հղումային իրականացման վերածնում C#-ով։</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Ստեղների դիրքերը և հիմնային շերտի ստեղները այն ստեղնաշարերի, որոնք նկարվում են «Ստեղնաշար + Մկնիկ» նախադիտման մեջ, ստեղծված QMK-ի դասավորության տվյալներից և Keychron-ի QMK ֆորկից։ GPL-2.0-or-later։</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Ստեղների դիրքերը և հիմնային շերտի ստեղները այն ստեղնաշարերի, որոնք նկարվում են «Ստեղնաշար + Մկնիկ» նախադիտման մեջ, ստեղծված QMK-ի դասավորության տվյալներից և Keychron-ի QMK ֆորկից։</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Անկյունային լուսանցքի գնահատման մոտեցում, որը աշխատում է կետային ամպի համընկնողի կողքին միամատ ձևերի վրա։ Իրականացնում է GestureSign-ի PointPatternAnalyzer-ի գնահատման գաղափարը բնօրինակ C#-ով։ GPL-2.0, միայն փաստաթղթավորում։</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Անկյունային լուսանցքի գնահատման մոտեցում, որը աշխատում է կետային ամպի համընկնողի կողքին միամատ ձևերի վրա։ Իրականացնում է GestureSign-ի PointPatternAnalyzer-ի գնահատման գաղափարը բնօրինակ C#-ով։ Միայն փաստաթղթավորում։</value></data>
   <data name="About_License" xml:space="preserve"><value>Լիցենզիա</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Այս ծրագրային ապահովումը լիցենզավորված է CC BY-NC-SA 4.0-ով (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International)։ AL2009man-ի Gamepad-Asset-Pack (MIT) փաթեթը տրամադրում է 2D կառավարիչների ռեսուրսները։ TransposonY-ի GestureSign (GPL-2.0) նախագիծը կարդացվել է որպես փաստաթղթավորում AngularMarginRecognizer-ի համար, և դրա կոդից ոչինչ չի ներառվում։ Handheld Companion (CC BY-NC-SA 4.0) նախագիծը տրամադրում է Xbox 360-ի և Steam Deck-ի 3D մոդելները, որոնք PadForge-ը հարմարեցնում է։ HelixToolkit-ը, HidHide-ը, HIDMaestro-ն, Windows MIDI Services-ը և WPF UI-ը լիցենզավորված են MIT լիցենզիայով։ OpenXInput-ը ներառում է միայն վերին հոսքի ապրանքանիշի հերքում և վերատարածվում է ինչպես կա՝ նույն պայմաններով։ Magrofuoco, Vatavu, Anthony և Wobbrock-ի $Q Recognizer (BSD 3-Clause) նախագիծը հղում է հպահարթակի ShapeRecognizer-ի համար, որը C#-ով վերածնում է։ SDL3-ը լիցենզավորված է zlib լիցենզիայով։ x360ce (LGPL-3.0-or-later) նախագիծը սկզբնական կոդային բազան է, որից ֆորկվել է PadForge-ը։ Igor Budzhak-ի Zergatul.Obs.InputOverlay (MIT) նախագիծը տրամադրում է մկնիկի նկարազարդումը։</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK բեռնիչ)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD-ձևաչափ</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio-ի լիցենզիայի պայմաններ</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK-ի պայմաններ</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Միայն ապրանքանիշի հերքում</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Պայմաններ նշված չեն</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Հրապարակված չէ</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Մի քանի լիցենզիա</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Օգտատիրոջ ռեժիմի վիրտուալ HID կառավարիչների մեխանիզմ (փոխարինում է ViGEmBus-ին և vJoy-ին)։ MIT։</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Օգտատիրոջ ռեժիմի վիրտուալ HID կառավարիչների մեխանիզմ (փոխարինում է ViGEmBus-ին և vJoy-ին)։</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Ուղղակի փոխարինում XInput-ին։ PadForge-ի սեփական վիրտուալ կառավարիչները զտում է իր սեփական տեսադաշտից։ Վերին հոսքի ապրանքանիշի հերքում, առանց բաց կոդով լիցենզիայի։</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Ուղղակի փոխարինում XInput-ին։ PadForge-ի սեփական վիրտուալ կառավարիչները զտում է իր սեփական տեսադաշտից։</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Միջուկի դրայվեր՝ ֆիզիկական սարքերը խաղերից թաքցնելու համար։ MIT։</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Միջուկի դրայվեր՝ ֆիզիկական սարքերը խաղերից թաքցնելու համար։</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Հրավեր</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>«Եվ մենք խոսում ենք Քրիստոսի մասին, մենք հրճվում ենք Քրիստոսով, մենք քարոզում ենք Քրիստոսի մասին, մենք մարգարեանում ենք Քրիստոսի մասին, և մենք գրում ենք մեր մարգարեությունների համաձայն, որ մեր զավակները կարողանան իմանալ, թե ինչ աղբյուրի նրանք կարող են ապավինել իրենց մեղքերի թողության համար:»</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Նեփի 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Փառք, պատիվ և օրհնություն Տեր Հիսուս Քրիստոսին՝ ամեն ճշմարտության և փրկության աղբյուրին, հավիտյանս հավիտենից։</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Սիրով հրավիրում ենք ձեզ այցելել ComeUntoChrist.org և ավելին իմանալ Նրա և Հիսուս Քրիստոսի Վերջին Օրերի Սրբերի Եկեղեցու մասին։</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Բաուերի ստերեոֆոնիկ-բինաուրալ crossfeed՝ ականջակալների ելքի համար։ MIT։</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Բաուերի ստերեոֆոնիկ-բինաուրալ crossfeed՝ ականջակալների ելքի համար։</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Մաքուր C# Opus կոդավորիչ, որը Bluetooth-ով աշխատեցնում է DualSense-ի բարձրախոսի աուդիոն։ Հեղինակ՝ Logan Stromberg։ BSD 3-Clause։</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Մաքուր C# Opus կոդավորիչ, որը Bluetooth-ով աշխատեցնում է DualSense-ի բարձրախոսի աուդիոն։ Հեղինակ՝ Logan Stromberg։</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ի DualSense Bluetooth աուդիոյի հետազոտություն՝ փաթեթների տրանսպորտը, որով գնում է կառավարիչի բարձրախոսի հոսքը։ apps.sdore.me/SAxense։ MPL-2.0։</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga-ի DualSense Bluetooth աուդիոյի հետազոտություն՝ փաթեթների տրանսպորտը, որով գնում է կառավարիչի բարձրախոսի հոսքը։ apps.sdore.me/SAxense։</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ի Bluetooth բարձրախոսի բաղադրատոմս՝ Opus շրջանակավորում և փաթեթի դասավորություն։ Շնորհակալություն նաև TechAntohere-ին՝ կիսված գտածոների և փորձարկման համար։ MIT։</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol-ի Bluetooth բարձրախոսի բաղադրատոմս՝ Opus շրջանակավորում և փաթեթի դասավորություն։ Շնորհակալություն նաև TechAntohere-ին՝ կիսված գտածոների և փորձարկման համար։</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB կառավարիչի աուդիոյի փոխանցման հղումային իրականացում։ Հեղինակ՝ WujekFoliarz։</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Նիշի ուշացում (մվ)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Միլիվայրկյաններ մուտքագրված նիշերի միջև՝ մինչև 1000։ 0-ը մուտքագրում է ամբողջ տեքստը միանգամից։</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Անջատում անգործության դեպքում</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Սնուցում</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Սարքի անձնագիր</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Մանրամասներ</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>րոպե (0 = երբեք)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Անջատել Bluetooth-ը, երբ միացված է USB-ով</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Արագ լիցքավորում։ Երբ այս կառավարիչը հայտնում է, որ լիցքավորվում է Bluetooth-ով միացած վիճակում, Bluetooth կապն անջատվում է, որպեսզի այն լիցքավորվի առանց ռադիոն սնուցելու։ Ցանկացած USB սնման աղբյուր հաշվվում է, այդ թվում պատի լիցքավորիչները։ Եթե Bluetooth-ը նորից միացնեք, մինչ մալուխը մնում է միացված, այն չի շոշափվի մինչև հաջորդ անջատումը։</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Այս PlayStation պադից ուղղակիորեն խնդրում է ուղղությունները, որպեսզի ձախն ու աջը կամ վերն ու ներքևը գրանցվեն միաժամանակ պարային գորգի վրա՝ առաջին քայլից։ Դրանք գալիս են որպես Վերև, Ներքև, Ձախ և Աջ սլաքի կոճակներ, որոնք 3.34 որոնվածքն էլ ինքնուրույն է ուղարկում, հենց հակադիր ուղղություններ սեղմվեն, և PadForge-ն այդ ժամանակ դադարում է խնդրել։ Մինչ այդ ադապտերը բաց է թողնում պադի սեփական կարդացումների մեծ մասը։</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2-ի ճնշում</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Խաղացողի համար</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Ադապտերը պահում է համարը և նորից միանում է որպես այդ խաղացող։ Այնուհետև Windows-ը տեսնում է նոր սարք, ուստի վերադառնալուց հետո նորից կապակցեք պորտը։</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Ադապտերը պահում է համարը և նորից միանում է, ինչը Windows-ը տեսնում է որպես նոր սարք։</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Խաղացող</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Սահմանել խաղացողին</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast էկրան</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Ոչինչ չի հասնում պորտին, մինչև չպահեք։</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Ցույց տալ</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Ադապտերի պատկերը</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Պրոֆիլի անուն</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO-ն կարդացվում է որպես երկու Taiko թմբուկ։</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0}-ը կարդացվում է որպես iCade կառավարիչ։</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0}-ը նորից կարդացվում է որպես ստեղնաշար։</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Լուսային ատրճանակ</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Նպատակադրման լռելյայն միջակայք՝ X {0}-ից {1}, Y {2}-ից {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Չափաբերված նպատակադրման միջակայք՝ X {0}-ից {1}, Y {2}-ից {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Ատրճանակի չափաբերում</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Բոլոր ստեղնաշարերը (միավորված)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Բոլոր մկնիկները (միավորված)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Սարքեր</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} միացված</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Որոնել սարքեր</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Բոլորը</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Ստեղնաշարեր և մկնիկներ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Կարդալ Chatpad-ը</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Կարդալ Chatpad-երը և uDraw պլանշետները</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Կարդալ խաղային կառավարիչները</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0}-ը նորից իր Windows դրայվերի վրա է։</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0}-ի Windows դրայվերը չհաջողվեց վերականգնել։</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows-ը {0}-ը վերադարձրեց իր սեփական դրայվերին։ Նորից փոխելու համար ընտրեք այն Սարքեր էջում։</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> առցանց / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> ընդամենը</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Հեռացնել այս սարքը և դրա կարգավորումները</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Հեռացնել սարքը</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0}-ը կհեռացվի սարքերի ցանկից, և դրա պահված կարգավորումները կմոռացվեն։</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Քաշեք սարքը կողագոտու կառավարչի քարտի վրա՝ այն վերագրելու համար։</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Ապրանք՝ </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Քաշեք սարքը կողագոտու կառավարչի վրա՝ այն վերագրելու համար։</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Ուղարկել սարքի կապակցումը</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Վիրտուալ կառավարչի վերագրում</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Փոխել վերագրումը</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Վիրտուալ կառավարչի սլոթներ դեռ չկան։ Այս սարքը վերագրելու համար ստեղծեք մեկը վահանակում։</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Մուտքի ռեժիմ</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Վերագրում է այս սարքը այս կառավարչին կամ հանում է այն։</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Ստիպել հում ջոյստիկի ռեժիմ (շրջանցել կառավարչի վերակապակցումը)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Կարդալ հում HID ինդեքսները SDL-ի կառավարչի կապակցման փոխարեն։ Օգտագործեք, երբ SDL-ը սխալ է որոշում կոճակների/առանցքների դասավորությունը։</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Մուտքի թաքցում</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Թաքցնել խաղերից (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Ամբողջությամբ թաքցնում է այս սարքը մյուս ծրագրերից HidHide դրայվերի միջոցով։ Երբ PadForge-ը թաքցնում է արդեն միացված USB կառավարիչ, այն նորից միացնում է Windows-ում, ուստի այն բացած ցանկացած բան կորցնում է այն։ Bluetooth կառավարիչը կամ այն, որն ընդհանուր ընդունիչ ունի մեկ այլ կառավարչի հետ, մնում է այն բացած ցանկացած բանի մոտ, մինչև հաջորդ անգամ միանա։</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Այս տարբերակը միացնելու համար տեղադրեք HidHide դրայվերը</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Սպառել կապակցված մուտքերը (կեռեր)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Արգելափակում է միայն կապակցված ստեղները/կոճակները՝ չկապակցված մուտքերին թույլ տալով անցնել</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Հում մուտքի վիճակ</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Ընտրեք սարք՝ դրա հում մուտքը ստուգելու համար։</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Փորձարկել մուտքերը</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Ընտրեք սարք՝ նրա կարգավորումները տեսնելու և մուտքերը փորձարկելու համար։</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Առանցքներ</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Ստեղնաշար</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Ընտրված սարքը չունի կլոնավորելու առանցքներ, կոճակներ կամ POV-ներ։</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Կլոնավորե՞լ {0}-ը այս սլոթի վրա որպես 1:1 փոխանցում։ Դասավորությունը դառնում է {1} առանցք, {2} կոճակ և {3} POV, և այս սարքի տողերը սլոթում փոխարինվում են նրա սեփական մուտքերով։</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Այս սարքն ունի ավելի շատ մուտք, քան Extended կառավարիչը կարող է տանել։ Կապակցվեց {1} առանցքից {0}-ը, {3} կոճակից {2}-ը և {5} POV-ից {4}-ը։ Մնացածը մնացին չկապակցված։</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Ներմուծված պրոֆիլներ</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Օգտատիրոջ ներմուծած HIDMaestro պրոֆիլները պահվում են PadForge.xml-ի ներսում և հայտնվում են յուրաքանչյուր Extended սլոթի պրոֆիլների բացվող ցանկում։ Ստորև գրավեք նորը միացված սարքից կամ արտահանեք / ջնջեք գոյություն ունեցողը։</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Ձեր ներմուծած պրոֆիլները ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Ներմուծման համար հասանելի միացված սարքեր</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Կառավարչի նախադրվածքներ</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Ավելացրեք նախադրվածք կառավարչի համար, որը PadForge-ը չի տրամադրում, ֆայլից կամ հենց կառավարչից։</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Ներմուծված</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Ներմուծել միացված սարքից</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Արտահանել…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ջնջել</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Փակել</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Արտահանել պրոֆիլի JSON</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Ջնջե՞լ ներմուծված պրոֆիլը</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Ջնջե՞լ «{0}»-ը։ Այս պրոֆիլն օգտագործող ցանկացած սլոթ կանցնի սինթետիկ «Հատուկ» գրառմանը։</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Ջնջե՞լ նախադրվածքը</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0}-ն օգտագործող ցանկացած կառավարիչ վերադառնում է Հատուկ գրառմանը։ Սա հնարավոր չէ չեղարկել։</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Արտահանվեց դեպի {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Արտահանումը ձախողվեց՝ {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Ջնջվեց «{0}»։</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ներմուծել ֆայլից…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ներմուծել Ֆայլից…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Ներմուծել պրոֆիլի JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Ներմուծվեց {0}-ից։</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Կարդալը ձախողվեց՝ {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro-ն մերժեց այս պրոֆիլը ({1})՝ {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Այս պրոֆիլը HID նկարագրիչ չունի, ուստի դրանից կառավարիչ ստեղծել հնարավոր չէ։</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ոչինչ չներմուծվեց։ {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Թարմացնել</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ներմուծել</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(անանուն HID սարք)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Գտնվեց {0} HID ինտերֆեյս։</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Կենտրոն</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Մեռյալ գոտի</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Կենտրոնի շեղումներ, մեռյալ գոտու ձև և արժեքներ ըստ առանցքի, կոր յուրաքանչյուր առանցքի համար, միջակայք, ղեկավարում</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Տիրույթը թվերով, հում արժեքներ</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Չափաբերել սահմանը» կոճակը չափում է այն եզրը, որին ձողը կարող է հասնել, և այն վերածում է լրիվ շրջանի։ Չորս սահոցները միայն սահմանափակում են յուրաքանչյուր ուղղությունը։</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Նմուշառում...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Վերականգնել ձևի համընկնման շեմը</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Գրանցել հպահարթակի ժեստ</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Նկարեք ժեստը ստորև բերված մակերեսի վրա։ Երկխոսությունը ֆիքսում է դրված յուրաքանչյուր մատը։ Երբ բոլոր մատերը վերցնեք մակերեսից, նմուշը գրանցվում է։ Նախորդ նմուշներից տարբեր քանակի մատով նկարելը զրոյացնում է կուտակվածը։</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Սպասվում է մատի հպում կտավին</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Գրանցել ժեստ</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Նկարեք ձևը կառավարչի հպահարթակի վրա։ Այն դառնում է մուտք, որը կարող եք կապակցել։</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Նկարեք ժեստն այստեղ։</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Նկարեք հպահարթակի վրա։ Կտավը այն արտացոլում է կենդանի։</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Գրանցվում է {0}-ից, հպահարթակ {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>այս հպահարթակը</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Հպահարթակը հասանելի չէ։ Օգտագործեք ստորև բերված կտավը մկնիկով կամ հպմամբ։</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Հպահարթակը հասանելի չէ։ Նկարեք այստեղ մկնիկով, գրիչով կամ մատով։</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Նկարվում է…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Բոլոր նմուշները ֆիքսված են։ Անվանեք ժեստը և սեղմեք «Պահել»։</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Նմուշ {0}՝ {1}-ից</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} նմուշ</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Ֆիքսվող նմուշներ</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Ստանդարտը 3-ն է։ Ավելի շատ նմուշը ավելի ամուր համընկնում է տալիս, ավելի քիչը՝ ավելի արագ գրանցում։</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Գրանցվող նմուշներ</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Ստանդարտը 3-ն է։ Ավելի շատ նմուշը ավելի հուսալի համընկնում է տալիս, իսկ ավելի քիչը՝ ավելի արագ գրանցվում է։</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Անուն</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Կրկին փորձել</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Անվանեք այս ժեստը</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Անունը պարտադիր է</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Անունը շատ երկար է (առավելագույնը 64 նիշ)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Անունը պարունակում է անվավեր նիշեր</value></data>
@@ -2290,41 +2433,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Պրոֆիլներ</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Պրոֆիլների կառավարում</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Ստեղծեք կառավարիչների պրոֆիլներ յուրաքանչյուր հավելվածի համար, որոնք ավտոմատ փոխվում են ըստ ակտիվ խաղի։</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Պրոֆիլների ավտոմատ փոխարկում ըստ առաջին պլանի հավելվածի</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Պրոֆիլը ամբողջական կարգավորում է՝ իր կառավարիչները, կապակցումները և կարգավորումները։</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Մեկնարկային պրոֆիլներ</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Պատրաստի պրոֆիլներ ամբողջ ժանրի համար։ Ընտրեք մեկը, նշանակեք ցանկացած կառավարիչ և խաղացեք։</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Փոխարկել պրոֆիլները ըստ խաղի</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Ավտոմատ փոխարկում</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Հիմա առջևում է՝ {0}, դրա համար պրոֆիլ սահմանված չէ</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Հիմա առջևում է՝ {0}, որը բեռնում է պրոֆիլ՝ {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Հիմա առջևում է՝ {0}, և դեռ ոչ մի պրոֆիլի համար խաղ սահմանված չէ</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Թույլատրել արտաքին կառավարումը գործարկիչներից և սկրիպտերից</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Բացում է տեղային անվանված խողովակ՝ PadForge.Control, որպեսզի Playnite-ը, LaunchBox-ը կամ սկրիպտը կարողանան ակտիվացնել և ապաակտիվացնել պրոֆիլները։ Այս կերպ ակտիվացված պրոֆիլը մնում է ակտիվ, մինչև սկրիպտը այն թողնի կամ դուք ինքներդ փոխեք պրոֆիլը։ Միայն տեղային համակարգչում։</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Արտաքին կառավարում</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Ակտիվ պրոֆիլ:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Սլոթներ չկան</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Ավտոփոխարկում: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Կառավարիչներ չկան</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Թողեք՝ պրոֆիլը ներմուծելու համար</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Նոր</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Գցեք պրոֆիլի ֆայլն այստեղ</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Նոր պրոֆիլ</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Պահել որպես</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Պահել ընթացիկ կարգավորումը այստեղ</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Խմբագրել</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Բեռնել</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Ոչ մի պրոֆիլ դեռ գործարկվող ֆայլ չունի</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Ներկառուցված</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Նախ ընտրեք պրոֆիլ։</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Ներկառուցված Լռելյայն պրոֆիլը չի կարելի խմբագրել կամ ջնջել։</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Ջնջել պրոֆիլը</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Ջնջե՞լ «{0}» պրոֆիլը։ Նրա պահված սլոթերի և կապակցումների պատճենը կոչնչացվի։</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Խաղ սահմանված չէ</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Բեռնվում է {0}-ի համար</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Սահմանված է {0}-ի համար</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Ակտիվ</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ավելին՝ {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}՝ {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ջնջե՞լ {0}-ը</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Պրոֆիլը և նրա ավտոմատ փոխարկման կանոնը հեռացվում են։ Սա հնարավոր չէ չեղարկել։</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Պրոֆիլը հեռացվում է։ Սա հնարավոր չէ չեղարկել։</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Փոխարինե՞լ «{0}»-ում պահված կարգավորումը ընթացիկով։ Նրա անունը և խաղերը մնում են։</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Փոխարինել</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Պահել որպես պրոֆիլ</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Խմբագրել պրոֆիլը</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Պրոֆիլի անունը:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Նոր պրոֆիլ</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Անուն</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Նոր պրոֆիլ</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Գործարկվող ֆայլեր (համեմատվում են առաջին պլանի պատուհանի հետ):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Խաղեր, որոնք այն բեռնում են</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Հարցման հաճախականություն</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Լռելյայն (ընդհանուր կարգավորում)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Վերասահմանված է «{0}» պրոֆիլի ակտիվության ընթացքում՝ {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Մեկ անվան տակ պահում է բոլոր սլոթների կապակցումները և սարքերի կարգավորումները։ Կապված գործարկվող ֆայլերը ավտոմատ կերպով անցնում են դրան։</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Վերանվանում է պրոֆիլը և թարմացնում այն ակտիվացնող գործարկվող ֆայլերը։ Պահված կապակցումներն ու կարգավորումները չեն փոխվում։</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Պահում է յուրաքանչյուր կառավարչի կապակցումներն ու կարգավորումները մեկ անվան տակ։ Այն բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Պրոֆիլը բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Սկսվում է առանց կառավարիչների։ Այն բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ավելացնել աշխատող խաղ</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ոչ մի այլ ծրագիր պատուհան բաց չունի։</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Հեռացնել {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Հարցման հաճախականությունը, քանի դեռ այս պրոֆիլը բեռնված է</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Պատճենել կարգավորումները սարքից...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Ընտրեք սարք՝ նրա կարգավորումները պատճենելու համար։</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Պատճենել սրանից</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Փոխարինեք {0}-ի կապակցումներն ու սարքերի կարգավորումները մեկ այլ կառավարչի կարգավորումներով։</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Ավելացրեք մեկ այլ կառավարչի մակրոները {0}-ին։</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Վերագրված չէ, պահում է նախկին կապակցումները</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Ընտրեք հավելված՝ սպիտակ ցուցակում ավելացնելու համար</value></data>
@@ -2366,6 +2530,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Հակամեռյալ գոտի</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Կրկնակի կտտացրեք՝ կետ ավելացնելու համար։ Աջ կտտացրեք՝ հեռացնելու համար։ Քաշեք՝ կարգավորելու համար։</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>կորի խմբագրիչ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2694,8 +2859,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Հիմնական</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift շերտ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Կարգավորել հիմնականը</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Հիմնական շերտի անունը, պատկերակը և գույնը տեղաշարժի շերտի թռուցիկում և շերտերի շարքում։</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Շերտի անուն</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Ակտիվացնող մուտք</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Անուն</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Պահվում է սրանով</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Սեղմվում է սրանով</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Հաջորդ շերտ սրանով</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Նախորդ շերտ սրանով</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Եվ սրանով</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Ընտրեք մուտք</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Չկապակցված կառավարման տարրեր</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Անցնել հիմնականին</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ոչինչ չանել</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ռեժիմ, մուտքի տեսակ, ժամանակացույց և գույն</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ռեժիմ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Պահել</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Փոխանջատել</value></data>
@@ -2722,14 +2898,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Եթե նշված է, այս շերտի թիրախը մնում է անջատված՝ հիմնական տողին չանցնելու փոխարեն։</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Հապաղում</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Որքան ժամանակ մուտքը պետք է պահվի, մինչև շերտը արձագանքի։ Պահել ռեժիմում սա մուտքի կարճատև աղմուկի զտում է։ Փոխանջատել, Ֆիքսում և Կպչուն ռեժիմներում փոխարկումը դառնում է երկար սեղմում. շերտը փոխվում է մեկ անգամ, երբ պահումը անցնում է այս ժամանակը, իսկ ավելի կարճ հպումը ոչինչ չի անում։ 0-ի դեպքում արձագանքում է անմիջապես։</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Համակցության երկրորդ մուտք</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Առանցքի շեմ</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ցիկլ շերտերի միջով</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Միայն շերտում լինելիս</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Ցանկացած շերտ</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Մուտքը հաշվվում է միայն ընտրված շերտի ակտիվ լինելու ժամանակ։ Ստուգումը կատարվում է մուտքը սեղմելու պահին և գործում է ամբողջ սեղմման ընթացքում։ «Ցանկացած շերտ» նշանակում է, որ մուտքը միշտ հաշվվում է։ Յուրաքանչյուր շերտի ելքերը սահմանեք այդ շերտում՝ մեկ այլ ակտիվացնողով կամ «Շերտի փոխարկում» մակրոյով։</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Հաջորդ կոճակ</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Նախորդ կոճակ</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Շրջանաձև անցում</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Երբ միացված է, վերջին շերտից հետո անցնելիս վերադառնում է առաջինին, իսկ առաջինից առաջ՝ վերջինին։ Երբ անջատված է, ցուցիչը կանգ է առնում եզրերում։</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Ներառել հիմնականը</value></data>
@@ -2741,18 +2914,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Մեկ կոճակի (կամ POV ուղղության) սեղմումը միացնում է շերտը։</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Շերտը միացնելու համար երկու կոճակները պետք է պահվեն միաժամանակ։ Աջակցվում է նաև տարբեր սարքերի կոճակների համակցություն։</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Միացված է, քանի դեռ անալոգային առանցքը շեմային արժեքից վեր է։</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Շերտը մնում է միացված, քանի դեռ ակտիվացնողը պահվում է։ Բաց թողնելիս անջատվում է։</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Մինչ նրա մուտքը պահված է, այս շերտի կապակցումները փոխարինում են հիմնականինը։</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Հպեք՝ միացնելու համար։ Կրկին հպեք՝ անջատելու համար։ Շերտը պահպանվում է բազմաթիվ սեղմումների ընթացքում։</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Սեղմեք՝ այս շերտը ֆիքսելու և պահելու համար։ Կրկին սեղմեք՝ հիմնականին վերադառնալու համար։ Այլ Ֆիքսում կոճակը անցնում է իր սեփական շերտին։</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Յուրաքանչյուր սեղմում անցնում է կարգավորված շերտերի ցանկի հաջորդին։ Վերջում վերադառնում է հիմնականին։</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Հպեք մեկ անգամ՝ միացնելու համար։ Հաջորդ կապակցված կոճակի սեղմումը գործում է շերտում, ապա շերտն ինքնաբերաբար անջատվում է։</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Սեփական կոճակ չունի։ Ավելացրեք այն Ցիկլ կառավարման հերթում, և ցիկլը կհասնի դրան։</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Ժառանգել չկապակցված թիրախները հիմնականից</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Գործարկել բաց թողնելիս</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Սպասում է, մինչև կոճակը բաց թողնվի, ապա միայն գործարկում է այս ակտիվացնողը։ Եթե սահմանված է պահման հապաղում, բաց թողնումը հաշվվելու համար սեղմումը պետք է տևի այդքան։</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Գործարկել նաև ակտիվացնողի սեփական կապակցումը</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Եթե նշված է, ակտիվացնող կոճակը շարունակում է կառավարել այն տողերը, որոնք այն օգտագործում են որպես աղբյուր։ Մեկ սեղմումը և՛ փոխում է շերտը, և՛ գործարկում կոճակի սեփական կապակցումը։ Երբ նշված չէ (լռելյայն), ակտիվացնողի սեղմումը ծախսվում է միայն շերտի փոփոխման վրա։</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Եթե նշված է, այս շերտում բացահայտորեն չկապակցված թիրախները անցնում են հիմնական շերտին։ Երբ նշված չէ (լռելյայն), շերտը լիովին փոխարինում է հիմնականին, և չկապակցված թիրախները մնում են անջատված։</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Անցնել հիմնականին ընտրանքի դեպքում այս շերտում չկապակցված կառավարման տարրերը պահում են իրենց հիմնական կապակցումները։ Ոչինչ չանել ընտրանքի դեպքում շերտը լիովին փոխարինում է հիմնականին, և այդ տարրերը մնում են անջատված։</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Պտտման միջակայք</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Սահմանել պտտման միջակայքը</value></data>
@@ -2955,15 +3127,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Ընտրված սարքը ներկառուցված բարձրախոս չունի։ Այս կառավարիչի մակրո ձայները նվագարկվում են համակարգի լռելյայն ելքով։</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Վերականգնել ձայնի ելքը</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Բրաուզերային DualSense թեստային փաթեթ՝ Xuezhou Dai (daidr)։ Հղում է Sony feature-report CRC շրջանակավորման և որոնվածքի թեստային հրամանների համար, որոնք PadForge-ը փոխանցում է վիրտուալ կառավարիչներից ֆիզիկականներին։ MIT։</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Բրաուզերային DualSense թեստային փաթեթ՝ Xuezhou Dai (daidr)։ Հղում է Sony feature-report CRC շրջանակավորման և որոնվածքի թեստային հրամանների համար, որոնք PadForge-ը փոխանցում է վիրտուալ կառավարիչներից ֆիզիկականներին։</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4-ի Bluetooth աուդիոյի հղում՝ nefarius։ Հաղորդագրությունների շրջանակավորում PadForge-ի DS4 բարձրախոսի հոսքի համար։ SBC կոդավորիչը օրիգինալ C# իրականացում է՝ ըստ Bluetooth A2DP սպեցիֆիկացիայի։ Արձանագրության փաստաթղթերը՝ khallmark-ի ds4mac-ից։ MIT։</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>DualShock 4-ի Bluetooth աուդիոյի հղում՝ nefarius։ Հաղորդագրությունների շրջանակավորում PadForge-ի DS4 բարձրախոսի հոսքի համար։ SBC կոդավորիչը օրիգինալ C# իրականացում է՝ ըստ Bluetooth A2DP սպեցիֆիկացիայի։ Արձանագրության փաստաթղթերը՝ khallmark-ի ds4mac-ից։</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Արտահանել…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Ներմուծել…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>«{0}» պրոֆիլն արտահանվեց։</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>«{0}» պրոֆիլը ներմուծվեց (գրանցվեց {1} ձայնային փաթեթ)։</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ֆայլը PadForge-ի ընթեռնելի պրոֆիլ չէ։</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Ընտրեք ձայն՝ {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Ձայնային փաթեթներ</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Ձայնային մակրոների ձայների zip ֆայլեր</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ձայնային փաթեթը .pfsounds ընդլայնմամբ ձայների մեկ zip ֆայլ է։ Ավելացրեք մեկն այստեղ, ապա ընտրեք դրա ձայները ցանկացած ձայնային մակրոյում։ PadForge-ը կարդում է անմիջապես ֆայլից և երբեք չի բացում այն։ Պահեք փաթեթները PadForge.exe-ի կողքին՝ շարժական մնալու համար։</value></data>
@@ -3008,20 +3179,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Ինքնության պաշտպանություն</value>
+    <value>Զուգակցման ինքնություն</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Ինչպես է պահվում այս համակարգչի զուգակցման ինքնությունը։ Ընտրեք շարժական ռեժիմ՝ ձեր զուգակցումները USB կրիչով մեքենաների միջև տեղափոխելու համար։</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Անվանեք այս համակարգիչը</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Մոտակա համակարգիչներ (չզուգակցված)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Վերականգնել</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Հեռակա կապի գաղտնաբառ</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge-ի հպահարթակ</value>
@@ -3053,9 +3217,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>Զուգակցված համակարգիչ</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Առցանց</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Անցանց</value>
   </data>
@@ -3072,7 +3233,7 @@
     <value>Պաշտպանությունը փոխելուց առաջ ապակողպեք ընթացիկ ինքնությունը։</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Սահմանեք գաղտնաբառ՝ ձեր շարժական ինքնությունը պաշտպանելու համար։ Այն կմուտքագրեք յուրաքանչյուր համակարգչում Հեռակա կապն ապակողպելու համար։</value>
+    <value>Գաղտնաբառը պաշտպանում է այս համակարգչի զուգակցման ինքնությունը։</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Ինքնության պաշտպանությունը թարմացվեց։</value>
@@ -3092,7 +3253,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Միացում {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Վերամիանալ ինքնաբերաբար</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Ինքնավերամիացում</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Լսում է՝ {0}</value>
   </data>
@@ -3111,65 +3272,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>{0} հանգույցը միացավ, {1} սարք</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Ընտրեք ձայն ավելացված փաթեթից կամ փնտրեք ֆայլ։</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Ընտրել ֆայլեր…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Ընտրեք ձայն</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ձայնը նվագարկվում է կառավարչի բարձրախոսով, իսկ եթե այն չունի՝ համակարգչի։</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Օգտագործել ձայնը</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Նվագարկել {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback ձայնագրում կառավարիչի աուդիոյի հայելու և աուդիո-բասային ձգանի թրթռոցի համար։ NAudio.Midi-ն, որը PadForge-ը չի ներառում, նաև հղում է հին MIDI API-ի WinMM հայտարարությունների և պորտերի հաջորդականությունների համար, այն կանոնի համար, որ զրոյական արագությամբ Note On-ը Note Off է, և սուստեյնի նման միացված/անջատված կառավարիչների համար։ Հեղինակ՝ Mark Heath։ MIT։</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback ձայնագրում կառավարիչի աուդիոյի հայելու և աուդիո-բասային ձգանի թրթռոցի համար։ NAudio.Midi-ն, որը PadForge-ը չի ներառում, նաև հղում է հին MIDI API-ի WinMM հայտարարությունների և պորտերի հաջորդականությունների համար, այն կանոնի համար, որ զրոյական արագությամբ Note On-ը Note Off է, և սուստեյնի նման միացված/անջատված կառավարիչների համար։ Հեղինակ՝ Mark Heath։</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Օֆլայն խոսքի ճանաչիչ, որը լսում է ձայնային մակրոների արտահայտությունները։ Հեղինակ՝ Alpha Cephei։ Մոդելը ներառված է PadForge-ում։ Apache-2.0։</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Օֆլայն խոսքի ճանաչիչ, որը լսում է ձայնային մակրոների արտահայտությունները։ Հեղինակ՝ Alpha Cephei։ Մոդելը ներառված է PadForge-ում։</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Գաղտնագրություն Հեռակա կապի զուգակցման և փոխադրման համար (X25519, Ed25519, ChaCha20-Poly1305)։ Bouncy Castle Licence՝ MIT-ի նման լիցենզիա։</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Գաղտնագրություն Հեռակա կապի զուգակցման և փոխադրման համար (X25519, Ed25519, ChaCha20-Poly1305)։</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius-ի ներառված Bluetooth պրոֆիլի և PSM զտիչ դրայվերներ, որոնք թույլ են տալիս DualShock 3-ին միանալ ընդհանուր ռադիոյի միջոցով։ Տեղադրվում են ծրագրում՝ զուգակցման պահին։ BSD 3-Clause։</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius-ի ներառված Bluetooth պրոֆիլի և PSM զտիչ դրայվերներ, որոնք թույլ են տալիս DualShock 3-ին միանալ ընդհանուր ռադիոյի միջոցով։ Տեղադրվում են ծրագրում՝ զուգակցման պահին։</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-ի արձանագրության հղում՝ Benjamin Höglinger-Stelzer. sixpair feature հաշվետվություններ, Bluetooth ելքային հաշվետվության ձևանմուշ, միացման հերթականություն, մարտկոցի քարտեզ։ PadForge-ի իրականացումը օրիգինալ C# է։ HIDMaestro-ի DualShock 3 (SIXAXIS)՝ Full controller-ը օգտագործում է DsHidMini-ի SXS ռեժիմի հաշվետվության նկարագրիչը։ BSD 3-Clause։</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-ի արձանագրության հղում՝ Benjamin Höglinger-Stelzer. sixpair feature հաշվետվություններ, Bluetooth ելքային հաշվետվության ձևանմուշ, միացման հերթականություն, մարտկոցի քարտեզ։ PadForge-ի իրականացումը օրիգինալ C# է։ HIDMaestro-ի DualShock 3 (SIXAXIS)՝ Full controller-ը օգտագործում է DsHidMini-ի SXS ռեժիմի հաշվետվության նկարագրիչը։</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Դրայվերի պահոցի տեղադրում, Bluetooth դասի զտիչի գրանցում և USB պորտի ցիկլում՝ ծրագրում BthPS3-ի տեղադրման և թաքցված USB կառավարիչը ազատելու համար։ Հեղինակ՝ nefarius։ MIT։</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Դրայվերի պահոցի տեղադրում, Bluetooth դասի զտիչի գրանցում և USB պորտի ցիկլում՝ ծրագրում BthPS3-ի տեղադրման և թաքցված USB կառավարիչը ազատելու համար։ Հեղինակ՝ nefarius։</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>USB հասանելիություն Switch 2 Pro-ի լարային դրայվերի և այն կառավարիչների համար, որոնք PadForge-ը կապում է WinUSB-ին, առաքվում է որպես libusb-1.0.dll։ LGPL-2.1-or-later։</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>USB հասանելիություն Switch 2 Pro-ի լարային դրայվերի և այն կառավարիչների համար, որոնք PadForge-ը կապում է WinUSB-ին, առաքվում է որպես libusb-1.0.dll։</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Հպումային ջոյստիկը հեռախոսի վեբ կառավարչում, հեղինակ՝ Yoann Moinet։ MIT։</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Հպումային ջոյստիկը հեռախոսի վեբ կառավարչում, հեղինակ՝ Yoann Moinet։</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Համայնքային կառավարիչների կապակցումների տվյալների բազա, որը ընդլայնում են PadForge-ի ներառված կապակցումները։ zlib։</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Համայնքային կառավարիչների կապակցումների տվյալների բազա, որը ընդլայնում են PadForge-ի ներառված կապակցումները։</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide կոճակի LED-ի հետազոտություն. XboxGIP փաթեթի կառուցվածքը և հայտնաբերման հաջորդականությունը, հեղինակ՝ Leclowndu93150։ MIT։</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide կոճակի LED-ի հետազոտություն. XboxGIP փաթեթի կառուցվածքը և հայտնաբերման հաջորդականությունը, հեղինակ՝ Leclowndu93150։</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Փաթաթվող անկյունով ղեկավարման և թեքման մաթեմատիկա, հեղինակներ՝ JibbSmart և Electronicks։ MIT։</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Փաթաթվող անկյունով ղեկավարման և թեքման մաթեմատիկա, հեղինակներ՝ JibbSmart և Electronicks։</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Խաղացողի տարածության և աշխարհի տարածության գիրոյի փոխակերպում, հեղինակ՝ JibbSmart։ MIT։</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Խաղացողի տարածության և աշխարհի տարածության գիրոյի փոխակերպում, հեղինակ՝ JibbSmart։</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ի (2015) հապտիկ հաշվետվության կառուցվածքը և նոտայի պարբերության մաթեմատիկան, հեղինակներ՝ Pila և Roboron3042։ BSD 3-Clause։</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ի (2015) հապտիկ հաշվետվության կառուցվածքը և նոտայի պարբերության մաթեմատիկան, հեղինակներ՝ Pila և Roboron3042։</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ի և Steam Deck-ի LFO-տոնային հապտիկ կառուցվածքը, հեղինակներ՝ Pila, Crazy և AAGaming։ BSD 3-Clause։</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ի և Steam Deck-ի LFO-տոնային հապտիկ կառուցվածքը, հեղինակներ՝ Pila, Crazy և AAGaming։</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD մաքրման իմաստաբանությունը Snap Tap ռեժիմների համար, հեղինակ՝ valignatev։ MIT։</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD մաքրման իմաստաբանությունը Snap Tap ռեժիմների համար, հեղինակ՝ valignatev։</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam ցանցի հաճախորդ, որը անանուն սեսիայով բերում է Steam Workshop-ի կառավարիչների կոնֆիգուրացիաները, հեղինակներ՝ Ryan Stecker և SteamRE Team։ LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet)։</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers սերիալիզատոր, որը SteamKit2-ն օգտագործում է Steam-ի ցանցային արձանագրության համար, հեղինակ՝ Marc Gravell։ Apache-2.0։</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers սերիալիզատոր, որը SteamKit2-ն օգտագործում է Steam-ի ցանցային արձանագրության համար, հեղինակ՝ Marc Gravell։</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard ապասեղմում, որը SteamKit2-ն օգտագործում է Steam depot-ի կտորների համար, zstd գրադարանի C# պորտ, հեղինակ՝ Oleg Stepanischev։ MIT։</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard ապասեղմում, որը SteamKit2-ն օգտագործում է Steam depot-ի կտորների համար, zstd գրադարանի C# պորտ, հեղինակ՝ Oleg Stepanischev։</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Փաստաթղթեր՝ Wii զուգակցման ծեսի, բարձրախոսի ADPCM-ի, Wii Remote-ի կողքաշրջված և ուղղահայաց դիրքավորման, ձողի դարպասի մոդելի և դրա պահպանման ձևաչափի և գիրոյի առանցքների պայմանականության մասին։ GPL-2.0-or-later, կարդացված միայն որպես փաստաթուղթ, GPL կոդ չի ներառվում։</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Փաստաթղթեր՝ Wii զուգակցման ծեսի, բարձրախոսի ADPCM-ի, Wii Remote-ի կողքաշրջված և ուղղահայաց դիրքավորման, ձողի դարպասի մոդելի և դրա պահպանման ձևաչափի և գիրոյի առանցքների պայմանականության մասին։ Կարդացված միայն որպես փաստաթուղթ, GPL կոդ չի ներառվում։</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ի վարքագծի փաստաթղթեր. անգործության անջատում, հպահարթակի սահմաններ, մարտկոցի վերծանում, Bluetooth-ի անջատման IOCTL, DualSense-ի թրթռոցի ռեժիմի բիթեր, գիրոյի դողի կոր, ձողը-որպես-մկնիկ մասշտաբ և Bluetooth ելքային հաշվետվության CRC սերմ։ Նրա վիրտուալ ստեղնաշարի ստեղների աղյուսակը ուղղորդել է PadForge-ինը։ GPL-3.0-or-later, կարդացված միայն որպես փաստաթուղթ, GPL կոդ չի ներառվում։</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock-ի վարքագծի փաստաթղթեր. անգործության անջատում, հպահարթակի սահմաններ, մարտկոցի վերծանում, Bluetooth-ի անջատման IOCTL, DualSense-ի թրթռոցի ռեժիմի բիթեր, գիրոյի դողի կոր, ձողը-որպես-մկնիկ մասշտաբ և Bluetooth ելքային հաշվետվության CRC սերմ։ Նրա վիրտուալ ստեղնաշարի ստեղների աղյուսակը ուղղորդել է PadForge-ինը։ Կարդացված միայն որպես փաստաթուղթ, GPL կոդ չի ներառվում։</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>GIP LED հրամանի փաստաթղթեր, որոնք հաստատում են xbledctl-ը։ GPL-2.0-or-later, միայն փաստաթղթեր։</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>GIP LED հրամանի փաստաթղթեր, որոնք հաստատում են xbledctl-ը։ Միայն փաստաթղթեր։</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR տեսախցիկի և Balance Board-ի վարքագծի փաստաթղթեր, հեղինակ՝ Brian Peek։ MIT։</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR տեսախցիկի և Balance Board-ի վարքագծի փաստաթղթեր, հեղինակ՝ Brian Peek։</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD թրթռոցի հաղորդման ձևաչափի փաստաթղթեր, հեղինակ՝ Sergey004։ Կարդացված է միայն արձանագրության փաստերի համար։</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Զուգակցել</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Զուգակցել կառավարիչ</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Զուգակցել կառավարիչ</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Զուգակցել Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Բացեք մարտկոցի կափարիչը և սեղմեք կարմիր SYNC կոճակը։</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Պահեք հեռակառավարիչը այս համակարգչի մոտ, մինչ լույսերը թարթում են։</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Զուգակցել DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Զուգակցել Move կամ Navigation կառավարիչ</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Ավելացնել սերիական կառավարիչ</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Ավելացնել DJI հեռակառավարիչ</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Կառավարիչների ընտանիք</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Բացեք մարտկոցի կափարիչը և սեղմեք կարմիր SYNC կոճակը։ Թողեք PadForge-ը որոնի, մինչև ձեր կառավարիչը հայտնվի։</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Ժամանակավոր զուգակցում (պահեք 1 և 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Զուգակցել</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Որոնում է։ Սեղմեք SYNC կոճակը հիմա։</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Որոնում է հեռակառավարիչ։</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Գտնված կառավարիչներ</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Կառավարիչներ դեռ չեն գտնվել։ Համոզվեք, որ կապույտ լույսերը թարթում են։</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Զուգակցվեց {0}։ Այն կհայտնվի ձեր սարքերի ցանկում։</value></data>
@@ -3179,7 +3345,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>Պատրաստ է</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ի OpenVR հաճախորդի API (BSD 3-Clause). VR գլխադիրներ և շարժման կառավարիչներ՝ որպես մուտքի աղբյուրներ։ Բնօրինակ գործարկման միջավայրը բեռնվում է ձեր SteamVR տեղադրումից։</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve-ի OpenVR հաճախորդի API։ VR գլխադիրներ և շարժման կառավարիչներ՝ որպես մուտքի աղբյուրներ։ Բնօրինակ գործարկման միջավայրը բեռնվում է ձեր SteamVR տեղադրումից։</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Աշխատում է</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Աշխատում է, դրայվերը միացված է</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Աշխատում է, կառավարիչները ակտիվ են</value></data>
@@ -3217,13 +3383,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Զուգակցումը չավարտվեց։ Ձախողված քայլը ցուցադրված է վերևում։</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Փակել</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC պիտակներ</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Գրանցել պիտակ</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Հպեք պիտակը ընթերցիչին՝ նրա UID-ն ստանալու համար։</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID՝</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(սպասում է)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Անուն՝</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Հպեք պիտակը ընթերցիչին և անվանեք այն։ Այն դառնում է կոճակ, որը կարող եք կապակցել։</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Հպեք պիտակը ընթերցիչին։</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Անուն</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Անվանեք այս պիտակը</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Գրանցել</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Գրանցված պիտակներ</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Գրանցված</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFC ընթերցիչ չի հայտնաբերվել։ Միացրեք PC/SC ընթերցիչ և նորից բացեք։</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Պիտակը ստացվեց։ Մուտքագրեք անուն և սեղմեք Գրանցել։ Այն փոխարինելու համար հպեք մեկ այլ պիտակ։</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Գրանցվեց «{0}»։ Ավելին ավելացնելու համար հպեք մեկ այլ պիտակ։</value></data>
@@ -3301,22 +3466,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack ընդհանուր հիշողությունը նույնպես չհաջողվեց բացել։</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Սովորեցնել / կառավարել թաքնված կոճակները</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Թաքնված կոճակներ</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Սովորեցնել կոճակ</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Երբ հարցվի, մեկ անգամ սեղմեք թաքնված կոճակը։ PadForge-ը հետևում է ստեղնաշարին, մկնիկին, արտադրողի բոլոր հաշվետվություններին և այս համակարգչի բոլոր համակարգային իրադարձություններին և գրանցում է այն, որը կոճակը փոխում է։</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Համակարգիչ՝</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Սկսել սովորեցումը</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Սովորեցրեք PadForge-ին կոճակ, որը Windows-ը չի ցույց տալիս որպես կառավարիչ։ Սեղմեք այն, երբ հարցվի։</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Ձեռքերը հեռու պահեք։ Կարդացվում է անգործուն վիճակը…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Սեղմեք թաքնված կոճակը հիմա, ապա բաց թողեք…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Մի պահ…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Փոփոխություն չի նկատվել։ Սեղմեք կոճակը ընդգծված ժամանակահատվածում և նորից փորձեք։</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Սեղմեք և պահեք կոճակը հիմա։</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Բաց թողեք կոճակը։</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Քայլ {0}՝ {1}-ից</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Փոփոխություն չի նկատվել։ Ընտրեք Սկսել նորից, ապա սեղմեք և պահեք կոճակը, երբ հարցվի։</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Դիտարկվել է արտադրողի {0} հաշվետվություն և իրադարձությունների {1} դաս։ Սեղմման ընթացքում՝ {2} հաշվետվություն, {3} իրադարձություն։</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Կոճակը գրանցվեց։ Մուտքագրեք անուն և սեղմեք «Գրանցել»։</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Աղբյուր՝</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Անուն՝</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Աղբյուր</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Անուն</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Անվանեք այս կոճակը</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Գրանցել</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Սովորած կոճակներ</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Սկսել նորից</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Դեռ ոչ մի կոճակ չի սովորեցվել։</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Գրանցվեց «{0}»։ Մեկ այլ կոճակ սովորեցնելու համար նորից սկսեք։</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Սովորեցված է {0}-ում</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Գրանցվեց «{0}»։ Մեկ այլ կոճակ սովորեցնելու համար ընտրեք Սկսել նորից։</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ստեղներ՝ {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Թաքնված կոճակները անջատված են։ Նախ Կարգավորումներում միացրեք «Դյուրակիր համակարգչի կոճակները»։</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0}-ը աշխատում է։ Այն շարունակում է արձագանքել այս կոճակներին, մինչև դադարեցնեք այն։</value></data>
@@ -3465,6 +3630,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Համայնքային կոնֆիգուրացիաներ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Թերթեք համայնքի ստեղծած Steam Input կառավարիչների կոնֆիգուրացիաները և թարգմանեք դրանք PadForge-ի պրոֆիլների։ PadForge-ը ուղղակիորեն կապվում է Steam-ի սերվերներին միայն երբ որոնում եք, բացում կոնֆիգուրացիա կամ ստուգում ներմուծված կոնֆիգուրացիաների թարմացումները։ Այն ուղարկում է ձեր որոնման տեքստը, ներգրավված խաղերի, կոնֆիգուրացիաների և հեղինակների նույնացուցիչները և PadForge-ի տարբերակը։ Անանուն Steam մուտքը ուղարկում է նաև ձեր Windows-ի տարբերակը և մեքենայի նույնացուցիչ, որը ստեղծված է ձեր Windows-ի տեղադրման նույնացուցչի, ցանցային ադապտերների հասցեների և բեռնման սկավառակի սերիական համարի հեշերից։ Ոչ մի հեռաչափություն, ոչ մի երրորդ կողմի ծառայություն, ոչ մի Steam հաշիվ։</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge-ը կապվում է Steam-ի սերվերներին միայն երբ որոնում եք, բացում կոնֆիգուրացիա կամ ստուգում ներմուծված կոնֆիգուրացիաների թարմացումները։ Ոչ մի հեռաչափություն, ոչ մի Steam հաշիվ։</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ինչ է ուղարկվում</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Միացնել համայնքային կոնֆիգուրացիաները</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Ցուցադրել հին Workshop կոնֆիգուրացիաները</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Որոշ հին կոնֆիգուրացիաներ Steam-ի CDN-ում ներբեռնվող ֆայլ չունեն։ PadForge-ը դրանք ցուցադրում է «Հին» նշանով և կարդում է այն օրինակը, որը Steam-ը պահում է, երբ բաժանորդագրվեք։ Մինչ այդ առաջարկում է բացել կոնֆիգուրացիան Steam Workshop-ում։</value></data>
@@ -3472,18 +3639,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Ստուգել ներմուծված պրոֆիլների թարմացումները</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop-ի քեշը մաքրվեց</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Թերթել համայնքային կոնֆիգուրացիաները</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Թերթել համայնքային կոնֆիգուրացիաները</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Պրոֆիլներ · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Ստանալ պրոֆիլներ</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Սկսեք պատրաստի պրոֆիլից, համայնքային կոնֆիգուրացիայից կամ մեկ այլ գործիքի ֆայլից։</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Մեկնարկային</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Համայնք</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Ներմուծել ֆայլ</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Պահելով ավելանում է սովորական պրոֆիլ, որը կարող եք խմբագրել։</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Դարբնոցը սառել է</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Համայնքային կոնֆիգուրացիաներ թերթելը PadForge-ը ուղղակիորեն կապում է Steam-ին՝ միայն երբ որոնում եք, երբեք գործարկման ժամանակ։</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Միացնել համայնքային կոնֆիգուրացիաները</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Որոնել խաղեր</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} խաղ</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Խաղեր</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam խանութում խաղեր չեն գտնվել։</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Որոնում Steam-ում…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Կոնֆիգուրացիաների ընթերցում Steam-ից…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Կոնֆիգուրացիայի ընթերցում Steam-ից…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>դասավորված ըստ վարկանիշի</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Դասավորված ըստ</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Որոնել այս կոնֆիգուրացիաներում</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Վարկանիշ</value></data>
@@ -3497,7 +3667,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Գտնվել է {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Ցուցադրվում է {0}՝ {1}-ից</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} կոնֆիգուրացիա</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>համայնքային կոնֆիգուրացիա</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>լրիվ կառավարիչի աջակցություն</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>մասնակի կառավարիչի աջակցություն</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Որոնել խաղեր</value></data>
@@ -3516,8 +3685,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Կրկնել</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Այս 2016 թվականի կոնֆիգուրացիան նախորդում է Steam-ի կոնֆիգուրացիաների CDN-ին։ Բաժանորդագրվեք դրան Steam-ում, և PadForge-ը այն կկարդա ձեր Steam թղթապանակից։</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Բացել Steam Workshop-ում</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Ընտրեք կոնֆիգուրացիա՝ նրա թարգմանության մանիֆեստը կարդալու համար։</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>Կարդացվել է {0} կապակցում</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Ընտրեք կոնֆիգուրացիա՝ տեսնելու, թե ինչ է փոխանցվում։</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ինչ է փոխանցվում</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Դառնում է</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Ընտրում է վիրտուալ կառավարիչը, որը ստանում է կոնֆիգուրացիայի կոճակներն ու ձողերը։ Նրա ստեղներն ու մկնիկը միշտ գնում են Ստեղնաշար + Մկնիկ կառավարչին։</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Շերտեր</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Մաքուր</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Մասնակի</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Բաց թողնված</value></data>
@@ -3582,7 +3754,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop-ում թարմացումների ստուգում…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Ներմուծված պրոֆիլները թարմ են (ստուգվել է {0})</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop-ի թարմացումներ</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Այս ներմուծված պրոֆիլներն ունեն ավելի նոր տարբերակներ Steam Workshop-ում։ Փոփոխություններն ստանալու համար նորից ներմուծեք դրանք «Թերթել համայնքային կոնֆիգուրացիաները» պատուհանից։</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Այս ներմուծված պրոֆիլներն ունեն ավելի նոր տարբերակներ Steam Workshop-ում։ Փոփոխություններն ստանալու համար նորից ներմուծեք դրանք «Ստանալ պրոֆիլներ» պատուհանից։</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Երկար սեղմելիս</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Կարճ սեղմելիս</value></data>
@@ -3730,7 +3902,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Ընտրացանկ {0} բջիջ {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Ընտրացանկի վերադիր</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Վերադիրներ</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Էկրանային ցուցիչներ, որոնք PadForge-ը ցուցադրում է խաղալու ընթացքում։ Մեկն անջատելը երբեք չի փոխում վարքը, միայն այն, թե արդյոք այն ծանուցվում է։</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Էկրանային ցուցիչներ, որոնք PadForge-ը ցուցադրում է խաղալու ընթացքում։ Մեկն անջատելը երբեք չի փոխում վարքը, միայն այն, թե արդյոք այն ցուցադրվում է։</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Շիֆթ շերտի ծանուցում</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Պրոֆիլի փոխարկման վերադիր</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ցուցադրել էկրանային օղակը կամ ցանցը, երբ շառավղային կամ հպման ընտրացանկը ներգրավված է։ Ընտրացանկերը դարձյալ գործարկվում են վերադիրն անջատված ժամանակ։</value></data>
@@ -3780,6 +3952,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Այս ալիքի տոնի հաճախականությունը՝ 20-ից 120 Հց։ Գործարկեք հաճախականության սրբագրումը՝ գտնելու համար, թե որտեղ է ձեր շեյքերն ամենաուժեղ արձագանքում։</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Այս ալիքի ձայնի ուժգնությունը մինչև գլխավոր ուժեղացումը։</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Ուժեղացում</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Հաճախականություն</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Փորձարկել</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Նվագարկում է այս ալիքի տոնը 1.5 վայրկյան՝ սահմանված ուժեղացմամբ։</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Վերականգնել ցածր թրթռաշարժիչը</value></data>
@@ -3822,16 +3995,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Հպահարթակից մկնիկի ելքի համար ցուցիչի արագացման կոր։ libinput-ի հպահարթակի արագացման պրոֆիլի C# տարբերակը։ MIT։</value>
+    <value>Հպահարթակից մկնիկի ելքի համար ցուցիչի արագացման կոր։ libinput-ի հպահարթակի արագացման պրոֆիլի C# տարբերակը։</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D կառավարիչների մոդելներ (Xbox 360, Steam Deck) և 3D տեսքի մոդելի ու անիմացիայի կոդը՝ CasperH2O, Lesueur Benjamin, trippyone։ Նաև հղում է Steam Deck-ի ռեպորտի և հապտիկ ապակոդավորման, Steam Controller-ի (2015) անջատման ռեպորտի, դյուրակիր սարքերի դեյմոնի դիտարկման ցանկի, թարմացման ստուգման ժամանակի և 500 ms ընդմիջումով USB հանգույցի պորտի ցիկլի համար, որը վերակապակցում է թաքցված USB կառավարիչը, որպեսզի այն առաջինը բացած ծրագրերը կորցնեն այն։ CC BY-NC-SA 4.0։</value>
+    <value>3D կառավարիչների մոդելներ (Xbox 360, Steam Deck) և 3D տեսքի մոդելի ու անիմացիայի կոդը՝ CasperH2O, Lesueur Benjamin, trippyone։ Նաև հղում է Steam Deck-ի ռեպորտի և հապտիկ ապակոդավորման, Steam Controller-ի (2015) անջատման ռեպորտի, դյուրակիր սարքերի դեյմոնի դիտարկման ցանկի, թարմացման ստուգման ժամանակի և 500 ms ընդմիջումով USB հանգույցի պորտի ցիկլի համար, որը վերակապակցում է թաքցված USB կառավարիչը, որպեսզի այն առաջինը բացած ծրագրերը կորցնեն այն։</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D կառավարիչների սխեմաներ (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense)՝ AL2009man։ MIT։</value>
+    <value>2D կառավարիչների սխեմաներ (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense)՝ AL2009man։</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4-ի աուդիո արձանագրության փաստաթղթավորում՝ SBC պարամետրեր և փաթեթների դասավորություն, հեղինակ՝ khallmark։ GPL-2.0, միայն փաստաթղթավորում։</value>
+    <value>DualShock 4-ի աուդիո արձանագրության փաստաթղթավորում՝ SBC պարամետրեր և փաթեթների դասավորություն, հեղինակ՝ khallmark։ Միայն փաստաթղթավորում։</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Աշխատասեղան</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Կառավարեք Windows-ը բազմոցից։ Ցուցիչը, ոլորումը և սեղմումները՝ ձգաններին։</value></data>
@@ -3845,10 +4018,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Վեց կոճակով դասավորություն՝ մրցաշարային SOCD մաքրմամբ երկու առանցքներում։</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Ստեղնաշար + մկնիկ</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Գեյմփադ</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Դիտել մեկնարկային պրոֆիլները</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Մեկնարկային պրոֆիլներ</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Պատրաստի պրոֆիլներ ամբողջ ժանրի համար։ Ընտրեք մեկը, նշանակեք ցանկացած կառավարիչ և խաղացեք։ Պահելիս ավելանում է սովորական պրոֆիլ, որը կարող եք խմբագրել։</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Պահել պրոֆիլը</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Ավելացվեց «{0}» մեկնարկային պրոֆիլը։</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Մատնանշել և սեղմել</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Արկածային խաղեր և այն ամենը, ինչ կառավարվում է ցուցիչով և երկու բայով։</value></data>
@@ -3948,13 +4117,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Վերականգնել ելքի ուղին</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Հետևել ականջակալի խցանին</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ի ելքային ռեպորտի բայթերի քարտեզը և Sony scePad-ի իմաստաբանությունը՝ WujekFoliarz, PadForge-ի էֆեկտների և աուդիոյի գրող մոդուլների հիմքը։ MIT։</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-ի ելքային ռեպորտի բայթերի քարտեզը և Sony scePad-ի իմաստաբանությունը՝ WujekFoliarz, PadForge-ի էֆեկտների և աուդիոյի գրող մոդուլների հիմքը։</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Խցանի հայտնաբերմամբ աուդիո երթուղավորման օրինակ՝ SundayMoments, «Հետևել ականջակալի խցանին» ռեժիմի հիմքը։ Կարդացվել է որպես փաստաթղթավորում։ AGPL-3.0։</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Խցանի հայտնաբերմամբ աուդիո երթուղավորման օրինակ՝ SundayMoments, «Հետևել ականջակալի խցանին» ռեժիմի հիմքը։ Կարդացվել է որպես փաստաթղթավորում։</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Բայթային ռեժիմի QR կոդավորիչ Վեբ կառավարչի հասցեների համար՝ տեղափոխված Nayuki-ի հղումային իրականացումից։ MIT։</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Բայթային ռեժիմի QR կոդավորիչ Վեբ կառավարչի հասցեների համար՝ տեղափոխված Nayuki-ի հղումային իրականացումից։</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Մկնիկի պատկերը «Ստեղնաշար + մկնիկ» վիզուալիզացիայում՝ Igor Budzhak։ MIT։</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Մկնիկի պատկերը «Ստեղնաշար + մկնիկ» վիզուալիզացիայում՝ Igor Budzhak։</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Ճնշումով կարգավորվող արագություն</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Կրկնման արագությունը հետևում է, թե որքան ուժեղ է սեղմված ընտրված անալոգային աղբյուրը։ Թեթև սեղմումը կրկնվում է Դանդաղ միջակայքով, լրիվ սեղմումը՝ վերևի Միջակայքով, իսկ միջանկյալը սահուն խառնվում է։</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Դանդաղ միջակայք</value></data>
@@ -3969,7 +4138,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Կապակցվում է կոդով…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Չհաջողվեց անմիջապես հասնել գործընկերոջը։ Փորձեք կապակցվել հասցեով VPN-ի միջոցով։</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Այս համակարգչի կոդը</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Փոխանակեք կոդերը մյուս անձի հետ՝ նրանցը տեղադրեք ձեր Կապակցման դաշտում, մինչ նրանք տեղադրում են ձերը, ապա երկուսդ սեղմեք «Կապակցվել»։ Դա բացում է ուղիղ ուղի ինտերնետով, VPN պետք չէ։ Կոդը թարմացվում է, քանի դեռ Հեռակա կապը աշխատում է։</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Փոխանակեք կոդերը մյուս անձի հետ՝ նրանցը տեղադրեք Միանալ հասցեով դաշտում, Ավելին բաժնում, մինչ նրանք տեղադրում են ձերը, ապա երկուսդ սեղմեք Զուգակցել / Միանալ։ Դա բացում է ուղիղ ուղի ինտերնետով, VPN պետք չէ։ Կոդը թարմացվում է, քանի դեռ Հեռակա կապը աշխատում է։</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Այս ցանցը չի կարող ուղիղ կապեր ստեղծել (կարծես շարժական թեժ կետ կամ օպերատորի մակարդակի NAT է)։ Օգտագործեք VPN, օրինակ՝ Tailscale, կամ կապակցվեք տնային լայնաշերտ կապից։</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Չհաջողվեց գտնել այս համակարգչի հանրային հասցեն (ցանցը կարող է արգելափակել անհրաժեշտ տրաֆիկը)։ Ուղիղ կապերն այստեղ չեն աշխատի։ Օգտագործեք VPN կամ կապակցվեք հասցեով նույն ցանցում։</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Կառավարչի մարտկոցը ցածր է</value></data>
@@ -3980,6 +4149,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Ծանուցել, երբ մակարդակը հավասար է կամ ցածր է</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Նաև թրթռացնել կառավարիչը</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Փորձնական ծանուցում</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Ստուգել ծանուցումը</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Նշանակման հուշումներ</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Երբ սարքը միանում է, մինչ վիրտուալ կառավարչի էջը բաց է, PadForge-ը կարող է առաջարկել այն նշանակել այնտեղ, իսկ «Գլխավոր» էջը կարող է նոր սարքին առաջարկել սեփական վիրտուալ կառավարիչ։ Ոչինչ չի նշանակվում, մինչև չընդունեք առաջարկը։ Ստեղնաշարերը, մկնիկները, հպահարթակները և մեդիա ստեղները երբեք չեն առաջարկվում։</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Առաջարկել նոր սարքերը բաց վիրտուալ կառավարչին</value></data>
@@ -3993,23 +4163,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Հիմա ոչ</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Ցանկացած արտահայտություն</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Ձայնային մակրոներ</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Ասեք արտահայտություն, և այն սեղմում է կոճակ, որը կարող եք կապակցել։ Լսում է յուրաքանչյուր խոսափող, որին PadForge-ը կարող է հասնել։</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Կառավարել ձայնային մակրոները</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Միացնել ձայնային մակրոները</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Միացնում է լսելը։ Միացված վիճակում յուրաքանչյուր գրանցված արտահայտություն կոճակ է, որը գործարկվում է, երբ ասում եք այն։ Ճանաչման մոդելը գալիս է PadForge-ի մեջ և աշխատում է ամբողջովին անցանց։</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Լսում</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>«Միշտ» ռեժիմը խոսափողը պահում է բաց։ «Սեղմել և խոսել» ռեժիմը լսում է միայն այն ժամանակ, երբ կապակցված «Ձայնային լսում» մակրոն պահվում է։</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Լսումը միացված կամ անջատված, ռեժիմ, վստահություն</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Միշտ</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Սեղմել և խոսել</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Նվազագույն վստահություն</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Որքան վստահ պետք է լինի ճանաչիչը, որ արտահայտությունը գործարկվի։ Բարձրացրեք, եթե պատահական խոսքը գործարկում է մակրոներ, իջեցրեք, եթե ձեր արտահայտությունները բաց են թողնվում։</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Խոսքի սպասում։ Ճանաչումները երևում են այստեղ իրենց վստահությամբ։</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Լսվեց «{0}» ({1:F2})։ Գործարկվեց։</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Լսվեց «{0}» ({1:F2})։ Վստահության շեմից ցածր է, կամ խոսելու ստեղնը բաց է։</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Լսումը անջատված է։ Միացրեք այն Ավելին բաժնում։</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Լսվեց {0} {1}-ով</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Լսվեց {0} {1}-ով։ Այն վստահության շեմից ցածր էր, կամ խոսելու ստեղնը բաց էր։</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Արտահայտություն</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Ասվող արտահայտություն</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Անուն</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Կոճակի անուն</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Գրանցել</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Գրանցված արտահայտություններ</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>Գրանցվեց «{0}»։ Ասեք այն՝ նրա կոճակը գործարկելու համար, և կապակցեք մակրոներ դրան կառավարչի էջում։</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Արտահայտություններ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Գրանցվեց «{0}»։ Ասեք այն՝ նրա կոճակը գործարկելու համար, և կապակցեք այն կառավարչի էջում։</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Ձայնային լսում (պահելիս)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Ձայնային մակրոների «սեղմել և խոսել»՝ քանի դեռ այս մակրոն պահվում է, ճանաչիչը լսում է։ «Կառավարել ձայնային մակրոները» պատուհանում Լսում դաշտը դրեք «Սեղմել և խոսել»։</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Խոսափող</value></data>
@@ -4017,12 +4192,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Հապտիկ շարժիչ և Razer-ի մատակարար՝ Razer Sensa տողի թրթռոցի հիմքում։ HAR.dll և Interhaptics.RazerProvider.dll տեղակայվում են PadForge-ի մեջ՝ հանրային Core SDK-ից անփոփոխ։ Հեղինակ՝ Wyvrn։ Wyvrn EULA։</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Հապտիկ շարժիչ և Razer-ի մատակարար՝ Razer Sensa տողի թրթռոցի հիմքում։ HAR.dll և Interhaptics.RazerProvider.dll տեղակայվում են PadForge-ի մեջ՝ հանրային Core SDK-ից անփոփոխ։ Հեղինակ՝ Wyvrn։</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Steam Controller (2015) և Steam Controller (2026) 3D մոդելները, ցանցավորված Valve-ի հրապարակած STEP ֆայլերից։ Copyright Valve Corporation։ CC BY-NC-SA 4.0։ PadForge-ը Valve-ի հետ կապված չէ և նրա կողմից հավանության չի արժանացել։</value>
+    <value>Steam Controller (2015) և Steam Controller (2026) 3D մոդելները, ցանցավորված Valve-ի հրապարակած STEP ֆայլերից։ Copyright Valve Corporation։ PadForge-ը Valve-ի հետ կապված չէ և նրա կողմից հավանության չի արժանացել։</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 runtime</value>
@@ -4039,7 +4214,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer Chroma REST API-ի շրջանակավորման հաստատում Razer-ի լուսավորության համար՝ Adam Hellberg և Brandon Scott։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer Chroma REST API-ի շրջանակավորման հաստատում Razer-ի լուսավորության համար՝ Adam Hellberg և Brandon Scott։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK-ի հղումներ</value>
   </data>
@@ -4048,19 +4223,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>UDP հետևիչի դեյթագրամը և FreeTrack 2.0-ի ընդհանուր հիշողության դասավորությունը գլխի հետևման համար։ ISC։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value>
+    <value>UDP հետևիչի դեյթագրամը և FreeTrack 2.0-ի ընդհանուր հիշողության դասավորությունը գլխի հետևման համար։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Lenovo WMI-ի օգտակար իրադարձությունների դասը, որին բաժանորդագրվում է դյուրակիր սարքի թաքնված կոճակների սովորողը, և բարձրացված իրավունքներով IPC սերվերի օրինակը արտաքին պրոֆիլի կառավարման հիմքում։ GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value>
+    <value>Lenovo WMI-ի օգտակար իրադարձությունների դասը, որին բաժանորդագրվում է դյուրակիր սարքի թաքնված կոճակների սովորողը, և բարձրացված իրավունքներով IPC սերվերի օրինակը արտաքին պրոֆիլի կառավարման հիմքում։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Դյուրակիր համակարգչի նույնացման տողեր և մատակարարի ռեպորտների նշումներ, ստուգված թաքնված կոճակների սովորողի համար։ GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value>
+    <value>Դյուրակիր համակարգչի նույնացման տողեր և մատակարարի ռեպորտների նշումներ, ստուգված թաքնված կոճակների սովորողի համար։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook և WiimoteHook</value>
@@ -4075,13 +4250,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>WinMM-ի կանչերի հաջորդականությունները հին MIDI API-ի հիմքում՝ պորտի բացում, դրան ուղարկում և փակում։ Կարդացված PortMidi-ից (MIT, Ross Bencina, Phil Burk և Roger B. Dannenberg) և RtMidi-ից (MIT-ձևաչափ RtMidi լիցենզիա, Gary P. Scavone)։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-ստեղնի SDK-ի հղումներ</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Իրադարձության բառի դասավորությունը G-ստեղների մուտքի հիմքում գալիս է SDK-ի LogitechGkeyLib.h-ից։ Գրադարանի որոնման կարգը և անջատումը հետևում են Mumble-ի GKey.cpp-ին (BSD 3-Clause)։ PadForge-ը բեռնում է գրադարանի այն օրինակը, որը կա մեքենայի վրա, և Logitech կոդ չի տեղակայում։</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Իրադարձության բառի դասավորությունը G-ստեղների մուտքի հիմքում գալիս է SDK-ի LogitechGkeyLib.h-ից։ Գրադարանի որոնման կարգը և անջատումը հետևում են Mumble-ի GKey.cpp-ին։ PadForge-ը բեռնում է գրադարանի այն օրինակը, որը կա մեքենայի վրա, և Logitech կոդ չի տեղակայում։</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup և AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Անալոգային ստեղնաշարի մուտքը C#-ով տեղափոխում է HallJoy-ի ստեղնաշարի երթուղիները, ստեղների աղյուսակները և մոդելների կատալոգները (AGPL-3.0, PashOK7) և հետևում է Soup-ին ու AnalogSense JavaScript SDK-ին (MIT, Calamity, Inc.), ստուգված Wooting Analog SDK-ով (MPL-2.0)։ Մյուս ստեղնաշարերը հետևում են AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk և hmkconf (GPL-3.0-or-later, peppapighs) նախագծերին, և DenkiSuki-ի, LeiterConsulting-ի ու paysdelest-ի Soup fork-երին (MIT)։ Ռեպորտների ձևաչափերը և ստեղների աղյուսակները նաև գալիս են Razer-ի Synapse Web-ից և NuPhy-ի NuPhyIO կարգավորիչներից, OpenRazer-ից (GPL-2.0-or-later), Abbytech-ի razer-analog-keyboard-ից, TinyUSB-ից (MIT) և Sainan-ի գրավման նշումներից։</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box-ի հղումներ</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Bliss-Box API-ն «Կարդալ Bliss-Box ադապտերները» գործառույթի հիմքում, կարդացված Bliss-Box LLC-ի API Tool-ից (BSD-ձևաչափ, անվճար վերաբաշխում) և DeviceBuddy-ից (կոդը հասանելի, Bliss-Box LLC), կոճակների անուններով SteveFox1620-ի retroarch-joypad-autoconfig fork-ի Bliss-Box ֆայլերից, Controller Pak-ի ստուգիչ գումարները՝ ստուգված libdragon-ով (Unlicense), և PlayStation pad-ի պատասխանը psx-spx-ից և Linux-ի psxpad-spi դրայվերից (GPL-2.0-or-later)։ Կառավարիչների անունները և աջակցության նշումները նաև գալիս են Bliss-Box LLC-ի համատեղելիության ցանկից, իսկ ադապտերների վարքը ստուգվել է նրանց որոնվածքի հետ։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ի կոմպոզիտ USB կառավարիչների USB տրանսպորտը՝ Vadym Hrynchyshyn։ HIDMaestro-ն իր մեջ ներառում է ստորագրված հոսթ կոնտրոլերի դրայվերը և տեղադրում է այն կոմպոզիտ կառավարիչն առաջին անգամ ստեղծելիս։ BSD 2-Clause։</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ի կոմպոզիտ USB կառավարիչների USB տրանսպորտը՝ Vadym Hrynchyshyn։ HIDMaestro-ն իր մեջ ներառում է ստորագրված հոսթ կոնտրոլերի դրայվերը և տեղադրում է այն կոմպոզիտ կառավարիչն առաջին անգամ ստեղծելիս։</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Ընտրեք, այս սլոթի որ կեսերն են աշխատում։ Կեսն անջատելը թաքցնում է նրա տողերը և դադարեցնում ուղարկումը, բայց պահում է նրա կապակցումները, որպեսզի նորից միացնելիս դրանք վերականգնվեն։</value>
   </data>
@@ -4149,13 +4324,15 @@
     <value>Նշանակել համօգտագործվող սարքերը</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Նշանակումներ՝ {0}-ում</value>
+    <value>{0}-ի հետ համօգտագործվող սարքեր</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Ընտրեք այս համակարգչի կողմից համօգտագործվող սարքը, ապա ընտրեք նրա վիրտուալ կառավարիչները մյուս համակարգչում։</value>
+    <value>Ընտրեք սարք, ապա այն կառավարիչները այդ համակարգչում, որոնք այն պետք է կառավարի։</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Տրամադրվում է այս համակարգչից</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Կառավարիչներ {0}-ում</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Պրոֆիլ՝ {0}</value>
+    <value>Ակտիվ պրոֆիլ՝ {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Մյուս համակարգչում թույլատրեք հեռակա նշանակման փոփոխությունները այս համակարգչի համար՝ Հեռակա կապ &gt; Զուգակցված համակարգիչներ բաժնում։</value>
@@ -4247,60 +4424,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS և CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Խոսքի ապակոդավորիչը, տրանսդյուսերների գրադարանը և գծային հանրահաշիվը libvosk.dll-ի ներսում։ Kaldi և OpenFst՝ Apache-2.0։ OpenBLAS և CLAPACK՝ BSD 3-Clause, GotoBLAS2-ի համար OpenBLAS-ի ներսում և f2c կատարման միջավայրի համար՝ առանձին ծանուցումներով։</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>«Ռազմավարություն» և «Աշխատասեղան» մեկնարկային պրոֆիլների դասավորությունները, և տուրբո վարքը, որից խուսափում է ճնշումով կարգավորվող տուրբոն։ GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>«Ռազմավարություն» և «Աշխատասեղան» մեկնարկային պրոֆիլների դասավորությունները, և տուրբո վարքը, որից խուսափում է ճնշումով կարգավորվող տուրբոն։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ի հղումը Windows-ի չփաստաթղթավորված IPolicyConfig ինտերֆեյսի դասավորության վերաբերյալ, որը PadForge-ը օգտագործում է կառավարչի աուդիո վերջնակետը վերամիացնելու համար։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Antoine Aflalo-ի հղումը Windows-ի չփաստաթղթավորված IPolicyConfig ինտերֆեյսի դասավորության վերաբերյալ, որը PadForge-ը օգտագործում է կառավարչի աուդիո վերջնակետը վերամիացնելու համար։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Պարամետրիկ EQ պրոֆիլի ձևաչափը, որը ներմուծում է կառավարչի Պարամետրիկ EQ-ն՝ Jaakko Pasanen։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Պարամետրիկ EQ պրոֆիլի ձևաչափը, որը ներմուծում է կառավարչի Պարամետրիկ EQ-ն՝ Jaakko Pasanen։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ի տեխնիկաները Տեքստային բլոկի մակրոների և ստեղնաշարի համակցության կեռիկի հիմքում՝ Unicode մուտքագրում, փաթեթի սահմաններ, Win ստեղնի դիմակավորող ստեղն և նշված ներարկված մուտք։ GPL-2.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>SendInput-ի տեխնիկաները Տեքստային բլոկի մակրոների և ստեղնաշարի համակցության կեռիկի հիմքում՝ Unicode մուտքագրում, փաթեթի սահմաններ, Win ստեղնի դիմակավորող ստեղն և նշված ներարկված մուտք։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU արձանագրության հղումը շարժման սերվերի հիմքում՝ v1993։ Unlicense։</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>DSU արձանագրության հղումը շարժման սերվերի հիմքում՝ v1993։</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ի Bluetooth ելքային ռեպորտի շրջանակավորումը՝ Christopher Rosell։ MIT։</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4-ի Bluetooth ելքային ռեպորտի շրջանակավորումը՝ Christopher Rosell։</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ի մարտկոցի տիրույթները, հպահարթակի հապտիկ իմպուլսի ժամանակը և ուժգնության աստիճանները, և հպահարթակի նետման վարքը։ GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4-ի մարտկոցի տիրույթները, հպահարթակի հապտիկ իմպուլսի ժամանակը և ուժգնության աստիճանները, և հպահարթակի նետման վարքը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton fork)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ի աուդիո ձայնի տիրույթները, նշանով 8-բիթանոց հապտիկ նմուշները և համակցված Bluetooth տրանսպորտի դասավորությունը։ GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense-ի աուդիո ձայնի տիրույթները, նշանով 8-բիթանոց հապտիկ նմուշները և համակցված Bluetooth տրանսպորտի դասավորությունը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ի Bluetooth աուդիո բուֆերի երկարության լռելյայնը և նվազագույնը՝ awalol։ MIT։</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense-ի Bluetooth աուդիո բուֆերի երկարության լռելյայնը և նվազագույնը՝ awalol։</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube-ի հարմարվող ձգանի նախադրված արժեքները՝ Mxater։ Կարդացվել է միայն փաստերի համար։</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU շարժման առանցքների նշանները, ստուգված նրա UDP ապակոդավորիչով։ GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU շարժման առանցքների նշանները, ստուգված նրա UDP ապակոդավորիչով։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ի լռելյայն նախադրվածները «Տիեզերական սիմուլյատոր» մեկնարկային պրոֆիլի հիմքում՝ Richard Buckle։ MIT։</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Elite Dangerous-ի լռելյայն նախադրվածները «Տիեզերական սիմուլյատոր» մեկնարկային պրոֆիլի հիմքում՝ Richard Buckle։</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ի բարձրախոսի ADPCM նիբլների կարգը և SBC ապակոդավորիչը, որով ստուգվել է DualShock 4-ի կոդավորիչը։ LGPL-2.1-or-later, կարդացվել է միայն որպես փաստաթղթավորում, LGPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote-ի բարձրախոսի ADPCM նիբլների կարգը և SBC ապակոդավորիչը, որով ստուգվել է DualShock 4-ի կոդավորիչը։ Կարդացվել է միայն որպես փաստաթղթավորում, LGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Թեքման փոխհատուցմամբ կողմնացույցի ուղղությունը կողմնացույցային պտույտի համար, տեղափոխված C#՝ x-io Technologies։ MIT։</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Թեքման փոխհատուցմամբ կողմնացույցի ուղղությունը կողմնացույցային պտույտի համար, տեղափոխված C#՝ x-io Technologies։</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Մարտկոցի ցածր մակարդակի ծանուցման կանոնը և նույնացման թրթռոցի օրինակը՝ Lukas Frühstück։ MIT։</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Մարտկոցի ցածր մակարդակի ծանուցման կանոնը և նույնացման թրթռոցի օրինակը՝ Lukas Frühstück։</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4-ի, DualSense-ի, DualSense Edge-ի, Xbox Series-ի և Switch 2 Pro Controller-ի 3D մոդելները, գնված CGTrader-ում։ CGTrader Royalty Free License։</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4-ի, DualSense-ի, DualSense Edge-ի, Xbox Series-ի և Switch 2 Pro Controller-ի 3D մոդելները, գնված CGTrader-ում։</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ի 3D մոդելը, գնված CGTrader-ում և բաժանված առանձին մասերի ցանցերի։ CGTrader Royalty Free License։</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3-ի 3D մոդելը, գնված CGTrader-ում և բաժանված առանձին մասերի ցանցերի։</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>HID շերտը, որը կոմպիլացվել է ներառված SDL3.dll-ի մեջ՝ Alan Ott, Signal 11 Software։ BSD-ձևաչափի լիցենզիա։</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>HID շերտը, որը կոմպիլացվել է ներառված SDL3.dll-ի մեջ՝ Alan Ott, Signal 11 Software։</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Պատկերակների աղբյուրներ</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Բոցի գլիֆը Material Design Icons-ից (Pictogrammers, Apache-2.0), ընդհանուր գեյմփադի պատկերակը Ionicons-ից (Ionic, MIT), Extended ջոյսթիքը Jam Icons-ից (Michael Amprimo, MIT), և Xbox-ի ու PlayStation-ի պատկերակները SVG Repo-ից՝ յուրաքանչյուր պատկերակի էջի լիցենզիայով։</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Ռելեի արձանագրությունը Հեռակա կապի պահուստային գծի հիմքում, որը խոսում է n0.computer-ի անվճար հանրային ռելեների հետ այնպես, ինչպես FlexInput-ը։ iroh՝ MIT OR Apache-2.0։ FlexInput՝ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Joy-Con 2-ի օպտիկական մկնիկի հաշվիչները և շրջանցման դելտաները Mouse Motion X և Y-ի հիմքում՝ coffincolors, Frano և moutella։ MIT։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Joy-Con 2-ի օպտիկական մկնիկի հաշվիչները և շրջանցման դելտաները Mouse Motion X և Y-ի հիմքում՝ coffincolors, Frano և moutella։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux-ի միջուկի դրայվերներ</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3-ի, Move-ի, DualSense-ի, Steam Deck-ի և PID հետադարձ ուժի արձանագրության փաստերը, և ACPI WMI բլոկի դասավորությունը։ PadForge-ը ստեղնաշարերի և մկնիկների նկարագրիչները կարդում է hid-core-ի կանոններով։ GPL-2.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3-ի, Move-ի, DualSense-ի, Steam Deck-ի և PID հետադարձ ուժի արձանագրության փաստերը, և ACPI WMI բլոկի դասավորությունը։ PadForge-ը ստեղնաշարերի և մկնիկների նկարագրիչները կարդում է hid-core-ի կանոններով։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows-ի կառավարիչների մուտքը, ներառյալ Xbox Elite-ի պադլները։ SDK բեռնիչը կապակցված է SDL-ին։ MIT (SDK բեռնիչ)։</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows-ի կառավարիչների մուտքը, ներառյալ Xbox Elite-ի պադլները։ SDK բեռնիչը կապակցված է SDL-ին։</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll-ի համար անհրաժեշտ C++ կատարման միջավայրը (msvcp140.dll, vcruntime140.dll, իսկ x64 կառուցվածքում՝ նաև vcruntime140_1.dll), տեղակայված անփոփոխ PadForge-ի ներսում։ Microsoft Visual Studio լիցենզիայի պայմաններ։</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll-ի համար անհրաժեշտ C++ կատարման միջավայրը (msvcp140.dll, vcruntime140.dll, իսկ x64 կառուցվածքում՝ նաև vcruntime140_1.dll), տեղակայված անփոփոխ PadForge-ի ներսում։</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con-ի և Pro Controller-ի HID, HD թրթռոցի և home LED-ի նշումները՝ dekuNukem, Switch 2-ի համար՝ ndeadly-ի switch2_controller_research-ով։ Կարդացվել է միայն արձանագրության փաստերի համար։</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Բարձրացված իրավունքներով թարմացման բայի օրինակը ծրագրի թարմացնողի օգնականի հիմքում։ LGPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, LGPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Բարձրացված իրավունքներով թարմացման բայի օրինակը ծրագրի թարմացնողի օգնականի հիմքում։ Կարդացվել է միայն որպես փաստաթղթավորում, LGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>WinSCard-ի ստորագրությունները և ընթերցիչների մոնիթորինգի կանչերի հաջորդականությունը NFC պիտակի մուտքի հիմքում՝ Daniel Mueller։ BSD 2-Clause։</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>WinSCard-ի ստորագրությունները և ընթերցիչների մոնիթորինգի կանչերի հաջորդականությունը NFC պիտակի մուտքի հիմքում՝ Daniel Mueller։</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move-ի ռեպորտների դասավորությունները, սենսորների չափաբերումը և EXT աքսեսուարի ձեռքսեղմումը՝ Thomas Perl, ստուգված moveonpc վիքիով։ PadForge-ի իրականացումը օրիգինալ C# է։ BSD 2-Clause։</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Մրցավազքի հեռաչափության հղումներ</value></data>
@@ -4308,23 +4485,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3-ի Bluetooth զուգակցման և ռեպորտների փաստաթղթավորում։ GPL-2.0 և GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>STUN հաղորդագրության դասավորությունը և XOR-MAPPED-ADDRESS ապակոդավորումը Հեռակա կապի NAT հատման հիմքում, վերցված իր C# կոդից՝ Aaron Clauson։ BSD 3-Clause՝ լիցենզիայի 2-րդ բաժնի օգտագործման սահմանափակմամբ։</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>STUN հաղորդագրության դասավորությունը և XOR-MAPPED-ADDRESS ապակոդավորումը Հեռակա կապի NAT հատման հիմքում, վերցված իր C# կոդից՝ Aaron Clauson։ Իր լիցենզիան ավելացնում է օգտագործման սահմանափակում 2-րդ բաժնում։</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse-ի հղումներ</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion-ի ռեպորտի դասավորությունը, սարքերի աղյուսակը և առանցքի սանդղակը, կարդացված hid.spacemouse (MIT), PySpaceMouse (MIT), AndunHH-ի spacemouse (CC BY-NC-SA 4.0) և spacenavd (GPL-3.0-or-later) նախագծերից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Bluetooth կապի խզումը host IOCTL-ով, թաքնված XInput-ի անջատման և հնարավորությունների օրդինալները, և DualSense-ի ձգանի թրթռոցի լռելյայն արժեքները։ GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Bluetooth կապի խզումը host IOCTL-ով, թաքնված XInput-ի անջատման և հնարավորությունների օրդինալները, և DualSense-ի ձգանի թրթռոցի լռելյայն արժեքները։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller-ի արձանագրության հղումներ</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Սահեցման հապտիկ թիկերը, ռեպորտ 0x42-ի կոճակի բիթերը, անջատման հրամանը և դոնգլի ռելեն, կարդացված OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) և SteamlessController (MIT) նախագծերից։ Միայն փաստաթղթավորում, GPL կամ AGPL կոդ չի տեղակայվում։</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Ձողերի մեռյալ գոտիներ</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Վեց մեռյալ գոտու ձևերը՝ Minimuino։ GFDL-1.3-or-later և GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ի IR ցուցիչի վարքը՝ կետերի զույգի միջնակետ, լուսանցքներ, սենսորային գծի շեղում, հարթեցում և FPS Mouse կորը, Ryochan7, Suegrini և Trihy ճյուղերով։ GPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote-ի IR ցուցիչի վարքը՝ կետերի զույգի միջնակետ, լուսանցքներ, սենսորային գծի շեղում, հարթեցում և FPS Mouse կորը, Ryochan7, Suegrini և Trihy ճյուղերով։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ի հարմարվող ձգանի էֆեկտների դասավորությունները և գոտիների փաթեթավորումը, վերարտադրված C#-ով՝ John "Nielk1" Klein։ MIT։</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense-ի հարմարվող ձգանի էֆեկտների դասավորությունները և գոտիների փաթեթավորումը, վերարտադրված C#-ով՝ John "Nielk1" Klein։</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>DS4_REPORT_EX դասավորությունը վիրտուալ DualShock 4 մուտքային ռեպորտի հիմքում՝ Benjamin Höglinger-Stelzer։ MIT։</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>DS4_REPORT_EX դասավորությունը վիրտուալ DualShock 4 մուտքային ռեպորտի հիմքում՝ Benjamin Höglinger-Stelzer։</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton fork)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Վիրտուալ DualSense խոսափողի 48 dB թուլացման տիրույթը։ GPL-3.0-or-later, կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Վիրտուալ DualSense խոսափողի 48 dB թուլացման տիրույթը։ Կարդացվել է միայն որպես փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Ղեկերի արձանագրության հղումներ</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster և Logitech ղեկերի բնիկ հետադարձ ուժի և RPM փոխման LED ռեպորտները, կարդացված hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) և thrustmaster-led-linux (GPL-3.0) նախագծերից, և ստուգված prodigal.knight-ի SimHub LED պլագինով (MIT) և tm-bt-led-ով (MIT)։ Միայն փաստաթղթավորում, GPL կոդ չի տեղակայվում։</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Arcade I/O-ի հղումներ</value></data>
@@ -4354,19 +4531,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox կառավարիչների հղումներ</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL fork-ի դրայվերների արձանագրությունները սկզբնական Xbox-ի, Steel Battalion-ի, Xbox 360 chatpad-ի և Xbox 360 uDraw-ի համար, և Xbox 360 ընդունիչների, որոնք PadForge-ը կապում է Windows-ի սեփական դրայվերին, կարդացված brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), ITO Takayuki-ի euc.jp, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) և xemu (LGPL-2.0-or-later) աղբյուրներից։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Մեկ INF մեկ սարքի համար փաթեթավորումը և սարքերի ցուցակագրումը WinUSB-ի ինքնաշխատ կապակցման հիմքում՝ Pete Batard։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։ LGPL-3.0-or-later։</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Մեկ INF մեկ սարքի համար փաթեթավորումը և սարքերի ցուցակագրումը WinUSB-ի ինքնաշխատ կապակցման հիմքում՝ Pete Batard։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Bluetooth HID feature-ռեպորտի հարցումը, որ PadForge-ը ուղարկում է PS Move աքսեսուարը նույնացնելու համար՝ Ricardo Quesada։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։ Apache-2.0։</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Bluetooth HID feature-ռեպորտի հարցումը, որ PadForge-ը ուղարկում է PS Move աքսեսուարը նույնացնելու համար՝ Ricardo Quesada։ Միայն փաստաթղթավորում, կոդ չի տեղակայվում։</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL fork-ի Windows Mixed Reality կոնֆիգուրացիայի բանալին գալիս է Monado-ից։ Copyright 2021 Jan Schmidt։ Տեղակայվում է SDL3.dll-ի ներսում։ BSL-1.0։</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL fork-ի Windows Mixed Reality կոնֆիգուրացիայի բանալին գալիս է Monado-ից։ Copyright 2021 Jan Schmidt։ Տեղակայվում է SDL3.dll-ի ներսում։</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL fork-ի Rift DK1 սենսորային միաձուլումը OpenHMD-ինի տեղափոխումն է։ Copyright 2013 Fredrik Hultin, Jakob Bornecrantz։ Տեղակայվում է SDL3.dll-ի ներսում։ BSL-1.0։</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL fork-ի Rift DK1 սենսորային միաձուլումը OpenHMD-ինի տեղափոխումն է։ Copyright 2013 Fredrik Hultin, Jakob Bornecrantz։ Տեղակայվում է SDL3.dll-ի ներսում։</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote-ի բարձրախոսի արձանագրության և IR չափաբերման փաստաթղթավորում։ Կարդացվել է միայն արձանագրության փաստերի համար։</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox-ի impulse-trigger-ի 9 բայթանոց ռեպորտը և նրա գրելու ուղին՝ araghon007։ MIT։</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox-ի impulse-trigger-ի 9 բայթանոց ռեպորտը և նրա գրելու ուղին՝ araghon007։</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ի հապտիկ PCM ձևաչափը՝ նշանով 16-բիթանոց, 3 kHz, որը որոշեց նշանով 8-բիթանոց Bluetooth հապտիկ կոդավորումը։ AGPL-3.0, կարդացվել է միայն որպես փաստաթղթավորում, AGPL կոդ չի տեղակայվում։</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5-ի հապտիկ PCM ձևաչափը՝ նշանով 16-բիթանոց, 3 kHz, որը որոշեց նշանով 8-բիթանոց Bluetooth հապտիկ կոդավորումը։ Կարդացվել է միայն որպես փաստաթղթավորում, AGPL կոդ չի տեղակայվում։</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Ստեղնաշարի էկրաններ</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Նկարում է Logitech-ի GamePanel ստեղնաշարերի և Mad Catz S.T.R.I.K.E. 7-ի ներկառուցված էկրաններին, ինչպես նաև հեռախոսին՝ Logitech Arx Control-ի միջոցով՝ պրոֆիլ, ժամացույց, խաղի ժամանակ, վայրկենաչափ, պատկեր կամ DualShock 4-ի կամ DualSense-ի լուսաշերտի գույն։ Յուրաքանչյուր էկրան Սարքեր էջում ունի իր շարքը, որտեղ սահմանվում է, թե ինչ է այն ցույց տալիս։ Էկրանի կողքի ստեղները նրա շարքի կոճակներն են։</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Կառավարել ստեղնաշարի էկրանները</value></data>
@@ -4434,6 +4611,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Տեղաշարժ</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Տեղաշարժ X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Տեղաշարժ Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Ընտրեք, թե ինչ է ցուցադրվում։ Ոչինչ չի փոխվում, մինչև չպահեք։</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} սահմանվեց՝ {1}։</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Ներբեռնվում է Mad Catz-ի S.T.R.I.K.E. 7 SDK-ն…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7-ն այժմ բեռնում է {0}-ը։</value></data>
@@ -4573,8 +4751,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>{0}-ը կարդացվում է ընդհանուր հիշողությունից։</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Սպասում է Assetto Corsa-ին կամ Assetto Corsa Competizione-ին։</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Փոխանցում է {0} պորտին։</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Հարմարեցված հեռաչափության ձևաչափեր</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Նկարագրեք խաղի ուղարկած փաթեթները՝ դաշտ առ դաշտ, և PadForge-ը կկարդա նաև այդ խաղը։ Յուրաքանչյուր փոփոխական դառնում է առանցք «Խաղի հեռաչափություն» տողում և ալիք Հարմարեցված արտահայտության գործարկիչների համար։ Ձևաչափն ընտրեք անունով Խաղ ցանկում կամ տվեք նրան երկարություն կամ բանալի, որպեսզի Ավտոմատ հայտնաբերումը գտնի այն։</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Հարմարեցված ձևաչափեր</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Նկարագրեք այն խաղի հեռաչափության փաթեթները, որը PadForge-ը չի ճանաչում։</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Ավելացնել ձևաչափ</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Ձևաչափ {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Անուն</value></data>
@@ -4585,12 +4763,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Այս ձևաչափով կարդացվում են միայն հենց այդքան բայթանոց փաթեթները։ 0-ի դեպքում կարդացվում է ցանկացած փաթեթ, իսկ Ավտոմատ հայտնաբերումը ձևաչափը չի դիտարկում, ուստի ընտրեք այն անունով։</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Պարտադիր բանալի</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Այս ձևաչափով կարդացվում են միայն այս բանալին պարունակող JSON փաթեթները։ Դատարկ թողնելու դեպքում կարդացվում է ցանկացած փաթեթ, իսկ Ավտոմատ հայտնաբերումը ձևաչափը չի դիտարկում, ուստի ընտրեք այն անունով։</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Բայթերի կարգ</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian-ը յուրաքանչյուր թվի ամենաքիչ նշանակալի բայթը դնում է առաջինը, ինչպես համակարգչային խաղերը գրեթե միշտ անում են։ Big-Endian-ը առաջինը դնում է ամենանշանակալի բայթը։</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Big-Endian</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Փաթեթը յուրաքանչյուր թիվ գրում է բարձր կարգի բայթից սկսած։ Համակարգչային խաղերը գրեթե միշտ սկսում են ցածր կարգի բայթից։</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Փոխանցման արժեքներ</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Փոխանցման դաշտն ունի հետընթացի և չեզոքի իր թվերը, ինչպես Forza-ի 0-ն ու 11-ը։ Երբ անջատված է, բացասական փոխանցումը հետընթաց է, իսկ 0-ն՝ չեզոք։</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Հետընթաց</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Չեզոք</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Պարտադիր բանալի JSON փաթեթների համար, փոխանցման արժեքներ</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Դաշտեր</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Յուրաքանչյուր դաշտ կարդում է թիվ իր տեղաշարժից կամ JSON-ում իր բանալու տակից (կետերը թույլ են տալիս մտնել ներդրված օբյեկտների մեջ) և բազմապատկում այն մասշտաբով։ Մասշտաբից հետո արագությունը կմ/ժ է, ոտնակները տատանվում են 0-ից 1, իսկ ղեկը՝ -1-ից (ամբողջովին ձախ) մինչև 1 (ամբողջովին աջ)։ Փոփոխականի առանցքը տատանվում է հանգստի վիճակի Նվազագույն արժեքից մինչև լրիվ դիրքի Առավելագույն արժեքը։</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Նպատակակետ</value></data>
@@ -4674,4 +4855,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}՝ {1}, մինչև դադարեցումը</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Դադարեցնել ձգանի էֆեկտը՝ {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Վերահսկել այս սարքի լուսավորությունը, լուսավորության պահում</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Միացված</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Միացված չեն</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Այլ մուտքեր</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Սարքեր չեն համընկնում։</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Չի օգտագործվում</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>մարտկոց {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>մարտկոց {0}, լիցքավորվում է</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Օգտագործվում է</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Նոր կառավարիչ</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Կարգավորումներ</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Յուրաքանչյուր առանցք, կոճակ և սենսոր</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Սեղմված՝ {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Նույնացուցիչներ, ուղի, հնարավորություններ, Ստիպել հում ջոյստիկի ռեժիմ</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Նույնացուցիչներ, ուղի, հնարավորություններ</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Պատճենել մանրամասները</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Ապրանք</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Տեսակ</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Հնարավորություններ</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Կապ</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Մարտկոց</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ուղի</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Սերիական համար</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Որոնվածք</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Վերանայում</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Նաև թրթռացնել կառավարիչը, Կրկնել ծանուցումը ամեն, Ծանուցել, երբ լիցքը լրիվ է</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Պահանջում է ուշադրություն</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Ներմուծվել է մաքուր</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}։ {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Սահմանել գաղտնաբառ</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Ապակողպել Հեռակա կապը</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Գաղտնաբառ</value></data>
 </root>

@@ -186,10 +186,13 @@ namespace PadForge.Tests
 
             // The eviction: the last thing the sync does, for whatever tab
             // is selected, from the group's own visibility.
-            Assert.Matches(@"SyncSectionVisibility\(\);\s*EnsureSelectedTabAvailable\(\);\s*\}\s*/// <summary>The group that holds", cs);
+            Assert.Matches(@"SyncSectionVisibility\(\);\s*EnsureSelectedTabAvailable\(\);\s*\}\s*/// <summary>Each group of a stacked section", cs);
             Assert.Contains("return group == null || group.Visibility == Visibility.Visible;", cs);
-            Assert.Contains("3 => TabSticks,", cs);
-            Assert.Contains("4 => TabTriggers,", cs);
+            // A tab's group comes from the page's one table of groups, which
+            // Search places the page's settings by as well.
+            Assert.Contains("[\"TabSticks\"] = 3,", cs);
+            Assert.Contains("[\"TabTriggers\"] = 4,", cs);
+            Assert.Matches(@"private FrameworkElement GroupOfTab\(int tab\)\s*\{\s*foreach \(var \(name, of\) in TabOfGroupName\)\s*if \(of == tab\)\s*return FindName\(name\) as FrameworkElement;", cs);
 
             // No rule is stated a second time.
             Assert.DoesNotContain("vm.SelectedConfigTab == 3", cs);
@@ -213,18 +216,20 @@ namespace PadForge.Tests
 
         // C237 and C238: the passthrough clone.
 
-        /// <summary>The clone confirm is not application-modal, so while it is
-        /// up the user can switch slots, change the slot's type, apply a
-        /// profile that replaces the config instance, or unassign the device.
-        /// The apply writes both the page's controls and the slot's layout, so
-        /// landing it on a different slot rewrites a configuration nobody
-        /// asked about. The layer-delete confirm on this page already
-        /// re-validates after its await for exactly this reason.</summary>
+        /// <summary>The clone confirm is modal, so no click reaches the page
+        /// while it is up, but its ShowDialog runs the dispatcher: queued
+        /// work still lands, and an automatic profile switch among it can
+        /// replace the config instance, change the slot's type or take the
+        /// device away. The apply writes both the page's controls and the
+        /// slot's layout, so landing it on a different slot rewrites a
+        /// configuration nobody asked about. The layer-delete confirm on
+        /// this page re-validates after its confirm for the same
+        /// reason.</summary>
         [Fact]
         public void TheCloneRevalidatesAfterItsConfirm()
         {
             string cs = CodeBehind();
-            int i = cs.IndexOf("await confirm.ShowDialogAsync()", StringComparison.Ordinal);
+            int i = cs.IndexOf("Strings.Instance.Pad_ExtendedClone_Apply, kind: ConfirmKind.Primary))", StringComparison.Ordinal);
             Assert.True(i > 0, "the clone confirm is gone");
             int apply = cs.IndexOf("ApplyPassthroughClone(vm,", i, StringComparison.Ordinal);
             Assert.True(apply > i, "the apply no longer follows the confirm");

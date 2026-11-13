@@ -21,7 +21,8 @@ namespace PadForge.Controls
     /// control (the HomeExtraTile style): the glyph, the name, the word On
     /// with the status or the one line after it, one button that opens the
     /// extra's page, and no switch. A tile with <see cref="ActionText"/>
-    /// has a second button at its end that opens the page too.</para>
+    /// has a second button at its end that opens the page too: always on
+    /// Home, and in the catalog while the extra runs.</para>
     /// </summary>
     [TemplatePart(Name = OpenPartName, Type = typeof(ButtonBase))]
     [TemplatePart(Name = SwitchPartName, Type = typeof(ToggleButton))]
@@ -161,7 +162,7 @@ namespace PadForge.Controls
             => SetValue(SummaryKey, string.IsNullOrEmpty(Status) ? (Line ?? string.Empty) : Status);
 
         /// <summary>The words on a second button at the tile's end (Show QR
-        /// on Home's Web Controller tile), or empty for none. The button
+        /// on the Web Controller's tile), or empty for none. The button
         /// opens the extra's page, as the tile does.</summary>
         public string ActionText
         {

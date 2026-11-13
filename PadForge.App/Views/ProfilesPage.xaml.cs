@@ -4,11 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 using PadForge.Services;
 using PadForge.ViewModels;
 
@@ -19,34 +17,133 @@ namespace PadForge.Views
         public ProfilesPage()
         {
             InitializeComponent();
+            // The drop tile shares the cards' grid through a
+            // CompositeCollection, and its CollectionContainer sits outside
+            // the visual tree, so a DataContext binding cannot reach the
+            // profiles. Hand it the collection directly whenever the view
+            // model lands, as Home does for its cards.
+            DataContextChanged += (_, e) =>
+            {
+                if (e.NewValue is SettingsViewModel vm)
+                    ProfilesCollectionContainer.Collection = vm.ProfileItems;
+            };
+            ShowStarters();
+            Loaded += (_, _) =>
+            {
+                Strings.CultureChanged -= ShowStarters;
+                Strings.CultureChanged += ShowStarters;
+                ShowStarters();
+            };
+            Unloaded += (_, _) => Strings.CultureChanged -= ShowStarters;
         }
 
-        private void ProfileList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        // ─────────────────────────────────────────────
+        //  Starter profiles (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>How many starter profiles the page shows: the catalog's
+        /// first four, one row of tiles on the board. Get Profiles lists
+        /// them all.</summary>
+        internal const int StarterTileCount = 4;
+
+        /// <summary>Set by MainWindow: adds a starter profile to the user's
+        /// profiles, as Save Profile does in Get Profiles.</summary>
+        internal Action<StarterProfileInfo> AddStarter { get; set; }
+
+        private string _lastStarterKey;
+        private long _lastStarterAt;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern uint GetDoubleClickTime();
+
+        /// <summary>A tile reads its words from the strings as it is made,
+        /// so a change of language makes the tiles again.</summary>
+        private void ShowStarters()
+            => StarterTiles.ItemsSource = StarterProfileCatalog.All.Take(StarterTileCount).ToArray();
+
+        /// <summary>Whether a click on a starter's tile adds its profile.
+        /// The second click of a double click on one tile does not, nor does
+        /// a held Enter's repeat: each would add the profile again under a
+        /// numbered name.</summary>
+        internal static bool AddsStarter(string key, string lastKey, long now, long lastAt, long doubleClickMs)
+            => !string.Equals(key, lastKey, StringComparison.Ordinal) || now - lastAt > doubleClickMs;
+
+        private void StarterTile_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is SettingsViewModel vm &&
-                vm.LoadProfileCommand.CanExecute(null))
-            {
-                vm.LoadProfileCommand.Execute(null);
-            }
+            if ((sender as FrameworkElement)?.DataContext is not StarterProfileInfo info) return;
+            long now = Environment.TickCount64;
+            bool adds = AddsStarter(info.Key, _lastStarterKey, now, _lastStarterAt, GetDoubleClickTime());
+            _lastStarterKey = info.Key;
+            _lastStarterAt = now;
+            if (adds) AddStarter?.Invoke(info);
         }
+
+        // ─────────────────────────────────────────────
+        //  The cards (#574)
+        // ─────────────────────────────────────────────
+
+        /// <summary>A double click on a card loads its profile, as a double click
+        /// on the list's row did. The card's Load button does it from the keyboard.</summary>
+        private void ProfileCard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount != 2 || DataContext is not SettingsViewModel vm) return;
+            if ((sender as FrameworkElement)?.DataContext is not ProfileListItem item) return;
+            if (!vm.LoadProfileCommand.CanExecute(item)) return;
+            vm.LoadProfileCommand.Execute(item);
+            e.Handled = true;
+        }
+
+        /// <summary>Opens a card's More menu under its button, on the card's own
+        /// profile. A context menu is outside the page's tree, so it is handed
+        /// the card's item for its gates and its items' clicks.</summary>
+        private void CardMore_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button || button.ContextMenu == null) return;
+            button.ContextMenu.DataContext = button.DataContext;
+            button.ContextMenu.PlacementTarget = button;
+            button.ContextMenu.Placement = PlacementMode.Bottom;
+            button.ContextMenu.IsOpen = true;
+        }
+
+        /// <summary>A More menu's item runs its command on the card's profile.</summary>
+        private void ProfileMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not SettingsViewModel vm) return;
+            if (sender is not FrameworkElement { DataContext: ProfileListItem item, Tag: string action }) return;
+            ICommand command = action switch
+            {
+                "Edit" => vm.EditProfileCommand,
+                "SaveAs" => vm.SaveAsProfileCommand,
+                "SaveHere" => vm.SaveSetupHereCommand,
+                "Export" => vm.ExportProfileCommand,
+                "Delete" => vm.DeleteProfileCommand,
+                _ => null,
+            };
+            if (command?.CanExecute(item) == true) command.Execute(item);
+        }
+
+        /// <summary>The drop tile opens Get Profiles on Import a File, as the board links it.</summary>
+        private void DropTile_Click(object sender, RoutedEventArgs e)
+            => (DataContext as SettingsViewModel)?.GetProfilesCommand.Execute("File");
 
         // ─────────────────────────────────────────────
         //  Drop-zone import (#175)
         // ─────────────────────────────────────────────
 
         /// <summary>Set by MainWindow: consumes a dropped profile file through
-        /// the same code path as the Import button.</summary>
+        /// the same code path as Get Profiles' Import a File.</summary>
         internal Action<string> ImportProfileFile { get; set; }
 
-        /// <summary>A file the Import button takes: a .pfprofile, or another
-        /// tool's config (#561), whose content then decides.</summary>
-        private static bool IsImportableFile(string file)
+        /// <summary>A file Import a File takes: a .pfprofile, or another
+        /// tool's config (#561), whose content then decides. Get Profiles'
+        /// drop zone takes the same files.</summary>
+        internal static bool IsImportableFile(string file)
             => file != null
                && (file.EndsWith(PadForge.Common.ProfileTransfer.FileExtension, StringComparison.OrdinalIgnoreCase)
                    || PadForge.Common.ConfigImport.ForeignConfigImporter.HandlesFile(file));
 
         /// <summary>True when the drag carries at least one importable file.</summary>
-        private static bool IsProfileFileDrag(DragEventArgs e)
+        internal static bool IsProfileFileDrag(DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return false;
             return e.Data.GetData(DataFormats.FileDrop) is string[] files &&

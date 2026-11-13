@@ -25,7 +25,7 @@ namespace PadForge.Tests
         [InlineData("Gamepad LeftStick (half) · Long Press", "Gamepad LeftStick", " (half) · Long Press")]
         public void DecorationIsSplitFromTheBareStem(string source, string bare, string decoration)
         {
-            var (b, d) = WorkshopBrowseDialog.SplitSourceDecoration(source);
+            var (b, d) = CommunityConfigsPanel.SplitSourceDecoration(source);
             Assert.Equal(bare, b);
             Assert.Equal(decoration, d);
         }
@@ -42,8 +42,8 @@ namespace PadForge.Tests
         [InlineData("Gamepad LeftStick (half)", "LeftThumbRing")]
         public void DecoratedSourceStillAnchorsToItsControl(string decorated, string expectedAnchor)
         {
-            var (bare, _) = WorkshopBrowseDialog.SplitSourceDecoration(decorated);
-            Assert.Equal(expectedAnchor, WorkshopBrowseDialog.ArtAnchorFor(bare));
+            var (bare, _) = CommunityConfigsPanel.SplitSourceDecoration(decorated);
+            Assert.Equal(expectedAnchor, CommunityConfigsPanel.ArtAnchorFor(bare));
         }
 
         /// <summary>And the decoration must survive into the label, or the fix
@@ -51,8 +51,8 @@ namespace PadForge.Tests
         [Fact]
         public void DecorationSurvivesIntoTheLabel()
         {
-            var (bare, deco) = WorkshopBrowseDialog.SplitSourceDecoration("Gamepad ButtonA · Long Press");
-            Assert.Equal("A · Long Press", WorkshopBrowseDialog.FriendlySource(bare) + deco);
+            var (bare, deco) = CommunityConfigsPanel.SplitSourceDecoration("Gamepad ButtonA · Long Press");
+            Assert.Equal("A · Long Press", CommunityConfigsPanel.FriendlySource(bare) + deco);
         }
 
         // ── Finding #16: RawHidState.Clear skipped HardwareAxes ─────────────

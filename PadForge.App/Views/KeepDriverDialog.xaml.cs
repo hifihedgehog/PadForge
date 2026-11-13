@@ -1,7 +1,11 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Documents;
 using System.Windows.Threading;
+using PadForge.Common;
 using PadForge.Resources.Strings;
 
 namespace PadForge.Views
@@ -14,33 +18,31 @@ namespace PadForge.Views
     /// shared receiver can take the other with it, so the switch asks to be
     /// kept and undoes itself when nobody answers: the way
     /// Windows' display settings undo a change after 15 seconds. Only the
-    /// Keep button keeps it. Give It Back, Esc, the close button and the
+    /// Keep button keeps it. Give It Back, Esc and the
     /// countdown's end all give the keyboard back.
     /// </summary>
-    public partial class KeepDriverDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class KeepDriverDialog : DialogWindow
     {
         private readonly DispatcherTimer _timer;
         private readonly int _seconds;
         private long _deadline;
         private int _remaining;
+        private int _shown = -1;
         private bool _kept;
 
         private KeepDriverDialog(string deviceName, int seconds, bool mouse, bool touchpad)
         {
             InitializeComponent();
-            // ConfirmDialog's remedy for a FluentWindow with no title bar,
-            // so the prompt can be moved.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             Title = touchpad ? Strings.Instance.Devices_TouchpadKeepTitle
                 : mouse ? Strings.Instance.Devices_DriverKeepTitle_Mouse : Strings.Instance.Devices_DriverKeepTitle;
-            TitleText.Text = Title;
-            MessageText.Text = string.Format(touchpad
+            Subtitle = string.Format(touchpad
                 ? Strings.Instance.Devices_TouchpadKeepMessage_Format
                 : mouse
                 ? Strings.Instance.Devices_DriverKeepMessage_Mouse_Format
                 : Strings.Instance.Devices_DriverKeepMessage_Format, deviceName);
             _seconds = Math.Max(1, seconds);
+            CountdownBar.Maximum = _seconds;
             _remaining = _seconds;
             ShowRemaining();
 
@@ -91,8 +93,30 @@ namespace PadForge.Views
         internal static int RemainingAt(long deadline, long now)
             => now >= deadline ? 0 : (int)Math.Ceiling((deadline - now) / (double)Stopwatch.Frequency);
 
+        /// <summary>The bar drains by the exact time left, at the timer's
+        /// step. The sentence counts whole seconds, its number in the code
+        /// face as the board draws it, and is made again only when the
+        /// number changes, so a screen reader hears each second once.</summary>
         private void ShowRemaining()
-            => CountdownText.Text = string.Format(Strings.Instance.Devices_DriverKeepCountdown_Format, _remaining);
+        {
+            CountdownBar.Value = _deadline == 0
+                ? _seconds
+                : Math.Max(0, (_deadline - Stopwatch.GetTimestamp()) / (double)Stopwatch.Frequency);
+            if (_shown == _remaining) return;
+            _shown = _remaining;
+
+            string format = Strings.Instance.Devices_DriverKeepCountdown_Format;
+            var (before, after) = FormatRuns.Split(format);
+            var number = new Run(_remaining.ToString(CultureInfo.CurrentCulture));
+            number.SetResourceReference(TextElement.FontFamilyProperty, "TelemetryFontFamily");
+            CountdownText.Inlines.Clear();
+            CountdownText.Inlines.Add(new Run(before));
+            CountdownText.Inlines.Add(number);
+            CountdownText.Inlines.Add(new Run(after));
+            string sentence = string.Format(CultureInfo.CurrentCulture, format, _remaining);
+            AutomationProperties.SetName(CountdownText, sentence);
+            AutomationProperties.SetName(CountdownBar, sentence);
+        }
 
         private void KeepButton_Click(object sender, RoutedEventArgs e)
         {

@@ -381,7 +381,11 @@ namespace PadForge.Tests
                 "Binding HeadTrackingStatus", "Binding Dashboard_HeadTrackingFooter,",
             })
                 Assert.Contains(needle, card);
-            Assert.Equal(1, card.Split(new[] { "StaticResource CardBorder" }, StringSplitOptions.None).Length - 1);
+            // One status card, the Sources and Range cards, and the More card (#574).
+            Assert.Equal(1, card.Split(new[] { "Style=\"{StaticResource ExtraStatusCard}\"" }, StringSplitOptions.None).Length - 1);
+            Assert.Equal(2, card.Split(new[] { "Style=\"{StaticResource ExtraCard}\"" }, StringSplitOptions.None).Length - 1);
+            Assert.Equal(1, card.Split(new[] { "<controls:FoldList " }, StringSplitOptions.None).Length - 1);
+            Assert.DoesNotContain("StaticResource CardBorder", card);
 
             // Home has the extra's row while it is on, and none of its settings:
             // the row reads the any-source switch and the status, nothing else.

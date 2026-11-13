@@ -1,100 +1,62 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.CopyFromDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.CopyFromDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        xmlns:controls="clr-namespace:PadForge.Controls"
         xmlns:common="clr-namespace:PadForge.Common"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        Title="{Binding CopyFrom_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="420" Width="420"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        BodyPadding="22,14,22,18"
+        Title="{Binding CopyFrom_Title, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- Copy From (#574), as the Confirm board draws it: the line under the
+         title says what is replaced or added on which controller, and each
+         row is a controller to copy from, named as its page names it over
+         the device that drives it. The first row is picked on open, and a
+         double click copies at once. -->
+    <views:DialogWindow.Resources>
+        <!-- A row is read by its two lines: with a template of its own it
+             would be read as its type. -->
+        <Style x:Key="CopyFromRow" TargetType="ListBoxItem" BasedOn="{StaticResource DialogRadioListItem}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding ReadName, TargetNullValue=''}"/>
+        </Style>
+    </views:DialogWindow.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button Style="{StaticResource DialogButton}" IsCancel="True" Click="CancelButton_Click"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="CopyButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True" Click="OkButton_Click"
+                    Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CancelButton_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <controls:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
-
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="{Binding CopyFrom_SelectDevice, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,12"/>
-
-            <ListBox Grid.Row="1" x:Name="DeviceList"
-                     SelectionMode="Single"
-                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                     MouseDoubleClick="DeviceList_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="4,2">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding LayoutLabel}" FontSize="12"
-                                           Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <TextBlock Text="{Binding SlotLabel}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <!-- Footer band (#175 dialog language): OK confirms the copy
-                 source and wears the ember accent. -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="0,18,0,0">
-                <Button Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}" MinWidth="90" Margin="0,0,8,0"
-                        IsDefault="True" Click="OkButton_Click"
-                        Style="{StaticResource EmberAccentButton}"/>
-                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="90"
-                        IsCancel="True" Click="CancelButton_Click"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+    <Border Style="{StaticResource DialogList}" common:InitialFocus.First="True">
+        <ListBox x:Name="DeviceList" Style="{StaticResource DialogListBox}" MaxHeight="322" SelectionMode="Single"
+                 ItemContainerStyle="{StaticResource CopyFromRow}"
+                 MouseDoubleClick="DeviceList_MouseDoubleClick"
+                 AutomationProperties.Name="{Binding CopyFrom_Title, Source={x:Static strings:Strings.Instance}}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Detail}" FontSize="13" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Detail}" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Detail}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Border>
+</views:DialogWindow>

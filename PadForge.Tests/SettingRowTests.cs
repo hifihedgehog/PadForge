@@ -3,6 +3,9 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using PadForge.Controls;
 using Xunit;
@@ -45,11 +48,21 @@ namespace PadForge.Tests
 
         private static double TopOf(UIElement child, UIElement panel) => child.TranslatePoint(new Point(0, 0), panel).Y;
 
+        /// <summary>A row with no reach of its own, for the tests of what a
+        /// row does with its whole width.</summary>
+        private static SettingRow Unbounded(SettingRow row)
+        {
+            SettingRow.SetReach(row, double.PositiveInfinity);
+            return row;
+        }
+
         /// <summary>A row as the page writes one: a label in its column, a
-        /// slider that asks for 280, a value, and a reset docked right.</summary>
-        private static (SettingRow Row, TextBlock Label, Slider Slider, Border Value, Border Reset) SliderRow()
+        /// slider that asks for 280, a value, and a reset docked right. It
+        /// has no reach unless the test asks for the page's own.</summary>
+        private static (SettingRow Row, TextBlock Label, Slider Slider, Border Value, Border Reset) SliderRow(bool withReach = false)
         {
             var row = new SettingRow { MinHeight = 44 };
+            if (!withReach) Unbounded(row);
             var label = new TextBlock { Width = 230, Margin = new Thickness(0, 0, 12, 0) };
             var slider = new Slider { MaxWidth = 280 };
             var value = new Border { Width = 40, Height = 20 };
@@ -141,6 +154,101 @@ namespace PadForge.Tests
             Assert.Equal(486, slider.RenderSize.Width);
             Assert.Equal(728, LeftOf(value, row));
             Assert.Equal(768, LeftOf(reset, row));
+        });
+
+        // ── the row's reach ────────────────────────────────────────────
+
+        [Theory]
+        // Narrower than the reach: the row's own width.
+        [InlineData(500, 660, 314, 500)]
+        [InlineData(660, 660, 314, 660)]
+        // Wider: the reach.
+        [InlineData(1300, 660, 314, 660)]
+        // Parts that need more than the reach have what they need, and
+        // never more than the row.
+        [InlineData(1300, 660, 760, 760)]
+        [InlineData(700, 660, 760, 700)]
+        // No reach, or no bound: the width.
+        [InlineData(1300, double.PositiveInfinity, 314, 1300)]
+        [InlineData(1300, 0, 314, 1300)]
+        [InlineData(double.PositiveInfinity, 660, 314, double.PositiveInfinity)]
+        public void ARowLaysItsPartsOutWithinItsReach(double width, double reach, double needed, double room)
+            => Assert.Equal(room, SettingRow.RoomFor(width, reach, needed));
+
+        /// <summary>On a wide card a row's reset stands beside its value,
+        /// 660 from the row's start, and not at the card's far end: at
+        /// 1300 it stood 746 from the value (the Rumble section on a wide
+        /// window, 2026-11-13).</summary>
+        [Fact]
+        public void InAWideCard_TheResetStandsBesideTheValue() => RunSta(() =>
+        {
+            Assert.Equal(660.0, SettingRow.DefaultReach);
+            var (row, label, slider, value, reset) = SliderRow(withReach: true);
+            Assert.Equal(660.0, SettingRow.GetReach(row));
+            Layout(row, 1300);
+            Assert.Equal(0, LeftOf(label, row));
+            Assert.Equal(242, LeftOf(slider, row));
+            Assert.Equal(280, slider.RenderSize.Width);
+            Assert.Equal(522, LeftOf(value, row));
+            Assert.Equal(628, LeftOf(reset, row));
+
+            // A slider that grows runs to the value at the reach's end.
+            slider.MaxWidth = double.PositiveInfinity;
+            row.Grow = true;
+            Layout(row, 1300);
+            Assert.Equal(660 - 242 - 40 - 32, slider.RenderSize.Width);
+            Assert.Equal(588, LeftOf(value, row));
+            Assert.Equal(628, LeftOf(reset, row));
+
+            // A card narrower than the reach: the row's own width, as before.
+            Layout(row, 500);
+            Assert.Equal(468, LeftOf(reset, row));
+
+            // A page sets the reach for every row inside it.
+            var page = new Border { Child = row };
+            SettingRow.SetReach(page, 820);
+            row.ClearValue(SettingRow.ReachProperty);
+            Assert.Equal(820.0, SettingRow.GetReach(row));
+            Layout(page, 1300);
+            Assert.Equal(788, LeftOf(reset, row));
+            SettingRow.SetReach(page, double.PositiveInfinity);
+            Layout(page, 1300);
+            Assert.Equal(1268, LeftOf(reset, row));
+        });
+
+        /// <summary>A label that fills: it takes the reach's room, and the
+        /// switch after it stands against the reset. A row whose parts
+        /// need more than the reach has what they need.</summary>
+        [Fact]
+        public void WithinTheReach_AFillingLabelPutsTheSwitchAgainstTheReset() => RunSta(() =>
+        {
+            var row = new SettingRow { MinHeight = 44 };
+            var label = new TextBlock { Text = "Hide from Games", TextWrapping = TextWrapping.Wrap };
+            SettingRow.SetFills(label, true);
+            var toggle = new Border { Width = 40, Height = 22 };
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            row.Children.Add(label);
+            row.Children.Add(toggle);
+            row.Children.Add(reset);
+            Layout(row, 1300);
+            Assert.Equal(588, label.RenderSize.Width);
+            Assert.Equal(588, LeftOf(toggle, row));
+            Assert.Equal(628, LeftOf(reset, row));
+
+            // Parts with no child that gives way, wider than the reach:
+            // the reset follows them.
+            var wide = new SettingRow { MinHeight = 44 };
+            var name = new Border { Width = 242, Height = 20 };
+            var boxes = new Border { Width = 430, Height = 30 };
+            var end = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(end, Dock.Right);
+            wide.Children.Add(name);
+            wide.Children.Add(boxes);
+            wide.Children.Add(end);
+            Layout(wide, 1300);
+            Assert.Equal(242, LeftOf(boxes, wide));
+            Assert.Equal(672, LeftOf(end, wide));
         });
 
         // ── the value's column ─────────────────────────────────────────
@@ -262,7 +370,7 @@ namespace PadForge.Tests
         [Fact]
         public void AChildThatFills_TakesTheRoom_AndWrapsInsideIt() => RunSta(() =>
         {
-            var row = new SettingRow { MinHeight = 44 };
+            var row = Unbounded(new SettingRow { MinHeight = 44 });
             var label = new Border { Width = 242, Height = 20 };
             var toggle = new Border { Width = 40, Height = 22 };
             var hint = new TextBlock
@@ -291,7 +399,7 @@ namespace PadForge.Tests
         [Fact]
         public void AChildThatFills_StopsAtItsMaxWidth_AndWhatFollowsItComesNext() => RunSta(() =>
         {
-            var row = new SettingRow { MinHeight = 44 };
+            var row = Unbounded(new SettingRow { MinHeight = 44 });
             var label = new Border { Width = 242, Height = 20 };
             var meters = new Border { MaxWidth = 420, Height = 6 };
             SettingRow.SetFills(meters, true);
@@ -323,7 +431,7 @@ namespace PadForge.Tests
         [Fact]
         public void APickerThatFills_StaysAtItsWidth_AndNarrowsInANarrowRow() => RunSta(() =>
         {
-            var row = new SettingRow { MinHeight = 44, Grow = true, ValueWidth = 66 };
+            var row = Unbounded(new SettingRow { MinHeight = 44, Grow = true, ValueWidth = 66 });
             var label = new Border { Width = 182, Height = 20 };
             var picker = new Border { MaxWidth = 260, Height = 32 };
             SettingRow.SetFills(picker, true);
@@ -341,6 +449,204 @@ namespace PadForge.Tests
             Layout(row, 388);
             Assert.Equal(174, picker.RenderSize.Width);
             Assert.Equal(356, LeftOf(reset, row));
+        });
+
+        // ── a row whose controls stand at its end ──────────────────────
+
+        /// <summary>What a line of text takes on one line, its margin included.</summary>
+        private static double Natural(string text, Thickness margin)
+        {
+            var probe = new TextBlock { Text = text, Margin = margin };
+            probe.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            return probe.DesiredSize.Width;
+        }
+
+        /// <summary>The height of one line of text.</summary>
+        private static double OneLine()
+        {
+            var probe = new TextBlock { Text = "Ag" };
+            probe.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            return probe.DesiredSize.Height;
+        }
+
+        /// <summary>The Settings board's row: the label takes the room the
+        /// row has left, the control stands at the row's end and the reset
+        /// after it, 12 on. The row takes its whole width whatever the
+        /// reach is. A row with no reset ends on its control.</summary>
+        [Fact]
+        public void WithEndsSet_TheLabelTakesTheRoom_AndTheControlStandsAtTheRowsEnd() => RunSta(() =>
+        {
+            Assert.Equal(12.0, SettingRow.EndGap);
+            var row = new SettingRow { MinHeight = 44 };
+            Assert.False(SettingRow.GetEnds(row));
+            // Set on what holds the row, every row inside reads it.
+            var host = new StackPanel();
+            host.Children.Add(row);
+            SettingRow.SetEnds(host, true);
+            Assert.True(SettingRow.GetEnds(row));
+
+            var label = new TextBlock { Text = "Start at Login", Margin = new Thickness(0, 0, 12, 0), TextWrapping = TextWrapping.Wrap };
+            var toggle = new Border { Width = 40, Height = 22 };
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            row.Children.Add(label);
+            row.Children.Add(toggle);
+            row.Children.Add(reset);
+            Layout(host, 780);
+            Assert.Equal(780, row.RenderSize.Width);
+            Assert.Equal(748, LeftOf(reset, row));
+            Assert.Equal(748 - 12 - 40, LeftOf(toggle, row));
+            Assert.Equal(new Rect(0, 0, 696, 44), LayoutInformation.GetLayoutSlot(label));
+
+            // A narrow row: the label wraps in what the control and the
+            // reset leave.
+            Assert.Equal(OneLine(), label.DesiredSize.Height, 3);
+            Layout(host, 40 + 12 + 32 + 50);
+            Assert.Equal(50, LayoutInformation.GetLayoutSlot(label).Width);
+            Assert.True(label.DesiredSize.Height > OneLine() + 1, "the label did not wrap: " + label.DesiredSize.Height);
+            Assert.Equal(50, LeftOf(toggle, row));
+
+            // No reset: the control ends the row, with no gap after it.
+            row.Children.Remove(reset);
+            Layout(host, 780);
+            Assert.Equal(740, LeftOf(toggle, row));
+            Assert.Equal(740, LayoutInformation.GetLayoutSlot(label).Width);
+
+            // A part that is collapsed takes no room. Another width, since
+            // a panel measured twice at one width is not measured again.
+            row.Children.Add(reset);
+            toggle.Visibility = Visibility.Collapsed;
+            Layout(host, 800);
+            Assert.Equal(768, LeftOf(reset, row));
+            Assert.Equal(768, LayoutInformation.GetLayoutSlot(label).Width);
+        });
+
+        /// <summary>What a setting reports stands aside: before the switch
+        /// it was written after, so the switches of a card keep one column
+        /// whatever each row reports. It is the part that gives way in a
+        /// narrow row, down to its least, and then the label wraps.</summary>
+        [Fact]
+        public void WithEndsSet_AStatusStandsBeforeTheSwitch_AndGivesWayFirst() => RunSta(() =>
+        {
+            Assert.Equal(96.0, SettingRow.FillLeast);
+            const string LabelText = "Read Analog Keyboards", StatusText = "No supported analog keyboard found.";
+            var margin = new Thickness(0, 0, 12, 0);
+            var row = new SettingRow { MinHeight = 44 };
+            SettingRow.SetEnds(row, true);
+            var label = new TextBlock { Text = LabelText, Margin = margin, TextWrapping = TextWrapping.Wrap };
+            var toggle = new Border { Width = 40, Height = 22 };
+            var status = new TextBlock { Text = StatusText, Margin = margin, TextWrapping = TextWrapping.Wrap };
+            SettingRow.SetFills(status, true);
+            SettingRow.SetAside(status, true);
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            foreach (UIElement part in new UIElement[] { label, toggle, status, reset }) row.Children.Add(part);
+            double labelWidth = Natural(LabelText, margin), statusWidth = Natural(StatusText, margin);
+            Assert.True(statusWidth > 160 && labelWidth > 80, "the status is " + statusWidth + " wide and the label " + labelWidth);
+
+            // Room for all: the switch against the reset, the status
+            // before it at the width of its words, the label the rest.
+            Layout(row, 780);
+            double switchAt = 780 - 32 - 12 - 40;
+            Assert.Equal(switchAt, LeftOf(toggle, row), 3);
+            Assert.Equal(switchAt - statusWidth, LeftOf(status, row), 3);
+            Assert.Equal(switchAt - statusWidth, LayoutInformation.GetLayoutSlot(label).Width, 3);
+            Assert.Equal(44, row.RenderSize.Height);
+
+            // Written after the switch and not aside, it stands after it,
+            // and the switch moves with its words.
+            SettingRow.SetAside(status, false);
+            Layout(row, 780);
+            Assert.Equal(switchAt - statusWidth, LeftOf(toggle, row), 3);
+            Assert.Equal(switchAt - statusWidth + 40, LeftOf(status, row), 3);
+            SettingRow.SetAside(status, true);
+
+            // Short of room by 60: the status gives it and wraps, and the
+            // label keeps its one line.
+            double others = 40 + 12 + 32;
+            Layout(row, labelWidth + statusWidth - 60 + others);
+            Assert.Equal(statusWidth - 60, LayoutInformation.GetLayoutSlot(status).Width, 3);
+            Assert.Equal(labelWidth, LayoutInformation.GetLayoutSlot(label).Width, 3);
+            Assert.True(status.DesiredSize.Height > OneLine() + 1, "the status did not wrap");
+            Assert.Equal(OneLine(), label.DesiredSize.Height, 3);
+            Assert.Equal(labelWidth + statusWidth - 60, LeftOf(toggle, row), 3);
+
+            // At its least the label wraps in what is left.
+            Layout(row, 96 + 70 + others);
+            Assert.Equal(96, LayoutInformation.GetLayoutSlot(status).Width, 3);
+            Assert.Equal(70, LayoutInformation.GetLayoutSlot(label).Width, 3);
+            Assert.Equal(166, LeftOf(toggle, row), 3);
+        });
+
+        /// <summary>A part that fills with a width of its own to stop at (a
+        /// path's field) takes that width at the row's end while there is
+        /// room, and a picker with none is as wide as its content.</summary>
+        [Fact]
+        public void WithEndsSet_AFieldTakesItsMaxWidth_AndAPickerItsContent() => RunSta(() =>
+        {
+            var row = new SettingRow { MinHeight = 44 };
+            SettingRow.SetEnds(row, true);
+            var label = new Border { Width = 120, Height = 20 };
+            var field = new Border { MaxWidth = 420, MinWidth = 200, Height = 30 };
+            SettingRow.SetFills(field, true);
+            var browse = new Border { Width = 80, Height = 30 };
+            var reset = new Border { Width = 32, Height = 32 };
+            DockPanel.SetDock(reset, Dock.Right);
+            foreach (UIElement part in new UIElement[] { label, field, browse, reset }) row.Children.Add(part);
+
+            Layout(row, 900);
+            Assert.Equal(900 - 32 - 12 - 80, LeftOf(browse, row));
+            Assert.Equal(420, LayoutInformation.GetLayoutSlot(field).Width);
+            Assert.Equal(900 - 32 - 12 - 80 - 420, LeftOf(field, row));
+
+            // Narrower: the field gives way, never under its own least.
+            Layout(row, 120 + 300 + 80 + 12 + 32);
+            Assert.Equal(300, LayoutInformation.GetLayoutSlot(field).Width);
+            Layout(row, 120 + 150 + 80 + 12 + 32);
+            Assert.Equal(200, LayoutInformation.GetLayoutSlot(field).Width);
+
+            // A picker that fills with no width to stop at: its content's.
+            var picker = new Border { MinWidth = 210, Height = 34, Child = new Border { Width = 236 } };
+            SettingRow.SetFills(picker, true);
+            row.Children.Clear();
+            foreach (UIElement part in new UIElement[] { label, picker, reset }) row.Children.Add(part);
+            Layout(row, 900);
+            Assert.Equal(236, LayoutInformation.GetLayoutSlot(picker).Width);
+            Assert.Equal(900 - 32 - 12 - 236, LeftOf(picker, row));
+        });
+
+        /// <summary>What a part draws, a pixel as 0xAARRGGBB.</summary>
+        private static uint[] Pixels(Visual part, int width, int height)
+        {
+            var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(part);
+            var pixels = new uint[width * height];
+            bitmap.CopyPixels(pixels, width * 4, 0);
+            return pixels;
+        }
+
+        /// <summary>The line over a row is its item's: one pixel thick, the
+        /// item's whole width, over the item's first row of pixels and not
+        /// its second. An item with no rule draws none.</summary>
+        [Fact]
+        public void ASettingItem_DrawsItsHairlineOverItself_ItsWholeWidth() => RunSta(() =>
+        {
+            const uint Red = 0xFFFF0000, White = 0xFFFFFFFF;
+            Assert.Equal(1.0, SettingItem.RuleHeight);
+            var item = new SettingItem { Rule = Brushes.Red };
+            item.Children.Add(new Border { Height = 20 });
+            var host = new Border { Background = Brushes.White, Child = item };
+            Layout(host, 60);
+            var pixels = Pixels(host, 60, 20);
+            for (int x = 0; x < 60; x++)
+            {
+                Assert.Equal(Red, pixels[x]);
+                Assert.Equal(White, pixels[60 + x]);
+            }
+
+            item.Rule = null;
+            item.UpdateLayout();
+            Assert.All(Pixels(host, 60, 20), pixel => Assert.Equal(White, pixel));
         });
 
         // ── a card's head row ──────────────────────────────────────────

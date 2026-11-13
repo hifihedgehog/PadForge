@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -14,11 +15,36 @@ namespace PadForge.ViewModels
         public RelayCommand<string> ResetSettingCommand =>
             _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
 
+        private RelayCommand<string> _resetCardCommand;
+
+        /// <summary>A card's Reset All on the Settings page (#574): every setting
+        /// the card shows goes back to its default through its own reset.</summary>
+        public RelayCommand<string> ResetCardCommand =>
+            _resetCardCommand ??= new RelayCommand<string>(ResetCard, card => CardSettings(card).Count > 0);
+
+        /// <summary>The settings each card's Reset All puts back, in the card's order.</summary>
+        internal static IReadOnlyList<string> CardSettings(string card) => card switch
+        {
+            "Window" => new[] { nameof(MinimizeToTray), nameof(CloseToTray), nameof(AlwaysShowTrayIcon), nameof(StartMinimized), nameof(StartAtLogin) },
+            "Updates" => new[] { nameof(CheckForUpdatesAutomatically), nameof(InstallUpdatesAutomatically), nameof(IncludePreReleaseUpdates) },
+            "InputEngine" => new[] { nameof(AutoStartEngine), nameof(EnablePollingOnFocusLoss), nameof(PollingRateMs), nameof(HmInactivityDestroyTimeoutSeconds) },
+            "AssignmentPrompts" => new[] { nameof(AssignOfferNewDevice), nameof(AssignOfferEmptySlot), nameof(AssignOfferHome) },
+            "BatteryAlerts" => new[] { nameof(BatteryNotifyEnabled), nameof(BatteryNotifyThreshold), nameof(BatteryNotifyVibrate), nameof(BatteryNotifyRepeatMinutes), nameof(BatteryNotifyFull) },
+            "Hardware" => new[] { nameof(FlydigiEnhancedProtocol), nameof(GKeysEnabled), nameof(AnalogKeyboardsEnabled), nameof(BlissBoxEnabled), nameof(HandheldButtonsEnabled), nameof(KeyboardScreensEnabled), nameof(NovintFalconEnabled) },
+            _ => Array.Empty<string>(),
+        };
+
+        private void ResetCard(string card)
+        {
+            foreach (string name in CardSettings(card)) ResetSetting(name);
+        }
+
         internal static bool CanResetSetting(string name) => name is
             nameof(SelectedThemeIndex) or
             nameof(SelectedLanguage) or
             nameof(AutoStartEngine) or
             nameof(MinimizeToTray) or
+            nameof(CloseToTray) or
             nameof(AlwaysShowTrayIcon) or
             nameof(CheckForUpdatesAutomatically) or
             nameof(InstallUpdatesAutomatically) or
@@ -75,6 +101,11 @@ namespace PadForge.ViewModels
                 case nameof(MinimizeToTray):
                 {
                     MinimizeToTray = false;
+                    break;
+                }
+                case nameof(CloseToTray):
+                {
+                    CloseToTray = false;
                     break;
                 }
                 case nameof(AlwaysShowTrayIcon):
@@ -976,6 +1007,7 @@ namespace PadForge.ViewModels
 
         internal static bool CanResetSetting(string name) => name is
             nameof(Enabled) or
+            nameof(CellCount) or
             nameof(HasCenter) or
             nameof(ShowLabels) or
             nameof(ShowOnWebController) or
@@ -1029,6 +1061,13 @@ namespace PadForge.ViewModels
                 case nameof(Suggestions):
                 {
                     Suggestions = true;
+                    break;
+                }
+                // How many cells a new menu has. The count box of 5.3.1 had
+                // this reset, and Add Cell's line keeps it (#574).
+                case nameof(CellCount):
+                {
+                    CellCount = new MenuDefinitionEntry().CellCount;
                     break;
                 }
                 case nameof(HasCenter):

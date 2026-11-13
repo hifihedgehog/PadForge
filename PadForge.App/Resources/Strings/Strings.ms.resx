@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Hidup</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Mati</value></data>
   <data name="Common_More" xml:space="preserve"><value>Lagi</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Lihat Semua</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Dipasang</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Tidak Dipasang</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Tidak Tersedia pada ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Menghentikan…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Menghentikan enjin…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Berjalan pada {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Berjalan ({0} klien)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Berjalan, {0} bersambung</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Mendengar pada :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} sedang digunakan</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Akses ditolak untuk port {0} (jalankan sebagai pentadbir)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Luar talian</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Tidak diketahui</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Lalai</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Semak imbas...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Semak imbas…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Teruskan</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Henti</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Mula</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Membersihkan pengawal maya yang tertinggal daripada sesi sebelumnya.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> peranti</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tambah Pengawal</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Tambah Pengawal</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Pilih apa yang patut dilihat permainan. Pengawal ditambah sebaik sahaja anda klik.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Didorong Oleh</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Pilih Kemudian</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Lazim</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Output Lain</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Reka letak yang dijangka kebanyakan permainan PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Untuk permainan dengan prom PlayStation, pad sentuh dan bar lampu.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Reka letak butang Switch, untuk permainan dan emulator yang menjangkakannya.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Kekunci, kursor dan skrol daripada pad.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Stereng, kayu bedik penerbangan dan reka letak tersuai.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota dan perubahan kawalan untuk perisian muzik.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Pengawal VR maya melalui SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Untuk menukar jenis kemudian, klik cip jenis pada pengawal. Ia hanya perlukan satu klik.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services tidak bertindak balas. Lihat kadnya dalam Tetapan.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Memerlukan SteamVR. Pasangkannya daripada kadnya dalam Tetapan.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Sudah ada pengawal VR. Satu memacu kedua-dua tangan.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge mempunyai {0} pengawal, jumlah paling banyak yang boleh dijalankan. Padam satu untuk menambah yang lain.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profil</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Cari tetapan, peranti dan profil</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Cari</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Hasil</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Atas</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Bawah</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} untuk bergerak</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} untuk membuka</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} dari mana-mana</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Halaman</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Tindakan</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Dokumentasi</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>di bawah Lagi</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>dalam pilihan baris</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Tiada apa-apa dalam PadForge sepadan dengan “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Cari dokumentasi untuk “{0}”</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Padam pengawal maya</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Skrin Penuh</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Tunjukkan PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profil "{0}" dicipta.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profil "{0}" dipadam.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profil "{0}" dikemas kini.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profil “{0}” kini menyimpan persediaan semasa.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profil dimuatkan: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profil dikembalikan kepada Lalai</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" ditetapkan kepada Pengawal Maya {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil ditukar: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Profil ditukar: Lalai</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Lalai</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Pintasan Profil</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Pintasan</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Tetapkan kombo butang untuk menukar profil daripada mana-mana pengawal.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Tambah Pintasan</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profil Seterusnya</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profil Sebelumnya</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Profil Tertentu</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Togol Tetingkap</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Togol Pengawal Maya Dinyahdayakan</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Tunjuk atau Sembunyikan PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Hidupkan atau Matikan Pengawal Maya</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Mana-mana Peranti Bersambung</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Rakam</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Merakam...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Tiada peranti dipilih.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Indeks slot tidak sah: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Gagal menetapkan peranti.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>apabila</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pada</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" ditetapkan kepada Pengawal Maya {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" dinyahtetapkan daripada Pengawal Maya {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Peranti disembunyikan. (Boleh dipulihkan dalam fail tetapan.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Peranti dialih keluar.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Pengawal Maya {0} dipadam.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Laman Utama</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Peranti disambungkan: {0}. Pengawal: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Permainan melihat setiap pengawal yang aktif.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Enjin hidup dan tiada pengawal aktif.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Mulakan enjin untuk mengembalikan pengawal anda.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Kadar tinjauan</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Pengawal aktif</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Peranti bersambung</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Hidupkan atau matikan pengawal ini</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Ia bermula apabila enjin bermula.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Ia bermula apabila peranti ini bersambung.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Ia bermula apabila salah satu peranti ini bersambung.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Tidak bersambung</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Sedang menghantar input</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateri {0}, rendah</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateri {0}, sedang dicas</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Enjin Input</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Pengawal</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tambahan yang Digunakan</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Tunjuk QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} telah disambungkan dan tidak digunakan.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gunakan</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Apakah yang patut dilihat permainan?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge menukar pengawal ini kepada yang dijangka permainan anda. Pilih satu untuk bermula. Anda boleh mengubahnya kemudian dengan satu klik.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge menukar pengawal anda kepada yang dijangka permainan anda. Pilih satu untuk bermula. Anda boleh mengubahnya kemudian dengan satu klik.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Main permainan papan kekunci dan tetikus dengan pad.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Jenis lain: [{0}, {1}, {2} dan {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Butang, kayu bedik dan pencetus dipetakan 1:1 sebaik sahaja pengawal dicipta.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Gandingkan pengawal Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Mulakan daripada profil siap sedia</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Bersambung</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bateri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bateri {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Tiada pengawal bersambung</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Sambungkan satu dengan kabel atau melalui Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> dipetakan, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> disambungkan</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Enjin berjalan. Klik untuk menghentikan.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Enjin melahu. Klik untuk menghentikan.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Enjin dihentikan. Klik untuk memulakan.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Konfigurasikan pengawal ini</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Nyalakan Tempa</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Sambungkan pengawal, pilih jenis output, dan PadForge menempa input anda ke dalamnya. Lawatan ringkas menunjukkan di mana segalanya berada.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Mulakan Lawatan</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Langkau</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Seterusnya</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Selesai</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slot</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Setiap pengawal maya berada di sini. Nyalaan menunjukkan slot yang sedang menempa sekarang.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Enjin Input</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Tempa itu sendiri. Togol nyalaan untuk memulakan atau menghentikan semua pengundian input.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Pengawal Maya</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Pilih jenis output, bekalkan peranti ke slot, dan klik kad untuk membentuk pemetaannya.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ciri pilihan menanti di sini: pengawal web telefon, Pautan Jauh, pelayan gerakan dan banyak lagi.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Tunjukkan Lawatan Selamat Datang</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Peranti</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Didorong oleh</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah Peranti</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Rendah</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Senarai</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} output</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Tekanan mana yang dilihat permainan apabila kedua-dua kekunci dalam sepasang ditahan</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Menahan pesongan kayu bedik yang kecil supaya permainan terus menunjukkan paparan pengawal</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Aktif: {0} daripada {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro dalam senarai, atau tekan + di sebelah Makro untuk mencipta satu.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>KELUAR</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pratonton</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Tambahan</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Ciri pilihan. Setiap satu tidak mengganggu sehingga anda menghidupkannya.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} daripada {1} hidup</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Lebih Banyak Cara Bermain</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Hantar ke Tempat Lain</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Pada Skrin</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan penjejak kepala atau set kepala VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Petakan kelajuan, pedal dan gear daripada permainan pemanduan.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Benarkan penonton menekan butang dengan menaip dalam sembang.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Kongsi pengawal dengan PadForge pada PC lain.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Pacu pengawal maya pada PC lain.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Hantar gerakan pengawal kepada emulator.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Terima kesan pencetus dan cahaya daripada mod permainan.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tunjukkan menu, lapisan dan pertukaran profil semasa anda bermain.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan yang menggunakan pad sentuh PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, pemasa atau jam di atas tetingkap lain.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, alamat HTTP biasa, kod akses</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung semula, port, perlindungan identiti, sambung melalui alamat</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Masa jalan OpenXR, port UDP, julat setiap paksi</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP biasa, kod akses</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung Semula Automatik, port, identiti penggandingan, sambung melalui alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pengganti DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, kelajuan penuh, format tersuai</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Kelajuan Penuh, Format Tersuai</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan penjejak kepala atau set kepala VR sementara kedua-dua ibu jari kekal pada butang.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Petakan kelajuan, pedal dan gear yang dihantar oleh permainan pemanduan, seperti mana-mana input.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Hantar gerakan pengawal kepada emulator yang membaca sumber gerakan DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Terima kesan pencetus suai dan lampu daripada mod permainan yang ditulis untuk DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Hidupkan output telemetri dalam permainan dan halakan ke PC dan port ini.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Dalam emulator, tambah sumber gerakan pada alamat PC ini dan port ini.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Kesan sesuatu mod sampai ke setiap pengawal yang mempunyai perkakasan untuknya.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pose kepala ialah baris Penjejak Kepala pada [Peranti]. Petakan yaw kepala kepada paksi kayu bedik dalam bahagian Butang pengawal.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Nilai itu ialah baris Telemetri Permainan pada [Peranti]. Petakan dalam bahagian Butang pengawal atau gunakannya untuk mencetuskan makro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Kedudukan, saiz dan kelegapan sesuatu menu ditetapkan pada menu itu, dalam bahagian [Makro &amp; Menu] pengawal.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sumber</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack dan apa-apa yang menghantar format UDP miliknya</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Julat</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Julat Setiap Paksi. Sifar mengikut julat di atas.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Permainan yang Tidak Dikenali PadForge</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang sedang berjalan sebelum menghantar</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Apa yang Dipaparkan</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, grid atau bar sesuatu menu semasa ia terbuka</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan semasa lapisan shift ditahan</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil apabila profil bertukar</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin Alamat</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Letak pada Skrin</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Sambungkan Telefon</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Letakkan telefon pada rangkaian yang sama dengan PC ini.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Imbas kod dengan kameranya.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Pilih reka letak pengawal.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Telefon</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Tiada telefon bersambung.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Telefon yang bersambung dipaparkan di sini dan pada halaman Peranti, tempat anda menetapkannya kepada pengawal.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Saluran anda</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Perkataan yang Boleh Ditaip Penonton</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Penonton menaip perkataan seperti !a, dan PadForge menekan apa yang dipetakan kepada !a pada baris Sembang Twitch di halaman Peranti. Tetapkan baris itu kepada pengawal seperti mana-mana peranti.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Semasa Anda Siaran Langsung</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Gambar untuk Siaran Anda</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Tiada PC digandingkan.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Gandingkan PC Lain</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Tiada PC belum digandingkan berdekatan.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Hidupkan Pautan Jauh dalam PadForge pada PC yang satu lagi. Ia dipaparkan di sini, dan anda membandingkan kod pendek pada kedua-dua skrin.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Rupa dan Kedudukan</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Seret dengan butang kanan tetikus atau tiga jari untuk menggerakkannya.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Tindihan {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Paparan</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Semasa program lain berada di hadapan, klik melalui tindihan. Semasa PadForge berada di hadapan, seret dengan butang kanan tetikus dan ubah saiznya dari sudutnya. Makro boleh menunjukkan atau menyembunyikan tindihan mengikut nombornya.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pelayan Gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pelayan protokol DSU/CemuHook Motion Provider untuk data giro dan meter pecutan.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Dayakan Pelayan Gerakan DSU (Protokol CemuHook Motion Provider)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>tiada pengawal</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Jenis {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Pengawal Web</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sediakan UI gamepad kepada pelayar pada rangkaian setempat anda.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Gunakan telefon atau tablet sebagai pengawal. Tiada apa-apa untuk dipasang pada telefon.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Dayakan Pelayan Pengawal Web</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Sambung daripada pelayar telefon atau tablet untuk digunakan sebagai gamepad.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Imbas dengan kamera telefon, atau buka alamat ini dalam pelayarnya:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Alamat HTTP Biasa</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>Alamat kedua tanpa HTTPS, untuk pelayar yang menolak sijil PadForge dan untuk terowong atau proksi songsang yang membawa sijilnya sendiri. Gerakan telefon memerlukan HTTPS, jadi di sini ia hanya berfungsi melalui terowong atau proksi yang menyediakan HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Sediakan HTTP Biasa Juga</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Kod Akses</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Alamat biasa hanya dibuka dengan kod ini, dan pautan di bawah menyertakannya. Kod baharu memutuskan sambungan semua orang pada alamat biasa.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Kod Baharu</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Alamat pada PC ini:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Getaran (klik untuk mengenal pasti peranti ini)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Menggetarkan peranti ini supaya anda tahu yang mana satu.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Pautan Jauh</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Kongsi pengawal dengan PadForge yang digandingkan pada PC lain, pada rangkaian anda atau merentasi internet.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Pacu pengawal maya pada PC lain. Selepas penggandingan sekali sahaja, PC yang dipercayai bersambung semula secara automatik.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Dayakan Pelayan Pautan Jauh</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Selepas penggandingan sekali sahaja, PC yang dipercayai bersambung semula secara automatik. PC yang digandingkan boleh memacu output gamepad PC ini, dan melainkan anda menghadkannya, papan kekunci, tetikus, dan makronya juga.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Atau Sambung melalui Alamat (Lanjutan)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>PC yang digandingkan boleh memacu output gamepad PC ini, dan melainkan anda menghadkannya, papan kekunci, tetikus, dan makronya juga.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Sambung melalui Alamat</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Gandingkan / Sambung</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Gandingkan</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Sambung</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Bersambung</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Gandingkan dengan PC Jauh</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Sahkan kod ini sepadan pada kedua-dua skrin, kemudian Gandingkan.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Gandingkan dengan PC Lain?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Semak bahawa kedua-dua skrin menunjukkan kod yang sama.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Gandingkan</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Tolak</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Hadkan PC Ini kepada Input Gamepad Sahaja</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Gamepad Sahaja</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Identiti</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>PC yang digandingkan boleh menghantar input papan kekunci, tetikus, dan makro ke PC ini melainkan anda menghadkannya kepada gamepad sahaja.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>PC yang digandingkan boleh memacu output gamepad PC ini, dan melainkan anda menghadkannya, papan kekunci, tetikus, dan makronya juga.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>PC Digandingkan</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC yang telah anda gandingkan untuk Pautan Jauh. Tarik balik satu untuk menghentikannya daripada bersambung. Ia perlu digandingkan semula.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Tarik Balik</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tarik Balik Semua</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Namakan Semula</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Tindihan Pad Sentuh</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk emulasi pad sentuh serasi PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation, untuk skrin sentuh atau tetikus.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Dayakan Tindihan Pad Sentuh</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Kelegapan</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Tetap Semula Kedudukan</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Tetapan</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Umum</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Perkakasan</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Pemacu</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data &amp; Privasi</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Cari tetapan</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Tiada tetapan sepadan dengan “{0}”.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Penampilan</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Pilih tema visual pilihan anda.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Gelap</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Enjin Input</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurasikan tingkah laku pengundian dan pemprosesan latar belakang.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Sokongan Perkakasan</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Mulakan Enjin Secara Automatik semasa Pelancaran</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Teruskan Pengundian Apabila Tetingkap Hilang Fokus</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Selang Pengundian (Melainkan Profil Mengatasinya)</value></data>
@@ -502,16 +599,19 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge telah dikemas kini kepada {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Mulakan Dikecilkan</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Mulakan semasa Log Masuk</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>Pemacu HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Sembunyikan peranti fizikal daripada permainan untuk mengelakkan input berganda.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Menyembunyikan peranti fizikal daripada permainan untuk mengelakkan input berganda.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Pilihan HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Sembunyikan Peranti daripada Permainan, Kekalkan Peranti Tersamar Antara Pelancaran, Aplikasi Disenaraiputihkan</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplikasi Disenaraiputihkan</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Aplikasi ini masih boleh melihat peranti tersembunyi. PadForge sentiasa disenaraiputihkan secara automatik.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Tambah...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Pemacu HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Enjin pengawal HID maya mod pengguna. Terbenam dalam PadForge.App. Dipasang secara automatik apabila pengawal maya pertama dicipta. Menggantikan ViGEmBus dan vJoy dalam v3.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge memasang pemacu ini bersama pengawal maya pertama yang anda cipta. Nyahpasang menyenaraikan apa yang HIDMaestro tinggalkan pada PC ini sebelum mengalih keluarnya.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Mencipta pengawal maya.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Nyahpasang HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ini mengalih keluar HIDMaestro daripada PC ini: pengawal mayanya, pemacu, sijil tandatangan, kunci pendaftaran dan fail. PadForge menghentikan enjinnya dahulu. Program lain yang menggunakan HIDMaestro kehilangan pemacunya sehingga ia dimulakan semula. PadForge memasangnya semula pada kali berikutnya ia memulakan pengawal maya.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Alih keluar juga usbip-win2 yang dipasang oleh pemasangnya sendiri</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Inilah yang akan dialih keluar daripada PC ini. PadForge memasang HIDMaestro semula dengan pengawal maya seterusnya.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Alih keluar juga usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge versi lama memasang usbip-win2 dengan pemasang usbip-win2. Ini turut mengalih keluar pemasangan itu, termasuk penapis hab akar USB-nya, melainkan program lain menggunakan usbip-win2. Mengalih keluar penapis itu memulakan semula setiap hab akar USB 3, jadi peranti USB terputus seketika.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Membaca apa yang ditinggalkan HIDMaestro pada PC ini…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro tidak meninggalkan apa-apa pada PC ini untuk dialih keluar.</value></data>
@@ -520,10 +620,15 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Kekal: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Tidak dapat dibaca: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Tidak dialih keluar: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Pemacu Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Dialih keluar</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Dikekalkan</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Tidak Dibaca</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Tidak Dialih Keluar</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Membolehkan pengawal PlayStation 3, PlayStation Move dan pengawal Navigation bersambung melalui Bluetooth. Terbenam dalam PadForge dan dipasang kali pertama salah satunya digandingkan.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Menyambungkan pengawal PlayStation 3 melalui Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Nyahpasang BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ini mengalih keluar BthPS3 daripada PC ini: pemacunya, penapis yang ditambahnya pada Bluetooth, dan pemacu WinUSB yang diberikan PadForge kepada pengawal PlayStation 3 untuk penggandingan. PadForge menghentikan enjinnya dahulu, dan Bluetooth dimatikan seketika semasa pemacu dinyahmuat. Pengawal PlayStation 3, Move dan Navigation kemudian berfungsi melalui USB sahaja. Menggandingkan salah satunya memasang BthPS3 semula.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Inilah yang akan dialih keluar daripada PC ini. Pengawal PlayStation 3, Move dan Navigation kemudian berfungsi melalui USB sahaja, sehingga menggandingkan satu memasang BthPS3 semula.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Membaca apa yang ditinggalkan BthPS3 pada PC ini…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 tidak meninggalkan apa-apa pada PC ini untuk dialih keluar.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini menggunakan pemacu ini, jadi pemacu ini kekal selagi ia dipasang.</value></data>
@@ -542,6 +647,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth tidak dihidupkan semula. Hidupkannya dalam Tetapan Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Port MIDI maya dan input MIDI. Windows 11 25H2 menyertakan API daripada kemas kini lewat November 2026. PC lain menggunakan masa jalan Windows MIDI Services, yang boleh dipasang oleh PadForge, atau API MIDI warisan.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Port MIDI maya dan input MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Terbina dalam Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Masa Jalan App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Tidak Tersedia</value></data>
@@ -559,6 +665,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Ini mengalih keluar Windows MIDI Services Runtime and Tools Microsoft, dengan apl MIDI Settings, konsol MIDI, dan modul PowerShell. Microsoft tidak lagi menawarkannya untuk dimuat turun, jadi ia tidak boleh dipasang semula.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Masa jalan VR untuk pengawal VR maya. Dipasang daripada pelayan Valve tanpa memerlukan akaun Steam atau klien Steam (beberapa GB).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Masa jalan untuk pengawal VR maya.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Lokasi Pemasangan</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Nyahpasang SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Ini mengalih keluar pemasangan SteamVR tanpa Steam di {0} dan membebaskan beberapa GB. Pengawal maya VR tidak akan berfungsi sehingga SteamVR dipasang semula.</value></data>
@@ -571,7 +678,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostik</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Maklumat versi, serta pengelogan peristiwa enjin untuk penyelesaian masalah.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Simpan Log Diagnostik</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Menulis peristiwa enjin secara berterusan ke diagnostics.log dalam folder yang ditunjukkan di bawah. Kekal didayakan merentasi permulaan semula. Apabila fail mencapai 8 MB, ia bertukar ke diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Menulis peristiwa enjin secara berterusan ke diagnostics.log dalam folder log, yang dibuka oleh Buka Folder Log. Kekal didayakan merentasi permulaan semula. Apabila fail mencapai 8 MB, ia bertukar ke diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Simpan Syot Kilat</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Menyimpan peristiwa enjin terkini ke fail baharu. Berfungsi walaupun log diagnostik dimatikan.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buka Folder Log</value></data>
@@ -584,53 +691,92 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Perihal</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Utiliti Pemetaan Pengawal</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Terkini.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Dokumentasi</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Semak Kemas Kini</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Cabang moden x360ce, dibina semula dengan SDL3, WPF, dan .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge menukar sebarang peranti input kepada sebarang pengawal maya. Gamepad, joystick, papan kekunci, tetikus, dan skrin sentuh dipetakan kepada pengawal permainan maya (Xbox, PlayStation, joystick penerbangan, roda stereng, gamepad pihak ketiga) atau output papan kekunci+tetikus / MIDI yang dianggap permainan sebagai perkakasan sebenar. Dikuasakan oleh HIDMaestro dan Windows MIDI Services. Ia menggunakan SDL3 untuk input pengawal, Windows Raw Input untuk papan kekunci dan tetikus, HidHide untuk penyamaran peranti mengikut permainan, dan menyediakan antara muka Fluent Design moden untuk pemetaan, zon mati, lengkung kepekaan, dan maklum balas daya.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Gambaran Keseluruhan</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Dibina Dengan</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Cari kredit</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Tunjukkan Semua Kredit</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Tunjukkan Kurang Kredit</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Tiada kredit sepadan dengan “{0}”.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Masa jalan dan rangka kerja WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Masa jalan dan rangka kerja WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Input dan penghitungan pengawal. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Input dan penghitungan pengawal.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Input papan kekunci dan tetikus mengikut peranti</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Output peranti MIDI maya (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Output peranti MIDI maya (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Visualisasi pengawal 3D. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Visualisasi pengawal 3D.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistem reka bentuk Fluent 2 untuk WPF. Wpf.Ui.dll membawa VirtualizingWrapPanel, fon fluentui-system-icons, dan kod daripada WPF dan microsoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Sistem reka bentuk Fluent 2 untuk WPF. Wpf.Ui.dll membawa VirtualizingWrapPanel, fon fluentui-system-icons, dan kod daripada WPF dan microsoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm untuk pengikatan data. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm untuk pengikatan data.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikon kayu bedik dan pencetus yang diterbitkan daripada "Xbox Series Button Icons and Controls" oleh Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Ikon kayu bedik dan pencetus yang diterbitkan daripada "Xbox Series Button Icons and Controls" oleh Zacksly.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Pemadan templat bentuk pad sentuh (Bulatan / Segi Empat Sama / Segi Tiga / Z / Tanda Semak dan gerak isyarat rakaman tersuai). Terbitan semula dalam C# bagi rujukan JavaScript oleh Magrofuoco, Vatavu, Anthony, dan Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Pemadan templat bentuk pad sentuh (Bulatan / Segi Empat Sama / Segi Tiga / Z / Tanda Semak dan gerak isyarat rakaman tersuai). Terbitan semula dalam C# bagi rujukan JavaScript oleh Magrofuoco, Vatavu, Anthony, dan Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Kedudukan kekunci dan kekunci lapisan asas bagi papan kekunci yang dilukis oleh pratonton Papan Kekunci + Tetikus, dijana daripada data reka letak QMK dan fork QMK milik Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Kedudukan kekunci dan kekunci lapisan asas bagi papan kekunci yang dilukis oleh pratonton Papan Kekunci + Tetikus, dijana daripada data reka letak QMK dan fork QMK milik Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Pendekatan pemarkahan margin sudut yang berjalan bersama pemadan awan titik pada bentuk satu jari. Melaksanakan idea pemarkahan daripada PointPatternAnalyzer GestureSign dalam C# asli. GPL-2.0, dokumentasi sahaja.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Pendekatan pemarkahan margin sudut yang berjalan bersama pemadan awan titik pada bentuk satu jari. Melaksanakan idea pemarkahan daripada PointPatternAnalyzer GestureSign dalam C# asli. Dokumentasi sahaja.</value></data>
   <data name="About_License" xml:space="preserve"><value>Lesen</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Perisian ini dilesenkan di bawah CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack oleh AL2009man (MIT) membekalkan aset pengawal 2D. GestureSign oleh TransposonY (GPL-2.0) dibaca sebagai dokumentasi untuk AngularMarginRecognizer, dan tiada kodnya disertakan. Handheld Companion (CC BY-NC-SA 4.0) membekalkan model 3D Xbox 360 dan Steam Deck yang disesuaikan oleh PadForge. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services, dan WPF UI dilesenkan di bawah Lesen MIT. OpenXInput hanya menyertakan penafian tanda dagangan huluan dan diedarkan semula seadanya di bawah terma yang sama. $Q Recognizer oleh Magrofuoco, Vatavu, Anthony, dan Wobbrock (BSD 3-Clause) ialah rujukan untuk ShapeRecognizer pad sentuh, terbitan semula dalam C#. SDL3 dilesenkan di bawah Lesen zlib. x360ce (LGPL-3.0-or-later) ialah pangkalan kod asal tempat PadForge dicabangkan. Zergatul.Obs.InputOverlay oleh Igor Budzhak (MIT) membekalkan karya seni tetikus.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (pemuat SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>Gaya BSD</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Terma lesen Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Terma SDK Corsair</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Penafian tanda dagangan sahaja</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Tiada terma dinamakan</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Tiada diterbitkan</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Beberapa lesen</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Enjin pengawal HID maya mod pengguna (menggantikan ViGEmBus dan vJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Enjin pengawal HID maya mod pengguna (menggantikan ViGEmBus dan vJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Pengganti XInput terus pakai. Menapis pengawal maya PadForge sendiri daripada pandangannya sendiri. Penafian tanda dagangan huluan, tiada lesen OSS.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Pengganti XInput terus pakai. Menapis pengawal maya PadForge sendiri daripada pandangannya sendiri.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Pemacu kernel untuk menyembunyikan peranti fizikal daripada permainan. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Pemacu kernel untuk menyembunyikan peranti fizikal daripada permainan.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Satu Jemputan</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“Dan kita berbicara berkenaan Kristus, kita berbahagia dalam Kristus, kita berkhutbah berkenaan Kristus, kita bernubuat berkenaan Kristus, dan kita menulis menurut nubuat-nubuat kita, agar anak-anak kita dapat mengetahui kepada punca mana mereka dapat berpaling bagi pengampunan dosa-dosa mereka.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Nefi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Kemuliaan, kehormatan, dan pujian kepada Tuhan Yesus Kristus, sumber segala kebenaran dan keselamatan, selama-lamanya.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Anda dijemput dengan hangat untuk melawat ComeUntoChrist.org dan mengetahui lebih lanjut tentang-Nya serta The Church of Jesus Christ of Latter-day Saints.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed stereofonik-ke-binaural Bauer untuk output fon kepala. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed stereofonik-ke-binaural Bauer untuk output fon kepala.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Pengekod Opus C# tulen yang memacu audio pembesar suara DualSense melalui Bluetooth. Oleh Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Pengekod Opus C# tulen yang memacu audio pembesar suara DualSense melalui Bluetooth. Oleh Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>Penyelidikan audio Bluetooth DualSense oleh egormanga: pengangkutan paket yang dinaiki aliran pembesar suara pengawal. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Penyelidikan audio Bluetooth DualSense oleh egormanga: pengangkutan paket yang dinaiki aliran pembesar suara pengawal. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Resipi pembesar suara Bluetooth oleh awalol: pembingkaian Opus dan reka letak paket. Terima kasih juga kepada TechAntohere atas penemuan dan ujian yang dikongsi. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Resipi pembesar suara Bluetooth oleh awalol: pembingkaian Opus dan reka letak paket. Terima kasih juga kepada TechAntohere atas penemuan dan ujian yang dikongsi.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Pelaksanaan rujukan untuk laluan terus audio pengawal USB. Oleh WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Lengah Aksara (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisaat antara aksara yang ditaip, sehingga 1000. 0 menaip keseluruhan teks sekali gus.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Putus Sambungan Semasa Tidak Aktif</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Kuasa</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Dosier Peranti</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Butiran</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minit (0 = tidak pernah)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Putuskan Bluetooth Apabila Dipalamkan melalui USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Cas Pantas. Apabila pengawal ini melaporkan ia sedang dicas semasa disambungkan melalui Bluetooth, pautan Bluetooth diputuskan supaya ia dicas tanpa menghidupkan radio. Mana-mana sumber kuasa USB dikira, termasuk pengecas dinding. Jika anda menghidupkan Bluetooth semula sementara kabel masih terpasang, ia dibiarkan sehingga kabel dicabut seterusnya.</value></data>
@@ -701,10 +846,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Meminta pad PlayStation ini memberikan arahnya secara langsung, supaya kiri dan kanan, atau atas dan bawah, didaftarkan serentak pada tikar tarian dari langkah pertama. Ia tiba sebagai butang Anak Panah Atas, Bawah, Kiri dan Kanan, yang turut dihantar oleh perisian tegar 3.34 dengan sendirinya setelah arah bertentangan ditekan, dan PadForge berhenti meminta ketika itu. Sehingga itu penyesuai melangkau kebanyakan bacaannya sendiri terhadap pad.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Tekanan DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nombor Pemain</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Penyesuai menyimpan nombor itu dan menyambung semula sebagai pemain tersebut. Windows kemudian melihat peranti baharu, jadi petakan port itu semula apabila ia kembali.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Penyesuai menyimpan nombor itu dan menyambung semula, yang dilihat Windows sebagai peranti baharu.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Pemain</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Tetapkan Pemain</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Skrin Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tiada apa-apa sampai ke port sehingga anda menyimpan.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Papar</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Gambar Penyesuai</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Nama Profil</value></data>
@@ -751,7 +897,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Membaca Namco USIO sebagai dua dram Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Membaca {0} sebagai pengawal iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Membaca {0} sebagai papan kekunci semula.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Pistol Cahaya</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Julat bidik lalai: X {0} hingga {1}, Y {2} hingga {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Julat bidik ditentukur: X {0} hingga {1}, Y {2} hingga {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Penentukuran Pistol</value></data>
@@ -810,6 +955,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Semua Papan Kekunci (Digabungkan)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Semua Tetikus (Digabungkan)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Peranti</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} bersambung</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Cari peranti</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Semua</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Pengawal</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Papan Kekunci &amp; Tetikus</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Baca Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Baca Chatpad dan Tablet uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Baca Pad Permainan</value></data>
@@ -830,28 +980,21 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} kembali pada pemacu Windows-nya.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Pemacu Windows untuk {0} tidak dapat dipulihkan.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows meletakkan {0} kembali pada pemacunya sendiri. Pilihnya pada halaman Peranti untuk menukarnya semula.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> dalam talian / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> jumlah</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Alih keluar peranti ini dan tetapannya</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Alih Keluar Peranti</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} akan dialih keluar daripada senarai peranti dan tetapan tersimpannya dilupakan.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Seret peranti ke kad pengawal bar sisi untuk menetapkannya.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Produk: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Seret peranti ke pengawal dalam bar sisi untuk menetapkannya.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Hantar Pemetaan Peranti</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Penetapan Pengawal Maya</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Togol penetapan</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Belum ada slot pengawal maya. Cipta satu di Papan Pemuka untuk menetapkan peranti ini.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Mod Input</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Menetapkan peranti ini kepada pengawal ini, atau mengalihkannya.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Paksa Mod Joystick Mentah (Langkau Pemetaan Semula Pad Permainan)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Baca indeks HID mentah dan bukannya pemetaan pad permainan SDL. Gunakan apabila SDL tersalah kenal susun atur butang/paksi.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Penyembunyian Input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Sembunyikan daripada Permainan (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Menyembunyikan sepenuhnya peranti ini daripada aplikasi lain melalui pemacu HidHide. Apabila PadForge menyembunyikan pengawal USB yang sudah disambungkan, ia menyambungkannya semula dalam Windows, jadi apa-apa yang membukanya kehilangannya. Pengawal Bluetooth, atau yang berkongsi penerima dengan pengawal lain, kekal bersama apa-apa yang membukanya sebelum disembunyikan sehingga ia disambungkan semula.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Pasang pemacu HidHide untuk mendayakan pilihan ini</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Serap Input yang Dipetakan (Hook)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Menyekat hanya kekunci/butang tertentu yang dipetakan, dan membiarkan input yang tidak dipetakan lalu</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Keadaan Input Mentah</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Pilih peranti untuk memeriksa input mentahnya.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Uji Input</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Pilih peranti untuk melihat tetapannya dan menguji inputnya.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Paksi</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Butang</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Papan Kekunci</value></data>
@@ -1127,27 +1270,25 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Peranti terpilih tidak mendedahkan paksi, butang atau POV untuk diklon.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Klon {0} ke slot ini sebagai laluan terus 1:1? Susun atur menjadi {1} paksi, {2} butang dan {3} POV, dan baris peranti ini pada slot digantikan dengan inputnya sendiri.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Peranti ini mempunyai lebih banyak input daripada yang boleh dibawa oleh pengawal Extended. Dipetakan {0} daripada {1} paksi, {2} daripada {3} butang dan {4} daripada {5} POV. Selebihnya dibiarkan tidak dipetakan.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Profil Diimport</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Profil HIDMaestro yang diimport pengguna disimpan dalam PadForge.xml dan muncul dalam senarai juntai bawah profil setiap slot Extended. Tangkap yang baharu daripada peranti yang disambungkan di bawah, atau eksport / padam yang sedia ada.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Profil diimport anda ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Peranti Disambungkan yang Boleh Diimport</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Pratetap Pengawal</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Tambah pratetap untuk pengawal yang tidak disertakan PadForge, daripada fail atau daripada pengawal itu sendiri.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Diimport</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Import daripada Peranti Bersambung</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksport…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Padam</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Tutup</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksport JSON Profil</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Padam Profil Diimport?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Padam "{0}"? Mana-mana slot yang kini menggunakan profil ini akan kembali kepada entri Custom sintetik.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Padam Pratetap?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Mana-mana pengawal yang menggunakan {0} kembali kepada entri Custom. Ini tidak boleh dibuat asal.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Dieksport ke {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksport gagal: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" dipadam.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Import daripada Fail…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Import dari Fail…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Import JSON Profil</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Diimport daripada {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Bacaan gagal: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro menolak profil ini pada {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profil ini tiada deskriptor HID, jadi tiada pengawal yang boleh dibuat daripadanya.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Tiada apa-apa diimport. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Muat Semula</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Import</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(peranti HID tanpa nama)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} antara muka HID ditemui.</value></data>
@@ -1432,6 +1573,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Tengah</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zon Mati</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ofset tengah, bentuk zon mati dan nilai setiap paksi, lengkung untuk setiap paksi, julat, stereng</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Julat dalam nombor, nilai mentah</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Julat</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Tentukur Sempadan mengukur tepi yang boleh dicapai kayu bedik dan membentuk semula tepi itu menjadi bulatan penuh. Empat peluncur hanya mengehadkan setiap arah.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Mengambil sampel...</value></data>
@@ -1964,21 +2106,22 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Tetap semula ambang padanan bentuk</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Rakam gerak isyarat pad sentuh</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Lukis gerak isyarat pada permukaan di bawah. Dialog ini menangkap setiap jari yang anda letakkan. Apabila anda mengangkat semua jari dari permukaan, sampel dirakam. Melukis bilangan jari yang berbeza daripada sampel sebelumnya akan menetapkan semula timbunan.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Menunggu sentuhan jari pada kanvas</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Rakam Gerak Isyarat</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Lukis bentuk pada pad sentuh pengawal. Ia menjadi input yang boleh anda petakan.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Lukis gerak isyarat di sini.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Lukis pada pad sentuh. Kanvas mencerminkannya secara langsung.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Merakam daripada {0}, pad sentuh {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>pad sentuh ini</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Pad sentuh tidak tersedia. Gunakan kanvas di bawah dengan tetikus atau sentuhan.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Pad sentuh tidak tersedia. Lukis di sini dengan tetikus, pen atau jari.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Melukis…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Semua sampel telah ditangkap. Namakan gerak isyarat dan klik Simpan.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sampel {0} daripada {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} sampel</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Sampel untuk ditangkap</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ialah standard. Lebih banyak sampel = padanan lebih kukuh, lebih sedikit = rakaman lebih pantas.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Sampel untuk ditangkap</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 ialah standard. Lebih banyak sampel memberi padanan lebih tepat, dan lebih sedikit lebih pantas dirakam.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nama</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Cuba lagi</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Namakan gerak isyarat ini</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Nama diperlukan</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Nama terlalu panjang (maks. 64 aksara)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Nama mengandungi aksara yang tidak sah</value></data>
@@ -2300,41 +2443,62 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Profil</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Pengurusan Profil</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Cipta profil pengawal bagi setiap aplikasi yang bertukar secara automatik berdasarkan permainan yang aktif.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Tukar Profil Secara Automatik Berdasarkan Aplikasi Latar Depan</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Profil ialah persediaan penuh: pengawal, pemetaan dan penalaannya.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Profil Permulaan</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Profil siap sedia untuk satu genre penuh. Pilih satu, umpukkan mana-mana pengawal dan bermain.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Tukar Profil mengikut Permainan</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Penukaran Automatik</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Di hadapan sekarang: {0}, tiada profil ditetapkan untuknya</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Di hadapan sekarang: {0}, yang memuatkan {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Di hadapan sekarang: {0}, dan belum ada profil yang mempunyai permainan ditetapkan</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Benarkan Kawalan Luar oleh Pelancar dan Skrip</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Menyediakan paip bernama setempat, PadForge.Control, supaya Playnite, LaunchBox atau skrip dapat mengaktifkan dan menyahaktifkan profil. Profil yang diaktifkan dengan cara ini kekal aktif sehingga skrip melepaskannya atau anda menukar profil sendiri. Mesin setempat sahaja.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Kawalan Luar</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil aktif:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tiada Slot</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Tukar automatik: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Tiada Pengawal</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Lepaskan untuk Mengimport Profil</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Baharu</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Lepaskan fail profil di sini</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profil Baharu</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Simpan Sebagai</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Simpan Persediaan Semasa di Sini</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Edit</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Muat</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Tiada Profil Mempunyai Fail Boleh Laku Lagi</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Terbina dalam</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Pilih profil dahulu.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Profil Lalai terbina dalam tidak boleh disunting atau dipadam.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Padam Profil</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Padam "{0}"? Syot slot dan pemetaan yang disimpannya akan dimusnahkan.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Tiada permainan ditetapkan</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Dimuatkan untuk {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Ditetapkan untuk {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Lagi untuk {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Padam {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profil dan peraturan tukar automatiknya dialih keluar. Ini tidak boleh dibuat asal.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profil dialih keluar. Ini tidak boleh dibuat asal.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Gantikan persediaan yang disimpan dalam “{0}” dengan yang semasa? Nama dan permainannya kekal.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Gantikan</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Simpan Sebagai Profil</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Edit Profil</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nama Profil:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profil Baharu</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nama</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profil Baharu</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Fail Boleh Laku (dipadankan dengan tetingkap latar depan):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Permainan yang Memuatkannya</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Kadar Pengundian</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Lalai (Tetapan Global)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ditindih semasa profil “{0}” aktif: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Merakam pemetaan setiap slot dan tetapan setiap peranti di bawah satu nama. Fail boleh laku yang dipautkan bertukar kepadanya secara automatik.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Menamakan semula profil dan mengemas kini fail boleh laku yang mengaktifkannya. Pemetaan dan tetapan yang disimpan tidak berubah.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Menyimpan pemetaan dan tetapan setiap pengawal di bawah satu nama. Ia dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bermula tanpa pengawal. Ia dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tambah Permainan yang Sedang Berjalan</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tiada program lain mempunyai tetingkap terbuka.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Alih keluar {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Kadar tinjauan semasa profil ini dimuatkan</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Salin Tetapan Daripada...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Pilih peranti untuk menyalin tetapannya:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Salin Daripada</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Gantikan pemetaan dan penalaan setiap peranti {0} dengan milik pengawal lain.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Tambah makro pengawal lain kepada {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Tidak ditetapkan, mengekalkan pemetaan sebelum ini</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Pilih Aplikasi untuk Disenarai Putih</value></data>
@@ -2376,6 +2540,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Julat</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Zon Mati</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Klik dua kali untuk menambah titik. Klik kanan untuk membuang. Seret untuk melaras.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>penyunting lengkung</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Paksi Pencetus</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2730,8 +2895,19 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Asas</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lapisan Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurasikan Asas</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nama, ikon dan warna lapisan Asas pada Flyout Lapisan Shift dan dalam baris lapisan.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nama Lapisan</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Input Pengaktif</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nama</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ditahan Dengan</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Ditekan Dengan</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Lapisan Seterusnya Dengan</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Lapisan Sebelumnya Dengan</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Dan Dengan</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Pilih Input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Kawalan Tidak Dipetakan</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Jatuh ke Asas</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tidak Buat Apa-apa</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, jenis input, masa dan warna</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mod</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tahan</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Togol</value></data>
@@ -2758,14 +2934,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Apabila ditandakan, sasaran lapisan ini kekal mati dan tidak jatuh ke baris Asas.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Kelewatan</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Berapa lama input mesti ditahan sebelum lapisan bertindak balas. Untuk mod Tahan, ini ialah penyahlantunan. Untuk Togol, Selak dan Melekat, ia menjadikan pensuisan satu tekanan lama: lapisan bertukar sekali apabila tahanan melepasi masa ini, dan ketikan yang lebih singkat tidak melakukan apa-apa. 0 bertindak balas serta-merta.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Input Chord Kedua</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Ambang Paksi</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Kitar Melalui Lapisan</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Hanya Semasa dalam Lapisan</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Mana-mana Lapisan</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Input hanya dikira semasa lapisan yang dipilih aktif. Semakan dibuat apabila input ditekan dan berkuat kuasa sepanjang tekanan itu. Mana-mana Lapisan bermaksud input sentiasa dikira. Tentukan jalan keluar setiap lapisan pada lapisan itu, dengan pengaktif lain atau makro Tukar Lapisan.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Butang Seterusnya</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Butang Sebelumnya</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Berpusing Semula</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Apabila hidup, melangkah melepasi lapisan terakhir kembali ke yang pertama, dan melepasi yang pertama kembali ke yang terakhir. Apabila mati, kursor berhenti di hujung.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Sertakan Asas</value></data>
@@ -2777,18 +2950,17 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Satu tekanan butang (atau arah POV) mengaktifkan lapisan.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Kedua-dua butang mesti ditahan serentak untuk mengaktifkan. Chord merentas peranti disokong.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Aktif semasa paksi analog melepasi nilai ambang.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Lapisan kekal aktif semasa pengaktif ditahan. Dilepaskan apabila anda melepaskannya.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Semasa inputnya ditahan, pemetaan lapisan ini menggantikan pemetaan Asas.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Ketik untuk mengaktifkan. Ketik lagi untuk melepaskan. Lapisan kekal merentas banyak tekanan.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Tekan untuk menyelak lapisan ini dan mengekalkannya. Tekan lagi untuk melepaskan kembali ke Asas. Butang Selak yang berbeza bertukar ke lapisannya sendiri.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Setiap tekanan maju melalui senarai lapisan tersusun. Berpusing kembali ke Asas.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Ketik sekali untuk mengaktifkan. Tekanan butang terpeta yang seterusnya dilaksanakan pada lapisan, kemudian dilepaskan secara automatik.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Tiada butang sendiri. Tambahkannya ke giliran kawalan Kitar, dan kitaran akan sampai kepadanya.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Warisi Sasaran Tidak Dipeta daripada Asas</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Laksana semasa Dilepas</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Menunggu sehingga butang dilepaskan sebelum pengaktif ini dilaksanakan. Jika kelewatan tahanan ditetapkan, tekanan mesti selama itu supaya pelepasan dikira.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Laksanakan Juga Pemetaan Pengaktif Sendiri</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Apabila ditandakan, butang pengaktif masih memacu mana-mana baris yang menggunakannya sebagai sumber. Satu tekanan menukar lapisan dan melaksanakan pemetaan butang itu sendiri. Apabila tidak ditandakan (lalai), tekanan pengaktif digunakan oleh perubahan lapisan sahaja.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Apabila ditandakan, sasaran yang tidak dipetakan secara eksplisit oleh lapisan ini jatuh ke lapisan Asas. Apabila tidak ditandakan (lalai), lapisan menggantikan Asas sepenuhnya dan sasaran yang tidak dipetakan kekal mati.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Dengan Jatuh ke Asas, kawalan yang tidak dipetakan lapisan ini mengekalkan pemetaan Asasnya. Dengan Tidak Buat Apa-apa, lapisan menggantikan Asas sepenuhnya dan kawalan itu kekal mati.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Julat Putaran</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Tetapkan Julat Putaran</value></data>
@@ -2991,15 +3163,14 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Peranti yang dipilih tiada pembesar suara terbina dalam. Bunyi makro untuk pad ini dimainkan pada output lalai sistem.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tetap Semula Output Bunyi</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite ujian DualSense pelayar oleh Xuezhou Dai (daidr): rujukan untuk pembingkaian CRC laporan ciri Sony dan arahan ujian perisian tegar yang PadForge majukan daripada pad maya ke pad fizikal. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite ujian DualSense pelayar oleh Xuezhou Dai (daidr): rujukan untuk pembingkaian CRC laporan ciri Sony dan arahan ujian perisian tegar yang PadForge majukan daripada pad maya ke pad fizikal.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Rujukan audio Bluetooth DualShock 4 oleh nefarius: pembingkaian laporan untuk strim pembesar suara DS4 PadForge. Pengekod SBC ialah pelaksanaan C# asli daripada spesifikasi Bluetooth A2DP. Dengan dokumentasi protokol daripada ds4mac milik khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Rujukan audio Bluetooth DualShock 4 oleh nefarius: pembingkaian laporan untuk strim pembesar suara DS4 PadForge. Pengekod SBC ialah pelaksanaan C# asli daripada spesifikasi Bluetooth A2DP. Dengan dokumentasi protokol daripada ds4mac milik khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Eksport…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Import…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profil "{0}" dieksport.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Profil "{0}" diimport ({1} pakej bunyi didaftarkan).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Fail ini bukan profil PadForge yang boleh dibaca.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pilih bunyi daripada {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakej Bunyi</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Fail zip bunyi untuk makro bunyi</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Pakej bunyi ialah satu fail zip bunyi dengan sambungan .pfsounds. Tambah satu di sini, kemudian pilih bunyinya dalam mana-mana makro bunyi. PadForge membaca terus daripada fail dan tidak pernah menyahmampatkannya. Simpan pakej bersebelahan PadForge.exe supaya kekal mudah alih.</value></data>
@@ -3044,20 +3215,13 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Perlindungan Identiti</value>
+    <value>Identiti Penggandingan</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Cara identiti penggandingan PC ini disimpan. Pilih mod mudah alih untuk membawa penggandingan anda pada pemacu kilat antara mesin.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Namakan PC Ini</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>PC Berdekatan (Belum Digandingkan)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Tetap Semula</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Kata Laluan Pautan Jauh</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Pad Sentuh PadForge</value>
@@ -3089,9 +3253,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>PC Digandingkan</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Dalam Talian</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Luar Talian</value>
   </data>
@@ -3108,7 +3269,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
     <value>Buka kunci identiti semasa sebelum mengubah perlindungannya.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Tetapkan kata laluan untuk melindungi identiti mudah alih anda. Anda akan memasukkannya untuk membuka kunci Pautan Jauh pada setiap PC.</value>
+    <value>Kata laluan melindungi identiti penggandingan PC ini.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Perlindungan identiti dikemas kini.</value>
@@ -3128,7 +3289,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Menyambung ke {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Sambung Semula Secara Automatik</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Sambung Semula Automatik</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Mendengar pada {0}</value>
   </data>
@@ -3147,65 +3308,70 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Rakan {0} bersambung, {1} peranti</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Pilih bunyi daripada pakej yang ditambah, atau semak imbas untuk fail.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Semak Imbas Fail…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Pilih Bunyi</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Bunyi dimainkan melalui pembesar suara pengawal, atau pembesar suara PC jika tiada.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Guna Bunyi</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Main {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Tangkapan gelung balik WASAPI untuk cermin audio pengawal dan getaran pencetus bass-audio. NAudio.Midi, yang tidak dihantar bersama PadForge, juga ialah rujukan untuk pengisytiharan WinMM bagi API MIDI lama dan urutan port, untuk peraturan bahawa Note On dengan halaju 0 ialah Note Off, dan untuk pengawal hidup/mati seperti sustain. Oleh Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Tangkapan gelung balik WASAPI untuk cermin audio pengawal dan getaran pencetus bass-audio. NAudio.Midi, yang tidak dihantar bersama PadForge, juga ialah rujukan untuk pengisytiharan WinMM bagi API MIDI lama dan urutan port, untuk peraturan bahawa Note On dengan halaju 0 ialah Note Off, dan untuk pengawal hidup/mati seperti sustain. Oleh Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Pengecam pertuturan luar talian yang mendengar frasa makro suara. Oleh Alpha Cephei. Model dihantar dalam PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Pengecam pertuturan luar talian yang mendengar frasa makro suara. Oleh Alpha Cephei. Model dihantar dalam PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografi untuk penggandingan dan pengangkutan Pautan Jauh (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, lesen gaya MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptografi untuk penggandingan dan pengangkutan Pautan Jauh (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>Pemacu profil Bluetooth dan penapis PSM yang dibundel oleh nefarius yang membolehkan DualShock 3 bersambung melalui radio yang dikongsi. Dipasang dalam aplikasi semasa penggandingan. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Pemacu profil Bluetooth dan penapis PSM yang dibundel oleh nefarius yang membolehkan DualShock 3 bersambung melalui radio yang dikongsi. Dipasang dalam aplikasi semasa penggandingan.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Rujukan protokol DualShock 3 oleh Benjamin Höglinger-Stelzer: laporan ciri sixpair, templat laporan output Bluetooth, tertib pengaktifan, peta bateri. Pelaksanaan PadForge ialah C# asli. DualShock 3 (SIXAXIS) HIDMaestro: Pengawal penuh menggunakan deskriptor laporan mod SXS DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Rujukan protokol DualShock 3 oleh Benjamin Höglinger-Stelzer: laporan ciri sixpair, templat laporan output Bluetooth, tertib pengaktifan, peta bateri. Pelaksanaan PadForge ialah C# asli. DualShock 3 (SIXAXIS) HIDMaestro: Pengawal penuh menggunakan deskriptor laporan mod SXS DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Pemasangan stor pemacu, pendaftaran penapis kelas Bluetooth dan pengitaran port USB untuk persediaan BthPS3 dalam aplikasi dan untuk melepaskan pengawal USB yang disembunyikan, oleh nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Pemasangan stor pemacu, pendaftaran penapis kelas Bluetooth dan pengitaran port USB untuk persediaan BthPS3 dalam aplikasi dan untuk melepaskan pengawal USB yang disembunyikan, oleh nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Akses USB untuk pemacu berwayar Switch 2 Pro dan pengawal yang PadForge ikat kepada WinUSB, dihantar sebagai libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Akses USB untuk pemacu berwayar Switch 2 Pro dan pengawal yang PadForge ikat kepada WinUSB, dihantar sebagai libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Kayu bedik sentuh dalam Pengawal Web telefon, oleh Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Kayu bedik sentuh dalam Pengawal Web telefon, oleh Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Pangkalan data pemetaan gamepad komuniti yang dilanjutkan oleh pemetaan terbundel PadForge. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Pangkalan data pemetaan gamepad komuniti yang dilanjutkan oleh pemetaan terbundel PadForge.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Penyelidikan LED butang Guide Xbox: susun atur paket XboxGIP dan urutan penemuan, oleh Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Penyelidikan LED butang Guide Xbox: susun atur paket XboxGIP dan urutan penemuan, oleh Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematik stereng sudut penggulungan dan condong, oleh JibbSmart dan Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematik stereng sudut penggulungan dan condong, oleh JibbSmart dan Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Penukaran giro ruang pemain dan ruang dunia, oleh JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Penukaran giro ruang pemain dan ruang dunia, oleh JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Susun atur laporan haptik Steam Controller (2015) dan matematik tempoh nota, oleh Pila dan Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Susun atur laporan haptik Steam Controller (2015) dan matematik tempoh nota, oleh Pila dan Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Susun atur haptik nada LFO Steam Controller 2026 dan Steam Deck, oleh Pila, Crazy dan AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Susun atur haptik nada LFO Steam Controller 2026 dan Steam Deck, oleh Pila, Crazy dan AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantik pembersihan SOCD untuk mod Snap Tap, oleh valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantik pembersihan SOCD untuk mod Snap Tap, oleh valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Klien rangkaian Steam yang mengambil konfigurasi pengawal Steam Workshop melalui sesi tanpa nama, oleh Ryan Stecker dan SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializer Protocol Buffers yang digunakan SteamKit2 untuk protokol wayar Steam, oleh Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializer Protocol Buffers yang digunakan SteamKit2 untuk protokol wayar Steam, oleh Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Penyahmampatan Zstandard yang digunakan SteamKit2 untuk ketulan depot Steam, port C# bagi pustaka zstd oleh Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Penyahmampatan Zstandard yang digunakan SteamKit2 untuk ketulan depot Steam, port C# bagi pustaka zstd oleh Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentasi untuk upacara penggandingan Wii, ADPCM pembesar suara, orientasi Wii Remote mengiring dan tegak, model get kayu bedik dan format storannya, serta konvensyen paksi giro. GPL-2.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL dihantar.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Dokumentasi untuk upacara penggandingan Wii, ADPCM pembesar suara, orientasi Wii Remote mengiring dan tegak, model get kayu bedik dan format storannya, serta konvensyen paksi giro. Dibaca sebagai dokumentasi sahaja, tiada kod GPL dihantar.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Dokumentasi tingkah laku DualShock: putus sambungan melahu, sempadan pad sentuh, nyahkod bateri, IOCTL putus sambungan Bluetooth, bit mod getaran DualSense, lengkung jitter giro, skala kayu bedik sebagai tetikus dan benih CRC laporan output Bluetooth. Jadual kekunci papan kekunci mayanya menjadi panduan untuk jadual PadForge. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL dihantar.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Dokumentasi tingkah laku DualShock: putus sambungan melahu, sempadan pad sentuh, nyahkod bateri, IOCTL putus sambungan Bluetooth, bit mod getaran DualSense, lengkung jitter giro, skala kayu bedik sebagai tetikus dan benih CRC laporan output Bluetooth. Jadual kekunci papan kekunci mayanya menjadi panduan untuk jadual PadForge. Dibaca sebagai dokumentasi sahaja, tiada kod GPL dihantar.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentasi arahan LED GIP yang menyokong xbledctl. GPL-2.0-or-later, dokumentasi sahaja.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentasi arahan LED GIP yang menyokong xbledctl. Dokumentasi sahaja.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentasi tingkah laku kamera IR Wii dan Balance Board, oleh Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentasi tingkah laku kamera IR Wii dan Balance Board, oleh Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Dokumentasi format wayar getaran HD Joy-Con, oleh Sergey004. Dibaca untuk fakta protokol sahaja.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Gandingkan</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Gandingkan Pengawal</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Gandingkan Pengawal</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Gandingkan Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Buka penutup bateri dan tekan butang SYNC merah.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Letakkan alat kawalan berhampiran PC ini semasa lampunya berkelip.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Gandingkan DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Gandingkan Pengawal Move atau Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Tambah Pengawal Bersiri</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Tambah Alat Kawalan DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Keluarga Pengawal</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Buka penutup bateri dan tekan butang SYNC merah. Biarkan PadForge terus mencari sehingga pengawal anda muncul.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Penggandingan Sementara (Tahan 1 dan 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Gandingkan</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Mencari. Tekan butang SYNC sekarang.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Mencari alat kawalan.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Pengawal Ditemui</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Belum ada pengawal ditemui. Pastikan lampu biru berkelip.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} digandingkan. Ia akan muncul dalam senarai peranti anda.</value></data>
@@ -3215,7 +3381,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Selesai</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>API klien OpenVR Valve (BSD 3-Clause): set kepala VR dan pengawal gerakan sebagai sumber input. Masa jalan asli dimuatkan daripada pemasangan SteamVR anda sendiri.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API klien OpenVR Valve: set kepala VR dan pengawal gerakan sebagai sumber input. Masa jalan asli dimuatkan daripada pemasangan SteamVR anda sendiri.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Berjalan</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Berjalan, pemacu bersambung</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Berjalan, pengawal aktif</value></data>
@@ -3253,13 +3419,12 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Penggandingan tidak selesai. Langkah yang gagal ditunjukkan di atas.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tutup</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Tag NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Daftar Tag</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Ketik tag pada pembaca untuk menangkap UID-nya.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(menunggu)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nama:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Ketik tag pada pembaca dan namakannya. Ia menjadi butang yang boleh anda petakan.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Ketik tag pada pembaca.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nama</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Namakan tag ini</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Daftar</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Tag Berdaftar</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Didaftarkan</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Tiada pembaca NFC dikesan. Sambungkan pembaca PC/SC dan buka semula.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag ditangkap. Masukkan nama dan klik Daftar. Ketik tag lain untuk menggantikannya.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" didaftarkan. Ketik tag lain untuk menambah lagi.</value></data>
@@ -3337,22 +3502,22 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Memori kongsi FreeTrack juga tidak dapat dibuka.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Pelajari / Urus Butang Tersembunyi</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Butang Tersembunyi</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Pelajari Satu Butang</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Tekan butang tersembunyi itu sekali apabila diminta. PadForge memantau papan kekunci, tetikus, setiap laporan vendor dan setiap peristiwa sistem pada mesin ini, lalu merekodkan mana-mana yang diubah oleh butang itu.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Mesin:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Mula Belajar</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Ajar PadForge satu butang yang tidak dipaparkan Windows sebagai pengawal. Tekan apabila diminta.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Lepaskan tangan. Membaca keadaan rehat…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tekan butang tersembunyi sekarang, kemudian lepaskan…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Sebentar…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Tiada perubahan dilihat. Tekan butang itu semasa tetingkap yang diserlahkan dan cuba lagi.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tekan dan tahan butang itu sekarang.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lepaskan butang itu.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Langkah {0} daripada {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Tiada perubahan dilihat. Pilih Mula Semula, kemudian tekan dan tahan butang apabila diminta.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Memantau {0} laporan vendor dan {1} kelas peristiwa. Semasa penekanan: {2} laporan, {3} peristiwa.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Butang ditangkap. Masukkan nama dan klik Daftar.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Sumber:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nama:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Sumber</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nama</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Namakan butang ini</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Daftar</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Butang yang Dipelajari</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Mula Semula</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Belum ada butang yang dipelajari.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" didaftarkan. Mulakan semula untuk mempelajari yang lain.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Dipelajari pada {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Didaftarkan "{0}." Pilih Mula Semula untuk mempelajari yang lain.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Kekunci: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Butang tersembunyi dimatikan. Dayakan Butang PC Pegang Tangan dalam Tetapan dahulu.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} sedang berjalan. Ia masih bertindak balas kepada butang ini sehingga anda menghentikannya.</value></data>
@@ -3501,6 +3666,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurasi Komuniti</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Layari konfigurasi pengawal Steam Input buatan komuniti dan terjemahkannya kepada profil PadForge. PadForge menyambung terus ke pelayan Steam hanya apabila anda mencari, membuka konfigurasi, atau menyemak konfigurasi yang diimport untuk kemas kini. Ia menghantar teks carian anda, id permainan, konfigurasi dan pencipta yang terlibat, serta versi PadForge. Log masuk Steam tanpa nama juga menghantar versi Windows anda dan id mesin yang dibuat daripada cincangan id pemasangan Windows anda, alamat penyesuai rangkaian dan nombor siri cakera but. Tiada telemetri, tiada perkhidmatan pihak ketiga, tiada akaun Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge menyambung ke pelayan Steam hanya apabila anda mencari, membuka konfigurasi atau menyemak konfigurasi yang diimport untuk kemas kini. Tiada telemetri, tiada akaun Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Apa yang Dihantar</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Dayakan Konfigurasi Komuniti</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Tunjukkan Konfigurasi Workshop Lama</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Sesetengah konfigurasi lama tidak mempunyai fail yang boleh dimuat turun pada CDN Steam. PadForge menyenaraikannya dengan lencana Legacy dan membaca salinan yang disimpan Steam setelah anda melanggan. Sehingga itu, ia menawarkan untuk membuka konfigurasi itu di Steam Workshop.</value></data>
@@ -3508,18 +3675,21 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Semak Profil yang Diimport untuk Kemas Kini</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Cache Workshop dikosongkan</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Layari Konfigurasi Komuniti</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Layari Konfigurasi Komuniti</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profil · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Dapatkan Profil</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Mulakan daripada profil siap sedia, konfigurasi komuniti atau fail daripada alat lain.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Permulaan</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Komuniti</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Import Fail</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Menyimpan menambah profil biasa yang boleh anda sunting.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Tempa Masih Sejuk</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Melayari konfigurasi komuniti menyambungkan PadForge terus ke Steam, hanya apabila anda mencari, tidak pernah semasa permulaan.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Dayakan Konfigurasi Komuniti</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Cari Permainan</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} permainan</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Permainan</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Tiada permainan ditemui di kedai Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Mencari di Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Membaca Konfigurasi daripada Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Membaca Konfigurasi daripada Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>disusun mengikut penilaian</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Disusun Mengikut</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Cari Konfigurasi Ini</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Penilaian</value></data>
@@ -3533,7 +3703,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ditemui</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Menunjukkan {0} daripada {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} konfigurasi</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>konfigurasi komuniti</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>sokongan pengawal penuh</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>sokongan pengawal separa</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Cari Permainan</value></data>
@@ -3552,8 +3721,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Cuba Lagi</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Konfigurasi era 2016 ini mendahului CDN konfigurasi Steam. Langgan di Steam dan PadForge membacanya daripada folder Steam anda.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buka di Steam Workshop</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk membaca manifes terjemahannya.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} pengikatan dibaca</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang dibawa.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Apa yang Dibawa</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Menjadi</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Memilih pengawal maya yang mendapat butang dan kayu bedik konfigurasi. Kekunci dan tetikusnya sentiasa pergi ke pengawal Papan Kekunci + Tetikus.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Lapisan</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Bersih</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Separa</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Dilangkau</value></data>
@@ -3618,7 +3790,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Menyemak kemas kini di Steam Workshop…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Profil yang diimport sudah terkini ({0} disemak)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Kemas Kini Workshop</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profil yang diimport ini mempunyai versi lebih baharu di Steam Workshop. Import semula daripada Layari Konfigurasi Komuniti untuk mendapatkan perubahan itu.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profil yang diimport ini mempunyai versi lebih baharu di Steam Workshop. Import semula daripada Dapatkan Profil untuk mendapatkan perubahan itu.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Semasa Tekan Lama</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Semasa Tekan Singkat</value></data>
@@ -3766,7 +3938,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Sel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Tindihan Menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Tindihan</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Penunjuk atas skrin yang dipaparkan PadForge semasa anda bermain. Mematikan satu tidak pernah mengubah tingkah laku, hanya sama ada ia diumumkan.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Penunjuk atas skrin yang dipaparkan PadForge semasa anda bermain. Mematikan satu tidak pernah mengubah tingkah laku, hanya sama ada ia dipaparkan.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Tetingkap Timbul Lapisan Alih</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Tindihan Tukar Profil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tunjukkan cincin atau grid atas skrin semasa menu jejari atau sentuh diaktifkan. Menu masih dicetuskan apabila tindihan dimatikan.</value></data>
@@ -3816,6 +3988,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Frekuensi nada untuk saluran ini, 20 hingga 120 Hz. Jalankan sapuan frekuensi untuk mencari tempat shaker anda bertindak balas paling kuat.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Kelantangan saluran ini sebelum gandaan induk.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Gandaan</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frekuensi</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Uji</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Memainkan nada saluran ini selama 1.5 saat pada gandaan yang ditetapkan.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Tetap Semula Motor Rendah</value></data>
@@ -3858,16 +4031,16 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Lengkung pecutan penuding pad jejak untuk output pad sentuh ke tetikus. Port C# bagi profil pecutan pad sentuh libinput. MIT.</value>
+    <value>Lengkung pecutan penuding pad jejak untuk output pad sentuh ke tetikus. Port C# bagi profil pecutan pad sentuh libinput.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Model pengawal 3D (Xbox 360, Steam Deck) serta kod model dan animasi paparan 3D, oleh CasperH2O, Lesueur Benjamin, trippyone. Juga rujukan bagi laporan Steam Deck dan penyahkodan haptik, laporan matikan kuasa Steam Controller (2015), senarai pantau daemon pegang tangan, masa semakan kemas kini, dan kitaran port hab, berselang 500 ms, yang menyambung semula pengawal USB tersembunyi supaya program yang membukanya dahulu kehilangannya. CC BY-NC-SA 4.0.</value>
+    <value>Model pengawal 3D (Xbox 360, Steam Deck) serta kod model dan animasi paparan 3D, oleh CasperH2O, Lesueur Benjamin, trippyone. Juga rujukan bagi laporan Steam Deck dan penyahkodan haptik, laporan matikan kuasa Steam Controller (2015), senarai pantau daemon pegang tangan, masa semakan kemas kini, dan kitaran port hab, berselang 500 ms, yang menyambung semula pengawal USB tersembunyi supaya program yang membukanya dahulu kehilangannya.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>Skema pengawal 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), oleh AL2009man. MIT.</value>
+    <value>Skema pengawal 2D (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), oleh AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>Dokumentasi protokol audio DualShock 4: parameter SBC dan susun atur paket, oleh khallmark. GPL-2.0, dokumentasi sahaja.</value>
+    <value>Dokumentasi protokol audio DualShock 4: parameter SBC dan susun atur paket, oleh khallmark. Dokumentasi sahaja.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Jalankan Windows dari sofa. Kursor, tatal dan klik pada pencetus.</value></data>
@@ -3881,10 +4054,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Susun atur enam butang dengan pembersihan SOCD sah kejohanan pada kedua-dua paksi.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Papan Kekunci + Tetikus</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Layari Profil Permulaan</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Profil Permulaan</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Profil siap sedia untuk satu genre penuh. Pilih satu, umpukkan mana-mana pengawal dan bermain. Menyimpan akan menambah profil biasa yang boleh anda sunting.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Simpan Profil</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil permulaan "{0}" ditambah.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Tuding dan Klik</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Permainan pengembaraan dan apa sahaja yang dipacu oleh kursor dan dua kata kerja.</value></data>
@@ -3984,13 +4153,13 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Tetap Semula Laluan Output</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Ikut Jek Fon Kepala</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>Peta bait laporan output DualSense dan semantik scePad Sony oleh WujekFoliarz, yang mendasari penulis kesan dan audio PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Peta bait laporan output DualSense dan semantik scePad Sony oleh WujekFoliarz, yang mendasari penulis kesan dan audio PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Corak penghalaan audio pengesanan jek oleh SundayMoments, rujukan di sebalik Ikut Jek Fon Kepala. Dibaca sebagai dokumentasi. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Corak penghalaan audio pengesanan jek oleh SundayMoments, rujukan di sebalik Ikut Jek Fon Kepala. Dibaca sebagai dokumentasi.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Pengekod QR mod bait untuk alamat Pengawal Web, dialihkan daripada pelaksanaan rujukan Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Pengekod QR mod bait untuk alamat Pengawal Web, dialihkan daripada pelaksanaan rujukan Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Karya seni tetikus dalam visualisasi Papan Kekunci + Tetikus, oleh Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Karya seni tetikus dalam visualisasi Papan Kekunci + Tetikus, oleh Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Kadar Berskala Tekanan</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Kadar ulangan mengikut sekuat mana sumber analog yang dipilih ditekan. Tekanan ringan berulang pada Sela Perlahan, tekanan penuh pada Sela di atas, dan semua yang di antaranya bercampur dengan lancar.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Sela Perlahan</value></data>
@@ -4005,7 +4174,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Menyambung melalui kod…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Tidak dapat mencapai rakan secara terus. Cuba Sambung melalui Alamat menerusi VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Kod PC Ini</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Tukar kod dengan orang lain: tampal kod mereka ke dalam kotak Sambung anda sementara mereka menampal kod anda, kemudian kedua-duanya klik Sambung. Itu membuka laluan terus merentasi internet, tanpa memerlukan VPN. Kod disegarkan semasa Pautan Jauh berjalan.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Tukar kod dengan orang lain: tampal kod mereka ke dalam Sambung melalui Alamat, di bawah Lagi, sementara mereka menampal kod anda, kemudian kedua-duanya klik Gandingkan / Sambung. Itu membuka laluan terus merentasi internet, tanpa memerlukan VPN. Kod disegarkan semasa Pautan Jauh berjalan.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Rangkaian ini tidak dapat membuat sambungan terus (nampaknya tompok panas mudah alih atau NAT gred pembawa). Gunakan VPN seperti Tailscale, atau sambung dari jalur lebar rumah.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Tidak dapat mencari alamat awam PC ini (rangkaian mungkin menyekat trafik yang diperlukan). Sambungan terus tidak akan berfungsi di sini. Gunakan VPN, atau Sambung melalui Alamat pada rangkaian yang sama.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bateri Pengawal Rendah</value></data>
@@ -4016,6 +4185,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Beritahu pada atau di Bawah</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Getarkan Pengawal Juga</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Uji Pemberitahuan</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Semak Pemberitahuan</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Gesaan Umpukan</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Apabila peranti disambungkan semasa halaman pengawal maya dibuka, PadForge boleh menawarkan untuk mengumpukkannya di situ, dan Laman Utama boleh menawarkan pengawal maya tersendiri kepada peranti baharu. Tiada apa-apa diumpukkan sehingga anda menerima tawaran. Papan kekunci, tetikus, pad sentuh dan kekunci media tidak pernah ditawarkan.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Tawarkan Peranti Baharu kepada Pengawal Maya yang Dibuka</value></data>
@@ -4029,23 +4199,28 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Bukan Sekarang</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Mana-mana Frasa</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Makro Suara</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Sebut frasa dan ia menekan butang yang boleh anda petakan. Setiap mikrofon yang boleh dicapai PadForge mendengar.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Urus Makro Suara</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Dayakan Makro Suara</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Menghidupkan pendengaran. Apabila didayakan, setiap frasa berdaftar ialah butang yang dicetuskan apabila anda menyebutnya. Model pengecaman disertakan dalam PadForge dan berfungsi sepenuhnya luar talian.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Pendengaran</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Sentiasa memastikan mikrofon terbuka. Tekan untuk Bercakap hanya mendengar semasa makro Dengar Suara yang terikat ditahan.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Mendengar hidup atau mati, mod, keyakinan</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Sentiasa</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Tekan untuk Bercakap</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Keyakinan Minimum</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Setinggi mana keyakinan pengecam sebelum frasa dicetuskan. Naikkan jika pertuturan rawak mencetuskan makro, turunkan jika frasa anda terlepas.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Menunggu pertuturan. Pengecaman muncul di sini bersama keyakinannya.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Didengar "{0}" ({1:F2}). Dicetuskan.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Didengar "{0}" ({1:F2}). Di bawah paras keyakinan atau kekunci bercakap dilepaskan.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Mendengar dimatikan. Hidupkannya di bawah Lagi.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Didengar {0} pada {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Didengar {0} pada {1}. Ia di bawah paras keyakinan, atau kekunci bercakap dilepaskan.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Frasa</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Frasa untuk disebut</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Nama</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Nama butang</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Daftar</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frasa Berdaftar</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}" didaftarkan. Sebutkannya untuk mencetuskan butangnya, dan ikat makro kepadanya pada halaman Pad.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frasa</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Didaftarkan "{0}." Sebutkannya untuk mencetuskan butangnya, dan petakannya pada halaman pengawal.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Dengar Suara (Semasa Ditahan)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Tekan untuk bercakap bagi Makro Suara: semasa makro ini ditahan, pengecam mendengar. Tetapkan Pendengaran kepada Tekan untuk Bercakap dalam Urus Makro Suara.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikrofon</value></data>
@@ -4053,12 +4228,12 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Enjin haptik dan penyedia Razer di sebalik getaran baris Razer Sensa. HAR.dll dan Interhaptics.RazerProvider.dll disertakan dalam PadForge, tidak diubah suai daripada Core SDK awam. Oleh Wyvrn. EULA Wyvrn.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Enjin haptik dan penyedia Razer di sebalik getaran baris Razer Sensa. HAR.dll dan Interhaptics.RazerProvider.dll disertakan dalam PadForge, tidak diubah suai daripada Core SDK awam. Oleh Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Model 3D Steam Controller (2015) dan Steam Controller (2026), dijadikan mesh daripada fail STEP yang diterbitkan Valve. Hak cipta Valve Corporation. CC BY-NC-SA 4.0. PadForge tidak berkaitan dengan atau disokong oleh Valve.</value>
+    <value>Model 3D Steam Controller (2015) dan Steam Controller (2026), dijadikan mesh daripada fail STEP yang diterbitkan Valve. Hak cipta Valve Corporation. PadForge tidak berkaitan dengan atau disokong oleh Valve.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>Masa jalan MinGW-w64</value>
@@ -4075,7 +4250,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Pengesahan bingkai REST API Razer Chroma bagi pencahayaan Razer, oleh Adam Hellberg dan Brandon Scott. MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Pengesahan bingkai REST API Razer Chroma bagi pencahayaan Razer, oleh Adam Hellberg dan Brandon Scott. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Rujukan SDK LED Logitech</value>
   </data>
@@ -4084,19 +4259,19 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Datagram penjejak UDP dan susun atur memori kongsi FreeTrack 2.0 untuk penjejakan kepala. ISC. Dokumentasi sahaja, tiada kod disertakan.</value>
+    <value>Datagram penjejak UDP dan susun atur memori kongsi FreeTrack 2.0 untuk penjejakan kepala. Dokumentasi sahaja, tiada kod disertakan.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Kelas peristiwa utiliti WMI Lenovo yang dilanggan oleh pembelajar butang tersembunyi peranti pegang tangan, dan corak pelayan IPC berhak tinggi di sebalik kawalan profil luaran. GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value>
+    <value>Kelas peristiwa utiliti WMI Lenovo yang dilanggan oleh pembelajar butang tersembunyi peranti pegang tangan, dan corak pelayan IPC berhak tinggi di sebalik kawalan profil luaran. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Rentetan identiti PC pegang tangan dan nota laporan vendor disemak silang untuk pembelajar butang tersembunyi. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value>
+    <value>Rentetan identiti PC pegang tangan dan nota laporan vendor disemak silang untuk pembelajar butang tersembunyi. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook dan WiimoteHook</value>
@@ -4111,13 +4286,13 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Urutan panggilan WinMM di sebalik API MIDI warisan: membuka port, menghantar kepadanya, dan menutupnya. Dibaca daripada PortMidi (MIT, oleh Ross Bencina, Phil Burk, dan Roger B. Dannenberg) dan RtMidi (lesen RtMidi gaya MIT, oleh Gary P. Scavone). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Rujukan SDK G-key Logitech</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Susun atur perkataan peristiwa di sebalik input G-key datang daripada LogitechGkeyLib.h dalam SDK. Tertib carian pustaka dan penutupan mengikut GKey.cpp Mumble (BSD 3-Clause). PadForge memuatkan mana-mana salinan pustaka yang ada pada mesin dan tidak menyertakan kod Logitech.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Susun atur perkataan peristiwa di sebalik input G-key datang daripada LogitechGkeyLib.h dalam SDK. Tertib carian pustaka dan penutupan mengikut GKey.cpp Mumble. PadForge memuatkan mana-mana salinan pustaka yang ada pada mesin dan tidak menyertakan kod Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup, dan AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Input papan kekunci analog memindahkan penghalaan papan kekunci, jadual kekunci dan katalog model HallJoy ke C# (AGPL-3.0, PashOK7) dan mengikut Soup serta SDK JavaScript AnalogSense (MIT, Calamity, Inc.), disemak berbanding Wooting Analog SDK (MPL-2.0). Papan kekunci lain mengikut AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk dan hmkconf (GPL-3.0-or-later, peppapighs), dan cabang Soup DenkiSuki, LeiterConsulting, dan paysdelest (MIT). Format laporan dan jadual kekunci juga datang daripada konfigurator Synapse Web Razer dan NuPhyIO NuPhy, OpenRazer (GPL-2.0-or-later), razer-analog-keyboard Abbytech, TinyUSB (MIT), dan nota tangkapan Sainan.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Rujukan Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box di sebalik Baca Penyesuai Bliss-Box, dibaca daripada API Tool Bliss-Box LLC (gaya BSD, pengedaran percuma) dan DeviceBuddy (sumber tersedia, Bliss-Box LLC), dengan nama butang daripada fail Bliss-Box dalam cabang retroarch-joypad-autoconfig SteveFox1620, checksum Controller Pak disemak berbanding libdragon (Unlicense), dan balasan pad PlayStation daripada psx-spx dan pemacu psxpad-spi Linux (GPL-2.0-or-later). Nama pengawal dan nota sokongan juga datang daripada senarai keserasian Bliss-Box LLC, dan kelakuan penyesuai disemak berbanding perisian tegar mereka. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Pengangkutan USB oleh Vadym Hrynchyshyn untuk pengawal USB komposit HIDMaestro. HIDMaestro membawa pemacu pengawal hosnya yang bertandatangan dan memasangnya kali pertama pengawal komposit dicipta. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Pengangkutan USB oleh Vadym Hrynchyshyn untuk pengawal USB komposit HIDMaestro. HIDMaestro membawa pemacu pengawal hosnya yang bertandatangan dan memasangnya kali pertama pengawal komposit dicipta.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Pilih separuh mana slot ini yang aktif. Mematikan satu separuh menyembunyikan barisnya dan menghentikannya daripada menghantar, dan mengekalkan pemetaannya supaya menghidupkannya semula memulihkannya.</value>
   </data>
@@ -4185,13 +4360,15 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
     <value>Umpuk Peranti Dikongsi</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Umpukan pada {0}</value>
+    <value>Peranti Dikongsi dengan {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Pilih peranti yang dikongsi oleh PC ini, kemudian pilih pengawal mayanya pada PC yang lain.</value>
+    <value>Pilih peranti, kemudian pengawal pada PC itu yang patut dipacunya.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Dikongsi daripada PC Ini</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Pengawal pada {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profil: {0}</value>
+    <value>Profil aktif: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Pada PC yang lain, benarkan perubahan umpukan jauh untuk PC ini di bawah Pautan Jauh &gt; PC Digandingkan.</value>
@@ -4283,60 +4460,60 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS, dan CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Penyahkod pertuturan, pustaka transduser dan algebra linear di dalam libvosk.dll. Kaldi dan OpenFst: Apache-2.0. OpenBLAS dan CLAPACK: BSD 3-Clause, dengan notis berasingan untuk GotoBLAS2 dalam OpenBLAS dan untuk masa jalan f2c.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Susun atur profil permulaan Strategi dan Desktop, dan kelakuan turbo yang dielakkan oleh turbo berskala tekanan. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Susun atur profil permulaan Strategi dan Desktop, dan kelakuan turbo yang dielakkan oleh turbo berskala tekanan. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rujukan oleh Antoine Aflalo untuk susun atur antara muka IPolicyConfig tidak berdokumen Windows, yang digunakan PadForge untuk mendayakan semula titik hujung audio pengawal. MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Rujukan oleh Antoine Aflalo untuk susun atur antara muka IPolicyConfig tidak berdokumen Windows, yang digunakan PadForge untuk mendayakan semula titik hujung audio pengawal. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimport EQ Parametrik pengawal, oleh Jaakko Pasanen. MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Format profil EQ parametrik yang diimport EQ Parametrik pengawal, oleh Jaakko Pasanen. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknik SendInput di sebalik makro Blok Teks dan cangkuk kord papan kekunci: menaip Unicode, had kelompok, kekunci topeng kekunci Win, dan input suntikan bertag. GPL-2.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Teknik SendInput di sebalik makro Blok Teks dan cangkuk kord papan kekunci: menaip Unicode, had kelompok, kekunci topeng kekunci Win, dan input suntikan bertag. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Rujukan protokol DSU di sebalik pelayan gerakan, oleh v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Rujukan protokol DSU di sebalik pelayan gerakan, oleh v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Pembingkaian laporan output Bluetooth DualShock 4, oleh Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Pembingkaian laporan output Bluetooth DualShock 4, oleh Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Julat bateri DualShock 4, masa dan langkah keamatan denyut haptik pad sentuh, dan kelakuan lontar pad sentuh. GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Julat bateri DualShock 4, masa dan langkah keamatan denyut haptik pad sentuh, dan kelakuan lontar pad sentuh. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (cabang hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Julat kelantangan audio DualSense, sampel haptik 8-bit bertanda dan susun atur pengangkutan Bluetooth gabungan. GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Julat kelantangan audio DualSense, sampel haptik 8-bit bertanda dan susun atur pengangkutan Bluetooth gabungan. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Lalai dan lantai panjang penimbal audio Bluetooth DualSense, oleh awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Lalai dan lantai panjang penimbal audio Bluetooth DualSense, oleh awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Nilai pratetap pencetus suai GameCube, oleh Mxater. Dibaca untuk fakta sahaja.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Tanda paksi gerakan DSU, disemak berbanding penyahkod UDP miliknya. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Tanda paksi gerakan DSU, disemak berbanding penyahkod UDP miliknya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Pratetap lalai Elite Dangerous di sebalik profil permulaan Simulasi Angkasa, oleh Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Pratetap lalai Elite Dangerous di sebalik profil permulaan Simulasi Angkasa, oleh Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Susunan nibble ADPCM pembesar suara Wii Remote, dan penyahkod SBC yang menyemak pengekod DualShock 4. LGPL-2.1-or-later, dibaca sebagai dokumentasi sahaja, tiada kod LGPL disertakan.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Susunan nibble ADPCM pembesar suara Wii Remote, dan penyahkod SBC yang menyemak pengekod DualShock 4. Dibaca sebagai dokumentasi sahaja, tiada kod LGPL disertakan.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Arah kompas terpampas condong untuk yaw kompas, dialihkan ke C#, oleh x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Arah kompas terpampas condong untuk yaw kompas, dialihkan ke C#, oleh x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Peraturan pemberitahuan bateri rendah dan corak getaran Kenal Pasti, oleh Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Peraturan pemberitahuan bateri rendah dan corak getaran Kenal Pasti, oleh Lukas Fröhstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>Model 3D DualShock 4, DualSense, DualSense Edge, Xbox Series dan Switch 2 Pro Controller, dibeli di CGTrader. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>Model 3D DualShock 4, DualSense, DualSense Edge, Xbox Series dan Switch 2 Pro Controller, dibeli di CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>Model 3D DualShock 3, dibeli di CGTrader dan dipecahkan kepada mesh setiap bahagian. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>Model 3D DualShock 3, dibeli di CGTrader dan dipecahkan kepada mesh setiap bahagian.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Lapisan HID yang dikompil ke dalam SDL3.dll yang disertakan, oleh Alan Ott, Signal 11 Software. Lesen gaya BSD.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Lapisan HID yang dikompil ke dalam SDL3.dll yang disertakan, oleh Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Sumber ikon</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glif api daripada Material Design Icons (Pictogrammers, Apache-2.0), ikon gamepad generik daripada Ionicons (Ionic, MIT), joystick Extended daripada Jam Icons (Michael Amprimo, MIT), dan ikon Xbox serta PlayStation daripada SVG Repo, di bawah lesen pada halaman setiap ikon.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokol geganti di sebalik lorong sandaran Pautan Jauh, dituturkan kepada geganti awam percuma n0.computer seperti yang dilakukan FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Pembilang tetikus optik Joy-Con 2 dan delta lilitan di sebalik Gerakan Tetikus X dan Y, oleh coffincolors, Frano, dan moutella. MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Pembilang tetikus optik Joy-Con 2 dan delta lilitan di sebalik Gerakan Tetikus X dan Y, oleh coffincolors, Frano, dan moutella. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Pemacu kernel Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Fakta protokol DualShock 3, Move, DualSense, Steam Deck dan maklum balas daya PID, dan susun atur blok ACPI WMI. PadForge membaca deskriptor papan kekunci dan tetikus mengikut peraturan hid-core. GPL-2.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Fakta protokol DualShock 3, Move, DualSense, Steam Deck dan maklum balas daya PID, dan susun atur blok ACPI WMI. PadForge membaca deskriptor papan kekunci dan tetikus mengikut peraturan hid-core. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Input pengawal Windows, termasuk paddle Xbox Elite. Pemuat SDK dipaut ke dalam SDL. MIT (pemuat SDK).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Input pengawal Windows, termasuk paddle Xbox Elite. Pemuat SDK dipaut ke dalam SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Masa Jalan Microsoft Visual C++</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Masa jalan C++ yang diperlukan SDL3.dll (msvcp140.dll, vcruntime140.dll dan, dalam binaan x64, vcruntime140_1.dll), disertakan tanpa diubah suai dalam PadForge. Terma lesen Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Masa jalan C++ yang diperlukan SDL3.dll (msvcp140.dll, vcruntime140.dll dan, dalam binaan x64, vcruntime140_1.dll), disertakan tanpa diubah suai dalam PadForge.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Nota HID Joy-Con dan Pro Controller, getaran HD dan LED rumah, oleh dekuNukem, dengan switch2_controller_research ndeadly untuk Switch 2. Dibaca untuk fakta protokol sahaja.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Corak kata kerja kemas kini berhak tinggi di sebalik pembantu pengemas kini dalam aplikasi. LGPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod LGPL disertakan.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Corak kata kerja kemas kini berhak tinggi di sebalik pembantu pengemas kini dalam aplikasi. Dibaca sebagai dokumentasi sahaja, tiada kod LGPL disertakan.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Tandatangan WinSCard dan urutan panggilan pemantauan pembaca di sebalik input teg NFC, oleh Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Tandatangan WinSCard dan urutan panggilan pemantauan pembaca di sebalik input teg NFC, oleh Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Susun atur laporan PlayStation Move, penentukuran penderia dan jabat tangan aksesori EXT, oleh Thomas Perl, disemak silang dengan wiki moveonpc. Pelaksanaan PadForge ialah C# asli. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Rujukan telemetri perlumbaan</value></data>
@@ -4344,23 +4521,23 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasi penggandingan dan laporan Bluetooth DualShock 3. GPL-2.0 dan GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Susun atur mesej STUN dan penyahkodan XOR-MAPPED-ADDRESS di sebalik rentas NAT Pautan Jauh, divendor daripada sumber C#nya, oleh Aaron Clauson. BSD 3-Clause, dengan sekatan penggunaan dalam seksyen 2 lesennya.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Susun atur mesej STUN dan penyahkodan XOR-MAPPED-ADDRESS di sebalik rentas NAT Pautan Jauh, divendor daripada sumber C#nya, oleh Aaron Clauson. Lesennya menambah sekatan penggunaan dalam seksyen 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Rujukan SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>Susun atur laporan 3Dconnexion, jadual peranti dan skala paksi, dibaca daripada hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse oleh AndunHH (CC BY-NC-SA 4.0), dan spacenavd (GPL-3.0-or-later). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Pemutusan pautan Bluetooth melalui IOCTL hos, ordinal matikan kuasa dan keupayaan XInput tersembunyi, dan lalai getaran pencetus DualSense. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Pemutusan pautan Bluetooth melalui IOCTL hos, ordinal matikan kuasa dan keupayaan XInput tersembunyi, dan lalai getaran pencetus DualSense. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Rujukan protokol Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Tik haptik leret, bit butang laporan 0x42, perintah matikan kuasa dan geganti dongle, dibaca daripada OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0), dan SteamlessController (MIT). Dokumentasi sahaja, tiada kod GPL atau AGPL disertakan.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Zon Mati Kayu Bedik</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Enam bentuk zon mati, oleh Minimuino. GFDL-1.3-or-later dan GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Kelakuan penuding IR Wii Remote: titik tengah pasangan titik, jidar, ofset bar penderia, pelicinan, dan lengkung Tetikus FPS, dengan cabang Ryochan7, Suegrini, dan Trihy. GPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Kelakuan penuding IR Wii Remote: titik tengah pasangan titik, jidar, ofset bar penderia, pelicinan, dan lengkung Tetikus FPS, dengan cabang Ryochan7, Suegrini, dan Trihy. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Susun atur kesan pencetus suai DualSense dan pemadatan zon, dihasilkan semula dalam C#, oleh John "Nielk1" Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Susun atur kesan pencetus suai DualSense dan pemadatan zon, dihasilkan semula dalam C#, oleh John "Nielk1" Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Susun atur DS4_REPORT_EX di sebalik laporan input DualShock 4 maya, oleh Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Susun atur DS4_REPORT_EX di sebalik laporan input DualShock 4 maya, oleh Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (cabang hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Julat pelemahan 48 dB mikrofon DualSense maya. GPL-3.0-or-later, dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Julat pelemahan 48 dB mikrofon DualSense maya. Dibaca sebagai dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Rujukan protokol roda</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Laporan maklum balas daya asli dan LED anjakan RPM untuk roda Fanatec, Thrustmaster, dan Logitech, dibaca daripada hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), dan thrustmaster-led-linux (GPL-3.0), dan disemak silang dengan pemalam LED SimHub oleh prodigal.knight (MIT) dan tm-bt-led (MIT). Dokumentasi sahaja, tiada kod GPL disertakan.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Rujukan I/O arked</value></data>
@@ -4390,19 +4567,19 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Rujukan pengawal Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>Protokol di sebalik pemacu cabang SDL untuk Xbox asal, Steel Battalion, chatpad Xbox 360 dan uDraw Xbox 360, serta penerima Xbox 360 yang diikat PadForge kepada pemacu asli Windows, dibaca daripada brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp oleh ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later), dan xemu (LGPL-2.0-or-later). Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Pembungkusan satu-INF-setiap-peranti dan penyenaraian peranti di sebalik pengikatan WinUSB automatik, oleh Pete Batard. Dokumentasi sahaja, tiada kod disertakan. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Pembungkusan satu-INF-setiap-peranti dan penyenaraian peranti di sebalik pengikatan WinUSB automatik, oleh Pete Batard. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Permintaan laporan ciri HID Bluetooth yang dihantar PadForge untuk mengenal pasti aksesori PS Move, oleh Ricardo Quesada. Dokumentasi sahaja, tiada kod disertakan. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Permintaan laporan ciri HID Bluetooth yang dihantar PadForge untuk mengenal pasti aksesori PS Move, oleh Ricardo Quesada. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Kunci konfigurasi Windows Mixed Reality dalam cabang SDL datang daripada Monado. Hak cipta 2021 Jan Schmidt. Disertakan dalam SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Kunci konfigurasi Windows Mixed Reality dalam cabang SDL datang daripada Monado. Hak cipta 2021 Jan Schmidt. Disertakan dalam SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Gabungan penderia Rift DK1 dalam cabang SDL ialah port daripada OpenHMD. Hak cipta 2013 Fredrik Hultin, Jakob Bornecrantz. Disertakan dalam SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Gabungan penderia Rift DK1 dalam cabang SDL ialah port daripada OpenHMD. Hak cipta 2013 Fredrik Hultin, Jakob Bornecrantz. Disertakan dalam SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Dokumentasi protokol pembesar suara dan penentukuran IR Wii Remote. Dibaca untuk fakta protokol sahaja.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Laporan 9 bait pencetus impuls Xbox dan laluan tulisnya, oleh araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Laporan 9 bait pencetus impuls Xbox dan laluan tulisnya, oleh araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Format PCM haptik PS5, 16-bit bertanda pada 3 kHz, yang menyelesaikan pengekodan haptik Bluetooth 8-bit bertanda. AGPL-3.0, dibaca sebagai dokumentasi sahaja, tiada kod AGPL disertakan.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Format PCM haptik PS5, 16-bit bertanda pada 3 kHz, yang menyelesaikan pengekodan haptik Bluetooth 8-bit bertanda. Dibaca sebagai dokumentasi sahaja, tiada kod AGPL disertakan.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Skrin Papan Kekunci</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Melukis pada skrin terbina dalam papan kekunci GamePanel Logitech dan Mad Catz S.T.R.I.K.E. 7, dan pada telefon melalui Logitech Arx Control: profil, jam, masa bermain, jam randik, gambar, atau warna bar cahaya DualShock 4 atau DualSense. Setiap skrin mendapat barisnya sendiri pada halaman Peranti, tempat anda menetapkan apa yang dipaparkannya. Kekunci di sebelah skrin ialah butang baris tersebut.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Kawal Skrin Papan Kekunci</value></data>
@@ -4470,6 +4647,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Pan</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Pan X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pan Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilih apa yang dipaparkan. Tiada apa-apa berubah sehingga anda menyimpan.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ditetapkan kepada {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Memuat turun SDK S.T.R.I.K.E. 7 Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 kini memuatkan {0}.</value></data>
@@ -4609,8 +4787,8 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Membaca {0} daripada memori kongsi.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Menunggu Assetto Corsa atau Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Memajukan ke port {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Format Telemetri Tersuai</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Huraikan paket yang dihantar oleh sesuatu permainan, medan demi medan, dan PadForge turut membaca permainan itu. Setiap pembolehubah menjadi paksi pada baris Telemetri Permainan dan saluran untuk pencetus Ungkapan Tersuai. Pilih format mengikut nama dalam senarai Permainan, atau beri panjang atau kunci supaya Kesan Automatik dapat menemuinya.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Format Tersuai</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Huraikan paket telemetri sesuatu permainan yang tidak dikenali PadForge.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Tambah Format</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Format {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Nama</value></data>
@@ -4621,12 +4799,15 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Hanya paket yang tepat sebanyak bait ini dibaca dengan format ini. Jika 0, mana-mana paket dibaca, dan Kesan Automatik tidak memilih format ini, jadi pilihnya mengikut nama.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Kunci Diperlukan</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Hanya paket JSON yang membawa kunci ini dibaca dengan format ini. Jika dibiarkan kosong, mana-mana paket dibaca, dan Kesan Automatik tidak memilih format ini, jadi pilihnya mengikut nama.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Susunan Bait</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian meletakkan bait paling tidak bererti bagi setiap nombor dahulu, seperti yang hampir selalu dibuat oleh permainan pada PC. Big-Endian meletakkan bait paling bererti dahulu.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Big-Endian</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Paket menulis setiap nombor dengan bait paling bererti dahulu. Permainan pada PC hampir selalu menulis bait paling kurang bererti dahulu.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Nilai Gear</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Medan gear mempunyai nombor tersendiri untuk undur dan neutral, seperti 0 dan 11 pada Forza. Apabila ini dimatikan, gear negatif ialah undur dan 0 ialah neutral.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Undur</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Kunci Diperlukan untuk paket JSON, nilai gear</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Medan</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Setiap medan membaca nombor pada ofsetnya, atau di bawah kuncinya dalam JSON (titik menjangkau objek bersarang), dan mendarabkannya dengan skala. Selepas skala, kelajuan dalam km/h, pedal bernilai 0 hingga 1, dan stereng bernilai -1 pada kiri penuh hingga 1 pada kanan penuh. Paksi pembolehubah bermula dari Min ketika rehat hingga Maks ketika penuh.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Dibaca Ke</value></data>
@@ -4710,4 +4891,35 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} pada {1} sehingga dihentikan</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Henti kesan pencetus pada {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kawal Pencahayaan Peranti Ini, Pegangan Pencahayaan</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Bersambung</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Tidak Bersambung</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Input Lain</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Tiada peranti sepadan.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Tidak digunakan</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateri {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateri {0}, sedang dicas</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Digunakan Oleh</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Pengawal Baharu</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Tetapan</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Setiap paksi, butang dan penderia</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ditekan: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, laluan, keupayaan, Paksa Mod Joystick Mentah</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, laluan, keupayaan</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Salin Butiran</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Produk</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Jenis</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Keupayaan</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Pautan</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Laluan</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nombor Siri</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Perisian Tegar</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Semakan</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Getarkan Pengawal Juga, Ulang Pemberitahuan Setiap, Beritahu Apabila Dicas Penuh</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Perlu Dilihat</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Diimport dengan Bersih</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Tetapkan Kata Laluan</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Buka Kunci Pautan Jauh</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Kata Laluan</value></data>
 </root>

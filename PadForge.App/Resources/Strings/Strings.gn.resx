@@ -77,7 +77,7 @@
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Omba'apóhína {0}-pe</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Ndaikatúi oñepyrũ</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Ojekuaa'ỹva</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Eheka...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Eheka…</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Mombyta</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Emoñepyrũ</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Mopotĩ</value></data>
@@ -125,14 +125,12 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Jejavy: {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Next" xml:space="preserve"><value>Upeigua</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Oĩma</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Tendakuéra</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Tenda</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Mba'e'oka</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Omboguata</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Embojoapy mba'e'oka</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Michĩ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ta'anga</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Tysỹi</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ñesẽ</value></data>
@@ -169,13 +167,21 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Ñemboheko</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Opavavépe g̃uarã</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Jeike</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Driverkuéra</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Marandu ha privacidad</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Eheka ñemboheko</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Ojehechaháicha</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Hesakã</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Iñypytũ</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Ovetã</value></data>
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Opyta: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Ndojeipe'ái: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver BthPS3 Bluetooth</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Ojeipe'áma</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Opyta</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 ndohejái mba'eve ko PC-pe ojeipe'a hag̃ua.</value></data>
   <data name="BthPS3Uninstall_KindRadio" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="BthPS3Uninstall_StillThere" xml:space="preserve"><value>Oĩ gueteri ko PC-pe.</value></data>
@@ -229,7 +235,6 @@
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Eiporavo ta'ãnga {0}-pe guarã…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Mboguete perfil ta'ãnga</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak puerto {0}.mpk</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Pistola de luz</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
   <data name="DevObj_ConsumerMute" xml:space="preserve"><value>Mokirirĩ</value></data>
@@ -307,8 +312,6 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Votõ kuéra</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Mboguete</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Mboty</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Mbopyahu</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
@@ -504,7 +507,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ko touchpad</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Téra</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Eñeha'ã jey</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Ehenói ko gesto</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Téra tekotevẽ</value></data>
 
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Giroscopio pitch</value></data>
@@ -587,11 +590,10 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Perfilkuéra</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Pyahu</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Eiporavo raẽ peteĩ perfil.</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Perfil pyahu</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Perfil réra:</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Téra</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Perfil pyahu</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -775,6 +777,17 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor akatúa</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Capa réra</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Téra</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ojejokóvo</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Ojejopývo</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Capa oúva</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Capa ohasáva</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Ha avei</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Eiporavo peteĩ jeike</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Control ojeasigna'ỹva</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Oipuru capa Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ndojapói mba'eve</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, jeike tipo, aravo ha sa'y</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantener</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Capa sa'y</value></data>
@@ -837,7 +850,7 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Emparejar</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Embojoaju peteĩ mando</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Emparejar</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Oĩma</value></data>
@@ -847,9 +860,8 @@
   <data name="SerialPair_Port" xml:space="preserve"><value>Puerto</value></data>
   <data name="SerialPair_Controller" xml:space="preserve"><value>Control</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Mboty</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(oha'arõhína)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Téra:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Téra</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Ehenói ko etiqueta</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Rastreador de cabeza</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Control VR</value></data>
   <data name="DeviceType_PeripheralHaptics" xml:space="preserve"><value>Háptica</value></data>
@@ -874,8 +886,10 @@
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Votõ kañymby</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Sapy'ami…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Téra:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Eheja votõ.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Paso {0} {1} apytépe</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Téra</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Ehenói ko votõ</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Teclakuéra: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Asu</value></data>
@@ -885,7 +899,7 @@
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Ta'angakuéra</value></data>
   <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Brillo</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Eheka ñembosarái</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} ñembosarái</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Ñembosarái</value></data>
   <data name="Workshop_LayerBindings_Format" xml:space="preserve"><value>{0} asignación</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Eheka ñembosarái</value></data>
   <data name="Workshop_TagAll" xml:space="preserve"><value>Opaite</value></data>
@@ -933,8 +947,6 @@
     <value>ds4mac</value>
   </data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Teclado + Mouse</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Perfil inicial</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Ñongatu perfil</value></data>
   <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Atajo</value></data>
   <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Mboguepyre</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
@@ -948,7 +960,9 @@
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Oimeraẽ ñe'ẽjoapy</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Akóinte</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Ñe'ẽjoapy</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Ñe'ẽjoaju ere hag̃ua</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Téra</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Votõ réra</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
@@ -992,7 +1006,7 @@
   </data>
   <data name="Menu_Layer" xml:space="preserve"><value>Capa</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Perfil: {0}</value>
+    <value>Perfil oikóva: {0}</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Eje virtual</value></data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Palanca asu X</value></data>
@@ -1120,8 +1134,8 @@
   <data name="MacroAction_TriggerEffect_SideBoth" xml:space="preserve"><value>Mokõivéva (L2 ha R2)</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ñembojoapykuéra</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Emondo ambue hendápe</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Emboja'o mando kuéra PadForge ndive ambue PC-pe.</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Joaju jey, puerto, identidad ñeñangareko, joaju direcciónpe</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Emboguata mando virtual kuéra ambue PCpe.</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Joaju jey ijeheguíva, puerto, ñembojoaju identidad, joaju direcciónpe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Votõ kuéra</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecla ha mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota ha control</value></data>
@@ -1161,4 +1175,92 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Asu</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Akatúa</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Mopotĩ activador</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Akã jere ojehechauka Head Tracker rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju akã jere peteĩ palanca ejépe mando Votõ kuéra pehẽme.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Umi valor ojehechauka Game Telemetry rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju umíva mando Votõ kuéra pehẽme térã eipuru macro omoñepyrũ hag̃ua.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Peteĩ menú renda, tamaño ha opacidad oñemboheko menúme voi, mando [Macro ha menúkuéra] pehẽme.</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Ekopia dirección</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Pumbyry ojoajúva ojehechauka ko'ápe ha Mba'e'oka kuéra kuatiaroguépe, ha upépe emoĩ peteĩ mandope.</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Ndaipóri PC ojoajúva.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Embojoaju ambue PC</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Ndaipóri PC ojoaju'ỹva ag̃uietépe.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Emyendy Remote Link PadForge ambue PC pegua rehe. Ojehechaukáta ko'ápe, ha embojoja peteĩ código mbyky mokõive pantállape.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Eheka mba'e'oka</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Opaite</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Oipurúva</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Ñemboheko</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Opaite eje, votõ ha sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Ojejopýva: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Ekopia detalle</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Ikatúva</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Joaju</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batería</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Tape</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Número de serie</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisión</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Emyengovia</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Perfil "{0}" oguereko ko'ág̃a ñemboheko ag̃agua.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ojejopývo</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pe</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Ehupyty perfilkuéra</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Ñepyrũrã</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Eñongatúvo, oñembojuaju peteĩ perfil ikatúva emoambue.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Oiko</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Capakuéra</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Ombovyryry avei mando, Ohechauka jey marandu ára ha ára, Oikuaauka henyhẽmbávo</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Okañy mba'e'oka ñembosaráigui, Okañy mba'e'oka ñepyrũ ha ñepyrũ mbytépe, Aplicación oñemoneĩva</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Eheka créditokuéra</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Eiporavo mba'épa ohecháta ñembosarái. Mando oñembojuaju ejopy vove.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Omboguata</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Eiporavo upéi</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Ojeipuruvéva</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Votõ rendakuéra PC ñembosarái oha'arõva.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Ñembosarái PlayStation symbol, touchpad ha lightbar reheguánte.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Switch votõ renda, ñembosarái ha emulador oha'arõvape g̃uarã.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Nota ha control change música softwarepe g̃uarã.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Mando VR virtual SteamVR rupive.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Emoambue hag̃ua tipo upéi, ejopy tipo chip mando ári. Peteĩ jejopyntevoi.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services ndombohováiri. Ehecha ikuadro Ñembohekópe.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Oikotevẽ SteamVR. Emoĩ ikuadro Ñembohekópe guive.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Oĩma peteĩ mando VR. Peteĩnte omboguata mokõive po.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Embojoaju peteĩ mando Bluetooth</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batería {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Batería {0}</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Eheka ñemboheko, mba'e'oka ha perfil</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Eheka</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Tembiapokue</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} eguata hag̃ua</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} eipe'a hag̃ua</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} oimeraẽ kuatiaroguégui</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Kuatiarogue</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Tembiapo</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Emboguete {0}?</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ndojeipe'ái</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Eipuru ryapu</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Embojuaju ñembosarái oikóva</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Nohẽ {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Capa Base réra, icono ha sa'y Shift Layer Flyoutpe ha capakuéra rysýipe.</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Ere peteĩ ñe'ẽjoaju ha ojopy peteĩ votõ ikatúva embojoaju. Opaite micrófono PadForge ohupytykuaáva ohendu.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Ohendu térã nohendúi, modo, jerovia</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Ñehendu oñembogue. Emyendy Hetavépe.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Eñepyrũ jey</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Oñemoarandu {0} rehe</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Embojuruja batería ñemo'ã ha ejopy votõ pytã SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Ejoko control ko PC ypýpe hesape omimbipa aja.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Embojoaju peteĩ DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Embojoaju peteĩ mando Move térã Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Embojuaju peteĩ mando serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Embojuaju peteĩ control DJI</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Eiporavo mba'épa ohechauka. Mba'eve noñemoambuéi eñongatu peve.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Mba'eve nog̃uahẽi puertope eñongatu peve.</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Rango papapýpe, valor ipyrusu</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Perfil inicial</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Perfil oñembosako'íva peteĩ género tuichakuépe g̃uarã. Eiporavo peteĩ, emoĩ oimeraẽ mando ha ehungá.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} {1} apytégui oñemyendy</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ko'ã perfil ojegueru oguereko versión ipyahuvéva Steam Workshoppe. Egueru jey Ehupyty perfilkuéragui ehupyty hag̃ua umi ñemoambue.</value></data>
 </root>

@@ -65,9 +65,6 @@ namespace PadForge.ViewModels
         /// <summary>The peer's machine (NetBIOS/host) name, shown next to the friendly name.</summary>
         public string HostName => _hostName;
 
-        /// <summary>Whether there's a host name to show alongside the friendly name.</summary>
-        public bool HasHostName => !string.IsNullOrWhiteSpace(_hostName);
-
         // The friendly-name default when the user hasn't set one: the machine name, or a
         // generic label until discovery learns it.
         private static string DefaultName(string hostName) =>
@@ -77,10 +74,28 @@ namespace PadForge.ViewModels
         public bool IsOnline
         {
             get => _isOnline;
-            set { if (SetProperty(ref _isOnline, value)) { OnPropertyChanged(nameof(OnlineText)); OnPropertyChanged(nameof(CanConnect)); } }
+            set { if (SetProperty(ref _isOnline, value)) { OnPropertyChanged(nameof(StateText)); OnPropertyChanged(nameof(CanConnect)); } }
         }
 
-        public string OnlineText => IsOnline ? S.Instance.RemoteLink_Online : S.Instance.RemoteLink_Offline;
+        /// <summary>The line under the name on the Remote Link page (#574):
+        /// connected or offline, and gamepad only when this PC limited
+        /// it.</summary>
+        public string StateText
+        {
+            get
+            {
+                string state = IsOnline ? S.Instance.RemoteLink_Connected : S.Instance.RemoteLink_Offline;
+                return GamepadOnly ? $"{state}  ·  {S.Instance.RemoteLink_GamepadOnlySuffix}" : state;
+            }
+        }
+
+        /// <summary>The language changed: the two lines built from the string
+        /// table read again.</summary>
+        internal void RefreshText()
+        {
+            OnPropertyChanged(nameof(StateText));
+            OnPropertyChanged(nameof(FingerprintDisplay));
+        }
 
         public string FingerprintHex { get; }
         public string PairedUtc { get; }

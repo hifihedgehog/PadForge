@@ -88,6 +88,12 @@ namespace PadForge.Tests
                 new[] { "{Binding DeadZoneBoth, Mode=TwoWay}", "PresetNameBoth", "SensitivityCurveBoth", "CalibrateCenter_Click", "ResetStickSensitivityCommand" },
                 new[] { "CenterOffsetX", "{Binding DeadZoneShapeIndex, Mode=TwoWay", "{Binding DeadZoneX, Mode=TwoWay}", "AntiDeadZoneY", "{Binding Linear, Mode=TwoWay}", "MomentumGlide",
                         "PresetNameX", "PresetNameY", "CalibrateBoundaryCommand", "MaxRangeYNeg", "Pad_Steering_Header" }),
+            // A trigger's typed range and raw values (the world-class pass).
+            ("Pad_More_Trigger", "{Binding MoreStateKey}", "Pad_More_Trigger",
+                new[] { "LowerValue=\"{Binding DeadZone, Mode=TwoWay}\"", "{Binding AntiDeadZone, Mode=TwoWay}", "TriggerPresetCombo",
+                        "CurveString=\"{Binding SensitivityCurve, Mode=TwoWay}\"", "RawNorm" },
+                new[] { "{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}", "{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}",
+                        "DeadZoneDigit", "MaxRangeDigit", "AntiDeadZoneDigit" }),
             ("Pad_More_Falcon", "Pad.Rumble.Falcon.More", "Pad_More_Falcon",
                 new[] { "{Binding FalconFeel, Mode=TwoWay}", "FalconSpring", "FalconForceCap" },
                 new[] { "FalconKickButton", "{Binding FalconKick, Mode=TwoWay}", "FalconShake", "FalconBraceButton", "FalconPreloadButton", "FalconGravity" }),
@@ -244,9 +250,17 @@ namespace PadForge.Tests
             var parts = Page().Descendants().Where(e => e.Name.LocalName is "FoldCard" or "MoreRow").ToList();
             var keys = parts.Select(p => (string)p.Attribute("StateKey")).ToList();
             Assert.All(keys, k => Assert.False(string.IsNullOrEmpty(k)));
-            Assert.Equal(keys.Count, keys.Distinct(StringComparer.Ordinal).Count());
-            // The one bound key is the stick's, which is one per stick.
-            Assert.Equal(new[] { "{Binding MoreStateKey}" }, keys.Where(k => k.StartsWith("{", StringComparison.Ordinal)));
+            var bound = keys.Where(k => k.StartsWith("{", StringComparison.Ordinal)).ToList();
+            var written = keys.Except(bound).ToList();
+            Assert.Equal(keys.Count - bound.Count, written.Distinct(StringComparer.Ordinal).Count());
+            // The two bound keys are a stick's and a trigger's, each one per
+            // card, and no stick's key is a trigger's.
+            Assert.Equal(new[] { "{Binding MoreStateKey}", "{Binding MoreStateKey}" }, bound);
+            Assert.Equal(new[] { "Pad_More_Stick", "Pad_More_Trigger" }, parts.Where(p => ((string)p.Attribute("StateKey")).StartsWith("{", StringComparison.Ordinal)).Select(Id));
+            Assert.Equal("Pad.Triggers.Trigger0.More", new TriggerConfigItem(0, "Left Trigger").MoreStateKey);
+            Assert.Equal("Pad.Triggers.Trigger1.More", new TriggerConfigItem(1, "Right Trigger").MoreStateKey);
+            Assert.NotEqual(new StickConfigItem(0, "Left Stick").MoreStateKey, new TriggerConfigItem(0, "Left Trigger").MoreStateKey);
+            Assert.DoesNotContain(new TriggerConfigItem(0, "Left Trigger").MoreStateKey, written);
         }
 
         [Fact]
@@ -265,14 +279,17 @@ namespace PadForge.Tests
 
                 string under = row.ToString();
                 // Up front: what stands before the row in its own panel. A
-                // stick's row follows the card's two columns, and there it
-                // is the settings column alone: the title's summary and the
-                // live stick view beside the settings read the values under
-                // More to show them, and set none.
+                // stick's and a trigger's row follows the card's line of
+                // columns, and there it is the columns of settings and of
+                // charts: the title's summary and the live stick view at
+                // the line's end (a Border) read the values under More to
+                // show them, and set none.
                 var columns = row.ElementsBeforeSelf().LastOrDefault();
-                var settings = columns?.Elements().FirstOrDefault(e => (string)e.Attribute("Grid.Column") == "0");
-                string before = settings != null
-                    ? settings.ToString()
+                bool ofAStickOrATrigger = want.Id is "Pad_More_Stick" or "Pad_More_Trigger";
+                if (ofAStickOrATrigger)
+                    Assert.Equal(want.Id == "Pad_More_Stick" ? "ThreePartPanel" : "FlexLinePanel", columns.Name.LocalName);
+                string before = ofAStickOrATrigger
+                    ? string.Concat(columns.Elements().Where(e => e.Name.LocalName == "StackPanel").Select(e => e.ToString()))
                     : string.Concat(row.ElementsBeforeSelf().Select(e => e.ToString()));
                 foreach (string text in want.UpFront)
                 {

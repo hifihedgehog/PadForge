@@ -350,6 +350,12 @@ namespace PadForge.Tests
             Assert.Equal(2, rows.Count);
             Assert.Contains(rows, r => r.Detail == string.Format(Strings.Instance.HIDMaestroUninstall_NotRemoved_Format, "in use")
                 && r.Kind == Strings.Instance.BthPS3Uninstall_KindPackage);
+            // After a removal each row says the item was not removed.
+            Assert.All(rows, r =>
+            {
+                Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeNotRemoved, r.Outcome);
+                Assert.False(r.IsRemoved);
+            });
         }
 
         /// <summary>A radio that does not come back on is a failure of its own,
@@ -389,6 +395,16 @@ namespace PadForge.Tests
             var cert = Assert.Single(rows, r => r.Kind == Strings.Instance.BthPS3Uninstall_KindCertificate);
             Assert.Equal(string.Format(Strings.Instance.HIDMaestroUninstall_Stays_Format, Strings.Instance.BthPS3Uninstall_CertificateKept), cert.Detail);
             Assert.All(rows.Where(r => r != cert), r => Assert.Null(r.Detail));
+            // Each row leads with what the item is and ends with what
+            // becomes of it, in the HIDMaestro removal's words.
+            Assert.Equal(Strings.Instance.BthPS3Uninstall_KindCertificate, cert.Title);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeKept, cert.Outcome);
+            Assert.False(cert.IsRemoved);
+            Assert.All(rows.Where(r => r != cert), r =>
+            {
+                Assert.Equal(Strings.Instance.HIDMaestroUninstall_OutcomeRemoved, r.Outcome);
+                Assert.True(r.IsRemoved);
+            });
             Assert.Equal(Enum.GetValues<ItemKind>().Length, Enum.GetValues<ItemKind>().Select(KindText).Distinct().Count());
         }
     }

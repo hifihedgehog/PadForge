@@ -1029,16 +1029,16 @@ namespace PadForge.Tests
         }
 
         /// <summary>Every default built for an assignment records what it
-        /// leaves owed, and what a profile holds travels with it: both
-        /// assignment paths, the type re-map, both fills and both profile
+        /// leaves owed, and what a profile holds travels with it: the
+        /// assignment path, the type re-map, both fills and both profile
         /// snapshot builders, with the profile switch restoring it, None
         /// included.</summary>
         [Fact]
         public void EveryAssignmentPathRecordsWhatItsPortOwes()
         {
             string devices = System.IO.File.ReadAllText(RepoPath("PadForge.App", "Services", "DeviceService.cs"));
-            Assert.Equal(2, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);"));
-            Assert.Equal(2, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);"));
+            Assert.Equal(1, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: true);"));
+            Assert.Equal(1, CountOf(devices, "BlissBoxRuntime.NoteOwedDefault(us, udForGuid, fresh: false);"));
             Assert.Contains("us.BlissBoxOwed |= BlissBoxOwedMapping.Default;", Body(devices, "public static void FillEmptyAutoMappingsForSlot("));
             Assert.Contains("us.BlissBoxOwed |= BlissBoxOwedMapping.Pressure;", Body(devices, "private static bool FillEmptyPlayStationMappingsForSlot("));
             string manager = System.IO.File.ReadAllText(RepoPath("PadForge.App", "Common", "SettingsManager.cs"));

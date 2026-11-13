@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using PadForge.Engine.RemoteLink;
-using Wpf.Ui.Controls;
 using S = PadForge.Resources.Strings.Strings;
 
 namespace PadForge.Views
 {
-    public partial class RemoteAssignmentsDialog : FluentWindow
+    /// <summary>
+    /// The devices this PC shares with a paired PC, and the controllers on
+    /// that PC each one drives. Every change is asked of the other PC over
+    /// the link's assignment channel, and the lists show what it answered.
+    /// </summary>
+    public partial class RemoteAssignmentsDialog : DialogWindow
     {
         private readonly LinkAssignmentChannel _channel;
         private readonly Func<IReadOnlyList<RemotePeerDeviceInfo>> _devices;
@@ -31,8 +35,10 @@ namespace PadForge.Views
             _devices = devices;
             InitializeComponent();
             Title = string.Format(S.Instance.RemoteLink_AssignmentTitle_Format, peerName);
-            // Drag from the header or other unused window space.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch (InvalidOperationException) { } };
+            ControllersOnText.Text = string.Format(S.Instance.RemoteLink_ControllersOn_Format, peerName);
+            ShowSlots(null);
+            // The devices' list shows once the first refresh has filled it.
+            DevicesFrame.Visibility = Visibility.Collapsed;
             Loaded += async (_, _) => { _ready = true; await RefreshAsync(true); };
             Closed += (_, _) => { _closed = true; _closing.Cancel(); _closing.Dispose(); };
         }
@@ -43,7 +49,22 @@ namespace PadForge.Views
             DevicesBox.IsEnabled = !busy;
             SlotsList.IsEnabled = !busy;
             RefreshButton.IsEnabled = !busy;
-            if (busy) StatusText.Text = S.Instance.RemoteLink_AssignmentBusy;
+            if (busy) Say(S.Instance.RemoteLink_AssignmentBusy);
+        }
+
+        /// <summary>The line under the lists. Empty, it takes no room.</summary>
+        private void Say(string message)
+        {
+            StatusText.Text = message ?? string.Empty;
+            StatusText.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        /// <summary>The other PC's controllers. With none to show, their
+        /// heading and list are left out, and the line under says why.</summary>
+        private void ShowSlots(IReadOnlyCollection<SlotChoice> slots)
+        {
+            SlotsList.ItemsSource = slots;
+            ControllersBlock.Visibility = slots != null && slots.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private async Task RefreshAsync(bool reloadDevices)
@@ -58,12 +79,13 @@ namespace PadForge.Views
                     var devices = _devices().ToArray();
                     DevicesBox.ItemsSource = devices;
                     DevicesBox.SelectedItem = devices.FirstOrDefault(d => d.PeerLocalDeviceId == selected) ?? devices.FirstOrDefault();
+                    DevicesFrame.Visibility = devices.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
                 if (DevicesBox.SelectedItem is not RemotePeerDeviceInfo device)
                 {
-                    SlotsList.ItemsSource = null;
+                    ShowSlots(null);
                     ProfileText.Text = "";
-                    StatusText.Text = S.Instance.RemoteLink_AssignmentNoDevices;
+                    Say(S.Instance.RemoteLink_AssignmentNoDevices);
                     return;
                 }
                 _deviceId = device.PeerLocalDeviceId;
@@ -75,9 +97,9 @@ namespace PadForge.Views
 
         private void ShowError(string message)
         {
-            SlotsList.ItemsSource = null;
+            ShowSlots(null);
             ProfileText.Text = "";
-            StatusText.Text = message;
+            Say(message);
         }
 
         private void ShowReply(LinkAssignmentReply reply)
@@ -88,9 +110,9 @@ namespace PadForge.Views
             {
                 ProfileText.Text = string.Format(S.Instance.RemoteLink_AssignmentProfile_Format, reply.Profile);
                 var slots = reply.Slots ?? Array.Empty<LinkAssignmentSlot>();
-                SlotsList.ItemsSource = slots.Select(s => new SlotChoice(s.Index, s.Name, s.Assigned, s.CanAssign || s.Assigned)).ToArray();
-                StatusText.Text = reply.Status == LinkAssignmentStatus.Stale ? S.Instance.RemoteLink_AssignmentStale
-                    : slots.Length == 0 ? S.Instance.RemoteLink_AssignmentNoSlots : "";
+                ShowSlots(slots.Select(s => new SlotChoice(s.Index, s.Name, s.Assigned, s.CanAssign || s.Assigned)).ToArray());
+                Say(reply.Status == LinkAssignmentStatus.Stale ? S.Instance.RemoteLink_AssignmentStale
+                    : slots.Length == 0 ? S.Instance.RemoteLink_AssignmentNoSlots : "");
             }
             else ShowError(reply.Status switch
             {

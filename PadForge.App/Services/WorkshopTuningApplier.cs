@@ -49,12 +49,12 @@ namespace PadForge.Services
         /// <para>Call this from EVERY path that assigns a device to a slot.
         /// The runtime overlays this replaced applied on every path by
         /// construction, so wiring it into one assignment entry point and not
-        /// its sibling silently dropped the tuning for the other. There are
-        /// two today, DeviceService.OnAssignToSlot (the device list's assign
-        /// command) and DeviceService.AssignDeviceToSlot (drag-drop and
-        /// programmatic), and a third added later must not have to know this
-        /// exists. It is idempotent and cheap, so calling it too often is
-        /// free and calling it too seldom is a silent regression.</para>
+        /// its sibling silently dropped the tuning for the other. There is
+        /// one today, DeviceService.AssignDeviceToSlot, which the Used By
+        /// chips (SetDeviceSlotAssignment) and drops reach, and a second added
+        /// later must not have to know this exists. It is idempotent and
+        /// cheap, so calling it too often is free and calling it too seldom
+        /// is a silent regression.</para>
         /// <para>N/A by design, and each for its own reason:</para>
         /// <para>WorkshopGyroRatchetDescriptors has no ratchet field on
         /// PadSetting and no ratchet control in any view, so there is no

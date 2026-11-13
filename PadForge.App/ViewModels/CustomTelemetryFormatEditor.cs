@@ -323,5 +323,15 @@ namespace PadForge.ViewModels
             new TelemetryChoice<CustomTelemetryType>(CustomTelemetryType.F32, () => "f32"),
             new TelemetryChoice<CustomTelemetryType>(CustomTelemetryType.F64, () => "f64"),
         };
+
+        /// <summary>The orders a binary format reads a number's bytes in, as
+        /// the Byte Order picker offers them: Little-Endian first, the order
+        /// nearly every game on a PC writes (#574). The value is
+        /// <see cref="TelemetryFormatEdit.BigEndian"/>.</summary>
+        public static IReadOnlyList<TelemetryChoice<bool>> ByteOrders { get; } = new[]
+        {
+            new TelemetryChoice<bool>(false, () => Strings.Instance.Telemetry_Formats_LittleEndian),
+            new TelemetryChoice<bool>(true, () => Strings.Instance.Telemetry_Formats_BigEndian),
+        };
     }
 }

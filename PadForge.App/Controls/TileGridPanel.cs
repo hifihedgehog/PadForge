@@ -14,7 +14,10 @@ namespace PadForge.Controls
     /// tile takes no cell. With <see cref="FillRows"/> a row's tiles share
     /// the whole width, however few they are. A tile marked
     /// <see cref="FullRowProperty"/> has a row to itself at the panel's
-    /// whole width.
+    /// whole width. A row's last tile marked <see cref="TakesRestProperty"/>
+    /// runs on through the columns the row has left. With
+    /// <see cref="Balance"/> a set that needs more than one row is shared
+    /// out evenly between its rows.
     /// </summary>
     public sealed class TileGridPanel : Panel
     {
@@ -144,6 +147,58 @@ namespace PadForge.Controls
             return rows;
         }
 
+        public static readonly DependencyProperty BalanceProperty = DependencyProperty.Register(
+            nameof(Balance), typeof(bool), typeof(TileGridPanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>Whether a set of tiles that needs more than one row is
+        /// shared out evenly: four tiles where three columns fit stand two
+        /// and two, and not three and one. For a short, fixed set. Unset,
+        /// every row but the last is full.</summary>
+        public bool Balance
+        {
+            get => (bool)GetValue(BalanceProperty);
+            set => SetValue(BalanceProperty, value);
+        }
+
+        /// <summary>The columns a balanced set uses: as few as still need
+        /// no more rows than <paramref name="columns"/> would.</summary>
+        internal static int BalancedColumns(int count, int columns)
+        {
+            if (count < 1 || columns < 1) return Math.Max(1, columns);
+            int rows = (count + columns - 1) / columns;
+            return (count + rows - 1) / rows;
+        }
+
+        /// <summary>The columns and the column width in use: what fits, or
+        /// with <paramref name="balance"/> the fewer columns that share
+        /// <paramref name="count"/> tiles out evenly, each then wider.</summary>
+        internal static (int Columns, double ItemWidth) ColumnsFor(double width, double minItemWidth, double gap, int maxColumns, int count, bool balance)
+        {
+            var (columns, itemWidth) = Columns(width, minItemWidth, gap, maxColumns);
+            if (!balance || double.IsInfinity(width) || double.IsNaN(width)) return (columns, itemWidth);
+            int even = BalancedColumns(count, columns);
+            return even == columns ? (columns, itemWidth) : (even, Math.Max(0, (width - gap * (even - 1)) / even));
+        }
+
+        public static readonly DependencyProperty TakesRestProperty = DependencyProperty.RegisterAttached(
+            "TakesRest", typeof(bool), typeof(TileGridPanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsParentMeasure));
+
+        public static bool GetTakesRest(UIElement element) => (bool)element.GetValue(TakesRestProperty);
+
+        public static void SetTakesRest(UIElement element, bool value) => element.SetValue(TakesRestProperty, value);
+
+        /// <summary>The width of a row's last tile when it takes what is
+        /// left of the row: its own column and every column after it, with
+        /// the gaps between them. A full row leaves it its column.</summary>
+        internal static double RestWidth(double width, double gap, int columns, int inRow, double itemWidth)
+        {
+            if (double.IsInfinity(width) || double.IsNaN(width) || inRow >= columns) return itemWidth;
+            int spans = columns - inRow + 1;
+            return spans * itemWidth + (spans - 1) * gap;
+        }
+
         /// <summary>The width of a tile that takes a whole row: the panel's
         /// width, or one column's when there is no width to go by.</summary>
         internal static double FullRowWidth(double width, double itemWidth)
@@ -166,11 +221,17 @@ namespace PadForge.Controls
             return shown;
         }
 
+        /// <summary>The width of the last tile of a row: the row's tile
+        /// width, or what is left of the row for a tile that takes it. A
+        /// row whose tiles share the whole width has nothing left.</summary>
+        private double LastWidth(UIElement last, bool isFull, double width, int columns, int inRow, double itemWidth, double tileWidth)
+            => !isFull && !FillRows && GetTakesRest(last) ? RestWidth(width, Gap, columns, inRow, itemWidth) : tileWidth;
+
         protected override Size MeasureOverride(Size availableSize)
         {
-            var (columns, itemWidth) = Columns(availableSize.Width, MinItemWidth, Gap, MaxColumns);
-            double down = RowGapFor(RowGap, Gap);
             var shown = Shown();
+            var (columns, itemWidth) = ColumnsFor(availableSize.Width, MinItemWidth, Gap, MaxColumns, shown.Count, Balance);
+            double down = RowGapFor(RowGap, Gap);
             bool[] full = FullRows(shown);
             double total = 0;
             int start = 0, across = 0;
@@ -182,7 +243,10 @@ namespace PadForge.Controls
                 double rowHeight = 0;
                 for (int i = start; i < start + inRow; i++)
                 {
-                    shown[i].Measure(new Size(tileWidth, double.PositiveInfinity));
+                    double own = i == start + inRow - 1
+                        ? LastWidth(shown[i], full[start], availableSize.Width, columns, inRow, itemWidth, tileWidth)
+                        : tileWidth;
+                    shown[i].Measure(new Size(own, double.PositiveInfinity));
                     rowHeight = Math.Max(rowHeight, shown[i].DesiredSize.Height);
                 }
                 total += rowHeight + (start > 0 ? down : 0);
@@ -219,9 +283,9 @@ namespace PadForge.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var (columns, itemWidth) = Columns(finalSize.Width, MinItemWidth, Gap, MaxColumns);
-            double down = RowGapFor(RowGap, Gap);
             var shown = Shown();
+            var (columns, itemWidth) = ColumnsFor(finalSize.Width, MinItemWidth, Gap, MaxColumns, shown.Count, Balance);
+            double down = RowGapFor(RowGap, Gap);
             bool[] full = FullRows(shown);
             double y = 0;
             int start = 0;
@@ -235,7 +299,12 @@ namespace PadForge.Controls
                 for (int i = start; i < start + inRow; i++)
                     height = Math.Max(height, shown[i].DesiredSize.Height);
                 for (int i = 0; i < inRow; i++)
-                    shown[start + i].Arrange(new Rect(i * (tileWidth + Gap), y, tileWidth, height));
+                {
+                    double own = i == inRow - 1
+                        ? LastWidth(shown[start + i], full[start], finalSize.Width, columns, inRow, itemWidth, tileWidth)
+                        : tileWidth;
+                    shown[start + i].Arrange(new Rect(i * (tileWidth + Gap), y, own, height));
+                }
                 y += height + down;
                 start += inRow;
             }

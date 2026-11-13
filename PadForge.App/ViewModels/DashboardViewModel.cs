@@ -21,8 +21,13 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Home_Title;
             ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
-            // Home's line under the engine's state counts them.
-            SlotSummaries.CollectionChanged += (_, _) => OnPropertyChanged(nameof(EngineLine));
+            // Home's line under the engine's state counts them, and Home shows
+            // its first page while there are none.
+            SlotSummaries.CollectionChanged += (_, e) =>
+            {
+                FollowSlots(e);
+                FollowFirstRun();
+            };
         }
 
         protected override void OnCultureChanged()
@@ -30,6 +35,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Home_Title;
             RefreshHomeText();
             OnPropertyChanged(nameof(PollingFrequencyText));
+            RaisePollingRateParts();
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
             foreach (var overlay in ScreenOverlays) overlay.RefreshText();
             // The runtime picker's System Default row kept the previous
@@ -83,9 +89,16 @@ namespace PadForge.ViewModels
 
             if (changed)
             {
-                SlotSummaries.Clear();
-                foreach (int slot in activeSlots)
-                    SlotSummaries.Add(new SlotSummary(slot));
+                // Home's first page is decided once the list is whole.
+                _refreshingSlots = true;
+                try
+                {
+                    SlotSummaries.Clear();
+                    foreach (int slot in activeSlots)
+                        SlotSummaries.Add(new SlotSummary(slot));
+                }
+                finally { _refreshingSlots = false; }
+                FollowFirstRun();
             }
 
             // Update display labels to use sequential global numbering.
@@ -168,7 +181,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _engineStateKey, value))
+                {
                     OnPropertyChanged(nameof(IsEngineOn));
+                    FollowEngineState();
+                }
             }
         }
 
@@ -188,7 +204,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _pollingFrequency, value))
+                {
                     OnPropertyChanged(nameof(PollingFrequencyText));
+                    RaisePollingRateParts();
+                }
             }
         }
 
@@ -205,7 +224,7 @@ namespace PadForge.ViewModels
         private int _onlineDevices;
 
         /// <summary>Number of currently connected (online) input devices.
-        /// Home's engine card prints it (<see cref="EngineLine"/>).</summary>
+        /// Home's engine card prints it.</summary>
         public int OnlineDevices
         {
             get => _onlineDevices;
@@ -623,6 +642,17 @@ namespace PadForge.ViewModels
         {
             get => _isGameTelemetryRunning;
             set => SetProperty(ref _isGameTelemetryRunning, value);
+        }
+
+        private bool _isGameTelemetryReceiving;
+
+        /// <summary>A game's telemetry reaches the row: the Extras page's status
+        /// flame burns ember, and gold while the row waits for a game. Set with
+        /// the status line, from the row's own status.</summary>
+        public bool IsGameTelemetryReceiving
+        {
+            get => _isGameTelemetryReceiving;
+            set => SetProperty(ref _isGameTelemetryReceiving, value);
         }
 
         // ─────────────────────────────────────────────
@@ -1212,6 +1242,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _headTrackingStatus, value ?? Strings.Instance.Common_Stopped);
         }
 
+        private bool _isHeadTrackingReceiving;
+
+        /// <summary>A source delivers a pose to the Head Tracker row: the Extras
+        /// page's status flame burns ember, and gold while the inputs wait. Set
+        /// with the status line.</summary>
+        public bool IsHeadTrackingReceiving
+        {
+            get => _isHeadTrackingReceiving;
+            set => SetProperty(ref _isHeadTrackingReceiving, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Web Controller Server
         // ─────────────────────────────────────────────
@@ -1440,6 +1481,29 @@ namespace PadForge.ViewModels
                 }
             });
 
+        /// <summary>The phones and browsers connected now, for the Phones card
+        /// (#574). InputService adds a session on the UI thread when it
+        /// connects and takes it out when that same session ends.</summary>
+        public ObservableCollection<WebControllerPhone> WebControllerPhones { get; } = new();
+
+        /// <summary>A session connected. A phone that reconnects under the
+        /// same id replaces its old entry.</summary>
+        internal void AddWebControllerPhone(WebControllerDevice device)
+        {
+            if (device == null) return;
+            for (int i = 0; i < WebControllerPhones.Count; i++)
+                if (WebControllerPhones[i].Id == device.InstanceGuid) { WebControllerPhones[i] = new WebControllerPhone(device); return; }
+            WebControllerPhones.Add(new WebControllerPhone(device));
+        }
+
+        /// <summary>A session ended. Only its own entry goes: the end of a
+        /// session a reconnect already replaced leaves the new one alone.</summary>
+        internal void RemoveWebControllerPhone(WebControllerDevice device)
+        {
+            for (int i = 0; i < WebControllerPhones.Count; i++)
+                if (ReferenceEquals(WebControllerPhones[i].Device, device)) { WebControllerPhones.RemoveAt(i); return; }
+        }
+
         // ─────────────────────────────────────────────
         //  Remote Link (issue #138)
         // ─────────────────────────────────────────────
@@ -1645,6 +1709,16 @@ namespace PadForge.ViewModels
         public RelayCommand ResetOpacityCommand =>
             _resetOpacityCommand ??= new RelayCommand(() => TouchpadOverlayOpacity = 0.25);
 
+        private RelayCommand _resetTouchpadOverlayCardCommand;
+        /// <summary>Reset All on Look and Place (#574): the opacity and the
+        /// place, the card's two settings.</summary>
+        public RelayCommand ResetTouchpadOverlayCardCommand =>
+            _resetTouchpadOverlayCardCommand ??= new RelayCommand(() =>
+            {
+                ResetOpacityCommand.Execute(null);
+                ResetTouchpadOverlayPositionCommand.Execute(null);
+            });
+
         /// <summary>Raised when the user clicks Reset Position. Handler in
         /// InputService recenters the live overlay (or seeds defaults if not
         /// open) and clears persisted Left/Top.</summary>
@@ -1730,6 +1804,27 @@ namespace PadForge.ViewModels
 
         internal void RequestScreenOverlayChoose(ScreenOverlayItem item)
             => ChooseScreenOverlayContentRequested?.Invoke(this, item);
+
+        /// <summary>Raised by an overlay's Reset All (#574): what it shows goes
+        /// back to the default. MainWindow holds the keyboard screens'
+        /// choices and makes the change.</summary>
+        public event EventHandler<ScreenOverlayItem> ResetScreenOverlayChoicesRequested;
+
+        internal void RequestScreenOverlayResetChoices(ScreenOverlayItem item)
+            => ResetScreenOverlayChoicesRequested?.Invoke(this, item);
+
+        /// <summary>What an overlay shows, by its number, read from the saved
+        /// choices. Set by MainWindow. Null leaves every overlay at the
+        /// default mode.</summary>
+        internal Func<int, PadForge.Services.KeyboardScreenMode> ScreenOverlayModeOf { get; set; }
+
+        /// <summary>A screen's choices changed: the overlay that is that row
+        /// says what it shows again.</summary>
+        internal void ScreenOverlayChoicesChanged(Guid row)
+        {
+            foreach (var item in ScreenOverlays)
+                if (PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.OverlayRow(item.Number) == row) item.RefreshShows();
+        }
 
         private RelayCommand _addScreenOverlayCommand;
         public RelayCommand AddScreenOverlayCommand =>
@@ -1966,6 +2061,153 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(StatusText));
             }
         }
+
+        private bool _engineStopped = true;
+
+        /// <summary>Whether the engine is stopped. The dashboard tells each
+        /// summary, so a card can say its heat without looking past
+        /// itself.</summary>
+        public bool EngineStopped
+        {
+            get => _engineStopped;
+            set
+            {
+                if (SetProperty(ref _engineStopped, value))
+                    FollowHeat();
+            }
+        }
+
+        private string _heat = HeatCold;
+
+        public const string HeatForging = "Forging";
+        public const string HeatWaiting = "Waiting";
+        public const string HeatCold = "Cold";
+
+        /// <summary>The controller's heat in one word that never changes
+        /// with the language, for the views to switch on: Forging while its
+        /// virtual controller is live or being made, Waiting while it is on
+        /// and has devices but the engine is stopped or its virtual
+        /// controller is not there, Cold while it is off or has no device.
+        /// It is the sidebar pill's rule (MainWindow.ComputeFlameHeat)
+        /// without the engine's idle state, which the engine's own word
+        /// carries.</summary>
+        public string Heat => _heat;
+
+        private void FollowHeat()
+        {
+            string heat = !_isEnabled ? HeatCold
+                : _isInitializing ? HeatForging
+                : _mappedDeviceCount == 0 ? HeatCold
+                : _engineStopped || !_isVirtualControllerConnected ? HeatWaiting
+                : HeatForging;
+            if (heat == _heat) return;
+            _heat = heat;
+            OnPropertyChanged(nameof(Heat));
+        }
+
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.PropertyName is nameof(IsEnabled) or nameof(IsInitializing) or nameof(MappedDeviceCount)
+                or nameof(IsVirtualControllerConnected))
+                FollowHeat();
+            // The pill's word and the waiting line are made of these.
+            if (e.PropertyName is nameof(IsEnabled) or nameof(IsInitializing) or nameof(IsCreateFailed)
+                or nameof(MappedDeviceCount) or nameof(ConnectedDeviceCount) or nameof(IsVirtualControllerConnected)
+                or nameof(EngineStopped) or nameof(Heat))
+                RefreshWords();
+        }
+
+        /// <summary>The state in the words of the card's pill, which is the
+        /// controller's switch: Disabled while it is off, then what an
+        /// enabled controller is doing. The order is the old flame
+        /// tooltip's: being made, failed, nothing mapped, the engine
+        /// stopped, waiting for a device, forging. Through the inactivity
+        /// grace a controller is still live with its devices away, so it
+        /// reads Forging until it is taken down.</summary>
+        public string StateWord => !_isEnabled ? Strings.Instance.Common_Disabled
+            : _isInitializing ? Strings.Instance.Main_Initializing
+            : _isCreateFailed ? Strings.Instance.Main_VcFailed
+            : _mappedDeviceCount == 0 ? Strings.Instance.Dashboard_StatusCold
+            : _engineStopped ? Strings.Instance.Main_EngineStopped
+            : !_isVirtualControllerConnected ? Strings.Instance.Main_AwaitingDevices
+            : Strings.Instance.Main_Active;
+
+        /// <summary>What a waiting controller waits for, in a sentence with
+        /// no number in it, or nothing: the engine while it is stopped,
+        /// else a device while none of its devices is connected.</summary>
+        public string WaitHint => _heat != HeatWaiting || _isCreateFailed ? string.Empty
+            : _engineStopped ? Strings.Instance.Home_Card_StartsWithEngine
+            : _connectedDeviceCount > 0 ? string.Empty
+            : _mappedDeviceCount == 1 ? Strings.Instance.Home_Card_StartsWhenThis
+            : Strings.Instance.Home_Card_StartsWhenOne;
+
+        /// <summary>Has the card read its words again: a state changed, or
+        /// the language did.</summary>
+        internal void RefreshWords()
+        {
+            base.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(StateWord)));
+            base.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(WaitHint)));
+        }
+
+        private string _pictureProfile;
+        private VirtualControllerType _pictureType;
+        private string _pictureFinishes;
+        private bool _pictureStill;
+        private bool _pictureMade;
+        private bool _pictureComing;
+        private System.Windows.Media.ImageSource _picture, _pictureGray;
+
+        /// <summary>The controller's picture on the card's stage: what its
+        /// own page shows, in the finish chosen there. Null for a type
+        /// with no picture, whose card shows the type's symbol, and while
+        /// a still of the 3D model is being made.</summary>
+        public System.Windows.Media.ImageSource Picture => _picture;
+
+        /// <summary>The same picture with its colors taken out, which a
+        /// controller that is not forging shows.</summary>
+        public System.Windows.Media.ImageSource PictureGray => _pictureGray;
+
+        /// <summary>Whether the stage has a picture or is about to have
+        /// one. While it waits for a still the stage is empty, and the
+        /// type's symbol does not stand in for a moment.</summary>
+        public bool HasPicture => _picture != null || _pictureComing;
+
+        /// <summary>Whether the picture was made for this preset, this
+        /// type, these finishes and this kind (a still of the 3D model, or
+        /// the 2D art), so the one that sets it asks again only when one
+        /// of them changed.</summary>
+        internal bool PictureIsFor(string profileId, VirtualControllerType type, string finishes, bool still)
+            => _pictureMade && _pictureStill == still && _pictureType == type
+                && _pictureProfile == profileId && _pictureFinishes == finishes;
+
+        /// <summary>Sets the picture and what it was made for.
+        /// <paramref name="coming"/> says a still is being made, so there
+        /// is no picture yet and there will be one.</summary>
+        internal void SetPicture(string profileId, VirtualControllerType type, string finishes, bool still,
+            System.Windows.Media.ImageSource picture, System.Windows.Media.ImageSource gray, bool coming = false)
+        {
+            _pictureMade = true;
+            _pictureProfile = profileId;
+            _pictureType = type;
+            _pictureFinishes = finishes;
+            _pictureStill = still;
+            bool had = HasPicture;
+            bool changed = !ReferenceEquals(picture, _picture) || !ReferenceEquals(gray, _pictureGray);
+            _picture = picture;
+            _pictureGray = gray;
+            _pictureComing = coming && picture == null;
+            if (changed)
+            {
+                OnPropertyChanged(nameof(Picture));
+                OnPropertyChanged(nameof(PictureGray));
+            }
+            if (had != HasPicture) OnPropertyChanged(nameof(HasPicture));
+        }
+
+        /// <summary>Has the picture asked for again at the next refresh: a
+        /// still it waited for may have been made.</summary>
+        internal void ForgetPicture() => _pictureMade = false;
 
         private string _statusText = Strings.Instance.Common_Idle;
 

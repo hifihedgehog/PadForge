@@ -373,7 +373,8 @@ namespace PadForge.Tests
                 string markup =
                     "<Grid xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\""
                     + " xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\""
-                    + " xmlns:conv=\"clr-namespace:PadForge.Converters;assembly=" + assembly + "\">"
+                    + " xmlns:conv=\"clr-namespace:PadForge.Converters;assembly=" + assembly + "\""
+                    + " xmlns:controls=\"clr-namespace:PadForge.Controls;assembly=" + assembly + "\">"
                     + "<Grid.Resources>"
                     + "<conv:CultureLanguageConverter x:Key=\"CultureLanguageConverter\"/>"
                     + "<Style x:Key=\"{x:Type ComboBoxItem}\" TargetType=\"ComboBoxItem\"/>"

@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>تشغيل</value></data>
   <data name="Common_Off" xml:space="preserve"><value>إيقاف</value></data>
   <data name="Common_More" xml:space="preserve"><value>المزيد</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>عرض الكل</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>مثبت</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>غير مثبت</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>غير متوفر على ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>جارٍ الإيقاف…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>جارٍ إيقاف المحرك…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>يعمل على {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>قيد التشغيل (العملاء: {0})</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>قيد التشغيل، عدد المتصلين: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>يستمع على :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>المنفذ {0} قيد الاستخدام</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>تم رفض الوصول إلى المنفذ {0} (شغّل البرنامج كمسؤول)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>غير متصل</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>غير معروف</value></data>
   <data name="Common_Default" xml:space="preserve"><value>افتراضي</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>استعراض...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>استعراض…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>متابعة</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>إيقاف</value></data>
   <data name="Common_Start" xml:space="preserve"><value>بدء</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>جارٍ تنظيف وحدات التحكم الظاهرية المتبقية من جلسة سابقة.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> أجهزة</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>إضافة وحدة تحكم</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>إضافة وحدة تحكم</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>اختر ما يجب أن تراه الألعاب. تُضاف وحدة التحكم بمجرد النقر.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>يتحكم به</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>اختر لاحقا</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth، {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>شائعة</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>مخرجات أخرى</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>التخطيط الذي تتوقعه معظم ألعاب الكمبيوتر.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>للألعاب التي تعرض رموز PlayStation ولوحة اللمس وشريط الإضاءة.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>تخطيط أزرار Switch، للألعاب والمحاكيات التي تتوقعه.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>مفاتيح ومؤشر وتمرير من ذراع تحكم.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>عجلات قيادة وعصي طيران وتخطيطات مخصصة.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>نغمات ورسائل Control Change لبرامج الموسيقى.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>وحدات تحكم واقع افتراضي ظاهرية عبر SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>لتغيير النوع لاحقا، انقر شريحة النوع في وحدة التحكم. يكفي نقرة واحدة.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services لا يستجيب. راجع بطاقته في الإعدادات.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>يتطلب SteamVR. ثبّته من بطاقته في الإعدادات.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>توجد وحدة تحكم واقع افتراضي بالفعل. تتحكم واحدة في اليدين.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>عدد وحدات التحكم لدى PadForge {0}، وهو الحد الأقصى الذي يستطيع تشغيله. احذف واحدة لإضافة أخرى.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>ملف التعريف</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>البحث في الإعدادات والأجهزة وملفات التعريف</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>بحث</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>النتائج</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>أعلى</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>أسفل</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} للتنقل</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} للفتح</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} من أي مكان</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>الصفحات</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>الإجراءات</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>التوثيق</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>تحت المزيد</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>في خيارات الصف</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>، </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>لا شيء في PadForge يطابق «{0}».</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>ابحث في التوثيق عن «{0}»</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>حذف وحدة التحكم الظاهرية</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>ملء الشاشة</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>إظهار PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>تم إنشاء ملف التعريف «{0}».</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>تم حذف ملف التعريف «{0}».</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>تم تحديث ملف التعريف «{0}».</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>يحتوي ملف التعريف «{0}» الآن على الإعداد الحالي.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>تم تحميل ملف التعريف: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>تمت إعادة ملف التعريف إلى الافتراضي</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>تم تعيين «{0}» لوحدة التحكم الظاهرية {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>تم تبديل ملف التعريف: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>تم تبديل ملف التعريف: الافتراضي</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>افتراضي</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>اختصارات ملفات التعريف</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>الاختصارات</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>عيّن تركيبات أزرار لتبديل ملفات التعريف من أي وحدة تحكم.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>إضافة اختصار</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>ملف التعريف التالي</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>ملف التعريف السابق</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>ملف تعريف محدد</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>تبديل إظهار النافذة</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>تبديل تعطيل وحدات التحكم الظاهرية</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>إظهار PadForge أو إخفاؤه</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>تشغيل وحدات التحكم الظاهرية أو إيقافها</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>أي جهاز متصل</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>تسجيل</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>جارٍ التسجيل...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>لم يتم تحديد جهاز.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>فهرس الخانة غير صالح: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>فشل تعيين الجهاز.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>عند</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>على</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>تم تعيين «{0}» لوحدة التحكم الظاهرية {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>تم إلغاء تعيين «{0}» من وحدة التحكم الظاهرية {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>تم إخفاء الجهاز. (يمكن استعادته من ملف الإعدادات.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>تمت إزالة الجهاز.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>تم حذف وحدة التحكم الظاهرية {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>الرئيسية</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>الأجهزة المتصلة: {0}. وحدات التحكم: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>ترى الألعاب كل وحدة تحكم قيد التشغيل.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>المحرك يعمل ولا توجد وحدة تحكم قيد التشغيل.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>شغّل المحرك لإعادة وحدات التحكم.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>معدل الاستطلاع</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>وحدات تحكم قيد التشغيل</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>أجهزة متصلة</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>تشغيل وحدة التحكم هذه أو إيقافها</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>تبدأ عند بدء المحرك.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>تبدأ عند اتصال هذا الجهاز.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>تبدأ عند اتصال أحد هذه الأجهزة.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>غير متصل</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>يرسل إدخالا الآن</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>البطارية {0}، منخفضة</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>البطارية {0}، قيد الشحن</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>محرك الإدخال</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>وحدات التحكم</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>الإضافات قيد الاستخدام</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>عرض QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} متصل وغير مستخدم.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>استخدمه</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>ماذا يجب أن تراه الألعاب؟</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>يحوّل PadForge وحدة التحكم هذه إلى الوحدة التي تتوقعها ألعابك. اختر واحدة للبدء. يمكنك تغييرها لاحقا بنقرة واحدة.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>يحوّل PadForge وحدة التحكم لديك إلى الوحدة التي تتوقعها ألعابك. اختر واحدة للبدء. يمكنك تغييرها لاحقا بنقرة واحدة.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>العب ألعاب لوحة المفاتيح والماوس بذراع تحكم.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>أنواع أخرى: [{0}، {1}، {2} و{3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>تُعيَّن الأزرار والعصي والأزندة 1:1 لحظة إنشاء وحدة التحكم.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>إقران وحدة تحكم Bluetooth</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>ابدأ من ملف تعريف جاهز</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>متصل</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth، البطارية {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>البطارية {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>لا توجد وحدة تحكم متصلة</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>وصّل واحدة بكبل أو عبر Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> معينة، </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> متصلة</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>المحرك يعمل. انقر للإيقاف.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>المحرك خامل. انقر للإيقاف.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>المحرك متوقف. انقر للتشغيل.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>إعداد وحدة التحكم هذه</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>أشعل المسبك</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>وصّل وحدة تحكم واختر نوع الإخراج، وسيسبك PadForge مدخلاتك فيه. ستريك جولة قصيرة مكان كل شيء.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>بدء الجولة</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>تخطي</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>التالي</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>تم</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>الخانات</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>كل وحدة تحكم ظاهرية مكانها هنا. يبين اللهب الخانات التي يجري السبك فيها الآن.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>محرك الإدخال</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>هذا هو المسبك نفسه. بدّل اللهب لبدء استقصاء الإدخال كله أو إيقافه.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>وحدات التحكم الظاهرية</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>اختر نوع الإخراج، وزود الخانة بالأجهزة، ثم انقر على بطاقة لتشكيل تعييناتها.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>الميزات الاختيارية هنا: وحدة تحكم الويب على الهاتف والربط عن بعد وخادم الحركة وغيرها.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>عرض جولة الترحيب</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>الخانة</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>الجهاز</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>يتحكم به</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>إضافة جهاز</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>منخفضة</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>صورة</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>قائمة</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>المخرجات: {0}</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>أي ضغطة تراها الألعاب عند الضغط على مفتاحي زوج معا</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>يثبّت انحرافا صغيرا للعصا لتواصل الألعاب عرض رموز وحدة التحكم</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>قيد السبك</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>مباشر: {0} من {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>اختر ماكرو من القائمة، أو اضغط + بجانب «وحدات الماكرو» لإنشاء واحد.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>إخراج</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>معاينة</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>الإضافات</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>ميزات اختيارية. كل واحدة تبقى بعيدة عن طريقك حتى تشغلها.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} من {1} قيد التشغيل</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>طرق أكثر للعب</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>أرسلها إلى مكان آخر</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>على الشاشة</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>انظر حولك بجهاز تتبع الرأس أو سماعة واقع افتراضي.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس من ألعاب القيادة.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>دع المشاهدين يضغطون الأزرار بالكتابة في الدردشة.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>شارك وحدات التحكم مع PadForge على كمبيوتر آخر.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>تحكّم في وحدات التحكم الظاهرية على كمبيوتر آخر.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>استقبل مؤثرات الأزندة والإضاءة من تعديلات الألعاب.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>اعرض القوائم والطبقات وتبديل ملفات التعريف أثناء اللعب.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمس على الشاشة للألعاب التي تستخدم لوحة اللمس في PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمس على الشاشة لألعاب لوحة اللمس في PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>صورة أو مؤقت أو ساعة فوق النوافذ الأخرى.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>المنفذ، عنوان HTTP عادي، رمز الوصول</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة الاتصال، المنفذ، حماية الهوية، الاتصال بالعنوان</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>وقت تشغيل OpenXR، منفذ UDP، نطاق لكل محور</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>المنفذ، HTTP عادي، رمز الوصول</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة اتصال تلقائي، المنفذ، هوية الإقران، الاتصال بالعنوان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>المنفذ، بديل DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>المنافذ، السرعة الكاملة، تنسيقات مخصصة</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>المنافذ، «السرعة الكاملة»، «تنسيقات مخصصة»</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>انظر حولك بمتتبع رأس أو نظارة واقع افتراضي بينما يبقى إبهاماك على الأزرار.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس التي ترسلها لعبة قيادة، كأي إدخال.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات التي تقرأ مصدر حركة DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>استقبل تأثيرات الأزندة التكيفية والإضاءة من تعديلات الألعاب المكتوبة من أجل DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>فعّل إخراج بيانات القياس في اللعبة ووجّهه إلى هذا الكمبيوتر وهذا المنفذ.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>في المحاكي، أضف مصدر حركة بعنوان هذا الكمبيوتر وهذا المنفذ.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>تصل تأثيرات التعديل إلى كل وحدة تحكم فيها العتاد اللازم لها.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضع الرأس هو صف متتبع الرأس في [الأجهزة]. عيّن انعراج الرأس إلى محور عصا في قسم الأزرار بوحدة التحكم.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>القيم هي صف بيانات قياس الألعاب في [الأجهزة]. عيّنها في قسم الأزرار بوحدة التحكم أو استخدمها لتشغيل وحدات الماكرو.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>يُضبط موضع القائمة وحجمها وشفافيتها على القائمة نفسها، في قسم [وحدات الماكرو والقوائم] بوحدة التحكم.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>المصادر</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack وكل ما يرسل بصيغة UDP الخاصة به</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>النطاق</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>نطاق لكل محور. الصفر يتبع النطاق أعلاه.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>ألعاب لا يعرفها PadForge</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>للتعديلات التي تبحث عن DSX قيد التشغيل قبل أن ترسل</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ما الذي يظهر</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة أثناء الضغط على طبقة تحويل</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>نسخ العنوان</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>الموضع على الشاشة</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>ربط هاتف</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>ضع الهاتف على الشبكة نفسها التي يتصل بها هذا الكمبيوتر.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>امسح الرمز بكاميرا الهاتف.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>اختر تخطيط وحدة تحكم.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>الهواتف</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>لا توجد هواتف متصلة.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>يظهر الهاتف الذي يتصل هنا وفي صفحة الأجهزة، حيث تعيّنه إلى وحدة تحكم.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>قناتك</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>كلمات يكتبها المشاهدون</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>يكتب المشاهد كلمة مثل !a، فيضغط PadForge ما عُيّن له !a في صف Twitch Chat بصفحة الأجهزة. عيّن هذا الصف إلى وحدة تحكم كأي جهاز.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>أثناء بثك المباشر</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>صورة لبثك</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>لا توجد أجهزة كمبيوتر مقترنة.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>إقران كمبيوتر آخر</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>لا توجد أجهزة كمبيوتر غير مقترنة بالقرب.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>فعّل الربط عن بعد في PadForge على الكمبيوتر الآخر. يظهر هنا، وتقارن رمزا قصيرا على الشاشتين.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>المظهر والموضع</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>اسحبه بزر الماوس الأيمن أو بثلاثة أصابع لنقله.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>تراكب {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>يعرض</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>عندما يكون برنامج آخر في المقدمة، تمر النقرات عبر التراكب. وعندما يكون PadForge في المقدمة، اسحبه بزر الماوس الأيمن وغيّر حجمه من زاويته. يمكن لماكرو إظهار تراكب أو إخفاؤه برقمه.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>خادم الحركة</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>خادم بروتوكول DSU/CemuHook Motion Provider لبيانات الجيروسكوب ومقياس التسارع.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>تفعيل خادم الحركة DSU (بروتوكول CemuHook Motion Provider)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>بلا وحدة تحكم</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>النوع {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>وحدة تحكم الويب</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>تقديم واجهة ذراع تحكم للمتصفحات على شبكتك المحلية.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>استخدم هاتفا أو جهازا لوحيا كوحدة تحكم. لا شيء لتثبيته على الهاتف.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>تفعيل خادم وحدة تحكم الويب</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>اتصل من متصفح هاتف أو جهاز لوحي لاستخدامه كذراع تحكم.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>امسح الرمز بكاميرا الهاتف، أو افتح هذا العنوان في متصفحه:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>عنوان HTTP عادي</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>عنوان ثان بدون HTTPS، للمتصفحات التي ترفض شهادة PadForge وللنفق أو الخادم الوكيل العكسي الذي يأتي بشهادته الخاصة. حركة الهاتف تتطلب HTTPS، لذا لا تعمل هنا إلا عبر نفق أو خادم وكيل يقدم HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>تقديم HTTP عادي أيضا</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>رمز الوصول</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>لا يفتح العنوان العادي إلا بهذا الرمز، والرابط أدناه يتضمنه. إنشاء رمز جديد يقطع اتصال كل من يستخدم العنوان العادي.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>رمز جديد</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>العنوان على هذا الكمبيوتر:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>اهتزاز (انقر للتعرف على هذا الجهاز)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>يهتز هذا الجهاز لتعرف أيها هو.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>الربط عن بعد</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>مشاركة وحدات التحكم مع PadForge مقترن على كمبيوتر آخر، على شبكتك أو عبر الإنترنت.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>تحكّم في وحدات التحكم الظاهرية على كمبيوتر آخر. بعد إقران لمرة واحدة، يعيد الكمبيوتر الموثوق الاتصال تلقائيا.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>تفعيل خادم الربط عن بعد</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>بعد إقران لمرة واحدة، يعيد الكمبيوتر الموثوق الاتصال تلقائيا. يستطيع الكمبيوتر المقترن التحكم في إخراج ذراع التحكم على هذا الكمبيوتر، وكذلك في لوحة المفاتيح والماوس ووحدات الماكرو ما لم تقيده.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>أو الاتصال بالعنوان (متقدم)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>يستطيع الكمبيوتر المقترن التحكم في إخراج ذراع التحكم على هذا الكمبيوتر، وكذلك في لوحة المفاتيح والماوس ووحدات الماكرو ما لم تقيده.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>الاتصال بالعنوان</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>إقران / اتصال</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>إقران</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>اتصال</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>متصل</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>الإقران مع كمبيوتر بعيد</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>تأكد من تطابق هذا الرمز على الشاشتين، ثم اختر «إقران».</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>الإقران مع كمبيوتر آخر؟</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>تأكد أن الشاشتين تعرضان الرمز نفسه.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>إقران</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>رفض</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>قصر هذا الكمبيوتر على إدخال ذراع التحكم فقط</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>ذراع التحكم فقط</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>الهوية</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>يستطيع الكمبيوتر المقترن إرسال إدخال لوحة المفاتيح والماوس والماكرو إلى هذا الكمبيوتر ما لم تقصره على ذراع التحكم فقط.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>يستطيع الكمبيوتر المقترن التحكم في إخراج ذراع التحكم على هذا الكمبيوتر، وكذلك في لوحة المفاتيح والماوس ووحدات الماكرو ما لم تقيده.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>أجهزة الكمبيوتر المقترنة</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>أجهزة الكمبيوتر التي أقرنتها لأجل الربط عن بعد. أبطل إقران أحدها لمنعه من الاتصال، وسيلزمه الإقران من جديد.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>إبطال</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>إبطال الكل</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>إعادة تسمية</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>تراكب لوحة اللمس</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>سطح لمس على الشاشة لمحاكاة لوحة لمس متوافقة مع PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>سطح لمس على الشاشة لألعاب لوحة اللمس في PlayStation، لشاشة لمس أو للماوس.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>تفعيل تراكب لوحة اللمس</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>العتامة</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>إعادة ضبط الموضع</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>الإعدادات</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>عام</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>الإدخال</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>العتاد</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>برامج التشغيل</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>البيانات والخصوصية</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>البحث في الإعدادات</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>لا إعدادات تطابق «{0}».</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>المظهر</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>اختر السمة المرئية المفضلة لديك.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>السمة</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>داكن</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>محرك الإدخال</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>إعداد سلوك الاستقصاء والمعالجة في الخلفية.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>دعم العتاد</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>تشغيل المحرك تلقائيا عند بدء البرنامج</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>متابعة الاستقصاء عندما تفقد النافذة التركيز</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>فاصل الاستقصاء (ما لم يتجاوزه ملف تعريف)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>تم تحديث PadForge إلى {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>بدء التشغيل مصغرا</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>التشغيل عند تسجيل الدخول</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>برنامج تشغيل HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>إخفاء الأجهزة الفعلية عن الألعاب لمنع الإدخال المزدوج.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>يخفي الأجهزة الفعلية عن الألعاب لمنع الإدخال المزدوج.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>خيارات HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>إخفاء الأجهزة عن الألعاب، إبقاء الأجهزة محجوبة بين مرات التشغيل، التطبيقات المدرجة في قائمة السماح</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>التطبيقات المدرجة في قائمة السماح</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>تستطيع هذه التطبيقات رؤية الأجهزة المخفية. PadForge مدرج في قائمة السماح تلقائيا دائما.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>إضافة...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>برنامج تشغيل HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>محرك وحدات تحكم HID ظاهرية يعمل في وضع المستخدم. مضمن في PadForge.App. يتم تثبيته تلقائيا عند إنشاء أول وحدة تحكم ظاهرية. يحل محل ViGEmBus وvJoy في v3.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>يثبّت PadForge برنامج التشغيل هذا مع أول وحدة تحكم ظاهرية تنشئها. يعرض إلغاء التثبيت ما تركه HIDMaestro على هذا الكمبيوتر قبل أن يزيله.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ينشئ وحدات التحكم الظاهرية.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>إلغاء تثبيت HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>تزيل هذه العملية HIDMaestro من هذا الكمبيوتر: وحدات التحكم الظاهرية وبرنامج التشغيل وشهادة التوقيع ومفاتيح السجل والملفات. يوقف PadForge محركه أولا. تفقد البرامج الأخرى التي تستخدم HIDMaestro برنامج تشغيله إلى أن تبدأ من جديد. يثبته PadForge مرة أخرى عند بدء وحدة تحكم ظاهرية في المرة القادمة.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>إزالة usbip-win2 المثبت بواسطة برنامج التثبيت الخاص به أيضا</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>هذا ما سيُزال من هذا الكمبيوتر. يثبّت PadForge HIDMaestro مرة أخرى مع وحدة التحكم الظاهرية التالية.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>إزالة usbip-win2 أيضا</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>ثبتت إصدارات PadForge الأقدم usbip-win2 باستخدام برنامج التثبيت الخاص به. يزيل هذا الخيار ذلك التثبيت أيضا، بما في ذلك مرشح محور USB الجذري، ما لم يستخدم برنامج آخر usbip-win2. تؤدي إزالة المرشح إلى إعادة تشغيل كل محور USB 3 جذري، فتنقطع أجهزة USB عن الاتصال لحظة.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>جارٍ قراءة ما تركه HIDMaestro على هذا الكمبيوتر…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>لم يترك HIDMaestro شيئا على هذا الكمبيوتر لإزالته.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>يبقى: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>تعذرت القراءة: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>لم تتم الإزالة: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>برنامج تشغيل Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>تمت الإزالة</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>تم إبقاؤه</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>لم تتم قراءته</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>لم تتم إزالته</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>يتيح اتصال وحدات تحكم PlayStation 3 وPlayStation Move ووحدة تحكم Navigation عبر Bluetooth. مضمن في PadForge ويتم تثبيته عند إقران إحداها لأول مرة.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>يوصّل وحدات تحكم PlayStation 3 عبر Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>إلغاء تثبيت BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>تزيل هذه العملية BthPS3 من هذا الكمبيوتر: برامج تشغيله والمرشح الذي يضيفه إلى Bluetooth وبرنامج تشغيل WinUSB الذي منحه PadForge لوحدات تحكم PlayStation 3 من أجل الإقران. يوقف PadForge محركه أولا، ويتوقف Bluetooth عن العمل لحظة أثناء إلغاء تحميل برامج التشغيل. بعد ذلك تعمل وحدات تحكم PlayStation 3 وMove وNavigation عبر USB فقط. يؤدي إقران إحداها إلى تثبيت BthPS3 مرة أخرى.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>هذا ما سيُزال من هذا الكمبيوتر. تعمل وحدات تحكم PlayStation 3 وMove وNavigation عبر USB فقط بعد ذلك، إلى أن يثبّت إقران إحداها BthPS3 مرة أخرى.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>جارٍ قراءة ما تركه BthPS3 على هذا الكمبيوتر…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>لم يترك BthPS3 شيئا على هذا الكمبيوتر لإزالته.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>يستخدم DsHidMini برامج التشغيل هذه، لذا تبقى ما دام مثبتا.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>لم يتم تشغيل Bluetooth من جديد. شغله من إعدادات Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>منافذ MIDI ظاهرية وإدخال MIDI. يتضمن Windows 11 25H2 واجهة API بدءا من تحديث أواخر نوفمبر 2026. أجهزة الكمبيوتر الأخرى تستخدم وقت تشغيل Windows MIDI Services، الذي يستطيع PadForge تثبيته، أو واجهة MIDI API القديمة.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>منافذ MIDI ظاهرية وإدخال MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>مدمج في Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>وقت تشغيل App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>غير متوفر</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>سيزيل هذا Windows MIDI Services Runtime and Tools من Microsoft، ومعه تطبيق MIDI Settings وأداة MIDI console ووحدة PowerShell النمطية. لم تعد Microsoft تتيح تنزيلها، لذا لا يمكن تثبيتها مرة أخرى.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>وقت تشغيل الواقع الافتراضي لوحدات تحكم الواقع الافتراضي الظاهرية. يتم تثبيته من خوادم Valve دون الحاجة إلى حساب Steam أو عميل Steam (عدة غيغابايت).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>وقت تشغيل الواقع الافتراضي لوحدات تحكم الواقع الافتراضي الظاهرية.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>موقع التثبيت</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>إلغاء تثبيت SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>سيزيل هذا نسخة SteamVR المثبتة بدون Steam في {0} ويحرر عدة غيغابايت. لن تعمل وحدات تحكم الواقع الافتراضي الظاهرية حتى يتم تثبيت SteamVR من جديد.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>التشخيص</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>معلومات الإصدار، وتسجيل أحداث المحرك لاستكشاف الأخطاء وإصلاحها.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>الاحتفاظ بسجل تشخيص</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>يكتب أحداث المحرك باستمرار في diagnostics.log في المجلد المبين أدناه. يبقى مفعلا بعد إعادة التشغيل. عندما يبلغ الملف 8 ميغابايت يتحول إلى diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>يكتب أحداث المحرك باستمرار في diagnostics.log في مجلد السجل، الذي يفتحه «فتح مجلد السجل». يبقى مفعلا بعد إعادة التشغيل. عندما يبلغ الملف 8 ميغابايت يتحول إلى diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>حفظ لقطة</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>يحفظ أحدث أحداث المحرك في ملف جديد. يعمل حتى لو كان سجل التشخيص متوقفا.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>فتح مجلد السجل</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>حول</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>أداة تعيين وحدات التحكم</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>محدّث.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>التوثيق</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>التحقق من التحديثات</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>نسخة مشتقة حديثة من x360ce، أعيد بناؤها باستخدام SDL3 وWPF و.NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>يحوّل PadForge أي جهاز إدخال إلى أي وحدة تحكم ظاهرية. يتم تعيين أذرع التحكم وعصي التحكم ولوحات المفاتيح وأجهزة الماوس وشاشات اللمس إلى وحدات تحكم ألعاب ظاهرية (Xbox وPlayStation وعصي الطيران وعجلات القيادة وأذرع تحكم من شركات أخرى) أو إلى إخراج لوحة مفاتيح + ماوس / MIDI تعامله الألعاب كعتاد حقيقي. يعمل بتقنية HIDMaestro وWindows MIDI Services. يستخدم SDL3 لإدخال وحدات التحكم، وWindows Raw Input للوحة المفاتيح والماوس، وHidHide لإخفاء الأجهزة لكل لعبة على حدة، ويوفر واجهة Fluent Design حديثة للتعيين والمناطق الميتة ومنحنيات الحساسية وردود فعل القوة.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>نظرة عامة</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>مبني باستخدام</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>البحث في الاعتمادات</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>عرض كل الاعتمادات</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>عرض اعتمادات أقل</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>لا اعتماد يطابق «{0}».</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>وقت التشغيل وإطار عمل WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>وقت التشغيل وإطار عمل WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>إدخال وحدات التحكم وتعدادها. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>إدخال وحدات التحكم وتعدادها.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>إدخال لوحة المفاتيح والماوس لكل جهاز على حدة</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>إخراج جهاز MIDI ظاهري (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>إخراج جهاز MIDI ظاهري (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>عرض 3D لوحدة التحكم. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>عرض 3D لوحدة التحكم.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>نظام التصميم Fluent 2 لإطار WPF. يحمل Wpf.Ui.dll المكون VirtualizingWrapPanel وخطوط fluentui-system-icons وشيفرة من WPF وmicrosoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>نظام التصميم Fluent 2 لإطار WPF. يحمل Wpf.Ui.dll المكون VirtualizingWrapPanel وخطوط fluentui-system-icons وشيفرة من WPF وmicrosoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm لربط البيانات. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm لربط البيانات.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>حزمة أيقونات Zacksly</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>أيقونات العصا والزناد مشتقة من «Xbox Series Button Icons and Controls» من إعداد Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>أيقونات العصا والزناد مشتقة من «Xbox Series Button Icons and Controls» من إعداد Zacksly.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>مطابق قوالب الأشكال للوحة اللمس (دائرة / مربع / مثلث / Z / علامة صح وإيماءات مخصصة مسجلة). إعادة اشتقاق بلغة C# لمرجع JavaScript من إعداد Magrofuoco وVatavu وAnthony وWobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>مطابق قوالب الأشكال للوحة اللمس (دائرة / مربع / مثلث / Z / علامة صح وإيماءات مخصصة مسجلة). إعادة اشتقاق بلغة C# لمرجع JavaScript من إعداد Magrofuoco وVatavu وAnthony وWobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>مواضع المفاتيح ومفاتيح الطبقة الأساسية في لوحات المفاتيح التي ترسمها معاينة لوحة مفاتيح + ماوس، مولدة من بيانات تخطيط QMK ومن نسخة Keychron من QMK. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>مواضع المفاتيح ومفاتيح الطبقة الأساسية في لوحات المفاتيح التي ترسمها معاينة لوحة مفاتيح + ماوس، مولدة من بيانات تخطيط QMK ومن نسخة Keychron من QMK.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>أسلوب تقييم بالهامش الزاوي يعمل بجانب مطابق سحابة النقاط على الأشكال المرسومة بإصبع واحد. ينفذ فكرة التقييم من PointPatternAnalyzer في GestureSign بشيفرة C# أصلية. GPL-2.0، للتوثيق فقط.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>أسلوب تقييم بالهامش الزاوي يعمل بجانب مطابق سحابة النقاط على الأشكال المرسومة بإصبع واحد. ينفذ فكرة التقييم من PointPatternAnalyzer في GestureSign بشيفرة C# أصلية. للتوثيق فقط.</value></data>
   <data name="About_License" xml:space="preserve"><value>الترخيص</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>هذا البرنامج مرخص بموجب CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). يوفر Gamepad-Asset-Pack من إعداد AL2009man (MIT) أصول وحدات التحكم 2D. تمت قراءة GestureSign من إعداد TransposonY (GPL-2.0) كتوثيق لأجل AngularMarginRecognizer، ولا يتضمن البرنامج أي جزء من شيفرته. يوفر Handheld Companion (CC BY-NC-SA 4.0) نماذج 3D لوحدتي Xbox 360 وSteam Deck التي يكيفها PadForge. HelixToolkit وHidHide وHIDMaestro وWindows MIDI Services وWPF UI مرخصة بموجب ترخيص MIT. يأتي OpenXInput بإخلاء مسؤولية عن العلامات التجارية من المصدر الأصلي فقط، ويعاد توزيعه كما هو بالشروط نفسها. $Q Recognizer من إعداد Magrofuoco وVatavu وAnthony وWobbrock (BSD 3-Clause) هو مرجع ShapeRecognizer الخاص بلوحة اللمس، وهو إعادة اشتقاق بلغة C#. SDL3 مرخص بموجب ترخيص zlib. x360ce (LGPL-3.0-or-later) هو قاعدة الشيفرة الأصلية التي تفرع منها PadForge. يوفر Zergatul.Obs.InputOverlay من إعداد Igor Budzhak (MIT) رسومات الماوس.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (محمّل SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>على نمط BSD</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>شروط ترخيص Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>شروط Corsair SDK</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>إخلاء مسؤولية عن العلامة التجارية فقط</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>لا شروط مذكورة</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>لا شيء منشور</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>عدة تراخيص</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>محرك وحدات تحكم HID ظاهرية يعمل في وضع المستخدم (يحل محل ViGEmBus وvJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>محرك وحدات تحكم HID ظاهرية يعمل في وضع المستخدم (يحل محل ViGEmBus وvJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>بديل مباشر عن XInput. يستبعد وحدات التحكم الظاهرية التي ينشئها PadForge من قراءته هو نفسه. إخلاء مسؤولية عن العلامات التجارية من المصدر الأصلي، بلا ترخيص مفتوح المصدر.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>بديل مباشر عن XInput. يستبعد وحدات التحكم الظاهرية التي ينشئها PadForge من قراءته هو نفسه.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>برنامج تشغيل على مستوى النواة لإخفاء الأجهزة الفعلية عن الألعاب. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>برنامج تشغيل على مستوى النواة لإخفاء الأجهزة الفعلية عن الألعاب.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>دعوة</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>«وَعَنِ الْمَسيحِ نَتَكَلَّمُ وَبِالْمَسيحِ نَبْتَهِجُ وَعَنِ الْمَسيحِ نَكْرِزُ وَعَنِ الْمَسيحِ نَتَنَبَّأُ، وَنَكْتُبُ حَسَبَ النُّبوءاتِ كَيْ يَعْرِفَ أَبْناؤُنا مِنْ أَيْنَ يَطْلُبونَ مَغْفِرَةَ خَطاياهُمْ.»</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 نافي 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>المجد والكرامة والتسبيح للرب يسوع المسيح، مصدر كل حق وخلاص، إلى أبد الآبدين.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>ندعوك بكل ترحاب إلى زيارة ComeUntoChrist.org ومعرفة المزيد عنه وعن كنيسة يسوع المسيح لقديسي الأيام الأخيرة.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>تغذية متقاطعة بطريقة Bauer لتحويل الستيريو إلى صوت ثنائي الأذن لإخراج سماعات الرأس. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>تغذية متقاطعة بطريقة Bauer لتحويل الستيريو إلى صوت ثنائي الأذن لإخراج سماعات الرأس.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>مرمز Opus مكتوب بلغة C# خالصة يشغّل صوت مكبر الصوت في DualSense عبر Bluetooth. من إعداد Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>مرمز Opus مكتوب بلغة C# خالصة يشغّل صوت مكبر الصوت في DualSense عبر Bluetooth. من إعداد Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>بحث في صوت DualSense عبر Bluetooth من إعداد egormanga: ناقل الحزم الذي ينتقل عليه دفق مكبر صوت وحدة التحكم. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>بحث في صوت DualSense عبر Bluetooth من إعداد egormanga: ناقل الحزم الذي ينتقل عليه دفق مكبر صوت وحدة التحكم. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>طريقة تشغيل مكبر الصوت عبر Bluetooth من إعداد awalol: تأطير Opus وتخطيط الحزم. والشكر كذلك إلى TechAntohere على مشاركة النتائج والاختبار. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>طريقة تشغيل مكبر الصوت عبر Bluetooth من إعداد awalol: تأطير Opus وتخطيط الحزم. والشكر كذلك إلى TechAntohere على مشاركة النتائج والاختبار.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>تنفيذ مرجعي للتمرير المباشر لصوت وحدة التحكم عبر USB. من إعداد WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>تأخير الأحرف (مللي ثانية)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>عدد المللي ثانية بين الأحرف المكتوبة، حتى 1000. القيمة 0 تكتب النص كله دفعة واحدة.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>قطع الاتصال عند الخمول</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>الطاقة</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>ملف معلومات الجهاز</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>التفاصيل</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>دقائق (0 = أبدا)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>قطع Bluetooth عند التوصيل عبر USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>شحن سريع. عندما تبلغ وحدة التحكم هذه بأنها تشحن وهي متصلة عبر Bluetooth، يتم قطع اتصال Bluetooth لتشحن دون تغذية الراديو. يشمل ذلك أي مصدر طاقة USB، ومنه شواحن الحائط. إذا أعدت تشغيل Bluetooth والكبل ما زال موصولا، فسيبقى الاتصال كما هو حتى فصل الكبل في المرة التالية.</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>يطلب من ذراع تحكم PlayStation هذا اتجاهاته مباشرة، فيتم تسجيل اليسار واليمين معا، أو الأعلى والأسفل معا، على بساط الرقص من الخطوة الأولى. تصل الاتجاهات كأزرار السهم لأعلى ولأسفل ولليسار ولليمين، وهي أزرار يرسلها البرنامج الثابت 3.34 من تلقاء نفسه أيضا بعد ضغط اتجاهين متعاكسين، وعندها يتوقف PadForge عن الطلب. وحتى ذلك الحين يتخطى المحول معظم قراءاته الخاصة لذراع التحكم.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>ضغط أزرار DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>رقم اللاعب</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>يخزن المحول الرقم ويعيد الاتصال بصفته ذلك اللاعب. عندها يرى Windows جهازا جديدا، لذا أعد تعيين المنفذ عند عودته.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>يخزن المحول الرقم ويعيد الاتصال، وهو ما يراه Windows جهازا جديدا.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>اللاعب</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>تحديد اللاعب</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>شاشة Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>لا يصل شيء إلى المنفذ حتى تحفظ.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>عرض</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>صورة المحول</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>اسم ملف التعريف</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>جارٍ قراءة Namco USIO كطبلتي Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>جارٍ قراءة {0} كوحدة تحكم iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>جارٍ قراءة {0} كلوحة مفاتيح من جديد.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>مسدس ضوئي</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>نطاق التصويب الافتراضي: X من {0} إلى {1}، Y من {2} إلى {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>نطاق التصويب بعد المعايرة: X من {0} إلى {1}، Y من {2} إلى {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>معايرة المسدس</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>كل لوحات المفاتيح (مجتمعة)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>كل أجهزة الماوس (مجتمعة)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>الأجهزة</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} متصل</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>البحث في الأجهزة</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>الكل</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>وحدات التحكم</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>المفاتيح والماوس</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>قراءة Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>قراءة أجهزة Chatpad وأجهزة uDraw اللوحية</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>قراءة أذرع التحكم</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>عاد {0} إلى برنامج تشغيل Windows الخاص به.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>تعذرت استعادة برنامج تشغيل Windows للجهاز {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>أعاد Windows الجهاز {0} إلى برنامج تشغيله الخاص. حدده في صفحة الأجهزة لتبديله من جديد.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> متصلة / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> إجمالا</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>إزالة هذا الجهاز وإعداداته</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>إزالة الجهاز</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>ستتم إزالة {0} من قائمة الأجهزة وحذف إعداداته المحفوظة.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>اسحب جهازا إلى بطاقة وحدة تحكم في الشريط الجانبي لتعيينه.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>المنتج: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>اسحب جهازا إلى وحدة تحكم في الشريط الجانبي لتعيينه.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>إرسال تعيين الجهاز</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>التعيين لوحدة تحكم ظاهرية</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>تبديل التعيين</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>لا توجد خانات وحدات تحكم ظاهرية بعد. أنشئ خانة من لوحة المعلومات لتعيين هذا الجهاز.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>وضع الإدخال</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>يعيّن هذا الجهاز إلى وحدة التحكم هذه، أو يزيله عنها.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>فرض وضع عصا التحكم الخام (تجاوز إعادة تعيين ذراع التحكم)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>قراءة فهارس HID الخام بدلا من تعيين ذراع التحكم في SDL. استخدمه عندما يخطئ SDL في تحديد تخطيط الأزرار/المحاور.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>إخفاء الإدخال</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>الإخفاء عن الألعاب (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>يخفي هذا الجهاز تماما عن التطبيقات الأخرى عبر برنامج تشغيل HidHide. عندما يخفي PadForge وحدة تحكم USB كانت متصلة من قبل، يعيد توصيلها في Windows، فيفقدها كل تطبيق كان يفتحها. أما وحدة تحكم Bluetooth، أو وحدة تشارك جهاز استقبال مع وحدة تحكم أخرى، فتبقى متاحة لكل تطبيق فتحها قبل إخفائها إلى أن تتصل في المرة التالية.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>ثبّت برنامج تشغيل HidHide لتفعيل هذا الخيار</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>استهلاك المدخلات المعينة (خطافات)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>يكتم فقط المفاتيح/الأزرار المعينة، ويترك المدخلات غير المعينة تمر</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>حالة الإدخال الخام</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>حدد جهازا لفحص إدخاله الخام.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>اختبار المدخلات</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>حدد جهازا لرؤية إعداداته واختبار مدخلاته.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>المحاور</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>الأزرار</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>لوحة المفاتيح</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>لا يتيح الجهاز المحدد أي محاور أو أزرار أو قبعات لاستنساخها.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>هل تريد استنساخ {0} إلى هذه الخانة كتمرير مباشر 1:1؟ يصبح التخطيط: المحاور {1}، الأزرار {2}، مفاتيح POV {3}، ويتم استبدال صفوف هذا الجهاز في الخانة بمدخلاته هو.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>في هذا الجهاز مدخلات أكثر مما تستطيع وحدة تحكم موسعة حمله. تم تعيين {0} من {1} من المحاور، و{2} من {3} من الأزرار، و{4} من {5} من مفاتيح POV. بقي الباقي بلا تعيين.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>ملفات التعريف المستوردة</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>يتم تخزين ملفات تعريف HIDMaestro التي استوردها المستخدم داخل PadForge.xml، وتظهر في القائمة المنسدلة لملفات التعريف في كل خانة موسعة. التقط ملفا جديدا من جهاز متصل أدناه، أو صدّر / احذف ملفا موجودا.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>ملفات التعريف التي استوردتها ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>الأجهزة المتصلة المتاحة للاستيراد</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>الإعدادات المسبقة لوحدة التحكم</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>أضف إعدادا مسبقا لوحدة تحكم لا يرفقها PadForge، من ملف أو من وحدة التحكم نفسها.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>المستوردة</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>استيراد من جهاز متصل</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>تصدير…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>حذف</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>إغلاق</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>تصدير JSON لملف التعريف</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>حذف ملف التعريف المستورد؟</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>حذف «{0}»؟ أي خانة تستخدم ملف التعريف هذا حاليا ستعود إلى العنصر «مخصص» المولّد تلقائيا.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>حذف الإعداد المسبق؟</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>تعود أي وحدة تحكم تستخدم {0} إلى الخيار «مخصص». لا يمكن التراجع عن ذلك.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>تم التصدير إلى {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>فشل التصدير: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>تم حذف «{0}».</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>استيراد من ملف…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>استيراد من الملف…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>استيراد JSON لملف التعريف</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>تم الاستيراد من {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>فشلت القراءة: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>رفض HIDMaestro ملف التعريف هذا عند {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ليس في ملف التعريف هذا واصف HID، لذا لا يمكن إنشاء وحدة تحكم منه.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>لم يتم استيراد شيء. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>تحديث</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>استيراد</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(جهاز HID بلا اسم)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>عدد واجهات HID التي تم العثور عليها: {0}.</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>المركز</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>المنطقة الميتة</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>إزاحات المركز، شكل المنطقة الميتة وقيمها لكل محور، منحنى لكل محور، النطاق، التوجيه</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>النطاق بالأرقام، القيم الخام</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>النطاق</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«معايرة الحدود» تقيس الحافة التي تستطيع العصا بلوغها وتعيد تشكيلها إلى دائرة كاملة. أشرطة التمرير الأربعة تحد كل اتجاه فقط.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>جارٍ أخذ العينات...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>إعادة ضبط عتبة مطابقة الشكل</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>تسجيل إيماءة لوحة اللمس</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>ارسم الإيماءة على السطح أدناه. يلتقط مربع الحوار كل إصبع تضعه. عندما ترفع كل الأصابع عن السطح يتم تسجيل العينة. الرسم بعدد أصابع مختلف عن العينات السابقة يعيد ضبط المجموعة.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>بانتظار ملامسة الإصبع للوحة الرسم</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>تسجيل إيماءة</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>ارسم الشكل على لوحة اللمس في وحدة التحكم. يصبح مدخلا يمكنك تعيينه.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>ارسم الإيماءة هنا.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>ارسم على لوحة اللمس. تعكس لوحة الرسم ذلك مباشرة.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>التسجيل من {0}، لوحة اللمس {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>لوحة اللمس هذه</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>لوحة اللمس غير متوفرة. استخدم لوحة الرسم أدناه بالماوس أو اللمس.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>لوحة اللمس غير متوفرة. ارسم هنا بالماوس أو القلم أو إصبعك.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>جارٍ الرسم…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>تم التقاط كل العينات. أدخل اسما للإيماءة وانقر «حفظ».</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>العينة {0} من {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} عينات</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>عدد العينات المطلوب التقاطها</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 هو المعتاد. عينات أكثر = مطابقة أمتن، وعينات أقل = تسجيل أسرع.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>العينات المطلوب التقاطها</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>3 هو المعتاد. تعطي العينات الأكثر مطابقة أوثق، والأقل تسجيلا أسرع.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>الاسم</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>إعادة المحاولة</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>سمِّ هذه الإيماءة</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>الاسم مطلوب</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>الاسم طويل جدا (الحد الأقصى 64 حرفا)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>الاسم يحتوي على أحرف غير صالحة</value></data>
@@ -2300,41 +2443,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>ملفات التعريف</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>إدارة ملفات التعريف</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>أنشئ ملفات تعريف لوحدات التحكم خاصة بكل تطبيق، يتم التبديل بينها تلقائيا بحسب اللعبة النشطة.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>تبديل ملفات التعريف تلقائيا بحسب التطبيق الذي في المقدمة</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>ملف التعريف هو إعداد كامل: وحدات التحكم والتعيينات والضبط.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>ملفات تعريف مبدئية</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>ملفات تعريف جاهزة لنوع كامل من الألعاب. اختر واحدا، وعيّن أي وحدة تحكم، والعب.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>تبديل ملفات التعريف حسب اللعبة</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>التبديل التلقائي</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، لا يوجد ملف تعريف له</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، وهو يحمّل {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>في المقدمة الآن: {0}، ولم تُحدَّد لعبة لأي ملف تعريف بعد</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>السماح بالتحكم الخارجي من مشغلات الألعاب والبرامج النصية</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>يوفر ممرا مسمى محليا (named pipe) باسم PadForge.Control، ليتمكن Playnite أو LaunchBox أو برنامج نصي من تفعيل ملفات التعريف وإلغاء تفعيلها. ملف التعريف المفعل بهذه الطريقة يبقى نشطا إلى أن يحرره البرنامج النصي أو تبدّل ملفات التعريف بنفسك. على الجهاز المحلي فقط.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>التحكم الخارجي</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>ملف التعريف النشط:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>لا توجد خانات</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>تبديل تلقائي: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>لا توجد وحدات تحكم</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>أفلت لاستيراد ملف تعريف</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>جديد</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>أفلت ملف ملف التعريف هنا</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>ملف تعريف جديد</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>حفظ باسم</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>حفظ الإعداد الحالي هنا</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>تعديل</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>تحميل</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>لا يوجد ملف تعريف له ملف تنفيذي بعد</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>مدمج</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>حدد ملف تعريف أولا.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>ملف التعريف الافتراضي المدمج لا يمكن تعديله أو حذفه.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>حذف ملف التعريف</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>حذف «{0}»؟ سيتم إتلاف لقطة الخانات والتعيينات المحفوظة فيه.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>لم تحدد لعبة</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>يُحمَّل مع {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>مضبوط على {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>نشط</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>المزيد من خيارات {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>حذف {0}؟</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>يُزال ملف التعريف وقاعدة التبديل التلقائي الخاصة به. لا يمكن التراجع عن ذلك.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>يُزال ملف التعريف. لا يمكن التراجع عن ذلك.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>استبدال الإعداد المحفوظ في «{0}» بالإعداد الحالي؟ يبقى اسمه وألعابه.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>استبدال</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>حفظ كملف تعريف</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>تعديل ملف التعريف</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>اسم ملف التعريف:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>ملف تعريف جديد</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>الاسم</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>ملف تعريف جديد</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>الملفات التنفيذية (تتم مطابقتها مع النافذة التي في المقدمة):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>الألعاب التي تحمّله</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>معدل الاستقصاء</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>افتراضي (الإعداد العام)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>تم تجاوزه ما دام ملف التعريف «{0}» نشطا: {1} مللي ثانية</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>يحفظ لقطة من تعيينات كل خانة وإعدادات كل جهاز تحت اسم واحد. الملفات التنفيذية المرتبطة به تبدّل إليه تلقائيا.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>يعيد تسمية ملف التعريف ويحدّث الملفات التنفيذية التي تفعّله. التعيينات والإعدادات المخزنة تبقى دون تغيير.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>يحفظ تعيينات وإعدادات كل وحدة تحكم تحت اسم واحد. يُحمَّل تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>يُحمَّل ملف التعريف تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>يبدأ بلا وحدات تحكم. يُحمَّل تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>إضافة لعبة قيد التشغيل</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>لا يوجد برنامج آخر لديه نافذة مفتوحة.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>إزالة {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>معدل الاستطلاع أثناء تحميل ملف التعريف هذا</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>نسخ الإعدادات من...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>حدد جهازا لنسخ إعداداته:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>نسخ من</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>استبدل تعيينات {0} وضبط كل جهاز فيها بتعيينات وضبط وحدة تحكم أخرى.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>أضف وحدات ماكرو وحدة تحكم أخرى إلى {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>غير معيّن، تبقى التعيينات السابقة</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>حدد تطبيقا لإضافته إلى قائمة السماح</value></data>
@@ -2376,6 +2540,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>النطاق</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>مضاد المنطقة الميتة</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>انقر نقرا مزدوجا لإضافة نقطة. انقر بالزر الأيمن للإزالة. اسحب للتعديل.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>محرر المنحنى</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور الزناد</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2735,8 +2900,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>الأساسية</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>طبقة Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>إعداد الطبقة الأساسية</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>اسم الطبقة الأساسية وأيقونتها ولونها في قائمة الطبقة المنبثقة وفي صف الطبقات.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>اسم الطبقة</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>مدخل التفعيل</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>الاسم</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>يُضغط باستمرار مع</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>يُضغط مع</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>الطبقة التالية مع</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>الطبقة السابقة مع</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>وكذلك مع</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>اختر مدخلا</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>عناصر تحكم غير معيّنة</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>الرجوع إلى الأساسية</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>عدم فعل شيء</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>الوضع ونوع المدخل والتوقيت واللون</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>الوضع</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ضغط مستمر</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>تبديل</value></data>
@@ -2763,14 +2939,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>عند التحديد، يبقى هدف هذه الطبقة متوقفا بدلا من الرجوع إلى صف الطبقة الأساسية.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>التأخير</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>المدة التي يجب أن يبقى فيها المدخل مضغوطا قبل أن تستجيب الطبقة. في وضع «ضغط مستمر» تعمل كمانع للارتداد. في «تبديل» و«تثبيت» و«ثبات» تجعل التبديل ضغطة مطولة: تنقلب الطبقة مرة واحدة عندما يتجاوز الضغط هذه المدة، والضغطة الأقصر لا تفعل شيئا. القيمة 0 تستجيب فورا.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>المدخل الثاني للتركيبة</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>عتبة المحور</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>التنقل بين الطبقات</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>فقط أثناء الطبقة</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>أي طبقة</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>لا يحتسب المدخل إلا ما دامت الطبقة المختارة نشطة. يتم التحقق عند ضغط المدخل ويبقى ساريا طوال الضغطة. «أي طبقة» تعني أن المدخل يحتسب دائما. أنشئ مخارج كل طبقة على تلك الطبقة نفسها، بمدخل تفعيل آخر أو بماكرو «تبديل الطبقة».</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>زر التالي</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>زر السابق</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>التفاف دوري</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>عند التشغيل، تجاوز الطبقة الأخيرة يعيد إلى الأولى، وتجاوز الأولى يعيد إلى الأخيرة. عند الإيقاف، يتوقف المؤشر عند الطرفين.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>تضمين الطبقة الأساسية</value></data>
@@ -2782,18 +2955,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>ضغطة زر واحد (أو اتجاه POV) تفعّل الطبقة.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>يجب ضغط الزرين معا في الوقت نفسه للتفعيل. التركيبة بين أجهزة مختلفة مدعومة.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>تتفعل ما دام محور تناظري متجاوزا قيمة العتبة.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>تبقى الطبقة مفعلة ما دام مدخل التفعيل مضغوطا. تتحرر عندما تتركه.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>ما دام مدخلها مضغوطا، تحل تعيينات هذه الطبقة محل تعيينات الأساسية.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>اضغط للتفعيل. اضغط مرة أخرى للتحرير. تبقى الطبقة عبر ضغطات كثيرة.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>اضغط لتثبيت هذه الطبقة وإبقائها. اضغط مرة أخرى للعودة إلى الطبقة الأساسية. زر تثبيت آخر يبدّل إلى طبقته الخاصة.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>كل ضغطة تتقدم في قائمة طبقات مرتبة. ثم تعود إلى الطبقة الأساسية.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>اضغط مرة للتفعيل. ضغطة الزر المعين التالية تعمل على الطبقة، ثم تتحرر الطبقة تلقائيا.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>بلا زر خاص بها. أضفها إلى قائمة عنصر تحكم «دورة»، فتصل إليها الدورة.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>توريث الأهداف غير المعينة من الطبقة الأساسية</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>الإطلاق عند التحرير</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>ينتظر حتى ترك الزر قبل أن ينطلق مدخل التفعيل هذا. إذا كان هناك تأخير ضغط محدد، فيجب أن تدوم الضغطة تلك المدة ليحتسب التحرير.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>إطلاق التعيين الخاص بمدخل التفعيل أيضا</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>عند التحديد، يظل زر التفعيل يشغّل أي صف يستخدمه مصدرا. ضغطة واحدة تغيّر الطبقة وتطلق التعيين الخاص بالزر معا. عند إلغاء التحديد (الافتراضي)، يتم استهلاك ضغطة التفعيل في تغيير الطبقة فقط.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>عند التحديد، الأهداف التي لا تعيّنها هذه الطبقة صراحة ترجع إلى الطبقة الأساسية. عند إلغاء التحديد (الافتراضي)، تحل الطبقة محل الأساسية كليا وتبقى الأهداف غير المعينة متوقفة.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>مع «الرجوع إلى الأساسية»، تحتفظ عناصر التحكم التي لا تعيّنها هذه الطبقة بتعييناتها في الأساسية. ومع «عدم فعل شيء»، تحل الطبقة محل الأساسية كليا وتبقى هذه العناصر متوقفة.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>نطاق الدوران</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ضبط نطاق الدوران</value></data>
@@ -2996,15 +3168,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>الجهاز المحدد بلا مكبر صوت مدمج. أصوات الماكرو لذراع التحكم هذا تعمل على جهاز الإخراج الافتراضي للنظام.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>إعادة ضبط إخراج الصوت</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعة اختبارات DualSense تعمل في المتصفح من إعداد Xuezhou Dai (daidr): مرجع لتأطير CRC في تقارير الميزات من Sony ولأوامر اختبار البرنامج الثابت التي يمررها PadForge من أذرع التحكم الظاهرية إلى الفعلية. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعة اختبارات DualSense تعمل في المتصفح من إعداد Xuezhou Dai (daidr): مرجع لتأطير CRC في تقارير الميزات من Sony ولأوامر اختبار البرنامج الثابت التي يمررها PadForge من أذرع التحكم الظاهرية إلى الفعلية.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>مرجع صوت DualShock 4 عبر Bluetooth من إعداد nefarius: تأطير التقارير لدفق مكبر صوت DS4 في PadForge. مرمز SBC تنفيذ أصلي بلغة C# من مواصفة Bluetooth A2DP. مع توثيق البروتوكول من ds4mac الذي أعده khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>مرجع صوت DualShock 4 عبر Bluetooth من إعداد nefarius: تأطير التقارير لدفق مكبر صوت DS4 في PadForge. مرمز SBC تنفيذ أصلي بلغة C# من مواصفة Bluetooth A2DP. مع توثيق البروتوكول من ds4mac الذي أعده khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>تصدير…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>استيراد…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>تم تصدير ملف التعريف «{0}».</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>تم استيراد ملف التعريف «{0}» (حزم الصوت المسجلة: {1}).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>الملف ليس ملف تعريف PadForge قابلا للقراءة.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>اختر صوتا من {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>حزم الصوت</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>ملفات zip من الأصوات لماكرو الصوت</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>حزمة الصوت ملف zip واحد من الأصوات بالامتداد pfsounds. أضف حزمة هنا، ثم اختر أصواتها في أي ماكرو صوت. يقرأ PadForge من الملف مباشرة ولا يفك ضغطه أبدا. أبق الحزم بجوار PadForge.exe لتبقى محمولة.</value></data>
@@ -3049,20 +3220,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>حماية الهوية</value>
+    <value>هوية الإقران</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>كيفية تخزين هوية الإقران لهذا الكمبيوتر. اختر وضعا محمولا لنقل عمليات الإقران على محرك أقراص محمول بين الأجهزة.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>أدخل اسما لهذا الكمبيوتر</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>أجهزة كمبيوتر قريبة (غير مقترنة)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>إعادة ضبط</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>كلمة مرور الربط عن بعد</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>لوحة لمس PadForge</value>
@@ -3094,9 +3258,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>كمبيوتر مقترن</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>متصل</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>غير متصل</value>
   </data>
@@ -3113,7 +3274,7 @@
     <value>افتح قفل الهوية الحالية قبل تغيير حمايتها.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>عيّن كلمة مرور لحماية هويتك المحمولة. ستدخلها لفتح قفل الربط عن بعد على كل كمبيوتر.</value>
+    <value>تحمي كلمة المرور هوية الإقران لهذا الكمبيوتر.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>تم تحديث حماية الهوية.</value>
@@ -3133,7 +3294,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>جارٍ الاتصال بالعنوان {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>إعادة الاتصال تلقائيا</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>إعادة اتصال تلقائي</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>يستمع على {0}</value>
   </data>
@@ -3152,65 +3313,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>اتصل النظير {0}، عدد الأجهزة: {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>اختر صوتا من حزمة مضافة، أو استعرض للبحث عن ملف.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>استعراض الملفات…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>اختيار صوت</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>يُشغَّل الصوت عبر مكبر صوت وحدة التحكم، أو مكبر الكمبيوتر إن لم يكن لها مكبر.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>استخدام الصوت</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>تشغيل {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>التقاط الاسترجاع عبر WASAPI لنسخ الصوت إلى وحدة التحكم ولاهتزاز الأزندة بجهير الصوت. NAudio.Midi، الذي لا يتضمنه PadForge، هو كذلك مرجع تعريفات WinMM وتسلسلات المنافذ في واجهة MIDI API القديمة، وقاعدة أن Note On بسرعة 0 هي Note Off، ووحدات التحكم من نوع تشغيل/إيقاف مثل الاستدامة (sustain). من إعداد Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>التقاط الاسترجاع عبر WASAPI لنسخ الصوت إلى وحدة التحكم ولاهتزاز الأزندة بجهير الصوت. NAudio.Midi، الذي لا يتضمنه PadForge، هو كذلك مرجع تعريفات WinMM وتسلسلات المنافذ في واجهة MIDI API القديمة، وقاعدة أن Note On بسرعة 0 هي Note Off، ووحدات التحكم من نوع تشغيل/إيقاف مثل الاستدامة (sustain). من إعداد Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>أداة تعرف على الكلام تعمل دون اتصال وتسمع عبارات الماكرو الصوتي. من إعداد Alpha Cephei. النموذج مضمن داخل PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>أداة تعرف على الكلام تعمل دون اتصال وتسمع عبارات الماكرو الصوتي. من إعداد Alpha Cephei. النموذج مضمن داخل PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>التشفير لإقران الربط عن بعد ونقله (X25519, Ed25519, ChaCha20-Poly1305). ترخيص Bouncy Castle Licence، وهو ترخيص على نمط MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>التشفير لإقران الربط عن بعد ونقله (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>برنامجا تشغيل مرفقان من إعداد nefarius، لملف تعريف Bluetooth ولتصفية PSM، يتيحان اتصال DualShock 3 عبر الراديو المشترك. يتم تثبيتهما من داخل التطبيق عند الإقران. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>برنامجا تشغيل مرفقان من إعداد nefarius، لملف تعريف Bluetooth ولتصفية PSM، يتيحان اتصال DualShock 3 عبر الراديو المشترك. يتم تثبيتهما من داخل التطبيق عند الإقران.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>مرجع بروتوكول DualShock 3 من إعداد Benjamin Höglinger-Stelzer: تقارير ميزات sixpair، وقالب تقرير الإخراج عبر Bluetooth، وترتيب التفعيل، وخريطة البطارية. تنفيذ PadForge مكتوب بلغة C# أصلية. وحدة التحكم «DualShock 3 (SIXAXIS): Full» في HIDMaestro تستخدم واصف التقرير لوضع SXS من DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>مرجع بروتوكول DualShock 3 من إعداد Benjamin Höglinger-Stelzer: تقارير ميزات sixpair، وقالب تقرير الإخراج عبر Bluetooth، وترتيب التفعيل، وخريطة البطارية. تنفيذ PadForge مكتوب بلغة C# أصلية. وحدة التحكم «DualShock 3 (SIXAXIS): Full» في HIDMaestro تستخدم واصف التقرير لوضع SXS من DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>التثبيت في مخزن برامج التشغيل، وتسجيل عامل تصفية فئة Bluetooth، وإعادة تدوير منفذ USB لإعداد BthPS3 من داخل التطبيق ولتحرير وحدة تحكم USB مخفية، من إعداد nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>التثبيت في مخزن برامج التشغيل، وتسجيل عامل تصفية فئة Bluetooth، وإعادة تدوير منفذ USB لإعداد BthPS3 من داخل التطبيق ولتحرير وحدة تحكم USB مخفية، من إعداد nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>الوصول إلى USB لبرنامج التشغيل السلكي لوحدة Switch 2 Pro ولوحدات التحكم التي يربطها PadForge ببرنامج WinUSB، ويأتي في صورة libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>الوصول إلى USB لبرنامج التشغيل السلكي لوحدة Switch 2 Pro ولوحدات التحكم التي يربطها PadForge ببرنامج WinUSB، ويأتي في صورة libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>عصا تحكم باللمس في وحدة تحكم الويب على الهاتف، من إعداد Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>عصا تحكم باللمس في وحدة تحكم الويب على الهاتف، من إعداد Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>قاعدة بيانات تعيينات أذرع التحكم من المجتمع، وتوسعها التعيينات المرفقة مع PadForge. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>قاعدة بيانات تعيينات أذرع التحكم من المجتمع، وتوسعها التعيينات المرفقة مع PadForge.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>بحث في مصباح LED لزر Guide في Xbox: تخطيط حزم XboxGIP وتسلسل الاكتشاف، من إعداد Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>بحث في مصباح LED لزر Guide في Xbox: تخطيط حزم XboxGIP وتسلسل الاكتشاف، من إعداد Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>حسابات التوجيه بزاوية اللف والميل، من إعداد JibbSmart وElectronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>حسابات التوجيه بزاوية اللف والميل، من إعداد JibbSmart وElectronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>تحويل الجيروسكوب إلى فضاء اللاعب وفضاء العالم، من إعداد JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>تحويل الجيروسكوب إلى فضاء اللاعب وفضاء العالم، من إعداد JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>تخطيط التقرير اللمسي لوحدة Steam Controller (2015) وحسابات دور النغمة، من إعداد Pila وRoboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>تخطيط التقرير اللمسي لوحدة Steam Controller (2015) وحسابات دور النغمة، من إعداد Pila وRoboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>التخطيط اللمسي لنغمات LFO في Steam Controller 2026 وSteam Deck، من إعداد Pila وCrazy وAAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>التخطيط اللمسي لنغمات LFO في Steam Controller 2026 وSteam Deck، من إعداد Pila وCrazy وAAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>دلالات معالجة SOCD لأوضاع Snap Tap، من إعداد valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>دلالات معالجة SOCD لأوضاع Snap Tap، من إعداد valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>عميل شبكة Steam يجلب إعدادات وحدات التحكم من ورشة عمل Steam عبر جلسة مجهولة، من إعداد Ryan Stecker وفريق SteamRE. LGPL-2.1-or-later (license.txt)، LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>مسلسل Protocol Buffers الذي يستخدمه SteamKit2 لبروتوكول الاتصال في Steam، من إعداد Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>مسلسل Protocol Buffers الذي يستخدمه SteamKit2 لبروتوكول الاتصال في Steam، من إعداد Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>فك ضغط Zstandard الذي يستخدمه SteamKit2 لأجزاء مستودعات Steam، وهو نقل لمكتبة zstd إلى C# من إعداد Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>فك ضغط Zstandard الذي يستخدمه SteamKit2 لأجزاء مستودعات Steam، وهو نقل لمكتبة zstd إلى C# من إعداد Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>توثيق لإجراء إقران Wii، وصيغة ADPCM لمكبر الصوت، ووضعيتي Wii Remote الجانبية والعمودية، ونموذج حدود العصا وتنسيق تخزينه، واصطلاح محاور الجيروسكوب. GPL-2.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>توثيق لإجراء إقران Wii، وصيغة ADPCM لمكبر الصوت، ووضعيتي Wii Remote الجانبية والعمودية، ونموذج حدود العصا وتنسيق تخزينه، واصطلاح محاور الجيروسكوب. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>توثيق سلوك DualShock: قطع الاتصال عند الخمول، وحدود لوحة اللمس، وفك ترميز البطارية، وأمر IOCTL لقطع اتصال Bluetooth، وبتات وضع الاهتزاز في DualSense، ومنحنى ارتعاش الجيروسكوب، ومقياس استخدام العصا كماوس، وبذرة CRC لتقرير الإخراج عبر Bluetooth. أرشد جدول مفاتيح لوحة المفاتيح الظاهرية فيه جدول PadForge. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>توثيق سلوك DualShock: قطع الاتصال عند الخمول، وحدود لوحة اللمس، وفك ترميز البطارية، وأمر IOCTL لقطع اتصال Bluetooth، وبتات وضع الاهتزاز في DualSense، ومنحنى ارتعاش الجيروسكوب، ومقياس استخدام العصا كماوس، وبذرة CRC لتقرير الإخراج عبر Bluetooth. أرشد جدول مفاتيح لوحة المفاتيح الظاهرية فيه جدول PadForge. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>توثيق أوامر GIP LED يؤيد ما في xbledctl. GPL-2.0-or-later، للتوثيق فقط.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>توثيق أوامر GIP LED يؤيد ما في xbledctl. للتوثيق فقط.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>توثيق سلوك كاميرا IR في Wii ولوح Balance Board، من إعداد Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>توثيق سلوك كاميرا IR في Wii ولوح Balance Board، من إعداد Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>توثيق تنسيق الإرسال لاهتزاز HD في Joy-Con، من إعداد Sergey004. تمت قراءته لمعرفة حقائق البروتوكول فقط.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>إقران</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>إقران وحدة تحكم</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>إقران وحدة تحكم</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>إقران Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>افتح غطاء البطارية واضغط زر SYNC الأحمر.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>أبقِ وحدة التحكم قرب هذا الكمبيوتر بينما تومض أضواؤها.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>إقران وحدة DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>إقران وحدة تحكم Move أو Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>إضافة وحدة تحكم تسلسلية</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>إضافة جهاز DJI للتحكم عن بعد</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>عائلة وحدة التحكم</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>افتح غطاء البطارية واضغط زر SYNC الأحمر. أبق PadForge يبحث إلى أن تظهر وحدة التحكم.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>إقران مؤقت (اضغط 1 و2 باستمرار)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>إقران</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>جارٍ البحث. اضغط زر SYNC الآن.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>جارٍ البحث عن Wii Remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>وحدات التحكم التي تم العثور عليها</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>لم يتم العثور على وحدات تحكم بعد. تأكد من أن الأضواء الزرقاء تومض.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>تم إقران {0}. سيظهر في قائمة أجهزتك.</value></data>
@@ -3220,7 +3386,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>تم</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>واجهة OpenVR API للعملاء من Valve (BSD 3-Clause): نظارات الواقع الافتراضي ووحدات التحكم بالحركة كمصادر إدخال. يتم تحميل وقت التشغيل الأصلي من نسخة SteamVR المثبتة لديك.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>واجهة OpenVR API للعملاء من Valve: نظارات الواقع الافتراضي ووحدات التحكم بالحركة كمصادر إدخال. يتم تحميل وقت التشغيل الأصلي من نسخة SteamVR المثبتة لديك.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>قيد التشغيل</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>قيد التشغيل، برنامج التشغيل متصل</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>قيد التشغيل، وحدات التحكم نشطة</value></data>
@@ -3258,13 +3424,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>لم يكتمل الإقران. الخطوة التي فشلت معروضة أعلاه.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>إغلاق</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>علامات NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>تسجيل علامة</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>قرّب علامة من القارئ لالتقاط UID الخاص بها.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(بالانتظار)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>الاسم:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>قرّب علامة من القارئ وسمّها. تصبح زرا يمكنك تعيينه.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>قرّب علامة من القارئ.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>الاسم</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>سمِّ هذه العلامة</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>تسجيل</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>العلامات المسجلة</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>المسجلة</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>لم يتم اكتشاف قارئ NFC. وصّل قارئ PC/SC وأعد الفتح.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>تم التقاط العلامة. أدخل اسما وانقر «تسجيل». قرّب علامة أخرى لاستبدالها.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>تم تسجيل «{0}». قرّب علامة أخرى لإضافة المزيد.</value></data>
@@ -3342,22 +3507,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>تعذر كذلك فتح الذاكرة المشتركة FreeTrack.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>تعلّم / إدارة الأزرار المخفية</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>الأزرار المخفية</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>تعلّم زر</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>اضغط الزر المخفي مرة واحدة عند الطلب. يراقب PadForge لوحة المفاتيح والماوس وكل تقارير الشركة المصنعة وكل أحداث النظام على هذا الجهاز، ويسجل ما يغيّره الزر منها.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>الجهاز:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>بدء التعلم</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>علّم PadForge زرا لا يعرضه Windows كوحدة تحكم. اضغطه عند الطلب.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>ارفع يديك. جارٍ قراءة حالة السكون…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>اضغط الزر المخفي الآن ثم اتركه…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>لحظة واحدة…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>لم يظهر أي تغيير. اضغط الزر خلال الفترة المميزة وحاول مرة أخرى.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>اضغط الزر مع الاستمرار الآن.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>اترك الزر.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>الخطوة {0} من {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>لم يُرصد أي تغيير. اختر «ابدأ من جديد»، ثم اضغط الزر مع الاستمرار عند الطلب.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>تمت مراقبة تقارير الشركة المصنعة ({0}) وفئات الأحداث ({1}). أثناء الضغط: التقارير {2}، الأحداث {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>تم التقاط الزر. أدخل اسما وانقر «تسجيل».</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>المصدر:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>الاسم:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>المصدر</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>الاسم</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>سمِّ هذا الزر</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>تسجيل</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>الأزرار التي تم تعلمها</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>ابدأ من جديد</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>لم يتم تعلم أي زر بعد.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>تم تسجيل «{0}». ابدأ من جديد لتعلم زر آخر.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>تم تعلمه على {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>تم تسجيل «{0}». اختر «ابدأ من جديد» لتعلم زر آخر.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>المفاتيح: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>الأزرار المخفية متوقفة. فعّل «أزرار الكمبيوتر المحمول باليد» في الإعدادات أولا.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} قيد التشغيل. سيظل يستجيب لهذه الأزرار إلى أن توقفه.</value></data>
@@ -3506,6 +3671,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>تكوينات المجتمع</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>تصفح تكوينات وحدات التحكم في Steam Input التي أعدها المجتمع وحوّلها إلى ملفات تعريف PadForge. يتصل PadForge مباشرة بخوادم Steam فقط عندما تبحث أو تفتح تكوينا أو تتحقق من تحديثات التكوينات التي استوردتها. يرسل نص بحثك، ومعرفات الألعاب والتكوينات والمنشئين المعنيين، وإصدار PadForge. تسجيل الدخول المجهول إلى Steam يرسل كذلك إصدار Windows لديك ومعرف جهاز مكونا من تجزئات معرف تثبيت Windows وعناوين محولات الشبكة والرقم التسلسلي لقرص الإقلاع. بلا قياس عن بعد، بلا خدمة من طرف ثالث، بلا حساب Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>يتصل PadForge بخوادم Steam فقط عندما تبحث أو تفتح تكوينا أو تتحقق من تحديثات التكوينات المستوردة. بلا قياس عن بعد، بلا حساب Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>ما الذي يُرسل</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>تفعيل تكوينات المجتمع</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>إظهار تكوينات ورشة العمل القديمة</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>بعض التكوينات الأقدم ليس لها ملف قابل للتنزيل على شبكة CDN في Steam. يسردها PadForge بشارة «قديم» ويقرأ النسخة التي يحتفظ بها Steam بعد اشتراكك. وحتى ذلك الحين، يعرض فتح التكوين في ورشة عمل Steam.</value></data>
@@ -3513,18 +3680,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>التحقق من تحديثات ملفات التعريف المستوردة</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>تم مسح ذاكرة ورشة العمل المؤقتة</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>تصفح تكوينات المجتمع</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>تصفح تكوينات المجتمع</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>ملفات التعريف · ورشة عمل Steam</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>الحصول على ملفات تعريف</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>ابدأ من ملف تعريف جاهز أو تكوين من المجتمع أو ملف من أداة أخرى.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>المبدئية</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>المجتمع</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>استيراد ملف</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>يضيف الحفظ ملف تعريف عاديا يمكنك تعديله.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>المسبك بارد</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>تصفح تكوينات المجتمع يصل PadForge مباشرة بخدمة Steam، فقط عندما تبحث، ولا يحدث ذلك أبدا عند بدء التشغيل.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>تفعيل تكوينات المجتمع</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>البحث في الألعاب</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>الألعاب: {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>الألعاب</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>لم يتم العثور على ألعاب في متجر Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>جارٍ البحث في Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>جارٍ قراءة التكوينات من Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>جارٍ قراءة التكوين من Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>مرتبة بحسب التقييم</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>الترتيب بحسب</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>البحث في هذه التكوينات</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>التقييم</value></data>
@@ -3538,7 +3708,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>تم العثور على {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>عرض {0} من {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>التكوينات: {0}</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>تكوينات المجتمع</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>دعم كامل لوحدات التحكم</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>دعم جزئي لوحدات التحكم</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>البحث في الألعاب</value></data>
@@ -3557,8 +3726,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>إعادة المحاولة</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>هذا التكوين من حقبة 2016 يسبق شبكة CDN للتكوينات في Steam. اشترك فيه في Steam وسيقرؤه PadForge من مجلد Steam لديك.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>فتح في ورشة عمل Steam</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>حدد تكوينا لقراءة بيان تحويله.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>الارتباطات المقروءة: {0}</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>اختر تكوينا لترى ما ينتقل.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ما الذي ينتقل</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>يصبح</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>يحدد وحدة التحكم الظاهرية التي تتلقى أزرار التكوين وعصيّه. تذهب مفاتيحه وحركات الماوس دائما إلى وحدة تحكم لوحة مفاتيح + ماوس.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>الطبقات</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>سليم</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>جزئي</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>متخطى</value></data>
@@ -3623,7 +3795,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>جارٍ التحقق من التحديثات في ورشة عمل Steam…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>ملفات التعريف المستوردة محدثة (تم التحقق من {0})</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>تحديثات ورشة العمل</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>لملفات التعريف المستوردة هذه إصدارات أحدث في ورشة عمل Steam. أعد استيرادها من «تصفح تكوينات المجتمع» للحصول على التغييرات.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>لهذه الملفات المستوردة إصدارات أحدث في ورشة عمل Steam. أعد استيرادها من «الحصول على ملفات تعريف» للحصول على التغييرات.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>عند الضغطة المطولة</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>عند الضغطة القصيرة</value></data>
@@ -3771,7 +3943,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>القائمة {0} الخلية {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>تراكب القائمة</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>التراكبات</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>مؤشرات على الشاشة يعرضها PadForge أثناء اللعب. إيقاف أحدها لا يغيّر السلوك أبدا، بل يحدد فقط هل يتم الإعلان عنه.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>مؤشرات على الشاشة يعرضها PadForge أثناء اللعب. إيقاف أحدها لا يغيّر السلوك أبدا، بل يحدد فقط هل يتم عرضه.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>النافذة المنبثقة لطبقة Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>تراكب تبديل ملف التعريف</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>إظهار الحلقة أو الشبكة على الشاشة ما دامت قائمة شعاعية أو قائمة لمس مفعلة. القوائم تظل تنطلق والتراكب متوقف.</value></data>
@@ -3821,6 +3993,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>تردد النغمة لهذه القناة، من 20 إلى 120 هرتز. شغّل مسح التردد لتعرف أين تكون استجابة الهزاز لديك أقوى.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>جهارة هذه القناة قبل الكسب الرئيسي.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>الكسب</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>التردد</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>اختبار</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>يشغّل نغمة هذه القناة لمدة 1.5 ثانية بكسبها المضبوط.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>إعادة ضبط محرك التردد المنخفض</value></data>
@@ -3863,16 +4036,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>منحنى تسارع مؤشر لوحة التتبع لإخراج لوحة اللمس إلى الماوس. نقل إلى C# لملف تعريف تسارع لوحة اللمس في libinput. MIT.</value>
+    <value>منحنى تسارع مؤشر لوحة التتبع لإخراج لوحة اللمس إلى الماوس. نقل إلى C# لملف تعريف تسارع لوحة اللمس في libinput.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>نماذج 3D لوحدات التحكم (Xbox 360 وSteam Deck) وشيفرة النماذج والحركة في عرض 3D، من إعداد CasperH2O وLesueur Benjamin وtrippyone. وهو كذلك مرجع تقرير Steam Deck وفك الترميز اللمسي، وتقرير إيقاف التشغيل في Steam Controller (2015)، وقائمة مراقبة الخدمات في الأجهزة المحمولة باليد، وتوقيت التحقق من التحديثات، ودورة منفذ الموزع، بفاصل 500 مللي ثانية، التي تعيد توصيل وحدة تحكم USB مخفية فتفقدها البرامج التي فتحتها أولا. CC BY-NC-SA 4.0.</value>
+    <value>نماذج 3D لوحدات التحكم (Xbox 360 وSteam Deck) وشيفرة النماذج والحركة في عرض 3D، من إعداد CasperH2O وLesueur Benjamin وtrippyone. وهو كذلك مرجع تقرير Steam Deck وفك الترميز اللمسي، وتقرير إيقاف التشغيل في Steam Controller (2015)، وقائمة مراقبة الخدمات في الأجهزة المحمولة باليد، وتوقيت التحقق من التحديثات، ودورة منفذ الموزع، بفاصل 500 مللي ثانية، التي تعيد توصيل وحدة تحكم USB مخفية فتفقدها البرامج التي فتحتها أولا.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>مخططات 2D لوحدات التحكم (Xbox 360 وXbox One S وXbox Series وDualShock 4 وDualSense)، من إعداد AL2009man. MIT.</value>
+    <value>مخططات 2D لوحدات التحكم (Xbox 360 وXbox One S وXbox Series وDualShock 4 وDualSense)، من إعداد AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>توثيق بروتوكول الصوت في DualShock 4: معاملات SBC وتخطيطات الحزم، من إعداد khallmark. GPL-2.0، للتوثيق فقط.</value>
+    <value>توثيق بروتوكول الصوت في DualShock 4: معاملات SBC وتخطيطات الحزم، من إعداد khallmark. للتوثيق فقط.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>سطح المكتب</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>تحكم في Windows من الأريكة. المؤشر والتمرير، والنقرات على الأزندة.</value></data>
@@ -3886,10 +4059,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>تخطيط بستة أزرار مع معالجة SOCD المسموح بها في البطولات على المحورين.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>لوحة مفاتيح + ماوس</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>ذراع تحكم</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>تصفح ملفات التعريف المبدئية</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>ملفات التعريف المبدئية</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>ملفات تعريف جاهزة لنوع كامل من الألعاب. اختر واحدا، وعيّن أي وحدة تحكم، والعب. الحفظ يضيف ملف تعريف عاديا يمكنك تعديله.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>حفظ ملف التعريف</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>تمت إضافة ملف التعريف المبدئي «{0}».</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>التأشير والنقر</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>ألعاب المغامرات وكل ما يدار بمؤشر وفعلين.</value></data>
@@ -3989,13 +4158,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>إعادة ضبط مسار الإخراج</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>اتباع مقبس سماعة الرأس</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>خريطة بايتات تقرير الإخراج في DualSense ودلالات scePad من Sony من إعداد WujekFoliarz، وهي أساس كاتبات التأثيرات والصوت في PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>خريطة بايتات تقرير الإخراج في DualSense ودلالات scePad من Sony من إعداد WujekFoliarz، وهي أساس كاتبات التأثيرات والصوت في PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>نمط توجيه الصوت باكتشاف المقبس من إعداد SundayMoments، وهو المرجع وراء «اتباع مقبس سماعة الرأس». تمت قراءته كتوثيق؛ AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>نمط توجيه الصوت باكتشاف المقبس من إعداد SundayMoments، وهو المرجع وراء «اتباع مقبس سماعة الرأس». تمت قراءته كتوثيق.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>مرمز QR بوضع البايتات لعناوين وحدة تحكم الويب، منقول عن التنفيذ المرجعي الذي أعده Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>مرمز QR بوضع البايتات لعناوين وحدة تحكم الويب، منقول عن التنفيذ المرجعي الذي أعده Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>رسومات الماوس في العرض المرئي للوحة المفاتيح + الماوس، من إعداد Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>رسومات الماوس في العرض المرئي للوحة المفاتيح + الماوس، من إعداد Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>معدل بحسب الضغط</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>يتبع معدل التكرار قوة ضغط المصدر التناظري المحدد. الضغطة الخفيفة تتكرر بقيمة «الفاصل الزمني البطيء»، والضغطة الكاملة بقيمة «الفاصل الزمني» أعلاه، وما بينهما يتدرج بسلاسة.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>الفاصل الزمني البطيء</value></data>
@@ -4010,7 +4179,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>جارٍ الاتصال بالرمز…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>تعذر الوصول إلى النظير مباشرة. جرّب «الاتصال بالعنوان» عبر VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>رمز هذا الكمبيوتر</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>تبادل الرمزين مع الشخص الآخر: الصق رمزه في مربع الاتصال لديك وهو يلصق رمزك، ثم انقرا كلاكما «اتصال». يفتح ذلك مسارا مباشرا عبر الإنترنت دون حاجة إلى VPN. يتجدد الرمز ما دام الربط عن بعد يعمل.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>تبادل الرمزين مع الشخص الآخر: الصق رمزه في «الاتصال بالعنوان» تحت «المزيد» وهو يلصق رمزك، ثم انقرا كلاكما «إقران / اتصال». يفتح ذلك مسارا مباشرا عبر الإنترنت دون حاجة إلى VPN. يتجدد الرمز ما دام الربط عن بعد يعمل.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>هذه الشبكة لا تستطيع إنشاء اتصالات مباشرة (يبدو أنها نقطة اتصال محمولة أو NAT على مستوى مزود الخدمة). استخدم VPN مثل Tailscale، أو اتصل من إنترنت منزلي واسع النطاق.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>تعذر العثور على العنوان العام لهذا الكمبيوتر (قد تكون الشبكة تحجب حركة البيانات المطلوبة). الاتصالات المباشرة لن تعمل هنا. استخدم VPN، أو «الاتصال بالعنوان» على الشبكة نفسها.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>بطارية وحدة التحكم منخفضة</value></data>
@@ -4021,6 +4190,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>الإشعار عند هذه النسبة أو أقل</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>تشغيل اهتزاز وحدة التحكم أيضا</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>اختبار الإشعار</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>معاينة الإشعار</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>مطالبات التعيين</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>عندما يتصل جهاز وصفحة وحدة تحكم ظاهرية مفتوحة، يستطيع PadForge أن يعرض تعيينه لها، وتستطيع الرئيسية أن تعرض على جهاز جديد وحدة تحكم ظاهرية خاصة به. لا يتم تعيين شيء إلى أن تقبل عرضا. لوحات المفاتيح وأجهزة الماوس ولوحات اللمس ومفاتيح الوسائط لا يتم عرضها أبدا.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>عرض الأجهزة الجديدة على وحدة التحكم الظاهرية المفتوحة</value></data>
@@ -4034,23 +4204,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>ليس الآن</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>أي عبارة</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>وحدات الماكرو الصوتية</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>انطق عبارة فتضغط زرا يمكنك تعيينه. يستمع كل ميكروفون يصل إليه PadForge.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>إدارة وحدات الماكرو الصوتية</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>تفعيل وحدات الماكرو الصوتية</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>يشغّل الاستماع. ما دام مفعلا، كل عبارة مسجلة هي زر ينطلق عندما تنطقها. نموذج التعرف مضمن داخل PadForge ويعمل دون اتصال تماما.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>الاستماع</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>«دائما» يبقي الميكروفون مفتوحا. «اضغط للتحدث» يستمع فقط ما دام ماكرو «استماع صوتي» مرتبط مضغوطا.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>تشغيل الاستماع أو إيقافه، الوضع، الثقة</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>دائما</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>اضغط للتحدث</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>الحد الأدنى للثقة</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>مدى تأكد أداة التعرف المطلوب قبل انطلاق عبارة. ارفعه إذا كان الكلام العشوائي يشغّل وحدات الماكرو، واخفضه إذا كانت عباراتك تفوت.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>بانتظار الكلام. تظهر العبارات المتعرف عليها هنا مع درجة الثقة.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>تم سماع «{0}» ({1:F2}). انطلقت.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>تم سماع «{0}» ({1:F2}). دون الحد الأدنى للثقة أو مفتاح التحدث غير مضغوط.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>الاستماع متوقف. شغّله تحت المزيد.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>تم سماع {0} على {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>تم سماع {0} على {1}. كان دون حد الثقة، أو كان مفتاح التحدث مرفوعا.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>العبارة</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>العبارة المراد نطقها</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>الاسم</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>اسم الزر</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>تسجيل</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>العبارات المسجلة</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>تم تسجيل «{0}». انطقها لإطلاق زرها، واربط وحدات الماكرو بها في صفحة وحدة التحكم.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>العبارات</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>تم تسجيل «{0}». انطقها لإطلاق زرها، وعيّنه في صفحة وحدة التحكم.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>استماع صوتي (أثناء الضغط المستمر)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>الضغط للتحدث لوحدات الماكرو الصوتية: ما دام هذا الماكرو مضغوطا، تستمع أداة التعرف. اضبط «الاستماع» على «اضغط للتحدث» في «إدارة وحدات الماكرو الصوتية».</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>ميكروفون</value></data>
@@ -4058,12 +4233,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>المحرك اللمسي ومزود Razer اللذان يقفان وراء اهتزاز صف Razer Sensa. يأتي HAR.dll وInterhaptics.RazerProvider.dll داخل PadForge دون تعديل عن Core SDK العام. من إعداد Wyvrn. اتفاقية Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>المحرك اللمسي ومزود Razer اللذان يقفان وراء اهتزاز صف Razer Sensa. يأتي HAR.dll وInterhaptics.RazerProvider.dll داخل PadForge دون تعديل عن Core SDK العام. من إعداد Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>نماذج 3D لوحدتي Steam Controller (2015) وSteam Controller (2026)، تم بناء شبكاتها من ملفات STEP التي نشرتها Valve. حقوق النشر لشركة Valve Corporation. CC BY-NC-SA 4.0. PadForge غير مرتبط بشركة Valve ولا يحظى بتأييدها.</value>
+    <value>نماذج 3D لوحدتي Steam Controller (2015) وSteam Controller (2026)، تم بناء شبكاتها من ملفات STEP التي نشرتها Valve. حقوق النشر لشركة Valve Corporation. PadForge غير مرتبط بشركة Valve ولا يحظى بتأييدها.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>وقت تشغيل MinGW-w64</value>
@@ -4080,7 +4255,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>تأييد لتأطير Razer Chroma REST API الخاص بإضاءة Razer، من إعداد Adam Hellberg وBrandon Scott. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>تأييد لتأطير Razer Chroma REST API الخاص بإضاءة Razer، من إعداد Adam Hellberg وBrandon Scott. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>مراجع Logitech LED SDK</value>
   </data>
@@ -4089,19 +4264,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>مخطط بيانات المتتبع عبر UDP وتخطيط الذاكرة المشتركة FreeTrack 2.0 لتتبع الرأس. ISC. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value>
+    <value>مخطط بيانات المتتبع عبر UDP وتخطيط الذاكرة المشتركة FreeTrack 2.0 لتتبع الرأس. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>فئة أحداث الأدوات في Lenovo WMI التي يشترك فيها متعلم الأزرار المخفية في الأجهزة المحمولة باليد، ونمط خادم IPC بصلاحيات مرتفعة الذي يقف وراء التحكم الخارجي في ملفات التعريف. GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value>
+    <value>فئة أحداث الأدوات في Lenovo WMI التي يشترك فيها متعلم الأزرار المخفية في الأجهزة المحمولة باليد، ونمط خادم IPC بصلاحيات مرتفعة الذي يقف وراء التحكم الخارجي في ملفات التعريف. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>سلاسل هوية الكمبيوتر المحمول باليد وملاحظات تقارير الشركات المصنعة التي تمت مطابقتها لأجل متعلم الأزرار المخفية. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value>
+    <value>سلاسل هوية الكمبيوتر المحمول باليد وملاحظات تقارير الشركات المصنعة التي تمت مطابقتها لأجل متعلم الأزرار المخفية. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook وWiimoteHook</value>
@@ -4116,13 +4291,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>تسلسلات استدعاء WinMM التي تقف وراء واجهة MIDI API القديمة: فتح منفذ والإرسال إليه وإغلاقه. تمت قراءتها من PortMidi (MIT، من إعداد Ross Bencina وPhil Burk وRoger B. Dannenberg) وRtMidi (ترخيص RtMidi على نمط MIT، من إعداد Gary P. Scavone). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>مراجع Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>تخطيط كلمة الحدث الذي يقف وراء إدخال G-key مأخوذ من LogitechGkeyLib.h في SDK. ترتيب البحث عن المكتبة وإيقافها يتبعان GKey.cpp من Mumble (BSD 3-Clause). يحمّل PadForge أي نسخة من المكتبة موجودة على الجهاز ولا يتضمن أي شيفرة من Logitech.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>تخطيط كلمة الحدث الذي يقف وراء إدخال G-key مأخوذ من LogitechGkeyLib.h في SDK. ترتيب البحث عن المكتبة وإيقافها يتبعان GKey.cpp من Mumble. يحمّل PadForge أي نسخة من المكتبة موجودة على الجهاز ولا يتضمن أي شيفرة من Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy وSoup وAnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>إدخال لوحات المفاتيح التناظرية ينقل مسارات لوحات المفاتيح وجداول المفاتيح وكتالوجات الطرازات من HallJoy إلى C# (AGPL-3.0، PashOK7) ويتبع Soup وAnalogSense JavaScript SDK (MIT، Calamity, Inc.)، مع المطابقة مع Wooting Analog SDK (MPL-2.0). لوحات المفاتيح الأخرى تتبع AnalogKeys (MIT، Nisayera) وKeyAxis (MIT، RigZeeel) وHallEffectAnalogMapper (MIT، Ricards Mironovs) وlibhmk وhmkconf (GPL-3.0-or-later، peppapighs) وتفرعات Soup من DenkiSuki وLeiterConsulting وpaysdelest (MIT). تنسيقات التقارير وجداول المفاتيح مأخوذة كذلك من برنامجي الإعداد Synapse Web من Razer وNuPhyIO من NuPhy، وOpenRazer (GPL-2.0-or-later)، وrazer-analog-keyboard من Abbytech، وTinyUSB (MIT) وملاحظات الالتقاط من Sainan.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>مراجع Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>واجهة Bliss-Box API التي تقف وراء «قراءة محولات Bliss-Box»، تمت قراءتها من API Tool من Bliss-Box LLC (على نمط BSD، وإعادة التوزيع مجانية) وDeviceBuddy (المصدر متاح، Bliss-Box LLC)، مع أسماء الأزرار من ملفات Bliss-Box في تفرع retroarch-joypad-autoconfig الذي أعده SteveFox1620، ومطابقة مجاميع Controller Pak الاختبارية مع libdragon (Unlicense)، ورد ذراع تحكم PlayStation من psx-spx وبرنامج التشغيل psxpad-spi في Linux (GPL-2.0-or-later). أسماء وحدات التحكم وملاحظات الدعم مأخوذة كذلك من قائمة التوافق من Bliss-Box LLC، وتمت مطابقة سلوك المحولات مع برنامجها الثابت. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ناقل USB من إعداد Vadym Hrynchyshyn لوحدات تحكم USB المركبة في HIDMaestro. يحمل HIDMaestro برنامج تشغيل وحدة التحكم المضيفة الموقع الخاص به ويثبته عند إنشاء أول وحدة تحكم مركبة. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>ناقل USB من إعداد Vadym Hrynchyshyn لوحدات تحكم USB المركبة في HIDMaestro. يحمل HIDMaestro برنامج تشغيل وحدة التحكم المضيفة الموقع الخاص به ويثبته عند إنشاء أول وحدة تحكم مركبة.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>اختر أي نصفي هذه الخانة يعمل. إيقاف نصف يخفي صفوفه ويمنعه من الإرسال، ويحتفظ بتعييناته فتعود عند تشغيله من جديد.</value>
   </data>
@@ -4190,13 +4365,15 @@
     <value>تعيين الأجهزة المشاركة</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>التعيينات على {0}</value>
+    <value>الأجهزة المشتركة مع {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>حدد جهازا يشاركه هذا الكمبيوتر، ثم اختر وحدات التحكم الظاهرية له على الكمبيوتر الآخر.</value>
+    <value>اختر جهازا، ثم وحدات التحكم على ذلك الكمبيوتر التي يجب أن يتحكم بها.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>المشاركة من هذا الكمبيوتر</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>وحدات التحكم على {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>ملف التعريف: {0}</value>
+    <value>ملف التعريف النشط: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>على الكمبيوتر الآخر، اسمح بتغيير التعيينات عن بعد لهذا الكمبيوتر ضمن «الربط عن بعد» &gt; «أجهزة الكمبيوتر المقترنة».</value>
@@ -4288,60 +4465,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi وOpenFst وOpenBLAS وCLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>مفكك ترميز الكلام ومكتبة المحولات والجبر الخطي داخل libvosk.dll. Kaldi وOpenFst: Apache-2.0. OpenBLAS وCLAPACK: BSD 3-Clause، مع إشعارات مستقلة لمكتبة GotoBLAS2 داخل OpenBLAS ولوقت تشغيل f2c.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>تخطيطات ملفي التعريف المبدئيين «الاستراتيجية» و«سطح المكتب»، وسلوك التوربو الذي يتجنبه التوربو المعتمد على الضغط. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>تخطيطات ملفي التعريف المبدئيين «الاستراتيجية» و«سطح المكتب»، وسلوك التوربو الذي يتجنبه التوربو المعتمد على الضغط. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجع من إعداد Antoine Aflalo لتخطيط واجهة IPolicyConfig غير الموثقة في Windows، التي يستخدمها PadForge لإعادة تفعيل نقطة نهاية الصوت لوحدة تحكم. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>مرجع من إعداد Antoine Aflalo لتخطيط واجهة IPolicyConfig غير الموثقة في Windows، التي يستخدمها PadForge لإعادة تفعيل نقطة نهاية الصوت لوحدة تحكم. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>تنسيق ملف تعريف المعادل البارامتري الذي يستورده «المعادل البارامتري» في وحدة التحكم، من إعداد Jaakko Pasanen. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>تنسيق ملف تعريف المعادل البارامتري الذي يستورده «المعادل البارامتري» في وحدة التحكم، من إعداد Jaakko Pasanen. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>تقنيات SendInput التي تقف وراء وحدات ماكرو «كتلة نصية» وخطاف تركيبات لوحة المفاتيح: كتابة Unicode، وحدود الدفعات، ومفتاح قناع مفتاح Win، والإدخال المحقون الموسوم. GPL-2.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>تقنيات SendInput التي تقف وراء وحدات ماكرو «كتلة نصية» وخطاف تركيبات لوحة المفاتيح: كتابة Unicode، وحدود الدفعات، ومفتاح قناع مفتاح Win، والإدخال المحقون الموسوم. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>مرجع بروتوكول DSU الذي يقف وراء خادم الحركة، من إعداد v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>مرجع بروتوكول DSU الذي يقف وراء خادم الحركة، من إعداد v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>تأطير تقرير الإخراج عبر Bluetooth في DualShock 4، من إعداد Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>تأطير تقرير الإخراج عبر Bluetooth في DualShock 4، من إعداد Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>نطاقات البطارية في DualShock 4، وتوقيت النبضات اللمسية للوحة اللمس ودرجات شدتها، وسلوك الدفعة في لوحة اللمس. GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>نطاقات البطارية في DualShock 4، وتوقيت النبضات اللمسية للوحة اللمس ودرجات شدتها، وسلوك الدفعة في لوحة اللمس. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (تفرع hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>نطاقات مستوى الصوت في DualSense، والعينات اللمسية ذات 8 بت مع الإشارة، وتخطيط النقل المجمع عبر Bluetooth. GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>نطاقات مستوى الصوت في DualSense، والعينات اللمسية ذات 8 بت مع الإشارة، وتخطيط النقل المجمع عبر Bluetooth. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>القيمة الافتراضية والحد الأدنى لطول المخزن المؤقت لصوت DualSense عبر Bluetooth، من إعداد awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>القيمة الافتراضية والحد الأدنى لطول المخزن المؤقت لصوت DualSense عبر Bluetooth، من إعداد awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>قيم الإعداد المسبق للأزندة التكيفية على طريقة GameCube، من إعداد Mxater. تمت قراءته لمعرفة الحقائق فقط.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>إشارات محاور الحركة في DSU، تمت مطابقتها مع مفكك ترميز UDP فيه. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>إشارات محاور الحركة في DSU، تمت مطابقتها مع مفكك ترميز UDP فيه. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>الإعدادات المسبقة الافتراضية للعبة Elite Dangerous التي يقوم عليها ملف التعريف المبدئي «محاكاة الفضاء»، من إعداد Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>الإعدادات المسبقة الافتراضية للعبة Elite Dangerous التي يقوم عليها ملف التعريف المبدئي «محاكاة الفضاء»، من إعداد Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>ترتيب أنصاف البايتات في ADPCM لمكبر صوت Wii Remote، ومفكك ترميز SBC الذي تم به التحقق من مرمز DualShock 4. LGPL-2.1-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة LGPL.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>ترتيب أنصاف البايتات في ADPCM لمكبر صوت Wii Remote، ومفكك ترميز SBC الذي تم به التحقق من مرمز DualShock 4. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة LGPL.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>اتجاه البوصلة مع تعويض الإمالة لأجل انعراج البوصلة، منقول إلى C#، من إعداد x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>اتجاه البوصلة مع تعويض الإمالة لأجل انعراج البوصلة، منقول إلى C#، من إعداد x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>قاعدة إشعار انخفاض البطارية ونمط اهتزاز «التعرف»، من إعداد Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>قاعدة إشعار انخفاض البطارية ونمط اهتزاز «التعرف»، من إعداد Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>نماذج 3D لوحدات DualShock 4 وDualSense وDualSense Edge وXbox Series وSwitch 2 Pro Controller، تم شراؤها من CGTrader. ترخيص CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>نماذج 3D لوحدات DualShock 4 وDualSense وDualSense Edge وXbox Series وSwitch 2 Pro Controller، تم شراؤها من CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>نموذج 3D لوحدة DualShock 3، تم شراؤه من CGTrader وتقسيمه إلى شبكات لكل جزء. ترخيص CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>نموذج 3D لوحدة DualShock 3، تم شراؤه من CGTrader وتقسيمه إلى شبكات لكل جزء.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>طبقة HID المضمنة في SDL3.dll المرفق، من إعداد Alan Ott، Signal 11 Software. ترخيص على نمط BSD.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>طبقة HID المضمنة في SDL3.dll المرفق، من إعداد Alan Ott، Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>مصادر الأيقونات</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>رمز اللهب من Material Design Icons (Pictogrammers، Apache-2.0)، وأيقونة ذراع التحكم العامة من Ionicons (Ionic، MIT)، وعصا التحكم للنوع الموسع من Jam Icons (Michael Amprimo، MIT)، وأيقونتا Xbox وPlayStation من SVG Repo، بموجب الترخيص المذكور في صفحة كل أيقونة.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>بروتوكول الترحيل الذي يقف وراء المسار الاحتياطي في الربط عن بعد، ويتم التخاطب به مع المرحّلات العامة المجانية من n0.computer كما يفعل FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>عدادات الماوس الضوئي في Joy-Con 2 وفروق الالتفاف التي تقف وراء «حركة الماوس X» و«حركة الماوس Y»، من إعداد coffincolors وFrano وmoutella. MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>عدادات الماوس الضوئي في Joy-Con 2 وفروق الالتفاف التي تقف وراء «حركة الماوس X» و«حركة الماوس Y»، من إعداد coffincolors وFrano وmoutella. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>برامج تشغيل نواة Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>حقائق بروتوكولات DualShock 3 وMove وDualSense وSteam Deck وردود فعل القوة PID، وتخطيط كتل ACPI WMI. تقرأ PadForge واصفات لوحة المفاتيح والماوس وفق قواعد hid-core. GPL-2.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>حقائق بروتوكولات DualShock 3 وMove وDualSense وSteam Deck وردود فعل القوة PID، وتخطيط كتل ACPI WMI. تقرأ PadForge واصفات لوحة المفاتيح والماوس وفق قواعد hid-core. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>إدخال وحدات التحكم في Windows، ومنه مجاديف Xbox Elite. محمّل SDK مرتبط داخل SDL. MIT (محمّل SDK).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>إدخال وحدات التحكم في Windows، ومنه مجاديف Xbox Elite. محمّل SDK مرتبط داخل SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>وقت تشغيل C++ الذي يحتاجه SDL3.dll (msvcp140.dll وvcruntime140.dll، وفي بنية x64 أيضا vcruntime140_1.dll)، ويأتي دون تعديل داخل PadForge. شروط ترخيص Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>وقت تشغيل C++ الذي يحتاجه SDL3.dll (msvcp140.dll وvcruntime140.dll، وفي بنية x64 أيضا vcruntime140_1.dll)، ويأتي دون تعديل داخل PadForge.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>ملاحظات HID واهتزاز HD ومصباح LED لزر Home في Joy-Con وPro Controller، من إعداد dekuNukem، مع switch2_controller_research من ndeadly لجهاز Switch 2. تمت قراءته لمعرفة حقائق البروتوكول فقط.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>نمط فعل التحديث بصلاحيات مرتفعة الذي يقف وراء مساعد أداة التحديث داخل التطبيق. LGPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة LGPL.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>نمط فعل التحديث بصلاحيات مرتفعة الذي يقف وراء مساعد أداة التحديث داخل التطبيق. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة LGPL.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>تواقيع WinSCard وتسلسل استدعاءات مراقبة القارئ التي تقف وراء إدخال علامات NFC، من إعداد Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>تواقيع WinSCard وتسلسل استدعاءات مراقبة القارئ التي تقف وراء إدخال علامات NFC، من إعداد Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>تخطيطات تقارير PlayStation Move، ومعايرة المستشعرات، ومصافحة ملحق EXT، من إعداد Thomas Perl، مع المطابقة مع ويكي moveonpc. تنفيذ PadForge مكتوب بلغة C# أصلية. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>مراجع بيانات القياس في ألعاب السباق</value></data>
@@ -4349,23 +4526,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>توثيق إقران DualShock 3 عبر Bluetooth وتقاريره. GPL-2.0 و GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>تخطيط رسائل STUN وفك ترميز XOR-MAPPED-ADDRESS اللذان يقفان وراء اجتياز NAT في الربط عن بعد، منقولان من شيفرته المصدرية بلغة C#، من إعداد Aaron Clauson. BSD 3-Clause، مع قيد الاستخدام الوارد في القسم 2 من ترخيصه.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>تخطيط رسائل STUN وفك ترميز XOR-MAPPED-ADDRESS اللذان يقفان وراء اجتياز NAT في الربط عن بعد، منقولان من شيفرته المصدرية بلغة C#، من إعداد Aaron Clauson. يضيف ترخيصه قيد استخدام في القسم 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>مراجع SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>تخطيط تقارير 3Dconnexion وجدول الأجهزة ومقياس المحاور، تمت قراءتها من hid.spacemouse (MIT) وPySpaceMouse (MIT) وspacemouse من إعداد AndunHH (CC BY-NC-SA 4.0) وspacenavd (GPL-3.0-or-later). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>قطع اتصال Bluetooth عبر أمر IOCTL من الجهاز المضيف، والأرقام الترتيبية المخفية في XInput لإيقاف التشغيل والإمكانات، والقيم الافتراضية لاهتزاز الأزندة في DualSense. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>قطع اتصال Bluetooth عبر أمر IOCTL من الجهاز المضيف، والأرقام الترتيبية المخفية في XInput لإيقاف التشغيل والإمكانات، والقيم الافتراضية لاهتزاز الأزندة في DualSense. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>مراجع بروتوكول Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>نقرات اللمس عند السحب، وبتات الأزرار في التقرير 0x42، وأمر إيقاف التشغيل، وترحيل جهاز الاستقبال، تمت قراءتها من OpenPuck (AGPL-3.0) وsc2-research (MIT) وsteam_controller_tools (GPL-2.0) وSteamlessController (MIT). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL أو AGPL.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>أشكال المنطقة الميتة الستة، من إعداد Minimuino. GFDL-1.3-or-later و GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>سلوك مؤشر IR في Wii Remote: منتصف زوج النقاط، والهوامش، وإزاحة شريط الاستشعار، والتنعيم، ومنحنى «ماوس FPS»، مع تفرعات Ryochan7 وSuegrini وTrihy. GPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>سلوك مؤشر IR في Wii Remote: منتصف زوج النقاط، والهوامش، وإزاحة شريط الاستشعار، والتنعيم، ومنحنى «ماوس FPS»، مع تفرعات Ryochan7 وSuegrini وTrihy. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>تخطيطات تأثيرات الأزندة التكيفية في DualSense وحزم المناطق، أعيد إنتاجها بلغة C#، من إعداد John "Nielk1" Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>تخطيطات تأثيرات الأزندة التكيفية في DualSense وحزم المناطق، أعيد إنتاجها بلغة C#، من إعداد John "Nielk1" Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>تخطيط DS4_REPORT_EX الذي يقف وراء تقرير الإدخال لوحدة DualShock 4 الظاهرية، من إعداد Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>تخطيط DS4_REPORT_EX الذي يقف وراء تقرير الإدخال لوحدة DualShock 4 الظاهرية، من إعداد Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (تفرع hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>نطاق التوهين 48 dB لميكروفون DualSense الظاهري. GPL-3.0-or-later، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>نطاق التوهين 48 dB لميكروفون DualSense الظاهري. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>مراجع بروتوكولات عجلات القيادة</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>تقارير ردود فعل القوة الأصلية ومصابيح LED لتبديل السرعة بحسب RPM لعجلات Fanatec وThrustmaster وLogitech، تمت قراءتها من hid-fanatecff (GPL-2.0) وhid-tmff2 (GPL-2.0-or-later) وnew-lg4ff (GPL-2.0-or-later) وoversteer (GPL-3.0) وthrustmaster-led-linux (GPL-3.0)، ومطابقتها مع إضافة SimHub LED من إعداد prodigal.knight (MIT) وtm-bt-led (MIT). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة GPL.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>مراجع إدخال/إخراج الأركيد</value></data>
@@ -4395,19 +4572,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>مراجع وحدات تحكم Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>البروتوكولات التي تقف وراء برامج تشغيل تفرع SDL لوحدات Xbox الأصلية وSteel Battalion وXbox 360 chatpad وXbox 360 uDraw، وأجهزة استقبال Xbox 360 التي يربطها PadForge ببرنامج تشغيل Windows نفسه، تمت قراءتها من brandonw.net وChatpad Super Driver (MIT) وCxbx-Reloaded (GPL-2.0-or-later) وeuc.jp من إعداد ITO Takayuki وJoypadOS (Apache-2.0) وlibSteelBattalion وlibsteelbat وLinux (GPL-2.0-or-later) وogx360 (GPL-3.0-or-later) وs-config.com وSBC (MIT) وSpivey's Corner وsteel-battalion-net (LGPL-3.0) وSteelBattalionController (Apache-2.0) وSteelBattalionDriver (GPL-3.0) وSteelBattalionMapper (GPL-3.0-or-later) وtusb_xinput (MIT) وuDrawTablet وXb2XInput (GPL-3.0) وxb360ChatpadToKM (GPL-3.0) وxbox360wirelesschatpad وxboxdevwiki وxboxdrv (GPL-3.0-or-later) وxemu (LGPL-2.0-or-later). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>حزم ملف INF واحد لكل جهاز وسرد الأجهزة اللذان يقفان وراء الربط التلقائي ببرنامج WinUSB، من إعداد Pete Batard. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>حزم ملف INF واحد لكل جهاز وسرد الأجهزة اللذان يقفان وراء الربط التلقائي ببرنامج WinUSB، من إعداد Pete Batard. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>طلب تقرير الميزات عبر Bluetooth HID الذي يرسله PadForge للتعرف على ملحق PS Move، من إعداد Ricardo Quesada. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>طلب تقرير الميزات عبر Bluetooth HID الذي يرسله PadForge للتعرف على ملحق PS Move، من إعداد Ricardo Quesada. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>مفتاح إعداد Windows Mixed Reality في تفرع SDL مأخوذ من Monado. حقوق النشر 2021 Jan Schmidt. يأتي داخل SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>مفتاح إعداد Windows Mixed Reality في تفرع SDL مأخوذ من Monado. حقوق النشر 2021 Jan Schmidt. يأتي داخل SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>دمج المستشعرات لنظارة Rift DK1 في تفرع SDL منقول عن OpenHMD. حقوق النشر 2013 Fredrik Hultin, Jakob Bornecrantz. يأتي داخل SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>دمج المستشعرات لنظارة Rift DK1 في تفرع SDL منقول عن OpenHMD. حقوق النشر 2013 Fredrik Hultin, Jakob Bornecrantz. يأتي داخل SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>توثيق بروتوكول مكبر صوت Wii Remote ومعايرة IR. تمت قراءته لمعرفة حقائق البروتوكول فقط.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>تقرير الأزندة النبضية في Xbox المكون من 9 بايتات ومسار كتابته، من إعداد araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>تقرير الأزندة النبضية في Xbox المكون من 9 بايتات ومسار كتابته، من إعداد araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>تنسيق PCM اللمسي في PS5، 16 بت مع الإشارة عند 3 kHz، وهو ما حسم الترميز ذا 8 بت مع الإشارة لردود الفعل اللمسية عبر Bluetooth. AGPL-3.0، تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة AGPL.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>تنسيق PCM اللمسي في PS5، 16 بت مع الإشارة عند 3 kHz، وهو ما حسم الترميز ذا 8 بت مع الإشارة لردود الفعل اللمسية عبر Bluetooth. تمت قراءته كتوثيق فقط، ولا يتضمن البرنامج أي شيفرة AGPL.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>مراجع تعديلات ألعاب DSX</value></data>
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>تعليمات UDP والردود وملفات المنافذ وبايتات تأثيرات الزناد التي تقف وراء «تعديلات الألعاب»، تمت قراءتها من أمثلة التعديلات الرسمية لـ DSX v3.1 وDualSenseX v2 من Paliverse، ونسختي DualSenseY وDualSense4Rockstar (بلا ترخيص منشور)، وDSZ وpydualsense (MIT)، وWujek Dualsense API وخادم DSX في تفرع DS4Windows الذي أعده hbashton (GPL-3.0). للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>مراجع الصوت والميكروفون في DualShock 4</value></data>
@@ -4482,6 +4659,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>تحريك</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>تحريك X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>تحريك Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>اختر ما يعرضه. لا يتغير شيء حتى تحفظ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>تم ضبط {0} على {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>جارٍ تنزيل SDK الخاص بـ Mad Catz S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>يحمّل S.T.R.I.K.E. 7 الآن {0}.</value></data>
@@ -4621,8 +4799,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>قراءة {0} من الذاكرة المشتركة.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>في انتظار Assetto Corsa أو Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>إعادة التوجيه إلى المنفذ {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>تنسيقات بيانات القياس المخصصة</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>صِف الحزم التي ترسلها اللعبة، حقلًا حقلًا، وسيقرأ PadForge تلك اللعبة أيضًا. يصبح كل متغير محورًا في صف بيانات قياس الألعاب وقناة لمشغلات التعبير المخصص. اختر التنسيق بالاسم من قائمة الألعاب، أو امنحه طولًا أو مفتاحًا ليجده اكتشاف تلقائي.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>تنسيقات مخصصة</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>صف حزم بيانات القياس للعبة لا يعرفها PadForge.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>إضافة تنسيق</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>تنسيق {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>الاسم</value></data>
@@ -4633,12 +4811,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>لا تُقرأ بهذا التنسيق إلا الحزم التي يبلغ طولها هذا العدد من البايتات بالضبط. مع 0 تُقرأ أي حزمة، ولا يختار اكتشاف تلقائي هذا التنسيق، لذا اختره بالاسم.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>المفتاح المطلوب</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>لا تُقرأ بهذا التنسيق إلا حزم JSON التي تحمل هذا المفتاح. إذا تُرك فارغًا تُقرأ أي حزمة، ولا يختار اكتشاف تلقائي هذا التنسيق، لذا اختره بالاسم.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>ترتيب البايتات</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>يضع صغير النهاية (Little-Endian) أقل بايت أهمية من كل رقم أولا، كما تفعل ألعاب الكمبيوتر دائما تقريبا. ويضع كبير النهاية (Big-Endian) أهم بايت أولا.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>صغير النهاية (Little-Endian)</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>كبير النهاية (Big-Endian)</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>تكتب الحزمة كل رقم بدءًا بالبايت الأكثر أهمية. تكتب ألعاب الكمبيوتر بدءًا بالبايت الأقل أهمية في جميع الحالات تقريبًا.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>قيم التروس</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>يملك حقل الترس أرقامه الخاصة للرجوع والمحايد، كما في 0 و11 في Forza. عند إيقاف هذا الخيار، يعني الترس السالب الرجوع ويعني 0 المحايد.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>رجوع</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>محايد</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>المفتاح المطلوب لحزم JSON، قيم التروس</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>الحقول</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>يقرأ كل حقل رقمًا عند إزاحته، أو تحت مفتاحه في JSON (تصل النقاط إلى الكائنات المتداخلة)، ويضربه في المقياس. بعد المقياس تكون السرعة بالكم/س، وتتراوح الدواسات من 0 إلى 1، ويتراوح التوجيه من -1 عند أقصى اليسار إلى 1 عند أقصى اليمين. يمتد محور المتغير من قيمته الأدنى عند السكون إلى قيمته الأقصى عند الاكتمال.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>يقرأ إلى</value></data>
@@ -4722,4 +4903,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} على {1} حتى الإيقاف</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>إيقاف تأثير الزناد على {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>التحكم في إضاءة هذا الجهاز، الاستحواذ على الإضاءة</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>متصلة</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>غير متصلة</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>مدخلات أخرى</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>لا توجد أجهزة مطابقة.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>غير مستخدم</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>البطارية {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>البطارية {0}، قيد الشحن</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>مستخدم بواسطة</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>وحدة تحكم جديدة</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>الإعدادات</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>كل محور وزر ومستشعر</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>المضغوط: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>المعرفات، المسار، الإمكانات، فرض وضع عصا التحكم الخام</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>المعرفات، المسار، الإمكانات</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>نسخ التفاصيل</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>المنتج</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>النوع</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>الإمكانات</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>الاتصال</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>البطارية</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>المسار</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>الرقم التسلسلي</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>البرنامج الثابت</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>المراجعة</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>تشغيل اهتزاز وحدة التحكم أيضا، تكرار الإشعار كل، إشعار عند اكتمال الشحن</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>يحتاج إلى نظرة</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>تم استيراده دون مشكلات</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>تعيين كلمة مرور</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>فتح قفل الربط عن بعد</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>كلمة المرور</value></data>
 </root>

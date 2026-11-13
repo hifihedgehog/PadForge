@@ -95,6 +95,7 @@ namespace PadForge.Services
             var im = _inputManager;
             string status = string.Empty;
             bool canInstall = false;
+            bool warns = false;
             if (im != null && im.IsRunning && settings.NovintFalconEnabled)
             {
                 var s = Strings.Instance;
@@ -124,11 +125,13 @@ namespace PadForge.Services
 
                 var rows = im.FalconRows;
                 canInstall = FalconCanInstall(sweep, rows.Count);
+                warns = FalconStatusIsWarning(sweep, rows.Count);
                 if (rows.Count == 0 && sweep.LibraryReason.Length == 0)
                     lines.Add(FalconNoRowLine(sweep, canInstall));
                 status = string.Join(Environment.NewLine, lines);
             }
             settings.FalconCanInstallDriver = canInstall;
+            settings.FalconStatusIsWarning = warns;
             if (string.Equals(_falconStatusLast, status, StringComparison.Ordinal)) return;
             _falconStatusLast = status;
             settings.FalconStatus = status;
@@ -141,6 +144,12 @@ namespace PadForge.Services
         internal static bool FalconCanInstall(FalconSweepStatus sweep, int rows)
             => rows == 0 && sweep.HasDriverlessNode && sweep.OtherDrivers.Length == 0
                && sweep.OwnDriverNodes == 0 && sweep.DriverPackage != null;
+
+        /// <summary>The card's lines warn (#574) when the library did not
+        /// load, a picked copy was not the one loaded, or no Falcon is open.
+        /// The loaded library's line beside an open Falcon is information.</summary>
+        internal static bool FalconStatusIsWarning(FalconSweepStatus sweep, int rows)
+            => sweep.LibraryReason.Length != 0 || sweep.PickNotLoaded || rows == 0;
 
         /// <summary>Why no Falcon opened, with the library loaded. A Falcon
         /// on Force Dimension's own driver that did not open gets the

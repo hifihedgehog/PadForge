@@ -175,6 +175,8 @@ $map = @{
     "devices-twitch-chat"           = "devices-twitch-chat"
     "twitch-chat-commands"          = "twitch-chat-commands"
     "map-key-lights"                = "map-key-lights"
+    # v6.0.0 additions
+    "settings-search"               = "settings-search"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

@@ -126,49 +126,64 @@ namespace PadForge.Tests
         public static IEnumerable<object[]> FirstAndMore() => new[]
         {
             new object[] { "WebController", "Extras_More_WebController",
-                new[] { "{Binding WebControllerStatus}", "{Binding WebControllerHttpsWarning}", "{Binding WebControllerQr}", "{Binding Dashboard_WebFooter," },
+                new[] { "{Binding WebControllerStatus}", "{Binding WebControllerHttpsWarning}", "{Binding WebControllerQr}",
+                        "{Binding Extras_WebController_Step1,", "{Binding WebControllerPhones}" },
                 new[] { "{Binding WebControllerPort,", "{Binding EnableWebControllerPlainHttp}", "{Binding WebControllerPlainHttpLocalOnly}",
                         "{Binding WebControllerPlainHttpPort,", "WebControllerAccessCodeBox", "NewWebAccessCodeButton", "{Binding WebControllerPlainQr}" } },
             new object[] { "RemoteLink", "Extras_More_RemoteLink",
                 new[] { "{Binding RemoteLinkStatus}", "{Binding RemoteLink.TrustedPeers}", "{Binding RemoteLink.NearbyUnpaired}",
-                        "{Binding RemoteLinkMyCode,", "{Binding RemoteLinkNatWarning}", "{Binding Dashboard_RemoteLinkFooter," },
+                        "{Binding RemoteLinkMyCode,", "{Binding RemoteLinkNatWarning}" },
                 new[] { "{Binding AutoReconnect}", "{Binding RemoteLinkPort,", "{Binding RemoteLink.IdentityProtectionModeIndex,", "{Binding RemoteLinkConnectHost," } },
-            new object[] { "HeadTracking", "Extras_More_HeadTracking",
+            new object[] { "HeadTracking", null,
                 new[] { "{Binding HeadTrackingStatus}", "{Binding HeadTrackingRecenterCommand}", "IsChecked=\"{Binding HeadTrackingEnabled}\"",
                         "IsChecked=\"{Binding HeadTrackingFreeTrack}\"", "IsChecked=\"{Binding HeadTrackingOpenXr}\"",
                         "{Binding HeadTrackingRotationRange,", "{Binding HeadTrackingTranslationRange,", "{Binding Dashboard_HeadTrackingFooter," },
                 new[] { "{Binding SelectedOpenXrRuntime,", "{Binding HeadTrackingUdpPort,", "{Binding HeadTrackingRangeYaw,", "{Binding HeadTrackingRangeZ," } },
             new object[] { "MotionServer", "Dashboard_Port",
-                new[] { "{Binding DsuServerStatus}", "{Binding Dashboard_DsuFooter," },
+                new[] { "{Binding DsuServerStatus}", "{Binding Extras_StatusHint_MotionServer,", "{Binding Dashboard_DsuFooter," },
                 new[] { "{Binding DsuMotionServerPort," } },
             new object[] { "GameMods", "Extras_More_GameMods",
-                new[] { "{Binding GameModServerStatus}", "{Binding Dashboard_GameModsFooter," },
+                new[] { "{Binding GameModServerStatus}", "{Binding Extras_StatusHint_GameMods,", "{Binding Dashboard_GameModsFooter," },
                 new[] { "{Binding GameModServerPort,", "{Binding GameModDsxStandIn}" } },
             new object[] { "GameTelemetry", "Extras_More_GameTelemetry",
-                new[] { "{Binding GameTelemetryStatus}", "{Binding SelectedGameTelemetryOption,", "{Binding Dashboard_GameTelemetryFooter," },
-                new[] { "{Binding GameTelemetryPort,", "{Binding GameTelemetryForwardPort,", "{Binding GameTelemetryFullSpeed,", "GameTelemetryFormatsButton_Click" } },
+                new[] { "{Binding GameTelemetryStatus}", "{Binding Extras_StatusHint_GameTelemetry,", "{Binding SelectedGameTelemetryOption," },
+                new[] { "{Binding GameTelemetryPort,", "{Binding GameTelemetryForwardPort,", "{Binding GameTelemetryFullSpeed,",
+                        "{Binding Dashboard_GameTelemetryFooter,", "GameTelemetryFormatsButton_Click" } },
         };
 
-        /// <summary>A page with a More row shows its status and the one thing
-        /// to do first, and keeps its ports and its rarely changed settings
-        /// under More. The More row is the last thing in the card, it is
-        /// stored under the extra's own key, and its hint names what it
-        /// holds.</summary>
+        /// <summary>A page with a More card shows its status and the one
+        /// thing to do first, and keeps its ports and its rarely changed
+        /// settings under More. The More row is a card of its own (the
+        /// MoreCardRow in a FoldList), it is stored under the extra's own
+        /// key, and its hint names what it holds. Only the page's note may
+        /// follow it.</summary>
         [Theory]
         [MemberData(nameof(FirstAndMore))]
         public void APage_ShowsItsStatusFirst_AndKeepsTheRestUnderMore(string key, string hint, string[] first, string[] more)
         {
             string body = PageOf(key);
-            string open = "<controls:MoreRow x:Name=\"" + key + "More\" StateKey=\"Extras." + key + ".More\"";
+            string open = "<controls:MoreRow x:Name=\"" + key + "More\" Style=\"{StaticResource MoreCardRow}\" StateKey=\"Extras." + key + ".More\"";
             int at = body.IndexOf(open, StringComparison.Ordinal);
-            Assert.True(at > 0, key + " has no More row of its own key");
+            Assert.True(at > 0, key + " has no More card of its own key");
+            Assert.EndsWith("<controls:FoldList Gap=\"0\" Margin=\"0,16,0,0\">", Regex.Replace(body.Substring(0, at), @"\s+$", ""));
             int end = body.IndexOf("</controls:MoreRow>", at, StringComparison.Ordinal);
             Assert.True(end > at);
             string shown = body.Substring(0, at), kept = body.Substring(at, end - at);
 
             Assert.Contains("AutomationProperties.AutomationId=\"Extras_More_" + key + "\"", kept);
             Assert.Contains("Header=\"{Binding Common_More, Source={x:Static strings:Strings.Instance}}\"", kept);
-            Assert.Contains("Hint=\"{Binding " + hint + ", Source={x:Static strings:Strings.Instance}}\"", kept);
+            if (hint != null)
+                Assert.Contains("Hint=\"{Binding " + hint + ", Source={x:Static strings:Strings.Instance}}\"", kept);
+            else
+            {
+                // Head Tracking's hint names its three settings in their own words.
+                int port = kept.IndexOf("<Binding Path=\"Dashboard_HeadTrackingPort\" Source=\"{x:Static strings:Strings.Instance}\"/>", StringComparison.Ordinal);
+                int runtime = kept.IndexOf("<Binding Path=\"Dashboard_HeadTrackingOpenXrRuntime\" Source=\"{x:Static strings:Strings.Instance}\"/>", StringComparison.Ordinal);
+                int axes = kept.IndexOf("<Binding Path=\"Dashboard_HeadTrackingAxisRanges\" Source=\"{x:Static strings:Strings.Instance}\"/>", StringComparison.Ordinal);
+                Assert.True(kept.Contains("<MultiBinding StringFormat=\"{}{0}, {1}, {2}\">", StringComparison.Ordinal) && port > 0 && runtime > port && axes > runtime,
+                    "Head Tracking's More hint is not its three settings' names in order");
+                Assert.DoesNotContain("Hint=\"{Binding", kept);
+            }
             foreach (string needle in first)
             {
                 Assert.True(shown.Contains(needle, StringComparison.Ordinal), key + " does not show " + needle + " first");
@@ -179,64 +194,79 @@ namespace PadForge.Tests
                 Assert.True(kept.Contains(needle, StringComparison.Ordinal), key + " does not keep " + needle + " under More");
                 Assert.False(shown.Contains(needle, StringComparison.Ordinal), key + " also shows " + needle + " first");
             }
-            // Nothing follows the More row but the card's closing tags (and
-            // the comment that heads the next page).
+            // The More card is the page's last card: after it come only its
+            // FoldList's end, the page's note when it has one, and the page's
+            // end (and the comment that heads the next page).
             string after = Regex.Replace(body.Substring(end + "</controls:MoreRow>".Length), "<!--.*?-->", "", RegexOptions.Singleline);
-            Assert.Equal("</StackPanel></Border></StackPanel>", Regex.Replace(after, @"\s+", ""));
+            after = Regex.Replace(after, @"\s+", "");
+            Assert.StartsWith("</controls:FoldList>", after);
+            Assert.Matches(new Regex("^(<TextBlock[^>]*ExtraNote[^>]*/>|<TextBlock[^>]*ExtraNote[^>]*>.*</TextBlock>)?</StackPanel>$", RegexOptions.Singleline),
+                after.Substring("</controls:FoldList>".Length));
         }
 
-        /// <summary>One label column to a card. Where a card shows boxes
-        /// first and keeps more of them under More, they sit in two grids,
-        /// and one shared size group on both label columns, inside one scope
-        /// on the card, starts every box at the same x. No number box or
-        /// picker is left in a row of its own, where it would start at its
-        /// own label's width: the Web Controller's main port and Head
-        /// Tracking's OpenXR runtime did, on the Dashboard and on the first
-        /// build of these pages.</summary>
+        /// <summary>The label column each page's board draws: 260 on most,
+        /// 300 on Head Tracking, 230 on the Web Controller, 200 on Twitch
+        /// Chat. The page's DzLabel is 260, and a page with another width
+        /// shadows it in its panel's resources with the same look
+        /// (ExtraLabel). Every row that starts with a label starts with the
+        /// one DzLabel draws, so every control of a page starts at one x, and
+        /// every box and picker stands in a row.</summary>
         [Theory]
-        [InlineData("WebController", "WebControllerLabel")]
-        [InlineData("HeadTracking", "HeadTrackingLabel")]
-        [InlineData("GameTelemetry", "GameTelemetryLabel")]
-        public void ACardWithBoxesFirstAndUnderMore_KeepsOneLabelColumn(string key, string group)
+        [InlineData("WebController", 230)]
+        [InlineData("HeadTracking", 300)]
+        [InlineData("GameTelemetry", 260)]
+        [InlineData("TwitchChat", 200)]
+        [InlineData("RemoteLink", 260)]
+        [InlineData("MotionServer", 260)]
+        [InlineData("GameMods", 260)]
+        [InlineData("Overlays", 260)]
+        [InlineData("TouchpadOverlay", 260)]
+        [InlineData("ScreenOverlay", 260)]
+        public void EachPage_KeepsOneLabelColumn_AtItsBoardsWidth(string key, int width)
         {
-            string body = PageOf(key);
-            Assert.Equal(1, Count(body, "<StackPanel Grid.IsSharedSizeScope=\"True\">"));
-            Assert.Equal(2, Count(body, "<ColumnDefinition Width=\"Auto\" SharedSizeGroup=\"" + group + "\"/>"));
-
             System.Xml.Linq.XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
             var doc = System.Xml.Linq.XDocument.Parse(Page());
-            var page = Assert.Single(doc.Descendants(), e => (string)e.Attribute(x + "Name") == key + "Page");
-            var boxes = page.Descendants().Where(e => e.Name.LocalName is "NumberBox" or "ComboBox").ToList();
-            Assert.True(boxes.Count >= 2, key + " has no boxes to line up");
-            foreach (var box in boxes)
-            {
-                // A box is a grid's own cell, or sits in the panel that is.
-                var cell = box.Parent!.Name.LocalName == "Grid" ? box : box.Parent;
-                var grid = cell.Parent!;
-                string what = (string)box.Attribute("Value") ?? (string)box.Attribute("SelectedItem") ?? box.ToString();
-                Assert.True(grid.Name.LocalName == "Grid", "not in a grid: " + what);
-                Assert.Equal("1", (string)cell.Attribute("Grid.Column"));
-                var label = grid.Elements().First(e => e.Name.LocalName == "Grid.ColumnDefinitions").Elements().First();
-                Assert.True((string)label.Attribute("SharedSizeGroup") == group, "its grid's label column is not in the shared group: " + what);
-            }
-        }
+            System.Xml.Linq.XElement Setter(System.Xml.Linq.XElement style, string property) =>
+                style.Elements().SingleOrDefault(e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == property);
 
-        /// <summary>The rule over this PC's code on the Remote Link page
-        /// shows only while the code or the network verdict does. On the
-        /// Dashboard the connect-by-address row followed it. That row sits
-        /// under More now, so with no code yet the rule stood over nothing
-        /// but the card's closing note.</summary>
-        [Fact]
-        public void TheRemoteLinkPage_DrawsNoRuleOverNothing()
-        {
-            string body = PageOf("RemoteLink");
-            int code = body.IndexOf("<Condition Binding=\"{Binding HasRemoteLinkMyCode}\" Value=\"False\"/>", StringComparison.Ordinal);
-            int verdict = body.IndexOf("<Condition Binding=\"{Binding HasRemoteLinkNatWarning}\" Value=\"False\"/>", StringComparison.Ordinal);
-            int shown = body.IndexOf("<StackPanel Visibility=\"{Binding HasRemoteLinkMyCode,", StringComparison.Ordinal);
-            Assert.True(code > 0 && verdict > code && shown > verdict, "the rule's two conditions sit over the code's panel");
-            Assert.Contains("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", body.Substring(verdict, shown - verdict));
-            int rule = body.LastIndexOf("<Border Height=\"1\"", code, StringComparison.Ordinal);
-            Assert.True(rule > 0 && !body.Substring(rule, code - rule).Contains("/>", StringComparison.Ordinal), "the conditions belong to the rule");
+            // The page's own column, and the look every column shares.
+            var resources = doc.Root!.Elements().Single(e => e.Name.LocalName == "UserControl.Resources");
+            var label = Assert.Single(resources.Elements(), e => (string)e.Attribute(x + "Key") == "DzLabel");
+            Assert.Equal("{StaticResource ExtraLabel}", (string)label.Attribute("BasedOn"));
+            Assert.Equal("260", (string)Setter(label, "Width")!.Attribute("Value"));
+            var look = Assert.Single(resources.Elements(), e => (string)e.Attribute(x + "Key") == "ExtraLabel");
+            Assert.Equal("14", (string)Setter(look, "FontSize")!.Attribute("Value"));
+            Assert.Equal("0,0,12,0", (string)Setter(look, "Margin")!.Attribute("Value"));
+
+            var page = Assert.Single(doc.Descendants(), e => (string)e.Attribute(x + "Name") == key + "Page");
+            var own = page.Elements().SingleOrDefault(e => e.Name.LocalName == "StackPanel.Resources")?
+                .Elements().Where(e => (string)e.Attribute(x + "Key") == "DzLabel").ToList() ?? new List<System.Xml.Linq.XElement>();
+            if (width == 260)
+                Assert.Empty(own);
+            else
+            {
+                var shadow = Assert.Single(own);
+                Assert.Equal("{StaticResource ExtraLabel}", (string)shadow.Attribute("BasedOn"));
+                Assert.Equal(width.ToString(System.Globalization.CultureInfo.InvariantCulture), (string)Setter(shadow, "Width")!.Attribute("Value"));
+            }
+
+            var rows = page.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            if (key != "Overlays") Assert.NotEmpty(rows);
+            foreach (var row in rows)
+            {
+                var head = row.Elements().First();
+                if (head.Name.LocalName != "TextBlock") continue;
+                Assert.Equal("{StaticResource DzLabel}", (string)head.Attribute("Style"));
+                Assert.Null(head.Attribute("Width"));
+            }
+            // A box or a picker stands in a row after its label. A paired PC's
+            // name is typed over in its own line, under its own name.
+            foreach (var box in page.Descendants().Where(e => e.Name.LocalName is "NumberBox" or "ComboBox" or "TextBox"))
+            {
+                if ((string)box.Attribute(x + "Name") == "PeerNameBox") continue;
+                Assert.True(box.Ancestors().Any(a => a.Name.LocalName == "SettingRow"),
+                    key + ": not in a row: " + ((string)box.Attribute("Value") ?? (string)box.Attribute("Text") ?? (string)box.Attribute("SelectedItem") ?? (string)box.Attribute("SelectedIndex")));
+            }
         }
 
         /// <summary>The four pages with few settings show them all: no More
@@ -254,6 +284,24 @@ namespace PadForge.Tests
         /// switch's reset button. The switch is the card's own check box,
         /// with the binding and the id it always had. Screen Overlay has a
         /// switch for each overlay and none of its own.</summary>
+        /// <summary>A page's head: what stands before its first card, its
+        /// status card, its row of cards or its More card.</summary>
+        private static string HeaderOf(string body)
+        {
+            int cut = body.Length;
+            foreach (string marker in new[]
+            {
+                "Style=\"{StaticResource CardBorder}\"", "Style=\"{StaticResource ExtraStatusCard}\"",
+                "Style=\"{StaticResource ExtraCard}\"", "<controls:FoldList", "<controls:FlexLinePanel", "<ItemsControl",
+            })
+            {
+                int at = body.IndexOf(marker, StringComparison.Ordinal);
+                if (at > 0) cut = Math.Min(cut, at);
+            }
+            Assert.True(cut < body.Length, "the page has no card");
+            return body.Substring(0, cut);
+        }
+
         [Theory]
         [InlineData("WebController", "EnableWebController", "CommandParameter=\"EnableWebController\"")]
         [InlineData("RemoteLink", "EnableRemoteLink", "CommandParameter=\"EnableRemoteLink\"")]
@@ -267,9 +315,7 @@ namespace PadForge.Tests
         public void APage_OpensOnItsTitleAndItsOwnSwitch(string key, string property, string reset)
         {
             string body = PageOf(key);
-            int card = body.IndexOf("<Border Style=\"{StaticResource CardBorder}\"", StringComparison.Ordinal);
-            Assert.True(card > 0);
-            string header = body.Substring(0, card);
+            string header = HeaderOf(body);
 
             Assert.Contains("x:Name=\"" + key + "Title\" AutomationProperties.HeadingLevel=\"Level1\"", header);
             Assert.Equal(1, Count(header, "<CheckBox "));
@@ -288,10 +334,254 @@ namespace PadForge.Tests
         public void TheScreenOverlayPage_HasASwitchForEachOverlay_AndTheTileTurnsThemAllOnOrOff()
         {
             string body = PageOf("ScreenOverlay");
-            string header = body.Substring(0, body.IndexOf("<Border Style=\"{StaticResource CardBorder}\"", StringComparison.Ordinal));
+            string header = HeaderOf(body);
             Assert.DoesNotContain("<CheckBox", header);
+            // Add Overlay stands where another page's switch does.
+            Assert.Contains("<ui:Button AutomationProperties.AutomationId=\"ScreenOverlay_Add\"", header);
             Assert.Contains("IsChecked=\"{Binding Enabled}\"", body);
             Assert.Matches(new Regex("x:Name=\"ScreenOverlayTile\"[^>]*IsOn=\"\\{Binding ScreenOverlaysAnyEnabled\\}\"", RegexOptions.Singleline), Page());
+        }
+
+        // ── the catalog, the frame and the notes ───────────────────────
+
+        public static IEnumerable<object[]> EveryKey() => PadForge.Views.ExtrasPage.Keys.Select(k => new object[] { k });
+
+        private static readonly System.Xml.Linq.XNamespace XamlNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+
+        private static System.Xml.Linq.XElement Named(System.Xml.Linq.XDocument doc, string name) =>
+            Assert.Single(doc.Descendants(), e => (string)e.Attribute(XamlNs + "Name") == name);
+
+        /// <summary>The catalog as its board of the world-class pass draws
+        /// it: the boards' gutters, the title of 28 in the display face
+        /// with its line, how many extras are on at the head's end, three
+        /// group headings 26 under what is above them, and each group's
+        /// tiles sharing their row, in the decided order.</summary>
+        [Fact]
+        public void TheCatalog_IsTheBoardsCatalog()
+        {
+            string text = Page();
+            var doc = System.Xml.Linq.XDocument.Parse(text);
+            var catalog = Named(doc, "CatalogView");
+            // 36 at the sides and the foot, 26 over the title, on the
+            // catalog and on every extra's own page.
+            Assert.Equal("36,26,36,36", (string)catalog.Parent.Attribute("Margin"));
+            Assert.Null(catalog.Attribute("Margin"));
+            // A tile is lit only while the engine runs, as on Home.
+            Assert.Equal("{Binding IsEngineOn}", catalog.Attributes().Single(a => a.Name.LocalName == "Heat.IsLive").Value);
+            var parts = catalog.Elements().ToList();
+
+            var head = parts[0];
+            Assert.Equal("CatalogHead", (string)head.Attribute(XamlNs + "Name"));
+            Assert.Equal("FlexLinePanel", head.Name.LocalName);
+            var titles = head.Elements().First().Elements().ToList();
+            Assert.Equal("{StaticResource ExtraTitle}", (string)titles[0].Attribute("Style"));
+            Assert.Equal("Level1", (string)titles[0].Attribute("AutomationProperties.HeadingLevel"));
+            Assert.Equal("{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}", (string)titles[0].Attribute("Text"));
+            Assert.Equal("{StaticResource ExtraLine}", (string)titles[1].Attribute("Style"));
+            Assert.Equal("{Binding Extras_Subtitle, Source={x:Static strings:Strings.Instance}}", (string)titles[1].Attribute("Text"));
+            // The pages' title: 28 in the display face, on a line of 40.6.
+            var titleStyle = Assert.Single(doc.Descendants(), e => (string)e.Attribute(XamlNs + "Key") == "ExtraTitle");
+            string Set(string property) => (string)titleStyle.Elements().Single(s => (string)s.Attribute("Property") == property).Attribute("Value");
+            Assert.Equal("28", Set("FontSize"));
+            Assert.Equal("{StaticResource DisplayFontFamily}", Set("FontFamily"));
+            Assert.Equal("40.6", Set("LineHeight"));
+
+            // 2 of 10 on: the number large, in the code face and ember, and
+            // the words around it as the language puts them, all three from
+            // the view model that counts the switches. The runs stand on
+            // one line of markup so no space falls between them.
+            var count = Named(doc, "OnCountText");
+            Assert.Same(head, count.Parent);
+            Assert.Equal("Bottom", (string)count.Attribute("VerticalAlignment"));
+            Assert.Equal("Extras_OnCount", (string)count.Attribute("AutomationProperties.AutomationId"));
+            Assert.StartsWith("{Binding ExtrasOnSpoken,", (string)count.Attribute("AutomationProperties.Name"));
+            var runs = count.Elements().ToList();
+            Assert.Equal(new[] { "{Binding ExtrasOnLead, Mode=OneWay}", "{Binding ExtrasOnNumber, Mode=OneWay}", "{Binding ExtrasOnTail, Mode=OneWay}" },
+                runs.Select(r => (string)r.Attribute("Text")));
+            Assert.Equal("20", (string)runs[1].Attribute("FontSize"));
+            Assert.Equal("{StaticResource TelemetryFontFamily}", (string)runs[1].Attribute("FontFamily"));
+            Assert.Equal("{DynamicResource EmberHotBrush}", (string)runs[1].Attribute("Foreground"));
+            Assert.Contains("\"><Run Text=\"{Binding ExtrasOnLead, Mode=OneWay}\"/><Run Text=\"{Binding ExtrasOnNumber, Mode=OneWay}\"", text);
+            Assert.Contains("/><Run Text=\"{Binding ExtrasOnTail, Mode=OneWay}\"/></TextBlock>", text);
+
+            Assert.DoesNotContain("&#xE74C;", text);
+            Assert.DoesNotContain("UpperConverter", text);
+            Assert.DoesNotContain(catalog.Descendants(), e => e.Name.LocalName == "WrapPanel");
+
+            var headings = parts.Where(e => (string)e.Attribute("Style") == "{StaticResource PageSectionTitle}").ToList();
+            Assert.Equal(new[] { "Extras_Group_Play", "Extras_Group_Send", "Extras_Group_Screen" },
+                headings.Select(h => Regex.Match((string)h.Attribute("Text"), @"\{Binding (\w+),").Groups[1].Value));
+            Assert.All(headings, h => Assert.Equal("0,26,0,12", (string)h.Attribute("Margin")));
+            var grids = parts.Where(e => e.Name.LocalName == "TileGridPanel").ToList();
+            Assert.Equal(new[] { 4, 3, 3 }, grids.Select(g => g.Elements().Count()));
+            // Tiles at least 240 wide, 14 apart, sharing their row's whole
+            // width, and two and two where four do not fit one row.
+            Assert.All(grids, g =>
+            {
+                Assert.Equal("240", (string)g.Attribute("MinItemWidth"));
+                Assert.Equal("14", (string)g.Attribute("Gap"));
+                Assert.Equal("True", (string)g.Attribute("FillRows"));
+                Assert.Equal("True", (string)g.Attribute("Balance"));
+            });
+            for (int i = 0; i < 3; i++) Assert.Same(grids[i], headings[i].ElementsAfterSelf().First());
+            var tiles = grids.SelectMany(g => g.Elements()).ToList();
+            Assert.Equal(PadForge.Views.ExtrasPage.Keys, tiles.Select(t => (string)t.Attribute("Key")));
+            // Show QR on the Web Controller's tile alone, in Home's words.
+            var web = Named(doc, "WebControllerTile");
+            Assert.Equal("{Binding Home_ShowQr, Source={x:Static strings:Strings.Instance}}", (string)web.Attribute("ActionText"));
+            Assert.All(tiles.Where(t => t != web), t => Assert.Null(t.Attribute("ActionText")));
+        }
+
+        /// <summary>Every page in the one frame its board draws: the way
+        /// back, then a head with the extra's square (the tile's glyph, warm
+        /// while the tile's setting is on), the page's name and its line.
+        /// No drawing on a page glows.</summary>
+        [Theory]
+        [MemberData(nameof(EveryKey))]
+        public void EachPage_HasTheFrame(string key)
+        {
+            var doc = System.Xml.Linq.XDocument.Parse(Page());
+            var page = Named(doc, key + "Page");
+            var parts = page.Elements().Where(e => e.Name.LocalName != "StackPanel.Resources").ToList();
+
+            var back = Assert.Single(parts[0].Elements(), e => e.Name.LocalName == "Button");
+            Assert.Equal("{StaticResource ExtrasCrumb}", (string)back.Attribute("Style"));
+            Assert.Equal("Back_Click", (string)back.Attribute("Click"));
+            Assert.Equal("Extras_Back_" + key, (string)back.Attribute("AutomationProperties.AutomationId"));
+            Assert.Equal(new[] { "{StaticResource ExtrasCrumbText}", "{StaticResource ExtrasCrumbText}" },
+                parts[0].Elements().Skip(1).Select(e => (string)e.Attribute("Style")));
+
+            var head = parts[1];
+            Assert.Equal("HeadRowPanel", head.Name.LocalName);
+            Assert.Equal("0,10,0,0", (string)head.Attribute("Margin"));
+            var leading = head.Elements().First();
+            var badge = Assert.Single(leading.Elements(), e => e.Name.LocalName == "ExtraBadge");
+            var tile = Named(doc, key + "Tile");
+            Assert.Equal((string)tile.Attribute("Glyph"), (string)badge.Attribute("Glyph"));
+            Assert.Equal((string)tile.Attribute("IsOn"), (string)badge.Attribute("IsOn"));
+            var title = Assert.Single(leading.Descendants(), e => (string)e.Attribute(XamlNs + "Name") == key + "Title");
+            Assert.Equal("{StaticResource ExtraTitle}", (string)title.Attribute("Style"));
+            Assert.Equal("{StaticResource ExtraLine}", (string)title.ElementsAfterSelf().Single().Attribute("Style"));
+
+            Assert.DoesNotContain(page.Descendants(), e => e.Name.LocalName is "DropShadowEffect" || e.Name.LocalName.EndsWith(".Effect", StringComparison.Ordinal));
+            Assert.DoesNotContain(page.Descendants(), e => (string)e.Attribute("Property") == "Effect");
+        }
+
+        /// <summary>A note's bracketed words are a link: the note's string
+        /// is bound three times, its parts around the brackets, with the
+        /// middle one in a Hyperlink that opens the page it names. Every
+        /// language that has the note keeps one pair of brackets in
+        /// it.</summary>
+        [Theory]
+        [InlineData("HeadTracking", "Extras_Note_HeadTracking", "DevicesLink_Click")]
+        [InlineData("GameTelemetry", "Extras_Note_GameTelemetry", "DevicesLink_Click")]
+        [InlineData("Overlays", "Extras_Note_Overlays", "MenusLink_Click")]
+        public void TheNotes_LinkTheBracketedWords(string key, string note, string handler)
+        {
+            var doc = System.Xml.Linq.XDocument.Parse(Page());
+            var page = Named(doc, key + "Page");
+            var block = Assert.Single(page.Elements(), e => e.Name.LocalName == "TextBlock" && (string)e.Attribute("Style") == "{StaticResource ExtraNote}");
+            var inlines = block.Elements().ToList();
+            Assert.Equal(new[] { "Run", "Hyperlink", "Run" }, inlines.Select(i => i.Name.LocalName));
+            string Part(int n) => "{Binding " + note + ", Source={x:Static strings:Strings.Instance}, Converter={StaticResource BracketPartConverter}, ConverterParameter=" + n + ", Mode=OneWay}";
+            Assert.Equal(Part(0), (string)inlines[0].Attribute("Text"));
+            Assert.Equal(Part(1), (string)Assert.Single(inlines[1].Elements()).Attribute("Text"));
+            Assert.Equal(Part(2), (string)inlines[2].Attribute("Text"));
+            Assert.Equal(handler, (string)inlines[1].Attribute("Click"));
+            Assert.Equal("Extras_Link_" + key, (string)inlines[1].Attribute("AutomationProperties.AutomationId"));
+            Assert.Contains("private void " + handler + "(object sender, RoutedEventArgs e)", RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs"));
+
+            int checkedFiles = 0;
+            foreach (string file in Directory.GetFiles(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Resources", "Strings"), "Strings*.resx"))
+            {
+                var m = Regex.Match(File.ReadAllText(file), "<data name=\"" + note + "\"[^>]*>\\s*<value>(.*?)</value>", RegexOptions.Singleline);
+                if (!m.Success) continue;
+                checkedFiles++;
+                string v = m.Groups[1].Value;
+                int open = v.IndexOf('['), close = v.IndexOf(']');
+                Assert.True(open >= 0 && close > open && v.IndexOf('[', open + 1) < 0 && v.IndexOf(']', close + 1) < 0,
+                    System.IO.Path.GetFileName(file) + " has no single pair of brackets in " + note + ": " + v);
+            }
+            Assert.True(checkedFiles >= 1, "no string table has " + note);
+        }
+
+        /// <summary>The Range card's Reset All puts the rotation and
+        /// translation ranges back and leaves the per-axis ranges under More
+        /// alone, which keep resets of their own.</summary>
+        [Fact]
+        public void TheRangeResetAll_ResetsTheTwoRanges()
+        {
+            int rotation = HeadTrackingRuntime.RotationRangeDeg, translation = HeadTrackingRuntime.TranslationRangeCm;
+            int yaw = HeadTrackingRuntime.GetAxisRangeOverride(0);
+            try
+            {
+                WithHeadTracking(vm =>
+                {
+                    vm.HeadTrackingRotationRange = 45;
+                    vm.HeadTrackingTranslationRange = 99;
+                    vm.HeadTrackingRangeYaw = 30;
+                    vm.ResetHeadTrackingRangesCommand.Execute(null);
+                    Assert.Equal(HeadTrackingRuntime.DefaultRotationRangeDeg, vm.HeadTrackingRotationRange);
+                    Assert.Equal(HeadTrackingRuntime.DefaultTranslationRangeCm, vm.HeadTrackingTranslationRange);
+                    Assert.Equal(30, vm.HeadTrackingRangeYaw);
+                });
+            }
+            finally
+            {
+                HeadTrackingRuntime.RotationRangeDeg = rotation;
+                HeadTrackingRuntime.TranslationRangeCm = translation;
+                HeadTrackingRuntime.SetAxisRange(0, yaw);
+            }
+        }
+
+        /// <summary>The status flames of Head Tracking and Game Telemetry burn
+        /// while data arrives: each tick sets whether it does with the status
+        /// line, and off when the extra stops.</summary>
+        [Fact]
+        public void TheFlames_ReadWhetherDataArrives()
+        {
+            string service = RepoText("PadForge.App", "Services", "InputService.cs").Replace("\r", "");
+            int head = service.IndexOf("private void UpdateHeadTrackingStatus()", StringComparison.Ordinal);
+            Assert.True(head > 0);
+            string body = service.Substring(head, service.IndexOf("\n        }\n", head, StringComparison.Ordinal) - head);
+            int off = body.IndexOf("dash.IsHeadTrackingReceiving = false;", StringComparison.Ordinal);
+            int stopped = body.IndexOf("if (_headTrackingStatusVersion == HeadTrackingStatusStopped)", StringComparison.Ordinal);
+            int status = body.IndexOf("dash.HeadTrackingStatus = BuildHeadTrackerStatus(ht);", StringComparison.Ordinal);
+            int on = body.IndexOf("dash.IsHeadTrackingReceiving = ht.Source != PadForge.Common.Input.HeadTrackerSource.None;", StringComparison.Ordinal);
+            Assert.True(off > 0 && stopped > off && status > stopped && on > status, "Head Tracking's flame is not set with its status");
+
+            string telemetry = RepoText("PadForge.App", "Services", "InputService.GameTelemetry.cs").Replace("\r", "");
+            Assert.Contains("dash.IsGameTelemetryRunning = false;\n                dash.IsGameTelemetryReceiving = false;", telemetry);
+            int line = telemetry.IndexOf("dash.GameTelemetryStatus = BuildGameTelemetryStatus(status, row.Format);", StringComparison.Ordinal);
+            int live = telemetry.IndexOf("dash.IsGameTelemetryReceiving = status.Source != TelemetrySource.None;", StringComparison.Ordinal);
+            Assert.True(line > 0 && live > line, "Game Telemetry's flame is not set with its status");
+
+            // The pages read them.
+            Assert.Contains("IsLive=\"{Binding IsHeadTrackingReceiving}\"", PageOf("HeadTracking"));
+            Assert.Contains("IsLive=\"{Binding IsGameTelemetryReceiving}\"", PageOf("GameTelemetry"));
+        }
+
+        /// <summary>The notes' links reach their pages: Devices, and the first
+        /// controller's Macros &amp; Menus with the menus showing, or Home
+        /// with no controller.</summary>
+        [Fact]
+        public void TheLinks_ReachTheirPages()
+        {
+            string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            int home = window.IndexOf("HomePageView.OpenExtrasRequested += (s, e) => SelectNavItemByTag(\"Extras\");", StringComparison.Ordinal);
+            int devices = window.IndexOf("ExtrasPageView.OpenDevicesRequested += (s, e) => SelectNavItemByTag(\"Devices\");", StringComparison.Ordinal);
+            int menus = window.IndexOf("ExtrasPageView.OpenMenusRequested += (s, e) => OpenFirstControllerMenus();", StringComparison.Ordinal);
+            Assert.True(home > 0 && devices > home && menus > devices, "the links are not wired beside Home's");
+            int method = window.IndexOf("private void OpenFirstControllerMenus()", StringComparison.Ordinal);
+            Assert.True(method > 0);
+            string body = window.Substring(method, window.IndexOf("NavigateToSlot(first.PadIndex);", method, StringComparison.Ordinal) - method);
+            Assert.Contains("_viewModel.NavControllerItems.FirstOrDefault()", body);
+            Assert.Contains("SelectNavItemByTag(\"Home\");", body);
+            Assert.Contains(".SelectedConfigTab = PadViewModel.MenusTabIndex;", body);
+
+            string code = RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
+            Assert.Contains("=> OpenDevicesRequested?.Invoke(this, EventArgs.Empty);", code);
+            Assert.Contains("=> OpenMenusRequested?.Invoke(this, EventArgs.Empty);", code);
         }
 
         // ── the page's code and the window ─────────────────────────────
@@ -338,8 +628,6 @@ namespace PadForge.Tests
             Assert.Contains("SetNavAutomationId(_navExtras, \"Extras\");", window);
             Assert.Contains("private const int ControllerInsertIndex = 5;", window);
             Assert.Contains("if (_navExtras != null) _navExtras.Content = Strings.Instance.Extras_Title;", window);
-            // The Welcome Tour's stop on the services points at the item now.
-            Assert.Contains("(_navExtras, Strings.Instance.Extras_Title, Strings.Instance.Tour_Extras_Body),", window);
             Assert.DoesNotContain("ServicesSection", window);
         }
 
@@ -545,6 +833,58 @@ namespace PadForge.Tests
                 Assert.Contains("or nameof(DashboardViewModel." + name + ")", window, StringComparison.Ordinal);
             }
         }
+
+        /// <summary>The screenshot script frames an extra's page, and the
+        /// catalog, by words the page shows: a card's row, a button, a
+        /// tile. An anchor no string reads, or one the page stopped
+        /// binding, would refuse its shot at the next capture and say so
+        /// only then.</summary>
+        [Fact]
+        public void TheExtrasRecipesAnchorOnNamesThePagesShow()
+        {
+            string script = RepoText("tools", "capture_all.ps1").Replace("\r\n", "\n");
+            var anchors = new List<string>();
+            foreach (string recipe in new[]
+            {
+                "Capture-ExtrasPages", "Capture-ExtrasCatalog", "Capture-WebPlainSection", "Capture-GameModsCard",
+                "Capture-GameTelemetryCard", "Capture-TwitchChatShots", "Capture-ScreenOverlayCard",
+            })
+            {
+                int start = script.IndexOf("\nfunction " + recipe + " {\n", StringComparison.Ordinal);
+                Assert.True(start >= 0, "no function " + recipe);
+                string body = script.Substring(start, script.IndexOf("\n}\n", start, StringComparison.Ordinal) - start);
+                foreach (string line in body.Split('\n'))
+                {
+                    // A list of anchors ends at its first quote followed by a bracket.
+                    int list = line.IndexOf("Anchors = @(", StringComparison.Ordinal);
+                    if (list < 0) list = line.IndexOf("-Anchors @(", StringComparison.Ordinal);
+                    if (list >= 0)
+                    {
+                        string rest = line.Substring(list);
+                        int end = rest.IndexOf("\")", StringComparison.Ordinal);
+                        Assert.True(end > 0, line);
+                        foreach (Match item in Regex.Matches(rest.Substring(0, end + 1), "\"(?<a>[^\"]+)\""))
+                            anchors.Add(item.Groups["a"].Value);
+                    }
+                    foreach (Match shown in Regex.Matches(line, "Test-InFrame \"(?<a>[^\"]+)\""))
+                        anchors.Add(shown.Groups["a"].Value);
+                }
+            }
+            // Positive control: the scan read the recipes' anchors.
+            Assert.True(anchors.Count >= 13, "only " + anchors.Count + " anchors read: " + string.Join(" | ", anchors));
+
+            var english = System.Xml.Linq.XDocument.Parse(RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"))
+                .Root.Elements("data").ToLookup(d => (string)d.Element("value"), d => (string)d.Attribute("name"));
+            string page = RepoText("PadForge.App", "Views", "ExtrasPage.xaml") + RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
+            foreach (string written in anchors.Distinct())
+            {
+                string anchor = written.Replace("$([char]0x2026)", "…").Replace("$([char]0x2019)", "’");
+                var keys = english[anchor].ToList();
+                Assert.True(keys.Count > 0, "no string reads '" + anchor + "'");
+                Assert.True(keys.Any(k => Regex.IsMatch(page, @"(?<![\w])" + Regex.Escape(k) + @"(?![\w])")),
+                    "the Extras page shows no '" + anchor + "' (" + string.Join(", ", keys) + ")");
+            }
+        }
     }
 
     /// <summary>
@@ -594,10 +934,23 @@ namespace PadForge.Tests
                 + "<Style x:Key=\"CardBorder\" TargetType=\"Border\"/>"
                 + "<Style x:Key=\"CardTitle\" TargetType=\"TextBlock\"/>"
                 + "<Style x:Key=\"CardDescription\" TargetType=\"TextBlock\"/>"
+                + string.Concat(StandInBrushes.Select((b, i) => "<SolidColorBrush x:Key=\"" + b + "\" Color=\"#FF0000" + (i + 1).ToString("X2") + "\"/>"))
+                + "<Geometry x:Key=\"FlameOuterGeometry\">M12 3 C8 8 6 12 12 21 C18 12 16 8 12 3 Z</Geometry>"
                 + file.Substring(from, to - from)
                 + "</ResourceDictionary>";
             return (ResourceDictionary)System.Windows.Markup.XamlReader.Parse(markup);
         }
+
+        /// <summary>Stand-ins for the theme brushes the parts color
+        /// themselves with, each a color of its own, so a test can tell
+        /// which one a part took.</summary>
+        private static readonly string[] StandInBrushes =
+        {
+            "SteelRaisedBrush", "EmberWellBrush", "TextFillColorSecondaryBrush", "EmberHotBrush",
+            "TextFillColorTertiaryBrush", "WaitBrush", "EmberBrush", "EmberEdgeBrush", "LinkHoverBrush",
+            "TextFillColorPrimaryBrush", "SteelFieldBrush", "CardStrokeColorDefaultBrush", "EmberRingBrush",
+            "EmberRingSoftBrush", "EmberTintBrush",
+        };
 
         [Fact]
         public void ATile_BuildsFromItsShippedTemplate_OpensItsPage_AndItsSwitchWorksTheSetting() => RunSta(() =>
@@ -619,8 +972,18 @@ namespace PadForge.Tests
 
             var open = Assert.IsType<Button>(tile.Template.FindName(ExtraTile.OpenPartName, tile));
             var toggle = Assert.IsType<CheckBox>(tile.Template.FindName(ExtraTile.SwitchPartName, tile));
+            var action = Assert.IsType<Button>(tile.Template.FindName(ExtraTile.ActionPartName, tile));
             var word = Assert.IsType<TextBlock>(tile.Template.FindName("StateWord", tile));
             var status = Assert.IsType<TextBlock>(tile.Template.FindName("StatusText", tile));
+            var title = Assert.IsType<TextBlock>(tile.Template.FindName("TitleText", tile));
+            var line = Assert.IsType<TextBlock>(tile.Template.FindName("LineText", tile));
+            var card = Assert.IsType<Border>(tile.Template.FindName("Card", tile));
+            var wash = Assert.IsType<Border>(tile.Template.FindName("Wash", tile));
+            var square = Assert.IsType<Border>(tile.Template.FindName("Square", tile));
+            var light = Assert.IsType<Halo>(tile.Template.FindName("Light", tile));
+            var squareLight = Assert.IsType<Halo>(tile.Template.FindName("SquareLight", tile));
+            var dotLight = Assert.IsType<Halo>(tile.Template.FindName("DotLight", tile));
+            var dot = Assert.IsType<Ellipse>(tile.Template.FindName("Dot", tile));
 
             // A UI script and a screen reader find the two by these.
             Assert.Equal("Extras_Open_WebController", AutomationProperties.GetAutomationId(open));
@@ -630,36 +993,130 @@ namespace PadForge.Tests
             Assert.Equal("Stopped", AutomationProperties.GetItemStatus(open));
             Assert.Equal("Enable Web Controller Server", toggle.Content);
 
-            // Off: the word, and no status under it.
+            // The board's measures: a square of 44 and a name of 16, and
+            // the lights its shadows come to (30 at 0.13 with a ring at
+            // 0.16 around the card, 16 at 0.28 around the square, 8 at 0.9
+            // around the dot).
+            Assert.Equal(new Size(44, 44), new Size(square.Width, square.Height));
+            Assert.Equal(16.0, title.FontSize);
+            Assert.Equal((37.5, 0.065, 0.16), (light.Radius, light.Strength, light.Rim));
+            Assert.Equal((20.0, 0.14), (squareLight.Radius, squareLight.Strength));
+            Assert.Equal((10.0, 0.45), (dotLight.Radius, dotLight.Strength));
+
+            // The face lies under the words and the square, which take no
+            // click, so a click on them opens the page. The switch and the
+            // action are controls of their own.
+            foreach (UIElement part in new UIElement[] { title, line, word, status, squareLight, dotLight, light, wash })
+                Assert.False(part.IsHitTestVisible);
+            Assert.True(toggle.IsHitTestVisible && action.IsHitTestVisible && open.IsHitTestVisible);
+
+            // The foot is one line: a status too long for the tile is cut
+            // short, and the face's tooltip holds all of it while the
+            // extra is on.
+            Assert.Equal(TextTrimming.CharacterEllipsis, status.TextTrimming);
+            Assert.Equal(TextWrapping.NoWrap, status.TextWrapping);
+
+            // Off: the word alone, with no dot, no status and no light,
+            // whatever the status holds.
             Assert.False(tile.IsOn);
             Assert.False(toggle.IsChecked);
             Assert.Equal(Strings.Instance.Common_Off, word.Text);
+            Assert.Equal(Visibility.Visible, word.Visibility);
+            Assert.Same(styles["TextFillColorTertiaryBrush"], word.Foreground);
             Assert.Equal(Visibility.Collapsed, status.Visibility);
+            Assert.Equal(Visibility.Collapsed, dotLight.Visibility);
+            Assert.False(light.IsLit || squareLight.IsLit || dotLight.IsLit);
+            Assert.Equal(Visibility.Collapsed, wash.Visibility);
+            Assert.Same(styles["SteelFieldBrush"], square.Background);
+            Assert.Null(open.ToolTip);
 
-            // The switch writes the setting, and the setting moves the switch.
+            // On and live, which a tile is unless what holds it says
+            // otherwise: the switch writes the setting, the status stands
+            // in ember in place of the word, and the tile is lit.
             toggle.IsChecked = true;
             Assert.True(tile.IsOn);
-            Assert.Equal(Strings.Instance.Common_On, word.Text);
+            Assert.True(Heat.GetIsLive(tile));
+            Assert.Equal(Visibility.Collapsed, word.Visibility);
             Assert.Equal(Visibility.Visible, status.Visibility);
             Assert.Equal("Stopped", status.Text);
+            Assert.Same(styles["EmberHotBrush"], status.Foreground);
+            Assert.Equal(FontWeights.SemiBold, status.FontWeight);
+            Assert.Equal(Visibility.Visible, dotLight.Visibility);
+            Assert.Same(styles["EmberBrush"], dot.Fill);
+            Assert.True(light.IsLit && squareLight.IsLit && dotLight.IsLit);
+            Assert.Equal(Visibility.Visible, wash.Visibility);
+            Assert.Same(styles["EmberRingBrush"], card.BorderBrush);
+            Assert.Same(styles["EmberTintBrush"], square.Background);
+            Assert.Same(styles["EmberRingSoftBrush"], square.BorderBrush);
+            Assert.Equal("Stopped", open.ToolTip);
+
+            // On while the engine is stopped: the switch and the status
+            // stay, in steel, and nothing glows.
+            Heat.SetIsLive(tile, false);
+            Assert.True(toggle.IsChecked);
+            Assert.Equal(Visibility.Visible, status.Visibility);
+            Assert.Same(styles["TextFillColorSecondaryBrush"], status.Foreground);
+            Assert.Equal(FontWeights.Normal, status.FontWeight);
+            Assert.Equal(Visibility.Visible, dotLight.Visibility);
+            Assert.Same(styles["TextFillColorTertiaryBrush"], dot.Fill);
+            Assert.False(light.IsLit || squareLight.IsLit || dotLight.IsLit);
+            Assert.Equal(Visibility.Collapsed, wash.Visibility);
+            Assert.NotSame(styles["EmberRingBrush"], card.BorderBrush);
+            Assert.Same(styles["SteelFieldBrush"], square.Background);
+            Heat.SetIsLive(tile, true);
+            Assert.True(light.IsLit);
+
+            // The setting moves the switch, and off is the word again.
             tile.IsOn = false;
             Assert.False(toggle.IsChecked);
             Assert.Equal(Strings.Instance.Common_Off, word.Text);
+            Assert.Equal(Visibility.Visible, word.Visibility);
+            Assert.Equal(Visibility.Collapsed, status.Visibility);
+            Assert.Null(open.ToolTip);
 
-            // An extra with no status line shows only the word.
+            // An extra with no status line: the word On stands for it, in
+            // ember, and the face has no tooltip.
             tile.IsOn = true;
-            tile.Status = "";
-            Assert.Equal(Visibility.Collapsed, status.Visibility);
-            tile.Status = null;
-            Assert.Equal(Visibility.Collapsed, status.Visibility);
+            foreach (string none in new[] { "", null })
+            {
+                tile.Status = none;
+                Assert.Equal(Visibility.Collapsed, status.Visibility);
+                Assert.Equal(Visibility.Visible, word.Visibility);
+                Assert.Equal(Strings.Instance.Common_On, word.Text);
+                Assert.Same(styles["EmberHotBrush"], word.Foreground);
+                Assert.Equal(FontWeights.SemiBold, word.FontWeight);
+                Assert.Null(open.ToolTip);
+            }
+            tile.Status = "Stopped";
+            Assert.Equal(Visibility.Visible, status.Visibility);
 
-            // The face asks for the page. The switch never does.
+            // The action: there while the tile names one and the extra is
+            // on and live, and nowhere else.
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
+            tile.ActionText = "Show QR";
+            Assert.Equal(Visibility.Visible, action.Visibility);
+            Assert.Equal("Show QR", action.Content);
+            Assert.Equal("Extras_Open_WebController_Action", AutomationProperties.GetAutomationId(action));
+            Heat.SetIsLive(tile, false);
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
+            Heat.SetIsLive(tile, true);
+            tile.IsOn = false;
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
+            tile.IsOn = true;
+            Assert.Equal(Visibility.Visible, action.Visibility);
+
+            // The face asks for the page, and so does the action. The
+            // switch never does.
             var opened = new List<object>();
             tile.OpenRequested += (_, e) => opened.Add(e.OriginalSource);
             open.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             Assert.Same(tile, Assert.Single(opened));
             toggle.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             Assert.Single(opened);
+            action.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            Assert.Equal(2, opened.Count);
+            tile.ActionText = null;
+            Assert.Equal(Visibility.Collapsed, action.Visibility);
 
             // A key set after the template names the parts too.
             tile.Key = "RemoteLink";
@@ -771,15 +1228,81 @@ namespace PadForge.Tests
             Assert.Equal(Strings.Instance.Common_Off, word.Text);
             Assert.Equal(HorizontalAlignment.Left, knob.HorizontalAlignment);
 
+            // Off reads in the switch's own quiet color, On in the boards'
+            // ember text.
+            Assert.Same(styles["TextFillColorSecondaryBrush"], word.Foreground);
+
             box.IsChecked = true;
             Assert.Equal(Strings.Instance.Common_On, word.Text);
             Assert.Equal(HorizontalAlignment.Right, knob.HorizontalAlignment);
             Assert.NotEqual(Strings.Instance.Common_On, Strings.Instance.Common_Off);
+            Assert.Same(styles["EmberHotBrush"], word.Foreground);
 
             // It stays a check box to a screen reader, named by the Content it does not draw.
             var peer = System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(box);
             Assert.Equal(System.Windows.Automation.Peers.AutomationControlType.CheckBox, peer.GetAutomationControlType());
             Assert.Equal("Enable Remote Link Server", peer.GetName());
+        });
+
+        /// <summary>The square at the head of an extra's page: the glyph on
+        /// the raised steel while the extra is off, in the ember text color on
+        /// the warm square while it is on. It only decorates, so it takes no
+        /// focus.</summary>
+        [Fact]
+        public void AnExtraBadge_IsWarmWhileOn() => RunSta(() =>
+        {
+            var styles = ShippedStyles();
+            var badge = new ExtraBadge { Glyph = "\uE77B", Resources = styles };
+            badge.Style = (Style)styles[typeof(ExtraBadge)];
+            Assert.True(badge.ApplyTemplate(), "the badge has no template");
+            Assert.False(badge.Focusable);
+            Assert.False(badge.IsTabStop);
+            Assert.Equal(40, badge.Width);
+            Assert.Equal(40, badge.Height);
+            var well = Assert.IsType<Border>(badge.Template.FindName("Well", badge));
+            var glyph = Assert.IsType<GlyphText>(badge.Template.FindName("Glyph", badge));
+            Assert.Equal("\uE77B", glyph.Text);
+
+            Assert.Same(styles["SteelRaisedBrush"], well.Background);
+            Assert.Same(styles["TextFillColorSecondaryBrush"], glyph.Foreground);
+            badge.IsOn = true;
+            Assert.Same(styles["EmberWellBrush"], well.Background);
+            Assert.Same(styles["EmberHotBrush"], glyph.Foreground);
+            badge.IsOn = false;
+            Assert.Same(styles["SteelRaisedBrush"], well.Background);
+        });
+
+        /// <summary>The flame of a status card has three states: an outline
+        /// while the extra is off, gold while it is on and waits, ember while
+        /// it works. The line beside it says the same, so it takes no
+        /// focus.</summary>
+        [Fact]
+        public void AStatusFlame_HasThreeStates() => RunSta(() =>
+        {
+            var styles = ShippedStyles();
+            var flame = new StatusFlame { Resources = styles };
+            flame.Style = (Style)styles[typeof(StatusFlame)];
+            Assert.True(flame.ApplyTemplate(), "the flame has no template");
+            Assert.False(flame.Focusable);
+            Assert.False(flame.IsTabStop);
+            var path = Assert.IsType<System.Windows.Shapes.Path>(flame.Template.FindName("Flame", flame));
+            Assert.Equal(FlowDirection.LeftToRight, path.FlowDirection);
+            Assert.Same(styles["FlameOuterGeometry"], path.Data);
+
+            // Off: an outline in the tertiary color, no fill.
+            Assert.Equal(System.Windows.Media.Colors.Transparent, Assert.IsType<System.Windows.Media.SolidColorBrush>(path.Fill).Color);
+            Assert.Same(styles["TextFillColorTertiaryBrush"], path.Stroke);
+            // On and waiting: gold.
+            flame.IsOn = true;
+            Assert.Same(styles["WaitBrush"], path.Fill);
+            Assert.Null(path.Stroke);
+            // On and working: ember.
+            flame.IsLive = true;
+            Assert.Same(styles["EmberBrush"], path.Fill);
+            Assert.Null(path.Stroke);
+            // Live but switched off stays the outline: the switch speaks first.
+            flame.IsOn = false;
+            Assert.Same(styles["TextFillColorTertiaryBrush"], path.Stroke);
         });
     }
 }

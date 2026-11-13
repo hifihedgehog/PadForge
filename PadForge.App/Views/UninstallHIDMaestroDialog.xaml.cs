@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace PadForge.Views
     /// it. The same window, with Close alone, lists what a removal could not
     /// take (<see cref="ShowReport"/>).
     /// </summary>
-    public partial class UninstallHIDMaestroDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class UninstallHIDMaestroDialog : DialogWindow
     {
         /// <summary>One item of a report, as the list shows it.</summary>
         public sealed class EntryRow
@@ -28,7 +29,27 @@ namespace PadForge.Views
             /// <summary>Why the item stays, could not be read, or was not
             /// removed. Null for an item the removal takes.</summary>
             public string Detail { get; init; }
+
+            /// <summary>The row's first line: the kind, its first letter
+            /// upper.</summary>
+            public string Title { get; init; }
+
+            /// <summary>What becomes of the item, at the row's end.</summary>
+            public string Outcome { get; init; }
+
+            /// <summary>Whether the removal takes the item. Any other
+            /// outcome stands in the wait color.</summary>
+            public bool IsRemoved { get; init; }
+
+            /// <summary>What a screen reader says for the row.</summary>
+            public override string ToString()
+                => string.Join(", ", new[] { Title, Location, Outcome, Detail }.Where(part => !string.IsNullOrEmpty(part)));
         }
+
+        /// <summary>A kind as a row's first line. HIDMaestro writes its
+        /// kinds in lowercase English.</summary>
+        internal static string TitleOf(string kind, CultureInfo culture)
+            => string.IsNullOrEmpty(kind) ? kind : char.ToUpper(kind[0], culture) + kind.Substring(1);
 
         private readonly Func<bool, Task<HMUninstallReport>> _preview;
         private int _generation;
@@ -38,12 +59,6 @@ namespace PadForge.Views
         {
             _preview = preview;
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so the window is dragged by its inert chrome, as
-            // ConfirmDialog is.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
-            Title = Strings.Instance.HIDMaestroUninstall_Title;
             Loaded += (_, _) => CancelButton.Focus();
         }
 
@@ -66,7 +81,7 @@ namespace PadForge.Views
         {
             var dlg = new UninstallHIDMaestroDialog(null);
             Place(dlg, owner);
-            dlg.MessageText.Text = statusLine;
+            dlg.Subtitle = statusLine;
             dlg.UsbipPanel.Visibility = Visibility.Collapsed;
             dlg.BusyPanel.Visibility = Visibility.Collapsed;
             dlg.RefreshButton.Visibility = Visibility.Collapsed;
@@ -84,7 +99,8 @@ namespace PadForge.Views
 
         /// <summary>The rows for a report. A preview lists every item, with
         /// the reason beside each one that stays or could not be read. A
-        /// removal lists only the items it could not take.</summary>
+        /// removal lists only the items it could not take. Each row says at
+        /// its end what becomes of the item.</summary>
         internal static IReadOnlyList<EntryRow> RowsFor(HMUninstallReport report)
         {
             var rows = new List<EntryRow>();
@@ -104,6 +120,16 @@ namespace PadForge.Views
                     Kind = e.Kind,
                     Location = e.Location,
                     Detail = format != null && !string.IsNullOrEmpty(e.Reason) ? string.Format(format, e.Reason) : null,
+                    Title = TitleOf(e.Kind, CultureInfo.InvariantCulture),
+                    Outcome = e.Outcome switch
+                    {
+                        HMUninstallOutcome.Kept => Strings.Instance.HIDMaestroUninstall_OutcomeKept,
+                        HMUninstallOutcome.Failed => report.IsPreview
+                            ? Strings.Instance.HIDMaestroUninstall_OutcomeUnread
+                            : Strings.Instance.HIDMaestroUninstall_OutcomeNotRemoved,
+                        _ => Strings.Instance.HIDMaestroUninstall_OutcomeRemoved,
+                    },
+                    IsRemoved = e.Outcome is not (HMUninstallOutcome.Kept or HMUninstallOutcome.Failed),
                 });
             }
             return rows;
@@ -125,9 +151,8 @@ namespace PadForge.Views
             RefreshButton.IsEnabled = false;
             IncludeUsbipBox.IsEnabled = false;
             BusyPanel.Visibility = Visibility.Visible;
-            NoteText.Visibility = Visibility.Collapsed;
-            ProgramList.Visibility = Visibility.Collapsed;
-            EntryList.Visibility = Visibility.Collapsed;
+            HideNote();
+            EntryFrame.Visibility = Visibility.Collapsed;
 
             HMUninstallReport report = null;
             string failure = null;
@@ -166,18 +191,28 @@ namespace PadForge.Views
             ActionButton.IsEnabled = CanRemove(report);
         }
 
+        /// <summary>A problem (programs that block the removal, a preview
+        /// that failed) stands in the wait box. Nothing to remove is a plain
+        /// line with no box.</summary>
         private void ShowNote(string text, bool caution)
         {
-            NoteText.Text = text;
-            NoteText.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
-                caution ? "SystemFillColorCautionBrush" : "TextFillColorSecondaryBrush");
-            NoteText.Visibility = Visibility.Visible;
+            NoteText.Text = caution ? text : string.Empty;
+            NotePanel.Visibility = caution ? Visibility.Visible : Visibility.Collapsed;
+            PlainNoteText.Text = caution ? string.Empty : text;
+            PlainNoteText.Visibility = caution ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void HideNote()
+        {
+            NotePanel.Visibility = Visibility.Collapsed;
+            PlainNoteText.Visibility = Visibility.Collapsed;
+            ProgramList.Visibility = Visibility.Collapsed;
         }
 
         private void ShowEntries(IReadOnlyList<EntryRow> rows)
         {
             EntryList.ItemsSource = rows;
-            EntryList.Visibility = rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            EntryFrame.Visibility = rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void IncludeUsbipBox_Changed(object sender, RoutedEventArgs e)

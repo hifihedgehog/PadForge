@@ -93,17 +93,14 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kkono)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ waggulu)</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Ensobi: {0}</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Tewali kyuma kirondeddwa.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Ekyuma kiggyiddwawo.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Buuka</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Ekiddako</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Kiwedde</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ekyuma</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Ensibuko</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongerako Ekyuma</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Wansi</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Yunga</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Kiyungiddwa</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Gaana</value></data>
@@ -111,11 +108,17 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Ensengeka</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Ebya bulijjo</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Okuyingiza</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data n'Ebyekyama</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Noonya mu nsengeka</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Ekitangaala</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Ekizikiza</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Eddirisa</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Ggyawo HIDMaestro</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Driver ya Bluetooth eya BthPS3</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth eya BthPS3</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Ggyawo BthPS3</value></data>
   <data name="BthPS3Uninstall_KindFile" xml:space="preserve"><value>Fayiro ya driver</value></data>
   <data name="BthPS3Uninstall_KindRadio" xml:space="preserve"><value>Bluetooth</value></data>
@@ -129,7 +132,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Ebifo bya key ne key ez'oku layer esooka ku kiibodi ezirabikira mu preview ya Keyboard + Mouse. Byaggyibwa mu data ya layout ya QMK ne mu fork ya QMK eya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Ebifo bya key ne key ez'oku layer esooka ku kiibodi ezirabikira mu preview ya Keyboard + Mouse. Byaggyibwa mu data ya layout ya QMK ne mu fork ya QMK eya Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -148,7 +151,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Wandiika "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(tewali biwandiiko)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ebiwandiiko</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Amaanyi</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Ennamba y'omuzannyi</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Omuzannyi</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Teekawo omuzannyi</value></data>
@@ -207,7 +209,6 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Yongeramu langi</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Amapeesa</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ggyawo</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Ggalawo</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Tewali</value></data>
@@ -345,7 +346,7 @@
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Erinnya</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Gezaako nate</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Tuuma gesture eno erinnya</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Erinnya lyetaagisa</value></data>
 
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Kwata</value></data>
@@ -370,7 +371,6 @@
   <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
 
   <!-- ═══ Profiles ═══ -->
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Sooka olonde profile.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
 
@@ -476,7 +476,6 @@
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Bulijjo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Londa eddoboozi okuva mu {0}</value></data>
   <data name="IconPicker_Images" xml:space="preserve"><value>Ebifaananyi</value></data>
   <data name="Emoji_Category_Hands" xml:space="preserve"><value>Emikono</value></data>
   <data name="Emoji_Category_Animals" xml:space="preserve"><value>Ebisolo</value></data>
@@ -491,6 +490,8 @@
     <value>PadForge Touchpad</value>
   </data>
   <data name="PickSound_Title" xml:space="preserve"><value>Londa eddoboozi</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Eddoboozi livugira mu sipika ya controller, oba mu eya PC bw'eba nga tegirina.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Kozesa Eddoboozi</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -521,18 +522,17 @@
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="DjiPair_Address" xml:space="preserve"><value>Endagiriro</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Ggalawo</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Erinnya:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Erinnya</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Tuuma tag eno erinnya</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Wandiisa</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Amapeesa agakwekeddwa</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Yiga eppeesa</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Ekyuma:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Tandika okuyiga</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Akaseera katono…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Ensibuko:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Erinnya:</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Leka button.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Omutendera {0} ku {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Ensibuko</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Erinnya</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Tuuma button eno erinnya</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Wandiisa</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Amapeesa agayigiddwa</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Tandika Buggya</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Kkono</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Ddyo</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Waggulu</value></data>
@@ -542,7 +542,7 @@
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Ggyawo ekifaananyi</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Embiro</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Noonya emizannyo</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Emizannyo {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Emizannyo</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Noonya emizannyo</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>leero</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Gezaako nate</value></data>
@@ -731,4 +731,70 @@
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yonna</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kebera shakers</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Omuzannyi oba Ensi</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Embeera y'omutwe ye lunyiriri lwa Head Tracker ku [Ebyuma]. Teeka okukyuka kw'omutwe ku axis ya stick mu kitundu kya Buttons ekya controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Emiwendo gye lunyiriri lwa Game Telemetry ku [Ebyuma]. Gitekeko mu kitundu kya Buttons ekya controller oba gikozese okutandika macro.</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Koppa endagiriro</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Essimu eyungiddwa erabikira wano ne ku lupapula lwa Ebyuma, w'ogigaba eri controller.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Noonya ebyuma</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Byonna</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Ebiyungiddwa</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bbaatule {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bbaatule {0}, eri ku caaji</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Ebigikozesa</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Ensengeka</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Buli axis, button ne sensa</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Koppa ebikwatako</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Ekintu</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Ekika</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Okuyunga</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bbaatule</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ekkubo</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nnamba ya serial</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Enkyusa</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Zzaawo</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>nga</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ku</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Okutereka kwongerako profile eya bulijjo gy'osobola okukyusa.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Kifuuka</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Kweka ebyuma eri emizannyo, Kuuma ebyuma nga bikwese wakati w'okutandika, Pulogulaamu ezikkirizibwa</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Noonya ebisiimo</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Ensibuko</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Londa Oluvannyuma</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Ebisinga</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Enteekateeka emizannyo gya PC mingi gye gisuubira.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Ku mizannyo egirina obubonero bwa PlayStation, touchpad ne lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Enteekateeka ya buttons eya Switch, ku mizannyo ne emulator ezigisuubira.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Notes ne control changes ku pulogulaamu z'ennyimba.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Controller za VR ez'ekifaananyi nga ziyita mu SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Okukyusa ekika oluvannyuma, nyiga ku kaabonero k'ekika ku controller. Kitwala kunyiga kumu.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Yeetaaga SteamVR. Gissaamu okuva ku kaadi yaayo mu Nsengeka.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Waliwo dda controller ya VR. Emu efuga emikono gyombi.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Gatta controller ya Bluetooth</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bbaatule {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bbaatule {0}</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Noonya ensengeka, ebyuma ne profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Noonya</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ebivuddemu</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} okutambula</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} okuggulawo</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} okuva wonna</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Empapula</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ebikolwa</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Sangula {0}?</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ggyawo {0}</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Byayigibwa ku {0}</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Ggulawo ekisaanikira kya bbaatule onyige button emmyufu eya SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Kuuma remote kumpi ne PC eno ng'ettaala zaayo zimyansa.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Gatta DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Gatta Move oba Navigation Controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Gattako Controller ya Serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Gattako DJI Remote</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Londa ky'eraga. Tewali kikyuka okutuusa lw'otereka.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tewali kituuka ku port okutuusa lw'otereka.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ku {1} bikola</value></data>
 </root>

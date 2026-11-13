@@ -33,19 +33,13 @@
              at the edit boundary, class lives in PadPage.xaml.cs. -->
         <views:FractionToPercentConverter x:Key="FractionToPercentConverter"/>
 
-        <!-- A setting's row (#574), a SettingRow: its label in a column 230
-             wide, its control, its value and unit, and its reset at the
-             row's far right (the reset styles dock right, which the row
-             reads). A slider is 280 wide with an ember fill up to its
-             thumb, and narrows when the row has less room: it asks for the
-             280 as a MaxWidth, which is what a SettingRow lets give way. -->
-        <Style x:Key="DzLabel" TargetType="TextBlock">
-            <Setter Property="Width" Value="230"/>
-            <Setter Property="Margin" Value="0,0,12,0"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-        </Style>
+        <!-- A setting's row (#574), a SettingRow: its label in the column
+             DzLabel draws (App.xaml), its control, its value and unit, and
+             its reset at the row's far right (the reset styles dock right,
+             which the row reads). A slider is 280 wide with an ember fill up
+             to its thumb, and narrows when the row has less room: it asks
+             for the 280 as a MaxWidth, which is what a SettingRow lets give
+             way. -->
         <!-- A setting that belongs to the row above it: its label starts
              16 in and reads a step quieter, and its control still starts
              where every row's does. -->
@@ -65,57 +59,6 @@
         <Style x:Key="OffsetSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
             <Setter Property="Minimum" Value="-100"/>
         </Style>
-        <!-- A setting's value, typed in place. At rest it reads as plain
-             text in the mono face, the number and then its unit, as the
-             boards draw it. Under the pointer it takes the raised fill,
-             and with the keyboard's focus the field's fill and a cold
-             edge, so it shows where a value is typed. It is as wide as its
-             number, and never narrower than two digits: a single digit
-             stands at the right of that, against its unit. The template
-             adds no inset of its own: a TextBox lays its Padding around its
-             text itself, and a template that bound the same Padding again
-             cut a third digit off a boxed value. -->
-        <Style x:Key="DzValueEdit" TargetType="TextBox">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="CaretBrush" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="MinWidth" Value="20"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="8,0,0,0"/>
-            <Setter Property="Padding" Value="3,2,0,2"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Focusable="False"
-                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.45"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="DzDigitEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <Setter Property="Width" Value="56"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -125,38 +68,12 @@
             <Setter Property="Padding" Value="2,1"/>
             <Setter Property="ToolTip" Value="{Binding Pad_RawAxisValue, Source={x:Static strings:Strings.Instance}}"/>
         </Style>
-        <!-- A unit reads as part of its row's phrase, so it takes the
-             label's color (owner, 2026-10-30). UnitTextTests pins it. It
-             follows its number at the value box's own inset, which is the
-             width of a space. -->
-        <Style x:Key="DzPercent" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-        </Style>
-        <!-- A motor's live bar (#574): a track 6 tall, a field's fill
-             inside a hairline, with an ember fill for what reaches the
-             device. Where a row also shows what the game commands, that is
-             a bar with a cold fill and the ember one lies over it with no
-             track of its own (ActivityBarOver), so the cold that shows
-             past the ember is what the settings take off. -->
-        <Style x:Key="ActivityBar" TargetType="ProgressBar">
-            <Setter Property="Height" Value="6"/>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ProgressBar">
-                        <Grid>
-                            <Border Background="{DynamicResource SteelFieldBrush}"
-                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="3"/>
-                            <Rectangle x:Name="PART_Track" Margin="1"/>
-                            <Border x:Name="PART_Indicator" Margin="1" HorizontalAlignment="Left"
-                                    Background="{TemplateBinding Foreground}" CornerRadius="2"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <!-- A motor's live bar (#574) is ActivityBar (App.xaml), with an
+             ember fill for what reaches the device. Where a row also shows
+             what the game commands, that is a bar with a cold fill and the
+             ember one lies over it with no track of its own
+             (ActivityBarOver), so the cold that shows past the ember is
+             what the settings take off. -->
         <!-- A mapping row's live value (#574): a track 4 tall, filled in
              ember to the value's share of the output's full scale. -->
         <Style x:Key="ValueMeter" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
@@ -186,12 +103,6 @@
             <Setter Property="Margin" Value="12,0,0,0"/>
             <Setter Property="IsTabStop" Value="False"/>
         </Style>
-        <!-- An icon button in a card's head (#574): the quiet reset's size
-             with the glyph in the secondary text color. -->
-        <Style x:Key="CardIconButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
         <!-- A list head's button, 28 square, as the Macros board draws New
              Macro and the list's More. -->
         <Style x:Key="ListHeadButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
@@ -215,58 +126,6 @@
                         <Border Background="Transparent" Padding="0,4">
                             <ContentPresenter/>
                         </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <!-- A list of a card: its items alone, with no scroll view of its
-             own, so the wheel over it scrolls the page. -->
-        <Style x:Key="PartList" TargetType="ListBox">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBox">
-                        <ItemsPresenter/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <!-- An item of such a list, as the Macros board draws it: 38 tall
-             with 12 at its sides and corners of 6. The picked one stands
-             on the ember fill in the text color at SemiBold. -->
-        <Style x:Key="PartListItem" TargetType="ListBoxItem">
-            <!-- An item is read by its name: with a template of its own it
-                 would be read as its type. -->
-            <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
-            <Setter Property="MinHeight" Value="38"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="Bd" CornerRadius="6" Background="Transparent"
-                                Padding="{TemplateBinding Padding}" MinHeight="{TemplateBinding MinHeight}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
-                            </Trigger>
-                            <!-- After the pointer's, so the picked item keeps
-                                 its fill under the pointer. -->
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -299,20 +158,6 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-        <!-- An input of a macro's trigger, as the Macros board draws it: a pill
-             30 tall on the raised fill with a cold edge, 12 at its start, and
-             its remove 6 after its words. A name too long for the line is cut
-             short. -->
-        <Style x:Key="InputChip" TargetType="Border">
-            <Setter Property="MinHeight" Value="30"/>
-            <Setter Property="CornerRadius" Value="15"/>
-            <Setter Property="Padding" Value="12,0,6,0"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource InputChipEdgeBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-            <Setter Property="TextElement.Foreground" Value="{DynamicResource InputChipTextBrush}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="InputChipRemove" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
             <Setter Property="Width" Value="22"/>
@@ -404,21 +249,6 @@
         <Style x:Key="CellItem" TargetType="ListBoxItem" BasedOn="{StaticResource StepItem}">
             <Setter Property="AutomationProperties.Name" Value="{Binding RowName, TargetNullValue=''}"/>
         </Style>
-        <!-- The quiet button under a list, as the board renders Add Action and Add
-             Cell: no fill, and its mark and word in the text color. Both dim while
-             it cannot be used: its content is a panel, which takes the button's own
-             color and not the one the button's template gives a disabled label. -->
-        <Style x:Key="QuietTextButton" TargetType="ui:Button" BasedOn="{StaticResource QuietButton}">
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="Padding" Value="14,0"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <!-- A small head inside a block, over a group of its rows: 12 SemiBold in
-             the quiet text color, as the board draws the heads of the lists' card. -->
         <!-- A number a card's row holds, as the boards draw one: 64 wide and 34
              tall on the field fill, with its digits at the right. -->
         <Style x:Key="CardNumberBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -429,40 +259,6 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
-        </Style>
-        <Style x:Key="EditorSubHead" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <!-- A record button, as the Macros board draws it: the ember dot, 7 across,
-             and the word Record, 36 tall with 12 at each side, 10 after the control
-             it records for. Its content is the glyph that says whether it records
-             (the view models' record and stop glyphs), and its face follows that:
-             while it records the dot is a square and the word is Stop. The glyph
-             is not drawn, so a button with this look carries a name of its own. -->
-        <DataTemplate x:Key="RecordFace">
-            <StackPanel Orientation="Horizontal">
-                <Rectangle x:Name="Mark" FlowDirection="LeftToRight" Width="7" Height="7" RadiusX="3.5" RadiusY="3.5"
-                           Margin="0,0,8,0" VerticalAlignment="Center" Fill="{DynamicResource EmberBrush}"/>
-                <TextBlock x:Name="Word" Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-            </StackPanel>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding}" Value="&#xE71A;">
-                    <Setter TargetName="Mark" Property="RadiusX" Value="1"/>
-                    <Setter TargetName="Mark" Property="RadiusY" Value="1"/>
-                    <Setter TargetName="Word" Property="Text" Value="{Binding Common_Stop, Source={x:Static strings:Strings.Instance}}"/>
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-        <Style x:Key="RecordButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
-            <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
-            <Setter Property="ContentTemplate" Value="{StaticResource RecordFace}"/>
-            <Setter Property="MinHeight" Value="36"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
@@ -498,20 +294,6 @@
             </Setter>
             <!-- The quiet rest state and the fill under the pointer
                  (#574) are QuietResetButton's. -->
-        </Style>
-        <!-- Reset All is a reset button in words: the reset buttons' quiet
-             rest state and fill under the pointer (QuietResetButton), at
-             its natural width so the localized label fits. In a card's
-             title row it docks right, as every reset does in its row. -->
-        <Style x:Key="ResetAllButton" TargetType="ui:Button" BasedOn="{StaticResource QuietResetButton}">
-            <Setter Property="Width" Value="Auto"/>
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="MinHeight" Value="30"/>
-            <Setter Property="Padding" Value="10,0"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="0"/>
         </Style>
 
         <!-- Compact row styles for RGB sliders that need to fit under
@@ -553,29 +335,33 @@
         <Style x:Key="ResetButtonTight" TargetType="ui:Button" BasedOn="{StaticResource ResetButton}"/>
 
         <!-- Section strip button (#574): one of the six sections in the
-             page's header, a RadioButton drawn as a text tab. SemiBold text
-             in the selected text color over a 2px ember underline while its
-             section shows, secondary text otherwise, and hover brings the
-             text up and hints the underline. SyncSectionSelection checks the one
-             whose section holds the selected tab. Navigation rides Click,
-             so a click on the checked section still goes to it, and
+             page's header, a RadioButton drawn as a tab: its icon, then its
+             name. While its section shows, the name is SemiBold in the
+             selected text color, the icon is ember, and the tab stands on
+             a 2px ember underline with a soft light around it. Otherwise
+             the name is secondary and the icon quiet, and hover brings the
+             name up and hints the underline. SyncSectionSelection checks
+             the one whose section holds the selected tab. Navigation rides
+             Click, so a click on the checked section still goes to it, and
              Checked as well, since UI Automation's Select (a screen
              reader's, a script's) checks a radio button without clicking
-             it. -->
+             it. A tab's content is a panel, so each names itself. -->
         <Style x:Key="SectionStripButton" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadSection"/>
-            <Setter Property="Margin" Value="0,0,26,0"/>
+            <Setter Property="Margin" Value="0,0,30,0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         <Grid Background="Transparent">
-                            <ContentPresenter Margin="0,10,0,10" VerticalAlignment="Center"
+                            <ContentPresenter Margin="2,10,2,12" VerticalAlignment="Center"
                                               TextBlock.Foreground="{TemplateBinding Foreground}"/>
-                            <Rectangle x:Name="Underline" Height="2" RadiusX="1" RadiusY="1"
-                                       VerticalAlignment="Bottom"
-                                       Fill="{DynamicResource EmberBrush}" Opacity="0"/>
+                            <controls:Halo x:Name="UnderLight" CornerRadius="1" Radius="9" Strength="0.32"
+                                           VerticalAlignment="Bottom" IsHitTestVisible="False">
+                                <Rectangle x:Name="Underline" Height="2" RadiusX="1" RadiusY="1"
+                                           Fill="{DynamicResource EmberBrush}" Opacity="0"/>
+                            </controls:Halo>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -586,11 +372,37 @@
                                 <Setter Property="Foreground" Value="{DynamicResource SelectedTextBrush}"/>
                                 <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
                                 <Setter TargetName="Underline" Property="Opacity" Value="1"/>
+                                <Setter TargetName="UnderLight" Property="IsLit" Value="True"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- A section tab's icon: quiet, and ember on the tab whose section
+             shows. The line icons take the first style and the stick, which
+             is a filled shape, the second. -->
+        <Style x:Key="SectionIcon" TargetType="controls:DecorativeStrokeIcon">
+            <Setter Property="Size" Value="16"/>
+            <Setter Property="StrokeWidth" Value="1.8"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SectionIconShape" TargetType="Path">
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Fill" Value="{DynamicResource QuietGlyphBrush}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
+                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Part switch button (RadioButton styled as tab header). The
@@ -863,30 +675,6 @@
         <Visibility x:Key="RowOptionDeadzoneEarly">Collapsed</Visibility>
         <Visibility x:Key="RowOptionDeadzoneLate">Visible</Visibility>
         <Visibility x:Key="RowOptionAddSource">Visible</Visibility>
-        <!-- A quiet button that holds a state: no fill until the pointer is
-             on it, as QuietPlainButton, in the text color. -->
-        <Style x:Key="QuietToggle" TargetType="ToggleButton">
-            <Setter Property="MinHeight" Value="36"/>
-            <Setter Property="Padding" Value="10,0"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="6"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Face" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <!-- A mapping row's source and its live value, as option rows (#574):
              the first rows of an open row in the list. The bar under the
@@ -1577,9 +1365,9 @@
                      to populate the formula on selection. -->
                 <StackPanel controls:TileGridPanel.FullRow="True" x:Name="FormulaEditor" Orientation="Vertical" Margin="0,0,0,4"
                             Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" VerticalAlignment="Center">
-                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="CombineExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding ResetLabel_Formula, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineExpression_4415"/>
-                        <TextBox x:Name="CustomFormulaBox"
+                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" VerticalAlignment="Center">
+                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="CombineExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding ResetLabel_Formula, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineExpression_4415"/>
+                        <TextBox x:Name="CustomFormulaBox" TabIndex="0"
                                  Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  MinWidth="380" MinHeight="34" Padding="8,4" VerticalContentAlignment="Center"
                                  FontFamily="{StaticResource TelemetryFontFamily}"
@@ -2423,7 +2211,7 @@
              Then the assignment offer while there is one, and the six
              sections. Two tiers of up to fourteen tabs stood here.
              ═══════════════════════════════════════════ -->
-        <StackPanel Grid.Row="0" Margin="32,24,32,0">
+        <StackPanel Grid.Row="0" Margin="36,22,36,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -2448,21 +2236,50 @@
                      DockPanel hands the title the width the chip leaves, so
                      a title longer than that ends in an ellipsis. -->
                 <DockPanel>
-                <!-- Type chip: the slot's type as its Home card and its
+                <!-- Type tile: the slot's type as its Home card and its
                      sidebar entry draw it (SlotTypeIconMap), larger. It
-                     states what the slot is and takes no click. -->
-                <Border DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="9" Margin="0,0,14,0"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource EmberBrush}">
-                    <Grid>
-                        <Path FlowDirection="LeftToRight" Data="{Binding TypeGeometry, Mode=OneWay}" Width="20" Height="20"
-                              Stretch="Uniform" Fill="{DynamicResource EmberInkBrush}"/>
-                        <controls:GlyphText Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="18"
-                                            Foreground="{DynamicResource EmberInkBrush}"
-                                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                                            Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
-                    </Grid>
-                </Border>
+                     states what the slot is and takes no click. It is
+                     ember while the controller forges or waits, in light
+                     while it forges, and steel while it is cold: the heat
+                     is the slot's summary's, which the power button
+                     holds. -->
+                <controls:Halo x:Name="PadTypeHalo" DockPanel.Dock="Left" Margin="0,0,16,0" VerticalAlignment="Center"
+                               CornerRadius="12" Radius="30" Strength="0.225">
+                    <controls:Halo.Style>
+                        <Style TargetType="controls:Halo">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.Heat, ElementName=SlotPowerButton}" Value="Forging">
+                                    <Setter Property="IsLit" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:Halo.Style>
+                    <Border x:Name="PadTypeTile" Width="46" Height="46" CornerRadius="12">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource SteelLiftBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{DynamicResource SubRowTextBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.Heat, ElementName=SlotPowerButton}" Value="Forging">
+                                        <Setter Property="Background" Value="{StaticResource EmberTileBrush}"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberInkBrush}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DataContext.Heat, ElementName=SlotPowerButton}" Value="Waiting">
+                                        <Setter Property="Background" Value="{StaticResource EmberTileBrush}"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberInkBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Path FlowDirection="LeftToRight" Data="{Binding TypeGeometry, Mode=OneWay}" Width="27" Height="27"
+                                  Stretch="Uniform" Fill="{Binding (TextElement.Foreground), ElementName=PadTypeTile}"/>
+                            <controls:GlyphText Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="24"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
+                        </Grid>
+                    </Border>
+                </controls:Halo>
 
                 <!-- The page's title: the type's name and which one of that
                      type this is, where "Slot N" and the identity chip
@@ -2475,7 +2292,7 @@
                      giving the gap. -->
                 <TextBlock x:Name="PadTitle" AutomationProperties.HeadingLevel="Level1" VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"
-                           FontFamily="{StaticResource BodyFontFamily}" FontWeight="SemiBold" FontSize="24"
+                           FontFamily="{StaticResource DisplayFontFamily}" FontWeight="SemiBold" FontSize="28"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"><Run Text="{Binding OutputTypeDisplayName, Mode=OneWay}"/><Run Text="{Binding TypeInstanceLabel, Mode=OneWay, StringFormat=' #{0}'}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="15" FontWeight="Normal" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
                 </DockPanel>
 
@@ -2561,129 +2378,55 @@
                  hand-over. -->
             <Border x:Name="SlotPowerHost" Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0"
                     DataContext="{x:Null}">
-                <controls:StateToggleButton x:Name="SlotPowerButton" DataContext="{Binding SelectedSlotSummary}"
-                                            AutomationProperties.AutomationId="Pad_SlotPower"
-                                            AutomationProperties.Name="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
-                                            IsOn="{Binding IsEnabled}" Click="SlotPower_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="MinHeight" Value="34"/>
-                            <Setter Property="Padding" Value="10,0,12,0"/>
-                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
-                            <Setter Property="ToolTip" Value="{Binding Common_Disabled, Source={x:Static strings:Strings.Instance}}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
-                                                CornerRadius="17" Padding="{TemplateBinding Padding}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+                <!-- The light is the button's parent, so the button's data
+                     is set on it and reaches both. -->
+                <controls:Halo x:Name="SlotPowerHalo" DataContext="{Binding SelectedSlotSummary}"
+                               CornerRadius="19" Radius="25" Strength="0.11">
+                    <controls:Halo.Style>
+                        <Style TargetType="controls:Halo">
                             <Style.Triggers>
-                                <!-- The pill's ground follows the state word's
-                                     color: raised steel while off or with
-                                     nothing mapped, gold while it waits, ember
-                                     while the virtual controller is up. -->
-                                <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource WaitWellBrush}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource WaitEdgeBrush}"/>
-                                    <Setter Property="ToolTip" Value="{Binding Main_Active, Source={x:Static strings:Strings.Instance}}"/>
-                                </DataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                        <Condition Binding="{Binding MappedDeviceCount}" Value="0"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
-                                </MultiDataTrigger>
-                                <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                    <Setter Property="Background" Value="{DynamicResource EmberPickBrush}"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource EmberEdgeBrush}"/>
-                                </DataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                        <Condition Binding="{Binding IsVirtualControllerConnected}" Value="False"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="ToolTip" Value="{Binding Main_AwaitingDevices, Source={x:Static strings:Strings.Instance}}"/>
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                        <Condition Binding="{Binding DataContext.EngineStateKey, ElementName=SlotPowerHost}" Value="Stopped"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="ToolTip" Value="{Binding Main_EngineStopped, Source={x:Static strings:Strings.Instance}}"/>
-                                </MultiDataTrigger>
-                                <!-- Create failed: outranks awaiting-devices (a failed
-                                     create with online devices is not waiting) -->
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                        <Condition Binding="{Binding IsCreateFailed}" Value="True"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="ToolTip" Value="{Binding Main_VcFailed, Source={x:Static strings:Strings.Instance}}"/>
-                                </MultiDataTrigger>
-                                <!-- Initializing: override tooltip -->
-                                <DataTrigger Binding="{Binding IsInitializing}" Value="True">
-                                    <Setter Property="ToolTip" Value="{Binding Main_Initializing, Source={x:Static strings:Strings.Instance}}"/>
+                                <DataTrigger Binding="{Binding Heat}" Value="Forging">
+                                    <Setter Property="IsLit" Value="True"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
+                    </controls:Halo.Style>
+                <controls:StateToggleButton x:Name="SlotPowerButton"
+                                            AutomationProperties.AutomationId="Pad_SlotPower"
+                                            AutomationProperties.Name="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                            AutomationProperties.HelpText="{Binding StateWord, Mode=OneWay, TargetNullValue='', FallbackValue=''}"
+                                            IsOn="{Binding IsEnabled}" Click="SlotPower_Click">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource StatePill}">
+                            <Setter Property="Height" Value="38"/>
+                            <Setter Property="Padding" Value="12,0,16,0"/>
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
                     </Button.Style>
+                    <!-- Two lines: the state in full, which the pill may
+                         trim, and what a click does. -->
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="{Binding StateWord}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Home_Card_Power, Source={x:Static strings:Strings.Instance}}"/>
+                        </StackPanel>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}"
-                              Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0">
+                              Width="17" Height="17" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0">
                             <Path.Style>
                                 <Style TargetType="Path">
-                                    <!-- Default: cold outline (disabled) (#175) -->
+                                    <!-- Cold or off: the outline alone. -->
                                     <Setter Property="Fill" Value="Transparent"/>
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.2"/>
                                     <Style.Triggers>
-                                        <!-- Enabled + devices mapped: ember (forging).
-                                             Enabled-but-empty stays the cold outline (#175):
-                                             heat requires fuel. -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
+                                        <DataTrigger Binding="{Binding Heat}" Value="Forging">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </MultiDataTrigger>
-                                        <!-- Enabled + mapped but no live VC: gold (awaiting
-                                             devices). During the HM-inactivity grace period
-                                             the VC stays alive even with devices offline, so
-                                             the flame stays ember until the timeout actually
-                                             fires and tears the VC down. -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
-                                                <Condition Binding="{Binding IsVirtualControllerConnected}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Heat}" Value="Waiting">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </MultiDataTrigger>
-                                        <!-- Enabled + mapped but engine stopped: gold -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
-                                                <Condition Binding="{Binding DataContext.EngineStateKey, ElementName=SlotPowerHost}" Value="Stopped"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                        </MultiDataTrigger>
-                                        <!-- Igniting: flashing ember -->
-                                        <DataTrigger Binding="{Binding IsInitializing}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                         </DataTrigger>
                                         <!-- Reduced motion (#175 item 98): no flash loop,
@@ -2719,50 +2462,37 @@
                              every language but "Virtual controller failed",
                              which trims in 18 of them, and the tooltip says
                              that state in full. -->
-                        <TextBlock x:Name="SlotStateWord" common:LiveText.Polite="True" Text="{Binding StatusText}"
-                                   MaxWidth="204" TextTrimming="CharacterEllipsis"
-                                   FontSize="14" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
-                                        </DataTrigger>
-                                        <!-- Gold requires mappings (#175): enabled but
-                                             empty reads Cold in tertiary steel. -->
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
-                                                <Condition Binding="{Binding MappedDeviceCount}" Value="0"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                        <TextBlock x:Name="SlotStateWord" common:LiveText.Polite="True" Text="{Binding StateWord}"
+                                   MaxWidth="204" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                     </StackPanel>
                 </controls:StateToggleButton>
+                </controls:Halo>
             </Border>
 
             <!-- More, under the dots: what acts on the whole controller.
                  Copy its mappings and settings, paste them, copy them from
                  another device, clear its mappings, delete it. Clear All
                  asks through the shared ConfirmDialog first (#175 item 1d). -->
-            <Button x:Name="PadMoreButton" Grid.Column="2" Width="34" Height="34" MinHeight="0" Padding="0" Margin="14,0,0,0"
+            <Button x:Name="PadMoreButton" Grid.Column="2" Width="40" Height="38" MinHeight="0" Padding="0" Margin="14,0,0,0"
                     VerticalAlignment="Center"
                     ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
-                    AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                     AutomationProperties.AutomationId="Pad_More"
                     Click="MoreMenu_Click">
-                <!-- The boards' dots: three of 2.4 across, 5.25 apart. -->
-                <Path FlowDirection="LeftToRight" Width="12.9" Height="2.4" Stretch="Uniform"
+                <!-- A list on the page has a More of its own, so this one
+                     reads the controller it acts on (More, Xbox #1), from
+                     the two values the title's runs show. The title's own
+                     Text is empty: a TextBlock drawn in runs has none. -->
+                <AutomationProperties.Name>
+                    <MultiBinding StringFormat="{}{0}, {1} #{2}">
+                        <Binding Path="Common_More" Source="{x:Static strings:Strings.Instance}"/>
+                        <Binding Path="OutputTypeDisplayName"/>
+                        <Binding Path="TypeInstanceLabel"/>
+                    </MultiBinding>
+                </AutomationProperties.Name>
+                <!-- The board's dots: three of 3.2 across, 6.5 apart. -->
+                <Path FlowDirection="LeftToRight" Width="16.2" Height="3.2" Stretch="Uniform"
                       Fill="{DynamicResource TextFillColorSecondaryBrush}"
-                      Data="M0,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 M5.25,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 M10.5,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0"/>
+                      Data="M0,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M6.5,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M13,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0"/>
                 <Button.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
@@ -2784,21 +2514,24 @@
             </Grid>
 
             <!-- Line 2: the physical device that feeds this controller. -->
-            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,12,0,0">
 
                 <TextBlock x:Name="DrivenByLabel" Text="{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}"
                            FontSize="13"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
 
                 <!-- The devices that feed this controller, a pill for each,
-                     as the header board draws one: its name, Bluetooth
-                     written out where that is its link, and its battery
-                     when it reports one. The selected pill's device is the one
-                     whose settings the page shows. It reads brighter and
-                     filled, the others dimmer and clear, and a device that
-                     is not connected is faint. A pill is a list item named
-                     for its device, which is how a screen reader reads it
-                     and how the screenshot script finds it. -->
+                     as the header board draws one: a light that is ember
+                     while the device sends input, its name, a mark where
+                     its link is Bluetooth, and its battery when it reports
+                     one, a meter of its level before the percentage. The
+                     selected pill's device is the one whose settings the
+                     page shows. It reads brighter and filled, the others
+                     dimmer and clear, and a device that is not connected
+                     is quiet inside a dashed outline. A pill is a list
+                     item named for its device, which is how a screen
+                     reader reads it and how the screenshot script finds
+                     it. -->
                 <ListBox x:Name="DrivenByList" ItemsSource="{Binding MappedDevices}"
                          SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
                          AutomationProperties.AutomationId="Pad_DrivenByList"
@@ -2818,26 +2551,54 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
-                            <Setter Property="Margin" Value="0,2,12,2"/>
+                            <Setter Property="Margin" Value="0,4,10,4"/>
                             <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                             <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue='', FallbackValue=''}"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <Border x:Name="Pill" MinHeight="28" MaxWidth="320" Padding="12,2" CornerRadius="14" BorderThickness="1"
-                                                Background="Transparent"
-                                                BorderBrush="{DynamicResource SteelPillLineBrush}">
-                                            <ContentPresenter VerticalAlignment="Center"/>
-                                        </Border>
+                                        <Grid>
+                                            <Border x:Name="Pill" MinHeight="34" MaxWidth="460" Padding="11,0,13,0" CornerRadius="17" BorderThickness="1"
+                                                    Background="Transparent"
+                                                    BorderBrush="{DynamicResource SteelPillLineBrush}">
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Border>
+                                            <!-- A Border cannot dash, so a
+                                                 Rectangle wears the outline of
+                                                 a device that is not connected. -->
+                                            <Rectangle x:Name="Dash" RadiusX="17" RadiusY="17" IsHitTestVisible="False"
+                                                       Stroke="{DynamicResource DashLineBrush}"
+                                                       StrokeThickness="1" StrokeDashArray="4 3"
+                                                       SnapsToDevicePixels="True" Visibility="Collapsed"/>
+                                        </Grid>
                                         <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Pill" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                                            </Trigger>
+                                            <!-- The selected device, whose settings
+                                                 the page shows: filled, in the
+                                                 text's own color. -->
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Pill" Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+                                                <Setter TargetName="Pill" Property="Background" Value="{DynamicResource SteelBandBrush}"/>
                                                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                                             </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Pill" Property="Background" Value="{DynamicResource SteelCardHoverBrush}"/>
+                                            </Trigger>
+                                            <!-- A low battery: a gold edge. -->
+                                            <DataTrigger Binding="{Binding BatteryLow}" Value="True">
+                                                <Setter TargetName="Pill" Property="BorderBrush" Value="{DynamicResource WaitRingBrush}"/>
+                                            </DataTrigger>
+                                            <!-- Not connected: quiet, with a dashed
+                                                 outline in place of the edge. -->
+                                            <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                <Setter TargetName="Pill" Property="BorderBrush" Value="Transparent"/>
+                                                <Setter TargetName="Dash" Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/>
+                                            </DataTrigger>
+                                            <!-- Bluetooth is a mark here, so a
+                                                 screen reader is told in words. -->
+                                            <DataTrigger Binding="{Binding IsBluetooth}" Value="True">
+                                                <Setter Property="AutomationProperties.HelpText" Value="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}"/>
+                                            </DataTrigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -2847,30 +2608,85 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <StackPanel.Style>
-                                    <Style TargetType="StackPanel">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                                                <Setter Property="Opacity" Value="0.5"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Style>
-                                <TextBlock Text="{Binding Name}" FontSize="13" TextTrimming="CharacterEllipsis" MaxWidth="220"
-                                           VerticalAlignment="Center"/>
-                                <!-- The link, written out where it is known: Bluetooth. A
-                                     link that makes no claim (USB, a receiver, a virtual
-                                     source) says nothing. -->
-                                <TextBlock Text="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}" FontSize="13"
-                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           VerticalAlignment="Center" Margin="8,0,0,0"
-                                           Visibility="{Binding HasTransportGlyph, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <!-- Battery (issue #167), there when the device reports one. -->
-                                <TextBlock Text="{Binding BatteryText}"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center" Margin="8,0,0,0"
-                                           Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <!-- The light: ember while the device sends
+                                     input, steel while it does not, hollow
+                                     while it is not connected. -->
+                                <controls:Halo CornerRadius="3.5" Radius="11" Strength="0.47" IsLit="{Binding IsSending}" VerticalAlignment="Center">
+                                    <Ellipse Width="7" Height="7" StrokeThickness="1">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="{DynamicResource SteelMarkBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                        <Setter Property="Fill" Value="Transparent"/>
+                                                        <Setter Property="Stroke" Value="{DynamicResource SteelMarkBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsSending}" Value="True">
+                                                        <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Home_Device_Sending, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </controls:Halo>
+                                <TextBlock Text="{Binding Name}" Margin="8,0,0,0" FontSize="13" TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="MaxWidth" Value="220"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                    <Setter Property="MaxWidth" Value="128"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <!-- Connected: a hairline, then the link as a
+                                     mark where it is known (Bluetooth: USB, a
+                                     receiver and a virtual source make no
+                                     claim), and the battery (issue #167) where
+                                     the device reports one: its level as a
+                                     meter, the percentage, and the word Low at
+                                     or under the level Settings names. -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                            Visibility="{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Rectangle Width="1" Height="16" Margin="8,0,0,0" Fill="{DynamicResource SteelPillLineBrush}"
+                                               Visibility="{Binding HasLinkOrBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <controls:DecorativeStrokeIcon Data="{StaticResource BluetoothLineGeometry}" Size="13" StrokeWidth="2" Margin="8,0,0,0"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
+                                                                   ToolTip="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}"
+                                                                   Visibility="{Binding IsBluetooth, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <controls:BatteryMeter Margin="8,0,0,0" Percent="{Binding BatteryPercent}"
+                                                           Charging="{Binding BatteryCharging}" Low="{Binding BatteryLow}"
+                                                           Ground="{DynamicResource SteelBandBrush}"/>
+                                    <TextBlock Text="{Binding BatteryText}" Margin="7,0,0,0"
+                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" VerticalAlignment="Center"
+                                               AutomationProperties.Name="{Binding BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}"
+                                               Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding BatteryLow}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Pad_Battery_Low, Source={x:Static strings:Strings.Instance}}" Margin="7,0,0,0"
+                                               FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource WaitBrush}"
+                                               Visibility="{Binding BatteryLow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </StackPanel>
+                                <!-- Not connected: the words. -->
+                                <TextBlock Text="{Binding Home_Device_NotConnected, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
+                                           FontSize="12" VerticalAlignment="Center"
+                                           Visibility="{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -2882,8 +2698,8 @@
                      button has padding, which draws it out 8 to the start,
                      and its template keeps 8 after an icon, which the icon
                      takes 2 back from. -->
-                <ui:Button x:Name="AddDeviceButton" Margin="-8,2,0,2" VerticalAlignment="Center"
-                           MinHeight="28" Padding="8,0" FontSize="13"
+                <ui:Button x:Name="AddDeviceButton" Margin="-2,4,0,4" VerticalAlignment="Center"
+                           MinHeight="34" Padding="10,0" FontSize="13"
                            Style="{StaticResource QuietButton}"
                            Click="AddDevice_Click"
                            Content="{Binding Pad_AddDevice, Source={x:Static strings:Strings.Instance}}"
@@ -2946,28 +2762,53 @@
                 <WrapPanel x:Name="SectionStrip" Orientation="Horizontal">
                     <RadioButton x:Name="SectionButtons" Tag="0" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
                                  IsChecked="True"
+                                 AutomationProperties.Name="{Binding FirstSectionName, TargetNullValue='', FallbackValue=''}"
                                  AutomationProperties.AutomationId="Section_Buttons">
-                        <TextBlock Text="{Binding FirstSectionName}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DecorativeStrokeIcon Style="{StaticResource SectionIcon}" Data="{StaticResource SectionButtonsGeometry}"/>
+                            <TextBlock Text="{Binding FirstSectionName}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="SectionSticks" Tag="1" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
+                                 AutomationProperties.Name="{Binding Pad_Section_Sticks, Source={x:Static strings:Strings.Instance}}"
                                  AutomationProperties.AutomationId="Section_Sticks">
-                        <TextBlock Text="{Binding Pad_Section_Sticks, Source={x:Static strings:Strings.Instance}}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Path FlowDirection="LeftToRight" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"
+                                  Data="{StaticResource ZackslyStickGeometry}" Style="{StaticResource SectionIconShape}"/>
+                            <TextBlock Text="{Binding Pad_Section_Sticks, Source={x:Static strings:Strings.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="SectionRumble" Tag="2" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
+                                 AutomationProperties.Name="{Binding Pad_Section_Rumble, Source={x:Static strings:Strings.Instance}}"
                                  AutomationProperties.AutomationId="Section_Rumble">
-                        <TextBlock Text="{Binding Pad_Section_Rumble, Source={x:Static strings:Strings.Instance}}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DecorativeStrokeIcon Style="{StaticResource SectionIcon}" Data="{StaticResource SectionRumbleGeometry}"/>
+                            <TextBlock Text="{Binding Pad_Section_Rumble, Source={x:Static strings:Strings.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="SectionMotion" Tag="3" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
+                                 AutomationProperties.Name="{Binding Pad_Section_Motion, Source={x:Static strings:Strings.Instance}}"
                                  AutomationProperties.AutomationId="Section_Motion">
-                        <TextBlock Text="{Binding Pad_Section_Motion, Source={x:Static strings:Strings.Instance}}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DecorativeStrokeIcon Style="{StaticResource SectionIcon}" Data="{StaticResource SectionMotionGeometry}"/>
+                            <TextBlock Text="{Binding Pad_Section_Motion, Source={x:Static strings:Strings.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="SectionLights" Tag="4" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
+                                 AutomationProperties.Name="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}"
                                  AutomationProperties.AutomationId="Section_Lights">
-                        <TextBlock Text="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DecorativeStrokeIcon Style="{StaticResource SectionIcon}" Data="{StaticResource SectionLightsGeometry}"/>
+                            <TextBlock Text="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                     <RadioButton x:Name="SectionMacros" Tag="5" Style="{StaticResource SectionStripButton}" Click="SectionBtn_Click" Checked="SectionBtn_Checked"
+                                 AutomationProperties.Name="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}"
                                  AutomationProperties.AutomationId="Section_Macros">
-                        <TextBlock Text="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <controls:DecorativeStrokeIcon Style="{StaticResource SectionIcon}" Data="{StaticResource SectionMacrosGeometry}"/>
+                            <TextBlock Text="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </RadioButton>
                 </WrapPanel>
             </Border>
@@ -3020,7 +2861,7 @@
                          Map All, at the row's end. When the trailing part
                          leaves the leading one less than the switch needs,
                          the two stand one under the other. -->
-                    <Border Grid.Row="0" x:Name="ButtonsCardHead" Margin="32,0,32,0" Padding="16,12"
+                    <Border Grid.Row="0" x:Name="ButtonsCardHead" Margin="36,0,36,0" Padding="16,12"
                             Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1"
                             CornerRadius="10,10,0,0">
@@ -3184,6 +3025,7 @@
                              for the words. -->
                         <ui:TextBox x:Name="MappingFilterSearchBox" Width="234" MinHeight="36" Margin="0" Padding="8,8,10,7"
                                     VerticalAlignment="Center" IconPlacement="Left"
+                                    AutomationProperties.Name="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
                                     ToolTip="{Binding Mapping_FilterSearch_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                     PlaceholderText="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
                                     Text="{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -3262,9 +3104,9 @@
                                 AutomationProperties.AutomationId="Pad_ListMore"
                                 Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Click="MoreMenu_Click">
-                            <Path FlowDirection="LeftToRight" Width="12.9" Height="2.4" Stretch="Uniform"
+                            <Path FlowDirection="LeftToRight" Width="16.2" Height="3.2" Stretch="Uniform"
                                   Fill="{DynamicResource TextFillColorPrimaryBrush}"
-                                  Data="M0,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 M5.25,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0 M10.5,1.2 a1.2,1.2 0 1 0 2.4,0 a1.2,1.2 0 1 0 -2.4,0"/>
+                                  Data="M0,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M6.5,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0 M13,1.6 a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0"/>
                             <Button.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
@@ -3288,7 +3130,7 @@
 
                     <!-- The list's second row: the pipeline chips, and the count
                          of rows drawn as one line at its end. -->
-                    <Grid Grid.Row="1" x:Name="ListChipsRow" Margin="32,0,32,0"
+                    <Grid Grid.Row="1" x:Name="ListChipsRow" Margin="36,0,36,0"
                           Visibility="{Binding IsButtonsListView, Converter={StaticResource BoolToVisibilityConverter}}">
                     <!-- The card's sides, behind the chips. -->
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
@@ -3590,7 +3432,7 @@
                          picture's row and the table's row (SyncButtonsLayout). -->
                     <ScrollViewer Grid.Row="2" x:Name="ButtonsScroll" AutomationProperties.Name="{Binding FirstSectionName, TargetNullValue=''}"
                                   VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
-                                  Padding="32,0"
+                                  Padding="36,0"
                                   SizeChanged="ButtonsRoot_SizeChanged">
                     <Grid x:Name="ButtonsPage" Margin="0,0,0,24">
                         <Grid.RowDefinitions>
@@ -3673,8 +3515,10 @@
                          ══════════════════════════════════════ -->
                     <Grid x:Name="PictureHost" AutomationProperties.AutomationId="ControllerModelHost"
                           SizeChanged="PictureHost_SizeChanged">
-                        <views:ControllerModelView x:Name="ControllerModel3D" />
-                        <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
+                        <views:ControllerModelView x:Name="ControllerModel3D"
+                                                   AutomationProperties.Name="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}"/>
+                        <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed"
+                                                     AutomationProperties.Name="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}"/>
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
                         <views:MidiPreviewView x:Name="MidiPreview" Visibility="Collapsed" />
                         <views:KBMPreviewView x:Name="KBMPreview" Visibility="Collapsed" />
@@ -3864,8 +3708,8 @@
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
-                                            <DockPanel Margin="0,4,0,0" LastChildFill="True">
-                                                <ui:Button DockPanel.Dock="Right" Command="{Binding ClearCommand}"
+                                            <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="0,4,0,0" LastChildFill="True">
+                                                <ui:Button TabIndex="2" DockPanel.Dock="Right" Command="{Binding ClearCommand}"
                                                            Style="{StaticResource RowIconButton}" Margin="8,0,0,0" IsTabStop="True"
                                                            AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
                                                            ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
@@ -3877,10 +3721,10 @@
                                                      dot and the word, and a square and Stop while the
                                                      row listens. Its content is the row's glyph for
                                                      which of the two it is. -->
-                                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource RecordButton}" Content="{Binding RecordButtonIcon}"
+                                                <ui:Button TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource RecordButton}" Content="{Binding RecordButtonIcon}"
                                                            Margin="8,0,0,0" Command="{Binding ToggleRecordCommand}" IsEnabled="{Binding IsRecordable}"
                                                            AutomationProperties.Name="{Binding RecordButtonText, TargetNullValue=''}"/>
-                                                <Grid VerticalAlignment="Center">
+                                                <Grid KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="0" VerticalAlignment="Center">
                                                     <!-- The input that drives the output, picked from
                                                          every input of the controller's devices. The
                                                          closed picker names the input and its device,
@@ -5232,7 +5076,7 @@
             <!-- ═══ SECTION 1: Sticks & Triggers ═══
                  Sticks, triggers, and a mouse's gestures. -->
             <TabItem>
-                <ScrollViewer x:Name="SticksSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Sticks, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="SticksSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Sticks, Source={x:Static strings:Strings.Instance}}" Padding="36,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <!-- This section's rows, as its board draws them (#574):
                              a label column 150 wide, a slider that takes the
@@ -5246,6 +5090,19 @@
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        </Style>
+                        <!-- The first rows of a stick's and a trigger's card stand in a
+                             column of their own beside the card's chart (the world-class
+                             pass). Their label column is as wide as the widest of their
+                             labels in the language, 96 at the least and 150 at the most,
+                             where a label wraps. The column is the label and 204 more,
+                             and grows by 60. The three numbers here are English's, and
+                             PadPage.SizeFirstRows sets them for the language. -->
+                        <sys:Double x:Key="FirstRowLabelWidth">96</sys:Double>
+                        <sys:Double x:Key="FirstRowSettingsBasis">300</sys:Double>
+                        <sys:Double x:Key="FirstRowSettingsMost">360</sys:Double>
+                        <Style x:Key="DzFirstLabel" TargetType="TextBlock" BasedOn="{StaticResource DzLabel}">
+                            <Setter Property="Width" Value="{DynamicResource FirstRowLabelWidth}"/>
                         </Style>
                         <Style x:Key="DzSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
                             <Setter Property="Minimum" Value="0"/>
@@ -5332,48 +5189,47 @@
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
                                 <Border Style="{StaticResource CardBorder}">
                                 <StackPanel>
-                                    <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                    <!-- The card's head, as the Sticks board draws it: the stick's mark, its
+                                         name, what its deadzone is set to in the mono face, and Reset All at
+                                         the head's end. The line of numbers gives way when the card is
+                                         narrow. Its shape name rides a plain converter binding: a Style
+                                         with bound Setters or DataTriggers on a Run inside a template
+                                         recursed to a stack overflow through the error dialog
+                                         (dump-confirmed 2026-07-04). Direct Run.Text bindings are safe. -->
+                                    <DockPanel Margin="0,2,0,4">
                                         <viewControls:LabeledShapeIcon Shape="Stick" Label="{Binding IconLabel}"
-                                                                       Width="18" Height="18"
-                                                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                        <!-- Inline mono subtitle (#175 close-out item 18):
-                                             deadzone shape + DZ%. Display-only, reuses the
-                                             shape names already bound to the shape combo.
-                                             Lives as a Span inside the title TextBlock so the
-                                             mono text shares the title's baseline (#175
-                                             typography), like the artifact's h3 span. -->
-                                        <!-- Shape name rides a plain converter binding: a
-                                             Style with bound Setters/DataTriggers on a Run
-                                             inside a template recursed to a stack overflow
-                                             through the error dialog (dump-confirmed
-                                             2026-07-04). Direct Run.Text bindings are safe. -->
-                                        <TextBlock Style="{StaticResource CardTitle}" ToolTip="{Binding Pad_Sticks_Subtitle, Source={x:Static strings:Strings.Instance}}"><Run
-                                                Text="{Binding Title, Mode=OneWay}"/><Run
-                                                Text="  "/><Span FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                                FontWeight="Normal"
-                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
+                                                                       Width="28" Height="28"
+                                                                       VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                        <TextBlock DockPanel.Dock="Left" Style="{StaticResource HeroCardTitle}" Text="{Binding Title}"
+                                                   ToolTip="{Binding Pad_Sticks_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ui:Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
+                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                                ToolTip="{Binding ResetAllToolTip}"/>
+                                        <TextBlock Margin="12,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
                                                 Text="{Binding DeadZoneShapeIndex, Mode=OneWay, Converter={StaticResource DzShapeNameConverter}}"/><Run
                                                 Text=" "/><Run
                                                 Text="{Binding DeadZoneX, Mode=OneWay, StringFormat={}{0:0}%}"/><Run
                                                 Text=" / "/><Run
-                                                Text="{Binding DeadZoneY, Mode=OneWay, StringFormat={}{0:0}%}"/></Span></TextBlock>
-                                        <ui:Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
-                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                                ToolTip="{Binding ResetAllToolTip}"/>
+                                                Text="{Binding DeadZoneY, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                     </DockPanel>
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Sliders (left) -->
-                                        <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                    <!-- The card's body, as the board draws it: the settings in a column
+                                         of their own, the curve beside them and the live view at the end,
+                                         on one line while the card is wide. The settings' column grows by
+                                         60 and no more, so each row's reset stands beside its control,
+                                         and the curve takes the room that is left. Where the three do not
+                                         fit one line, the live view stands beside the other two and the
+                                         curve goes under the settings, and in a narrow card the three
+                                         stand one under the other (ThreePartPanel). -->
+                                    <controls:ThreePartPanel Gap="22" LineGap="16" Margin="0,6,8,6">
+                                        <StackPanel controls:FlexLinePanel.Basis="{DynamicResource FirstRowSettingsBasis}"
+                                                    MaxWidth="{DynamicResource FirstRowSettingsMost}">
                                             <!-- Up front (#574): one deadzone and one sensitivity curve for the stick. Each sets its X and
                                                  its Y setting together. The settings for one axis, and everything else, are under More. -->
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <Slider AutomationProperties.AutomationId="StickDeadZoneBothSlider"
                                                         Value="{Binding DeadZoneBoth, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
@@ -5383,7 +5239,7 @@
                                                 <ui:Button Command="{Binding ResetDeadZoneBothCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="SensitivityBothCombo"
                                                           Width="160"
                                                           ItemsSource="{Binding CurvePresetChoices}"
@@ -5392,29 +5248,6 @@
                                                           Tag="{Binding}"/>
                                                 <ui:Button Command="{Binding ResetSensitivityBothCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_Sensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
-                                            <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition MaxWidth="560"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel>
-                                            <TextBlock Text="{Binding Pad_BothAxes, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       TextAlignment="Center"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       FontSize="10" Margin="0,4,0,2"/>
-                                            <controls:CurveEditor
-                                                AutomationProperties.AutomationId="SensitivityBothChart"
-                                                CurveString="{Binding SensitivityCurveBoth, Mode=TwoWay}"
-                                                DeadZone="{Binding DeadZoneBoth}"
-                                                MaxRange="{Binding MaxRangeX}"
-                                                MaxRangeNeg="{Binding MaxRangeXNeg}"
-                                                LiveInput="{Binding LiveInputX}"
-                                                IsSigned="True" IsFullWidth="True" ChartHeight="150"
-                                                Margin="0,0,0,4"/>
-                                            </StackPanel>
-                                            </Grid>
-                                            <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardDescription}"/>
                                             <!-- Speed multiplier: pointer sticks ONLY (keyboard-and-mouse
                                                  stick 0 = mouse movement, stick 1 = scroll wheel). Those are
                                                  rate outputs, so a multiplier is the right instrument. It is
@@ -5424,7 +5257,7 @@
                                                  2026-07-27). -->
                                             <controls:SettingRow Grow="True" MinHeight="44"
                                                         Visibility="{Binding IsPointerStick, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <Slider Value="{Binding Sensitivity, Mode=TwoWay}"
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                                                         Style="{StaticResource DzSlider}"/>
@@ -5434,7 +5267,7 @@
                                                 <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                            <TextBlock Text="{Binding Pad_Stick_Center, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                            <TextBlock Text="{Binding Pad_Stick_Center, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                             <Button Click="CalibrateCenter_Click"
                                                     Padding="14,0" VerticalAlignment="Center">
                                                 <Button.Style>
@@ -5451,10 +5284,28 @@
                                             </Button>
                                             </controls:SettingRow>
                                         </StackPanel>
-
+                                        <!-- The curve for both axes, at the width the card leaves it. -->
+                                        <StackPanel controls:FlexLinePanel.Basis="330" MaxWidth="720">
+                                            <TextBlock Text="{Binding Pad_BothAxes, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                       TextAlignment="Center"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontSize="11" Margin="0,0,0,6"/>
+                                            <controls:CurveEditor
+                                                AutomationProperties.AutomationId="SensitivityBothChart"
+                                                CurveString="{Binding SensitivityCurveBoth, Mode=TwoWay}"
+                                                DeadZone="{Binding DeadZoneBoth}"
+                                                MaxRange="{Binding MaxRangeX}"
+                                                MaxRangeNeg="{Binding MaxRangeXNeg}"
+                                                LiveInput="{Binding LiveInputX}"
+                                                IsSigned="True" IsFullWidth="True" ChartHeight="150"
+                                                Margin="0,0,0,6"/>
+                                            <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardDescription}"/>
+                                        </StackPanel>
                                         <!-- Live preview (right): inset instrument panel (#175
                                              iteration 21, matching the trigger instrument). -->
-                                        <Border Grid.Column="1" VerticalAlignment="Top"
+                                        <Border VerticalAlignment="Top"
                                                 Background="{DynamicResource ControlFillColorDefaultBrush}"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                                 BorderThickness="1" CornerRadius="8" Padding="12">
@@ -5729,7 +5580,7 @@
 
                                         </StackPanel>
                                         </Border>
-                                    </Grid>
+                                    </controls:ThreePartPanel>
                                     <!-- More (#574): the settings fewer people change, opened in place. Each stick remembers
                                          its own. The row follows the card's two columns, so it runs the card's width. Open, it
                                          holds two columns of groups, or one where the card is narrow, then a curve for each axis,
@@ -5906,7 +5757,11 @@
                                                            Style="{StaticResource ResetButton}"
                                                            Margin="6,0,0,0" VerticalAlignment="Center"
                                                            ToolTip="{Binding Pad_ResetStickBoundary, Source={x:Static strings:Strings.Instance}}"/>
+                                                <!-- Empty until the boundary is measured: a
+                                                     text with no words takes no room, and
+                                                     whether it is on screen follows that. -->
                                                 <TextBlock Text="{Binding BoundaryCircularityText}"
+                                                           AutomationProperties.IsOffscreenBehavior="FromClip"
                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                                            VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -6173,6 +6028,8 @@
                                  Shown only for the Fixed source. -->
                             <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
+                            <GroupBox Style="{StaticResource BareGroupBox}"
+                                      AutomationProperties.Name="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}">
                             <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                     HorizontalAlignment="Left"
                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
@@ -6199,9 +6056,9 @@
                                         </Border>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                        <DockPanel LastChildFill="True" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                            <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="SteeringLockLightbarColor" SettingLabel="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_SteeringLockLightbarColor_6775"/>
-                                            <TextBox Width="100"
+                                        <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="SteeringLockLightbarColor" SettingLabel="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_SteeringLockLightbarColor_6775"/>
+                                            <TextBox TabIndex="0" Width="100"
                                                      FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
                                                      Text="{Binding SteeringLockLightbarColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -6227,6 +6084,7 @@
                                     </controls:SettingRow>
                                 </StackPanel>
                             </Border>
+                            </GroupBox>
                             </StackPanel>
                             <!-- Dedicated palette. Shown only for the Palette Step source. Its own colors,
                                  stepped through one per lock entry, used only by the steering lock. -->
@@ -6441,73 +6299,69 @@
                             <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
                                 <Border Style="{StaticResource CardBorder}">
                                 <StackPanel>
-                                    <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                    <!-- The card's head, as a stick's: the trigger's mark, its name, its
+                                         range in the mono face, and Reset All at the head's end. -->
+                                    <DockPanel Margin="0,2,0,4">
                                         <viewControls:LabeledShapeIcon
                                             Shape="{Binding IconRightSide, Converter={StaticResource BoolToTriggerShapeKindConverter}}"
                                             Label="{Binding IconLabel}"
-                                            Width="18" Height="18"
-                                            VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                        <!-- Inline mono subtitle (#175 close-out item 18):
-                                             curve preset + anti-deadzone %. Display-only.
-                                             Span inside the title TextBlock so the mono text
-                                             shares the title's baseline (#175 typography). -->
-                                        <TextBlock Style="{StaticResource CardTitle}" ToolTip="{Binding Pad_Triggers_Subtitle, Source={x:Static strings:Strings.Instance}}"><Run
-                                                Text="{Binding Title, Mode=OneWay}"/><Run
-                                                Text="  "/><Span FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                                FontWeight="Normal"
-                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
-                                                Text="{Binding PresetName, Mode=OneWay}"/><Run
-                                                Text=" / "/><Run
-                                                Text="{Binding AntiDeadZone, Mode=OneWay, StringFormat={}{0:0}%}"/></Span></TextBlock>
+                                            Width="28" Height="28"
+                                            VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                        <TextBlock DockPanel.Dock="Left" Style="{StaticResource HeroCardTitle}" Text="{Binding Title}"
+                                                   ToolTip="{Binding Pad_Triggers_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
                                         <ui:Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                                 ToolTip="{Binding ResetAllToolTip}"/>
+                                        <TextBlock Margin="12,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
+                                                Text="{Binding DeadZone, Mode=OneWay, StringFormat={}{0:0}%}"/><Run
+                                                Text=" "/><Run
+                                                Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run
+                                                Text=" "/><Run
+                                                Text="{Binding MaxRange, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                     </DockPanel>
 
-                                    <Grid>
-                                        <!-- Sliders, full-width curve canvas, and live instrument
-                                             (#175 competitor item 4: the old right-column 120px
-                                             curve square moved down here at card width). -->
-                                        <StackPanel>
-                                            <!-- Range (dual-thumb: deadzone floor to max range ceiling) -->
+                                    <!-- The card's body, as the board draws it: the three settings in a
+                                         column of their own, and beside them the curve over the live
+                                         meter. -->
+                                    <controls:FlexLinePanel Gap="22" LineGap="16" Margin="0,6,8,6">
+                                        <StackPanel controls:FlexLinePanel.Basis="{DynamicResource FirstRowSettingsBasis}" controls:FlexLinePanel.Grow="1"
+                                                    MaxWidth="{DynamicResource FirstRowSettingsMost}">
+                                            <!-- Range (dual-thumb: deadzone floor to max range ceiling). Its
+                                                 two ends read beside the slider, and are typed under More.
+                                                 Each thumb is a Tab stop the arrow keys move. -->
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <controls:RangeSlider controls:SettingRow.Fills="True"
                                                     LowerValue="{Binding DeadZone, Mode=TwoWay}"
                                                     UpperValue="{Binding MaxRange, Mode=TwoWay}"
                                                     Minimum="0" Maximum="100"
                                                     MinWidth="60" VerticalAlignment="Center"/>
-                                                <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
-                                                           FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                                <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzDigitEdit}"/>
-                                                <TextBlock Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
-                                                           FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                                <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <TextBlock x:Name="RangeText" Margin="10,0,0,0" VerticalAlignment="Center"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12.5"
+                                                           Foreground="{DynamicResource ColdBrush}"><Run
+                                                    Text="{Binding DeadZone, Mode=OneWay, StringFormat={}{0:0}}"/><Run
+                                                    Text=" "/><Run
+                                                    Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run
+                                                    Text=" "/><Run
+                                                    Text="{Binding MaxRange, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                                 <ui:Button Command="{Binding ResetRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRange, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
 
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="{Binding Pad_AntiDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Pad_AntiDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <Slider Value="{Binding AntiDeadZone, Mode=TwoWay}"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding AntiDeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzDigitEdit}"/>
                                                 <ui:Button Command="{Binding ResetAntiDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAntiDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
 
                                             <!-- Sensitivity: the curve's preset, then the curve. -->
                                             <controls:SettingRow Grow="True" MinHeight="44">
-                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <!-- Instance binding, NOT x:Static (see the stick preset twin). -->
                                                 <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
                                                           Width="160"
@@ -6518,6 +6372,8 @@
                                                 <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </controls:SettingRow>
 
+                                        </StackPanel>
+                                        <StackPanel controls:FlexLinePanel.Basis="380" controls:FlexLinePanel.Grow="2">
                                             <!-- Full-width forge canvas (#175 competitor item 4):
                                                  the trigger curve at card width under the sensitivity
                                                  controls. Caption keeps the mono-10-tertiary
@@ -6526,7 +6382,7 @@
                                                        HorizontalAlignment="Stretch" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       FontSize="10" Margin="0,4,0,2"/>
+                                                       FontSize="11" Margin="0,0,0,6"/>
                                             <!-- Stretches to card width (#175 item 16): full-width
                                                  mode already redraws on SizeChanged, so no fixed
                                                  Width cap. -->
@@ -6564,6 +6420,7 @@
                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,8"/>
                                                     <ProgressBar Grid.Column="1" Value="{Binding RawNorm, Mode=OneWay}"
+                                                                 AutomationProperties.Name="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
                                                                  Minimum="0" Maximum="1"
                                                                  Style="{StaticResource InstrumentBarRaw}"
                                                                  Margin="0,0,0,8"/>
@@ -6578,6 +6435,7 @@
                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,0"/>
                                                     <ProgressBar Grid.Row="1" Grid.Column="1" Value="{Binding LiveValue, Mode=OneWay}"
+                                                                 AutomationProperties.Name="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
                                                                  Minimum="0" Maximum="1"
                                                                  Style="{StaticResource InstrumentBarOut}"/>
                                                     <TextBlock Grid.Row="1" Grid.Column="2"
@@ -6600,7 +6458,41 @@
                                                 </Grid>
                                             </Border>
                                         </StackPanel>
-                                    </Grid>
+                                    </controls:FlexLinePanel>
+                                    <!-- More (#574, the world-class pass): the range's two ends typed as
+                                         numbers, in percent and as the device's own raw values, and the
+                                         anti-deadzone as a raw value. Each trigger remembers whether its
+                                         own is open. -->
+                                    <controls:MoreRow StateKey="{Binding MoreStateKey}"
+                                                      AutomationProperties.AutomationId="Pad_More_Trigger"
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                      Hint="{Binding Pad_More_Trigger, Source={x:Static strings:Strings.Instance}}">
+                                        <!-- No reset here: each setting's reset is on its row
+                                             up front, and a setting has one. -->
+                                        <StackPanel MaxWidth="560" HorizontalAlignment="Left">
+                                            <controls:SettingRow Grow="True" MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
+                                                           FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                                <TextBlock Text="{Binding Common_To, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
+                                                           FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                <TextBox Text="{Binding MaxRangeDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                            </controls:SettingRow>
+                                            <controls:SettingRow Grow="True" MinHeight="44">
+                                                <TextBlock Text="{Binding Pad_AntiDeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <TextBox Text="{Binding AntiDeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzDigitEdit}"/>
+                                            </controls:SettingRow>
+                                        </StackPanel>
+                                    </controls:MoreRow>
 
                                 </StackPanel>
                                 </Border>
@@ -6762,7 +6654,7 @@
                  feedback, impulse triggers, adaptive triggers, a wheel's
                  forces and bass shakers. -->
             <TabItem>
-                <ScrollViewer x:Name="RumbleSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Rumble, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="RumbleSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Rumble, Source={x:Static strings:Strings.Instance}}" Padding="36,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,20,0,24">
 
             <!-- The groups below were tabs of the page and keep that
@@ -6777,7 +6669,7 @@
                              Filled and shown by SyncTabVisibility for those rows,
                              the G-key status line's ember. -->
                         <TextBlock x:Name="PeripheralHapticsRoute" Visibility="Collapsed"
-                                   Foreground="{DynamicResource EmberBrush}"
+                                   Foreground="{DynamicResource EmberTextBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Novint Falcon (#521): the feel, and how the game's
@@ -7297,6 +7189,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0" IsEnabled="{Binding AudioRumbleEnabled}">
                             <TextBlock Text="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding AudioRumbleLevelMeter, Mode=OneWay}"
+                                         AutomationProperties.Name="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}"
                                          Minimum="0" Maximum="1"
                                          Width="320" Height="10" VerticalAlignment="Center"
                                          Foreground="{DynamicResource EmberHotBrush}"/>
@@ -7326,6 +7219,14 @@
                             <StackPanel>
 
                                 <!-- ─── Left trigger ─── -->
+                                <!-- Each trigger's rows stand in a group that
+                                     reads the trigger's name. The two sets
+                                     of rows read alike, and with both in the
+                                     card's one group a screen reader could
+                                     not tell the left Source from the right. -->
+                                <GroupBox Style="{StaticResource BareGroupBox}"
+                                          AutomationProperties.Name="{Binding Pad_TriggerRouting_LeftTrigger, Source={x:Static strings:Strings.Instance}}">
+                                <StackPanel>
                                 <TextBlock Text="{Binding Pad_TriggerRouting_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardSubsectionTitle}"/>
                                 <controls:SettingRow MinHeight="44">
@@ -7416,6 +7317,11 @@
                                 </controls:SettingRow>
 
                                 <!-- ─── Right trigger ─── -->
+                                </StackPanel>
+                                </GroupBox>
+                                <GroupBox Style="{StaticResource BareGroupBox}"
+                                          AutomationProperties.Name="{Binding Pad_TriggerRouting_RightTrigger, Source={x:Static strings:Strings.Instance}}">
+                                <StackPanel>
                                 <TextBlock Text="{Binding Pad_TriggerRouting_RightTrigger, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardSubsectionTitle}" Margin="0,12,0,6"/>
                                 <controls:SettingRow MinHeight="44">
@@ -7504,6 +7410,8 @@
                                     <ui:Button Command="{Binding ResetRightTriggerRouteActivatorModeCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTriggerRouteActivatorMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
+                                </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </controls:FoldCard>
                         </controls:FoldList>
@@ -7524,7 +7432,7 @@
                         <!-- A DSX game mod's trigger effects (#529), which
                              Translate Adaptive Trigger Vibrations plays here. -->
                         <TextBlock Text="{Binding GameModImpulseLine}" Visibility="{Binding GameModImpulseLine, Converter={StaticResource StringToVisibility}}"
-                                   Foreground="{DynamicResource EmberBrush}"
+                                   Foreground="{DynamicResource EmberTextBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Impulse Triggers: the card follows Force Feedback's.
@@ -7780,6 +7688,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0" IsEnabled="{Binding AudioRumbleTriggersEnabled}">
                                     <TextBlock Text="{Binding Pad_AudioTriggerRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ProgressBar Value="{Binding AudioRumbleTriggersLevelMeter, Mode=OneWay}"
+                                                 AutomationProperties.Name="{Binding Pad_AudioTriggerRumble_Level, Source={x:Static strings:Strings.Instance}}"
                                                  Minimum="0" Maximum="1"
                                                  Width="320" Height="10" VerticalAlignment="Center"
                                                  Foreground="{DynamicResource EmberHotBrush}"/>
@@ -7801,7 +7710,7 @@
                         <!-- A DSX game mod setting these triggers (#529), in the
                              ember of the Force Feedback tab's route line. -->
                         <TextBlock Text="{Binding GameModTriggersLine}" Visibility="{Binding GameModTriggersLine, Converter={StaticResource StringToVisibility}}"
-                                   Foreground="{DynamicResource EmberBrush}"
+                                   Foreground="{DynamicResource EmberTextBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Adaptive Triggers: one card for the two triggers
@@ -7977,6 +7886,7 @@
                                     <Button DockPanel.Dock="Right" Style="{StaticResource QuietPlainButton}"
                                             MinHeight="30" Padding="10,0" FontSize="13" VerticalAlignment="Center"
                                             Content="GameCube"
+                                            AutomationProperties.Name="{Binding Pad_LeftTrigger, Source={x:Static strings:Strings.Instance}, StringFormat='GameCube, {0}'}"
                                             Command="{Binding DeviceConfig.ApplyLeftGameCubePresetCommand}"
                                             ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
@@ -8167,6 +8077,7 @@
                                     <Button DockPanel.Dock="Right" Style="{StaticResource QuietPlainButton}"
                                             MinHeight="30" Padding="10,0" FontSize="13" VerticalAlignment="Center"
                                             Content="GameCube"
+                                            AutomationProperties.Name="{Binding Pad_RightTrigger, Source={x:Static strings:Strings.Instance}, StringFormat='GameCube, {0}'}"
                                             Command="{Binding DeviceConfig.ApplyRightGameCubePresetCommand}"
                                             ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </controls:SettingRow>
@@ -8428,9 +8339,11 @@
                                                                   ToolTip="{Binding Pad_RumbleAudio_VoiceEnable_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                         <Slider Value="{Binding FrequencyHz, Mode=TwoWay}" Minimum="20" Maximum="120"
                                                                 Style="{StaticResource DzSlider}" TickFrequency="1"
+                                                                AutomationProperties.Name="{Binding Pad_RumbleAudio_Frequency, Source={x:Static strings:Strings.Instance}}"
                                                                 ToolTip="{Binding Pad_RumbleAudio_Frequency_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                         <TextBox Text="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                                  Style="{StaticResource DzValueEdit}"
+                                                                 AutomationProperties.Name="{Binding Pad_RumbleAudio_Frequency, Source={x:Static strings:Strings.Instance}}"
                                                                  ToolTip="{Binding Pad_RumbleAudio_Frequency_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                         <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
                                                         <Button Content="{Binding Pad_RumbleAudio_Test, Source={x:Static strings:Strings.Instance}}"
@@ -8450,6 +8363,7 @@
                                                                  ToolTip="{Binding Pad_RumbleAudio_Gain_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                         <ProgressBar Value="{Binding MeterLevel, Mode=OneWay}"
+                                                                     AutomationProperties.Name="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}"
                                                                      Minimum="0" Maximum="100" Width="80"
                                                                      Style="{StaticResource ActivityBar}" VerticalAlignment="Center" Margin="12,0,0,0"/>
                                                     </controls:SettingRow>
@@ -8483,7 +8397,7 @@
             <!-- ═══ SECTION 3: Motion & Touch ═══
                  Gyro, touchpad and pointer. -->
             <TabItem>
-                <ScrollViewer x:Name="MotionSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Motion, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="MotionSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Motion, Source={x:Static strings:Strings.Instance}}" Padding="36,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <!-- This section's rows, as its board draws them (#574): a label
                              column 170 wide, a slider that takes the room its row has
@@ -10263,7 +10177,7 @@
             <!-- ═══ SECTION 4: Lights & Sound ═══
                  Lighting and audio. -->
             <TabItem>
-                <ScrollViewer x:Name="LightsSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="LightsSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Lights, Source={x:Static strings:Strings.Instance}}" Padding="36,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <!-- This section's rows, as its board draws them (#574): a label
                              column 170 wide, a slider that takes the room its row has
@@ -10336,7 +10250,7 @@
                         </TextBlock>
                         <!-- A DSX game mod setting these lights (#529). -->
                         <TextBlock Text="{Binding GameModLightsLine}" Visibility="{Binding GameModLightsLine, Converter={StaticResource StringToVisibility}}"
-                                   Foreground="{DynamicResource EmberBrush}"
+                                   Foreground="{DynamicResource EmberTextBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- A mouse, keyboard or vendor lighting row (#494): this
@@ -10346,7 +10260,7 @@
                              ember line. Shown and filled by SyncTabVisibility. -->
                         <StackPanel x:Name="PeripheralLightingPanel" Visibility="Collapsed">
                             <TextBlock x:Name="PeripheralLightingRoute" Visibility="Collapsed"
-                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                       Foreground="{DynamicResource EmberTextBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
                         </StackPanel>
 
                         <!-- Unified lightbar mode picker. Replaces the
@@ -10999,6 +10913,8 @@
                                     <WrapPanel Margin="0,4,0,0">
 
                                         <!-- LOW (empty) color -->
+                                        <GroupBox Style="{StaticResource BareGroupBox}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_BatteryLowColor, Source={x:Static strings:Strings.Instance}}">
                                         <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
@@ -11045,8 +10961,11 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
+                                        </GroupBox>
 
                                         <!-- HIGH (full) color -->
+                                        <GroupBox Style="{StaticResource BareGroupBox}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_BatteryHighColor, Source={x:Static strings:Strings.Instance}}">
                                         <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
@@ -11093,6 +11012,7 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
+                                        </GroupBox>
                                     </WrapPanel>
                                 </StackPanel>
 
@@ -11107,6 +11027,8 @@
                                     <WrapPanel Margin="0,4,0,0">
 
                                         <!-- LOW (quiet) color -->
+                                        <GroupBox Style="{StaticResource BareGroupBox}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_AudioLightbar_LowColor, Source={x:Static strings:Strings.Instance}}">
                                         <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
@@ -11132,9 +11054,9 @@
                                                             </MultiBinding>
                                                         </Border.Background>
                                                     </Border>
-                                                    <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioLowHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="low" Visibility="{Binding Visibility, ElementName=AudioLowHexBox}" SettingLabel="{Binding ResetLabel_LowColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioLowHexBox_8930"/>
-                                                        <TextBox x:Name="AudioLowHexBox" Tag="Low"
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioLowHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="low" Visibility="{Binding Visibility, ElementName=AudioLowHexBox}" SettingLabel="{Binding ResetLabel_LowColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioLowHexBox_8930"/>
+                                                        <TextBox x:Name="AudioLowHexBox" TabIndex="0" Tag="Low"
                                                                  FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                                  KeyDown="AudioHexBox_KeyDown"
                                                                  LostFocus="AudioHexBox_LostFocus"
@@ -11161,8 +11083,11 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
+                                        </GroupBox>
 
                                         <!-- MID (medium) color -->
+                                        <GroupBox Style="{StaticResource BareGroupBox}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_AudioLightbar_MidColor, Source={x:Static strings:Strings.Instance}}">
                                         <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
@@ -11188,9 +11113,9 @@
                                                             </MultiBinding>
                                                         </Border.Background>
                                                     </Border>
-                                                    <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioMidHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="mid" Visibility="{Binding Visibility, ElementName=AudioMidHexBox}" SettingLabel="{Binding ResetLabel_MidColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioMidHexBox_8984"/>
-                                                        <TextBox x:Name="AudioMidHexBox" Tag="Mid"
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioMidHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="mid" Visibility="{Binding Visibility, ElementName=AudioMidHexBox}" SettingLabel="{Binding ResetLabel_MidColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioMidHexBox_8984"/>
+                                                        <TextBox x:Name="AudioMidHexBox" TabIndex="0" Tag="Mid"
                                                                  FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                                  KeyDown="AudioHexBox_KeyDown"
                                                                  LostFocus="AudioHexBox_LostFocus"
@@ -11217,8 +11142,11 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
+                                        </GroupBox>
 
                                         <!-- HIGH (loud) color -->
+                                        <GroupBox Style="{StaticResource BareGroupBox}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_AudioLightbar_HighColor, Source={x:Static strings:Strings.Instance}}">
                                         <Border Margin="0,0,8,8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
@@ -11244,9 +11172,9 @@
                                                             </MultiBinding>
                                                         </Border.Background>
                                                     </Border>
-                                                    <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioHighHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="high" Visibility="{Binding Visibility, ElementName=AudioHighHexBox}" SettingLabel="{Binding ResetLabel_HighColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioHighHexBox_9038"/>
-                                                        <TextBox x:Name="AudioHighHexBox" Tag="High"
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=AudioHighHexBox}" Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Click="ResetAudioColor_Click" Tag="high" Visibility="{Binding Visibility, ElementName=AudioHighHexBox}" SettingLabel="{Binding ResetLabel_HighColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_AudioHighHexBox_9038"/>
+                                                        <TextBox x:Name="AudioHighHexBox" TabIndex="0" Tag="High"
                                                                  FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                                  KeyDown="AudioHexBox_KeyDown"
                                                                  LostFocus="AudioHexBox_LostFocus"
@@ -11273,6 +11201,7 @@
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
+                                        </GroupBox>
                                     </WrapPanel>
 
                                 </StackPanel>
@@ -11429,10 +11358,11 @@
                                      Independent of LightbarRed/Green/Blue (which drives
                                      the base mode color), so users can layer a base
                                      color with a different flash color. -->
+                                <GroupBox Style="{StaticResource BareGroupBox}" Visibility="{Binding DeviceConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}"
+                                          AutomationProperties.Name="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}">
                                 <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
-                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                        Visibility="{Binding DeviceConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}"
                                                    FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -11461,6 +11391,7 @@
                                         </controls:SettingRow>
                                     </StackPanel>
                                 </Border>
+                                </GroupBox>
 
                                 <!-- At the card's foot, as its board has it (#574). While the
                                      mode is Player Number, a game that writes the lightbar
@@ -11682,7 +11613,7 @@
                                 <views:KeyLightsView Source="{Binding KeyColors}" HorizontalAlignment="Left" Margin="0,0,0,4"
                                                      AutomationProperties.Name="{Binding KeyColors.Title, TargetNullValue=''}"/>
                                 <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
-                                           Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                           Foreground="{DynamicResource EmberTextBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
                                            Visibility="{Binding KeyColors.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <TextBlock Text="{Binding KeyColors.SelectionSummary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="0,0,0,8"/>
@@ -12832,9 +12763,9 @@
                                                          ItemTemplate to show anything but ToString(): without
                                                          one it rendered "LowShelf" and "HighPass" verbatim, in
                                                          every locale. -->
-                                                    <DockPanel LastChildFill="True" Grid.Column="1" Margin="0,0,6,0">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Type" SettingLabel="{Binding Pad_Audio_EqCol_Type, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_Type_11940"/>
-                                                        <ComboBox
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Grid.Column="1" Margin="0,0,6,0">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Type" SettingLabel="{Binding Pad_Audio_EqCol_Type, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_Type_11940"/>
+                                                        <ComboBox TabIndex="0"
                                                                   ItemsSource="{Binding Source={StaticResource EqBandTypeValues}}"
                                                                   SelectedItem="{Binding Type, Mode=TwoWay}">
                                                             <ComboBox.ItemTemplate>
@@ -12844,19 +12775,19 @@
                                                             </ComboBox.ItemTemplate>
                                                         </ComboBox>
                                                     </DockPanel>
-                                                    <DockPanel LastChildFill="True" Grid.Column="2" Margin="0,0,6,0">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="FrequencyHz" SettingLabel="{Binding Pad_AT_Frequency, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_FrequencyHz_11948"/>
-                                                        <TextBox
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Grid.Column="2" Margin="0,0,6,0">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="FrequencyHz" SettingLabel="{Binding Pad_AT_Frequency, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_FrequencyHz_11948"/>
+                                                        <TextBox TabIndex="0"
                                                                  Text="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"/>
                                                     </DockPanel>
-                                                    <DockPanel LastChildFill="True" Grid.Column="3" Margin="0,0,6,0">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="GainDb" SettingLabel="{Binding Pad_Audio_EqCol_Gain, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_GainDb_11950"/>
-                                                        <TextBox
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Grid.Column="3" Margin="0,0,6,0">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="GainDb" SettingLabel="{Binding Pad_Audio_EqCol_Gain, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_GainDb_11950"/>
+                                                        <TextBox TabIndex="0"
                                                                  Text="{Binding GainDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"/>
                                                     </DockPanel>
-                                                    <DockPanel LastChildFill="True" Grid.Column="4" Margin="0,0,6,0">
-                                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Q" SettingLabel="{Binding Pad_Audio_EqCol_Q, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_Q_11952"/>
-                                                        <TextBox
+                                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Grid.Column="4" Margin="0,0,6,0">
+                                                        <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Q" SettingLabel="{Binding Pad_Audio_EqCol_Q, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_EqBandVm_Q_11952"/>
+                                                        <TextBox TabIndex="0"
                                                                  Text="{Binding Q, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.###}"/>
                                                     </DockPanel>
                                                     <ui:Button AutomationProperties.Name="{Binding Pad_Audio_EqRemove, Source={x:Static strings:Strings.Instance}}" Grid.Column="5" HorizontalAlignment="Left" Padding="6,2"
@@ -12994,6 +12925,8 @@
                                            Text="{Binding Pad_Audio_Packages_Empty, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
                                 <ListBox x:Name="SoundPackagesList" MaxHeight="170"
+                                         AutomationProperties.Name="{Binding Pad_Audio_Packages_Header, Source={x:Static strings:Strings.Instance}}"
+                                         AutomationProperties.IsOffscreenBehavior="FromClip"
                                          ItemContainerStyle="{StaticResource EmberSelectListItem}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -13023,7 +12956,7 @@
                      the right. The two stand side by side while the editor has 480 to
                      itself, and one under the other when it has not. The page scrolls as a
                      whole, as the other sections do. -->
-                <ScrollViewer x:Name="MacrosSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" Padding="32,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer x:Name="MacrosSectionScroll" AutomationProperties.Name="{Binding Pad_Section_Macros, Source={x:Static strings:Strings.Instance}}" Padding="36,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <!-- A row of a setting in this section, as its board draws it: 44 tall,
                              a label of 190 with 12 after it, the control, and the reset 10
@@ -13055,9 +12988,9 @@
                                 controls:FlexLinePanel.Basis="250" controls:FlexLinePanel.Grow="1" MinWidth="250" MaxWidth="320"
                                 HorizontalAlignment="Left" VerticalAlignment="Top">
                             <StackPanel>
-                                <DockPanel Margin="12,4,0,0" MinHeight="32">
-                                    <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
-                                               Foreground="{DynamicResource EmberBrush}"
+                                <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="12,4,0,0" MinHeight="32">
+                                    <ui:Button TabIndex="2" DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                               Foreground="{DynamicResource EmberTextBrush}"
                                                AutomationProperties.AutomationId="MacroAddButton"
                                                AutomationProperties.Name="{Binding Macro_NewMacro, Source={x:Static strings:Strings.Instance}}"
                                                ToolTip="{Binding Macro_NewMacro, Source={x:Static strings:Strings.Instance}}"
@@ -13066,7 +12999,7 @@
                                               Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
                                               StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                     </ui:Button>
-                                    <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                    <ui:Button TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
                                                AutomationProperties.AutomationId="MacroListMoreButton"
                                                AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
@@ -13083,13 +13016,14 @@
                                             </ContextMenu>
                                         </ui:Button.ContextMenu>
                                     </ui:Button>
-                                    <RadioButton x:Name="TabMacros" Tag="1" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
+                                    <RadioButton x:Name="TabMacros" TabIndex="0" Tag="1" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
                                                  Click="TabBtn_Click" Checked="TabBtn_Checked" IsChecked="True"
                                                  AutomationProperties.AutomationId="MacrosTab">
                                         <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}"/>
                                     </RadioButton>
                                 </DockPanel>
-                                <ListBox AutomationProperties.Name="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Macros}"
+                                <ListBox AutomationProperties.AutomationId="MacroList"
+                                         AutomationProperties.Name="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Macros}"
                                          SelectedItem="{Binding ListedMacro, Mode=TwoWay}"
                                          TextSearch.TextPath="Name"
                                          Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource PartListItem}">
@@ -13115,9 +13049,9 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                                 <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Margin="0,8,0,0" Padding="0,4,0,0">
-                                    <DockPanel Margin="12,4,0,0" MinHeight="32">
-                                        <ui:Button DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
-                                                   Foreground="{DynamicResource EmberBrush}"
+                                    <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="12,4,0,0" MinHeight="32">
+                                        <ui:Button TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                                   Foreground="{DynamicResource EmberTextBrush}"
                                                    AutomationProperties.AutomationId="MenuAddButton"
                                                    AutomationProperties.Name="{Binding Menu_NewMenu, Source={x:Static strings:Strings.Instance}}"
                                                    ToolTip="{Binding Menu_NewMenu, Source={x:Static strings:Strings.Instance}}"
@@ -13126,14 +13060,15 @@
                                                   Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
                                                   StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                         </ui:Button>
-                                        <RadioButton x:Name="TabMenus" Tag="15" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
+                                        <RadioButton x:Name="TabMenus" TabIndex="0" Tag="15" GroupName="PadMacrosPart" Style="{StaticResource ListHeadSwitch}"
                                                      Click="TabBtn_Click" Checked="TabBtn_Checked"
                                                      AutomationProperties.AutomationId="MenusTab">
                                             <TextBlock Text="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}"/>
                                         </RadioButton>
                                     </DockPanel>
                                 </Border>
-                                <ListBox AutomationProperties.Name="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Menus}"
+                                <ListBox AutomationProperties.AutomationId="MenuList"
+                                         AutomationProperties.Name="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" ItemsSource="{Binding Menus}"
                                          SelectedItem="{Binding ListedMenu, Mode=TwoWay}"
                                          TextSearch.TextPath="Name"
                                          Style="{StaticResource PartList}" ItemContainerStyle="{StaticResource PartListItem}">
@@ -13205,9 +13140,11 @@
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- The head, as the board draws it: the name at 20 SemiBold, which is
                                              typed over in place (the pencil puts the caret in it), then Enabled
-                                             and More at the card's end. -->
-                                        <DockPanel Margin="20,14,12,14">
-                                            <ui:Button DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                             with its reset and More at the card's end. The head docks from its
+                                             end, so More comes first here, then the reset, then the switch, and
+                                             Tab goes the way the eye does: name, switch, reset, More. -->
+                                        <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="20,14,12,14">
+                                            <ui:Button TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
                                                        AutomationProperties.AutomationId="MacroMoreButton"
                                                        AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                        ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
@@ -13228,14 +13165,17 @@
                                                     </ContextMenu>
                                                 </ui:Button.ContextMenu>
                                             </ui:Button>
-                                            <CheckBox DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                            <!-- The board draws the switch alone. Enabled keeps the reset it had in
+                                                 5.3.1, as every setting does. -->
+                                            <reset:SettingResetButton TabIndex="2" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="8,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="IsEnabled" SettingLabel="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_IsEnabled_1284"/>
+                                            <CheckBox TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
                                                       Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding IsEnabled, Mode=TwoWay}"/>
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="12,0,10,0"/>
                                             <!-- The name and its pencil share a line while the name fits, and a
                                                  name too long for it has the line to itself. -->
-                                            <controls:FlexLinePanel Gap="2" LineGap="0" VerticalAlignment="Center">
+                                            <controls:FlexLinePanel KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="0" Gap="2" LineGap="0" VerticalAlignment="Center">
                                                 <TextBox x:Name="MacroNameBox" Style="{StaticResource HeadNameEdit}"
                                                          Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          AutomationProperties.Name="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}"/>
@@ -13471,9 +13411,9 @@
                                         Margin="0,0,0,8">
                                 <TextBlock Style="{StaticResource EditorSubHead}" Text="{Binding Macro_Expression_Header, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,4,0,4"/>
-                                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" Margin="0,0,0,4">
-                                    <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="TriggerExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding Macro_Expression_Header, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_TriggerExpression_1419"/>
-                                    <TextBox x:Name="CustomFormulaBox"
+                                <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" Margin="0,0,0,4">
+                                    <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="TriggerExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding Macro_Expression_Header, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroItem_TriggerExpression_1419"/>
+                                    <TextBox x:Name="CustomFormulaBox" TabIndex="0"
                                              Text="{Binding TriggerExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              FontFamily="{StaticResource TelemetryFontFamily}"
                                              AcceptsReturn="False"
@@ -14309,7 +14249,7 @@
                                             <views:KeyLightsView Source="{Binding KeyTargetPicker}" HorizontalAlignment="Left" Margin="0,0,0,4"
                                                                  AutomationProperties.Name="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                                       Foreground="{DynamicResource EmberTextBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
                                                        Visibility="{Binding KeyTargetPicker.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <WrapPanel Margin="0,0,0,6">
                                                 <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectAllKeysCommand}"
@@ -14417,7 +14357,7 @@
                                             <views:KeyLightsView Source="{Binding KeyTargetPicker}" HorizontalAlignment="Left" Margin="0,0,0,4"
                                                                  AutomationProperties.Name="{Binding MacroAction_KeyColors_Keys, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="{Binding Pad_Lighting_KeyColors_PickHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Foreground="{DynamicResource EmberBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
+                                                       Foreground="{DynamicResource EmberTextBrush}" TextWrapping="Wrap" Margin="0,0,0,4"
                                                        Visibility="{Binding KeyTargetPicker.PickByPressing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <WrapPanel Margin="0,0,0,6">
                                                 <Button Padding="8,2" Margin="0,0,6,6" Command="{Binding KeyTargetPicker.SelectNumberRowCommand}"
@@ -14502,7 +14442,7 @@
                                         <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ScreenKind" SettingLabel="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenKind_13101"/>
                                     </controls:FlexLinePanel>
                                                         </DataTemplate>
-                                    <!-- Profile Shortcut (#561): the Profile Shortcuts card's modes
+                                    <!-- Profile Shortcut (#561): the Shortcuts card's modes
                                          on a macro, and the profile's name for the one that names one. -->
                                                         <DataTemplate x:Key="StepFieldsProfileShortcut">
                                     <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
@@ -15926,7 +15866,7 @@
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsRecording}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
                                                             <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -15967,9 +15907,9 @@
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- The head, as the board draws it: the name at 20 SemiBold, which is
                                              typed over in place (the pencil puts the caret in it), then Enabled
-                                             and More at the card's end. -->
-                                        <DockPanel Margin="20,14,12,14">
-                                            <ui:Button DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                             with its reset and More at the card's end, in the macro head's order. -->
+                                        <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="20,14,12,14">
+                                            <ui:Button TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
                                                        AutomationProperties.AutomationId="MenuMoreButton"
                                                        AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                        ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
@@ -15990,14 +15930,16 @@
                                                     </ContextMenu>
                                                 </ui:Button.ContextMenu>
                                             </ui:Button>
-                                            <CheckBox DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                                            <!-- Enabled keeps the reset it had in 5.3.1, as the macro's does. -->
+                                            <reset:SettingResetButton TabIndex="2" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="8,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="Enabled" SettingLabel="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_Enabled_12483"/>
+                                            <CheckBox TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
                                                       Content="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding Enabled}"/>
                                             <TextBlock DockPanel.Dock="Right" Text="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="12,0,10,0"/>
                                             <!-- The name and its pencil share a line while the name fits, and a
                                                  name too long for it has the line to itself. -->
-                                            <controls:FlexLinePanel Gap="2" LineGap="0" VerticalAlignment="Center">
+                                            <controls:FlexLinePanel KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="0" Gap="2" LineGap="0" VerticalAlignment="Center">
                                                 <TextBox x:Name="MenuNameBox" Style="{StaticResource HeadNameEdit}"
                                                          Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                          AutomationProperties.Name="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}"/>
@@ -16105,7 +16047,7 @@
                                                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsRecording}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
                                                             <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -16672,22 +16614,32 @@
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>
-                                                <!-- Add Cell, alone under the cells as the board draws it: no fill, a plus and
-                                                     the word in the text color, drawn out 14 so its plus stands at the cells'
-                                                     edge. It takes the count box's place: cells come and go at the end, since a
+                                                <!-- Add Cell under the cells, as the board draws it: no fill, a plus and the
+                                                     word in the text color, drawn out 14 so its plus stands at the cells' edge.
+                                                     It takes the count box's place: cells come and go at the end, since a
                                                      cell's number is what a mapping or a macro names it by, and Remove Last Cell
-                                                     is an item of the menu's More. -->
-                                                <ui:Button Style="{StaticResource QuietTextButton}" Margin="-14,2,0,0" HorizontalAlignment="Left"
-                                                           Command="{Binding AddCellCommand}"
-                                                           AutomationProperties.AutomationId="MenuAddCell"
-                                                           AutomationProperties.Name="{Binding Menu_AddCell, Source={x:Static strings:Strings.Instance}}">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
-                                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
-                                                              StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding Menu_AddCell, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </ui:Button>
+                                                     is an item of the menu's More. The box had a reset, and how many cells the
+                                                     menu has keeps it, at the line's end: back to the four a new menu has. What
+                                                     a cell past the fourth held stays with the menu, as Remove Last Cell leaves
+                                                     it. -->
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <ui:Button Style="{StaticResource QuietTextButton}" Margin="-14,2,0,0" HorizontalAlignment="Left"
+                                                               Command="{Binding AddCellCommand}"
+                                                               AutomationProperties.AutomationId="MenuAddCell"
+                                                               AutomationProperties.Name="{Binding Menu_AddCell, Source={x:Static strings:Strings.Instance}}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
+                                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                                  StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Menu_AddCell, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </ui:Button>
+                                                    <reset:SettingResetButton Grid.Column="1" VerticalAlignment="Center" Margin="0,2,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="CellCount" SettingLabel="{Binding Menu_Cells, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_CellCount"/>
+                                                </Grid>
                                             </StackPanel>
                                         </Border>
                                         <!-- Keyboard: a keyboard menu's own controls and behavior. -->

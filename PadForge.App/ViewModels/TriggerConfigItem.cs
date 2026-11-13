@@ -36,10 +36,21 @@ namespace PadForge.ViewModels
         public string IconLabel { get; }
         public bool IconRightSide { get; }
 
+        /// <summary>The card's screen-reader name, its title: the card is a
+        /// list item, and ItemAutomationPeer.GetNameCore falls back to the
+        /// item's ToString(). Without it the card read as the first plain
+        /// text it shows, the words of its Reset All button, since the
+        /// title is drawn in runs.</summary>
+        public override string ToString() => Title ?? string.Empty;
+
         /// <summary>Per-card "Reset {Title}" tooltip — see StickConfigItem
         /// for the format-string rationale.</summary>
         public string ResetAllToolTip
             => string.Format(Resources.Strings.Strings.Instance.Pad_ResetSection_Format, Title);
+
+        /// <summary>The key this trigger's More row is stored under, so each
+        /// trigger opens and stays open on its own, as a stick's does.</summary>
+        public string MoreStateKey => "Pad.Triggers.Trigger" + Index.ToString(System.Globalization.CultureInfo.InvariantCulture) + ".More";
 
         // ── Digit conversion helpers (triggers use unsigned 16-bit: 0–65535) ──
         private static int PctToDigit(double pct) => (int)Math.Round(pct / 100.0 * 65535.0);

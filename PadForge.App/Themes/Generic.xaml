@@ -6,13 +6,29 @@
          single-Slider style; the only intrinsic delta is the active-range
          fill between the two thumbs, which uses the same accent the
          single-Slider gives the thumb. Theme brushes come from WPF-UI's
-         resource dictionary, so Light/Dark/HC switches work automatically. -->
+         resource dictionary, so Light/Dark/HC switches work automatically.
+         Each thumb is a Tab stop the arrow keys move, with a ring around it
+         while the keyboard is on it, the ember of every focus ring. -->
+
+    <Style x:Key="RangeSliderThumbFocus">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Ellipse Margin="-3" SnapsToDevicePixels="True"
+                             Stroke="{DynamicResource EmberHotBrush}" StrokeThickness="1.5"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="RangeSliderThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Height" Value="20" />
         <Setter Property="Width" Value="20" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource RangeSliderThumbFocus}" />
         <Setter Property="Cursor" Value="SizeWE" />
         <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource SliderThumbBackground}" />
@@ -70,14 +86,14 @@
                                     CornerRadius="2"/>
 
                             <!-- Lower thumb -->
-                            <Thumb x:Name="PART_LowerThumb"
-                                   Canvas.Top="1"
-                                   Style="{StaticResource RangeSliderThumbStyle}"/>
+                            <controls:RangeThumb x:Name="PART_LowerThumb"
+                                                 Canvas.Top="1"
+                                                 Style="{StaticResource RangeSliderThumbStyle}"/>
 
                             <!-- Upper thumb -->
-                            <Thumb x:Name="PART_UpperThumb"
-                                   Canvas.Top="1"
-                                   Style="{StaticResource RangeSliderThumbStyle}"/>
+                            <controls:RangeThumb x:Name="PART_UpperThumb"
+                                                 Canvas.Top="1"
+                                                 Style="{StaticResource RangeSliderThumbStyle}"/>
                         </Canvas>
                     </Grid>
                     <ControlTemplate.Triggers>

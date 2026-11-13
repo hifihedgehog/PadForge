@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace PadForge.Views
     /// what a removal could not take (<see cref="ShowReport"/>). It mirrors
     /// <see cref="UninstallHIDMaestroDialog"/>.
     /// </summary>
-    public partial class UninstallBthPS3Dialog : Wpf.Ui.Controls.FluentWindow
+    public partial class UninstallBthPS3Dialog : DialogWindow
     {
         /// <summary>One item of a report, as the list shows it.</summary>
         public sealed class EntryRow
@@ -28,6 +29,21 @@ namespace PadForge.Views
             /// <summary>Why the item stays or was not removed. Null for an
             /// item the removal takes.</summary>
             public string Detail { get; init; }
+
+            /// <summary>The row's first line: the kind, its first letter
+            /// upper.</summary>
+            public string Title { get; init; }
+
+            /// <summary>What becomes of the item, at the row's end.</summary>
+            public string Outcome { get; init; }
+
+            /// <summary>Whether the removal takes the item. Any other
+            /// outcome stands in the wait color.</summary>
+            public bool IsRemoved { get; init; }
+
+            /// <summary>What a screen reader says for the row.</summary>
+            public override string ToString()
+                => string.Join(", ", new[] { Title, Location, Outcome, Detail }.Where(part => !string.IsNullOrEmpty(part)));
         }
 
         private readonly Func<Task<BthPS3Removal.Report>> _preview;
@@ -38,10 +54,6 @@ namespace PadForge.Views
         {
             _preview = preview;
             InitializeComponent();
-            // Dragged by its inert chrome, as ConfirmDialog and the HIDMaestro
-            // removal are: ExtendsContentIntoTitleBar zeroes the caption.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
-            Title = Strings.Instance.BthPS3Uninstall_Title;
             Loaded += (_, _) => CancelButton.Focus();
         }
 
@@ -62,7 +74,7 @@ namespace PadForge.Views
         {
             var dlg = new UninstallBthPS3Dialog(null);
             Place(dlg, owner);
-            dlg.MessageText.Text = statusLine;
+            dlg.Subtitle = statusLine;
             dlg.BusyPanel.Visibility = Visibility.Collapsed;
             dlg.RefreshButton.Visibility = Visibility.Collapsed;
             dlg.ActionButton.Visibility = Visibility.Collapsed;
@@ -79,8 +91,8 @@ namespace PadForge.Views
 
         /// <summary>The rows for a report. A preview lists every item, with
         /// the reason beside each one that stays. A removal lists only the
-        /// items it could not take. The reasons read as the HIDMaestro
-        /// removal's do.</summary>
+        /// items it could not take. The reasons and the outcomes read as the
+        /// HIDMaestro removal's do.</summary>
         internal static IReadOnlyList<EntryRow> RowsFor(BthPS3Removal.Report report)
         {
             var rows = new List<EntryRow>();
@@ -93,11 +105,22 @@ namespace PadForge.Views
                     BthPS3Removal.ItemOutcome.Failed => Strings.Instance.HIDMaestroUninstall_NotRemoved_Format,
                     _ => null,
                 };
+                string kind = BthPS3Removal.KindText(item.Kind);
                 rows.Add(new EntryRow
                 {
-                    Kind = BthPS3Removal.KindText(item.Kind),
+                    Kind = kind,
                     Location = item.Location,
                     Detail = format != null && !string.IsNullOrEmpty(item.Reason) ? string.Format(format, item.Reason) : null,
+                    Title = UninstallHIDMaestroDialog.TitleOf(kind, CultureInfo.CurrentCulture),
+                    Outcome = item.Outcome switch
+                    {
+                        BthPS3Removal.ItemOutcome.Kept => Strings.Instance.HIDMaestroUninstall_OutcomeKept,
+                        BthPS3Removal.ItemOutcome.Failed => report.IsPreview
+                            ? Strings.Instance.HIDMaestroUninstall_OutcomeUnread
+                            : Strings.Instance.HIDMaestroUninstall_OutcomeNotRemoved,
+                        _ => Strings.Instance.HIDMaestroUninstall_OutcomeRemoved,
+                    },
+                    IsRemoved = item.Outcome is not (BthPS3Removal.ItemOutcome.Kept or BthPS3Removal.ItemOutcome.Failed),
                 });
             }
             return rows;
@@ -128,8 +151,8 @@ namespace PadForge.Views
             ActionButton.IsEnabled = false;
             RefreshButton.IsEnabled = false;
             BusyPanel.Visibility = Visibility.Visible;
-            NoteText.Visibility = Visibility.Collapsed;
-            EntryList.Visibility = Visibility.Collapsed;
+            HideNote();
+            EntryFrame.Visibility = Visibility.Collapsed;
 
             BthPS3Removal.Report report = null;
             string failure = null;
@@ -157,18 +180,27 @@ namespace PadForge.Views
             ActionButton.IsEnabled = CanRemove(report);
         }
 
+        /// <summary>A problem (what holds the removal, a preview that failed)
+        /// stands in the wait box. Nothing to remove, and why BthPS3 stays,
+        /// are plain lines with no box.</summary>
         private void ShowNote(string text, bool caution)
         {
-            NoteText.Text = text;
-            NoteText.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
-                caution ? "SystemFillColorCautionBrush" : "TextFillColorSecondaryBrush");
-            NoteText.Visibility = Visibility.Visible;
+            NoteText.Text = caution ? text : string.Empty;
+            NotePanel.Visibility = caution ? Visibility.Visible : Visibility.Collapsed;
+            PlainNoteText.Text = caution ? string.Empty : text;
+            PlainNoteText.Visibility = caution ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void HideNote()
+        {
+            NotePanel.Visibility = Visibility.Collapsed;
+            PlainNoteText.Visibility = Visibility.Collapsed;
         }
 
         private void ShowEntries(IReadOnlyList<EntryRow> rows)
         {
             EntryList.ItemsSource = rows;
-            EntryList.Visibility = rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            EntryFrame.Visibility = rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e) => RunPreview();

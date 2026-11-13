@@ -920,7 +920,6 @@ namespace PadForge.Tests
             Assert.False(vm.ShowDriverRestore);
             Assert.True(row.ShowsHidingDriverSwitch);
             Assert.True(row.ShowInputHidingSection);
-            Assert.True(row.ShowInputModeOrHidingSection);
 
             vm.DriverBusy = true;
             Assert.False(vm.ShowHidingDriverRestore);
@@ -942,19 +941,22 @@ namespace PadForge.Tests
             vm.SelectedDevice = null;
             Assert.False(row.ShowsHidingDriverSwitch);
 
-            // The two buttons stand between the section's heading and its
-            // divider, and the pair above it serves every other kind.
+            // The two buttons stand in the hiding rows of the Settings card,
+            // and the pair in the card's tools serves every other kind.
             string page = AuditDelta20261002Tests.RepoText("PadForge.App", "Views", "DevicesPage.xaml");
-            int heading = page.IndexOf("{Binding Devices_InputHiding,", StringComparison.Ordinal);
-            int divider = page.IndexOf("<Separator", heading, StringComparison.Ordinal);
-            Assert.True(heading > 0 && divider > heading, $"{heading} {divider}");
-            string section = page.Substring(heading, divider - heading);
+            int hiding = page.IndexOf("x:Name=\"HidingRows\"", StringComparison.Ordinal);
+            int power = page.IndexOf("x:Name=\"PowerRows\"", hiding, StringComparison.Ordinal);
+            Assert.True(hiding > 0 && power > hiding, $"{hiding} {power}");
+            string section = page.Substring(hiding, power - hiding);
             Assert.Contains("Visibility=\"{Binding ShowHidingDriverBind,", section);
             Assert.Contains("Visibility=\"{Binding ShowHidingDriverRestore,", section);
             Assert.Equal(1, section.Split("Click=\"DriverBind_Click\"").Length - 1);
             Assert.Equal(1, section.Split("Click=\"DriverRestore_Click\"").Length - 1);
-            int above = page.IndexOf("Visibility=\"{Binding ShowDriverBind,", StringComparison.Ordinal);
-            Assert.True(above > 0 && above < heading, $"{above} {heading}");
+            // The card after Settings is Details: Test Inputs stands before it.
+            int tools = page.IndexOf("x:Name=\"DeviceTools\"", StringComparison.Ordinal);
+            int next = page.IndexOf("x:Name=\"DetailsCard\"", StringComparison.Ordinal);
+            int other = page.IndexOf("Visibility=\"{Binding ShowDriverBind,", StringComparison.Ordinal);
+            Assert.True(tools > power && other > tools && other < next, $"{tools} {other} {next}");
             Assert.Equal(1, page.Split("Visibility=\"{Binding ShowDriverBind,").Length - 1);
         }
     }

@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Қосулы</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Өшірулі</value></data>
   <data name="Common_More" xml:space="preserve"><value>Қосымша</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Барлығын көру</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Орнатылған</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Орнатылмаған</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>ARM64 жүйесінде қолжетімсіз</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Тоқтатылуда…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Қозғалтқыш тоқтатылуда…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Жұмыс істеп тұр: {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Жұмыс істеп тұр ({0} клиент)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Жұмыс істеп тұр, қосылғандар: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} портын тыңдап тұр</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>{0} порты бос емес</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>{0} портына кіру рұқсат етілмеді (әкімші ретінде іске қосыңыз)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Желіден тыс</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Белгісіз</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Әдепкі</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Шолу...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Шолу…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Жалғастыру</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Тоқтату</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Іске қосу</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Алдыңғы сеанстан қалған виртуалды контроллерлер тазалануда.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> құрылғы</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер қосу</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Контроллер қосу</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Ойындар нені көруі керегін таңдаңыз. Контроллер шерткен бойда қосылады.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Кейін таңдау</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Жиі қолданылатындар</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Басқа шығыстар</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Көптеген компьютер ойындары күтетін макет.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>PlayStation белгілері, сенсорлық тақта және жарық жолағы бар ойындарға арналған.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Мұны күтетін ойындар мен эмуляторларға арналған Switch түйме макеті.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Геймпадпен перне, меңзер және айналдыру.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Рөлдер, ұшу джойстиктері және арнайы макеттер.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Музыкалық бағдарламаларға арналған ноталар мен басқару өзгерістері.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>SteamVR арқылы виртуалды VR контроллерлері.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Түрін кейін өзгерту үшін контроллердегі түр белгісін басыңыз. Ол бір рет басуды ғана қажет етеді.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services жауап бермейді. Параметрлердегі оның карточкасын қараңыз.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>SteamVR қажет. Оны Параметрлердегі карточкасынан орнатыңыз.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR контроллері бұрыннан бар. Біреуі екі қолды да басқарады.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge қолдайтын ең көп контроллер саны {0} жетті. Жаңасын қосу үшін біреуін жойыңыз.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профиль</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Параметрлерді, құрылғыларды, профильдерді іздеу</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Іздеу</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Нәтижелер</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Жоғары</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Төмен</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>Жылжу үшін {0} {1}</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>Ашу үшін {0}</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>Кез келген жерден {0}</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Беттер</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Әрекеттер</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Құжаттама</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>Қосымша астында</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>жолдың параметрлерінде</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>PadForge ішінде «{0}» сұранысына сәйкес ештеңе жоқ.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Құжаттамадан «{0}» іздеу</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Виртуалды контроллерді жою</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Толық экран</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge терезесін көрсету</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>«{0}» профилі жасалды.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>«{0}» профилі жойылды.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>«{0}» профилі жаңартылды.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>«{0}» профилі енді ағымдағы баптауды сақтайды.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Профиль жүктелді: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Профиль «Әдепкі» күйіне қайтарылды</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>«{0}» {1}-виртуалды контроллерге тағайындалды.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профиль ауыстырылды: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профиль ауыстырылды: Әдепкі</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Әдепкі</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Профиль тіркесімдері</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Тіркесімдер</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Кез келген контроллерден профильдерді ауыстыру үшін түймелер тіркесімдерін тағайындаңыз.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Тіркесім қосу</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Келесі профиль</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Алдыңғы профиль</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Белгілі бір профиль</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Терезені көрсету/жасыру</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Виртуалды контроллерлерді өшіру/қосу</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge-ты көрсету немесе жасыру</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Виртуалды контроллерлерді қосу немесе өшіру</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Кез келген қосылған құрылғы</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Жазу</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Жазылуда...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Құрылғы таңдалмаған.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Ұяшық индексі жарамсыз: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Құрылғы тағайындалмады.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>қашан</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>құрылғысында</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}» {1}-виртуалды контроллерге тағайындалды.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» {1}-виртуалды контроллерден ажыратылды.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Құрылғы жасырылды. (Оны параметрлер файлында қалпына келтіруге болады.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Құрылғы алып тасталды.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуалды контроллер {0} жойылды.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Басты бет</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Қосылған құрылғылар: {0}. Контроллерлер: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Ойындар жұмыс істеп тұрған әрбір контроллерді көреді.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Қозғалтқыш қосулы, бірақ жұмыс істеп тұрған контроллер жоқ.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Контроллерлеріңізді қайтару үшін қозғалтқышты іске қосыңыз.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Сұрау жиілігі</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Жұмыстағы контроллерлер</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Қосылған құрылғылар</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Бұл контроллерді қосу немесе өшіру</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Ол қозғалтқыш іске қосылғанда іске қосылады.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Ол осы құрылғы қосылғанда іске қосылады.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Ол осы құрылғылардың бірі қосылғанда іске қосылады.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Қосылмаған</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Қазір кіріс жіберуде</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Батарея {0}, төмен</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Батарея {0}, зарядталуда</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контроллерлер</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Қолданыстағы қосымша мүмкіндіктер</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>QR көрсету</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} қосылған, бірақ пайдаланылмайды.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Пайдалану</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ойындар нені көруі керек?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge бұл контроллерді ойындарыңыз күтетін контроллерге айналдырады. Бастау үшін біреуін таңдаңыз. Оны кейін бір рет басып өзгертуге болады.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge контроллеріңізді ойындарыңыз күтетін контроллерге айналдырады. Бастау үшін біреуін таңдаңыз. Оны кейін бір рет басып өзгертуге болады.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Пернетақта мен тінтуір ойындарын геймпадпен ойнаңыз.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Басқа түрлер: [{0}, {1}, {2} және {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Түймелер, стиктер мен триггерлер контроллер жасалған сәтте 1:1 сәйкестендіріледі.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Bluetooth контроллерін жұптастыру</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Дайын профильден бастау</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Қосылған</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, батарея {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Батарея {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Контроллер қосылмаған</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Оны кабельмен немесе Bluetooth арқылы қосыңыз.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> тағайындалған, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> қосылған</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Қозғалтқыш жұмыс істеп тұр. Тоқтату үшін басыңыз.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Қозғалтқыш бос тұр. Тоқтату үшін басыңыз.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Қозғалтқыш тоқтатылған. Іске қосу үшін басыңыз.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Бұл контроллерді баптау</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Ұста ошағын жағыңыз</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Контроллерді қосып, шығыс түрін таңдаңыз, сонда PadForge кірістеріңізді соған соғып береді. Қысқа таныстыру бәрі қай жерде орналасқанын көрсетеді.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Таныстыруды бастау</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Өткізіп жіберу</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Келесі</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Дайын</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Ұяшықтар</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Әр виртуалды контроллер осында орналасқан. Жалын қазір қай ұяшықтар соғып жатқанын көрсетеді.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Ұстахананың өзі. Барлық кірістерді сұрауды бастау не тоқтату үшін жалынды қосыңыз не өшіріңіз.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Виртуалды контроллерлер</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Шығыс түрін таңдаңыз, ұяшыққа құрылғыларды беріңіз және тағайындауларын баптау үшін карточканы басыңыз.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Қосымша мүмкіндіктер осында: телефондағы веб-контроллер, Қашықтан байланыс, қозғалыс сервері және тағы басқалары.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Таныстыруды көрсету</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Ұяшық</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Құрылғы</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Құрылғы қосу</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Төмен</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Сурет</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Тізім</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} шығыс</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Жұптың екі пернесі де басылып тұрғанда ойын қай басуды көреді</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Стикті сәл ауытқытып ұстайды, сондықтан ойындар контроллер нұсқауларын көрсете береді</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Соғуда</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Жұмыста: {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Тізімнен макросты таңдаңыз немесе жаңасын жасау үшін «Макростар» жанындағы + түймесін басыңыз.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ШИКІ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ШЫҒЫС</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Алдын ала қарау</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Қосымша мүмкіндіктер</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Міндетті емес мүмкіндіктер. Әрқайсысы сіз қосқанша кедергі келтірмейді.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} / {1} қосулы</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Ойнаудың қосымша тәсілдері</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Басқа жерге жіберу</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Экранда</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаңызға қараңыз.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Жарыс ойындарындағы жылдамдықты, педальдерді және берілістерді тағайындаңыз.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Көрермендер чатқа жазу арқылы түймелерді бассын.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Контроллерлерді басқа компьютердегі PadForge бағдарламасымен бөлісіңіз.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Басқа компьютердегі виртуалды контроллерлерді басқарыңыз.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын эмуляторларға жіберіңіз.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Ойын модтарынан триггер және жарық эффектілерін қабылдаңыз.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ойын кезінде мәзірлерді, қабаттарды және профиль ауысуларын көрсетіңіз.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation сенсорлық тақтасын пайдаланатын ойындарға арналған экрандағы сенсорлық бет.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Басқа терезелердің үстінде сурет, таймер немесе сағат.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, қарапайым HTTP мекенжайы, кіру коды</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Қайта қосылу, порт, сәйкестендіру деректерін қорғау, мекенжай арқылы қосылу</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR орындау ортасы, UDP порты, әр осьтің ауқымы</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, қарапайым HTTP, кіру коды</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматты қайта қосылу, порт, жұптастыру сәйкестендіруі, мекенжай арқылы қосылу</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe алмастырғышы</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порттар, толық жылдамдық, теңшелетін пішімдер</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порттар, Толық жылдамдық, Теңшелетін пішімдер</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Бас трекерімен немесе VR гарнитурасымен айналаға қараңыз, ал екі бас бармағыңыз түймелерде қалады.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Ойын жіберетін жылдамдықты, педальдарды және берілістерді кез келген кіріс сияқты сәйкестендіріңіз.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Контроллер қозғалысын DSU қозғалыс көзін оқитын эмуляторларға жіберіңіз.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX үшін жазылған ойын модтарынан бейімделгіш триггер мен жарық әсерлерін алыңыз.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ойында телеметрия шығысын қосып, оны осы компьютер мен портқа бағыттаңыз.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Эмуляторда осы компьютердің мекенжайы мен осы порт бойынша қозғалыс көзін қосыңыз.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Модтың әсерлері оларға арналған жабдығы бар әрбір контроллерге жетеді.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Бас қалпы [Құрылғылар] бетіндегі Бас трекері жолында көрінеді. Бас бұрылысын контроллердің Түймелер бөлімінде стик осіне сәйкестендіріңіз.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Мәндер [Құрылғылар] бетіндегі Ойын телеметриясы жолында көрінеді. Оларды контроллердің Түймелер бөлімінде сәйкестендіріңіз немесе макростарды іске қосу үшін пайдаланыңыз.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Мәзірдің орны, өлшемі және мөлдірсіздігі мәзірдің өзінде, контроллердің [Макростар және мәзірлер] бөлімінде орнатылады.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Көздер</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack және оның UDP пішімін жіберетін кез келген бағдарлама</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Ауқым</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Әр осьтің ауқымы. Нөл жоғарыдағы ауқымды пайдаланады.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge танымайтын ойындар</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Жібермес бұрын жұмыс істеп тұрған DSX іздейтін модтар үшін</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Не көрсетіледі</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Мәзір ашық кезіндегі оның сақинасы, торы немесе жолағы</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты ұсталып тұрғанда қабаттың аты</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профиль ауысқанда профильдің аты</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Мекенжайды көшіру</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Экрандағы орны</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Телефонды қосу</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Телефонды осы компьютермен бір желіге қосыңыз.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Кодты телефон камерасымен сканерлеңіз.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Контроллер макетін таңдаңыз.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Телефондар</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Телефондар қосылмаған.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Қосылған телефон осында және Құрылғылар бетінде көрінеді, онда оны контроллерге тағайындайсыз.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Сіздің арнаңыз</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Көрермендер жаза алатын сөздер</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Көрермен !a сияқты сөзді жазады, ал PadForge Құрылғылар бетіндегі Twitch Chat жолында !a сәйкестендірілген әрекетті басады. Бұл жолды кез келген құрылғы сияқты контроллерге тағайындаңыз.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Эфир кезінде</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Трансляцияға арналған сурет</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Жұптастырылған компьютерлер жоқ.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Тағы бір компьютерді жұптастыру</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Жақын жерде жұптастырылмаған компьютерлер жоқ.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Басқа компьютердегі PadForge бағдарламасында Қашықтан байланысты қосыңыз. Ол осында көрінеді, сонда екі экрандағы қысқа кодты салыстырасыз.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Көрінісі және орны</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Жылжыту үшін оны тінтуірдің оң жақ түймесімен немесе үш саусақпен сүйреңіз.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Көрсетеді</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Басқа бағдарлама алдыңғы қатарда тұрғанда, шерту оверлей арқылы өтіп кетеді. PadForge алдыңғы қатарда тұрғанда, оверлейді тінтуірдің оң жақ түймесімен сүйреп, бұрышынан өлшемін өзгертіңіз. Макрос оверлейді нөмірі бойынша көрсете немесе жасыра алады.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Қозғалыс сервері</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп пен акселерометр деректеріне арналған DSU/CemuHook Motion Provider хаттамасының сервері.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU қозғалыс серверін қосу (CemuHook Motion Provider хаттамасы)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>контроллер жоқ</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Түр {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Веб-контроллер</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Жергілікті желідегі браузерлерге геймпад интерфейсін ұсыну.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Телефонды немесе планшетті контроллер ретінде пайдаланыңыз. Телефонға ештеңе орнатудың қажеті жоқ.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Веб-контроллер серверін қосу</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Геймпад ретінде пайдалану үшін телефон не планшет браузерінен қосылыңыз.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Телефон камерасымен сканерлеңіз немесе осы мекенжайды оның браузерінде ашыңыз:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Қарапайым HTTP мекенжайы</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>PadForge сертификатын қабылдамайтын браузерлерге және өз сертификаты бар туннельге не кері проксиге арналған, HTTPS қолданбайтын екінші мекенжай. Телефон қозғалысы үшін HTTPS қажет, сондықтан мұнда ол тек HTTPS ұсынатын туннель не прокси арқылы жұмыс істейді.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Қарапайым HTTP арқылы да ұсыну</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Кіру коды</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Қарапайым мекенжай тек осы кодпен ашылады, төмендегі сілтемеде ол бар. Жаңа код қарапайым мекенжайдағы барлық қосылымдарды ажыратады.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Жаңа код</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Осы компьютердегі мекенжай:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Діріл (бұл құрылғыны анықтау үшін басыңыз)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Құрылғыны дірілдетеді, сонда оның қайсысы екенін білесіз.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Қашықтан байланыс</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Контроллерлерді басқа компьютердегі жұптастырылған PadForge бағдарламасымен желіңізде немесе интернет арқылы бөлісу.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Басқа компьютердегі виртуалды контроллерлерді басқарыңыз. Бір реттік жұптастырудан кейін сенімді компьютер автоматты түрде қайта қосылады.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Қашықтан байланыс серверін қосу</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Бір реттік жұптастырудан кейін сенімді компьютер автоматты түрде қайта қосылады. Жұптастырылған компьютер осы компьютердің геймпад шығысын, ал шектемесеңіз, пернетақтасын, тінтуірін және макростарын да басқара алады.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Немесе мекенжай арқылы қосылу (кеңейтілген)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Жұптастырылған компьютер осы компьютердің геймпад шығысын, ал шектемесеңіз, пернетақтасын, тінтуірін және макростарын да басқара алады.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Мекенжай арқылы қосылу</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Жұптастыру / Қосылу</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Жұптастыру</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Қосылу</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Қосылды</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Қашықтағы компьютермен жұптастыру</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Бұл кодтың екі экранда да бірдей екенін тексеріп, «Жұптастыру» түймесін басыңыз.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Басқа компьютермен жұптастыру керек пе?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Екі экранда да бірдей код көрсетілгеніне көз жеткізіңіз.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Жұптастыру</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Қабылдамау</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Бұл компьютерді тек геймпад кірісімен шектеу</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Тек геймпад</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Сәйкестендіру</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Тек геймпадпен шектемесеңіз, жұптастырылған компьютер осы компьютерге пернетақта, тінтуір және макрос кірісін жібере алады.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Жұптастырылған компьютер осы компьютердің геймпад шығысын, ал шектемесеңіз, пернетақтасын, тінтуірін және макростарын да басқара алады.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Жұптастырылған компьютерлер</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Қашықтан байланыс үшін жұптастырылған компьютерлер. Компьютердің қосылуын тоқтату үшін оның рұқсатын қайтарып алыңыз. Содан кейін оны қайта жұптастыру керек болады.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Қайтарып алу</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Барлығын қайтарып алу</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Атын өзгерту</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейі</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation үйлесімді сенсорлық тақтаны эмуляциялауға арналған экрандағы сенсорлық бет.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет, сенсорлы экран немесе тінтуір үшін.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Мөлдір еместік</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Орнын қалпына келтіру</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Параметрлер</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Жалпы</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Кіріс</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Жабдық</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Драйверлер</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Деректер және құпиялылық</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Параметрлерді іздеу</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>«{0}» сұранысына сәйкес параметр жоқ.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Сыртқы түрі</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Өзіңізге ұнайтын көрнекі тақырыпты таңдаңыз.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тақырып</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Қараңғы</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Кіріс қозғалтқышы</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Сұрау әрекеті мен фондық өңдеуді баптау.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Жабдықты қолдау</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Іске қосқанда қозғалтқышты автоматты бастау</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Терезе фокусты жоғалтқанда сұрауды жалғастыру</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Сұрау аралығы (профиль басқасын белгілемесе)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} нұсқасына жаңартылды.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Кішірейтілген күйде іске қосу</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Жүйеге кіргенде іске қосу</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide драйвері</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Қос кірісті болдырмау үшін физикалық құрылғыларды ойындардан жасыру.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Қос кірісті болдырмау үшін физикалық құрылғыларды ойындардан жасырады.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>HidHide параметрлері</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Құрылғыларды ойындардан жасыру, іске қосулар арасында құрылғыларды жасырын ұстау, рұқсат етілген қолданбалар</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Рұқсат етілген қолданбалар</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Бұл қолданбалар жасырын құрылғыларды көре береді. PadForge әрқашан рұқсат етілген тізімге автоматты түрде енеді.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Қосу...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro драйвері</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Пайдаланушы режиміндегі виртуалды HID контроллер қозғалтқышы. PadForge.App ішіне ендірілген. Алғашқы виртуалды контроллер жасалғанда автоматты түрде орнатылады. v3 нұсқасында ViGEmBus пен vJoy орнын басады.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge бұл драйверді өзіңіз жасайтын алғашқы виртуалды контроллермен орнатады. Жою HIDMaestro-ның осы компьютерде қалдырғанын тізімдейді, содан кейін оны жояды.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Виртуалды контроллерлерді жасайды.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro жою</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Бұл HIDMaestro-ны осы компьютерден жояды: оның виртуалды контроллерлерін, драйверін, қол қою сертификатын, тізілім кілттерін және файлдарын. PadForge алдымен өз қозғалтқышын тоқтатады. HIDMaestro пайдаланатын басқа бағдарламалар келесі іске қосылғанға дейін оның драйверінсіз қалады. PadForge келесі рет виртуалды контроллерді іске қосқанда оны қайта орнатады.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Өз орнатқышымен орнатылған usbip-win2 бағдарламасын да жою</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Осы компьютерден жойылатындар міне осылар. PadForge келесі виртуалды контроллермен HIDMaestro-ны қайта орнатады.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 бағдарламасын да жою</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>PadForge-дің ескі нұсқалары usbip-win2 бағдарламасын usbip-win2 орнатқышымен орнататын. Бұл сол орнатуды да жояды, оның USB түбірлік хаб сүзгісімен қоса, егер usbip-win2 бағдарламасын басқа бағдарлама пайдаланбаса. Сүзгіні жою әрбір USB 3 түбірлік хабты қайта іске қосады, сондықтан USB құрылғылары бір сәтке ажырайды.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>HIDMaestro осы компьютерде не қалдырғаны оқылуда…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro осы компьютерде жоятын ештеңе қалдырмады.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Қалады: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Оқу мүмкін болмады: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Жойылмады: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth драйвері</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Жойылды</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Сақталды</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Оқылмады</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Жойылмады</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 контроллерлерінің, PlayStation Move және Navigation контроллерінің Bluetooth арқылы қосылуына мүмкіндік береді. PadForge ішіне ендірілген және олардың бірі алғаш жұптастырылғанда орнатылады.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 контроллерлерін Bluetooth арқылы қосады.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>BthPS3 жою</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Бұл BthPS3-ті осы компьютерден жояды: оның драйверлерін, оның Bluetooth-қа қосатын сүзгісін және PadForge жұптастыру үшін PlayStation 3 контроллерлеріне берген WinUSB драйверін. PadForge алдымен өз қозғалтқышын тоқтатады, ал драйверлер түсірілгенше Bluetooth біраз уақытқа өшеді. Содан кейін PlayStation 3, Move және Navigation контроллерлері тек USB арқылы жұмыс істейді. Біреуін жұптастыру BthPS3-ті қайта орнатады.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Осы компьютерден жойылатындар міне осылар. Содан кейін PlayStation 3, Move және Navigation контроллерлері тек USB арқылы жұмыс істейді, біреуін жұптастыру BthPS3-ті қайта орнатқанша.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>BthPS3 осы компьютерде не қалдырғаны оқылуда…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 осы компьютерде жоятын ештеңе қалдырмады.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini осы драйверлерді пайдаланады, сондықтан ол орнатылып тұрғанда олар қалады.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth қайта қосылмады. Оны Windows параметрлерінде қосыңыз.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Виртуалды MIDI порттары және MIDI кірісі. Windows 11 25H2 жүйесінде бұл API 2026 жылғы қараша айының соңындағы жаңартудан бастап бар. Басқа компьютерлер PadForge орната алатын Windows MIDI Services орындау ортасын немесе ескі MIDI API интерфейсін пайдаланады.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Виртуалды MIDI порттары және MIDI кірісі.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Windows жүйесіне кірістірілген</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>App SDK орындау ортасы</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Қолжетімсіз</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Бұл әрекет Microsoft компаниясының Windows MIDI Services Runtime and Tools жинағын MIDI Settings қолданбасымен, MIDI консолімен және PowerShell модулімен бірге жояды. Microsoft оларды енді жүктеп алуға ұсынбайды, сондықтан оларды қайта орнату мүмкін болмайды.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Виртуалды VR контроллерлеріне арналған VR орындау ортасы. Steam тіркелгісін не Steam клиентін қажет етпей, Valve серверлерінен орнатылады (бірнеше ГБ).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Виртуалды VR контроллерлеріне арналған VR орындау ортасы.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Орнату орны</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>SteamVR бағдарламасын жою</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Бұл әрекет {0} қалтасындағы Steam клиентінсіз орнатылған SteamVR бағдарламасын жояды және бірнеше ГБ орын босатады. SteamVR қайта орнатылмайынша VR виртуалды контроллерлері жұмыс істемейді.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Диагностика</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Нұсқа туралы ақпарат және ақауларды жою үшін қозғалтқыш оқиғаларын журналға жазу.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Диагностика журналын жүргізу</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Қозғалтқыш оқиғаларын төменде көрсетілген қалтадағы diagnostics.log файлына үздіксіз жазады. Қайта іске қосулардан кейін де қосулы қалады. Файл 8 МБ көлемге жеткенде, ол diagnostics.log.old файлына ауыстырылады.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Қозғалтқыш оқиғаларын журнал қалтасындағы diagnostics.log файлына үздіксіз жазады, оны «Журнал қалтасын ашу» түймесі ашады. Қайта іске қосулардан кейін де қосулы қалады. Файл 8 МБ көлемге жеткенде, ол diagnostics.log.old файлына ауыстырылады.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Үзіндіні сақтау</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Қозғалтқыштың ең соңғы оқиғаларын жаңа файлға сақтайды. Диагностика журналы өшірулі болса да жұмыс істейді.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Журнал қалтасын ашу</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Бағдарлама туралы</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Контроллер тағайындау утилитасы</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Соңғы нұсқа орнатылған.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Құжаттама</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Жаңартуларды тексеру</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>SDL3, WPF және .NET 10 негізінде қайта құрылған x360ce жобасының заманауи тармағы</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge кез келген енгізу құрылғысын кез келген виртуалды контроллерге айналдырады. Геймпадтар, джойстиктер, пернетақталар, тінтуірлер және сенсорлы экрандар ойындар нақты құрылғы ретінде қабылдайтын виртуалды ойын контроллерлеріне (Xbox, PlayStation, ұшу джойстиктері, рөлдер, үшінші тарап геймпадтары) немесе пернетақта+тінтуір / MIDI шығысына тағайындалады. HIDMaestro және Windows MIDI Services негізінде жұмыс істейді. Контроллер кірісі үшін SDL3, пернетақта мен тінтуір үшін Windows Raw Input, әр ойын үшін құрылғыларды жасыру үшін HidHide пайдаланады және тағайындауларға, өлі аймақтарға, сезімталдық қисықтарына және күштік кері байланысқа арналған заманауи Fluent Design интерфейсін ұсынады.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Шолу</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Пайдаланылған технологиялар</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Алғыстарды іздеу</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Барлық алғыстарды көрсету</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Азырақ алғыс көрсету</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>«{0}» сұранысына сәйкес алғыс жоқ.</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Орындау ортасы және WPF фреймворкі. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Орындау ортасы және WPF фреймворкі.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллер кірісі және құрылғыларды санау. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллер кірісі және құрылғыларды санау.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Әр құрылғы бойынша пернетақта мен тінтуір кірісі</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуалды MIDI құрылғысының шығысы (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Виртуалды MIDI құрылғысының шығысы (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Контроллердің 3D бейнесі. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>Контроллердің 3D бейнесі.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF үшін Fluent 2 дизайн жүйесі. Wpf.Ui.dll ішінде VirtualizingWrapPanel, fluentui-system-icons қаріптері, сондай-ақ WPF және microsoft-ui-xaml кодтары бар. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF үшін Fluent 2 дизайн жүйесі. Wpf.Ui.dll ішінде VirtualizingWrapPanel, fluentui-system-icons қаріптері, сондай-ақ WPF және microsoft-ui-xaml кодтары бар.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>Деректерді байланыстыруға арналған CommunityToolkit.Mvvm. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>Деректерді байланыстыруға арналған CommunityToolkit.Mvvm.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly белгішелер жинағы</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly авторының «Xbox Series Button Icons and Controls» жинағынан алынған стик пен триггер белгішелері (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly авторының «Xbox Series Button Icons and Controls» жинағынан алынған стик пен триггер белгішелері.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Сенсорлық тақтадағы пішінді үлгімен салыстырғыш (шеңбер / шаршы / үшбұрыш / Z / құсбелгі және өзіңіз жазып алған қимылдар). Magrofuoco, Vatavu, Anthony және Wobbrock авторларының JavaScript эталонының C# тілінде қайта жасалған нұсқасы. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Сенсорлық тақтадағы пішінді үлгімен салыстырғыш (шеңбер / шаршы / үшбұрыш / Z / құсбелгі және өзіңіз жазып алған қимылдар). Magrofuoco, Vatavu, Anthony және Wobbrock авторларының JavaScript эталонының C# тілінде қайта жасалған нұсқасы.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Пернетақта + тінтуір алдын ала қарау бөлімі салатын пернетақталардағы перне орындары мен негізгі қабат пернелері, QMK орналасу деректерінен және Keychron компаниясының QMK форкінен жасалған. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Пернетақта + тінтуір алдын ала қарау бөлімі салатын пернетақталардағы перне орындары мен негізгі қабат пернелері, QMK орналасу деректерінен және Keychron компаниясының QMK форкінен жасалған.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Бір саусақпен салынған пішіндерде нүктелер бұлтымен салыстырғышпен қатар жұмыс істейтін бұрыштық шекті бағалау тәсілі. GestureSign жобасындағы PointPatternAnalyzer бағалау идеясын төл C# кодымен іске асырады. GPL-2.0, тек құжаттама ретінде.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Бір саусақпен салынған пішіндерде нүктелер бұлтымен салыстырғышпен қатар жұмыс істейтін бұрыштық шекті бағалау тәсілі. GestureSign жобасындағы PointPatternAnalyzer бағалау идеясын төл C# кодымен іске асырады. Тек құжаттама ретінде.</value></data>
   <data name="About_License" xml:space="preserve"><value>Лицензия</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Бұл бағдарламалық құрал CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) лицензиясы бойынша таратылады. 2D контроллер ресурстарын AL2009man (MIT) авторының Gamepad-Asset-Pack жинағы береді. TransposonY (GPL-2.0) жасаған GestureSign AngularMarginRecognizer үшін тек құжаттама ретінде оқылды, оның коды бағдарламаға енбеген. PadForge бейімдеген Xbox 360 және Steam Deck 3D модельдерін Handheld Companion (CC BY-NC-SA 4.0) береді. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services және WPF UI MIT лицензиясы бойынша таратылады. OpenXInput тек бастапқы жобаның сауда белгісі туралы ескертуімен бірге жеткізіледі және сол шарттармен өзгеріссіз қайта таратылады. Magrofuoco, Vatavu, Anthony және Wobbrock авторларының $Q Recognizer (BSD 3-Clause) алгоритмі сенсорлық тақтаның ShapeRecognizer құралына эталон болды, ол C# тілінде қайта жасалған. SDL3 zlib лицензиясы бойынша таратылады. PadForge x360ce (LGPL-3.0-or-later) жобасының бастапқы код базасынан тармақталып шыққан. Igor Budzhak (MIT) жасаған Zergatul.Obs.InputOverlay тінтуір суреттерін береді.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (SDK жүктегіші)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD үлгісі</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензия шарттары</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK шарттары</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Тек сауда белгісі туралы ескерту</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Шарттар көрсетілмеген</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Жарияланбаған</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Бірнеше лицензия</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Пайдаланушы режиміндегі виртуалды HID контроллер қозғалтқышы (ViGEmBus пен vJoy орнын басады). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Пайдаланушы режиміндегі виртуалды HID контроллер қозғалтқышы (ViGEmBus пен vJoy орнын басады).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput орнына тікелей қойылатын балама. PadForge өз виртуалды контроллерлерін өзі көрмейтіндей сүзеді. Бастапқы жобаның сауда белгісі туралы ескертуі бар, OSS лицензиясы жоқ.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput орнына тікелей қойылатын балама. PadForge өз виртуалды контроллерлерін өзі көрмейтіндей сүзеді.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Физикалық құрылғыларды ойындардан жасыруға арналған ядро драйвері. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Физикалық құрылғыларды ойындардан жасыруға арналған ядро драйвері.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Шақыру</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>«Міне біз Мәсіх туралы айтамыз, Мәсіхке қуанамыз, Мәсіхті уағыздаймыз, Мәсіх туралы пайғамбарлық етеміз және пайғамбарлықтарымызға сәйкес жазамыз; осылайша балаларымыз күнәларының кешірілуі үшін қай қайнар‑көзден іздеу керектігін білуі үшін.»</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2‑ші Нефи 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Барлық ақиқат пен құтқарылудың қайнары Иеміз Иса Мәсіхке мәңгі-бақи даңқ, құрмет және мадақ болсын.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Сізді ComeUntoChrist.org сайтына кіріп, Ол туралы және Соңғы күндердегі әулиелердің Иса Мәсіх Шіркеуі туралы көбірек білуге шын жүректен шақырамыз.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Құлаққап шығысына арналған Bauer стерео-бинаурал кроссфиді. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Құлаққап шығысына арналған Bauer стерео-бинаурал кроссфиді.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense динамигінің дыбысын Bluetooth арқылы беретін таза C# тіліндегі Opus кодтағышы. Авторы Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>DualSense динамигінің дыбысын Bluetooth арқылы беретін таза C# тіліндегі Opus кодтағышы. Авторы Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga жүргізген DualSense Bluetooth дыбысы зерттеуі: контроллер динамигінің ағыны жүретін пакеттік тасымалдау. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>egormanga жүргізген DualSense Bluetooth дыбысы зерттеуі: контроллер динамигінің ағыны жүретін пакеттік тасымалдау. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol ұсынған Bluetooth динамигі әдісі: Opus кадрлау және пакет құрылымы. Сондай-ақ бөліскен нәтижелері мен сынақтары үшін TechAntohere авторына алғыс. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol ұсынған Bluetooth динамигі әдісі: Opus кадрлау және пакет құрылымы. Сондай-ақ бөліскен нәтижелері мен сынақтары үшін TechAntohere авторына алғыс.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB контроллер дыбысын тікелей өткізудің эталондық іске асырылуы. Авторы WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Таңба кідірісі (мс)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Терілетін таңбалар арасындағы миллисекунд саны, 1000-ға дейін. 0 мәні бүкіл мәтінді бірден тереді.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Әрекетсіз кезде ажырату</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Қуат</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Құрылғы досьесі</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Мәліметтер</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>минут (0 = ешқашан)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB арқылы қосылғанда Bluetooth байланысын ажырату</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Жылдам зарядтау. Bluetooth арқылы қосылған контроллер зарядталып жатқанын хабарласа, Bluetooth байланысы үзіледі, сонда ол радионы қоректендірмей зарядталады. Кез келген USB қуат көзі, соның ішінде розеткаға қосылатын зарядтағыштар да есепке алынады. Кабель қосулы тұрғанда Bluetooth байланысын қайта қоссаңыз, кабель келесі рет ажыратылғанға дейін оған тиіспейді.</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Бұл PlayStation геймпадынан бағыттарды тікелей сұрайды, сонда би кілемшесінде сол мен оң немесе жоғары мен төмен бірінші қадамнан бастап бірге тіркеледі. Олар Жоғары, Төмен, Сол және Оң көрсеткі түймелері ретінде келеді, оларды 3.34 микробағдарламасы да қарама-қарсы бағыттар басылғаннан кейін өзі жібереді, сол кезде PadForge сұрауды тоқтатады. Оған дейін адаптер геймпадты өзі оқуының көбін өткізіп жібереді.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 басу күші</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Ойыншы нөмірі</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер нөмірді сақтайды және сол ойыншы ретінде қайта қосылады. Содан кейін Windows жаңа құрылғыны көреді, сондықтан порт қайта пайда болғанда оны қайта тағайындаңыз.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер нөмірді сақтайды және қайта қосылады, оны Windows жаңа құрылғы ретінде көреді.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Ойыншы</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Ойыншыны орнату</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast экраны</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Сақтамайынша порт ештеңе алмайды.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Көрсету</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Адаптердің суреті</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Профиль аты</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO екі Taiko барабаны ретінде оқылуда.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} iCade контроллері ретінде оқылуда.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} қайтадан пернетақта ретінде оқылуда.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Жарық тапаншасы</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Әдепкі көздеу ауқымы: X {0}–{1}, Y {2}–{3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Калибрленген көздеу ауқымы: X {0}–{1}, Y {2}–{3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Тапаншаны калибрлеу</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Барлық пернетақталар (біріктірілген)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Барлық тінтуірлер (біріктірілген)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Құрылғылар</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} қосылған</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Құрылғыларды іздеу</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Барлығы</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Контроллерлер</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Пернетақта және тінтуір</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad пернетақтасын оқу</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad пен uDraw планшеттерін оқу</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Геймпадтарды оқу</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} қайтадан Windows драйверінде жұмыс істейді.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} үшін Windows драйверін қалпына келтіру мүмкін болмады.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows {0} құрылғысын өз драйверіне қайтарды. Қайта ауыстыру үшін оны «Құрылғылар» бетінде таңдаңыз.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> желіде / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> барлығы</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Бұл құрылғыны және оның параметрлерін алып тастау</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Құрылғыны алып тастау</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} құрылғылар тізімінен алынып тасталады, ал оның сақталған параметрлері жойылады.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Құрылғыны тағайындау үшін оны бүйірлік тақтадағы контроллер карточкасына сүйреп апарыңыз.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Өнім: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Құрылғыны тағайындау үшін оны бүйірлік тақтадағы контроллерге сүйреп апарыңыз.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Құрылғы тағайындауын жіберу</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Виртуалды контроллерге тағайындау</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Тағайындауды қосу/өшіру</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Әзірге виртуалды контроллер ұяшықтары жоқ. Бұл құрылғыны тағайындау үшін бақылау тақтасында ұяшық жасаңыз.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Кіріс режимі</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Бұл құрылғыны осы контроллерге тағайындайды немесе алып тастайды.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Шикі джойстик режимін мәжбүрлеу (геймпадқа қайта тағайындауды айналып өту)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL геймпад тағайындауының орнына шикі HID индекстерін оқу. SDL түйме/ось схемасын қате анықтаған кезде пайдаланыңыз.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Кірісті жасыру</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Ойындардан жасыру (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide драйвері арқылы бұл құрылғыны басқа қолданбалардан толығымен жасырады. PadForge бұрыннан қосылып тұрған USB контроллерін жасырғанда, оны Windows жүйесінде қайта қосады, сондықтан оны ашып тұрған кез келген бағдарлама одан айырылады. Bluetooth контроллері немесе қабылдағышты басқа контроллермен бөлісетін контроллер келесі рет қосылғанша, жасырылмай тұрып оны ашқан бағдарламалармен қала береді.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Бұл параметрді қосу үшін HidHide драйверін орнатыңыз</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Тағайындалған кірістерді бөгеу (ілмектер)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Тек тағайындалған нақты пернелер/түймелерді бөгейді, тағайындалмаған кірістер ары қарай өте береді</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Шикі кіріс күйі</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Шикі кірісін қарау үшін құрылғыны таңдаңыз.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Кірістерді сынау</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Құрылғының параметрлерін көру және кірістерін сынау үшін оны таңдаңыз.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Осьтер</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Түймелер</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Пернетақта</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Таңдалған құрылғыда клондауға болатын ось, түйме немесе POV қосқышы жоқ.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} осы ұяшыққа 1:1 тікелей өткізу ретінде клондалсын ба? Схема {1} ось, {2} түйме және {3} POV болады, ал ұяшықтағы осы құрылғының жолдары оның өз кірістерімен ауыстырылады.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Бұл құрылғыда кеңейтілген контроллер көтере алатыннан көп кіріс бар. Тағайындалғаны: ось {0}/{1}, түйме {2}/{3}, POV {4}/{5}. Қалғандары тағайындалмай қалды.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Импортталған профильдер</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Пайдаланушы импорттаған HIDMaestro профильдері PadForge.xml ішінде сақталады және әр кеңейтілген ұяшықтың профиль тізімінде шығады. Төменде қосылған құрылғыдан жаңасын түсіріп алыңыз немесе барын экспорттаңыз / жойыңыз.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Импортталған профильдеріңіз ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Импорттауға болатын қосылған құрылғылар</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Контроллер алдын ала баптаулары</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge жеткізбейтін контроллер үшін алдын ала баптауды файлдан немесе контроллердің өзінен қосыңыз.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Импортталған</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Қосылған құрылғыдан импорттау</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Экспорттау…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Жою</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Жабу</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Профиль JSON файлын экспорттау</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Импортталған профиль жойылсын ба?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>«{0}» жойылсын ба? Қазір осы профильді пайдаланатын кез келген ұяшық синтетикалық «Теңшелетін» жазбасына қайтады.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Алдын ала баптау жойылсын ба?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} пайдаланатын кез келген контроллер «Теңшелетін» жазбасына қайтады. Мұны болдырмау мүмкін емес.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Экспортталды: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Экспорттау сәтсіз аяқталды: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>«{0}» жойылды.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файлдан импорттау…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файл арқылы импорттау…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Профиль JSON файлын импорттау</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Импортталды: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Оқу сәтсіз аяқталды: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro бұл профильді {1} жерінде қабылдамады: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Бұл профильде HID дескрипторы жоқ, сондықтан одан контроллер жасау мүмкін емес.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ештеңе импортталмады. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Жаңарту</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Импорттау</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(атаусыз HID құрылғысы)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID интерфейсі табылды.</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Орталық</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Өлі аймақ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Орталық ығысулар, өлі аймақ пішіні және осьтер бойынша мәндер, әр осьтің қисығы, ауқым, рөлдеу</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Ауқым сандармен, шикі мәндер</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Ауқым</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Шекараны калибрлеу» стик жете алатын шетті өлшеп, оны толық шеңберге келтіреді. Төрт жүгірткі әр бағытты ғана шектейді.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Үлгі алынуда...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Пішін сәйкестігінің шегін қалпына келтіру</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Сенсорлық тақта қимылын жазу</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Қимылды төмендегі бетке салыңыз. Диалог терезесі сіз қойған әр саусақты түсіреді. Барлық саусақтарды беттен алғанда үлгі жазылады. Алдыңғы үлгілерден басқа санды саусақпен салу жинақты тастайды.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Кенепте саусақ жанасуы күтілуде</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Қимылды жазу</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Пішінді контроллердің сенсорлық тақтасына салыңыз. Ол сәйкестендіруге болатын кіріске айналады.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Қимылды осында салыңыз.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Сенсорлық тақтаға салыңыз. Кенеп оны нақты уақытта көрсетеді.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Жазу көзі: {0}, сенсорлық тақта {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>осы сенсорлық тақта</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Сенсорлық тақта қолжетімсіз. Төмендегі кенепті тінтуірмен не сенсорлы экранмен пайдаланыңыз.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Сенсорлық тақта қолжетімсіз. Мұнда тінтуірмен, қаламмен не саусақпен салыңыз.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Салынуда…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Барлық үлгілер түсірілді. Қимылға ат беріп, «Сақтау» түймесін басыңыз.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Үлгі: {0}/{1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} үлгі</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Түсірілетін үлгілер саны</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт мәні 3. Үлгілер көп болса, сәйкестік сенімдірек, аз болса, жазу жылдамырақ.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Алынатын үлгілер</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандарт мәні 3. Үлгілер көп болса, сәйкестік сенімдірек, ал аз болса, жазу жылдамырақ.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Атауы</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Қайталау</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Қимылға ат беріңіз</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Атау қажет</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Атау тым ұзын (ең көбі 64 таңба)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Атауда жарамсыз таңбалар бар</value></data>
@@ -2301,41 +2444,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Профильдер</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Профильдерді басқару</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Белсенді ойынға қарай автоматты түрде ауысатын, әр қолданбаға арналған контроллер профильдерін жасаңыз.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Алдыңғы жоспардағы қолданбаға қарай профильдерді автоматты ауыстыру</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Профиль дегеніміз толық баптау: оның контроллерлері, сәйкестендірулері және реттеулері.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Бастапқы профильдер</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Бүкіл жанр үшін дайын профильдер. Біреуін таңдаңыз, кез келген контроллерді тағайындаңыз да, ойнаңыз.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Ойын бойынша профильдерді ауыстыру</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Автоматты ауыстыру</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, ол үшін профиль орнатылмаған</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, ол {1} профилін жүктейді</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Қазір алдыңғы қатарда: {0}, әзірге ешбір профильге ойын орнатылмаған</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Лаунчерлер мен скрипттерге сыртқы басқаруға рұқсат беру</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>PadForge.Control атты жергілікті аталған арнаны (named pipe) ұсынады, сонда Playnite, LaunchBox немесе скрипт профильдерді белсендіріп, өшіре алады. Осылай белсендірілген профиль скрипт оны босатқанша немесе профильді өзіңіз ауыстырғанша белсенді қалады. Тек жергілікті компьютер үшін.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Сыртқы басқару</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Белсенді профиль:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Ұяшықтар жоқ</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Автоауысу: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Контроллерлер жоқ</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Профильді импорттау үшін осында тастаңыз</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Жаңа</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Профиль файлын осында тастаңыз</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Жаңа профиль</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Басқаша сақтау</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Ағымдағы баптауды осында сақтау</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Өңдеу</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Жүктеу</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Әзірге ешбір профильде орындалатын файл жоқ</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Кірістірілген</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Алдымен профильді таңдаңыз.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Кірістірілген «Әдепкі» профилін өңдеуге немесе жоюға болмайды.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Профильді жою</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>«{0}» жойылсын ба? Оның сақталған ұяшықтары мен тағайындаулар көшірмесі жойылады.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Ойын орнатылмаған</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} үшін жүктеледі</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} үшін орнатылған</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Белсенді</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} үшін қосымша</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} жою керек пе?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профиль және оның автоматты ауыстыру ережесі жойылады. Мұны болдырмау мүмкін емес.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профиль жойылады. Мұны болдырмау мүмкін емес.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>«{0}» профилінде сақталған баптауды ағымдағысымен ауыстыру керек пе? Оның аты мен ойындары сақталады.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Ауыстыру</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Профиль ретінде сақтау</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Профильді өңдеу</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Профиль атауы:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Жаңа профиль</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Атауы</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Жаңа профиль</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Орындалатын файлдар (алдыңғы жоспардағы тереземен салыстырылады):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Оны жүктейтін ойындар</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Сұрау жиілігі</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Әдепкі (жалпы параметр)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>«{0}» профилі белсенді кезде қайта анықталған: {1} мс</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Әр ұяшықтың тағайындаулары мен әр құрылғының параметрлерінің көшірмесін бір атаумен сақтайды. Байланыстырылған орындалатын файлдар оған автоматты түрде ауысады.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профильдің атын өзгертеді және оны белсендіретін орындалатын файлдарды жаңартады. Сақталған тағайындаулар мен параметрлер өзгермейді.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Әр контроллердің сәйкестендірулері мен параметрлерін бір атаумен сақтайды. Ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профиль ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллерсіз басталады. Ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Жұмыс істеп тұрған ойынды қосу</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Басқа бағдарламаның ашық терезесі жоқ.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} алып тастау</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Осы профиль жүктелгендегі сұрау жиілігі</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Параметрлерді мынадан көшіру...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Параметрлерін көшіретін құрылғыны таңдаңыз:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Мынадан көшіру</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>{0} контроллерінің сәйкестендірулері мен құрылғы реттеулерін басқа контроллердікімен ауыстырыңыз.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Басқа контроллердің макростарын {0} контроллеріне қосыңыз.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Тағайындалмаған, бұрынғы сәйкестендірулер сақталады</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Рұқсат етілген тізімге қосылатын қолданбаны таңдаңыз</value></data>
@@ -2377,6 +2541,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>Ауқым</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Анти-өлі аймақ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Нүкте қосу үшін екі рет басыңыз. Жою үшін тінтуірдің оң жақ түймесін басыңыз. Реттеу үшін сүйреңіз.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>қисық өңдегіші</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Триггер осі</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2731,8 +2896,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Негізгі</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ауыстыру қабаты</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Негізгіні баптау</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ауыстыру қабаты ұшпа тақтасындағы және қабаттар жолындағы Негізгі қабаттың атауы, белгішесі және түсі.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Қабат атауы</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Белсендіргіш кірісі</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Атауы</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ұстап тұратын кіріс</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Басатын кіріс</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Келесі қабат кірісі</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Алдыңғы қабат кірісі</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Және кіріс</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Кірісті таңдаңыз</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Сәйкестендірілмеген басқару элементтері</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Негізгіге өту</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ештеңе істемеу</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, кіріс түрі, уақыт және түс</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Ұстау</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ауыстырғыш</value></data>
@@ -2759,14 +2935,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Белгіленсе, бұл қабаттың нысанасы негізгі жолға өтпей, өшірулі қалады.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Кідіріс</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Қабат әрекет етпес бұрын кірістің қанша уақыт ұсталып тұруы керек. «Ұстау» режимі үшін бұл секірісті сүзу. «Ауыстырғыш», «Бекіту» және «Жабысқақ» үшін ол ауыстыруды ұзақ басуға айналдырады: ұстау осы уақыттан асқанда қабат бір рет ауысады, ал қысқа түрту ештеңе істемейді. 0 бірден әрекет етеді.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Аккордтың екінші кірісі</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Ось шегі</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Қабаттарды кезектеу</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Тек қабатта болғанда</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Кез келген қабат</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Кіріс тек таңдалған қабат белсенді болғанда ғана есептеледі. Тексеру кіріс басылған сәтте орындалады және бүкіл басу бойы сақталады. «Кез келген қабат» кірістің әрқашан есептелетінін білдіреді. Әр қабаттан шығуды сол қабатта басқа белсендіргішпен немесе «Қабатты ауыстыру» макросымен баптаңыз.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Келесі түйме</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Алдыңғы түйме</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Айналмалы</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Қосулы болса, соңғы қабаттан әрі өткенде біріншісіне, біріншісінен әрі өткенде соңғысына оралады. Өшірулі болса, таңдау шеттерде тоқтайды.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Негізгіні қосу</value></data>
@@ -2778,18 +2951,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Бір түймені (немесе POV бағытын) басу қабатты іске қосады.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Іске қосу үшін екі түймені бір мезгілде ұстау керек. Әр түрлі құрылғылардағы аккордқа қолдау бар.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Аналогтық ось шек мәнінен асып тұрғанда іске қосылады.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Белсендіргіш ұсталып тұрғанда қабат белсенді болады. Жібергенде босатылады.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Кірісі ұсталып тұрғанда, бұл қабаттың сәйкестендірулері Негізгі қабатты алмастырады.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Іске қосу үшін түртіңіз. Босату үшін қайта түртіңіз. Қабат көптеген басулар бойы сақталады.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Бұл қабатты бекітіп, ұстап тұру үшін басыңыз. Негізгіге қайту үшін қайта басыңыз. Басқа «Бекіту» түймесі өз қабатына ауыстырады.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Әр басу реттелген қабаттар тізімі бойынша алға жылжиды. Соңында негізгіге оралады.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Іске қосу үшін бір рет түртіңіз. Келесі тағайындалған түйме басуы қабатта орындалады, содан кейін автоматты түрде босатылады.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Өз түймесі жоқ. Оны «Цикл» басқаруының кезегіне қосыңыз, сонда цикл оған жетеді.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Тағайындалмаған нысаналарды негізгіден мұраға алу</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Жібергенде іске қосу</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Бұл белсендіргіш іске қосылмас бұрын түйме жіберілгенше күтеді. Ұстау кідірісі орнатылған болса, жіберу есептелуі үшін басу сонша уақытқа созылуы керек.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Белсендіргіштің өз тағайындауын да орындау</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Белгіленсе, белсендіргіш түйме оны көз ретінде пайдаланатын кез келген жолды басқара береді. Бір басу қабатты да ауыстырады, түйменің өз тағайындауын да орындайды. Белгіленбесе (әдепкі), белсендіргішті басу тек қабатты ауыстыруға жұмсалады.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Белгіленсе, бұл қабат нақты тағайындамаған нысаналар негізгі қабатқа өтеді. Белгіленбесе (әдепкі), қабат негізгіні толығымен ауыстырады, ал тағайындалмаған нысаналар өшірулі қалады.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Негізгіге өту таңдалса, бұл қабат сәйкестендірмеген басқару элементтері Негізгі қабаттағы сәйкестендірулерін сақтайды. Ештеңе істемеу таңдалса, қабат Негізгіні толығымен алмастырады, ал ол элементтер өшірулі қалады.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Бұру ауқымы</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Бұру ауқымын орнату</value></data>
@@ -2992,15 +3164,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Таңдалған құрылғыда кірістірілген динамик жоқ. Бұл геймпадтың макрос дыбыстары жүйенің әдепкі шығысында ойнатылады.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Дыбыс шығысын қалпына келтіру</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) жасаған браузерлік DualSense сынақ жинағы: PadForge виртуалды геймпадтардан физикалық геймпадтарға жіберетін Sony feature-report CRC кадрлау және микробағдарлама сынақ командаларының эталоны. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) жасаған браузерлік DualSense сынақ жинағы: PadForge виртуалды геймпадтардан физикалық геймпадтарға жіберетін Sony feature-report CRC кадрлау және микробағдарлама сынақ командаларының эталоны.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius жасаған DualShock 4 Bluetooth дыбыс эталоны: PadForge DS4 динамик ағынының есеп кадрлауы. SBC кодтағышы Bluetooth A2DP спецификациясы бойынша C# тілінде төл түрде жазылған. Хаттама құжаттамасы khallmark жасаған ds4mac жобасынан алынған. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>nefarius жасаған DualShock 4 Bluetooth дыбыс эталоны: PadForge DS4 динамик ағынының есеп кадрлауы. SBC кодтағышы Bluetooth A2DP спецификациясы бойынша C# тілінде төл түрде жазылған. Хаттама құжаттамасы khallmark жасаған ds4mac жобасынан алынған.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Экспорттау…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Импорттау…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>«{0}» профилі экспортталды.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>«{0}» профилі импортталды ({1} дыбыс пакеті тіркелді).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Бұл файл оқылатын PadForge профилі емес.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>{0} ішінен дыбыс таңдау</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Дыбыс пакеттері</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Дыбыс макростарына арналған дыбыс zip файлдары</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Дыбыс пакеті .pfsounds кеңейтімі бар, дыбыстардан тұратын бір zip файл болып табылады. Оны осында қосыңыз, содан кейін оның дыбыстарын кез келген дыбыс макросында таңдаңыз. PadForge файлдан тікелей оқиды, оны ешқашан тарқатпайды. Тасымалдауға ыңғайлы болуы үшін пакеттерді PadForge.exe жанында сақтаңыз.</value></data>
@@ -3045,20 +3216,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Сәйкестендіру деректерін қорғау</value>
+    <value>Жұптастыру сәйкестендіруі</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Бұл компьютердің жұптастыру деректері қалай сақталатыны. Жұптастыруларыңызды флешкамен компьютерлер арасында тасымалдау үшін тасымалды режимді таңдаңыз.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Осы компьютерге ат беру</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Жақын маңдағы компьютерлер (жұптастырылмаған)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Қалпына келтіру</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Қашықтан байланыс құпиясөзі</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge сенсорлық тақтасы</value>
@@ -3090,9 +3254,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>Жұптастырылған компьютер</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Желіде</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Желіден тыс</value>
   </data>
@@ -3109,7 +3270,7 @@
     <value>Қорғауын өзгертпес бұрын ағымдағы сәйкестендіру деректерінің құлпын ашыңыз.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Тасымалды сәйкестендіру деректеріңізді қорғау үшін құпиясөз орнатыңыз. Әр компьютерде Қашықтан байланыс құлпын ашу үшін оны енгізесіз.</value>
+    <value>Құпия сөз осы компьютердің жұптастыру сәйкестендіруін қорғайды.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Сәйкестендіру деректерін қорғау жаңартылды.</value>
@@ -3129,7 +3290,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>{0}:{1} мекенжайына қосылуда…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Автоматты түрде қайта қосылу</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Автоматты қайта қосылу</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Тыңдалуда: {0}</value>
   </data>
@@ -3148,65 +3309,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>{0} компьютері қосылды, {1} құрылғы</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Қосылған пакеттен дыбыс таңдаңыз немесе файлды шолыңыз.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Файлдарды шолу…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Дыбыс таңдау</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Дыбыс контроллердің динамигінде, ал ол жоқ болса компьютерде ойнайды.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Дыбысты пайдалану</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>{0} ойнату</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Контроллер дыбысын көшіру және аудио басс арқылы триггер дірілі үшін WASAPI loopback жазу. PadForge жеткізбейтін NAudio.Midi кітапханасы ескі MIDI API үшін WinMM жариялаулары мен порт тізбектерінің, басу күші 0 болатын Note On хабары Note Off болып саналатыны туралы ереженің және sustain сияқты қосу/өшіру контроллерлерінің де эталоны болды. Авторы Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Контроллер дыбысын көшіру және аудио басс арқылы триггер дірілі үшін WASAPI loopback жазу. PadForge жеткізбейтін NAudio.Midi кітапханасы ескі MIDI API үшін WinMM жариялаулары мен порт тізбектерінің, басу күші 0 болатын Note On хабары Note Off болып саналатыны туралы ереженің және sustain сияқты қосу/өшіру контроллерлерінің де эталоны болды. Авторы Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Дауыстық макрос сөз тіркестерін тыңдайтын желіден тыс сөйлеуді тану құралы. Авторы Alpha Cephei. Модель PadForge ішінде жеткізіледі. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Дауыстық макрос сөз тіркестерін тыңдайтын желіден тыс сөйлеуді тану құралы. Авторы Alpha Cephei. Модель PadForge ішінде жеткізіледі.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Қашықтан байланыс жұптастыруы мен тасымалдауына арналған криптография (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, MIT стиліндегі лицензия.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Қашықтан байланыс жұптастыруы мен тасымалдауына арналған криптография (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius жасаған, DualShock 3 контроллерінің ортақ радио арқылы қосылуына мүмкіндік беретін, бірге жеткізілетін Bluetooth профилі мен PSM сүзгі драйверлері. Жұптастыру кезінде қолданба ішінде орнатылады. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>nefarius жасаған, DualShock 3 контроллерінің ортақ радио арқылы қосылуына мүмкіндік беретін, бірге жеткізілетін Bluetooth профилі мен PSM сүзгі драйверлері. Жұптастыру кезінде қолданба ішінде орнатылады.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer жасаған DualShock 3 хаттама эталоны: sixpair feature-есептері, Bluetooth шығыс есебінің үлгісі, қосу реті, батарея картасы. PadForge іске асыруы төл C# кодында жазылған. HIDMaestro ұсынатын DualShock 3 (SIXAXIS): Full контроллері DsHidMini жобасының SXS режиміндегі есеп дескрипторын пайдаланады. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer жасаған DualShock 3 хаттама эталоны: sixpair feature-есептері, Bluetooth шығыс есебінің үлгісі, қосу реті, батарея картасы. PadForge іске асыруы төл C# кодында жазылған. HIDMaestro ұсынатын DualShock 3 (SIXAXIS): Full контроллері DsHidMini жобасының SXS режиміндегі есеп дескрипторын пайдаланады.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Қолданба ішіндегі BthPS3 орнатуы және жасырылған USB контроллерін босату үшін драйвер қоймасына орнату, Bluetooth класс сүзгісін тіркеу және USB портын қайта қосу. Авторы nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Қолданба ішіндегі BthPS3 орнатуы және жасырылған USB контроллерін босату үшін драйвер қоймасына орнату, Bluetooth класс сүзгісін тіркеу және USB портын қайта қосу. Авторы nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro сымды драйвері және PadForge WinUSB драйверіне байланыстыратын контроллерлер үшін USB қатынасы, libusb-1.0.dll ретінде жеткізіледі. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro сымды драйвері және PadForge WinUSB драйверіне байланыстыратын контроллерлер үшін USB қатынасы, libusb-1.0.dll ретінде жеткізіледі.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Телефондағы веб-контроллердегі сенсорлы джойстик. Авторы Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Телефондағы веб-контроллердегі сенсорлы джойстик. Авторы Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge бірге жеткізетін тағайындаулар кеңейтетін қауымдастықтың геймпад тағайындаулары дерекқоры. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge бірге жеткізетін тағайындаулар кеңейтетін қауымдастықтың геймпад тағайындаулары дерекқоры.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide түймесінің LED зерттеуі: XboxGIP пакет құрылымы және анықтау тізбегі. Авторы Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide түймесінің LED зерттеуі: XboxGIP пакет құрылымы және анықтау тізбегі. Авторы Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Бұрау бұрышымен рөлдеу және көлбеу математикасы. Авторлары JibbSmart және Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Бұрау бұрышымен рөлдеу және көлбеу математикасы. Авторлары JibbSmart және Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Ойыншы кеңістігі мен әлем кеңістігіндегі гироскоп түрлендіруі. Авторы JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Ойыншы кеңістігі мен әлем кеңістігіндегі гироскоп түрлендіруі. Авторы JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) хаптикалық есеп құрылымы және нота кезеңі математикасы. Авторлары Pila және Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) хаптикалық есеп құрылымы және нота кезеңі математикасы. Авторлары Pila және Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 және Steam Deck үшін LFO-тон хаптикалық құрылымы. Авторлары Pila, Crazy және AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 және Steam Deck үшін LFO-тон хаптикалық құрылымы. Авторлары Pila, Crazy және AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap режимдеріне арналған SOCD реттеу семантикасы. Авторы valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap режимдеріне арналған SOCD реттеу семантикасы. Авторы valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam шеберханасындағы контроллер конфигурацияларын анонимді сеанс арқылы алатын Steam желілік клиенті. Авторлары Ryan Stecker және SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam желілік хаттамасы үшін пайдаланатын Protocol Buffers сериализаторы. Авторы Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 Steam желілік хаттамасы үшін пайдаланатын Protocol Buffers сериализаторы. Авторы Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot бөліктері үшін пайдаланатын Zstandard декомпрессиясы, zstd кітапханасының C# тіліне көшірілген нұсқасы. Авторы Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 Steam depot бөліктері үшін пайдаланатын Zstandard декомпрессиясы, zstd кітапханасының C# тіліне көшірілген нұсқасы. Авторы Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii жұптастыру рәсімінің, динамиктің ADPCM форматының, Wii Remote пультінің жанынан және тік бағдарының, стик шектеу моделі мен оның сақтау пішімінің және гироскоп осьтері келісімінің құжаттамасы. GPL-2.0-or-later, тек құжаттама ретінде оқылды, GPL коды жеткізілмейді.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii жұптастыру рәсімінің, динамиктің ADPCM форматының, Wii Remote пультінің жанынан және тік бағдарының, стик шектеу моделі мен оның сақтау пішімінің және гироскоп осьтері келісімінің құжаттамасы. Тек құжаттама ретінде оқылды, GPL коды жеткізілмейді.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock әрекетінің құжаттамасы: әрекетсіз кезде ажырату, сенсорлық тақта шекаралары, батарея деректерін декодтау, Bluetooth ажырату IOCTL, DualSense діріл режимінің биттері, гироскоп тербелісі қисығы, стикті тінтуір ретінде пайдалану масштабы және Bluetooth шығыс есебінің CRC бастапқы мәні. Оның виртуалды пернетақтасының перне кестесі PadForge кестесіне бағыт болды. GPL-3.0-or-later, тек құжаттама ретінде оқылды, GPL коды жеткізілмейді.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock әрекетінің құжаттамасы: әрекетсіз кезде ажырату, сенсорлық тақта шекаралары, батарея деректерін декодтау, Bluetooth ажырату IOCTL, DualSense діріл режимінің биттері, гироскоп тербелісі қисығы, стикті тінтуір ретінде пайдалану масштабы және Bluetooth шығыс есебінің CRC бастапқы мәні. Оның виртуалды пернетақтасының перне кестесі PadForge кестесіне бағыт болды. Тек құжаттама ретінде оқылды, GPL коды жеткізілмейді.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl деректерін растайтын GIP LED командалары құжаттамасы. GPL-2.0-or-later, тек құжаттама.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl деректерін растайтын GIP LED командалары құжаттамасы. Тек құжаттама.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR камерасы мен Balance Board әрекетінің құжаттамасы. Авторы Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR камерасы мен Balance Board әрекетінің құжаттамасы. Авторы Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD діріл деректер пішімінің құжаттамасы. Авторы Sergey004. Тек хаттама фактілері үшін оқылды.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Жұптастыру</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Контроллерді жұптастыру</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Контроллерді жұптастыру</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Wii пультін жұптастыру</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Батарея қақпағын ашып, қызыл SYNC түймесін басыңыз.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Шамдары жыпылықтап тұрғанда пультті осы компьютердің жанында ұстаңыз.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>DualShock 3 жұптастыру</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Move немесе Navigation контроллерін жұптастыру</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Сериялық контроллерді қосу</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>DJI пультін қосу</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Контроллер тобы</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Батарея қақпағын ашып, қызыл SYNC түймесін басыңыз. Контроллеріңіз пайда болғанша PadForge іздеуді жалғастыра берсін.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Уақытша жұптастыру (1 және 2 түймелерін ұстаңыз)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Жұптастыру</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Іздеуде. Қазір SYNC түймесін басыңыз.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Пульт іздеуде.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Табылған контроллерлер</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Әзірге контроллерлер табылмады. Көк шамдардың жыпылықтап тұрғанына көз жеткізіңіз.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} жұптастырылды. Ол құрылғылар тізіміңізде пайда болады.</value></data>
@@ -3216,7 +3382,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>Дайын</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve компаниясының OpenVR клиенттік API (BSD 3-Clause): VR гарнитуралары мен қозғалыс контроллерлері кіріс көздері ретінде. Төл орындау ортасы өзіңіздің SteamVR орнатуыңыздан жүктеледі.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve компаниясының OpenVR клиенттік API: VR гарнитуралары мен қозғалыс контроллерлері кіріс көздері ретінде. Төл орындау ортасы өзіңіздің SteamVR орнатуыңыздан жүктеледі.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Жұмыс істеп тұр</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Жұмыс істеп тұр, драйвер қосылған</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Жұмыс істеп тұр, контроллерлер белсенді</value></data>
@@ -3254,13 +3420,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Жұптастыру аяқталмады. Сәтсіз аяқталған қадам жоғарыда көрсетілген.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Жабу</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC белгілері</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Белгіні тіркеу</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>UID кодын түсіріп алу үшін белгіні оқу құрылғысына тигізіңіз.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(күтілуде)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Атауы:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Белгіні оқу құрылғысына тигізіп, оған ат беріңіз. Ол сәйкестендіруге болатын түймеге айналады.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Белгіні оқу құрылғысына тигізіңіз.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Атауы</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Белгіге ат беріңіз</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Тіркеу</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Тіркелген белгілер</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Тіркелген</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>NFC оқу құрылғысы табылмады. PC/SC оқу құрылғысын қосып, қайта ашыңыз.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Белгі түсірілді. Атау енгізіп, «Тіркеу» түймесін басыңыз. Оны ауыстыру үшін басқа белгіні тигізіңіз.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» тіркелді. Тағы қосу үшін басқа белгіні тигізіңіз.</value></data>
@@ -3338,22 +3503,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack ортақ жадын да ашу мүмкін болмады.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Жасырын түймелерді үйрену / басқару</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Жасырын түймелер</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Түймені үйрену</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Сұралғанда жасырын түймені бір рет басыңыз. PadForge осы компьютердегі пернетақтаны, тінтуірді, өндірушінің әр есебін және әр жүйелік оқиғаны бақылап, түйме өзгерткен кез келгенін жазып алады.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Компьютер:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Үйренуді бастау</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>PadForge-қа Windows контроллер ретінде көрсетпейтін түймені үйретіңіз. Сұралғанда оны басыңыз.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Қолыңызды тигізбеңіз. Бос күй оқылуда…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Жасырын түймені қазір басып, содан кейін жіберіңіз…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Бір сәт…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Ешқандай өзгеріс байқалмады. Түймені ерекшеленген уақыт аралығында басып, қайталап көріңіз.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Түймені қазір басып, ұстап тұрыңыз.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Түймені жіберіңіз.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>{1} ішінен {0}-қадам</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Ешқандай өзгеріс байқалмады. Қайта бастау түймесін басып, сұралғанда түймені басып ұстап тұрыңыз.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Өндірушінің {0} есебі және {1} оқиға класы бақыланды. Басу кезінде: {2} есеп, {3} оқиға.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Түйме түсірілді. Атау енгізіп, «Тіркеу» түймесін басыңыз.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Көз:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Атауы:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Көз</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Атауы</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Түймеге ат беріңіз</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Тіркеу</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Үйренілген түймелер</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Қайта бастау</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Әзірге ешбір түйме үйренілмеген.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>«{0}» тіркелді. Басқасын үйрену үшін қайта бастаңыз.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>{0} құрылғысында үйренілді</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>«{0}» тіркелді. Басқасын үйрену үшін Қайта бастау түймесін басыңыз.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Пернелер: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Жасырын түймелер өшірулі. Алдымен «Параметрлер» бөлімінде «Портативті компьютер түймелері» мүмкіндігін қосыңыз.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} жұмыс істеп тұр. Оны тоқтатпайынша ол бұл түймелерге жауап бере береді.</value></data>
@@ -3502,6 +3667,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Қауымдастық конфигурациялары</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Қауымдастық жасаған Steam Input контроллер конфигурацияларын шолып, оларды PadForge профильдеріне түрлендіріңіз. PadForge Steam серверлеріне тек іздегенде, конфигурацияны ашқанда немесе импортталған конфигурациялардың жаңартуларын тексергенде ғана тікелей қосылады. Ол іздеу мәтініңізді, қатысты ойындардың, конфигурациялардың және авторлардың идентификаторларын және PadForge нұсқасын жібереді. Steam жүйесіне анонимді кіру сондай-ақ Windows нұсқаңызды және Windows орнату ID, желі адаптерінің мекенжайлары мен жүктеу дискісінің сериялық нөмірінің хэштерінен жасалған компьютер идентификаторын жібереді. Телеметрия жоқ, үшінші тарап қызметі жоқ, Steam тіркелгісі қажет емес.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam серверлеріне тек іздегенде, конфигурацияны ашқанда немесе импортталған конфигурациялардың жаңартуларын тексергенде қосылады. Телеметрия жоқ, Steam тіркелгісі қажет емес.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Не жіберіледі</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Қауымдастық конфигурацияларын қосу</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Ескі шеберхана конфигурацияларын көрсету</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Кейбір ескі конфигурацияларда Steam CDN желісінде жүктеп алынатын файл жоқ. PadForge оларды ескі деп белгілеп тізімдейді және жазылғаннан кейін Steam сақтайтын көшірмені оқиды. Оған дейін конфигурацияны Steam шеберханасында ашуды ұсынады.</value></data>
@@ -3509,18 +3676,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Импортталған профильдердің жаңартуларын тексеру</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Шеберхана кэші тазаланды</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Қауымдастық конфигурацияларын шолу</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Қауымдастық конфигурацияларын шолу</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Профильдер · Steam шеберханасы</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Профильдерді алу</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Дайын профильден, қауымдастық конфигурациясынан немесе басқа құралдың файлынан бастаңыз.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Бастапқы</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Қауымдастық</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Файлды импорттау</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Сақтау өңдеуге болатын қарапайым профиль қосады.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Ұста ошағы суық</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Қауымдастық конфигурацияларын шолу PadForge бағдарламасын Steam жүйесіне тікелей қосады, тек іздегенде ғана, іске қосылғанда ешқашан.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Қауымдастық конфигурацияларын қосу</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Ойындарды іздеу</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} ойын</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Ойындар</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam дүкенінде ойындар табылмады.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam ішінде ізделуде…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Конфигурациялар Steam жүйесінен оқылуда…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Конфигурация Steam жүйесінен оқылуда…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>рейтинг бойынша сұрыпталған</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Сұрыптау</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Осы конфигурациялардан іздеу</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Рейтинг</value></data>
@@ -3534,7 +3704,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} табылды</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} ішінен {0} көрсетілген</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} конфигурация</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>қауымдастық конфигурациялары</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>контроллерге толық қолдау</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>контроллерге ішінара қолдау</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Ойындарды іздеу</value></data>
@@ -3553,8 +3722,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Қайталау</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Бұл 2016 жылғы конфигурация Steam конфигурациялар CDN желісінен бұрын жасалған. Оған Steam ішінде жазылыңыз, сонда PadForge оны Steam қалтаңыздан оқиды.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam шеберханасында ашу</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Аударма манифестін оқу үшін конфигурацияны таңдаңыз.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} байланыстыру оқылды</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Не ауысатынын көру үшін конфигурацияны таңдаңыз.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Не ауысады</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Болады</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Конфигурацияның түймелері мен стиктерін алатын виртуалды контроллерді таңдайды. Оның перне мен тінтуір әрекеттері әрқашан Пернетақта + тінтуір контроллеріне барады.</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Қабаттар</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Таза</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Ішінара</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Өткізілді</value></data>
@@ -3619,7 +3791,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam шеберханасынан жаңартулар тексерілуде…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Импортталған профильдер жаңартылған ({0} тексерілді)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Шеберхана жаңартулары</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Бұл импортталған профильдердің Steam шеберханасында жаңа нұсқалары бар. Өзгерістерді алу үшін оларды «Қауымдастық конфигурацияларын шолу» арқылы қайта импорттаңыз.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Бұл импортталған профильдердің Steam шеберханасында жаңа нұсқалары бар. Өзгерістерді алу үшін оларды «Профильдерді алу» арқылы қайта импорттаңыз.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ұзақ басқанда</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Қысқа басқанда</value></data>
@@ -3767,7 +3939,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Мәзір {0} ұяшық {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Мәзір оверлейі</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Оверлейлер</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge ойын кезінде көрсететін экрандағы көрсеткіштер. Біреуін өшіру жұмысты өзгертпейді, тек ол туралы хабарланатынын ғана өзгертеді.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge ойын кезінде көрсететін экрандағы көрсеткіштер. Біреуін өшіру жұмысты өзгертпейді, тек ол көрсетілетінін ғана өзгертеді.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Қабатты ауыстырудың қалқымалы терезесі</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профильді ауыстыру оверлейі</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиалды немесе сенсорлық мәзір белсенді болғанда экрандағы сақинаны немесе торды көрсету. Оверлей өшірулі болса да мәзірлер жұмыс істейді.</value></data>
@@ -3817,6 +3989,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Осы арнаның тон жиілігі, 20-дан 120 Гц-ке дейін. Шейкеріңіз ең күшті жауап беретін жерді табу үшін жиілік сыпыруын іске қосыңыз.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Негізгі күшейтуге дейінгі осы арнаның дыбыс деңгейі.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Күшейту</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Жиілік</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Сынау</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Осы арнаның тонын орнатылған күшейтумен 1.5 секунд ойнатады.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Төмен моторды қалпына келтіру</value></data>
@@ -3859,16 +4032,16 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Сенсорлық тақтадан тінтуірге шығыс үшін трекпадтың меңзер үдеу қисығы. libinput сенсорлық тақтасының үдеу профилінің C# портасы. MIT.</value>
+    <value>Сенсорлық тақтадан тінтуірге шығыс үшін трекпадтың меңзер үдеу қисығы. libinput сенсорлық тақтасының үдеу профилінің C# портасы.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Контроллердің 3D модельдері (Xbox 360, Steam Deck) және 3D көріністің моделі мен анимация коды, авторлары: CasperH2O, Lesueur Benjamin, trippyone. Сондай-ақ Steam Deck есебі мен хаптика декодтауының, Steam Controller (2015) қуатты өшіру есебінің, handheld daemon бақылау тізімінің, жаңартуды тексеру уақытының және хаб портын 500 мс аралықпен қайта қосудың анықтамасы: ол жасырылған USB контроллерін қайта қосады, сондықтан оны бірінші ашқан бағдарламалар оны жоғалтады. CC BY-NC-SA 4.0.</value>
+    <value>Контроллердің 3D модельдері (Xbox 360, Steam Deck) және 3D көріністің моделі мен анимация коды, авторлары: CasperH2O, Lesueur Benjamin, trippyone. Сондай-ақ Steam Deck есебі мен хаптика декодтауының, Steam Controller (2015) қуатты өшіру есебінің, handheld daemon бақылау тізімінің, жаңартуды тексеру уақытының және хаб портын 500 мс аралықпен қайта қосудың анықтамасы: ол жасырылған USB контроллерін қайта қосады, сондықтан оны бірінші ашқан бағдарламалар оны жоғалтады.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D контроллер сызбалары (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), авторы: AL2009man. MIT.</value>
+    <value>2D контроллер сызбалары (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), авторы: AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>DualShock 4 дыбыс протоколының құжаттамасы: SBC параметрлері мен пакет құрылымдары, авторы: khallmark. GPL-2.0, тек құжаттама.</value>
+    <value>DualShock 4 дыбыс протоколының құжаттамасы: SBC параметрлері мен пакет құрылымдары, авторы: khallmark. Тек құжаттама.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Жұмыс үстелі</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Windows-ты диваннан басқарыңыз. Меңзер, айналдыру және басулар триггерлерде.</value></data>
@@ -3882,10 +4055,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Алты түймелі орналасу, екі осьте де турнирге сай SOCD тазалауымен.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Пернетақта + тінтуір</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Геймпад</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Бастапқы профильдерді қарау</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Бастапқы профильдер</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Бүкіл жанр үшін дайын профильдер. Біреуін таңдаңыз, кез келген контроллерді қосыңыз да, ойнаңыз. Сақтау өңдеуге болатын қарапайым профиль қосады.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Профильді сақтау</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Бастапқы профиль «{0}» қосылды.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Көрсету және басу</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Шытырман оқиғалы ойындар және меңзермен, екі әрекетпен басқарылатын кез келген ойын.</value></data>
@@ -3983,13 +4152,13 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Шығыс жолын қалпына келтіру</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Құлаққап ұясын ұстану</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense шығыс есебінің байт картасы және Sony scePad семантикасы, авторы: WujekFoliarz, PadForge-тың эффект және дыбыс жазушыларының негізі. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense шығыс есебінің байт картасы және Sony scePad семантикасы, авторы: WujekFoliarz, PadForge-тың эффект және дыбыс жазушыларының негізі.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Ұя анықтау арқылы дыбысты бағыттау үлгісі, авторы: SundayMoments, Құлаққап ұясын ұстану функциясының анықтамасы. Құжаттама ретінде оқылған. AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Ұя анықтау арқылы дыбысты бағыттау үлгісі, авторы: SundayMoments, Құлаққап ұясын ұстану функциясының анықтамасы. Құжаттама ретінде оқылған.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб-контроллер мекенжайларына арналған байт режимді QR кодтаушысы, Nayuki-дің эталондық іске асыруынан портталған. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Веб-контроллер мекенжайларына арналған байт режимді QR кодтаушысы, Nayuki-дің эталондық іске асыруынан портталған.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Пернетақта + тінтуір визуализациясындағы тінтуір суреті, авторы: Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Пернетақта + тінтуір визуализациясындағы тінтуір суреті, авторы: Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Қысымға қарай жиілік</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Қайталау жиілігі таңдалған аналогтық көздің қаншалықты қатты басылатынына байланысты. Жеңіл басу Баяу аралықпен, толық басу жоғарыдағы Аралықпен қайталайды, ал арасындағысы біркелкі өтеді.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Баяу аралық</value></data>
@@ -4004,7 +4173,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Код арқылы қосылуда…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Екінші жаққа тікелей жету мүмкін болмады. VPN арқылы Мекенжай бойынша қосылуды көріңіз.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Осы компьютердің коды</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Екінші адаммен кодтарды алмасыңыз: оның кодын өз Қосылу жолағыңызға қойыңыз, ол сіздікін қойсын, содан кейін екеуіңіз де Қосылу түймесін басыңыз. Бұл интернет арқылы тікелей жол ашады, VPN қажет емес. Код Қашықтан байланыс жұмыс істеп тұрғанда жаңарады.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Екінші адаммен кодтарды алмасыңыз: оның кодын Қосымша астындағы Мекенжай арқылы қосылу жолына қойыңыз, ол сіздікін қойсын, содан кейін екеуіңіз де Жұптастыру / Қосылу түймесін басыңыз. Бұл интернет арқылы тікелей жол ашады, VPN қажет емес. Код Қашықтан байланыс жұмыс істеп тұрғанда жаңарады.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Бұл желі тікелей қосылымдар жасай алмайды (ұялы байланыс хотспоты немесе carrier-grade NAT сияқты). Tailscale сияқты VPN қолданыңыз немесе үйдегі кең жолақты желіден қосылыңыз.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Осы компьютердің жалпыға ортақ мекенжайын табу мүмкін болмады (желі қажетті трафикті бөгеуі мүмкін). Тікелей қосылымдар мұнда жұмыс істемейді. VPN қолданыңыз немесе сол желіде Мекенжай бойынша қосылуды қолданыңыз.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Контроллер батареясы аз</value></data>
@@ -4015,6 +4184,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Мына деңгейде немесе төмен болғанда хабарлау</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Контроллерді де дірілдету</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Хабарландыруды сынау</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Хабарландыруды тексеру</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Қосу ұсыныстары</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Виртуалды контроллер беті ашық кезде құрылғы қосылса, PadForge оны сонда қосуды ұсына алады, ал Басты бет жаңа құрылғыға жеке виртуалды контроллер ұсына алады. Ұсынысты қабылдағанша ештеңе қосылмайды. Пернетақталар, тінтуірлер, сенсорлық тақталар және медиа пернелер ешқашан ұсынылмайды.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Жаңа құрылғыларды ашық виртуалды контроллерге ұсыну</value></data>
@@ -4028,23 +4198,28 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Қазір емес</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Кез келген тіркес</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Дауыс макростары</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Тіркесті айтыңыз, ол сәйкестендіруге болатын түймені басады. PadForge жете алатын әрбір микрофон тыңдайды.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Дауыс макростарын басқару</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Дауыс макростарын қосу</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Тыңдауды қосады. Қосулы кезде әр тіркелген тіркес айтқанда іске қосылатын түйме болады. Тану моделі PadForge ішінде жеткізіледі және толығымен офлайн жұмыс істейді.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Тыңдау</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Әрқашан микрофонды ашық ұстайды. Сөйлеу үшін басу тек байланған Дауыс тыңдау макросы ұсталған кезде тыңдайды.</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Тыңдауды қосу немесе өшіру, режим, сенімділік</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Әрқашан</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Сөйлеу үшін басу</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Ең төмен сенімділік</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Тіркестің іске қосылуы үшін тану құралы қаншалықты сенімді болуы керек. Кездейсоқ сөйлеу макростарды іске қосса, көтеріңіз, тіркестер жіберіліп кетсе, төмендетіңіз.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Сөйлеуді күтуде. Танулар сенімділігімен осында көрінеді.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>«{0}» ({1:F2}) естілді. Іске қосылды.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>«{0}» ({1:F2}) естілді. Сенімділік шегінен төмен немесе сөйлеу пернесі босатылған.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Тыңдау өшірулі. Оны Қосымша астында қосыңыз.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>{1} құрылғысында {0} естілді</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>{1} құрылғысында {0} естілді. Ол сенімділік шегінен төмен болды немесе сөйлеу пернесі босатылған еді.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Тіркес</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Айтылатын тіркес</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Атауы</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Түйме атауы</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Тіркеу</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Тіркелген тіркестер</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>«{0}» тіркелді. Түймесін іске қосу үшін оны айтыңыз, ал макростарды оған контроллер бетінде байлаңыз.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Тіркестер</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>«{0}» тіркелді. Түймесін іске қосу үшін оны айтыңыз, ал оны контроллер бетінде сәйкестендіріңіз.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Дауыс тыңдау (ұстап тұрғанда)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Дауыс макростары үшін сөйлеу үшін басу: осы макрос ұсталып тұрғанда тану құралы тыңдайды. Дауыс макростарын басқаруда Тыңдауды Сөйлеу үшін басу етіп орнатыңыз.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Микрофон</value></data>
@@ -4052,12 +4227,12 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa жолының дірілінің артындағы хаптика қозғалтқышы мен Razer провайдері. HAR.dll және Interhaptics.RazerProvider.dll PadForge ішінде жалпыға қолжетімді Core SDK-дан өзгертусіз жеткізіледі. Авторы: Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Razer Sensa жолының дірілінің артындағы хаптика қозғалтқышы мен Razer провайдері. HAR.dll және Interhaptics.RazerProvider.dll PadForge ішінде жалпыға қолжетімді Core SDK-дан өзгертусіз жеткізіледі. Авторы: Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Valve жариялаған STEP файлдарынан торланған Steam Controller (2015) және Steam Controller (2026) 3D модельдері. Copyright Valve Corporation. CC BY-NC-SA 4.0. PadForge Valve компаниясымен байланысты емес және ол қолдамайды.</value>
+    <value>Valve жариялаған STEP файлдарынан торланған Steam Controller (2015) және Steam Controller (2026) 3D модельдері. Copyright Valve Corporation. PadForge Valve компаниясымен байланысты емес және ол қолдамайды.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>MinGW-w64 runtime</value>
@@ -4074,7 +4249,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer жарықтандыруы үшін Razer Chroma REST API құрылымын растау, авторлары Adam Hellberg және Brandon Scott. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Razer жарықтандыруы үшін Razer Chroma REST API құрылымын растау, авторлары Adam Hellberg және Brandon Scott. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Logitech LED SDK сілтемелері</value>
   </data>
@@ -4083,19 +4258,19 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Бас трекингі үшін UDP трекер дейтаграммасы және FreeTrack 2.0 ортақ жады құрылымы. ISC. Тек құжаттама, код жеткізілмейді.</value>
+    <value>Бас трекингі үшін UDP трекер дейтаграммасы және FreeTrack 2.0 ортақ жады құрылымы. Тек құжаттама, код жеткізілмейді.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Қол консолінің жасырын түймелерін үйрену функциясы жазылатын Lenovo WMI утилита-оқиға класы және сыртқы профильді басқарудың астарындағы биіктетілген IPC сервер үлгісі. GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value>
+    <value>Қол консолінің жасырын түймелерін үйрену функциясы жазылатын Lenovo WMI утилита-оқиға класы және сыртқы профильді басқарудың астарындағы биіктетілген IPC сервер үлгісі. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Жасырын түймелерді үйрену функциясы үшін салыстырылған қол ДК идентификация жолдары мен жеткізуші есебі туралы жазбалар. GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value>
+    <value>Жасырын түймелерді үйрену функциясы үшін салыстырылған қол ДК идентификация жолдары мен жеткізуші есебі туралы жазбалар. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook және WiimoteHook</value>
@@ -4110,13 +4285,13 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Ескі MIDI API-дің астарындағы WinMM шақыру реттілігі: портты ашу, оған жіберу және жабу. PortMidi (MIT, авторлары Ross Bencina, Phil Burk және Roger B. Dannenberg) және RtMidi (MIT үлгісіндегі RtMidi лицензиясы, автор Gary P. Scavone) көздерінен оқылған. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK сілтемелері</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key кірісінің астарындағы оқиға сөзінің орналасуы SDK ішіндегі LogitechGkeyLib.h файлынан алынған. Кітапхананы іздеу реті мен жабылуы Mumble-дің GKey.cpp файлына (BSD 3-Clause) негізделген. PadForge құрылғыдағы кітапхананың қай данасы болса да соны жүктейді және Logitech кодын жеткізбейді.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G-key кірісінің астарындағы оқиға сөзінің орналасуы SDK ішіндегі LogitechGkeyLib.h файлынан алынған. Кітапхананы іздеу реті мен жабылуы Mumble-дің GKey.cpp файлына негізделген. PadForge құрылғыдағы кітапхананың қай данасы болса да соны жүктейді және Logitech кодын жеткізбейді.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup және AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Аналогтық пернетақта кірісі HallJoy-дың пернетақта маршруттарын, перне кестелерін және модель каталогтарын C# тіліне көшіреді (AGPL-3.0, PashOK7) және Soup пен AnalogSense JavaScript SDK (MIT, Calamity, Inc.) үлгісін ұстанады, Wooting Analog SDK (MPL-2.0) бойынша тексерілген. Басқа пернетақталар AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk және hmkconf (GPL-3.0-or-later, peppapighs) және DenkiSuki, LeiterConsulting, paysdelest Soup тармақтарын (MIT) ұстанады. Есеп пішімдері мен перне кестелері сондай-ақ Razer-дің Synapse Web және NuPhy-дің NuPhyIO конфигураторларынан, OpenRazer (GPL-2.0-or-later), Abbytech-тің razer-analog-keyboard, TinyUSB (MIT) және Sainan-ның жазба ескертпелерінен алынған.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box сілтемелері</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>Read Bliss-Box Adapters функциясының астарындағы Bliss-Box API Bliss-Box LLC-нің API Tool (BSD үлгісінде, тегін тарату) және DeviceBuddy (көзі қолжетімді, Bliss-Box LLC) көздерінен оқылған. Түйме атаулары SteveFox1620-ның retroarch-joypad-autoconfig тармағындағы Bliss-Box файлдарынан алынған, Controller Pak бақылау сомалары libdragon (Unlicense) бойынша тексерілген, ал PlayStation пад жауабы psx-spx пен Linux-тың psxpad-spi драйверінен (GPL-2.0-or-later) алынған. Контроллер атаулары мен қолдау ескертпелері сондай-ақ Bliss-Box LLC-нің үйлесімділік тізімінен алынған, ал адаптерлердің әрекеті олардың микробағдарламасы бойынша тексерілген. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ның құрама USB контроллерлеріне арналған USB тасымалы, автор Vadym Hrynchyshyn. HIDMaestro оның қол қойылған хост-контроллер драйверін өзімен бірге жеткізеді және құрама контроллер бірінші рет жасалғанда орнатады. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro-ның құрама USB контроллерлеріне арналған USB тасымалы, автор Vadym Hrynchyshyn. HIDMaestro оның қол қойылған хост-контроллер драйверін өзімен бірге жеткізеді және құрама контроллер бірінші рет жасалғанда орнатады.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Осы ұяшықтың қай жартылары белсенді екенін таңдаңыз. Жартыны өшіру оның жолдарын жасырады және жіберуін тоқтатады, ал тағайындауларын сақтайды, сондықтан қайта қосқанда олар қалпына келеді.</value>
   </data>
@@ -4184,13 +4359,15 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
     <value>Ортақ құрылғыларды тағайындау</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>{0} құрылғысындағы тағайындаулар</value>
+    <value>{0} компьютерімен бөлісілген құрылғылар</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Осы ДК ортақ пайдаланатын құрылғыны таңдап, содан кейін оның виртуалды контроллерлерін екінші ДК-де таңдаңыз.</value>
+    <value>Құрылғыны, содан кейін ол басқаруы керек сол компьютердегі контроллерлерді таңдаңыз.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Осы компьютерден бөлісілген</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>{0} компьютеріндегі контроллерлер</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Профиль: {0}</value>
+    <value>Белсенді профиль: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>Екінші ДК-де Қашықтан байланыс &gt; Жұпталған ДК-лер бөлімінде осы ДК үшін қашықтан тағайындауды өзгертуге рұқсат беріңіз.</value>
@@ -4282,60 +4459,60 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS және CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>libvosk.dll ішіндегі сөйлеуді декодтаушы, трансдьюсер кітапханасы және сызықтық алгебра. Kaldi және OpenFst: Apache-2.0. OpenBLAS және CLAPACK: BSD 3-Clause, OpenBLAS ішіндегі GotoBLAS2 және f2c орындалу ортасы үшін жеке ескертулермен.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратегия мен жұмыс үстеліне арналған бастапқы профиль орналасулары және қысымға бейімделген турбо болдырмайтын турбо әрекеті. GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Стратегия мен жұмыс үстеліне арналған бастапқы профиль орналасулары және қысымға бейімделген турбо болдырмайтын турбо әрекеті. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-тың құжатталмаған IPolicyConfig интерфейсінің орналасуы бойынша Antoine Aflalo сілтемесі, оны PadForge контроллердің дыбыс соңғы нүктесін қайта қосу үшін қолданады. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Windows-тың құжатталмаған IPolicyConfig интерфейсінің орналасуы бойынша Antoine Aflalo сілтемесі, оны PadForge контроллердің дыбыс соңғы нүктесін қайта қосу үшін қолданады. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллердегі «Параметрлік эквалайзер» импорттайтын параметрлік EQ профилінің пішімі, автор Jaakko Pasanen. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Контроллердегі «Параметрлік эквалайзер» импорттайтын параметрлік EQ профилінің пішімі, автор Jaakko Pasanen. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Text Block макростары мен пернетақта аккорд ілмегінің астарындағы SendInput әдістері: Unicode теру, пакет шектеулері, Win пернесін бүркемелеу перне және таңбаланған енгізілген кіріс. GPL-2.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Text Block макростары мен пернетақта аккорд ілмегінің астарындағы SendInput әдістері: Unicode теру, пакет шектеулері, Win пернесін бүркемелеу перне және таңбаланған енгізілген кіріс. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Қозғалыс серверінің астарындағы DSU протоколының сілтемесі, автор v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Қозғалыс серверінің астарындағы DSU протоколының сілтемесі, автор v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 Bluetooth шығыс есебінің кадрлануы, автор Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>DualShock 4 Bluetooth шығыс есебінің кадрлануы, автор Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 батарея диапазондары, сенсорлық тақтаның хаптикалық импульс уақыты мен қарқын қадамдары және сенсорлық тақтаны серпіп жіберу әрекеті. GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>DualShock 4 батарея диапазондары, сенсорлық тақтаның хаптикалық импульс уақыты мен қарқын қадамдары және сенсорлық тақтаны серпіп жіберу әрекеті. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (hbashton тармағы)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense дыбыс деңгейінің диапазондары, таңбалы 8 биттік хаптика үлгілері және біріктірілген Bluetooth тасымал орналасуы. GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>DualSense дыбыс деңгейінің диапазондары, таңбалы 8 биттік хаптика үлгілері және біріктірілген Bluetooth тасымал орналасуы. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense Bluetooth дыбыс буфері ұзындығының әдепкі және ең төменгі мәні, автор awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>DualSense Bluetooth дыбыс буфері ұзындығының әдепкі және ең төменгі мәні, автор awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>GameCube адаптивті триггерінің дайын мәндері, автор Mxater. Тек деректер үшін оқылған.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>DSU қозғалыс осьтерінің таңбалары, оның UDP декодерімен тексерілген. GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>DSU қозғалыс осьтерінің таңбалары, оның UDP декодерімен тексерілген. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Space Sim бастапқы профилінің астарындағы Elite Dangerous әдепкі дайын баптаулары, автор Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Space Sim бастапқы профилінің астарындағы Elite Dangerous әдепкі дайын баптаулары, автор Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote динамигінің ADPCM нибл реті және DualShock 4 кодтаушысын тексерген SBC декодері. LGPL-2.1-or-later, тек құжаттама ретінде оқылған, LGPL коды жеткізілмейді.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Wii Remote динамигінің ADPCM нибл реті және DualShock 4 кодтаушысын тексерген SBC декодері. Тек құжаттама ретінде оқылған, LGPL коды жеткізілмейді.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Компас бұрылуы үшін көлбеуді ескеретін компас бағыты, C# тіліне көшірілген, автор x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Компас бұрылуы үшін көлбеуді ескеретін компас бағыты, C# тіліне көшірілген, автор x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Батарея заряды аз туралы хабарландыру ережесі және Identify діріл үлгісі, автор Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Батарея заряды аз туралы хабарландыру ережесі және Identify діріл үлгісі, автор Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series және Switch 2 Pro Controller 3D модельдері, CGTrader сайтынан сатып алынған. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>DualShock 4, DualSense, DualSense Edge, Xbox Series және Switch 2 Pro Controller 3D модельдері, CGTrader сайтынан сатып алынған.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 3D моделі, CGTrader сайтынан сатып алынған және бөлшектерге бөлінген торларға бөлінген. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>DualShock 3 3D моделі, CGTrader сайтынан сатып алынған және бөлшектерге бөлінген торларға бөлінген.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Жинақтағы SDL3.dll ішіне құрастырылған HID деңгейі, автор Alan Ott, Signal 11 Software. BSD үлгісіндегі лицензия.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Жинақтағы SDL3.dll ішіне құрастырылған HID деңгейі, автор Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Белгіше көздері</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons жалын белгісі (Pictogrammers, Apache-2.0), Ionicons жалпы геймпад белгішесі (Ionic, MIT), Jam Icons Extended джойстигі (Michael Amprimo, MIT) және SVG Repo сайтындағы Xbox және PlayStation белгішелері, әр белгішенің бетіндегі лицензия бойынша.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Remote Link-тің қосалқы желісінің астарындағы ретрансляция протоколы, FlexInput сияқты n0.computer-дің тегін қоғамдық ретрансляторларымен сөйлесетін. iroh: MIT OR Apache-2.0. FlexInput: MIT. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Mouse Motion X және Y астарындағы Joy-Con 2 оптикалық тінтуір есептегіштері мен айналып өту дельталары, авторлары coffincolors, Frano және moutella. MIT. Тек құжаттама, код жеткізілмейді.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Mouse Motion X және Y астарындағы Joy-Con 2 оптикалық тінтуір есептегіштері мен айналып өту дельталары, авторлары coffincolors, Frano және moutella. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Linux ядросының драйверлері</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck және PID күштік кері байланыс протоколдарының деректері және ACPI WMI блогының орналасуы. PadForge пернетақта мен тінтуір дескрипторларын hid-core ережелері бойынша оқиды. GPL-2.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>DualShock 3, Move, DualSense, Steam Deck және PID күштік кері байланыс протоколдарының деректері және ACPI WMI блогының орналасуы. PadForge пернетақта мен тінтуір дескрипторларын hid-core ережелері бойынша оқиды. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows контроллер кірісі, соның ішінде Xbox Elite қалақшалары. SDK жүктегіші SDL ішіне байланыстырылған. MIT (SDK жүктегіші).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Windows контроллер кірісі, соның ішінде Xbox Elite қалақшалары. SDK жүктегіші SDL ішіне байланыстырылған.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll қажет ететін C++ орындалу ортасы (msvcp140.dll, vcruntime140.dll және x64 құрастырмасында vcruntime140_1.dll), PadForge ішінде өзгертусіз жеткізіледі. Microsoft Visual Studio лицензия шарттары.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>SDL3.dll қажет ететін C++ орындалу ортасы (msvcp140.dll, vcruntime140.dll және x64 құрастырмасында vcruntime140_1.dll), PadForge ішінде өзгертусіз жеткізіледі.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Joy-Con және Pro Controller HID, HD діріл және home LED туралы жазбалар, автор dekuNukem, Switch 2 үшін ndeadly-дің switch2_controller_research материалымен. Тек протокол деректері үшін оқылған.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Қолданбаның ішіндегі жаңартқыш көмекшісінің астарындағы биіктетілген жаңарту-пәрмен үлгісі. LGPL-3.0, тек құжаттама ретінде оқылған, LGPL коды жеткізілмейді.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Қолданбаның ішіндегі жаңартқыш көмекшісінің астарындағы биіктетілген жаңарту-пәрмен үлгісі. Тек құжаттама ретінде оқылған, LGPL коды жеткізілмейді.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC тег кірісінің астарындағы WinSCard қолтаңбалары және оқу құрылғысын бақылау шақыру реттілігі, автор Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>NFC тег кірісінің астарындағы WinSCard қолтаңбалары және оқу құрылғысын бақылау шақыру реттілігі, автор Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>PlayStation Move есеп орналасулары, сенсорды калибрлеу және EXT қосалқы құралының қол алысуы, автор Thomas Perl, moveonpc уикиімен салыстырылған. PadForge-дың іске асыруы түпнұсқа C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Жарыс телеметриясының сілтемелері</value></data>
@@ -4343,23 +4520,23 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>DualShock 3 Bluetooth жұптастыруы және есеп құжаттамасы. GPL-2.0 және GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Remote Link-тің NAT өту функциясының астарындағы STUN хабарламасының орналасуы және XOR-MAPPED-ADDRESS декодтауы, оның C# көзінен алынған, автор Aaron Clauson. BSD 3-Clause, лицензияның 2-бөліміндегі пайдалану шектеуімен.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Remote Link-тің NAT өту функциясының астарындағы STUN хабарламасының орналасуы және XOR-MAPPED-ADDRESS декодтауы, оның C# көзінен алынған, автор Aaron Clauson. Оның лицензиясы 2-бөлімде пайдалану шектеуін қосады.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>SpaceMouse сілтемелері</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>3Dconnexion есеп орналасуы, құрылғы кестесі және ось шкаласы. Оқылған көздер: hid.spacemouse (MIT), PySpaceMouse (MIT), AndunHH-тың spacemouse жобасы (CC BY-NC-SA 4.0) және spacenavd (GPL-3.0-or-later). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Хост IOCTL арқылы Bluetooth байланысын үзу, жасырын XInput қуатты өшіру және мүмкіндіктер ординалдары және DualSense триггер дірілінің әдепкі мәндері. GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Хост IOCTL арқылы Bluetooth байланысын үзу, жасырын XInput қуатты өшіру және мүмкіндіктер ординалдары және DualSense триггер дірілінің әдепкі мәндері. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Steam Controller протокол сілтемелері</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Сырғыту хаптикасының тықылдары, 0x42 есебінің түйме биттері, қуатты өшіру пәрмені және донгл ретрансляциясы. Оқылған көздер: OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) және SteamlessController (MIT). Тек құжаттама, GPL немесе AGPL коды жеткізілмейді.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Стик өлі аймақтары</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Алты өлі аймақ пішіні, автор Minimuino. GFDL-1.3-or-later және GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR меңзерінің әрекеті: нүкте жұбының ортаңғы нүктесі, шеттер, сенсор жолағының ығысуы, тегістеу және FPS Mouse қисығы, Ryochan7, Suegrini және Trihy тармақтарымен. GPL-3.0, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Wii Remote IR меңзерінің әрекеті: нүкте жұбының ортаңғы нүктесі, шеттер, сенсор жолағының ығысуы, тегістеу және FPS Mouse қисығы, Ryochan7, Suegrini және Trihy тармақтарымен. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense адаптивті триггер әсерлерінің орналасуы және аймақтарды буып-түю, C# тілінде қайта жасалған, автор John "Nielk1" Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>DualSense адаптивті триггер әсерлерінің орналасуы және аймақтарды буып-түю, C# тілінде қайта жасалған, автор John "Nielk1" Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Виртуалды DualShock 4 кіріс есебінің астарындағы DS4_REPORT_EX орналасуы, автор Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Виртуалды DualShock 4 кіріс есебінің астарындағы DS4_REPORT_EX орналасуы, автор Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (hbashton тармағы)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуалды DualSense микрофонының 48 dB әлсіреу диапазоны. GPL-3.0-or-later, тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Виртуалды DualSense микрофонының 48 dB әлсіреу диапазоны. Тек құжаттама ретінде оқылған, GPL коды жеткізілмейді.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Рөл протоколдарының сілтемелері</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Fanatec, Thrustmaster және Logitech рөлдері үшін төл күштік кері байланыс және RPM ауыстыру LED есептері. Оқылған көздер: hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) және thrustmaster-led-linux (GPL-3.0), prodigal.knight жазған SimHub LED плагині (MIT) және tm-bt-led (MIT) бойынша тексерілген. Тек құжаттама, GPL коды жеткізілмейді.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Аркадалық I/O сілтемелері</value></data>
@@ -4389,19 +4566,19 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Xbox контроллер сілтемелері</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>SDL тармағының түпнұсқа Xbox, Steel Battalion, Xbox 360 chatpad және Xbox 360 uDraw драйверлерінің, сондай-ақ PadForge Windows-тың өз драйверіне байлайтын Xbox 360 қабылдағыштарының астарындағы протоколдар. Оқылған көздер: brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), ITO Takayuki жазған euc.jp, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) және xemu (LGPL-2.0-or-later). Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Автоматты WinUSB байланыстыруының астарындағы бір құрылғыға бір INF буып-түю және құрылғы тізімі, автор Pete Batard. Тек құжаттама, код жеткізілмейді. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Автоматты WinUSB байланыстыруының астарындағы бір құрылғыға бір INF буып-түю және құрылғы тізімі, автор Pete Batard. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge PS Move қосалқы құралын анықтау үшін жіберетін Bluetooth HID мүмкіндік есебінің сұрауы, автор Ricardo Quesada. Тек құжаттама, код жеткізілмейді. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>PadForge PS Move қосалқы құралын анықтау үшін жіберетін Bluetooth HID мүмкіндік есебінің сұрауы, автор Ricardo Quesada. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL тармағындағы Windows Mixed Reality конфигурация кілті Monado жобасынан алынған. Copyright 2021 Jan Schmidt. SDL3.dll ішінде жеткізіледі. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>SDL тармағындағы Windows Mixed Reality конфигурация кілті Monado жобасынан алынған. Copyright 2021 Jan Schmidt. SDL3.dll ішінде жеткізіледі.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL тармағындағы Rift DK1 сенсор бірігуі OpenHMD-ден көшірілген. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll ішінде жеткізіледі. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>SDL тармағындағы Rift DK1 сенсор бірігуі OpenHMD-ден көшірілген. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. SDL3.dll ішінде жеткізіледі.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Wii Remote динамигінің протоколы және IR калибрлеу құжаттамасы. Тек протокол деректері үшін оқылған.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox импульстік триггерінің 9 байттық есебі және оның жазу жолы, автор araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Xbox импульстік триггерінің 9 байттық есебі және оның жазу жолы, автор araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 хаптикалық PCM пішімі, 3 kHz жиілігінде таңбалы 16 биттік, ол таңбалы 8 биттік Bluetooth хаптика кодтауын анықтады. AGPL-3.0, тек құжаттама ретінде оқылған, AGPL коды жеткізілмейді.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>PS5 хаптикалық PCM пішімі, 3 kHz жиілігінде таңбалы 16 биттік, ол таңбалы 8 биттік Bluetooth хаптика кодтауын анықтады. Тек құжаттама ретінде оқылған, AGPL коды жеткізілмейді.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Пернетақта экрандары</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Logitech GamePanel пернетақталарына және Mad Catz S.T.R.I.K.E. 7 пернетақтасына орнатылған экрандарда, сондай-ақ Logitech Arx Control арқылы телефонда мыналарды көрсетеді: профиль, сағат, ойын уақыты, секундомер, сурет немесе DualShock 4 не DualSense жарық жолағының түсі. Әр экранның Құрылғылар бетінде өз қатары бар, онда оның нені көрсететінін таңдайсыз. Экранның жанындағы пернелер оның қатарының түймелері болады.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Пернетақта экрандарын басқару</value></data>
@@ -4469,6 +4646,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Жылжыту</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>X бойынша жылжыту</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y бойынша жылжыту</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Оның нені көрсететінін таңдаңыз. Сақтамайынша ештеңе өзгермейді.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} орнатылды: {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz компаниясының S.T.R.I.K.E. 7 SDK жинағы жүктелуде…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 енді {0} жүктейді.</value></data>
@@ -4608,8 +4786,8 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Ортақ жадтан {0} оқылуда.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Assetto Corsa немесе Assetto Corsa Competizione күтілуде.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>{0} портына жіберілуде.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Теңшелетін телеметрия пішімдері</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Ойын жіберетін пакеттерді өріс бойынша сипаттаңыз, сонда PadForge сол ойынды да оқиды. Әр айнымалы Ойын телеметриясы жолында ось болады және Теңшелетін өрнек триггерлері үшін арна болады. Пішімді Ойын тізімінен атымен таңдаңыз немесе Авто анықтау тапсын деп оған ұзындық не кілт беріңіз.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Теңшелетін пішімдер</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>PadForge танымайтын ойынның телеметрия пакеттерін сипаттаңыз.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Пішім қосу</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Пішім {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Атауы</value></data>
@@ -4620,12 +4798,15 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Осы пішіммен тек дәл осыншама байттан тұратын пакеттер оқылады. 0 болса, кез келген пакет оқылады, ал Авто анықтау пішімге тиіспейді, сондықтан оны атымен таңдаңыз.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Міндетті кілт</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Осы пішіммен тек осы кілті бар JSON пакеттері оқылады. Бос болса, кез келген пакет оқылады, ал Авто анықтау пішімге тиіспейді, сондықтан оны атымен таңдаңыз.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Байттар реті</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Little-Endian әр санның ең кіші маңызды байтын бірінші қояды, компьютердегі ойындар дерлік солай жасайды. Big-Endian ең маңызды байтты бірінші қояды.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Big-Endian</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Пакет әр санды ең үлкен разрядты байттан бастап жазады. Компьютердегі ойындар санды әрдайым дерлік ең кіші разрядты байттан бастап жазады.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Беріліс мәндері</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Беріліс өрісінде артқа және бейтарап үшін өз сандары бар, мысалы Forza-да 0 және 11. Бұл өшірулі болса, теріс беріліс артқа, ал 0 бейтарап болады.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Артқа</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Бейтарап</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>JSON пакеттері үшін міндетті кілт, беріліс мәндері</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Өрістер</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Әр өріс санды өз ығысуынан немесе JSON-да өз кілтінен оқиды (нүктелер ішкі нысандарға жеткізеді) және оны масштабқа көбейтеді. Масштабтан кейін жылдамдық км/сағ болады, педальдар 0-ден 1-ге дейін, ал руль толық солдағы -1-ден толық оңдағы 1-ге дейін жүреді. Айнымалының осі тыныштықтағы Мин. мәнінен толық күйдегі Макс. мәніне дейін жүреді.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Қайда оқылады</value></data>
@@ -4709,4 +4890,35 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0}: {1}, тоқтатылғанша</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Триггер эффектісін тоқтату: {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Осы құрылғының жарықтандыруын басқару, Жарықтандыруды ұстау</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Қосылған</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Қосылмаған</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Басқа кірістер</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Сәйкес құрылғылар жоқ.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Пайдаланылмайды</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>батарея {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>батарея {0}, зарядталуда</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Пайдаланатындар</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Жаңа контроллер</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Параметрлер</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Барлық ось, түйме және сенсор</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Басылған: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, жол, мүмкіндіктер, шикі джойстик режимін мәжбүрлеу</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, жол, мүмкіндіктер</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Мәліметтерді көшіру</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Өнім</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Түрі</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Мүмкіндіктер</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Байланыс</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батарея</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Жол</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Сериялық нөмір</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Микробағдарлама</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Нұсқа</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Контроллерді де дірілдету, хабарландыруды қайталау аралығы, толық зарядталғанда хабарлау</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Тексеруді қажет етеді</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Дұрыс импортталды</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Құпия сөзді орнату</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Қашықтан байланысты ашу</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Құпия сөз</value></data>
 </root>

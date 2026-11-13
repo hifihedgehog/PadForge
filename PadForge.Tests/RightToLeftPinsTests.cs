@@ -29,13 +29,10 @@ namespace PadForge.Tests
     /// </summary>
     public class RightToLeftPinsTests
     {
+        /// <summary>DecorativeImage is the Image a screen reader passes by
+        /// (Controls/DecorativeImage.cs), and mirrors as any Image does.</summary>
         private static readonly HashSet<string> Drawings = new(StringComparer.Ordinal)
-            { "Canvas", "Path", "Polygon", "Polyline", "Line", "Image", "Viewport3D", "HelixViewport3D", "InkCanvas" };
-
-        /// <summary>The one drawing that must mirror with its window: the
-        /// welcome tour cuts its spotlight out at the window coordinates of
-        /// the control it points at.</summary>
-        private const string Mirrors = "TourCanvas";
+            { "Canvas", "Path", "Polygon", "Polyline", "Line", "Image", "DecorativeImage", "Viewport3D", "HelixViewport3D", "InkCanvas" };
 
         private static void RunSta(Action body)
         {
@@ -74,9 +71,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>The drawings in one markup file that would mirror: each
-        /// as "name at line". <paramref name="named"/> collects the x:Name of
-        /// every unpinned drawing that has one.</summary>
-        internal static List<string> Unpinned(string xaml, List<string> named = null)
+        /// as "name at line".</summary>
+        internal static List<string> Unpinned(string xaml)
         {
             var found = new List<string>();
             var pinned = new Stack<bool>();
@@ -93,11 +89,9 @@ namespace PadForge.Tests
                 bool here = (pinned.Count > 0 && pinned.Peek()) || reader.GetAttribute("FlowDirection") == "LeftToRight";
                 if (!here && Drawings.Contains(reader.LocalName))
                 {
-                    string name = reader.GetAttribute("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
-                    if (name != null) named?.Add(name);
-                    if (name != Mirrors) found.Add(reader.LocalName + " at line " + lines.LineNumber);
+                    found.Add(reader.LocalName + " at line " + lines.LineNumber);
                     // What sits inside it is answered for by this one: a pin
-                    // here covers it, and the tour's own shapes mirror with it.
+                    // here covers it.
                     here = true;
                 }
                 if (!reader.IsEmptyElement) pinned.Push(here);
@@ -122,15 +116,6 @@ namespace PadForge.Tests
                 + string.Join("; ", offenders.Take(40)));
         }
 
-        [Fact]
-        public void TheWelcomeTourIsTheOneDrawingThatMirrors()
-        {
-            var named = new List<string>();
-            foreach (string path in AppSources("*.xaml"))
-                Unpinned(File.ReadAllText(path), named);
-            Assert.Equal(new[] { Mirrors }, named.Where(n => n == Mirrors).ToArray());
-        }
-
         /// <summary>The check above reports nothing on the tree, which is
         /// worth little unless it can report something. Fed a drawing with
         /// no pin, one pinned itself and one under a pinned parent, it must
@@ -144,8 +129,11 @@ namespace PadForge.Tests
             Assert.Empty(Unpinned(head + "<Border FlowDirection=\"LeftToRight\"><StackPanel><Image/><Canvas><Line/></Canvas></StackPanel></Border></Grid>"));
             Assert.Equal(new[] { "Canvas at line 1" }, Unpinned(head + "<Border FlowDirection=\"LeftToRight\"/><Canvas><Line/></Canvas></Grid>"));
             Assert.Equal(new[] { "Image at line 1" }, Unpinned(head + "<Image FlowDirection=\"RightToLeft\"/></Grid>"));
+            Assert.Equal(new[] { "DecorativeImage at line 1" }, Unpinned(head + "<DecorativeImage/></Grid>"));
             Assert.Empty(Unpinned(head + "<Ellipse/><Rectangle/><TextBlock/></Grid>"));
-            Assert.Empty(Unpinned(head + "<Canvas x:Name=\"TourCanvas\"/></Grid>"));
+            // A name excuses nothing: no drawing mirrors on purpose since
+            // the Welcome Tour's spotlight went (#574).
+            Assert.Equal(new[] { "Canvas at line 1" }, Unpinned(head + "<Canvas x:Name=\"TourCanvas\"/></Grid>"));
         }
 
         /// <summary>A drawing built in code is in no markup file, so the
@@ -154,18 +142,20 @@ namespace PadForge.Tests
         /// canvas of the control that builds them, the lightbar host, a
         /// window that keeps left to right, or, for the sidebar's line icons
         /// (DecorativeIcons.cs), the box the icon scales them in. The main
-        /// window's nine are the flames and the platform logos of the
-        /// sidebar and its pop-ups, the type bar's change-type row
-        /// (discussion #543) and the Add Controller entry's plus sign among
-        /// them, which go into mirrored rows, so each pins itself.
+        /// window's five are the flames of the sidebar and the profile
+        /// switcher, the platform logos of the sidebar's chip and the type bar
+        /// (discussion #543), and the Add Controller entry's plus sign, which
+        /// go into mirrored rows, so each pins itself.
         /// MarqueeLabel's canvas carries text, not a drawing, and mirrors
         /// with the language on purpose: in a right-to-left one the hidden
-        /// end of a name sits on the left, and the scroll must reveal it. A
-        /// new one moves a count and sends its author here.</summary>
+        /// end of a name sits on the left, and the scroll must reveal it.
+        /// ControllerStill's viewport is drawn to a bitmap in no window,
+        /// and pins itself. A new one moves a count and sends its author
+        /// here.</summary>
         [Fact]
         public void EveryDrawingBuiltInCodeIsOnTheList()
         {
-            const string types = "Canvas|Path|Polygon|Polyline|Image|Viewport3D|HelixViewport3D";
+            const string types = "Canvas|Path|Polygon|Polyline|Image|DecorativeImage|Viewport3D|HelixViewport3D";
             var pattern = new Regex(@"\bnew\s+(?:[A-Za-z_][\w.]*\.)?(?:" + types + @")\b\s*[({]|\b(?:" + types + @")\s+\w+\s*=\s*new\s*\(");
             var found = new SortedDictionary<string, int>(StringComparer.Ordinal);
             foreach (string path in AppSources("*.cs"))
@@ -177,12 +167,13 @@ namespace PadForge.Tests
             {
                 ["ControllerModel2DView.xaml.cs"] = 2,
                 ["ControllerSchematicView.xaml.cs"] = 4,
+                ["ControllerStill.cs"] = 1,
                 ["CurveEditor.xaml.cs"] = 1,
                 ["DecorativeIcons.cs"] = 2,
                 ["GunCalibrationScreen.cs"] = 1,
                 ["KBMPreviewView.xaml.cs"] = 4,
                 ["KeyLightsView.cs"] = 1,
-                ["MainWindow.xaml.cs"] = 9,
+                ["MainWindow.xaml.cs"] = 5,
                 ["MarqueeLabel.cs"] = 1,
                 ["MenuOverlayWindow.xaml.cs"] = 2,
                 ["MouseGlyph.cs"] = 3,
@@ -199,10 +190,13 @@ namespace PadForge.Tests
             string pad = File.ReadAllText(Path.Combine(AppDirectory(), "Views", "PadPage.xaml"));
             Assert.Contains("<Grid x:Name=\"LightbarPreviewHost\" FlowDirection=\"LeftToRight\"/>", pad);
 
+            string still = File.ReadAllText(Path.Combine(AppDirectory(), "Models3D", "ControllerStill.cs"));
+            Assert.Matches(new Regex(@"var viewport = new Viewport3D\s*\{\s*FlowDirection = FlowDirection\.LeftToRight,"), still);
+
             string main = File.ReadAllText(Path.Combine(AppDirectory(), "MainWindow.xaml.cs"));
             int pinned = Regex.Matches(main,
                 @"new System\.Windows\.Shapes\.Path\s*\{\s*FlowDirection = FlowDirection\.LeftToRight,").Count;
-            Assert.Equal(9, pinned);
+            Assert.Equal(5, pinned);
 
             // The line icon's path and its 24 by 24 canvas sit in a box
             // that keeps left to right.

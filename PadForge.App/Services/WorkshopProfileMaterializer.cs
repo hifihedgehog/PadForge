@@ -15,8 +15,9 @@ namespace PadForge.Services
     /// Turns the translator's neutral <see cref="TranslatedProfile"/> into a
     /// real <see cref="ProfileData"/> (#9). The library half stays out of the
     /// WPF exe project, so the App-owned shapes are assembled here: the
-    /// two pre-allocated VC slots (Xbox at 0, keyboard/mouse at 1, split
-    /// configs are the norm), the per-slot MappingSets, and MacroData built
+    /// two pre-allocated VC slots (a gamepad at 0, Xbox or PlayStation as
+    /// Get Profiles' Becomes picks, and keyboard/mouse at 1, split configs
+    /// are the norm), the per-slot MappingSets, and MacroData built
     /// from the device-independent macro descriptions. Device assignments are
     /// deliberately left empty: abstract Gamepad descriptors resolve on
     /// whichever pad the user maps into the slot.
@@ -28,9 +29,14 @@ namespace PadForge.Services
         /// (the browse dialog passes the Workshop item's identity), it is
         /// stamped onto the profile as provenance, with the import-time facts
         /// (ImportedAt, the report digest) filled in here so the dialog only
-        /// supplies what it already holds.
+        /// supplies what it already holds. <paramref name="gamepadType"/> is
+        /// the virtual controller the config's gamepad half lands on (#574):
+        /// Xbox or PlayStation, and any other value reads as Xbox. A
+        /// PlayStation slot reads the same gamepad targets an Xbox slot does,
+        /// so the slot's bindings are the same either way.
         /// </summary>
-        public static ProfileData Materialize(TranslatedProfile translated, SteamWorkshopSource source = null)
+        public static ProfileData Materialize(TranslatedProfile translated, SteamWorkshopSource source = null,
+            VirtualControllerType gamepadType = VirtualControllerType.Xbox)
         {
             if (translated == null) throw new ArgumentNullException(nameof(translated));
 
@@ -44,11 +50,12 @@ namespace PadForge.Services
 
             // Only the slots the translation actually binds exist on the
             // imported profile (owner report 2026-07-13: a keyboard-only
-            // config imported with an empty Xbox VC). The Xbox slot, when
+            // config imported with an empty Xbox VC). The gamepad slot, when
             // needed, always sits first so the macro triggers reading its
             // combined output keep their index.
+            if (gamepadType != VirtualControllerType.PlayStation) gamepadType = VirtualControllerType.Xbox;
             int nextSlot = 0;
-            int xboxSlot = translated.NeedsXboxSlot ? nextSlot++ : -1;
+            int gamepadSlot = translated.NeedsXboxSlot ? nextSlot++ : -1;
             int kbmSlot = translated.NeedsKbmSlot ? nextSlot++ : -1;
 
             var slotCreated = new bool[maxPads];
@@ -57,24 +64,24 @@ namespace PadForge.Services
             var slotProfileIds = new string[maxPads];
             var mappingSets = new MappingSet[maxPads];
 
-            if (xboxSlot >= 0)
+            if (gamepadSlot >= 0)
             {
-                slotCreated[xboxSlot] = true;
-                slotEnabled[xboxSlot] = true;
-                slotTypes[xboxSlot] = (int)VirtualControllerType.Xbox;
-                slotProfileIds[xboxSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.Xbox);
-                mappingSets[xboxSlot] = translated.XboxMappingSet ?? new MappingSet();
+                slotCreated[gamepadSlot] = true;
+                slotEnabled[gamepadSlot] = true;
+                slotTypes[gamepadSlot] = (int)gamepadType;
+                slotProfileIds[gamepadSlot] = InputManager.GetDefaultProfileId(gamepadType);
+                mappingSets[gamepadSlot] = translated.XboxMappingSet ?? new MappingSet();
                 // The translator spells out every binding, automap-identical
                 // ones included, so the legacy-automap merge must not add to
                 // this set when the user assigns a device.
-                mappingSets[xboxSlot].Authoritative = true;
+                mappingSets[gamepadSlot].Authoritative = true;
                 // Slot-level workshop stamps (v18): Steam's deadzone_shape
                 // rides the Xbox set (the thumb pairs it shapes live
                 // there); the runtime overlays it onto the resolved
                 // per-device tuning, the gesture auto-arm contract.
-                mappingSets[xboxSlot].WorkshopLeftStickDeadZoneShape =
+                mappingSets[gamepadSlot].WorkshopLeftStickDeadZoneShape =
                     translated.LeftStickDeadZoneShape ?? "";
-                mappingSets[xboxSlot].WorkshopRightStickDeadZoneShape =
+                mappingSets[gamepadSlot].WorkshopRightStickDeadZoneShape =
                     translated.RightStickDeadZoneShape ?? "";
             }
             if (kbmSlot >= 0)
@@ -92,11 +99,11 @@ namespace PadForge.Services
             // gate is per slot.
             if (!string.IsNullOrEmpty(translated.GyroEngageDescriptor))
             {
-                if (xboxSlot >= 0)
+                if (gamepadSlot >= 0)
                 {
-                    mappingSets[xboxSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
-                    mappingSets[xboxSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
-                    mappingSets[xboxSlot].WorkshopGyroEngageToggle = translated.GyroEngageToggle;
+                    mappingSets[gamepadSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
+                    mappingSets[gamepadSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
+                    mappingSets[gamepadSlot].WorkshopGyroEngageToggle = translated.GyroEngageToggle;
                 }
                 if (kbmSlot >= 0)
                 {
@@ -110,7 +117,7 @@ namespace PadForge.Services
             // gyro rows sit on whichever side the config put them.
             if (!string.IsNullOrEmpty(translated.GyroSpace))
             {
-                if (xboxSlot >= 0) mappingSets[xboxSlot].WorkshopGyroSpace = translated.GyroSpace;
+                if (gamepadSlot >= 0) mappingSets[gamepadSlot].WorkshopGyroSpace = translated.GyroSpace;
                 if (kbmSlot >= 0) mappingSets[kbmSlot].WorkshopGyroSpace = translated.GyroSpace;
             }
             // The gyro ratchet stamp (v22, Steam gyro_ratchet_button_mask)
@@ -120,7 +127,7 @@ namespace PadForge.Services
             if (translated.GyroRatchetDescriptors != null && translated.GyroRatchetDescriptors.Count > 0)
             {
                 string ratchet = string.Join("|", translated.GyroRatchetDescriptors);
-                if (xboxSlot >= 0) mappingSets[xboxSlot].WorkshopGyroRatchetDescriptors = ratchet;
+                if (gamepadSlot >= 0) mappingSets[gamepadSlot].WorkshopGyroRatchetDescriptors = ratchet;
                 if (kbmSlot >= 0) mappingSets[kbmSlot].WorkshopGyroRatchetDescriptors = ratchet;
             }
             // The gyro activation lane (several gyro buttons, all of them
@@ -130,7 +137,7 @@ namespace PadForge.Services
             string activation = translated.GyroActivationByLayer == null
                 ? ""
                 : string.Join(";", translated.GyroActivationByLayer.Select(kv => kv.Key + "=" + kv.Value.Encode()));
-            foreach (int slot in new[] { xboxSlot, kbmSlot })
+            foreach (int slot in new[] { gamepadSlot, kbmSlot })
             {
                 if (slot < 0) continue;
                 if (activation.Length > 0) mappingSets[slot].WorkshopGyroActivation = activation;
@@ -152,7 +159,7 @@ namespace PadForge.Services
                 foreach (var menu in translated.Menus)
                 {
                     if (menu == null) continue;
-                    if (xboxSlot >= 0) mappingSets[xboxSlot].Menus.Add(menu.Clone());
+                    if (gamepadSlot >= 0) mappingSets[gamepadSlot].Menus.Add(menu.Clone());
                     if (kbmSlot >= 0) mappingSets[kbmSlot].Menus.Add(menu.Clone());
                 }
             }
@@ -162,7 +169,7 @@ namespace PadForge.Services
             // the Xbox slot when there is one: a menu on each slot of a split
             // config would answer one press twice, each taking the keyboard
             // from the other.
-            int keyboardSlot = xboxSlot >= 0 ? xboxSlot : kbmSlot;
+            int keyboardSlot = gamepadSlot >= 0 ? gamepadSlot : kbmSlot;
             var macroSource = translated.Macros;
             if (macroSource != null && keyboardSlot >= 0)
             {
@@ -183,7 +190,7 @@ namespace PadForge.Services
                 }
             }
 
-            var macros = BuildMacros(macroSource, Math.Max(xboxSlot, 0),
+            var macros = BuildMacros(macroSource, Math.Max(gamepadSlot, 0),
                 translated.Report?.ControllerType);
 
             return new ProfileData

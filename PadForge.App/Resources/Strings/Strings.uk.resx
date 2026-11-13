@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Увімкнено</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Вимкнено</value></data>
   <data name="Common_More" xml:space="preserve"><value>Більше</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Показати все</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Установлено</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Не встановлено</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Недоступно на ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Зупинення…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Зупинення рушія…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Працює на {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Працює (клієнтів: {0})</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Працює, підключено: {0}</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Прослуховує :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Порт {0} зайнятий</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Немає доступу до порту {0} (запустіть від імені адміністратора)</value></data>
@@ -100,7 +101,7 @@
   <data name="Common_Offline" xml:space="preserve"><value>Офлайн</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Невідомо</value></data>
   <data name="Common_Default" xml:space="preserve"><value>Типово</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Огляд...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Огляд…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Продовжити</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Зупинити</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Запустити</value></data>
@@ -127,7 +128,42 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Очищення віртуальних контролерів, що залишилися з попереднього сеансу.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> пристр.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Додати контролер</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Додати контролер</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Виберіть, що мають бачити ігри. Контролер додається одразу після кліка.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Вхід від</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Вибрати пізніше</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Поширені</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Інші виходи</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Розкладка, яку очікує більшість ігор для ПК.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Для ігор із підказками PlayStation, сенсорною панеллю й світловою смугою.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Розкладка кнопок Switch для ігор і емуляторів, що її очікують.</value></data>
+  <data name="AddController_Kbm_Line" xml:space="preserve"><value>Клавіші, курсор і прокручування з геймпада.</value></data>
+  <data name="AddController_Extended_Line" xml:space="preserve"><value>Керма, джойстики для польотів і власні розкладки.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Ноти й зміни керування для музичного ПЗ.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Віртуальні VR-контролери через SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Щоб згодом змінити тип, клацніть чип типу на контролері. Це один клік.</value></data>
+  <data name="AddController_MidiNotRunning" xml:space="preserve"><value>Windows MIDI Services не відповідає. Див. його картку в налаштуваннях.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Потрібен SteamVR. Установіть його з його картки в налаштуваннях.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>VR-контролер уже є. Один керує обома руками.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>У PadForge вже {0} контролерів, більше він не підтримує. Видаліть один, щоб додати інший.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Профіль</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Пошук налаштувань, пристроїв і профілів</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Пошук</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Результати</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Вгору</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Вниз</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1}, щоб переміщатися</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0}, щоб відкрити</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} звідусіль</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Сторінки</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Дії</value></data>
+  <data name="Search_Group_Docs" xml:space="preserve"><value>Документація</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>у «Більше»</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>у параметрах рядка</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>У PadForge немає збігів із «{0}».</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Шукати в документації «{0}»</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Видалити віртуальний контролер</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>На весь екран</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Показати PadForge</value></data>
@@ -211,6 +247,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Профіль «{0}» створено.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Профіль «{0}» видалено.</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Профіль «{0}» оновлено.</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Профіль «{0}» тепер містить поточні налаштування.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Профіль завантажено: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Профіль повернуто до типового</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>«{0}» призначено віртуальному контролеру {1}.</value></data>
@@ -236,29 +273,39 @@
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профіль перемкнено: {0}</value></data>
   <data name="Status_ProfileSwitchedDefault" xml:space="preserve"><value>Профіль перемкнено: Типовий</value></data>
   <data name="Profile_Default" xml:space="preserve"><value>Типовий</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Комбінації для профілів</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Комбінації</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>Призначте комбінації кнопок, щоб перемикати профілі з будь-якого контролера.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Додати комбінацію</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Наступний профіль</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Попередній профіль</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Певний профіль</value></data>
-  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Показати/сховати вікно</value></data>
-  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Увімкнути/вимкнути віртуальні контролери</value></data>
+  <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Показати або сховати PadForge</value></data>
+  <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Увімкнути або вимкнути віртуальні контролери</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Будь-який підключений пристрій</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Записати</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Запис...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Пристрій не вибрано.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Неприпустимий індекс слота: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Не вдалося призначити пристрій.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>коли</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>на</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}» призначено віртуальному контролеру {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» більше не призначено віртуальному контролеру {1}.</value></data>
-  <data name="Status_DeviceHidden" xml:space="preserve"><value>Пристрій приховано. (Його можна відновити у файлі налаштувань.)</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Пристрій вилучено.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Віртуальний контролер {0} видалено.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
   <data name="Home_Title" xml:space="preserve"><value>Головна</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Пристроїв підключено: {0}. Контролерів: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Ігри бачать кожен активний контролер.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Рушій увімкнено, але активних контролерів немає.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Запустіть рушій, щоб повернути свої контролери.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Частота опитування</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Активні контролери</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Підключені пристрої</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>Увімкнути або вимкнути цей контролер</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Запускається, коли запускається рушій.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Запускається, коли цей пристрій підключається.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Запускається, коли підключається один із цих пристроїв.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Не підключено</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Зараз надсилає введення</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Заряд {0}, низький</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Заряд {0}, заряджається</value></data>
   <data name="Dashboard_InputEngine" xml:space="preserve"><value>Рушій введення</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Контролери</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Додатково в користуванні</value></data>
@@ -268,31 +315,31 @@
   <data name="Home_ShowQr" xml:space="preserve"><value>Показати QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} підключено, але не використовується.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Використати</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Що мають бачити ігри?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge перетворює цей контролер на той, якого очікують ваші ігри. Виберіть один, щоб почати. Згодом його можна змінити одним кліком.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge перетворює ваш контролер на той, якого очікують ваші ігри. Виберіть один, щоб почати. Згодом його можна змінити одним кліком.</value></data>
+  <data name="Home_FirstRun_Kbm_Line" xml:space="preserve"><value>Грайте в ігри для клавіатури й миші геймпадом.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Більше типів: [{0}, {1}, {2} і {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Кнопки, стіки й тригери прив'язуються 1:1 під час створення контролера.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Створити пару з Bluetooth-контролером</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Почати з готового профілю</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Підключено</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, заряд {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Заряд {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Контролер не підключено</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Підключіть його кабелем або через Bluetooth.</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> прив'язано, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> підключено</value></data>
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Рушій працює. Клацніть, щоб зупинити.</value></data>
   <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Рушій простоює. Клацніть, щоб зупинити.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Рушій зупинено. Клацніть, щоб запустити.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Налаштувати цей контролер</value></data>
-  <data name="FirstRun_Title" xml:space="preserve"><value>Розпаліть горно</value></data>
-  <data name="FirstRun_Body" xml:space="preserve"><value>Підключіть контролер, виберіть тип виходу, і PadForge перекує на нього ваше введення. Коротка екскурсія покаже, де що розташовано.</value></data>
-  <data name="FirstRun_Begin" xml:space="preserve"><value>Почати екскурсію</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Пропустити</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Далі</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Готово</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Слоти</value></data>
-  <data name="Tour_Slots_Body" xml:space="preserve"><value>Тут живе кожен віртуальний контролер. Полум'я показує, які слоти кують просто зараз.</value></data>
-  <data name="Tour_Engine_Title" xml:space="preserve"><value>Рушій введення</value></data>
-  <data name="Tour_Engine_Body" xml:space="preserve"><value>Саме горно. Перемкніть полум'я, щоб запустити або зупинити все опитування введення.</value></data>
-  <data name="Tour_Cards_Title" xml:space="preserve"><value>Віртуальні контролери</value></data>
-  <data name="Tour_Cards_Body" xml:space="preserve"><value>Виберіть тип виходу, дайте слоту пристрої та клацніть картку, щоб викувати її прив'язки.</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Тут чекають додаткові можливості: вебконтролер для телефона, Віддалений зв'язок, сервер руху та інші.</value></data>
-  <data name="Settings_ShowTour" xml:space="preserve"><value>Показати вітальну екскурсію</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Слот</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Пристрій</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Вхід від</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Додати пристрій</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Низький</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Зображення</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Список</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>Виходів: {0}</value></data>
@@ -328,6 +375,7 @@
   <data name="Pad_Kbm_Socd_FoldHint" xml:space="preserve"><value>Яке натискання бачать ігри, коли утримано обидві клавіші пари</value></data>
   <data name="Pad_KeepAwake_FoldHint" xml:space="preserve"><value>Утримує невелике відхилення стіка, щоб ігри й далі показували підказки контролера</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Кування</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Активні: {0} з {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Виберіть макрос у списку або натисніть + біля заголовка «Макроси», щоб створити новий.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ВХІД</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ВИХІД</value></data>
@@ -335,6 +383,7 @@
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Перегляд</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Додатково</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Додаткові можливості. Кожна не заважає, доки ви її не ввімкнете.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} з {1} увімкнено</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Більше способів грати</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Надсилання кудись інде</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>На екрані</value></data>
@@ -342,17 +391,59 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Оглядайтеся за допомогою трекера голови або VR-шолома.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>Прив'язуйте швидкість, педалі та передачі з гоночних ігор.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Дозвольте глядачам натискати кнопки, пишучи в чаті.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Діліться контролерами з PadForge на іншому ПК.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Керуйте віртуальними контролерами на іншому ПК.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Передає рух контролера до емуляторів.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Приймайте ефекти тригерів і світла від ігрових модів.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показуйте меню, шари та перемикання профілів під час гри.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор, що використовують сенсорну панель PlayStation.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Зображення, таймер або годинник поверх інших вікон.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, звичайна адреса HTTP, код доступу</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Повторне підключення, порт, захист посвідчення, підключення за адресою</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Середовище виконання OpenXR, порт UDP, діапазон окремих осей</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, звичайний HTTP, код доступу</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматичне перепідключення, порт, посвідчення пари, підключення за адресою</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, замінник DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порти, повна швидкість, власні формати</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Порти, Повна швидкість, Власні формати</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Озирайтеся трекером голови або VR-шоломом, а обидва великі пальці залишаються на кнопках.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Прив'язуйте швидкість, педалі й передачі, які надсилає гоночна гра, як будь-яке введення.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Надсилайте рух контролера в емулятори, що читають джерело руху DSU.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Беріть ефекти адаптивних тригерів і підсвічування з ігрових модів, написаних для DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Увімкніть вивід телеметрії в грі й вкажіть цей ПК і порт.</value></data>
+  <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>В емуляторі додайте джерело руху за адресою цього ПК і цим портом.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефекти мода доходять до кожного контролера, який має для них апаратну частину.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Поза голови відображається як рядок трекера голови на сторінці [Пристрої]. Прив'яжіть поворот голови до осі стіка в розділі «Кнопки» контролера.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значення відображаються як рядок ігрової телеметрії на сторінці [Пристрої]. Прив'яжіть їх у розділі «Кнопки» контролера або використайте для запуску макросів.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Місце, розмір і непрозорість меню задаються в самому меню, у розділі [Макроси і меню] контролера.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Джерела</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack і все, що надсилає його формат UDP</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Діапазон</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Діапазон окремих осей. Нуль означає діапазон, заданий вище.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Ігри, яких PadForge не знає</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Для модів, які шукають запущений DSX перед надсиланням</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Що показувати</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кільце, сітка або смуга меню, поки воно відкрите</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва шару, поки утримується шар зсуву</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назва профілю, коли профіль змінюється</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Копіювати адресу</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Місце на екрані</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Підключити телефон</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Підключіть телефон до тієї самої мережі, що й цей ПК.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Скануйте код його камерою.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Виберіть розкладку контролера.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Телефони</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Жодного телефона не підключено.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Телефон, що підключився, з'являється тут і на сторінці «Пристрої», де його призначають контролеру.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Ваш канал</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Слова для глядачів</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Глядач пише слово на кшталт !a, а PadForge натискає те, що прив'язано до !a у рядку Twitch Chat на сторінці «Пристрої». Призначте цей рядок контролеру, як будь-який пристрій.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Під час трансляції</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Зображення для трансляції</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Спарених ПК немає.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Створити пару з іншим ПК</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Поблизу немає ПК без пари.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Увімкніть Віддалений зв'язок у PadForge на іншому ПК. Він з'явиться тут, а ви порівняєте короткий код на обох екранах.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Вигляд і місце</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Щоб перемістити, перетягніть його правою кнопкою миші або трьома пальцями.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Показує</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Коли попереду інша програма, кліки проходять крізь оверлей. Коли попереду PadForge, перетягуйте оверлей правою кнопкою миші й змінюйте розмір за кут. Макрос може показати чи сховати оверлей за його номером.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер руху</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер протоколу DSU/CemuHook Motion Provider для даних гіроскопа й акселерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Увімкнути сервер руху DSU (протокол CemuHook Motion Provider)</value></data>
@@ -393,10 +484,8 @@
   <data name="BlissBox_NoController" xml:space="preserve"><value>немає контролера</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Тип {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Вебконтролер</value></data>
-  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Надає браузерам у вашій локальній мережі інтерфейс геймпада.</value></data>
+  <data name="Dashboard_WebDescription" xml:space="preserve"><value>Використовуйте телефон або планшет як контролер. На телефон нічого встановлювати не потрібно.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Увімкнути сервер вебконтролера</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Підключіться з браузера на телефоні чи планшеті, щоб користуватися ним як геймпадом.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Відскануйте камерою телефона або відкрийте цю адресу в його браузері:</value></data>
   <data name="Dashboard_WebPlainTitle" xml:space="preserve"><value>Звичайна адреса HTTP</value></data>
   <data name="Dashboard_WebPlainDescription" xml:space="preserve"><value>Друга адреса без HTTPS для браузерів, які відхиляють сертифікат PadForge, і для тунелю або зворотного проксі, що має власний. Рух із телефона потребує HTTPS, тому тут він працює лише через тунель або проксі, який надає HTTPS.</value></data>
   <data name="Dashboard_WebPlainEnable" xml:space="preserve"><value>Також надавати звичайний HTTP</value></data>
@@ -406,30 +495,30 @@
   <data name="Dashboard_WebAccessCode" xml:space="preserve"><value>Код доступу</value></data>
   <data name="Dashboard_WebAccessCodeHint" xml:space="preserve"><value>Звичайна адреса відкривається лише з цим кодом, і посилання нижче вже містить його. Новий код відключить усіх, хто підключений через звичайну адресу.</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Новий код</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Адреса на цьому ПК:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Вібрація (клацніть, щоб розпізнати цей пристрій)</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Змушує цей пристрій вібрувати, щоб ви могли визначити, який саме це.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Віддалений зв'язок</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Діліться контролерами зі спареним PadForge на іншому ПК у вашій мережі або через інтернет.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Керуйте віртуальними контролерами на іншому ПК. Після одноразового створення пари довірений ПК підключається знову автоматично.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Увімкнути сервер Віддаленого зв'язку</value></data>
-  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Після одноразового створення пари довірений ПК підключається знову автоматично. Спарений ПК може керувати виходом геймпада на цьому ПК, а якщо ви його не обмежите, то й клавіатурою, мишею та макросами.</value></data>
-  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Або підключитися за адресою (для досвідчених)</value></data>
+  <data name="Dashboard_RemoteLinkFooter" xml:space="preserve"><value>Спарений ПК може керувати виходом геймпада на цьому ПК, а якщо ви його не обмежите, то й клавіатурою, мишею та макросами.</value></data>
+  <data name="Dashboard_RemoteLinkConnect" xml:space="preserve"><value>Підключення за адресою</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>Створити пару / підключитися</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Створити пару</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Підключитися</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Підключено</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Створити пару з віддаленим ПК</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Переконайтеся, що цей код збігається на обох екранах, і натисніть «Створити пару».</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Створити пару з іншим ПК?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Переконайтеся, що обидва екрани показують однаковий код.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Створити пару</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Відхилити</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Обмежити цей ПК лише введенням геймпада</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Лише геймпад</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve"><value>Посвідчення</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Спарений ПК може надсилати на цей ПК введення клавіатури, миші та макросів, якщо ви не обмежите його лише геймпадом.</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Спарений ПК може керувати виходом геймпада на цьому ПК, а якщо ви його не обмежите, то й клавіатурою, мишею та макросами.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Спарені ПК</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>ПК, з якими ви створили пару для Віддаленого зв'язку. Відкличте пару, щоб ПК більше не підключався. Йому доведеться створити пару знову.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Відкликати</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Відкликати всі</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Перейменувати</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Оверлей сенсорної панелі</value></data>
-  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Екранна сенсорна поверхня для емуляції сенсорної панелі, сумісної з PlayStation.</value></data>
+  <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation, для сенсорного екрана або миші.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Увімкнути оверлей сенсорної панелі</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Непрозорість</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Скинути положення</value></data>
@@ -438,6 +527,13 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Налаштування</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Загальні</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Введення</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Обладнання</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Драйвери</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Дані й приватність</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Пошук налаштувань</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Немає налаштувань, що відповідають «{0}».</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Вигляд</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Виберіть бажану тему оформлення.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Тема</value></data>
@@ -446,6 +542,7 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Темна</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Рушій введення</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Налаштуйте опитування та фонову обробку.</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Підтримка обладнання</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автоматично запускати рушій разом із програмою</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продовжувати опитування, коли вікно втрачає фокус</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Інтервал опитування (якщо профіль не задає власний)</value></data>
@@ -502,16 +599,19 @@
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge оновлено до версії {0}.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Запускати згорнутим</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Запускати під час входу в систему</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>Драйвер HidHide</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Приховує фізичні пристрої від ігор, щоб уникнути подвійного введення.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Приховує фізичні пристрої від ігор, щоб запобігти подвійному введенню.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Параметри HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Приховувати пристрої від ігор, Залишати пристрої замаскованими між запусками, Програми з білого списку</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Програми з білого списку</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Ці програми й далі бачать приховані пристрої. PadForge завжди автоматично додається до білого списку.</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Додати...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>Драйвер HIDMaestro</value></data>
-  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Рушій віртуальних HID-контролерів, що працює в режимі користувача. Вбудований у PadForge.App. Установлюється автоматично під час створення першого віртуального контролера. У v3 замінює ViGEmBus і vJoy.</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
+  <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge установлює цей драйвер разом із першим віртуальним контролером, який ви створюєте. Видалення показує, що HIDMaestro залишив на цьому ПК, перш ніж вилучити це.</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Створює віртуальні контролери.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Видалити HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Це видаляє HIDMaestro з цього ПК: його віртуальні контролери, драйвер, сертифікат підпису, ключі реєстру та файли. Спершу PadForge зупиняє свій рушій. Інші програми, що використовують HIDMaestro, втратять його драйвер до наступного запуску. PadForge установить його знову, коли наступного разу створюватиме віртуальний контролер.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Також видалити usbip-win2, установлений його власним інсталятором</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ось що буде вилучено з цього ПК. PadForge установить HIDMaestro знову разом із наступним віртуальним контролером.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Також вилучити usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Старіші версії PadForge встановлювали usbip-win2 його власним інсталятором. Це видаляє й таке встановлення, разом із його фільтром кореневого USB-концентратора, якщо usbip-win2 не використовує інша програма. Видалення фільтра перезапускає кожен кореневий USB 3-концентратор, тому USB-пристрої на мить від'єднуються.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Читання того, що HIDMaestro залишив на цьому ПК…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro не залишив на цьому ПК нічого для видалення.</value></data>
@@ -520,10 +620,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Залишається: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Не вдалося прочитати: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Не видалено: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Драйвер BthPS3 для Bluetooth</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Вилучено</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Залишено</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Не прочитано</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Не вилучено</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Дає змогу контролерам PlayStation 3, PlayStation Move і контролеру Navigation підключатися через Bluetooth. Вбудований у PadForge і встановлюється під час першого створення пари з одним із них.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Підключає контролери PlayStation 3 через Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Видалити BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Це видаляє BthPS3 з цього ПК: його драйвери, фільтр, який він додає до Bluetooth, і драйвер WinUSB, який PadForge надав контролерам PlayStation 3 для створення пари. Спершу PadForge зупиняє свій рушій, а Bluetooth на мить вимикається, поки драйвери вивантажуються. Після цього контролери PlayStation 3, Move і Navigation працюватимуть лише через USB. Створення пари з одним із них знову встановить BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Ось що буде вилучено з цього ПК. Контролери PlayStation 3, Move і Navigation тоді працюватимуть лише через USB, доки створення пари з одним із них знову не встановить BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Читання того, що BthPS3 залишив на цьому ПК…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 не залишив на цьому ПК нічого для видалення.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini використовує ці драйвери, тому вони залишаються, доки його встановлено.</value></data>
@@ -542,6 +647,7 @@
   <data name="BthPS3Uninstall_RadioOff" xml:space="preserve"><value>Bluetooth не ввімкнувся знову. Ввімкніть його в параметрах Windows.</value></data>
   <data name="Settings_MidiServices" xml:space="preserve"><value>Windows MIDI Services</value></data>
   <data name="Settings_MidiDesc" xml:space="preserve"><value>Віртуальні порти MIDI та введення MIDI. Windows 11 25H2 містить цей API починаючи з оновлення кінця листопада 2026 року. Інші ПК використовують середовище виконання Windows MIDI Services, яке PadForge може встановити, або застарілий MIDI API.</value></data>
+  <data name="Settings_MidiLine" xml:space="preserve"><value>Віртуальні порти MIDI та введення MIDI.</value></data>
   <data name="Settings_MidiStatusInBox" xml:space="preserve"><value>Вбудовано у Windows</value></data>
   <data name="Settings_MidiStatusRuntime" xml:space="preserve"><value>Середовище виконання App SDK</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Недоступно</value></data>
@@ -559,6 +665,7 @@
   <data name="Settings_MidiUninstallBundleConfirm_Message" xml:space="preserve"><value>Буде видалено Windows MIDI Services Runtime and Tools від Microsoft разом із програмою MIDI Settings, консоллю MIDI та модулем PowerShell. Microsoft більше не пропонує їх для завантаження, тому встановити їх знову не вдасться.</value></data>
   <data name="Settings_SteamVR" xml:space="preserve"><value>SteamVR</value></data>
   <data name="Settings_SteamVRDesc" xml:space="preserve"><value>Середовище виконання VR для віртуальних VR-контролерів. Установлюється із серверів Valve, обліковий запис і клієнт Steam не потрібні (кілька ГБ).</value></data>
+  <data name="Settings_SteamVRLine" xml:space="preserve"><value>Середовище виконання для віртуальних VR-контролерів.</value></data>
   <data name="Settings_SteamVRInstallDir" xml:space="preserve"><value>Розташування встановлення</value></data>
   <data name="Settings_SteamVRUninstall_Title" xml:space="preserve"><value>Видалити SteamVR</value></data>
   <data name="Settings_SteamVRUninstallConfirm_Message" xml:space="preserve"><value>Буде видалено SteamVR, установлений без Steam у {0}, і звільнено кілька ГБ. Віртуальні VR-контролери не працюватимуть, доки SteamVR не буде встановлено знову.</value></data>
@@ -571,7 +678,7 @@
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Діагностика</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Відомості про версії та журнал подій рушія для пошуку несправностей.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Вести журнал діагностики</value></data>
-  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Безперервно записує події рушія у файл diagnostics.log у папці, показаній нижче. Залишається ввімкненим після перезапусків. Коли файл сягає 8 МБ, його вміст переноситься до diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Безперервно записує події рушія у файл diagnostics.log у папці журналів, яку відкриває «Відкрити папку журналів». Залишається ввімкненим після перезапусків. Коли файл сягає 8 МБ, його вміст переноситься до diagnostics.log.old.</value></data>
   <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Зберегти знімок</value></data>
   <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Зберігає найновіші події рушія в новий файл. Працює, навіть коли журнал діагностики вимкнено.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Відкрити папку журналу</value></data>
@@ -584,53 +691,92 @@
   <!-- ═══ About ═══ -->
   <data name="About_Title" xml:space="preserve"><value>Про програму</value></data>
   <data name="About_Subtitle" xml:space="preserve"><value>Утиліта для прив'язки контролерів</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Оновлень немає.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Документація</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Перевірити оновлення</value></data>
   <data name="About_Tagline" xml:space="preserve"><value>Сучасний форк x360ce, перебудований на SDL3, WPF і .NET 10</value></data>
   <data name="About_Description" xml:space="preserve"><value>PadForge перетворює будь-який пристрій введення на будь-який віртуальний контролер. Геймпади, джойстики, клавіатури, миші та сенсорні екрани прив'язуються до віртуальних ігрових контролерів (Xbox, PlayStation, авіаджойстики, керма, геймпади сторонніх виробників) або до виходу «клавіатура + миша» чи MIDI, який ігри сприймають як справжнє обладнання. Працює на основі HIDMaestro та Windows MIDI Services. Використовує SDL3 для введення з контролерів, Windows Raw Input для клавіатури й миші, HidHide для маскування пристроїв для окремих ігор і має сучасний інтерфейс у стилі Fluent Design для прив'язок, мертвих зон, кривих чутливості та силового зворотного зв'язку.</value></data>
   <data name="About_Overview" xml:space="preserve"><value>Огляд</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Створено за допомогою</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Пошук авторів</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Показати всіх авторів</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Показати менше авторів</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Жоден автор не відповідає «{0}».</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Середовище виконання та фреймворк WPF. MIT.</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Середовище виконання та фреймворк WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Введення з контролерів і їх перелічення. zlib.</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Введення з контролерів і їх перелічення.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Введення клавіатури й миші окремо для кожного пристрою</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Вихід віртуального пристрою MIDI (Windows MIDI Services). MIT.</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Вихід віртуального пристрою MIDI (Windows MIDI Services).</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-візуалізація контролера. MIT.</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-візуалізація контролера.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Система дизайну Fluent 2 для WPF. Wpf.Ui.dll містить VirtualizingWrapPanel, шрифти fluentui-system-icons і код із WPF та microsoft-ui-xaml. MIT.</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Система дизайну Fluent 2 для WPF. Wpf.Ui.dll містить VirtualizingWrapPanel, шрифти fluentui-system-icons і код із WPF та microsoft-ui-xaml.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm для прив'язування даних. MIT.</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm для прив'язування даних.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Набір піктограм Zacksly</value></data>
-  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Піктограми стіків і тригерів на основі «Xbox Series Button Icons and Controls» від Zacksly (CC BY 3.0)</value></data>
+  <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Піктограми стіків і тригерів на основі «Xbox Series Button Icons and Controls» від Zacksly.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
-  <data name="About_QDollarDesc" xml:space="preserve"><value>Розпізнавач фігур на сенсорній панелі за шаблонами (коло / квадрат / трикутник / Z / галочка та власні записані жести). Повторна реалізація мовою C# еталонного коду JavaScript авторства Magrofuoco, Vatavu, Anthony та Wobbrock. BSD 3-Clause.</value></data>
+  <data name="About_QDollarDesc" xml:space="preserve"><value>Розпізнавач фігур на сенсорній панелі за шаблонами (коло / квадрат / трикутник / Z / галочка та власні записані жести). Повторна реалізація мовою C# еталонного коду JavaScript авторства Magrofuoco, Vatavu, Anthony та Wobbrock.</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Положення клавіш і клавіші базового шару клавіатур, які малює попередній перегляд «Клавіатура + миша», згенеровано з даних розкладок QMK і форку QMK від Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Положення клавіш і клавіші базового шару клавіатур, які малює попередній перегляд «Клавіатура + миша», згенеровано з даних розкладок QMK і форку QMK від Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
-  <data name="About_GestureSignDesc" xml:space="preserve"><value>Метод оцінювання за кутовим відхиленням, що працює поруч із розпізнавачем за хмарою точок на фігурах, намальованих одним пальцем. Реалізує ідею оцінювання з PointPatternAnalyzer проєкту GestureSign власним кодом C#. GPL-2.0, лише як документація.</value></data>
+  <data name="About_GestureSignDesc" xml:space="preserve"><value>Метод оцінювання за кутовим відхиленням, що працює поруч із розпізнавачем за хмарою точок на фігурах, намальованих одним пальцем. Реалізує ідею оцінювання з PointPatternAnalyzer проєкту GestureSign власним кодом C#. Лише як документація.</value></data>
   <data name="About_License" xml:space="preserve"><value>Ліцензія</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Це програмне забезпечення ліцензовано на умовах CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). Gamepad-Asset-Pack від AL2009man (MIT) надає 2D-графіку контролерів. GestureSign від TransposonY (GPL-2.0) використано як документацію для AngularMarginRecognizer, і жодного його коду в програмі немає. Handheld Companion (CC BY-NC-SA 4.0) надає 3D-моделі Xbox 360 і Steam Deck, які адаптує PadForge. HelixToolkit, HidHide, HIDMaestro, Windows MIDI Services і WPF UI ліцензовано на умовах MIT License. OpenXInput постачається лише із застереженням про торговельні марки від першоджерела й поширюється як є на тих самих умовах. $Q Recognizer авторства Magrofuoco, Vatavu, Anthony та Wobbrock (BSD 3-Clause) є еталоном для ShapeRecognizer сенсорної панелі, повторної реалізації мовою C#. SDL3 ліцензовано на умовах zlib License. x360ce (LGPL-3.0-or-later) є початковою кодовою базою, від якої відгалужено PadForge. Zergatul.Obs.InputOverlay від Igor Budzhak (MIT) надає зображення миші.</value></data>
+  <data name="About_License_Mit" xml:space="preserve"><value>MIT</value></data>
+  <data name="About_License_MitSdkLoader" xml:space="preserve"><value>MIT (завантажувач SDK)</value></data>
+  <data name="About_License_Apache2" xml:space="preserve"><value>Apache-2.0</value></data>
+  <data name="About_License_Bsd3" xml:space="preserve"><value>BSD 3-Clause</value></data>
+  <data name="About_License_Bsd2" xml:space="preserve"><value>BSD 2-Clause</value></data>
+  <data name="About_License_BsdStyle" xml:space="preserve"><value>BSD-стиль</value></data>
+  <data name="About_License_Bsl1" xml:space="preserve"><value>BSL-1.0</value></data>
+  <data name="About_License_Isc" xml:space="preserve"><value>ISC</value></data>
+  <data name="About_License_Mpl2" xml:space="preserve"><value>MPL-2.0</value></data>
+  <data name="About_License_Unlicense" xml:space="preserve"><value>Unlicense</value></data>
+  <data name="About_License_Zlib" xml:space="preserve"><value>zlib</value></data>
+  <data name="About_License_Gpl2" xml:space="preserve"><value>GPL-2.0</value></data>
+  <data name="About_License_Gpl2OrLater" xml:space="preserve"><value>GPL-2.0-or-later</value></data>
+  <data name="About_License_Gpl3" xml:space="preserve"><value>GPL-3.0</value></data>
+  <data name="About_License_Gpl3OrLater" xml:space="preserve"><value>GPL-3.0-or-later</value></data>
+  <data name="About_License_Agpl3" xml:space="preserve"><value>AGPL-3.0</value></data>
+  <data name="About_License_Lgpl21OrLater" xml:space="preserve"><value>LGPL-2.1-or-later</value></data>
+  <data name="About_License_Lgpl3" xml:space="preserve"><value>LGPL-3.0</value></data>
+  <data name="About_License_Lgpl3OrLater" xml:space="preserve"><value>LGPL-3.0-or-later</value></data>
+  <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
+  <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
+  <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
+  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
+  <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
+  <data name="About_License_VisualStudio" xml:space="preserve"><value>Умови ліцензії Visual Studio</value></data>
+  <data name="About_License_CorsairSdk" xml:space="preserve"><value>Умови Corsair SDK</value></data>
+  <data name="About_License_TrademarkOnly" xml:space="preserve"><value>Лише застереження про торговельну марку</value></data>
+  <data name="About_License_NoTermsNamed" xml:space="preserve"><value>Умов не названо</value></data>
+  <data name="About_License_NonePublished" xml:space="preserve"><value>Не опубліковано</value></data>
+  <data name="About_License_Several" xml:space="preserve"><value>Кілька ліцензій</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Рушій віртуальних HID-контролерів режиму користувача (замінює ViGEmBus і vJoy). MIT.</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Рушій віртуальних HID-контролерів режиму користувача (замінює ViGEmBus і vJoy).</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Пряма заміна XInput. Відфільтровує власні віртуальні контролери PadForge з того, що бачить сам PadForge. Застереження про торговельні марки від першоджерела, без OSS-ліцензії.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Пряма заміна XInput. Відфільтровує власні віртуальні контролери PadForge з того, що бачить сам PadForge.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Драйвер ядра для приховування фізичних пристроїв від ігор. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Драйвер ядра для приховування фізичних пристроїв від ігор.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Запрошення</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>«І ми говоримо про Христа, ми втішаємося у Христі, ми проповідуємо Христа, ми пророкуємо про Христа, і ми записуємо наші пророцтва, щоб наші діти могли знати, до якого джерела їм звертатися за прощенням їхніх гріхів».</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Нефій 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Слава, честь і хвала Господу Ісусу Христу, джерелу всієї істини та спасіння, на віки вічні.</value></data>
   <data name="About_TestimonyInvite" xml:space="preserve"><value>Щиро запрошуємо вас відвідати ComeUntoChrist.org і дізнатися більше про Нього та про Церкву Ісуса Христа Святих Останніх Днів.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
-  <data name="About_Bs2bDesc" xml:space="preserve"><value>Кросфід Bauer stereophonic-to-binaural для виходу на навушники. MIT.</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Кросфід Bauer stereophonic-to-binaural для виходу на навушники.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
-  <data name="About_ConcentusDesc" xml:space="preserve"><value>Кодувальник Opus на чистому C#, що забезпечує звук динаміка DualSense через Bluetooth. Автор: Logan Stromberg. BSD 3-Clause.</value></data>
+  <data name="About_ConcentusDesc" xml:space="preserve"><value>Кодувальник Opus на чистому C#, що забезпечує звук динаміка DualSense через Bluetooth. Автор: Logan Stromberg.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>
-  <data name="About_SAxenseDesc" xml:space="preserve"><value>Дослідження звуку DualSense через Bluetooth від egormanga: пакетний транспорт, яким передається потік динаміка контролера. apps.sdore.me/SAxense. MPL-2.0.</value></data>
+  <data name="About_SAxenseDesc" xml:space="preserve"><value>Дослідження звуку DualSense через Bluetooth від egormanga: пакетний транспорт, яким передається потік динаміка контролера. apps.sdore.me/SAxense.</value></data>
   <data name="About_DsBtHaptics" xml:space="preserve"><value>dualsense-bt-haptics</value></data>
-  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Рецепт звуку динаміка через Bluetooth від awalol: кадрування Opus і структура пакетів. Дякуємо також TechAntohere за спільні знахідки й тестування. MIT.</value></data>
+  <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Рецепт звуку динаміка через Bluetooth від awalol: кадрування Opus і структура пакетів. Дякуємо також TechAntohere за спільні знахідки й тестування.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Еталонна реалізація наскрізної передачі звуку контролера через USB. Автор: WujekFoliarz.</value></data>
 
@@ -676,8 +822,7 @@
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Затримка символів (мс)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Мілісекунди між введеними символами, до 1000. Значення 0 вводить увесь текст одразу.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Відключення за бездіяльності</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Живлення</value></data>
-  <data name="Devices_Dossier" xml:space="preserve"><value>Досьє пристрою</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Відомості</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>хвилин (0 = ніколи)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Відключати Bluetooth, коли підключено через USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Швидке заряджання. Коли цей контролер повідомляє, що заряджається, будучи підключеним через Bluetooth, з'єднання Bluetooth розривається, щоб він заряджався, не живлячи радіомодуль. Підходить будь-яке джерело живлення USB, зокрема мережеві зарядні пристрої. Якщо ви знову ввімкнете Bluetooth, не виймаючи кабель, з'єднання не чіпатимуть до наступного від'єднання кабелю.</value></data>
@@ -701,10 +846,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Запитує напрямки безпосередньо в цього геймпада PlayStation, тож вліво і вправо або вгору і вниз реєструються разом на танцювальному килимку з першого кроку. Вони надходять як кнопки стрілок «Вгору», «Вниз», «Вліво» та «Вправо», які прошивка 3.34 надсилає й сама, щойно натиснуто протилежні напрямки, і тоді PadForge припиняє запитувати. До того часу адаптер пропускає більшість власних зчитувань геймпада.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Сила натискання DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Номер гравця</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер зберігає номер і підключається знову як цей гравець. Після цього Windows бачить новий пристрій, тому прив'яжіть порт заново, щойно він повернеться.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Адаптер зберігає номер і підключається знову, а Windows бачить це як новий пристрій.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Гравець</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Задати гравця</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Екран Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Нічого не потрапить у порт, доки ви не збережете.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Показувати</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Зображення адаптера</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Назва профілю</value></data>
@@ -751,7 +897,6 @@
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO зчитується як два барабани Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} зчитується як контролер iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} знову зчитується як клавіатура.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Світловий пістолет</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Типовий діапазон прицілювання: X від {0} до {1}, Y від {2} до {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Відкалібрований діапазон прицілювання: X від {0} до {1}, Y від {2} до {3}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Калібрування пістолета</value></data>
@@ -810,6 +955,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Усі клавіатури (об'єднано)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Усі миші (об'єднано)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Пристрої</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>підключено: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Пошук пристроїв</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Усі</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Контролери</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Клавіатури й миші</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Зчитувати Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Зчитувати Chatpad і планшети uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Зчитувати геймпади</value></data>
@@ -830,28 +980,21 @@
   <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} знову працює на своєму драйвері Windows.</value></data>
   <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Не вдалося відновити драйвер Windows для {0}.</value></data>
   <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows повернула {0} на власний драйвер. Виберіть цей пристрій на сторінці «Пристрої», щоб знову змінити драйвер.</value></data>
-  <data name="Devices_OnlineTotal" xml:space="preserve"><value> онлайн / </value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> усього</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Вилучити цей пристрій і його налаштування</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Вилучити пристрій</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} буде вилучено зі списку пристроїв, а збережені налаштування цього пристрою буде забуто.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Перетягніть пристрій на картку контролера на бічній панелі, щоб призначити його.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Продукт: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Перетягніть пристрій на контролер на бічній панелі, щоб призначити його.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Надіслати прив'язку пристрою</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Призначення віртуальному контролеру</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Перемкнути призначення</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Слотів віртуальних контролерів ще немає. Створіть слот на інформаційній панелі, щоб призначити цей пристрій.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Режим введення</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Призначає цей пристрій цьому контролеру або знімає призначення.</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Примусовий сирий режим джойстика (в обхід перепризначення геймпада)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Зчитує сирі індекси HID замість прив'язки геймпада SDL. Використовуйте, коли SDL неправильно визначає розкладку кнопок чи осей.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Приховування введення</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Приховати від ігор (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Повністю приховує цей пристрій від інших програм за допомогою драйвера HidHide. Коли PadForge приховує вже підключений USB-контролер, він перепідключає його у Windows, тож усі програми, що тримали його відкритим, втрачають його. Контролер Bluetooth або контролер, що ділить приймач з іншим контролером, залишається доступним усім програмам, які відкрили його до приховування, аж до наступного підключення.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Установіть драйвер HidHide, щоб увімкнути цей параметр</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Поглинати прив'язані входи (перехоплення)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Блокує лише ті клавіші та кнопки, що мають прив'язку, а неприв'язані входи пропускає далі</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Стан сирого введення</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Виберіть пристрій, щоб переглянути його сире введення.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Перевірка входів</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Виберіть пристрій, щоб побачити його налаштування й перевірити входи.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Осі</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Кнопки</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Клавіатура</value></data>
@@ -1127,27 +1270,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Вибраний пристрій не має осей, кнопок чи перемикачів POV для клонування.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Клонувати {0} у цей слот як наскрізну передачу 1:1? Розкладка матиме осей: {1}, кнопок: {2}, POV: {3}, а рядки цього пристрою в слоті буде замінено його власними входами.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Цей пристрій має більше входів, ніж уміщує розширений контролер. Прив'язано осей: {0} з {1}, кнопок: {2} з {3}, POV: {4} з {5}. Решта залишилася без прив'язки.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Імпортовані профілі</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Імпортовані користувачем профілі HIDMaestro зберігаються у PadForge.xml і з'являються у списку профілів кожного розширеного слота. Зніміть новий із підключеного пристрою нижче або експортуйте чи видаліть наявний.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Ваші імпортовані профілі ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Підключені пристрої, доступні для імпорту</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Пресети контролерів</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Додайте пресет для контролера, якого PadForge не постачає, з файлу або з самого контролера.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Імпортовані</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Імпорт із підключеного пристрою</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Експорт…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Видалити</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Закрити</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Експорт JSON профілю</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Видалити імпортований профіль?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Видалити «{0}»? Усі слоти, що зараз використовують цей профіль, повернуться до синтетичного запису «Власний».</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Видалити пресет?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Будь-який контролер, що використовує {0}, повернеться до запису «Власний». Цю дію не можна скасувати.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Експортовано в {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Не вдалося експортувати: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>«{0}» видалено.</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Імпорт із файлу…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Імпортувати з файлу…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Імпорт JSON профілю</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Імпортовано з {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Не вдалося прочитати: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro відхилив цей профіль у {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>У цього профілю немає дескриптора HID, тому на його основі не можна створити контролер.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Нічого не імпортовано. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Оновити</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Імпортувати</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(пристрій HID без назви)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Знайдено інтерфейсів HID: {0}.</value></data>
@@ -1432,6 +1573,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Центр</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мертва зона</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Зсуви центру, форма мертвої зони та значення для кожної осі, крива для кожної осі, діапазон, кермування</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Діапазон у числах, сирі значення</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Діапазон</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Калібрувати межу» вимірює край, якого може досягти стік, і перетворює його на повне коло. Чотири повзунки лише обмежують кожен напрямок.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Вимірювання...</value></data>
@@ -1964,21 +2106,22 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>Скинути поріг збігу фігури</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Записати жест сенсорної панелі</value></data>
-  <data name="Recorder_Subtitle" xml:space="preserve"><value>Намалюйте жест на поверхні нижче. Діалог фіксує кожен палець, яким ви торкаєтеся. Коли ви приберете всі пальці з поверхні, зразок буде записано. Якщо намалювати жест іншою кількістю пальців, ніж у попередніх зразках, набір зразків буде скинуто.</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Очікування дотику пальця до полотна</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Записати жест</value></data>
+  <data name="Recorder_Subtitle" xml:space="preserve"><value>Намалюйте фігуру на сенсорній панелі контролера. Вона стане входом, який можна прив'язати.</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Намалюйте жест тут.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Малюйте на сенсорній панелі. Полотно повторює рухи наживо.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Джерело запису: {0}, сенсорна панель {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>ця сенсорна панель</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Сенсорна панель недоступна. Скористайтеся полотном нижче за допомогою миші або дотику.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Сенсорна панель недоступна. Малюйте тут мишею, пером або пальцем.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Малювання…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Усі зразки записано. Дайте жесту назву й натисніть «Зберегти».</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Зразок {0} з {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Зразків: {0} / {1}</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Кількість зразків</value></data>
-  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандартне значення 3. Більше зразків = надійніше розпізнавання, менше = швидший запис.</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Кількість зразків для запису</value></data>
+  <data name="Recorder_SampleCount_Hint" xml:space="preserve"><value>Стандартне значення 3. Більше зразків дає надійніше розпізнавання, а менше швидше записується.</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Назва</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Спробувати ще раз</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Назвіть цей жест</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Потрібна назва</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Назва задовга (макс. 64 символи)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Назва містить неприпустимі символи</value></data>
@@ -2301,41 +2444,62 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Профілі</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Керування профілями</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Створюйте профілі контролера для окремих програм, які автоматично перемикаються залежно від активної гри.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Автоматично перемикати профілі за програмою на передньому плані</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Профіль є повним набором налаштувань: контролери, прив'язки й тонке налаштування.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Стартові профілі</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Готові профілі для цілого жанру. Виберіть профіль, призначте будь-який контролер і грайте.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Перемикати профілі за грою</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Автоматичне перемикання</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Попереду зараз: {0}, профіль для нього не задано</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Попереду зараз: {0}, що завантажує {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Попереду зараз: {0}, а жоден профіль ще не має заданої гри</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Дозволити зовнішнє керування лаунчерам і скриптам</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Надає локальний іменований канал PadForge.Control, щоб Playnite, LaunchBox або скрипт могли активувати й деактивувати профілі. Активований так профіль залишається активним, доки скрипт його не відпустить або ви самі не перемкнете профіль. Лише на локальному комп'ютері.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Зовнішнє керування</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Активний профіль:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Немає слотів</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Автоперемикання: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Немає контролерів</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Відпустіть, щоб імпортувати профіль</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Новий</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Киньте сюди файл профілю</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Новий профіль</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Зберегти як</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Зберегти поточні налаштування сюди</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Змінити</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Завантажити</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Жоден профіль ще не має виконуваного файлу</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Вбудований</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Спершу виберіть профіль.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Вбудований профіль «Типовий» не можна змінити чи видалити.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Видалити профіль</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Видалити «{0}»? Збережений знімок його слотів і прив'язок буде знищено.</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Гру не задано</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Завантажується для {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Задано для {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Активний</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Більше для {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Видалити {0}?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профіль і його правило автоперемикання буде вилучено. Цю дію не можна скасувати.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профіль буде вилучено. Цю дію не можна скасувати.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Замінити налаштування, збережені в «{0}», поточними? Назва й ігри профілю залишаться.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Замінити</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Зберегти як профіль</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Змінити профіль</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Назва профілю:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Новий профіль</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Назва</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Новий профіль</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Виконувані файли (порівнюються з вікном на передньому плані):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Ігри, що його завантажують</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Частота опитування</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Типово (глобальне налаштування)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Перевизначено, поки активний профіль «{0}»: {1} мс</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Зберігає знімок прив'язок усіх слотів і налаштувань окремих пристроїв під однією назвою. Пов'язані виконувані файли перемикають на нього автоматично.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Перейменовує профіль і оновлює виконувані файли, які його активують. Збережені прив'язки й налаштування не змінюються.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Зберігає прив'язки й налаштування кожного контролера під однією назвою. Завантажується сам, коли попереду одна з його ігор.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профіль завантажується сам, коли попереду одна з його ігор.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Починається без контролерів. Завантажується сам, коли попереду одна з його ігор.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Додати запущену гру</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Жодна інша програма не має відкритого вікна.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Вилучити {0}</value></data>
+  <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Частота опитування, поки завантажено цей профіль</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Копіювати налаштування з...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Виберіть пристрій, з якого копіювати налаштування:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Копіювати з</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Замінити прив'язки й налаштування пристроїв для {0} прив'язками іншого контролера.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Додати макроси іншого контролера до {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Не призначено, зберігає прив'язки з минулого</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Виберіть програму для білого списку</value></data>
@@ -2377,6 +2541,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>Діапазон</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Антимертва зона</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Двічі клацніть, щоб додати точку. Клацніть правою кнопкою, щоб вилучити. Перетягуйте, щоб змінити.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>редактор кривої</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Вісь тригера</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -2731,8 +2896,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Базовий</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Шар</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Налаштувати базовий шар</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Назва, піктограма й колір базового шару у виїзній панелі шарів зсуву та в рядку шарів.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Назва шару</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Вхід активатора</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Назва</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Утримується з</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Натискається з</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Наступний шар з</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Попередній шар з</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>І з</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Виберіть вхід</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Неприв'язані елементи</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Передавати базовому шару</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Нічого не робити</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, тип входу, часові параметри й колір</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Утримання</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Перемикання</value></data>
@@ -2759,14 +2935,11 @@
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Якщо позначено, ціль цього шару залишається вимкненою, а не переходить до рядка базового шару.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Затримка</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Як довго треба утримувати вхід, перш ніж шар зреагує. Для режиму «Утримання» це захист від брязкоту. Для «Перемикання», «Закріплення» та «Залипання» перемикання стає довгим натисканням: шар перемикається один раз, коли утримання перевищує цей час, а коротше натискання нічого не робить. 0 реагує миттєво.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Другий вхід акорду</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Поріг осі</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Перебирати шари</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Лише в шарі</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Будь-який шар</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Вхід враховується, лише поки вибраний шар активний. Перевірка відбувається в момент натискання входу й діє протягом усього натискання. «Будь-який шар» означає, що вхід враховується завжди. Виходи з кожного шару створюйте на цьому самому шарі: іншим активатором або макросом «Перемкнути шар».</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Кнопка наступного шару</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Кнопка попереднього шару</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Зациклювати</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Якщо ввімкнено, перехід за останній шар повертає до першого, а за перший до останнього. Якщо вимкнено, вказівник зупиняється на краях.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Включати базовий</value></data>
@@ -2778,18 +2951,17 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Шар задіюється натисканням однієї кнопки (або напрямку POV).</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Для задіяння обидві кнопки треба утримувати одночасно. Підтримується акорд із кнопок різних пристроїв.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Задіюється, поки аналогова вісь перевищує порогове значення.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Шар задіяний, поки утримується активатор. Вимикається, коли ви відпускаєте.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Поки утримується його вхід, прив'язки цього шару замінюють базові.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Натисніть, щоб задіяти. Натисніть ще раз, щоб вимкнути. Шар зберігається протягом багатьох натискань.</value></data>
   <data name="Pad_Shift_ModeCustom_Subtitle" xml:space="preserve"><value>Натисніть, щоб закріпити цей шар увімкненим. Натисніть ще раз, щоб повернутися до базового. Інша кнопка закріплення перемикає на свій шар.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Кожне натискання переходить далі впорядкованим списком шарів. Після останнього повертається до базового.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Натисніть один раз, щоб задіяти. Наступне натискання прив'язаної кнопки спрацьовує на цьому шарі, після чого шар вимикається автоматично.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Власної кнопки немає. Додайте шар до черги елемента «Цикл», і цикл до нього дійде.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Успадковувати неприв'язані цілі з базового шару</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Спрацьовувати під час відпускання</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Активатор спрацьовує лише після відпускання кнопки. Якщо задано затримку утримання, натискання має тривати стільки, щоб відпускання зарахувалося.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Також виконувати власну прив'язку активатора</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Якщо позначено, кнопка активатора й далі керує всіма рядками, що використовують її як джерело. Одне натискання і змінює шар, і виконує власну прив'язку кнопки. Якщо не позначено (типово), натискання активатора витрачається лише на зміну шару.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Якщо позначено, цілі, які цей шар явно не прив'язує, переходять до базового шару. Якщо не позначено (типово), шар повністю замінює базовий, а неприв'язані цілі залишаються вимкненими.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>З «Передавати базовому шару» елементи, яких цей шар не прив'язує, зберігають базові прив'язки. З «Нічого не робити» шар повністю замінює базовий, а ці елементи залишаються вимкненими.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Діапазон обертання</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Задавати діапазон обертання</value></data>
@@ -2992,15 +3164,14 @@
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Вибраний пристрій не має вбудованого динаміка. Звуки макросів для цього геймпада відтворюються на типовому системному виводі.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Скинути вивід звуку</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
-  <data name="About_DsTesterDesc" xml:space="preserve"><value>Браузерний набір тестів DualSense від Xuezhou Dai (daidr): еталон для CRC-кадрування feature-звітів Sony і тестових команд прошивки, які PadForge пересилає з віртуальних геймпадів на фізичні. MIT.</value></data>
+  <data name="About_DsTesterDesc" xml:space="preserve"><value>Браузерний набір тестів DualSense від Xuezhou Dai (daidr): еталон для CRC-кадрування feature-звітів Sony і тестових команд прошивки, які PadForge пересилає з віртуальних геймпадів на фізичні.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
-  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Еталон звуку DualShock 4 через Bluetooth від nefarius: кадрування звітів для потоку динаміка DS4 у PadForge. Кодувальник SBC є оригінальною реалізацією мовою C# за специфікацією Bluetooth A2DP. З документацією протоколу з ds4mac від khallmark. MIT.</value></data>
+  <data name="About_Ds4AudioDesc" xml:space="preserve"><value>Еталон звуку DualShock 4 через Bluetooth від nefarius: кадрування звітів для потоку динаміка DS4 у PadForge. Кодувальник SBC є оригінальною реалізацією мовою C# за специфікацією Bluetooth A2DP. З документацією протоколу з ds4mac від khallmark.</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Експорт…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>Імпорт…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Профіль «{0}» експортовано.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Профіль «{0}» імпортовано (зареєстровано звукових пакетів: {1}).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Цей файл не є придатним для читання профілем PadForge.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Виберіть звук із {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Звукові пакети</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Zip-файли зі звуками для звукових макросів</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Звуковий пакет є одним zip-файлом зі звуками з розширенням .pfsounds. Додайте пакет тут, а потім вибирайте його звуки в будь-якому звуковому макросі. PadForge читає просто з файлу й ніколи його не розпаковує. Тримайте пакети поруч із PadForge.exe, щоб зберегти портативність.</value></data>
@@ -3045,20 +3216,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Захист посвідчення</value>
+    <value>Посвідчення пари</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Як зберігається посвідчення цього ПК для створення пар. Виберіть портативний режим, щоб переносити свої пари на флешці між комп'ютерами.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Назвіть цей ПК</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>ПК поблизу (без пари)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Скинути</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Пароль Віддаленого зв'язку</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Сенсорна панель PadForge</value>
@@ -3090,9 +3254,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>Спарений ПК</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Онлайн</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Офлайн</value>
   </data>
@@ -3109,7 +3270,7 @@
     <value>Розблокуйте поточне посвідчення, перш ніж змінювати його захист.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Задайте пароль для захисту портативного посвідчення. Ви вводитимете його, щоб розблокувати Віддалений зв'язок на кожному ПК.</value>
+    <value>Пароль захищає посвідчення пари цього ПК.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Захист посвідчення оновлено.</value>
@@ -3129,7 +3290,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Підключення до {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Підключатися знову автоматично</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Автоматичне перепідключення</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Прослуховує {0}</value>
   </data>
@@ -3148,65 +3309,70 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>ПК {0} підключено, пристроїв: {1}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Виберіть звук із доданого пакета або знайдіть файл.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Огляд файлів…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Виберіть звук</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Звук відтворюється через динамік контролера або ПК, якщо в контролера його немає.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Використати звук</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Відтворити {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
-  <data name="About_NAudioDesc" xml:space="preserve"><value>Захоплення WASAPI loopback для дзеркалювання звуку на контролер і вібрації тригерів від басів. NAudio.Midi, який PadForge не постачає, також є еталоном для оголошень WinMM і послідовностей портів застарілого MIDI API, для правила, що Note On із velocity 0 означає Note Off, і для контролерів увімкнення/вимкнення, як-от сустейн. Автор: Mark Heath. MIT.</value></data>
+  <data name="About_NAudioDesc" xml:space="preserve"><value>Захоплення WASAPI loopback для дзеркалювання звуку на контролер і вібрації тригерів від басів. NAudio.Midi, який PadForge не постачає, також є еталоном для оголошень WinMM і послідовностей портів застарілого MIDI API, для правила, що Note On із velocity 0 означає Note Off, і для контролерів увімкнення/вимкнення, як-от сустейн. Автор: Mark Heath.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Офлайн-розпізнавач мовлення, що чує фрази голосових макросів. Автор: Alpha Cephei. Модель постачається в складі PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Офлайн-розпізнавач мовлення, що чує фрази голосових макросів. Автор: Alpha Cephei. Модель постачається в складі PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Криптографія для створення пар і транспорту Віддаленого зв'язку (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, ліцензія у стилі MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Криптографія для створення пар і транспорту Віддаленого зв'язку (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>Вбудовані драйвери профілю Bluetooth і фільтра PSM від nefarius, що дають змогу DualShock 3 підключатися через спільний радіомодуль. Установлюються з програми під час створення пари. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Вбудовані драйвери профілю Bluetooth і фільтра PSM від nefarius, що дають змогу DualShock 3 підключатися через спільний радіомодуль. Установлюються з програми під час створення пари.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
-  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Еталон протоколу DualShock 3 від Benjamin Höglinger-Stelzer: feature-звіти sixpair, шаблон вихідного звіту Bluetooth, порядок увімкнення, карта батареї. Реалізація PadForge є оригінальним кодом C#. Контролер «DualShock 3 (SIXAXIS): Full» у HIDMaestro використовує дескриптор звіту режиму SXS із DsHidMini. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Еталон протоколу DualShock 3 від Benjamin Höglinger-Stelzer: feature-звіти sixpair, шаблон вихідного звіту Bluetooth, порядок увімкнення, карта батареї. Реалізація PadForge є оригінальним кодом C#. Контролер «DualShock 3 (SIXAXIS): Full» у HIDMaestro використовує дескриптор звіту режиму SXS із DsHidMini.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
-  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Установлення у сховище драйверів, реєстрація фільтра класу Bluetooth і перезапуск USB-порту для вбудованого налаштування BthPS3 і для звільнення прихованого USB-контролера, від nefarius. MIT.</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Установлення у сховище драйверів, реєстрація фільтра класу Bluetooth і перезапуск USB-порту для вбудованого налаштування BthPS3 і для звільнення прихованого USB-контролера, від nefarius.</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>Доступ до USB для дротового драйвера Switch 2 Pro і контролерів, які PadForge переводить на WinUSB; постачається як libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Доступ до USB для дротового драйвера Switch 2 Pro і контролерів, які PadForge переводить на WinUSB, постачається як libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Сенсорний джойстик у вебконтролері для телефона, від Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Сенсорний джойстик у вебконтролері для телефона, від Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>База даних прив'язок геймпадів від спільноти, яку розширюють вбудовані прив'язки PadForge. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>База даних прив'язок геймпадів від спільноти, яку розширюють вбудовані прив'язки PadForge.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Дослідження LED-індикатора кнопки Guide на Xbox: структура пакетів XboxGIP і послідовність виявлення, від Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Дослідження LED-індикатора кнопки Guide на Xbox: структура пакетів XboxGIP і послідовність виявлення, від Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Математика кермування накручуванням кута й нахилу, від JibbSmart та Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Математика кермування накручуванням кута й нахилу, від JibbSmart та Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Перетворення гіроскопа в простір гравця та простір світу, від JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Перетворення гіроскопа в простір гравця та простір світу, від JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Структура тактильних звітів Steam Controller (2015) і математика періодів нот, від Pila та Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Структура тактильних звітів Steam Controller (2015) і математика періодів нот, від Pila та Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Структура тактильних LFO-тонів Steam Controller 2026 і Steam Deck, від Pila, Crazy та AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Структура тактильних LFO-тонів Steam Controller 2026 і Steam Deck, від Pila, Crazy та AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Семантика очищення SOCD для режимів Snap Tap, від valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Семантика очищення SOCD для режимів Snap Tap, від valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Мережевий клієнт Steam, що завантажує конфігурації контролерів із Майстерні Steam через анонімний сеанс, від Ryan Stecker і SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Серіалізатор Protocol Buffers, який SteamKit2 використовує для мережевого протоколу Steam, від Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Серіалізатор Protocol Buffers, який SteamKit2 використовує для мережевого протоколу Steam, від Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Розпакування Zstandard, яке SteamKit2 використовує для фрагментів сховищ Steam; порт бібліотеки zstd мовою C# від Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Розпакування Zstandard, яке SteamKit2 використовує для фрагментів сховищ Steam, порт бібліотеки zstd мовою C# від Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Документація щодо процедури створення пари Wii, ADPCM динаміка, орієнтації Wii Remote боком і вертикально, моделі обмежувача стіка та формату її зберігання, а також домовленості про осі гіроскопа. GPL-2.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Документація щодо процедури створення пари Wii, ADPCM динаміка, орієнтації Wii Remote боком і вертикально, моделі обмежувача стіка та формату її зберігання, а також домовленості про осі гіроскопа. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
-  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Документація щодо поведінки DualShock: відключення за бездіяльності, межі сенсорної панелі, декодування заряду батареї, IOCTL відключення Bluetooth, біти режиму вібрації DualSense, крива тремтіння гіроскопа, масштаб режиму «стік як миша» та початкове значення CRC вихідного звіту Bluetooth. Таблиця клавіш його віртуальної клавіатури стала орієнтиром для таблиці PadForge. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Документація щодо поведінки DualShock: відключення за бездіяльності, межі сенсорної панелі, декодування заряду батареї, IOCTL відключення Bluetooth, біти режиму вібрації DualSense, крива тремтіння гіроскопа, масштаб режиму «стік як миша» та початкове значення CRC вихідного звіту Bluetooth. Таблиця клавіш його віртуальної клавіатури стала орієнтиром для таблиці PadForge. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>Документація команд GIP LED, що підтверджує xbledctl. GPL-2.0-or-later, лише документація.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Документація команд GIP LED, що підтверджує xbledctl. Лише документація.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Документація щодо поведінки ІЧ-камери Wii та Balance Board, від Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Документація щодо поведінки ІЧ-камери Wii та Balance Board, від Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Документація формату передавання HD-вібрації Joy-Con, від Sergey004. Використано лише заради фактів про протокол.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Створити пару</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Створити пару з контролером</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Створити пару з контролером</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Створити пару з Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Відкрийте кришку батарейного відсіку й натисніть червону кнопку SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Тримайте пульт біля цього ПК, поки блимають його індикатори.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Створити пару з DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Створити пару з контролером Move або Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Додати послідовний контролер</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Додати пульт DJI</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Сімейство контролерів</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Відкрийте кришку батарейного відсіку й натисніть червону кнопку SYNC. Не зупиняйте пошук у PadForge, доки ваш контролер не з'явиться.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Тимчасова пара (утримуйте 1 і 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Створити пару</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Пошук. Натисніть кнопку SYNC зараз.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Пошук пульта.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Знайдені контролери</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Контролерів ще не знайдено. Переконайтеся, що сині індикатори блимають.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Пару з {0} створено. Контролер з'явиться у списку пристроїв.</value></data>
@@ -3216,7 +3382,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>Готово</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Клієнтський API OpenVR від Valve (BSD 3-Clause): VR-шоломи та контролери руху як джерела введення. Нативне середовище виконання завантажується з вашої власної інсталяції SteamVR.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Клієнтський API OpenVR від Valve: VR-шоломи та контролери руху як джерела введення. Нативне середовище виконання завантажується з вашої власної інсталяції SteamVR.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Працює</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Працює, драйвер підключено</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Працює, контролери активні</value></data>
@@ -3254,13 +3420,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Створення пари не завершено. Крок, на якому сталася помилка, показано вище.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Закрити</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Мітки NFC</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Зареєструвати мітку</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Прикладіть мітку до зчитувача, щоб зчитати її UID.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(очікування)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Назва:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Прикладіть мітку до зчитувача й назвіть її. Вона стане кнопкою, яку можна прив'язати.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Прикладіть мітку до зчитувача.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Назва</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Назвіть цю мітку</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Зареєструвати</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Зареєстровані мітки</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Зареєстровані</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Зчитувач NFC не виявлено. Підключіть зчитувач PC/SC і відкрийте це вікно знову.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Мітку зчитано. Введіть назву й натисніть «Зареєструвати». Прикладіть іншу мітку, щоб замінити її.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» зареєстровано. Прикладіть іншу мітку, щоб додати ще.</value></data>
@@ -3338,22 +3503,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Спільну пам'ять FreeTrack теж не вдалося відкрити.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Вивчити приховані кнопки / керувати ними</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Приховані кнопки</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Вивчити кнопку</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Натисніть приховану кнопку один раз, коли буде запропоновано. PadForge стежить за клавіатурою, мишею, усіма звітами виробника та всіма системними подіями на цьому комп'ютері й записує те, що змінює ця кнопка.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Комп'ютер:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Почати вивчення</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Навчіть PadForge кнопки, яку Windows не показує як контролер. Натисніть її, коли буде запропоновано.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Нічого не чіпайте. Зчитування стану спокою…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Натисніть приховану кнопку зараз, а потім відпустіть…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Хвилинку…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Змін не помічено. Натисніть кнопку протягом виділеного проміжку й спробуйте ще раз.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Натисніть і утримуйте кнопку зараз.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Відпустіть кнопку.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Крок {0} з {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Змін не помічено. Виберіть «Почати знову», а потім натисніть і утримуйте кнопку, коли буде запропоновано.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Відстежено звітів виробника: {0}, класів подій: {1}. Під час натискання: звітів {2}, подій {3}.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Кнопку зафіксовано. Введіть назву й натисніть «Зареєструвати».</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Джерело:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Назва:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Джерело</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Назва</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Назвіть цю кнопку</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Зареєструвати</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Вивчені кнопки</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Почати знову</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Ще не вивчено жодної кнопки.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>«{0}» зареєстровано. Почніть знову, щоб вивчити ще одну.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Вивчено на {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Зареєстровано «{0}». Виберіть «Почати знову», щоб вивчити ще одну.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Клавіші: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Приховані кнопки вимкнено. Спершу ввімкніть «Кнопки портативного ПК» у налаштуваннях.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} запущено. Ця програма й далі реагує на ці кнопки, доки ви її не зупините.</value></data>
@@ -3502,6 +3667,8 @@
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Конфігурації спільноти</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Переглядайте створені спільнотою конфігурації контролерів Steam Input і перетворюйте їх на профілі PadForge. PadForge підключається безпосередньо до серверів Steam, лише коли ви шукаєте, відкриваєте конфігурацію або перевіряєте оновлення імпортованих конфігурацій. Він надсилає текст вашого пошуку, ідентифікатори відповідних ігор, конфігурацій та авторів і версію PadForge. Анонімний вхід у Steam також надсилає версію вашої Windows та ідентифікатор комп'ютера, складений із гешів ідентифікатора інсталяції Windows, адрес мережевих адаптерів і серійного номера завантажувального диска. Без телеметрії, сторонніх служб і облікового запису Steam.</value></data>
+  <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge підключається до серверів Steam, лише коли ви шукаєте, відкриваєте конфігурацію або перевіряєте оновлення імпортованих конфігурацій. Без телеметрії і без облікового запису Steam.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Що надсилається</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Увімкнути конфігурації спільноти</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Показувати застарілі конфігурації Майстерні</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Деякі старіші конфігурації не мають файлу для завантаження в CDN Steam. PadForge показує їх із позначкою «Застаріла» і читає копію, яку зберігає Steam, щойно ви підпишетеся. До того часу він пропонує відкрити конфігурацію в Майстерні Steam.</value></data>
@@ -3509,18 +3676,21 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Перевірити оновлення імпортованих профілів</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Кеш Майстерні очищено</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Переглянути конфігурації спільноти</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Переглянути конфігурації спільноти</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Профілі · Майстерня Steam</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Отримати профілі</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Почніть із готового профілю, конфігурації спільноти або файлу з іншої програми.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Стартові</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Спільнота</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Імпорт файлу</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Збереження додає звичайний профіль, який можна редагувати.</value></data>
   <data name="Workshop_ColdTitle" xml:space="preserve"><value>Горно холодне</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Під час перегляду конфігурацій спільноти PadForge підключається безпосередньо до Steam, і лише тоді, коли ви шукаєте, а не під час запуску.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>Увімкнути конфігурації спільноти</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Пошук ігор</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Ігор: {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Ігри</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>У крамниці Steam не знайдено ігор.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Пошук у Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Читання конфігурацій зі Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Читання конфігурації зі Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>відсортовано за рейтингом</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Сортування</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Пошук серед цих конфігурацій</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Рейтинг</value></data>
@@ -3534,7 +3704,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>Знайдено: {0}</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Показано {0} з {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>Конфігурацій: {0}</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>конфігурацій спільноти</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>повна підтримка контролерів</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>часткова підтримка контролерів</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Пошук ігор</value></data>
@@ -3553,8 +3722,11 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Повторити</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Ця конфігурація часів 2016 року старша за CDN конфігурацій Steam. Підпишіться на неї в Steam, і PadForge прочитає її з вашої папки Steam.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Відкрити в Майстерні Steam</value></data>
-  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Виберіть конфігурацію, щоб прочитати її маніфест перетворення.</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>Прочитано прив'язок: {0}</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Виберіть конфігурацію, щоб побачити, що переноситься.</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Що переноситься</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Стає</value></data>
+  <data name="Workshop_Becomes_Tip" xml:space="preserve"><value>Вибирає віртуальний контролер, що отримає кнопки й стіки конфігурації. Її клавіші та миша завжди йдуть на контролер «Клавіатура + миша».</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Шари</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Чисто</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Частково</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Пропущено</value></data>
@@ -3619,7 +3791,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Перевірка оновлень у Майстерні Steam…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Імпортовані профілі актуальні (перевірено: {0})</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Оновлення з Майстерні</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ці імпортовані профілі мають новіші версії в Майстерні Steam. Імпортуйте їх знову через «Переглянути конфігурації спільноти», щоб отримати зміни.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ці імпортовані профілі мають новіші версії в Майстерні Steam. Імпортуйте їх знову через «Отримати профілі», щоб отримати зміни.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Після довгого натискання</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Після короткого натискання</value></data>
@@ -3767,7 +3939,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Меню {0}, комірка {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Оверлей меню</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Оверлеї</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Екранні індикатори, які PadForge показує під час гри. Вимкнення індикатора ніколи не змінює поведінку, а лише те, чи буде про неї повідомлено.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Екранні індикатори, які PadForge показує під час гри. Вимкнення індикатора ніколи не змінює поведінку, а лише те, чи його показано.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Спливне вікно шару</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Оверлей перемикання профілю</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показувати екранне кільце або сітку, поки задіяно радіальне чи сенсорне меню. Меню спрацьовують і з вимкненим оверлеєм.</value></data>
@@ -3817,6 +3989,7 @@
   <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Частота тону для цього каналу, від 20 до 120 Гц. Запустіть частотну розгортку, щоб знайти, де ваш шейкер відгукується найсильніше.</value></data>
   <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Гучність цього каналу до загального підсилення.</value></data>
   <data name="Pad_RumbleAudio_VoiceGain" xml:space="preserve"><value>Підсилення</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Частота</value></data>
   <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Перевірити</value></data>
   <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Відтворює тон цього каналу протягом 1.5 секунди із заданим підсиленням.</value></data>
   <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Скинути низькочастотний мотор</value></data>
@@ -3859,16 +4032,16 @@
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Крива прискорення вказівника трекпада для перетворення сенсорної панелі на мишу. Порт профілю прискорення сенсорної панелі з libinput мовою C#. MIT.</value>
+    <value>Крива прискорення вказівника трекпада для перетворення сенсорної панелі на мишу. Порт профілю прискорення сенсорної панелі з libinput мовою C#.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D-моделі контролерів (Xbox 360, Steam Deck) і код моделей та анімації 3D-вигляду, від CasperH2O, Lesueur Benjamin, trippyone. Також еталон для декодування звітів і тактильного відгуку Steam Deck, звіту вимкнення живлення Steam Controller (2015), списку відстежуваних фонових програм портативних ПК, таймінгу перевірки оновлень і перезапуску порту концентратора з інтервалом 500 мс, що перепідключає прихований USB-контролер, аби програми, які відкрили його раніше, втратили його. CC BY-NC-SA 4.0.</value>
+    <value>3D-моделі контролерів (Xbox 360, Steam Deck) і код моделей та анімації 3D-вигляду, від CasperH2O, Lesueur Benjamin, trippyone. Також еталон для декодування звітів і тактильного відгуку Steam Deck, звіту вимкнення живлення Steam Controller (2015), списку відстежуваних фонових програм портативних ПК, таймінгу перевірки оновлень і перезапуску порту концентратора з інтервалом 500 мс, що перепідключає прихований USB-контролер, аби програми, які відкрили його раніше, втратили його.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>2D-схеми контролерів (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), від AL2009man. MIT.</value>
+    <value>2D-схеми контролерів (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), від AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>Документація аудіопротоколу DualShock 4: параметри SBC і структури пакетів, від khallmark. GPL-2.0, лише документація.</value>
+    <value>Документація аудіопротоколу DualShock 4: параметри SBC і структури пакетів, від khallmark. Лише документація.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Робочий стіл</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Керуйте Windows із дивана. Курсор, прокручування та клацання на тригерах.</value></data>
@@ -3882,10 +4055,6 @@
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Шестикнопкова розкладка з дозволеним на турнірах очищенням SOCD на обох осях.</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Клавіатура + миша</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Геймпад</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Переглянути стартові профілі</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Стартові профілі</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Готові профілі для цілого жанру. Виберіть профіль, призначте будь-який контролер і грайте. Збереження додає звичайний профіль, який можна редагувати.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Зберегти профіль</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Додано стартовий профіль «{0}».</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Point-and-click</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Пригодницькі ігри та все, чим керують курсор і дві дії.</value></data>
@@ -3984,13 +4153,13 @@
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>Скинути шлях виводу</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>За гніздом навушників</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>Карта байтів вихідного звіту DualSense і семантика Sony scePad від WujekFoliarz, на яких ґрунтуються модулі запису ефектів і звуку PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Карта байтів вихідного звіту DualSense і семантика Sony scePad від WujekFoliarz, на яких ґрунтуються модулі запису ефектів і звуку PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Схема маршрутизації звуку за виявленням гнізда від SundayMoments, еталон для режиму «За гніздом навушників». Використано як документацію; AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Схема маршрутизації звуку за виявленням гнізда від SundayMoments, еталон для режиму «За гніздом навушників». Використано як документацію.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Байтовий QR-кодувальник для адрес вебконтролера, перенесений з еталонної реалізації Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Байтовий QR-кодувальник для адрес вебконтролера, перенесений з еталонної реалізації Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Зображення миші у візуалізації «Клавіатура + миша», від Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Зображення миші у візуалізації «Клавіатура + миша», від Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Швидкість за тиском</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Частота повторення залежить від того, наскільки сильно натиснуто вибране аналогове джерело. Легке натискання повторює з «Повільним інтервалом», повне з «Інтервалом» вище, а все проміжне плавно змішується.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Повільний інтервал</value></data>
@@ -4005,7 +4174,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Підключення за кодом…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Не вдалося зв'язатися з іншим ПК напряму. Спробуйте «Підключитися за адресою» через VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Код цього ПК</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Обміняйтеся кодами з іншою людиною: вставте її код у своє поле підключення, поки вона вставляє ваш, а потім обоє натисніть «Підключитися». Це відкриває прямий шлях через інтернет без VPN. Код оновлюється, поки працює Віддалений зв'язок.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Обміняйтеся кодами з іншою людиною: вставте її код у «Підключення за адресою» в розділі «Більше», поки вона вставляє ваш, а потім обоє натисніть «Створити пару / підключитися». Це відкриває прямий шлях через інтернет без VPN. Код оновлюється, поки працює Віддалений зв'язок.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Ця мережа не може встановлювати прямі з'єднання (схоже на мобільну точку доступу або NAT на рівні оператора). Скористайтеся VPN, як-от Tailscale, або підключіться з домашнього інтернету.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Не вдалося визначити публічну адресу цього ПК (можливо, мережа блокує потрібний трафік). Прямі з'єднання тут не працюватимуть. Скористайтеся VPN або «Підключитися за адресою» в тій самій мережі.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Низький заряд батареї контролера</value></data>
@@ -4016,6 +4185,7 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Сповіщати на рівні та нижче</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Також вібрувати контролером</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Перевірити сповіщення</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Перевірити сповіщення</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Пропозиції призначення</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Коли пристрій підключається, поки відкрито сторінку віртуального контролера, PadForge може запропонувати призначити його туди, а сторінка «Головна» може запропонувати новому пристрою власний віртуальний контролер. Нічого не призначається, доки ви не приймете пропозицію. Клавіатури, миші, сенсорні панелі та мультимедійні клавіші ніколи не пропонуються.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Пропонувати нові пристрої відкритому віртуальному контролеру</value></data>
@@ -4029,23 +4199,28 @@
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Не зараз</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Будь-яка фраза</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Голосові макроси</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Вимовте фразу, і вона натисне кнопку, яку можна прив'язати. Слухає кожен мікрофон, до якого PadForge має доступ.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Керувати голосовими макросами</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Увімкнути голосові макроси</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Вмикає прослуховування. Поки ввімкнено, кожна зареєстрована фраза є кнопкою, яка спрацьовує, коли ви її вимовляєте. Модель розпізнавання постачається в складі PadForge і працює повністю офлайн.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Прослуховування</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>«Завжди» тримає мікрофон відкритим. «Натисни й говори» слухає, лише поки утримується прив'язаний макрос «Голосове прослуховування».</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Прослуховування вкл. або викл., режим, впевненість</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Завжди</value></data>
   <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Натисни й говори</value></data>
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Мінімальна впевненість</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Наскільки впевненим має бути розпізнавач, щоб фраза спрацювала. Збільште, якщо випадкове мовлення запускає макроси, зменште, якщо ваші фрази пропускаються.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Очікування мовлення. Розпізнані фрази з'являються тут разом із рівнем впевненості.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Почуто «{0}» ({1:F2}). Спрацювало.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Почуто «{0}» ({1:F2}). Нижче порога впевненості або клавішу розмови відпущено.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Прослуховування вимкнено. Увімкніть його в розділі «Більше».</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Почуто {0} через {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Почуто {0} через {1}. Нижче порога впевненості, або клавішу розмови відпущено.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Фраза</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Фраза для вимови</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Назва</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Назва кнопки</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Зареєструвати</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Зареєстровані фрази</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>«{0}» зареєстровано. Вимовте фразу, щоб спрацювала її кнопка, а макроси прив'яжіть до неї на сторінці контролера.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Фрази</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Зареєстровано «{0}». Вимовте фразу, щоб спрацювала її кнопка, і прив'яжіть її на сторінці контролера.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Голосове прослуховування (поки утримується)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Режим «Натисни й говори» для голосових макросів: поки цей макрос утримується, розпізнавач слухає. У вікні «Керувати голосовими макросами» виберіть для параметра «Прослуховування» значення «Натисни й говори».</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Мікрофон</value></data>
@@ -4053,12 +4228,12 @@
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Тактильний рушій і провайдер Razer, що забезпечують вібрацію рядка Razer Sensa. HAR.dll та Interhaptics.RazerProvider.dll постачаються в складі PadForge без змін із публічного Core SDK. Автор: Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Тактильний рушій і провайдер Razer, що забезпечують вібрацію рядка Razer Sensa. HAR.dll та Interhaptics.RazerProvider.dll постачаються в складі PadForge без змін із публічного Core SDK. Автор: Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>CAD-моделі Valve Steam Controller</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>3D-моделі Steam Controller (2015) і Steam Controller (2026), побудовані як сітки з опублікованих Valve файлів STEP. Авторське право: Valve Corporation. CC BY-NC-SA 4.0. PadForge не пов'язаний із Valve і не схвалений нею.</value>
+    <value>3D-моделі Steam Controller (2015) і Steam Controller (2026), побудовані як сітки з опублікованих Valve файлів STEP. Авторське право: Valve Corporation. PadForge не пов'язаний із Valve і не схвалений нею.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>Середовище виконання MinGW-w64</value>
@@ -4075,7 +4250,7 @@
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Підтвердження кадрування Razer Chroma REST API для підсвічування Razer, від Adam Hellberg і Brandon Scott. MIT. Лише документація, код не постачається.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Підтвердження кадрування Razer Chroma REST API для підсвічування Razer, від Adam Hellberg і Brandon Scott. Лише документація, код не постачається.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Джерела щодо Logitech LED SDK</value>
   </data>
@@ -4084,19 +4259,19 @@
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Датаграма трекера UDP і структура спільної пам'яті FreeTrack 2.0 для відстеження голови. ISC. Лише документація, код не постачається.</value>
+    <value>Датаграма трекера UDP і структура спільної пам'яті FreeTrack 2.0 для відстеження голови. Лише документація, код не постачається.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Клас службових подій Lenovo WMI, на який підписується модуль вивчення прихованих кнопок портативних ПК, і схема IPC-сервера з підвищеними правами, що лежить в основі зовнішнього керування профілями. GPL-3.0, використано лише як документацію, код під GPL не постачається.</value>
+    <value>Клас службових подій Lenovo WMI, на який підписується модуль вивчення прихованих кнопок портативних ПК, і схема IPC-сервера з підвищеними правами, що лежить в основі зовнішнього керування профілями. Використано лише як документацію, код під GPL не постачається.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Ідентифікаційні рядки портативних ПК і нотатки про звіти виробників, звірені для модуля вивчення прихованих кнопок. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value>
+    <value>Ідентифікаційні рядки портативних ПК і нотатки про звіти виробників, звірені для модуля вивчення прихованих кнопок. Використано лише як документацію, код під GPL не постачається.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook і WiimoteHook</value>
@@ -4111,13 +4286,13 @@
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Послідовності викликів WinMM для застарілого MIDI API: відкриття порту, надсилання в нього та закриття. Вивчено з PortMidi (MIT, автори Ross Bencina, Phil Burk і Roger B. Dannenberg) та RtMidi (ліцензія RtMidi у стилі MIT, автор Gary P. Scavone). Лише документація, код не постачається.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Джерела щодо Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Структура слова події для введення з G-клавіш походить із LogitechGkeyLib.h у складі SDK. Порядок пошуку бібліотеки та завершення роботи відповідають GKey.cpp із Mumble (BSD 3-Clause). PadForge завантажує ту копію бібліотеки, яка є на комп'ютері, і не постачає коду Logitech.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Структура слова події для введення з G-клавіш походить із LogitechGkeyLib.h у складі SDK. Порядок пошуку бібліотеки та завершення роботи відповідають GKey.cpp із Mumble. PadForge завантажує ту копію бібліотеки, яка є на комп'ютері, і не постачає коду Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup і AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Введення з аналогових клавіатур переносить на C# маршрути клавіатур, таблиці клавіш і каталоги моделей із HallJoy (AGPL-3.0, PashOK7) та наслідує Soup і AnalogSense JavaScript SDK (MIT, Calamity, Inc.), звірені з Wooting Analog SDK (MPL-2.0). Інші клавіатури наслідують AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk і hmkconf (GPL-3.0-or-later, peppapighs) та форки Soup від DenkiSuki, LeiterConsulting і paysdelest (MIT). Формати звітів і таблиці клавіш також походять із конфігураторів Razer Synapse Web і NuPhyIO від NuPhy, OpenRazer (GPL-2.0-or-later), razer-analog-keyboard від Abbytech, TinyUSB (MIT) і нотаток Sainan про захоплення трафіку.</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Джерела щодо Bliss-Box</value></data>
   <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>API Bliss-Box, на якому працює функція «Зчитувати адаптери Bliss-Box», вивчено з API Tool від Bliss-Box LLC (ліцензія у стилі BSD, безоплатне поширення) і DeviceBuddy (код доступний, Bliss-Box LLC); назви кнопок узято з файлів Bliss-Box у форку retroarch-joypad-autoconfig від SteveFox1620, контрольні суми Controller Pak звірено з libdragon (Unlicense), а відповідь геймпада PlayStation узято з psx-spx і драйвера psxpad-spi для Linux (GPL-2.0-or-later). Назви контролерів і примітки про підтримку також походять зі списку сумісності Bliss-Box LLC, а поведінку адаптерів звірено з їхньою прошивкою. Лише документація, код не постачається.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспорт від Vadym Hrynchyshyn для складених USB-контролерів HIDMaestro. HIDMaestro постачає його підписаний драйвер хост-контролера й установлює його під час першого створення складеного контролера. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-транспорт від Vadym Hrynchyshyn для складених USB-контролерів HIDMaestro. HIDMaestro постачає його підписаний драйвер хост-контролера й установлює його під час першого створення складеного контролера.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Виберіть, які половини цього слота активні. Вимкнення половини приховує її рядки й зупиняє надсилання, але зберігає її прив'язки, тож після ввімкнення вони відновлюються.</value>
   </data>
@@ -4185,13 +4360,15 @@
     <value>Призначити спільні пристрої</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Призначення на {0}</value>
+    <value>Пристрої, надані для {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Виберіть пристрій, яким ділиться цей ПК, а потім виберіть для нього віртуальні контролери на іншому ПК.</value>
+    <value>Виберіть пристрій, а потім контролери на тому ПК, якими він має керувати.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Надано з цього ПК</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Контролери на {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Профіль: {0}</value>
+    <value>Активний профіль: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
     <value>На іншому ПК дозвольте віддалену зміну призначень для цього ПК у розділі «Віддалений зв'язок» &gt; «Спарені ПК».</value>
@@ -4283,60 +4460,60 @@
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS і CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Декодер мовлення, бібліотека перетворювачів і лінійна алгебра всередині libvosk.dll. Kaldi та OpenFst: Apache-2.0. OpenBLAS і CLAPACK: BSD 3-Clause, з окремими повідомленнями для GotoBLAS2 у складі OpenBLAS і для середовища виконання f2c.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Розкладки стартових профілів для стратегій і робочого стола, а також поведінка турбо, якої уникає турбо зі швидкістю за тиском. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Розкладки стартових профілів для стратегій і робочого стола, а також поведінка турбо, якої уникає турбо зі швидкістю за тиском. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Довідкове джерело від Antoine Aflalo щодо структури недокументованого інтерфейсу Windows IPolicyConfig, який PadForge використовує, щоб знову ввімкнути аудіоточку контролера. MIT. Лише документація, код не постачається.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Довідкове джерело від Antoine Aflalo щодо структури недокументованого інтерфейсу Windows IPolicyConfig, який PadForge використовує, щоб знову ввімкнути аудіоточку контролера. Лише документація, код не постачається.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Формат профілів параметричного еквалайзера, які імпортує «Параметричний еквалайзер» контролера, від Jaakko Pasanen. MIT. Лише документація, код не постачається.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Формат профілів параметричного еквалайзера, які імпортує «Параметричний еквалайзер» контролера, від Jaakko Pasanen. Лише документація, код не постачається.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Прийоми SendInput для макросів «Блок тексту» і перехоплення клавіатурних акордів: введення Unicode, обмеження пакетів, клавіша-маска для Win і позначене інжектоване введення. GPL-2.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Прийоми SendInput для макросів «Блок тексту» і перехоплення клавіатурних акордів: введення Unicode, обмеження пакетів, клавіша-маска для Win і позначене інжектоване введення. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Довідкове джерело щодо протоколу DSU для сервера руху, від v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Довідкове джерело щодо протоколу DSU для сервера руху, від v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Кадрування вихідних звітів DualShock 4 через Bluetooth, від Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Кадрування вихідних звітів DualShock 4 через Bluetooth, від Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Діапазони заряду батареї DualShock 4, таймінг тактильних імпульсів сенсорної панелі та сходинки інтенсивності, а також поведінка кидка на сенсорній панелі. GPL-3.0, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Діапазони заряду батареї DualShock 4, таймінг тактильних імпульсів сенсорної панелі та сходинки інтенсивності, а також поведінка кидка на сенсорній панелі. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (форк hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Діапазони гучності звуку DualSense, знакові 8-бітні тактильні семпли та структура об'єднаного транспорту Bluetooth. GPL-3.0, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Діапазони гучності звуку DualSense, знакові 8-бітні тактильні семпли та структура об'єднаного транспорту Bluetooth. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Типове й мінімальне значення довжини аудіобуфера Bluetooth для DualSense, від awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Типове й мінімальне значення довжини аудіобуфера Bluetooth для DualSense, від awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Значення пресету адаптивних тригерів GameCube, від Mxater. Використано лише заради фактів.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Знаки осей руху DSU, звірені з його декодером UDP. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Знаки осей руху DSU, звірені з його декодером UDP. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Типові пресети Elite Dangerous, на яких ґрунтується стартовий профіль «Космічний симулятор», від Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Типові пресети Elite Dangerous, на яких ґрунтується стартовий профіль «Космічний симулятор», від Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Порядок напівбайтів ADPCM для динаміка Wii Remote і декодер SBC, яким перевірено кодувальник DualShock 4. LGPL-2.1-or-later, використано лише як документацію, код під LGPL не постачається.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Порядок напівбайтів ADPCM для динаміка Wii Remote і декодер SBC, яким перевірено кодувальник DualShock 4. Використано лише як документацію, код під LGPL не постачається.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Курс компаса з компенсацією нахилу для рискання за компасом, перенесений на C#, від x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Курс компаса з компенсацією нахилу для рискання за компасом, перенесений на C#, від x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Правило сповіщення про низький заряд батареї та шаблон вібрації для розпізнавання пристрою, від Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Правило сповіщення про низький заряд батареї та шаблон вібрації для розпізнавання пристрою, від Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>3D-моделі DualShock 4, DualSense, DualSense Edge, Xbox Series і Switch 2 Pro Controller, придбані на CGTrader. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>3D-моделі DualShock 4, DualSense, DualSense Edge, Xbox Series і Switch 2 Pro Controller, придбані на CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>3D-модель DualShock 3, придбана на CGTrader і розділена на сітки окремих деталей. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>3D-модель DualShock 3, придбана на CGTrader і розділена на сітки окремих деталей.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Шар HID, скомпільований у вбудовану SDL3.dll, від Alan Ott, Signal 11 Software. Ліцензія у стилі BSD.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Шар HID, скомпільований у вбудовану SDL3.dll, від Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Джерела піктограм</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Гліф полум'я з Material Design Icons (Pictogrammers, Apache-2.0), загальна піктограма геймпада з Ionicons (Ionic, MIT), джойстик для типу «Розширений» із Jam Icons (Michael Amprimo, MIT) і піктограми Xbox та PlayStation з SVG Repo на умовах ліцензії, вказаної на сторінці кожної піктограми.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Протокол ретрансляції для резервного шляху Віддаленого зв'язку; обмін із безплатними публічними ретрансляторами n0.computer відбувається так само, як у FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Лише документація, код не постачається.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Лічильники оптичної миші Joy-Con 2 і різниці з переходом через межу лічильника, на яких працюють «Рух миші X» та «Рух миші Y», від coffincolors, Frano і moutella. MIT. Лише документація, код не постачається.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Лічильники оптичної миші Joy-Con 2 і різниці з переходом через межу лічильника, на яких працюють «Рух миші X» та «Рух миші Y», від coffincolors, Frano і moutella. Лише документація, код не постачається.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Драйвери ядра Linux</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Факти про протоколи DualShock 3, Move, DualSense, Steam Deck і силового зворотного зв'язку PID, а також структура блоку ACPI WMI. PadForge зчитує дескриптори клавіатур і мишей за правилами hid-core. GPL-2.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Факти про протоколи DualShock 3, Move, DualSense, Steam Deck і силового зворотного зв'язку PID, а також структура блоку ACPI WMI. PadForge зчитує дескриптори клавіатур і мишей за правилами hid-core. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Введення з контролерів у Windows, зокрема пелюстки Xbox Elite. Завантажувач SDK скомпоновано з SDL. MIT (завантажувач SDK).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Введення з контролерів у Windows, зокрема пелюстки Xbox Elite. Завантажувач SDK скомпоновано з SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Середовище виконання C++, потрібне для SDL3.dll (msvcp140.dll, vcruntime140.dll і, у збірці x64, vcruntime140_1.dll), постачається без змін у складі PadForge. Умови ліцензії Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Середовище виконання C++, потрібне для SDL3.dll (msvcp140.dll, vcruntime140.dll і, у збірці x64, vcruntime140_1.dll), постачається без змін у складі PadForge.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Нотатки про HID, HD-вібрацію та LED-індикатор кнопки Home для Joy-Con і Pro Controller, від dekuNukem, разом із switch2_controller_research від ndeadly для Switch 2. Використано лише заради фактів про протокол.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Схема команди оновлення з підвищеними правами для допоміжної програми вбудованого засобу оновлення. LGPL-3.0, використано лише як документацію, код під LGPL не постачається.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Схема команди оновлення з підвищеними правами для допоміжної програми вбудованого засобу оновлення. Використано лише як документацію, код під LGPL не постачається.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Сигнатури WinSCard і послідовність викликів для стеження за зчитувачем, на яких працює введення з міток NFC, від Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Сигнатури WinSCard і послідовність викликів для стеження за зчитувачем, на яких працює введення з міток NFC, від Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Структури звітів PlayStation Move, калібрування датчиків і рукостискання аксесуара EXT, від Thomas Perl, звірені з вікі moveonpc. Реалізація PadForge є оригінальним кодом C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Джерела щодо гоночної телеметрії</value></data>
@@ -4344,23 +4521,23 @@
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Документація щодо створення пари й звітів DualShock 3 через Bluetooth. GPL-2.0 і GPL-3.0, використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Структура повідомлень STUN і декодування XOR-MAPPED-ADDRESS для проходження NAT у Віддаленому зв'язку, включені з його вихідного коду C#, від Aaron Clauson. BSD 3-Clause, з обмеженням використання з розділу 2 його ліцензії.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Структура повідомлень STUN і декодування XOR-MAPPED-ADDRESS для проходження NAT у Віддаленому зв'язку, включені з його вихідного коду C#, від Aaron Clauson. Його ліцензія додає обмеження використання в розділі 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Джерела щодо SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>Структура звітів, таблиця пристроїв і масштаб осей 3Dconnexion, вивчені з hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse від AndunHH (CC BY-NC-SA 4.0) і spacenavd (GPL-3.0-or-later). Лише документація, код не постачається.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Розрив з'єднання Bluetooth через IOCTL хоста, приховані ординали XInput для вимкнення живлення й можливостей, а також типові значення вібрації тригерів DualSense. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Розрив з'єднання Bluetooth через IOCTL хоста, приховані ординали XInput для вимкнення живлення й можливостей, а також типові значення вібрації тригерів DualSense. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Джерела щодо протоколу Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Тактильні імпульси проведення, біти кнопок звіту 0x42, команда вимкнення живлення та ретрансляція через донгл, вивчені з OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0) і SteamlessController (MIT). Лише документація, код під GPL чи AGPL не постачається.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Шість форм мертвої зони, від Minimuino. GFDL-1.3-or-later і GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Поведінка ІЧ-вказівника Wii Remote: середина пари точок, поля, зміщення сенсорної планки, згладжування та крива режиму «FPS-миша», разом із форками Ryochan7, Suegrini і Trihy. GPL-3.0, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Поведінка ІЧ-вказівника Wii Remote: середина пари точок, поля, зміщення сенсорної планки, згладжування та крива режиму «FPS-миша», разом із форками Ryochan7, Suegrini і Trihy. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Структури ефектів адаптивних тригерів DualSense та пакування зон, відтворені мовою C#, від John «Nielk1» Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Структури ефектів адаптивних тригерів DualSense та пакування зон, відтворені мовою C#, від John «Nielk1» Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Структура DS4_REPORT_EX для вхідного звіту віртуального DualShock 4, від Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Структура DS4_REPORT_EX для вхідного звіту віртуального DualShock 4, від Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (форк hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Діапазон ослаблення 48 dB для мікрофона віртуального DualSense. GPL-3.0-or-later, використано лише як документацію, код під GPL не постачається.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Діапазон ослаблення 48 dB для мікрофона віртуального DualSense. Використано лише як документацію, код під GPL не постачається.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Джерела щодо протоколів керм</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Звіти рідного силового зворотного зв'язку та LED-індикаторів обертів для керм Fanatec, Thrustmaster і Logitech, вивчені з hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0) і thrustmaster-led-linux (GPL-3.0) та звірені з плагіном SimHub LED від prodigal.knight (MIT) і tm-bt-led (MIT). Лише документація, код під GPL не постачається.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Джерела щодо аркадних плат вводу-виводу</value></data>
@@ -4390,19 +4567,19 @@
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Джерела щодо контролерів Xbox</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>Протоколи для драйверів форку SDL для оригінального Xbox, Steel Battalion, Chatpad для Xbox 360 і uDraw для Xbox 360, а також для приймачів Xbox 360, які PadForge переводить на власний драйвер Windows, вивчені з brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp від ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later) і xemu (LGPL-2.0-or-later). Лише документація, код не постачається.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Пакування за принципом «один INF на пристрій» і перелік пристроїв для автоматичного переведення на WinUSB, від Pete Batard. Лише документація, код не постачається. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Пакування за принципом «один INF на пристрій» і перелік пристроїв для автоматичного переведення на WinUSB, від Pete Batard. Лише документація, код не постачається.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Запит feature-звіту Bluetooth HID, який PadForge надсилає, щоб розпізнати аксесуар PS Move, від Ricardo Quesada. Лише документація, код не постачається. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Запит feature-звіту Bluetooth HID, який PadForge надсилає, щоб розпізнати аксесуар PS Move, від Ricardo Quesada. Лише документація, код не постачається.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Ключ конфігурації Windows Mixed Reality у форку SDL походить із Monado. Copyright 2021 Jan Schmidt. Постачається в складі SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Ключ конфігурації Windows Mixed Reality у форку SDL походить із Monado. Copyright 2021 Jan Schmidt. Постачається в складі SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Об'єднання даних датчиків Rift DK1 у форку SDL є портом відповідного коду OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Постачається в складі SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Об'єднання даних датчиків Rift DK1 у форку SDL є портом відповідного коду OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Постачається в складі SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Документація щодо протоколу динаміка Wii Remote та ІЧ-калібрування. Використано лише заради фактів про протокол.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>9-байтовий звіт імпульсних тригерів Xbox і шлях його запису, від araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>9-байтовий звіт імпульсних тригерів Xbox і шлях його запису, від araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Формат тактильного PCM для PS5, знаковий 16-бітний на 3 kHz, який визначив знакове 8-бітне кодування тактильного відгуку через Bluetooth. AGPL-3.0, використано лише як документацію, код під AGPL не постачається.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Формат тактильного PCM для PS5, знаковий 16-бітний на 3 kHz, який визначив знакове 8-бітне кодування тактильного відгуку через Bluetooth. Використано лише як документацію, код під AGPL не постачається.</value></data>
   <data name="Settings_KeyboardScreens_Title" xml:space="preserve"><value>Екрани клавіатур</value></data>
   <data name="Settings_KeyboardScreens_Desc" xml:space="preserve"><value>Малює на екранах, вбудованих у клавіатури Logitech GamePanel і Mad Catz S.T.R.I.K.E. 7, а також на телефоні через Logitech Arx Control: профіль, годинник, час гри, секундомір, зображення або колір світлової панелі DualShock 4 чи DualSense. Кожен екран має власний рядок на сторінці «Пристрої», де можна налаштувати, що він показує. Клавіші поруч з екраном є кнопками його рядка.</value></data>
   <data name="Settings_KeyboardScreens" xml:space="preserve"><value>Керувати екранами клавіатур</value></data>
@@ -4470,6 +4647,7 @@
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Зсув</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Зсув X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Зсув Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Виберіть, що він показує. Нічого не зміниться, доки ви не збережете.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: вибрано {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Завантаження SDK Mad Catz для S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 тепер завантажує {0}.</value></data>
@@ -4609,8 +4787,8 @@
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Читання {0} зі спільної пам'яті.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Очікування Assetto Corsa або Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Пересилання на порт {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Власні формати телеметрії</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Опишіть пакети, які надсилає гра, поле за полем, і PadForge читатиме й цю гру. Кожна змінна стає віссю в рядку «Ігрова телеметрія» і каналом для тригерів власного виразу. Виберіть формат за назвою у списку ігор або задайте йому довжину чи ключ, щоб автовизначення його знаходило.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Власні формати</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Опишіть пакети телеметрії гри, якої PadForge не знає.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Додати формат</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Формат {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Назва</value></data>
@@ -4621,12 +4799,15 @@
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Цим форматом читаються лише пакети точно такої кількості байтів. З 0 читається будь-який пакет, а автовизначення оминає формат, тож вибирайте його за назвою.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Обов'язковий ключ</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Цим форматом читаються лише пакети JSON, що містять цей ключ. Якщо порожньо, читається будь-який пакет, а автовизначення оминає формат, тож вибирайте його за назвою.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Порядок байтів</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Молодший байт першим ставить найменш значущий байт кожного числа на початок, як майже завжди роблять ігри для ПК. Старший байт першим ставить на початок найбільш значущий байт.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Молодший байт першим</value></data>
   <data name="Telemetry_Formats_BigEndian" xml:space="preserve"><value>Старший байт першим</value></data>
-  <data name="Telemetry_Formats_BigEndian_Tooltip" xml:space="preserve"><value>Пакет записує кожне число, починаючи зі старшого байта. Ігри на ПК майже завжди записують спершу молодший байт.</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Значення передач</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Поле передачі має власні числа для заднього ходу та нейтралі, як-от 0 і 11 у Forza. Коли вимкнено, від'ємна передача означає задній хід, а 0 означає нейтраль.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Задній хід</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Нейтраль</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Обов'язковий ключ для пакетів JSON, значення передач</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Поля</value></data>
   <data name="Telemetry_Formats_FieldsHint" xml:space="preserve"><value>Кожне поле читає число за своїм зсувом або під своїм ключем у JSON (крапки заходять у вкладені об'єкти) і множить його на масштаб. Після масштабу швидкість у км/год, педалі йдуть від 0 до 1, а кермування від -1 повністю вліво до 1 повністю вправо. Вісь змінної йде від її мінімуму в спокої до максимуму на повну.</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Читається в</value></data>
@@ -4710,4 +4891,35 @@
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} ({1}), до зупинки</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Зупинити ефект тригера: {0}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Керувати підсвічуванням цього пристрою, обсяг керування підсвічуванням</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Підключені</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Не підключені</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Інші входи</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Немає відповідних пристроїв.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Не використовується</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>заряд {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>заряд {0}, заряджається</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Використовують</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Новий контролер</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Налаштування</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Усі осі, кнопки й датчики</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Натиснуто: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>ID, шлях, можливості, примусовий сирий режим джойстика</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>ID, шлях, можливості</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Копіювати відомості</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Продукт</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Тип</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Можливості</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>З'єднання</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батарея</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Шлях</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Серійний номер</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Прошивка</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Ревізія</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Також вібрувати контролером, Повторювати сповіщення кожні, Сповіщати про повну зарядку</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Потребує уваги</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Імпортовано без проблем</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Задати пароль</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Розблокувати Віддалений зв'язок</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Пароль</value></data>
 </root>

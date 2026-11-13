@@ -1,106 +1,74 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.PickSoundDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.PickSoundDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        xmlns:controls="clr-namespace:PadForge.Controls"
         xmlns:common="clr-namespace:PadForge.Common"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        BodyPadding="22,14,22,18"
         Title="{Binding PickSound_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="480" Width="460"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        Subtitle="{Binding PickSound_Subtitle, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- Pick a Sound (#574), as the Confirm board draws it: each sound with
+         a Play button before its name and its package after it, the picked
+         row SemiBold on the picked fill. A double click uses the sound at
+         once. Browse Files leads the foot where the caller allows it. -->
+    <views:DialogWindow.Resources>
+        <!-- A row is read by its sound's name: with a template of its own
+             it would be read as its type. The picked row's name is SemiBold. -->
+        <Style x:Key="SoundRow" TargetType="ListBoxItem" BasedOn="{StaticResource DialogPickListItem}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </views:DialogWindow.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="BrowseButton" Style="{StaticResource DialogQuietButton}" Visibility="Collapsed"
+                    Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"
+                    Click="BrowseButton_Click"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="OkButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True"
+                    Content="{Binding PickSound_Use, Source={x:Static strings:Strings.Instance}}"
+                    Click="OkButton_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so this dialog had no visible name at all (it
-             borrowed the caller's description as a Title that never rendered).
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="HeaderClose_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <controls:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
-
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Dialog description -->
-            <TextBlock x:Name="DescriptionText"
-                       TextWrapping="Wrap" Margin="0,0,0,12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-            <ListBox Grid.Row="1" x:Name="SoundList"
-                     SelectionMode="Single"
-                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                     MouseDoubleClick="SoundList_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="4,3">
-                            <controls:GlyphText Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                       FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="{Binding}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <!-- Footer band (#175 dialog language): Browse-files escape on
-                 the left (shown only for the package picker) stays neutral.
-                 OK confirms the pick and wears the ember accent. -->
-            <DockPanel Grid.Row="2" Margin="0,18,0,0" LastChildFill="False">
-                <Button x:Name="BrowseButton" DockPanel.Dock="Left"
-                        Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="120" Visibility="Collapsed" Click="BrowseButton_Click"/>
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                    <Button x:Name="OkButton"
-                            Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}"
-                            MinWidth="90" Margin="0,0,8,0"
-                            IsDefault="True" Click="OkButton_Click"
-                            Style="{StaticResource EmberAccentButton}"/>
-                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                            MinWidth="90" IsCancel="True"/>
-                </StackPanel>
-            </DockPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+    <Border Style="{StaticResource DialogList}" common:InitialFocus.First="True">
+        <ListBox x:Name="SoundList" Style="{StaticResource DialogListBox}" MaxHeight="322" SelectionMode="Single"
+                 ItemContainerStyle="{StaticResource SoundRow}"
+                 MouseDoubleClick="SoundList_MouseDoubleClick"
+                 AutomationProperties.Name="{Binding PickSound_Title, Source={x:Static strings:Strings.Instance}}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Play: the sound once, on the controller's speaker
+                             or the PC's. It is named for its sound. -->
+                        <ui:Button Style="{StaticResource DialogIconButton}" Click="Play_Click" Tag="{Binding}"
+                                   ToolTip="{Binding PlayName}"
+                                   AutomationProperties.Name="{Binding PlayName, TargetNullValue='', FallbackValue=''}">
+                            <Path FlowDirection="LeftToRight" Data="M 4.1,2.6 L 4.1,11.4 L 11.1,7 Z" Width="14" Height="14"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"/>
+                        </ui:Button>
+                        <TextBlock Grid.Column="1" Margin="12,0,0,0" Text="{Binding Name}"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Column="2" Margin="12,0,0,0" Text="{Binding Package}" FontSize="13" FontWeight="Normal"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Border>
+</views:DialogWindow>

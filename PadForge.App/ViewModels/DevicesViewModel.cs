@@ -37,6 +37,13 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Devices_Title;
             OnPropertyChanged(nameof(DriverBindText));
             OnPropertyChanged(nameof(DriverRestoreText));
+            // The Test Inputs card's line and the Used By chips' names are
+            // built from the string table.
+            OnPropertyChanged(nameof(TestPressedLead));
+            OnPropertyChanged(nameof(TestPressedTail));
+            RenamePressed();
+            foreach (var item in ActiveSlotItems)
+                item.RaiseLabel();
             // The chips keep their items through a language change, so their
             // names follow it here.
             foreach (var item in AnalogKeys)
@@ -81,11 +88,11 @@ namespace PadForge.ViewModels
                     }
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
-                    _assignToSlotCommand?.NotifyCanExecuteChanged();
                     _removeDeviceCommand?.NotifyCanExecuteChanged();
                     _resetSelectedDeviceSettingCommand?.NotifyCanExecuteChanged();
                     RefreshSlotButtons();
                     RefreshDriverOffer();
+                    RaisePanelFacts();
                 }
             }
         }
@@ -224,6 +231,9 @@ namespace PadForge.ViewModels
         {
             if (e.PropertyName == nameof(DeviceRowViewModel.DevicePath) && ReferenceEquals(sender, _selectedDevice))
                 RefreshDriverOffer();
+            // The panel's cards show by what the selected row offers.
+            if (ReferenceEquals(sender, _selectedDevice))
+                RaisePanelFacts();
         }
 
         /// <summary>Reads the offer for the selected device. Only a row whose
@@ -317,133 +327,14 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowHidingDriverRestore));
             OnPropertyChanged(nameof(DriverBindText));
             OnPropertyChanged(nameof(DriverRestoreText));
-            // The section's heading and dividers are the row's, and a
-            // switched keyboard's row shows neither of the section's toggles.
+            // The hiding rows are the row's, and a switched keyboard's row
+            // shows neither of their toggles.
             if (_selectedDevice != null)
             {
                 _selectedDevice.ShowsHidingDriverSwitch = ShowHidingDriverBind || ShowHidingDriverRestore;
                 _selectedDevice.NotifyTakeoverChanged();
             }
-        }
-
-        // ─────────────────────────────────────────────
-        //  Device counts
-        // ─────────────────────────────────────────────
-
-        private int _totalCount;
-
-        /// <summary>Total number of detected devices.</summary>
-        public int TotalCount
-        {
-            get => _totalCount;
-            set => SetProperty(ref _totalCount, value);
-        }
-
-        private int _onlineCount;
-
-        /// <summary>Number of currently connected devices.</summary>
-        public int OnlineCount
-        {
-            get => _onlineCount;
-            set => SetProperty(ref _onlineCount, value);
-        }
-
-        // ─────────────────────────────────────────────
-        //  Type facet filter (#175 phase 2 item 13)
-        // ─────────────────────────────────────────────
-
-        private string _selectedFacet = "ALL";
-
-        /// <summary>Active facet token: ALL / GAMEPAD / KEYBOARD / MOUSE /
-        /// OTHER. Locale-neutral literals per the DZ / PEAK precedent; the
-        /// chips' active-state DataTriggers key off the raw token.</summary>
-        public string SelectedFacet
-        {
-            get => _selectedFacet;
-            set => SetFacet(value);
-        }
-
-        private System.ComponentModel.ICollectionView _devicesView;
-
-        /// <summary>Applies a facet filter to the device list. Filters the
-        /// default collection view the ListBox already binds through, so the
-        /// XAML keeps its plain ItemsSource="{Binding Devices}".</summary>
-        public void SetFacet(string facet)
-        {
-            if (string.IsNullOrEmpty(facet) || _selectedFacet == facet)
-                return;
-            _selectedFacet = facet;
-            OnPropertyChanged(nameof(SelectedFacet));
-
-            _devicesView ??= System.Windows.Data.CollectionViewSource.GetDefaultView(Devices);
-            if (facet == "ALL")
-                _devicesView.Filter = null;
-            else
-                _devicesView.Filter = o => o is DeviceRowViewModel d && FacetOf(d) == facet;
-        }
-
-        /// <summary>Facet bucket for a row. GAMEPAD is the gamepad-shaped
-        /// classes only. Joysticks and wheels carry their own facets. OTHER
-        /// is whatever is left (touchpads, MIDI, NFC, consumer collections,
-        /// unclassified).</summary>
-        private static string FacetOf(DeviceRowViewModel d) => d.DeviceTypeKey switch
-        {
-            "Gamepad" or "FirstPerson" or "Supplemental" => "GAMEPAD",
-            // Joysticks and wheels get their own facets (maintainer request
-            // 2026-07-06): flight sticks bucket with joysticks.
-            "Joystick" or "FlightStick" => "JOYSTICK",
-            "Wheel" => "WHEEL",
-            "Keyboard" => "KEYBOARD",
-            "Mouse" => "MOUSE",
-            _ => "OTHER"
-        };
-
-        private int _facetCountJoystick;
-        /// <summary>Row count behind the JOYSTICK chip (joysticks + flight sticks).</summary>
-        public int FacetCountJoystick
-        {
-            get => _facetCountJoystick;
-            set => SetProperty(ref _facetCountJoystick, value);
-        }
-
-        private int _facetCountWheel;
-        /// <summary>Row count behind the WHEEL chip.</summary>
-        public int FacetCountWheel
-        {
-            get => _facetCountWheel;
-            set => SetProperty(ref _facetCountWheel, value);
-        }
-
-        private int _facetCountGamepad;
-        /// <summary>Row count behind the GAMEPAD chip. The ALL chip binds TotalCount.</summary>
-        public int FacetCountGamepad
-        {
-            get => _facetCountGamepad;
-            set => SetProperty(ref _facetCountGamepad, value);
-        }
-
-        private int _facetCountKeyboard;
-        /// <summary>Row count behind the KEYBOARD chip.</summary>
-        public int FacetCountKeyboard
-        {
-            get => _facetCountKeyboard;
-            set => SetProperty(ref _facetCountKeyboard, value);
-        }
-
-        private int _facetCountMouse;
-        /// <summary>Row count behind the MOUSE chip.</summary>
-        public int FacetCountMouse
-        {
-            get => _facetCountMouse;
-            set => SetProperty(ref _facetCountMouse, value);
-        }
-
-        private int _facetCountOther;
-        /// <summary>Row count behind the OTHER chip.</summary>
-        public int FacetCountOther
-        {
-            get => _facetCountOther;
-            set => SetProperty(ref _facetCountOther, value);
+            RaisePanelFacts();
         }
 
         // ─────────────────────────────────────────────
@@ -1022,7 +913,11 @@ namespace PadForge.ViewModels
         public bool HasRawData
         {
             get => _hasRawData;
-            set => SetProperty(ref _hasRawData, value);
+            set
+            {
+                if (SetProperty(ref _hasRawData, value))
+                    OnPropertyChanged(nameof(ShowTestCard));
+            }
         }
 
         // Gyroscope / Accelerometer individual values
@@ -1115,8 +1010,10 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null, int[] analogKeyOrder = null, bool isFalcon = false, bool isGameTelemetry = false, bool isTwitchChat = false)
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null, int[] analogKeyOrder = null, bool isFalcon = false, bool isGameTelemetry = false, bool isTwitchChat = false, bool gamepadLayout = false)
         {
+            // The compact test (#574) for a device in SDL's gamepad layout.
+            ResetGamepadTest(gamepadLayout);
             // Analog keyboards (#468): key chips, gathered as keys move.
             IsAnalogKeyboardDevice = analogKeyOrder != null;
             _analogKeyOrder = analogKeyOrder ?? System.Array.Empty<int>();
@@ -1235,6 +1132,7 @@ namespace PadForge.ViewModels
         /// <summary>Clears all raw state display data.</summary>
         internal void ClearRawState()
         {
+            ShowGamepadTest = false;
             RawAxes.Clear();
             RawButtons.Clear();
             RawPovs.Clear();
@@ -1302,31 +1200,6 @@ namespace PadForge.ViewModels
             _pairCommand ??= new RelayCommand(
                 () => PairRequested?.Invoke(this, EventArgs.Empty));
 
-        private RelayCommand<int> _assignToSlotCommand;
-
-        /// <summary>
-        /// Command to assign the selected device to a pad slot.
-        /// Parameter is the slot index (0–15).
-        /// </summary>
-        public RelayCommand<int> AssignToSlotCommand =>
-            _assignToSlotCommand ??= new RelayCommand<int>(
-                slotIndex => AssignToSlotRequested?.Invoke(this, slotIndex),
-                _ => HasSelectedDevice);
-
-        private RelayCommand _hideDeviceCommand;
-
-        /// <summary>Command to hide the selected device from the list.</summary>
-        public RelayCommand HideDeviceCommand =>
-            _hideDeviceCommand ??= new RelayCommand(
-                () =>
-                {
-                    if (_selectedDevice != null)
-                    {
-                        HideDeviceRequested?.Invoke(this, _selectedDevice.InstanceGuid);
-                    }
-                },
-                () => HasSelectedDevice);
-
         private RelayCommand _removeDeviceCommand;
 
         /// <summary>
@@ -1355,12 +1228,6 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user opens the Bluetooth pairing flow.</summary>
         public event EventHandler PairRequested;
-
-        /// <summary>Raised when the user assigns a device to a slot. Arg = slot index.</summary>
-        public event EventHandler<int> AssignToSlotRequested;
-
-        /// <summary>Raised when the user hides a device. Arg = instance GUID.</summary>
-        public event EventHandler<Guid> HideDeviceRequested;
 
         /// <summary>Raised when the user removes a device. Arg = instance GUID.</summary>
         public event EventHandler<Guid> RemoveDeviceRequested;
@@ -1454,14 +1321,21 @@ namespace PadForge.ViewModels
             {
                 ActiveSlotItems.Clear();
                 int num = 0;
+                // A chip's name numbers the slot within its type (Xbox #2),
+                // the sidebar's "#2": the walk is in type-group order, so a
+                // count per type is the count within the group.
+                var inType = new System.Collections.Generic.Dictionary<Engine.VirtualControllerType, int>();
                 foreach (var slot in activeSlots)
                 {
                     num++;
+                    inType.TryGetValue(slot.Type, out int typeNumber);
+                    inType[slot.Type] = ++typeNumber;
                     ActiveSlotItems.Add(new SlotButtonItem
                     {
                         PadIndex = slot.PadIndex,
                         SlotNumber = num,
                         VcType = slot.Type,
+                        TypeNumber = typeNumber,
                         IsAssigned = assignedSlots.Contains(slot.PadIndex)
                     });
                 }
@@ -1472,6 +1346,9 @@ namespace PadForge.ViewModels
                     item.IsAssigned = assignedSlots.Contains(item.PadIndex);
             }
 
+            // New Controller and Use It make a controller, which takes a free
+            // slot (MainWindow.HasAnyControllerTypeCapacity's rule).
+            CanAddController = activeSlots.Count < InputManager.MaxPads;
             _toggleSlotCommand?.NotifyCanExecuteChanged();
         }
 
@@ -1494,7 +1371,7 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Re-runs SetAssignedSlots on every device row so the slot badges
-        /// recompute their global numbers from the current SlotOrders. Call
+        /// recompute their numbers within each type from the current SlotOrders. Call
         /// this any time the type-group order changes (slot create / delete /
         /// type change / swap / move). Without it, the badge numbers drift
         /// out of sync with the dashboard cards' visual ordering even
@@ -1507,41 +1384,6 @@ namespace PadForge.ViewModels
                 if (d == null) continue;
                 d.SetAssignedSlots(SettingsManager.GetAssignedSlots(d.InstanceGuid));
             }
-        }
-
-        /// <summary>
-        /// Updates the device counts from the Devices collection, including
-        /// the facet chip counts (#175 phase 2 item 13). Re-runs the active
-        /// facet filter so rows whose type key changed in place re-bucket.
-        /// </summary>
-        public void RefreshCounts()
-        {
-            TotalCount = Devices.Count;
-            int online = 0, gamepad = 0, joystick = 0, wheel = 0, keyboard = 0, mouse = 0, other = 0;
-            foreach (var d in Devices)
-            {
-                if (d.IsOnline)
-                    online++;
-                switch (FacetOf(d))
-                {
-                    case "GAMEPAD": gamepad++; break;
-                    case "JOYSTICK": joystick++; break;
-                    case "WHEEL": wheel++; break;
-                    case "KEYBOARD": keyboard++; break;
-                    case "MOUSE": mouse++; break;
-                    default: other++; break;
-                }
-            }
-            OnlineCount = online;
-            FacetCountGamepad = gamepad;
-            FacetCountJoystick = joystick;
-            FacetCountWheel = wheel;
-            FacetCountKeyboard = keyboard;
-            FacetCountMouse = mouse;
-            FacetCountOther = other;
-
-            if (_selectedFacet != "ALL")
-                _devicesView?.Refresh();
         }
     }
 
@@ -1559,12 +1401,32 @@ namespace PadForge.ViewModels
         }
 
         private int _slotNumber;
-        /// <summary>1-based slot number among active slots.</summary>
+        /// <summary>1-based slot number among active slots. The chip's
+        /// AutomationId reads it (Devices_UsedBy_{SlotNumber}).</summary>
         public int SlotNumber
         {
             get => _slotNumber;
             set => SetProperty(ref _slotNumber, value);
         }
+
+        private int _typeNumber;
+        /// <summary>The slot's number within its type, the sidebar's "#1".</summary>
+        public int TypeNumber
+        {
+            get => _typeNumber;
+            set
+            {
+                if (SetProperty(ref _typeNumber, value))
+                    OnPropertyChanged(nameof(Label));
+            }
+        }
+
+        /// <summary>The chip's name: the type's name in the language and the
+        /// number within the type, "Xbox #1".</summary>
+        public string Label => SlotTypeIconMap.NameFor(_vcType) + " #" + _typeNumber.ToString(System.Globalization.CultureInfo.CurrentCulture);
+
+        /// <summary>The language changed: the name reads again.</summary>
+        public void RaiseLabel() => OnPropertyChanged(nameof(Label));
 
         private bool _isAssigned;
         /// <summary>Whether the currently selected device is assigned to this slot.</summary>
@@ -1586,6 +1448,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(TypeGeometry));
                     OnPropertyChanged(nameof(TypeGlyph));
+                    OnPropertyChanged(nameof(Label));
                 }
             }
         }

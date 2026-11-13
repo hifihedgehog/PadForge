@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Media;
 using PadForge.Common;
 
 namespace PadForge.Controls
@@ -67,6 +70,23 @@ namespace PadForge.Controls
             finally { _reading = false; }
         }
 
+        /// <summary>Opens or closes the part without storing it (#574). The
+        /// Settings page's search opens a part whose rows match while it lasts.</summary>
+        internal void ShowForSearch(bool open)
+        {
+            _reading = true;
+            try { SetCurrentValue(IsExpandedProperty, open); }
+            finally { _reading = false; }
+        }
+
+        /// <summary>The search is over: the part goes back to its stored state,
+        /// or closed when it has no key.</summary>
+        internal void EndSearch()
+        {
+            if (string.IsNullOrEmpty(StateKey)) ShowForSearch(false);
+            else ReadState();
+        }
+
         protected override void OnExpanded()
         {
             base.OnExpanded();
@@ -83,6 +103,38 @@ namespace PadForge.Controls
         {
             if (_reading) return;
             CardFoldState.Set(StateKey, open);
+        }
+
+        protected override AutomationPeer OnCreateAutomationPeer() => new FoldPartPeer(this);
+
+        /// <summary>An Expander's peer that lists nothing of what a closed
+        /// part holds. WPF keeps a closed Expander's content in the tree and
+        /// leaves it out of the control view while it is not visible
+        /// (UIElementAutomationPeer.IsControlElementCore). That rule misses
+        /// the items of a picker inside: a ComboBox whose list was opened
+        /// once keeps a peer for each item, and an item whose container is
+        /// gone (the list was filled again while the part was closed) counts
+        /// as a control with no visible owner to say otherwise
+        /// (ItemAutomationPeer.IsControlElementCore returns true with no
+        /// wrapper). A closed Engage part then read 157 list items to a
+        /// screen reader. What stands under the template's ExpandSite is
+        /// left out while the part is closed, and the header and its action
+        /// stay. Opening the part lays its content out, which marks this
+        /// peer stale (UIElementHelper.InvalidateAutomationAncestors), so
+        /// the content is listed again.</summary>
+        private sealed class FoldPartPeer : ExpanderAutomationPeer
+        {
+            public FoldPartPeer(FoldPart owner) : base(owner) { }
+
+            protected override List<AutomationPeer> GetChildrenCore()
+            {
+                List<AutomationPeer> children = base.GetChildrenCore();
+                var part = (FoldPart)Owner;
+                if (children == null || part.IsExpanded || part.Template?.FindName("ExpandSite", part) is not Visual site)
+                    return children;
+                children.RemoveAll(peer => peer is UIElementAutomationPeer { Owner: Visual owner } && site.IsAncestorOf(owner));
+                return children;
+            }
         }
     }
 
@@ -103,6 +155,31 @@ namespace PadForge.Controls
         public static readonly DependencyProperty HeaderActionProperty = DependencyProperty.Register(
             nameof(HeaderAction), typeof(object), typeof(FoldCard), new PropertyMetadata(null, OnHeaderActionChanged));
 
+        public static readonly DependencyProperty SummaryForegroundProperty = DependencyProperty.Register(
+            nameof(SummaryForeground), typeof(System.Windows.Media.Brush), typeof(FoldCard), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty HeaderMinHeightProperty = DependencyProperty.Register(
+            nameof(HeaderMinHeight), typeof(double), typeof(FoldCard), new PropertyMetadata(48.0));
+
+        public static readonly DependencyProperty ChevronMarginProperty = DependencyProperty.Register(
+            nameof(ChevronMargin), typeof(Thickness), typeof(FoldCard), new PropertyMetadata(new Thickness(0, 0, 12, 0)));
+
+        /// <summary>The least height of the part's line: 48, or what a
+        /// page's list of its own gives its lines.</summary>
+        public double HeaderMinHeight
+        {
+            get => (double)GetValue(HeaderMinHeightProperty);
+            set => SetValue(HeaderMinHeightProperty, value);
+        }
+
+        /// <summary>The room around the chevron: 12 between it and the
+        /// title, or what puts the title under a list's own column.</summary>
+        public Thickness ChevronMargin
+        {
+            get => (Thickness)GetValue(ChevronMarginProperty);
+            set => SetValue(ChevronMarginProperty, value);
+        }
+
         /// <summary>The part's state in a word or two, at the end of the
         /// line while it is folded: Off, a mode's name, a count.</summary>
         public string Summary
@@ -117,6 +194,16 @@ namespace PadForge.Controls
         {
             get => (string)GetValue(DescriptionProperty);
             set => SetValue(DescriptionProperty, value);
+        }
+
+        /// <summary>The color of <see cref="Summary"/>. The style sets the
+        /// secondary text color, the boards' value at a line's end. A list
+        /// that writes a count there sets the tertiary one (the Devices
+        /// page's folds).</summary>
+        public System.Windows.Media.Brush SummaryForeground
+        {
+            get => (System.Windows.Media.Brush)GetValue(SummaryForegroundProperty);
+            set => SetValue(SummaryForegroundProperty, value);
         }
 
         /// <summary>What stands at the end of the line while the part is

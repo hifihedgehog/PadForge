@@ -53,6 +53,35 @@ public sealed class WidthBehaviorTests(ITestOutputHelper output)
         finally{window.Close();}
     });
 
+    /// <summary>A picker with a MaxWidth of its own is sized to its widest
+    /// item up to that width and no further, alone or in a width group. Its
+    /// template draws the box at the Width it is given, so a Width past the
+    /// MaxWidth drew the end of the box outside the room the picker had (the
+    /// Slot picker of the Screen Overlay dialog, #574).</summary>
+    [Fact] public void APickerWithAMaxWidthIsNeverSizedPastIt()=>Sta(()=>
+    {
+        string group=Guid.NewGuid().ToString();
+        string wide=new string('W',40);
+        var capped=new ComboBox{ItemsSource=new[]{wide},MaxWidth=200};
+        var free=new ComboBox{ItemsSource=new[]{wide}};
+        var cappedInGroup=new ComboBox{ItemsSource=new[]{"A"},MaxWidth=180};
+        var freeInGroup=new ComboBox{ItemsSource=new[]{wide}};
+        foreach(var c in new[]{cappedInGroup,freeInGroup})ComboBoxWidthBehavior.SetWidthGroup(c,group);
+        var panel=new StackPanel();
+        foreach(var c in new[]{capped,free,cappedInGroup,freeInGroup}){ComboBoxWidthBehavior.SetSizeToItems(c,true);panel.Children.Add(c);}
+        var window=new Window{Content=panel,Width=700,Height=300,ShowActivated=false,Left=-10000,Top=-10000};
+        try
+        {
+            window.Show();window.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
+            output.WriteLine($"capped={capped.Width} free={free.Width} cappedInGroup={cappedInGroup.Width} freeInGroup={freeInGroup.Width}");
+            Assert.True(free.Width>200);
+            Assert.Equal(200,capped.Width);
+            Assert.Equal(free.Width,freeInGroup.Width);
+            Assert.Equal(180,cappedInGroup.Width);
+        }
+        finally{window.Close();}
+    });
+
     [Fact] public void DisablingSizingReleasesThePropertyDescriptorRoot()=>Sta(()=>
     {
         var enabled=SubscribedControl(false);var disabled=SubscribedControl(true);

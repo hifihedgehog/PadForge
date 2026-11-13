@@ -1,0 +1,695 @@
+<UserControl x:Class="PadForge.Views.CommunityConfigsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:views="clr-namespace:PadForge.Views"
+             FontFamily="{StaticResource BodyFontFamily}">
+
+    <UserControl.Resources>
+        <!-- Forge bar (design doc: the one loading treatment, no skeletons,
+             no per-card spinners). The ember segment sweeps the 170px track
+             while visible. With Windows animations off the segment holds
+             still at the left and the caption carries the state.
+             The sweep animates Canvas.Left, a single-step path on the
+             Rectangle itself, never a (RenderTransform).(X) complex path.
+             The IsVisible condition is already true while this template
+             instantiates inside a visible loading panel, so the trigger's
+             EnterActions run mid-instantiation, before an inline
+             RenderTransform member would have applied. Storyboard
+             verification then walks the path against the frozen
+             Transform.Identity default and every layout pass retries and
+             rethrows "Cannot animate '(0).(1)' on an immutable object
+             instance" (the 2026-07-13 crash storm, sibling of the v4.0.0
+             CardBorder launch crash). Single-step paths attach the clock
+             directly to the element and never enter
+             Storyboard.ProcessComplexPath. -->
+        <ControlTemplate x:Key="ForgeBarTemplate" TargetType="ContentControl">
+            <Border Width="170" Height="5" CornerRadius="3"
+                    Background="{DynamicResource SteelRaisedBrush}" ClipToBounds="True">
+                <Canvas FlowDirection="LeftToRight">
+                    <Rectangle Canvas.Left="0" Width="68" Height="5" RadiusX="3" RadiusY="3">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#00FF6B2C" Offset="0"/>
+                                <GradientStop Color="#FF6B2C" Offset="0.5"/>
+                                <GradientStop Color="#00FF6B2C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                            <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
+                                            <BeginStoryboard x:Name="ForgeSweep">
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                     From="-68" To="170" Duration="0:0:1.4">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <SineEase EasingMode="EaseInOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiDataTrigger.EnterActions>
+                                        <MultiDataTrigger.ExitActions>
+                                            <StopStoryboard BeginStoryboardName="ForgeSweep"/>
+                                        </MultiDataTrigger.ExitActions>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                </Canvas>
+            </Border>
+        </ControlTemplate>
+
+        <!-- A filter chip over the config list (the sort, its direction, a
+             controller tag): the boards' chip at 26, its words in the
+             secondary color, and the picked fill inside an ember edge with
+             ember words while it is the active filter. -->
+        <Style x:Key="WsFilterChip" TargetType="Border">
+            <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="CornerRadius" Value="13"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="TextElement.FontSize" Value="12"/>
+            <Setter Property="TextElement.FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- A layer chip on the Layers line (the shift layers these become):
+             the filter chip's look, picked while the layer comes across.
+             Standalone rather than based on the filter chip: its trigger
+             would bind a property a layer does not carry. -->
+        <Style x:Key="WsPresetChip" TargetType="Border">
+            <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="CornerRadius" Value="13"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="TextElement.FontSize" Value="12"/>
+            <Setter Property="TextElement.FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsIncluded}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- A row of the games or the configs, as the large Dialogs board
+             draws one: 12 over and under and 14 at the sides, corners of 8,
+             the band fill inside a soft edge, 8 under it. The pointer brings
+             the edge forward, and the picked row takes the picked fill inside
+             an ember edge. -->
+        <Style x:Key="PickRow" TargetType="ListBoxItem">
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" CornerRadius="8" BorderThickness="1"
+                                Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+                            </Trigger>
+                            <!-- After the pointer's, so the picked row keeps its
+                                 edge under the pointer. -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberCardPickBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A row is read by its name: with a template of its own it would be
+             read as its type. -->
+        <Style x:Key="GameRow" TargetType="ListBoxItem" BasedOn="{StaticResource PickRow}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
+        </Style>
+        <Style x:Key="ConfigRow" TargetType="ListBoxItem" BasedOn="{StaticResource PickRow}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Title, TargetNullValue=''}"/>
+        </Style>
+
+        <!-- What Comes Across: three shapes ride one ItemsControl, so all
+             templates are implicit-typed (BINDERR canon). -->
+        <!-- A layer's band. A config's action layers are what its author
+             built the thing out of ("Menu save", "Deactivate trackpad"),
+             and reading a flat run of control headers gives no sense of
+             where one layer ends. Only drawn when the config HAS more than
+             one, so a single-layer config keeps its clean list. -->
+        <DataTemplate DataType="{x:Type views:WorkshopManifestLayerItem}">
+            <Border Margin="0,12,0,4" CornerRadius="6" Padding="9,5"
+                    Background="{DynamicResource EmberCardPickBrush}" BorderThickness="1" BorderBrush="{DynamicResource EmberEdgeBrush}">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding CountText}" FontSize="12"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+        <!-- A control's head, over its rows, with a hairline after it. -->
+        <DataTemplate DataType="{x:Type views:WorkshopManifestGroupItem}">
+            <DockPanel Margin="0,10,0,4" LastChildFill="True">
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           Margin="0,0,8,0" VerticalAlignment="Center"/>
+                <Rectangle Height="1" Fill="{DynamicResource SteelLineSoftBrush}" VerticalAlignment="Center"/>
+            </DockPanel>
+        </DataTemplate>
+        <!-- A binding: its status dot, the Steam binding in the code face in
+             the cold color, the PadForge binding it becomes, and the reason
+             for anything not clean. -->
+        <DataTemplate DataType="{x:Type views:WorkshopManifestRowItem}">
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Width="7" Height="7" Fill="{Binding DotBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding Source}" MaxWidth="240"
+                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="13"
+                           Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
+                <TextBlock Grid.Column="2" Text="{Binding Target}" FontSize="13"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="3" Text="{Binding Reason}" MaxWidth="220" Margin="10,0,0,0" FontSize="12"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Reason}"
+                           Visibility="{Binding Reason, Converter={StaticResource StringToVisibility}}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!-- Get Profiles' Community tab (#574), as the large Dialogs board draws
+         it: the games or a game's configs in a column 380 wide, and What
+         Comes Across in the rest. The cold state stands alone, centered. -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── State: cold forge (opt-in) ─────────────────────────── -->
+        <StackPanel x:Name="ColdPanel" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <Border Width="44" Height="44" CornerRadius="22" HorizontalAlignment="Center"
+                    BorderThickness="1" BorderBrush="{DynamicResource SteelLineBrush}">
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.35,0.3">
+                        <GradientStop Color="#3A4557" Offset="0"/>
+                        <GradientStop Color="#1A212C" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <!-- The unlit flame: LivenessFlameBase idiom at cold-state size. -->
+                <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}" Width="18" Height="21" Stretch="Uniform"
+                      Fill="Transparent" Stroke="{DynamicResource TextFillColorTertiaryBrush}"
+                      StrokeThickness="1.1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="{Binding Workshop_ColdTitle, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+            <TextBlock Text="{Binding Workshop_ColdBody, Source={x:Static strings:Strings.Instance}}"
+                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap" TextAlignment="Center" MaxWidth="320"
+                       HorizontalAlignment="Center" Margin="0,8,0,0"/>
+            <!-- The endpoint list IS the privacy statement (design P4):
+                 shown in plain telemetry, not linked away. Locale-neutral
+                 host literals. -->
+            <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       LineHeight="17" HorizontalAlignment="Center" TextAlignment="Left" Margin="0,10,0,0"
+                       Text="store.steampowered.com&#10;api.steampowered.com&#10;steamcommunity.com&#10;cdn.steamusercontent.com&#10;cdn.cloudflare.steamstatic.com"/>
+            <ui:Button x:Name="EnableCommunityConfigsButton" Style="{StaticResource EmberPrimaryButton}" MinWidth="90"
+                       HorizontalAlignment="Center" Margin="0,14,0,0" Click="EnableCommunityConfigs_Click"
+                       Content="{Binding Workshop_EnableButton, Source={x:Static strings:Strings.Instance}}"/>
+        </StackPanel>
+
+        <!-- ── The games a search found ───────────────────────────── -->
+        <Grid x:Name="GamesColumn" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!-- The head: Games, and how many the search found, on one
+                 baseline. -->
+            <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
+                    Text="{Binding Workshop_Games, Source={x:Static strings:Strings.Instance}, Mode=OneWay}" FontSize="15" FontWeight="SemiBold"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" "/><Run x:Name="GamesCountText"/></TextBlock>
+            <ListBox x:Name="ShelfList" Grid.Row="1" Margin="0,8,0,0" Background="Transparent" BorderThickness="0" Padding="0"
+                     ItemContainerStyle="{StaticResource GameRow}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     AutomationProperties.Name="{Binding Workshop_Games, Source={x:Static strings:Strings.Instance}}"
+                     KeyDown="ShelfList_KeyDown"
+                     PreviewMouseLeftButtonUp="ShelfList_MouseLeftButtonUp">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- The cover, 30 by 45: the steel tile and the
+                                 initial under the art, the floor of the
+                                 fallback chain. Letterboxed when header art
+                                 stands in for the portrait. -->
+                            <Border Width="30" Height="45" CornerRadius="4" ClipToBounds="True" VerticalAlignment="Center"
+                                    BorderThickness="1" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                <Grid>
+                                    <Border>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0.6,1">
+                                                <GradientStop Color="#1C2430" Offset="0"/>
+                                                <GradientStop Color="#12161E" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <TextBlock Text="{Binding Initial}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <controls:DecorativeImage FlowDirection="LeftToRight" Source="{Binding Portrait}"
+                                                              Visibility="{Binding Portrait, Converter={StaticResource NullToCollapsedConverter}}">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Stretch" Value="UniformToFill"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLetterbox}" Value="True">
+                                                        <Setter Property="Stretch" Value="Uniform"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </controls:DecorativeImage>
+                                </Grid>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Name}"/>
+                                <TextBlock Text="{Binding SubLine}" FontSize="13" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Search-state overlays -->
+            <StackPanel x:Name="SearchLoadingPanel" Grid.Row="1" Visibility="Collapsed"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ContentControl Template="{StaticResource ForgeBarTemplate}" Focusable="False"/>
+                <TextBlock Text="{Binding Workshop_SearchingSteam, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            </StackPanel>
+            <TextBlock x:Name="SearchHintText" Grid.Row="1" Visibility="Collapsed"
+                       FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextWrapping="Wrap"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel x:Name="SearchErrorPanel" Grid.Row="1" Visibility="Collapsed"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Workshop_ErrorTitle, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Workshop_ErrorBody, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           TextWrapping="Wrap" TextAlignment="Center" MaxWidth="340" Margin="0,8,0,0"/>
+                <Button Content="{Binding Workshop_Retry, Source={x:Static strings:Strings.Instance}}"
+                        HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
+                        Click="SearchRetry_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ── A game's configs ───────────────────────────────────── -->
+        <Grid x:Name="ConfigsColumn" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- The game's head, and Search Games back to the games. -->
+            <DockPanel LastChildFill="True">
+                <ui:Button DockPanel.Dock="Right" Style="{StaticResource QuietTextButton}" MinHeight="28" Padding="8,0"
+                           VerticalAlignment="Center" Click="BackToSearch_Click"
+                           AutomationProperties.AutomationId="Workshop_Back"
+                           AutomationProperties.Name="{Binding Workshop_BackToSearch, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel Orientation="Horizontal">
+                        <controls:DecorativeStrokeIcon Data="{StaticResource BackLineGeometry}" Size="14" StrokeWidth="2"
+                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Workshop_BackToSearch, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ui:Button>
+                <!-- The game's name and its count of configs, on one baseline. -->
+                <TextBlock VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="13"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run x:Name="GameNameText" FontSize="15" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" "/><Run x:Name="GameCountText"/></TextBlock>
+            </DockPanel>
+            <!-- Search WITHIN this game's configs. A game can carry
+                 thousands, and paging to them is not finding them. -->
+            <Border Grid.Row="1" Margin="0,8,0,0" Height="32" CornerRadius="6" BorderThickness="1" Padding="10,0"
+                    BorderBrush="{DynamicResource SteelLineBrush}" Background="{DynamicResource SteelFieldBrush}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:DecorativeStrokeIcon Data="{StaticResource SearchLineGeometry}" Size="14" StrokeWidth="2"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <Grid Grid.Column="1">
+                        <TextBox AutomationProperties.Name="{Binding Workshop_SearchConfigs, Source={x:Static strings:Strings.Instance}}" x:Name="ConfigSearchBox"
+                                 Background="Transparent" BorderThickness="0" Padding="0" FontSize="13" VerticalAlignment="Center"
+                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 CaretBrush="{DynamicResource EmberBrush}"
+                                 TextChanged="ConfigSearch_TextChanged"
+                                 KeyDown="ConfigSearch_KeyDown"/>
+                        <TextBlock x:Name="ConfigSearchPlaceholder" IsHitTestVisible="False"
+                                   FontSize="13" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="{Binding Workshop_SearchConfigs, Source={x:Static strings:Strings.Instance}}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            <!-- The order: each entry is a Steam query type, so the ORDER IS
+                 STEAM'S over the whole result set, not a re-shuffle of the
+                 page already loaded. The direction reverses what has been
+                 loaded, since Steam only ever ranks descending. -->
+            <WrapPanel Grid.Row="2" Margin="0,8,0,0" Orientation="Horizontal">
+                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,6"
+                           Text="{Binding Workshop_SortedBy, Source={x:Static strings:Strings.Instance}}"/>
+                <controls:ClickBorder x:Name="SortChip" Style="{StaticResource WsFilterChip}" Click="SortChip_Click">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="SortChipText" VerticalAlignment="Center"/>
+                        <controls:GlyphText Text="&#x25BE;" Margin="5,0,0,0" FontSize="9"
+                                            VerticalAlignment="Center" Opacity="0.7"/>
+                    </StackPanel>
+                </controls:ClickBorder>
+                <controls:ClickBorder x:Name="SortDirChip" Style="{StaticResource WsFilterChip}" Click="SortDir_Click">
+                    <TextBlock x:Name="SortDirText" VerticalAlignment="Center"/>
+                </controls:ClickBorder>
+            </WrapPanel>
+            <!-- Filter chips from the result's own controller tags -->
+            <ItemsControl x:Name="TagChipList" Grid.Row="3" Margin="0,2,0,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ClickBorder Style="{StaticResource WsFilterChip}" Click="TagChip_Click" IsSelected="{Binding IsActive, Mode=OneWay}">
+                            <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
+                        </controls:ClickBorder>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ListBox x:Name="ConfigList" Grid.Row="4" Margin="0,8,0,0" Background="Transparent" BorderThickness="0" Padding="0"
+                     ItemContainerStyle="{StaticResource ConfigRow}"
+                     AutomationProperties.Name="{Binding GetProfiles_Community, Source={x:Static strings:Strings.Instance}}"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.ScrollChanged="ConfigList_ScrollChanged"
+                     SelectionChanged="ConfigList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <DockPanel LastChildFill="True">
+                                <!-- Up to two controller tags, the Steam Deck's
+                                     cold, and LEGACY for a config with no file
+                                     to download. -->
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <ItemsControl ItemsSource="{Binding Tags}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="6,0,0,0">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border" BasedOn="{StaticResource PillChip}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsCold}" Value="True">
+                                                                    <Setter Property="BorderBrush" Value="{DynamicResource InputChipEdgeBrush}"/>
+                                                                    <Setter Property="TextElement.Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Border Margin="6,0,0,0" Style="{StaticResource PillChip}"
+                                            Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
+                                            TextElement.Foreground="{DynamicResource WaitBrush}"
+                                            Visibility="{Binding IsLegacy, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="LEGACY" VerticalAlignment="Center"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Title}" VerticalAlignment="Center"/>
+                            </DockPanel>
+                            <TextBlock Text="{Binding MetaLine}" FontSize="13" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding MetaLine}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <!-- Config-list overlays -->
+            <StackPanel x:Name="ConfigsLoadingPanel" Grid.Row="4" Visibility="Collapsed"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ContentControl Template="{StaticResource ForgeBarTemplate}" Focusable="False"/>
+                <TextBlock Text="{Binding Workshop_ReadingConfigs, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            </StackPanel>
+            <StackPanel x:Name="ConfigsEmptyPanel" Grid.Row="4" Visibility="Collapsed"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                <TextBlock Text="{Binding Workshop_EmptyTitle, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                <TextBlock x:Name="ConfigsEmptyBody" FontSize="12"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           TextWrapping="Wrap" TextAlignment="Center" MaxWidth="280" Margin="0,8,0,0"/>
+            </StackPanel>
+            <StackPanel x:Name="ConfigsErrorPanel" Grid.Row="4" Visibility="Collapsed"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                <TextBlock Text="{Binding Workshop_ErrorTitle, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="ConfigsErrorBody" FontSize="12"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           TextWrapping="Wrap" TextAlignment="Center" MaxWidth="280" Margin="0,8,0,0"/>
+                <Button Content="{Binding Workshop_Retry, Source={x:Static strings:Strings.Instance}}"
+                        HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
+                        Click="ConfigsRetry_Click"/>
+            </StackPanel>
+            <!-- The list's foot: how many of the game's configs show, and the
+                 forge bar while the next page streams in (infinite scroll;
+                 the loaded rows never blank). -->
+            <StackPanel Grid.Row="5" Margin="0,6,0,0">
+                <TextBlock x:Name="ConfigsFoundText" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           TextTrimming="CharacterEllipsis"/>
+                <ContentControl x:Name="ConfigsMorePanel" Template="{StaticResource ForgeBarTemplate}" Focusable="False"
+                                HorizontalAlignment="Left" Margin="0,6,0,0" Visibility="Collapsed" IsHitTestVisible="False"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ── What Comes Across ──────────────────────────────────── -->
+        <Border x:Name="ManifestPane" Grid.Column="2" CornerRadius="10" BorderThickness="1" Padding="16" Visibility="Collapsed"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}" Background="{DynamicResource SteelBandBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <controls:FlexLinePanel Gap="16" LineGap="10">
+                    <TextBlock controls:FlexLinePanel.Basis="160" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center"
+                               AutomationProperties.HeadingLevel="Level2"
+                               Text="{Binding Workshop_WhatComesAcross, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <!-- Becomes: the virtual controller the config's gamepad
+                         half lands on. Only with a translation. -->
+                    <StackPanel x:Name="BecomesGroup" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
+                        <TextBlock Text="{Binding Workshop_Becomes, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <Border Style="{StaticResource SegmentTrack}"
+                                ToolTip="{Binding Workshop_Becomes_Tip, Source={x:Static strings:Strings.Instance}}"
+                                AutomationProperties.Name="{Binding Workshop_Becomes, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton x:Name="Becomes_Xbox" Style="{StaticResource SegmentRadio}" MinHeight="30" Padding="14,0"
+                                             GroupName="Becomes" Tag="Xbox" Checked="Becomes_Checked" IsChecked="True"
+                                             AutomationProperties.AutomationId="Becomes_Xbox"
+                                             Content="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
+                                <RadioButton x:Name="Becomes_PlayStation" Style="{StaticResource SegmentRadio}" MinHeight="30" Padding="14,0"
+                                             GroupName="Becomes" Tag="PlayStation" Checked="Becomes_Checked"
+                                             AutomationProperties.AutomationId="Becomes_PlayStation"
+                                             Content="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
+                                <RadioButton x:Name="Becomes_KeyboardMouse" Style="{StaticResource SegmentRadio}" MinHeight="30" Padding="14,0"
+                                             GroupName="Becomes" Tag="KeyboardMouse" Checked="Becomes_Checked"
+                                             AutomationProperties.AutomationId="Becomes_KeyboardMouse"
+                                             Content="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </controls:FlexLinePanel>
+
+                <!-- Layers: a chip for each of the config's layers, which
+                     turns it on or off before the save. Shown with two or
+                     more. -->
+                <DockPanel x:Name="LayersRow" Grid.Row="1" Margin="0,12,0,0" LastChildFill="True" Visibility="Collapsed">
+                    <TextBlock Text="{Binding Workshop_Layers, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Top" Margin="0,4,10,0"/>
+                    <ItemsControl x:Name="PresetChipList" VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <controls:ClickBorder Style="{StaticResource WsPresetChip}" Click="PresetChip_Click" IsChecked="{Binding IsIncluded, Mode=OneWay}">
+                                    <TextBlock Text="{Binding Label}" VerticalAlignment="Center"/>
+                                </controls:ClickBorder>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+
+                <!-- The result: the controller picture with its callouts,
+                     the three counts, and each binding. -->
+                <ScrollViewer x:Name="ManifestResultPanel" Grid.Row="2" Margin="0,12,0,0" Visibility="Collapsed"
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <!-- The pad itself, drawn from the repo's own 2DModels
+                             art with the config's bound inputs lit. Shown only
+                             while the preview has callouts: it collapses itself
+                             with none. -->
+                        <Border x:Name="ControllerPreviewFrame" Height="200" CornerRadius="8" BorderThickness="1" Padding="8"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                Visibility="{Binding Visibility, ElementName=ControllerPreview}">
+                            <views:WorkshopControllerPreview x:Name="ControllerPreview" Visibility="Collapsed"/>
+                        </Border>
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border CornerRadius="8" BorderThickness="1" Padding="12,8"
+                                    Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                <StackPanel>
+                                    <TextBlock x:Name="StatCleanNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding Workshop_StatClean, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" CornerRadius="8" BorderThickness="1" Padding="12,8"
+                                    Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                <StackPanel>
+                                    <TextBlock x:Name="StatPartialNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding Workshop_StatPartial, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="4" CornerRadius="8" BorderThickness="1" Padding="12,8"
+                                    Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                <StackPanel>
+                                    <TextBlock x:Name="StatSkippedNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding Workshop_StatSkipped, Source={x:Static strings:Strings.Instance}}" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <ItemsControl x:Name="ManifestRowsList" Margin="0,12,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Idle / loading / legacy / error fills of the pane -->
+                <TextBlock x:Name="ManifestIdlePanel" Grid.Row="2"
+                           Text="{Binding Workshop_ManifestIdle, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextWrapping="Wrap"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <StackPanel x:Name="ManifestLoadingPanel" Grid.Row="2" Visibility="Collapsed"
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ContentControl Template="{StaticResource ForgeBarTemplate}" Focusable="False"/>
+                    <TextBlock Text="{Binding Workshop_ReadingConfig, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+                <StackPanel x:Name="ManifestLegacyPanel" Grid.Row="2" Visibility="Collapsed"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24">
+                    <Border Style="{StaticResource PillChip}" HorizontalAlignment="Center"
+                            Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
+                            TextElement.Foreground="{DynamicResource WaitBrush}">
+                        <TextBlock Text="LEGACY" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="{Binding Workshop_LegacyBody, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               TextWrapping="Wrap" TextAlignment="Center" MaxWidth="360" Margin="0,10,0,0"/>
+                    <Button Content="{Binding Workshop_LegacyOpenButton, Source={x:Static strings:Strings.Instance}}"
+                            HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
+                            Click="OpenInSteam_Click"/>
+                </StackPanel>
+                <StackPanel x:Name="ManifestErrorPanel" Grid.Row="2" Visibility="Collapsed"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24">
+                    <TextBlock Text="{Binding Workshop_ErrorTitle, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="ManifestErrorBody" FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               TextWrapping="Wrap" TextAlignment="Center" MaxWidth="380" Margin="0,8,0,0"/>
+                    <Button Content="{Binding Workshop_Retry, Source={x:Static strings:Strings.Instance}}"
+                            HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
+                            Click="ManifestRetry_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

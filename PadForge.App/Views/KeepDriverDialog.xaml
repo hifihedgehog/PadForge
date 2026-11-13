@@ -1,60 +1,41 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.KeepDriverDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.KeepDriverDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        Width="440" SizeToContent="Height"
-        MinHeight="170"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-        ShowInTaskbar="False">
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        BodyPadding="22,14,22,18">
 
     <!-- The Keep prompt after a keyboard's switch to PadForge's driver
-         (#549), ConfirmDialog's chrome and footer. Give It Back holds the
-         default and the focus, so Enter, Esc, the close button and the
-         countdown all end on the undo. Keep fires only on a deliberate
-         click (or Tab + Enter). -->
-    <Grid Margin="20,18,20,18">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-            <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                       Fill="{DynamicResource EmberBrush}"
-                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBlock x:Name="TitleText"
-                       FontFamily="{StaticResource DisplayFontFamily}"
-                       FontWeight="SemiBold" FontSize="15"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                       VerticalAlignment="Center"
-                       Text="{Binding Devices_DriverKeepTitle, Source={x:Static strings:Strings.Instance}}"/>
-        </StackPanel>
-
-        <TextBlock Grid.Row="1" x:Name="MessageText" TextWrapping="Wrap"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-        <!-- The countdown, in the confirm's mono fact line. A live region,
-             so a screen reader says each second as it changes. -->
-        <TextBlock Grid.Row="2" x:Name="CountdownText" Margin="0,8,0,0"
-                   TextWrapping="Wrap"
-                   AutomationProperties.LiveSetting="Polite"
-                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                   Foreground="{DynamicResource ColdBrush}"/>
-
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-            <Button x:Name="GiveBackButton" MinWidth="90" Margin="0,0,8,0"
+         (#549), a mouse's, or a touchpad's switch to PadForge alone, as the
+         Confirm board draws it: the question, what changed, and a bar that
+         drains beside the seconds left. Give It Back holds the default and
+         the focus, so Enter, Esc and the countdown all end on the undo.
+         Keep fires only on a deliberate click (or Tab then Enter). The
+         code-behind words the title and the line under it for the device. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="GiveBackButton" Style="{StaticResource DialogButton}"
                     Content="{Binding Devices_DriverGiveBack, Source={x:Static strings:Strings.Instance}}"
                     IsCancel="True" IsDefault="True"/>
-            <Button x:Name="KeepButton" MinWidth="90"
-                    Style="{StaticResource EmberDestructiveButton}"
+            <Button x:Name="KeepButton" Style="{StaticResource DialogButton}"
                     Content="{Binding Devices_DriverKeep, Source={x:Static strings:Strings.Instance}}"
                     Click="KeepButton_Click"/>
-        </StackPanel>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <!-- The time left, drained at the timer's step. It is named by the
+             sentence beside it, which the code-behind keeps in step. -->
+        <ProgressBar x:Name="CountdownBar" Style="{StaticResource DialogCountdownBar}" VerticalAlignment="Center"/>
+        <!-- The sentence, its number in the code face. A live region, so a
+             screen reader says each second as it changes. -->
+        <TextBlock x:Name="CountdownText" Grid.Column="1" Margin="12,0,0,0" FontSize="14"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                   AutomationProperties.LiveSetting="Polite"/>
     </Grid>
-</ui:FluentWindow>
+</views:DialogWindow>

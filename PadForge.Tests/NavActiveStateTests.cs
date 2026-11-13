@@ -11,7 +11,9 @@ namespace PadForge.Tests
     /// Discussion #340 (Xaklse): after running the Welcome Tour from the
     /// Settings page, BOTH "Dashboard" and "Settings" wore the orange
     /// active bar while only the Dashboard was rendered. The Dashboard is
-    /// Home since #574, and the rule these pin is the same.
+    /// Home since #574, which also removed the Welcome Tour, the path that
+    /// first showed the two bars. The rule these pin stands for the rail
+    /// rebuild.
     ///
     /// <para>The rail is two collections. Home, Devices, Profiles, Extras and
     /// the slots are MenuItems; Settings and About are FooterMenuItems. The
@@ -80,10 +82,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>THE REPORTED BUG. Settings is lit (the user was on that
-        /// page), the tour activates Home, and exactly one bar must
-        /// remain. The old code left two.</summary>
+        /// page), Home is activated, and exactly one bar must remain. The
+        /// tour's old code left two.</summary>
         [Fact]
-        public void TourFromSettings_LeavesOnlyHomeLit()
+        public void HomeFromSettings_LeavesOnlyHomeLit()
         {
             RunSta(() =>
             {

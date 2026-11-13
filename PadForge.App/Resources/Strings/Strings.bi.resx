@@ -73,6 +73,7 @@
   <data name="Common_On" xml:space="preserve"><value>On</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Common_More" xml:space="preserve"><value>Moa</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Luk Evri</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>I instol finis</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>I no instol yet</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>I no gat long ARM64</value></data>
@@ -87,7 +88,7 @@
   <data name="Common_Idle" xml:space="preserve"><value>I stap spel</value></data>
   <data name="Common_Online" xml:space="preserve"><value>Onlaen</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Oflaen</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Lukaotem...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Lukaotem…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Gohed</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Stat</value></data>
@@ -110,7 +111,13 @@
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge i stap stat…</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> divaes</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Putum wan kontrola</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Putum wan Kontrola</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Jusum wanem ol gem oli mas luk. Kontrola i kam stret taem yu klik.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Input I Kam Long</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profael</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Lukaotem seting, divaes mo profael</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Lukaot</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Ol risalt</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Rabemaot virtual kontrola</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Soem PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual kontrola {0}</value></data>
@@ -158,19 +165,17 @@
   <data name="Status_EngineStopped" xml:space="preserve"><value>Enjin i stop.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Problem: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>PadForge i no save mekem {0}.</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Rekodem</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>I stap rekod...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Yu no jusum wan divaes yet.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>taem</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>long</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Next" xml:space="preserve"><value>Nekis</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Finis</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Ol slot</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Divaes</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Input i kam long</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Putum wan divaes</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Daon</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pija</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lis</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} aotput</value></data>
@@ -219,7 +224,6 @@
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web kontrola</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Kompiuta ia nomo</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Niu kod</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Adres long kompiuta ia:</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Joenem</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Konek</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>I konek</value></data>
@@ -229,14 +233,20 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Seting</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Jeneral</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hadwea</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Ol draeva</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data mo praevesi</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Lukaotem seting</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Laet</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Tudak</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Windo</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Jekem naoia</value></data>
   <data name="Update_DownloadStalled" xml:space="preserve"><value>Daonlod i stop.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Tekemaot HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Hemia i tekemaot HIDMaestro long PC ia: ol virtual kontrola blong hem, draeva, setifiket blong saenem, ol ki blong registry mo ol fael. PadForge i stopem enjin blong hem fastaem. Ol narafala program we oli yusum HIDMaestro bambae oli no gat draeva blong hem kasem taem oli stat bakegen. PadForge i instolem hem bakegen nekis taem we hem i statem wan virtual kontrola.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tekemaot tu usbip-win2 we instola blong hem i bin instolem</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Hemia nao ol samting we bambae i aot long PC ia. PadForge i instolem HIDMaestro bakegen wetem nekis virtual kontrola blong hem.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tekemaot tu usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Ol olfala vesen blong PadForge oli instolem usbip-win2 wetem instola blong usbip-win2. Hemia i tekemaot setap ia tu, wetem filta blong USB root hub blong hem, sapos i no gat narafala program we i yusum usbip-win2. Taem yu tekemaot filta ia, evri USB 3 root hub i stat bakegen, ale ol USB divaes oli no moa konek blong smol taem.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Stap ridim wanem HIDMaestro i livim long PC ia…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro i no livim wan samting long PC ia blong tekemaot.</value></data>
@@ -244,10 +254,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>I stap yet: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>I no save ridim: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>I no aot: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth draeva</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>I aot</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>I stap</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>I No Rid</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>I No Aot</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Hem i letem ol PlayStation 3 kontrola, PlayStation Move mo Navigation kontrola oli konek long Bluetooth. Hem i stap insaed long PadForge, mo PadForge i instolem hem fastaem we yu joenem wan long olgeta.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>I konektem ol PlayStation 3 kontrola long Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Tekemaot BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Hemia i tekemaot BthPS3 long PC ia: ol draeva blong hem, filta we hem i putum long Bluetooth, mo WinUSB draeva we PadForge i givim long ol PlayStation 3 kontrola blong joenem olgeta. PadForge i stopem enjin blong hem fastaem, mo Bluetooth i of smoltaem taem ol draeva oli aot. Afta, ol PlayStation 3, Move mo Navigation kontrola oli wok long USB nomo. Sapos yu joenem wan, PadForge i instolem BthPS3 bakegen.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Hemia nao ol samting we bambae i aot long PC ia. Afta, ol PlayStation 3, Move mo Navigation kontrola oli wok long USB nomo, kasem we yu joenem wan mo hem i instolem BthPS3 bakegen.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Stap ridim wanem BthPS3 i livim long PC ia…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 i no livim wan samting long PC ia blong tekemaot.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini i yusum ol draeva ia, taswe oli stap yet taem DsHidMini i instol finis.</value></data>
@@ -298,7 +313,6 @@
   <data name="MacroAction_RunProgram_Format" xml:space="preserve"><value>Ronem {0}</value></data>
   <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(i no gat program)</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Taepem "{0}"</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Paoa</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minit (0 = neva)</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Ridim olsem kiboad</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Ridim olsem ol stik blong Tekken</value></data>
@@ -324,7 +338,6 @@
   <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>Fael i no save wok: {0}</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Ridim {0} olsem wan iCade kontrola.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Ridim {0} olsem kiboad bakegen.</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Laet gan</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Kalibresen blong gan</value></data>
   <data name="GunCalibration_Title" xml:space="preserve"><value>Kalibresen blong gan</value></data>
   <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A, o B i kanselem.</value></data>
@@ -356,7 +369,6 @@
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Tekemaot divaes ya mo ol seting blong hem</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Tekemaot divaes</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>Bambae {0} i aot long lis blong divaes, mo ol seting blong hem we i sevem bambae i lus.</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>I no gat slot blong virtual kontrola yet. Wokem wan long Dashboard blong putum divaes ya long hem.</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Haedem long ol gem (HidHide)</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Ol aksis</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Ol baton</value></data>
@@ -459,7 +471,6 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ol triga</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ol baton</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Klosem</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro i no akseptem profael ia long {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profael ia i no gat HID descriptor, taswe i no save mekem wan kontrola long hem.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Program i no impotem wan samting. {0}</value></data>
@@ -504,6 +515,7 @@
   <data name="Pad_Formula_Status_And" xml:space="preserve"><value>mo</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dedzon</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ofset blong medel, sep mo valiu blong dedzon long evri aksis, kev blong evri aksis, renj, stia</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Renj long namba, ol raw valiu</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center offset Y</value></data>
@@ -700,7 +712,7 @@
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>tajpad ia</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Nem</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Traem bakegen</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Givim nem long jesja ia</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Yu mas putum wan nem</value></data>
 
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gaero pitch</value></data>
@@ -787,22 +799,23 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Ol profael</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profael we i wok naoia:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>I no gat slot</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Niu</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>No Gat Kontrola</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Niu Profael</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Sevem olsem</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Sevem Seting Naoia Long Ples Ia</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Jenisim</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Fastaem, jusum wan profael.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Tekemaot profael</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Tekemaot "{0}"? Ol slot mo mapping we oli sevem long hem bae oli lus olgeta.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Rabemaot {0}?</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Jenisim seting we i sev long "{0}" wetem seting blong naoia? Nem blong hem mo ol gem blong hem oli stap.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Jenisim</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Sevem olsem profael</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Jenisim profael</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nem blong profael:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Niu Profael</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nem</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Niu profael</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Jusum wan divaes blong kopiem seting blong hem:</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -997,6 +1010,17 @@
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekon (0 = neva)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nem blong layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nem</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Holem Wetem</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Presem Wetem</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Nekis Layer Wetem</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer Bifo Wetem</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Mo Wetem</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Jusum wan Input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Ol Kontrol we oli No Map</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Folem Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No Mekem Samting</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, kaen input, taem mo kala</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Holem</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>On/of</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>No gat baton</value></data>
@@ -1012,11 +1036,9 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Rubumaot layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Rubumaot layer "{0}" mo evri lain blong mapping blong hem? Bambae yu no save tekem bak.</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Eni layer</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Nekis baton</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Baton bifo</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Baton</value></data>
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Wan baton nomo (o wan direksen blong POV) we yu presem i statem layer.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Layer i stap on taem yu holem activator. I of taem yu lego.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Taem yu holem input blong hem, ol mapping blong layer ia oli tekem ples blong ol mapping blong Base.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>Tajem blong statem. Tajem bakegen blong stopem. Layer i stap nomata yu presem plante taem.</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Setem renj blong wil</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Sapos yu tekemaot maak long bokis ia, wil mo program blong hem nomo i setem renj. Ale PadForge i no sendem eni renj i go long wil.</value></data>
@@ -1079,7 +1101,6 @@
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>PadForge i no save ridim fael ia olsem wan profael.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Jusum wan saon long {0}</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Makro</value></data>
   <data name="IconPicker_Images" xml:space="preserve"><value>Ol piksa</value></data>
   <data name="Emoji_Category_Hands" xml:space="preserve"><value>Ol han</value></data>
@@ -1090,15 +1111,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Putum nem blong PC ia</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Ol PC we oli stap klosap (oli no joen yet)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Putum bak</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Pasword blong Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge tajpad</value>
@@ -1111,9 +1125,6 @@
   </data>
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>PC we i joen</value>
-  </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>I konek</value>
   </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>I no konek</value>
@@ -1138,6 +1149,8 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Lukaotem ol fael…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Jusum wan saon</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Saon i plei long spika blong kontrola, o long spika blong PC sapos kontrola i no gat.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Yusum Saon</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1161,12 +1174,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Joenem</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Joenem wan kontrola</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Joenem wan Kontrola</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Joenem wan Wii Remot</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Openem kava blong batri mo presem red baton SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Holem remot klosap long PC ia taem ol laet blong hem oli flas.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Joenem wan DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Joenem wan Move o Navigation Kontrola</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Putum wan Serial Kontrola</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Putum wan DJI Remot</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Openem kava blong batri mo presem red baton SYNC. Letem PadForge i stap lukaot kasem we kontrola blong yu i kamaot.</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Joenem</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>I stap lukaot. Presem baton SYNC naoia.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>I stap lukaotem wan remot.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Ol kontrola we i faenem</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>I no faenem kontrola yet. Lukaot se ol blu laet oli stap flas.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} i joen finis. Bambae i kamaot long lis blong divaes blong yu.</value></data>
@@ -1198,10 +1216,9 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PadForge i no save instolem Bluetooth draeva blong ol PlayStation kontrola.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Joenem i no finis. Step we i no wok i stap antap.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Klosem</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Tajem wan tag long rida blong kasem UID blong hem.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(i stap wet)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nem:</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>Tajem wan tag long rida.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Nem</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Givim nem long tag ia</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Hed traka</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR kontrola</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analog kiboad</value></data>
@@ -1235,14 +1252,13 @@
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>Stap wet long wan traka long UDP pot {0}.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Narafala program i stap yusum UDP pot {0}.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Ol baton we oli haed</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Lanem wan baton</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Masin:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Stat blong lanem</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Presem baton we i haed naoia, afta yu lego…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Wet smol…</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nem:</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Ol baton we yu lanem finis</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Presem mo holem baton naoia.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Lego baton.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Step {0} long {1}</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nem</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Givim nem long baton ia</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>I no gat baton we yu lanem yet.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Lanem long {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ol ki: {0}</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} i stap ron. Hem i stap wok yet long ol baton ia kasem we yu stopem.</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Maos</value></data>
@@ -1272,7 +1288,7 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Braet blong LED blong Guide: {0}%</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Spid</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Lukaotem ol gem</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} gem</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Ol gem</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>I no faenem gem long stoa blong Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Stap lukaotem long Steam…</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Lukaotem ol gem</value></data>
@@ -1331,9 +1347,6 @@
   </data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Ol gem blong faet</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Kiboad + Maos</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Lukluk ol stat profael</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Ol stat profael</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Sevem profael</value></data>
   <data name="Starter_Layer_Hotkeys" xml:space="preserve"><value>Ol hotki</value></data>
   <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>On</value></data>
@@ -1396,7 +1409,7 @@
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (i no stap long slot ia)</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profael: {0}</value>
+    <value>Profael we i wok: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Stap wet long narafala PC...</value>
@@ -1613,7 +1626,7 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Sendem i go long narafala ples</value></data>
   <data name="Extras_Tile_WebController" xml:space="preserve"><value>Yusum wan fon o tablet olsem wan kontrola.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tekem ol efek blong triga mo laet long ol mod blong gem.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP adres, kod blong akses</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP, kod blong akses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, samting we i tekem ples blong DSX.exe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ki mo maos</value></data>
@@ -1656,4 +1669,103 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lef</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Raet</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tekem ol efek blong adaptive triga mo laet long ol mod blong gem we oli raetem blong DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Statem telemetry autput long gem mo talem long hem blong sendem i kam long PC ia mo pot ia.</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ol efek blong wan mod oli kasem evri kontrola we i gat hadwea blong olgeta.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pos blong hed i stap long lain Head Tracker long [Ol divaes]. Mapem yaw blong hed i go long wan aksis blong stik long seksen Ol baten blong wan kontrola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol valiu oli stap long lain Game Telemetry long [Ol divaes]. Mapem olgeta long seksen Ol baten blong wan kontrola o yusum olgeta blong statem ol makro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ples, saes mo klia blong wan menu oli stap long menu ia, long seksen [Makro mo menu] blong wan kontrola.</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Blong ol mod we oli lukaotem wan DSX we i stap ron bifo oli sendem</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopi adres</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Konektem wan Fon</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Putum fon long sem netwok olsem PC ia.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>Skanem kod wetem kamera blong fon.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Jusum wan fasin blong kontrola.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Ol fon</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>I no gat fon we i konekt.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Wan fon we i konekt i kamaot long ples ia mo long pej Ol divaes, we yu givim hem long wan kontrola.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Joenem wan Narafala PC</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Lukaotem ol divaes</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Olgeta</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Kibod mo maos</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>I konekt</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>I No Konekt</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Narafala Input</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>I no gat divaes we i stret.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>I no stap yusum</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batri {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batri {0}, i stap jaj</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Yusum Long</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Niu Kontrola</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Seting</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Evri aksis, baton mo senso</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Presem: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopi ol Detel</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Wanem i save mekem</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Konek</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batri</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Rod</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serial Namba</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Fomwea</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisen</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Moa blong {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Kasem ol Profael</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Stat</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Taem yu sevem, i putum wan profael nomo we yu save jenisim.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>I kam</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Mekem kontrola i seksek tu, Talem bakegen evri, Talem taem i ful jaj</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Haedem ol divaes long ol gem, Holem ol divaes i haed bitwin ol stat, Ol aplikesen we oli letem</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>I mekem ol virtual kontrola.</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Dokumentesen</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Jekem ol niu vesen</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Lukaotem ol kredit</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Soem Evri Kredit</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Soem Smol Kredit Nomo</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>I no gat kredit we i stret wetem “{0}”.</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Ol komon</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Moa Autput</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Fasin we plante gem blong PC oli wantem.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Blong ol gem we oli soem ol saen blong PlayStation, tajpad mo laetba.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Fasin blong ol baton blong Switch, blong ol gem mo emulator we oli wantem.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Ol not mo ol control change blong ol program blong miusik.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Ol virtual VR kontrola tru long SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Blong jenisim kaen afta, klik long jip blong kaen long kontrola. I tekem wan klik nomo.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>I nidim SteamVR. Instolem long kad blong hem long Seting.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Wan VR kontrola i stap finis. Wan i save wokem tu han.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>PadForge i gat {0} kontrola, hemia nao moa we hem i save ronem. Rabemaot wan blong putum wan narafala.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Moa kaen: [{0}, {1}, {2} mo {3}]</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Joenem wan Bluetooth kontrola</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Stat long wan profael we i redi finis</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>I konekt</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batri {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Batri {0}</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} blong muv</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} blong openem</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} long eni ples</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Ol pej</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Ol aksen</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>anda long Moa</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>long ol jos blong wan lain</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>I no gat samting long PadForge we i stret wetem “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Lukaotem “{0}” long dokumentesen</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>I stat wetem no kontrola. Hem i lod hem wan taem wan long ol gem blong hem i stap long fored.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Putum wan Gem we i Stap Ron</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no gat narafala program we i gat windo i open.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tekemaot {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nem, aekon mo kala blong Base layer long Shift Layer Flyout mo long lain blong ol layer.</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>Tajem wan tag long rida mo givim nem long hem. Hem i kam wan baton we yu save mapem.</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Stat Bakegen</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Jusum wanem i soem. I no gat samting i jenis kasem we yu sevem.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>I no gat samting i kasem pot kasem we yu sevem.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>edita blong kev</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>I ron: {0} long {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Ol stat profael</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Ol profael we oli redi finis blong wan kaen gem. Jusum wan, givim eni kontrola, mo plei.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} long {1} i on</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ol profael ia we yu bin impotem oli gat niu vesen long Steam Workshop. Impotem olgeta bakegen long Kasem ol Profael blong kasem ol jenis.</value></data>
 </root>

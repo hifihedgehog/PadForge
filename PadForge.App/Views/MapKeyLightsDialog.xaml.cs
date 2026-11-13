@@ -21,7 +21,7 @@ namespace PadForge.Views
     /// input layout. The footer exports the model's names as a file or
     /// imports one, the Learn Handheld Button dialog's footer.
     /// </summary>
-    public partial class MapKeyLightsDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class MapKeyLightsDialog : DialogWindow
     {
         private sealed class ExportFile
         {
@@ -41,7 +41,6 @@ namespace PadForge.Views
             InitializeComponent();
             _vm = new MapKeyLightsViewModel(path, deviceName);
             DataContext = _vm;
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             PreviewKeyDown += OnPreviewKeyDown;
             PreviewKeyUp += OnPreviewKeyUp;
             Closed += (_, _) => _vm.Dispose();

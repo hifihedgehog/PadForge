@@ -70,7 +70,7 @@
   <data name="Common_Copy" xml:space="preserve"><value>Koperani</value></data>
   <data name="Common_Paste" xml:space="preserve"><value>Matani</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Osadziwika</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Sakatulani...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Sakatulani…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Pitirizani</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Imani</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Yambani</value></data>
@@ -111,16 +111,14 @@
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Zokonda zasungidwa ku {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Cholakwika posunga zokonda: {0}</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Cholakwika: {0}</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Palibe chipangizo chosankhidwa.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Chipangizo chachotsedwa.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Dumphani</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Chotsatira</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Chipangizo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kuchokera ku</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Onjezani chipangizo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Yatsika</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi kontrola ya PlayStation yomwe ili ndi nambala imeneyo.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lumikizani</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Kanani</value></data>
@@ -128,11 +126,17 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Zokonda</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Zonse</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Zolowetsa</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Zida</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Madalaivala</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Deta ndi chinsinsi</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Sakani zokonda</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Onani tsopano</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Onjezani...</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Chotsani HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Izi zichotsa HIDMaestro pa PC iyi: makontrola ake a pakompyuta, dalaivala, satifiketi yosainira, makiyi a registry ndi mafayilo. PadForge iyamba yaimitsa injini yake. Mapulogalamu ena omwe amagwiritsa ntchito HIDMaestro sadzakhala ndi dalaivala wake mpaka adzayambenso. PadForge idzayiyikanso nthawi ina ikadzayambitsa kontrola ya pakompyuta.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Chotsaninso usbip-win2 yomwe inaikidwa ndi pulogalamu yake yoyikira</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Izi ndi zomwe zidzachotsedwa pa PC iyi. PadForge idzaikanso HIDMaestro ndi kontrola yake ya pakompyuta yotsatira.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Chotsaninso usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Mitundu yakale ya PadForge inaika usbip-win2 pogwiritsa ntchito pulogalamu yoyikira ya usbip-win2. Izi zichotsanso zimenezo, kuphatikizapo fyuluta yake ya USB root hub, pokhapokha ngati pulogalamu ina ikugwiritsa ntchito usbip-win2. Kuchotsa fyulutayo kumayambitsanso ma USB 3 root hub onse, choncho zipangizo za USB zimasiya kulumikizana kwa kanthawi.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Kuwerenga zomwe HIDMaestro yasiya pa PC iyi…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>HIDMaestro sinasiye chilichonse choti chichotsedwe pa PC iyi.</value></data>
@@ -140,10 +144,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Chatsala: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Sichinawerengedwe: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Sichinachotsedwe: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Dalaivala ya Bluetooth ya BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Yachotsedwa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Yasungidwa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Sizinawerengedwe</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Sizinachotsedwe</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Imalola makontrola a PlayStation 3, PlayStation Move ndi kontrola ya Navigation kulumikizana kudzera pa Bluetooth. Ili mkati mwa PadForge ndipo imaikidwa nthawi yoyamba pamene imodzi mwa izo yalumikizidwa.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Imalumikiza makontrola a PlayStation 3 kudzera pa Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Chotsani BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Izi zichotsa BthPS3 pa PC iyi: madalaivala ake, fyuluta yomwe imawonjezera ku Bluetooth, ndi dalaivala ya WinUSB yomwe PadForge inapatsa makontrola a PlayStation 3 kuti alumikizidwe. PadForge iyamba yaimitsa injini yake, ndipo Bluetooth imazimitsidwa kwa kanthawi pamene madalaivala akuchotsedwa. Kenako makontrola a PlayStation 3, Move ndi Navigation adzagwira ntchito kudzera pa USB yokha. Kulumikiza imodzi mwa izo kudzaika BthPS3 kachiwiri.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Izi ndi zomwe zidzachotsedwa pa PC iyi. Kenako makontrola a PlayStation 3, Move ndi Navigation adzagwira ntchito kudzera pa USB yokha, mpaka kulumikiza imodzi mwa izo kudzaika BthPS3 kachiwiri.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Kuwerenga zomwe BthPS3 yasiya pa PC iyi…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 sinasiye chilichonse choti chichotsedwe pa PC iyi.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini imagwiritsa ntchito madalaivala awa, choncho atsala pamene idakali yoikidwa.</value></data>
@@ -170,7 +179,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Malo a makiyi ndi makiyi a layer yoyambira a makiibodi omwe Keyboard + Mouse preview imawonetsa, opangidwa kuchokera ku deta ya layout ya QMK ndi QMK fork ya Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Malo a makiyi ndi makiyi a layer yoyambira a makiibodi omwe Keyboard + Mouse preview imawonetsa, opangidwa kuchokera ku deta ya layout ya QMK ndi QMK fork ya Keychron.</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -193,7 +202,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Lembani "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(palibe mawu)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Mawu</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Mphamvu</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Werengani ngati kontrola ya iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Werengani ngati kiibodi</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nambala ya wosewera…</value></data>
@@ -201,6 +209,7 @@
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Wosewera</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Sankhani wosewera</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Sikirini ya Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Palibe chomwe chimafika ku port mpaka mutasunga.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Onetsani</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Chithunzi cha adaputala</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Dzina la mbiri</value></data>
@@ -284,7 +293,6 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Onjezani mtundu</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Mabatani</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Chotsani</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Tsekani</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yakana mbiri iyi pa {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Mbiri iyi ilibe HID descriptor, choncho palibe kontrola yomwe ingapangidwe kuchokera mmenemo.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Palibe chomwe chalowetsedwa. {0}</value></data>
@@ -510,7 +518,7 @@
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Chitsanzo {0} mwa {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Zitsanzo {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Dzina</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Yesaninso</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Patsani manja awa dzina</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Dzina likufunika</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Dzina ndi lalitali kwambiri (zilembo zosapitirira 64)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Dzina lili ndi zilembo zosaloledwa</value></data>
@@ -591,29 +599,36 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Mbiri</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Kuyang'anira mbiri</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Pangani mbiri za kontrola pa pulogalamu iliyonse zomwe zimasintha zokha kutengera masewera omwe akuseweredwa.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Sinthani mbiri zokha kutengera pulogalamu yomwe ili kutsogolo</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Mbiri ndi kukhazikitsa konse: makontrola ake, mapu ake ndi kusintha kwake.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Mbiri zoyambira</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Mbiri zokonzedwa kale za mtundu wonse wa masewera. Sankhani imodzi, patsani kontrola iliyonse, ndipo sewerani.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Sinthani mbiri malinga ndi masewera</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Kusintha kokha</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Kutsogolo tsopano: {0}, palibe mbiri yake</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Kutsogolo tsopano: {0}, yomwe imatsegula {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Kutsogolo tsopano: {0}, ndipo palibe mbiri yomwe ili ndi masewera pakadali pano</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Mbiri yogwira ntchito:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Palibe ma slot</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Kusintha kokha: {0}</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Yatsopano</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Palibe makontrola</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Mbiri yatsopano</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Sungani ngati</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Sungani kukhazikitsa kwapano apa</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Sinthani</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Tsegulani</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Sankhani mbiri kaye.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Chotsani mbiri</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Chotsani "{0}"? Ma slot ndi ma mapping ake osungidwa adzafufutidwa.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Chotsani {0}?</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Sinthani kukhazikitsa kosungidwa mu "{0}" ndi kwapano? Dzina lake ndi masewera ake sizisintha.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sinthani</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Sungani ngati mbiri</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Sinthani mbiri</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Dzina la mbiri:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Mbiri yatsopano</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Dzina</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Mbiri yatsopano</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Koperani zokonda kuchokera ku...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Sankhani chipangizo choti mukopere zokonda zake:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Koperani kuchokera ku</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Sinthani mapu ndi kusintha kwa chipangizo chilichonse cha {0} ndi za kontrola ina.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Onjezani ma macro a kontrola ina ku {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -784,6 +799,17 @@
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Mota yakumanja</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Dzina la layer</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Dzina</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Kugwiridwa ndi</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Kudinidwa ndi</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Layer yotsatira ndi</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Layer yapitayi ndi</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Komanso ndi</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Sankhani cholowetsa</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Zowongolera zopanda mapu</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Gwiritsani ntchito Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Osachita kanthu</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mawonekedwe, mtundu wa cholowetsa, nthawi ndi utoto</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Njira</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Gwirani</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Dzina la layer likufunika.</value></data>
@@ -799,8 +825,6 @@
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Chotsani layer ya "{0}" ndi mizere yake yonse ya mapping? Izi sizingathe kubwezeredwa.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Kuchedwa</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Layer iliyonse</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Batani lotsatira</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Batani lapitalo</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Batani</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Khazikitsani range ya kuzungulira</value></data>
   <data name="Pad_Wheel_SetRotationRangeTooltip" xml:space="preserve"><value>Chotsani chizindikiro ichi kuti range isankhidwe ndi wheel ndi pulogalamu yake. Pamenepo PadForge satumiza range iliyonse ku wheel.</value></data>
@@ -860,7 +884,6 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Mbiri "{0}" yatumizidwa kunja.</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Mbiri "{0}" yalowetsedwa (mapaketi a mawu {1} alembetsedwa).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Fayiloyi si mbiri ya PadForge yowerengeka.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Sankhani mawu kuchokera mu {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mapaketi a mawu</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mafayilo a zip a mawu a ma macro a mawu</value></data>
   <data name="Pad_Audio_Packages_Add" xml:space="preserve"><value>Onjezani paketi…</value></data>
@@ -889,12 +912,8 @@
   <data name="Mapping_MidiCcNamed_Format" xml:space="preserve"><value>CC {0} ({1})</value></data>
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Patsani PC iyi dzina</value></data>
   <data name="Common_Reset" xml:space="preserve">
     <value>Bwezeretsani</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Mawu achinsinsi a Remote Link</value>
   </data>
   <data name="RemoteLink_PasswordEmpty" xml:space="preserve">
     <value>Lowetsani mawu achinsinsi.</value>
@@ -908,11 +927,11 @@
   <data name="RemoteLink_StatusStartFailed" xml:space="preserve">
     <value>Kuyamba kwalephera: {0}</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Sankhani mawu kuchokera mu paketi yowonjezedwa, kapena sakatulani fayilo.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Sakatulani mafayilo…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Sankhani mawu</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Mawu amamveka kudzera pa sipika ya kontrola, kapena ya PC ngati kontrola ilibe.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Gwiritsani ntchito mawu</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Imbani {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -936,13 +955,18 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>Lumikizani</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>Lumikizani kontrola</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>Lumikizani kontrola</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>Lumikizani Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Tsegulani chivundikiro cha batire ndipo dinani batani lofiira la SYNC.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Sungani remote pafupi ndi PC iyi pamene magetsi ake akuthwanima.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>Lumikizani DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>Lumikizani kontrola ya Move kapena Navigation</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Onjezani kontrola ya serial</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Onjezani remote ya DJI</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Tsegulani chivundikiro cha batire ndipo dinani batani lofiira la SYNC. Lolani PadForge ipitirize kufufuza mpaka kontrola yanu itaonekera.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Kulumikiza kwakanthawi (gwirani 1 ndi 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>Lumikizani</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Ikufufuza. Dinani batani la SYNC tsopano.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Ikufufuza remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Makontrola opezeka</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Palibe makontrola amene apezeka pano. Onetsetsani kuti magetsi abuluu akuthwanima.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} yalumikizidwa. Idzaonekera pa mndandanda wa zipangizo zanu.</value></data>
@@ -967,8 +991,8 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Dalaivala ya Bluetooth ya makontrola a PlayStation sinathe kuikidwa.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Kulumikiza sikunathe. Gawo limene lalephera lasonyezedwa pamwambapa.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Tsekani</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ikudikira)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Dzina:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Dzina</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Patsani tag iyi dzina</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Lembetsani</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Kiibodi ya analog</value></data>
   <data name="DeviceType_PeripheralLighting" xml:space="preserve"><value>Magetsi</value></data>
@@ -995,11 +1019,14 @@
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Poti ya UDP {0} ikugwiritsidwa ntchito ndi pulogalamu ina.</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Mabatani obisika</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Dinani batani lobisika tsopano, kenako lisiyeni…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Dikirani pang'ono…</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Gwero:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Dzina:</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Dinani ndi kugwira batani tsopano.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Siyani batani.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Gawo {0} mwa {1}</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Gwero</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Dzina</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Patsani batani ili dzina</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Lembetsani</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Yambiraninso</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Makiyi: {0}</value></data>
   <data name="Pad_Mouse" xml:space="preserve"><value>Mbewa</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Kumanzere</value></data>
@@ -1016,7 +1043,7 @@
   <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Liwiro lalikulu kwambiri</value></data>
   <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Liwiro loyambira</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Sakani masewera</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Masewera {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Masewera</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Sakani masewera</value></data>
   <data name="Workshop_TimeToday" xml:space="preserve"><value>lero</value></data>
   <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>masiku {0} apitawo</value></data>
@@ -1060,7 +1087,6 @@
     <value>ds4mac</value>
   </data>
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Masewera omenyana</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Sungani mbiri</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Mtundu</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Chotsani</value></data>
@@ -1077,6 +1103,7 @@
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Dziwitsidwani pamene batire ya kontrola yatsala pang'ono kutha, isanathe pakati pa masewera.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Dziwitsani pamene batire yatsala pang'ono kutha</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Yesani chidziwitso</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Onani chidziwitso</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Osati pano</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Kumvetsera</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Nthawi zonse</value></data>
@@ -1123,7 +1150,7 @@
   <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Kukula kwa chithunzi</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Mbiri: {0}</value>
+    <value>Mbiri yogwira ntchito: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
     <value>Chipangizo kapena kulumikizana sikukupezeka. Lumikizaninso ndipo tsegulaninso zenera ili.</value>
@@ -1301,6 +1328,9 @@
   <data name="MacroAction_TriggerEffect_Timed_Format" xml:space="preserve"><value>{0} pa {1} kwa {2} ms</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Zowonjezera</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Mbiri</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Sakani zokonda, zipangizo ndi mbiri</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Sakani</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Zotsatira</value></data>
   <data name="Pad_Section_Sticks" xml:space="preserve"><value>Ma stick ndi ma trigger</value></data>
   <data name="Pad_Section_Lights" xml:space="preserve"><value>Magetsi ndi mawu</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Chizindikiro pamene stick yoyendetsa yafika kumapeto</value></data>
@@ -1321,6 +1351,7 @@
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa kuzungulira kumodzi</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Tembenuza, Momentum, Kuyankha, Kuthamanga, fling</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Kusuntha kwa pakati, mawonekedwe a deadzone ndi mitengo ya axis iliyonse, curve ya axis iliyonse, mtunda, kuyendetsa</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Mtunda mu manambala, mitengo yaiwisi</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Makiyi ndi mbewa</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ma note ndi ma CC</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Manja</value></data>
@@ -1339,4 +1370,75 @@
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kumanzere</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kumanja</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Chotsani trigger</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Yatsani kutumiza kwa telemetry mu masewera ndipo mulozetse ku PC iyi ndi port iyi.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Malo a mutu ali pa mzere wa Head Tracker pa [Zipangizo]. Ikani kutembenuka kwa mutu pa axis ya stick mu gawo la Mabatani la kontrola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Manambalawa ali pa mzere wa Game Telemetry pa [Zipangizo]. Muwaike mu gawo la Mabatani la kontrola kapena muwagwiritse ntchito kuyambitsa ma macro.</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Koperani adilesi</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Foni yolumikizidwa imaonekera pano ndi pa tsamba la Zipangizo, pomwe mumaipatsa kontrola.</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Sakani zipangizo</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Zonse</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batire {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>batire {0}, ikulipiritsidwa</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Zimagwiritsidwa ndi</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Zokonda</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis iliyonse, batani lililonse ndi sensa iliyonse</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Koperani zambiri</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Chinthu</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Mtundu</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Kulumikizana</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batire</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Njira</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nambala ya siriyo</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Kukonzanso</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Imatsegulidwa ndi {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Yakhazikitsidwa ya {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Ikugwira</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zina za {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Ikani fayilo ya mbiri pano</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>pamene</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pa</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Pezani mbiri</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Lowetsani fayilo</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kusunga kumaonjezera mbiri wamba yomwe mungasinthe.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Imakhala</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Gwedezaninso kontrola, Bwerezani chidziwitso nthawi iliyonse, Dziwitsani ikadzaza</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Bisani zipangizo kwa masewera, Sungani zipangizo zobisika pakati pa kuyambitsa, Mapulogalamu ololedwa</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Zolemba</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Onani zosintha</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Sakani oyamikiridwa</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Kuchokera ku</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Sankhani pambuyo pake</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Zofala</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Kapangidwe kamene masewera ambiri a PC amayembekezera.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Kwa masewera okhala ndi zizindikiro za PlayStation, touchpad ndi lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Kapangidwe ka mabatani a Switch, kwa masewera ndi ma emulator omwe amakafuna.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Ma note ndi ma CC a mapulogalamu a nyimbo.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Makontrola a VR kudzera mu SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Kuti musinthe mtundu pambuyo pake, dinani chizindikiro cha mtundu pa kontrola. Ndi kudina kamodzi kokha.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Pamafunika SteamVR. Iikeni kuchokera pa khadi lake mu Zokonda.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Pali kale kontrola ya VR. Imodzi imayendetsa manja onse awiri.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Lumikizani kontrola ya Bluetooth</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, batire {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Batire {0}</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} kuti musunthe</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} kuti mutsegule</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} kuchokera paliponse</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Masamba</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Zochita</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Imayamba yopanda makontrola. Imatsegulidwa yokha pamene limodzi la masewera ake lili kutsogolo.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Onjezani masewera omwe akuyenda</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Palibe pulogalamu ina yomwe ili ndi zenera lotseguka.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Chotsani {0}</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Dzina, chizindikiro ndi mtundu wa layer ya Base pa Shift Layer Flyout ndi pa mzere wa ma layer.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Zophunziridwa pa {0}</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Sankhani zomwe zimaonetsa. Palibe chomwe chimasintha mpaka mutasunga.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>chosinthira curve</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} mwa {1} zayatsidwa</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Mbiri zolowetsedwa izi zili ndi mitundu yatsopano pa Steam Workshop. Zilowetseninso kuchokera ku Pezani mbiri kuti mupeze zosinthazo.</value></data>
 </root>

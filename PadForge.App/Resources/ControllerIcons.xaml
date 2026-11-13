@@ -108,6 +108,12 @@
          (256,256). Not derivative; matches the inner radius of the
          Zacksly outer ring so the two compose. -->
     <StreamGeometry x:Key="ZackslyStickInnerDiscGeometry">M256,152.93 A103.07,103.07,0,1,1,256,359.06 A103.07,103.07,0,1,1,256,152.93 Z</StreamGeometry>
+    <!-- The stick whole: the ring around the disc as one shape, so a
+         drawing that stretches it keeps the two in proportion. -->
+    <GeometryGroup x:Key="ZackslyStickGeometry" FillRule="Nonzero">
+        <StaticResource ResourceKey="ZackslyStickOuterRingGeometry"/>
+        <StaticResource ResourceKey="ZackslyStickInnerDiscGeometry"/>
+    </GeometryGroup>
 
     <!-- Touchpad-stick card-header icon — the Segoe Fluent Icons
          LeftStick glyph (F108) silhouette with the "L" letter
@@ -133,15 +139,6 @@
          Shared Card Styles
          ═══════════════════════════════════════════ -->
 
-    <!-- Ember section header (#175): ember glyph + tightened title,
-         one treatment for every page section. -->
-    <Style x:Key="SectionGlyph" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="0,0,7,0"/>
-    </Style>
     <!-- Artifact chips (#175): cold = physical fact, ember = virtual
          fact, ghost = neutral. Border carries the chip; the child text
          inherits the matching foreground. -->
@@ -206,15 +203,109 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <!-- A heading over a part of a page that is not inside a card (#574,
+         the world-class pass): Home's Controllers and Extras in Use. One
+         step larger than body text and in the text's own color, so the
+         page reads as a few parts at a glance. -->
+    <Style x:Key="PageSectionTitle" TargetType="TextBlock">
+        <Setter Property="AutomationProperties.HeadingLevel" Value="Level2"/>
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- The small label of a number or of a list: Polling rate under the
+         rate, Driven by over a controller's devices. -->
+    <Style x:Key="StatLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+
+    <!-- A battery as a meter: its outline in the quiet text color and its
+         bar in the text's own, cold blue with a bolt while it charges, and
+         gold at or under the level Settings names. It reads left to right
+         in every language, as the percentage beside it does. -->
+    <Style TargetType="{x:Type controls:BatteryMeter}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Fill" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="Ground" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="Charging" Value="True">
+                <Setter Property="Stroke" Value="{DynamicResource ColdBrush}"/>
+                <Setter Property="Fill" Value="{DynamicResource ColdBrush}"/>
+            </Trigger>
+            <Trigger Property="Low" Value="True">
+                <Setter Property="Stroke" Value="{DynamicResource WaitBrush}"/>
+                <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- A controller's state, which is its switch (#574, the world-class
+         pass): the flame and the state's own word in a pill. The pill is
+         ember while the controller forges, gold while it waits and steel
+         while it is cold, by the Heat of what it is bound to. Its ends are
+         round at either of its heights, 32 on a card and 38 in a page's
+         header: a border never rounds a corner by more than half its
+         height. -->
+    <Style x:Key="StatePill" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="9,0,13,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1" CornerRadius="19" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Heat}" Value="Forging">
+                <Setter Property="BorderBrush" Value="{DynamicResource EmberRingBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Heat}" Value="Waiting">
+                <Setter Property="BorderBrush" Value="{DynamicResource WaitRingBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource WaitTintBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="CardBorder" TargetType="Border">
         <!-- PadForge 6 (#574): a card is a flat fill with one hairline and
-             rounded corners. It does not answer the pointer: the controls
-             inside it do. The fill and the hairline come from the theme, so
-             a switch of theme recolors every card. Its padding is the
-             boards': 20 at the left, 14 over the title, and 12 at the right
-             and under the last row, where a row's reset button sits. -->
+             corners of 12. On the dark ground the hairline is lit at its
+             top (EmberTheme.SetCardEdge). It does not answer the pointer:
+             the controls inside it do. The fill and the hairline come from
+             the theme, so a switch of theme recolors every card. Its
+             padding is the boards': 20 at the left, 14 over the title, and
+             12 at the right and under the last row, where a row's reset
+             button sits. -->
         <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
-        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="20,14,12,12"/>
         <Setter Property="Margin" Value="0,0,0,16"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -226,6 +317,17 @@
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- The title of a card that is one thing of its kind (#574, the
+         world-class pass): a stick, a trigger. The boards' 18 in the
+         display face, one step over a card's plain title. -->
+    <Style x:Key="HeroCardTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFontFamily}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
     </Style>
 
     <!-- Divider-separated SECTION title inside a card (e.g. the per-stick
@@ -282,6 +384,15 @@
                 <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="Opacity" Value="1"/>
             </DataTrigger>
+            <!-- On a card that is not forging, a stage with something set
+                 is bright steel: ember is the color of what is live. -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsHot}" Value="True"/>
+                    <Condition Binding="{Binding (controls:Heat.IsLive), RelativeSource={RelativeSource Self}}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
+            </MultiDataTrigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="StageGlyphShape" TargetType="Path">
@@ -293,6 +404,13 @@
                 <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="Opacity" Value="1"/>
             </DataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsHot}" Value="True"/>
+                    <Condition Binding="{Binding (controls:Heat.IsLive), RelativeSource={RelativeSource Self}}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Fill" Value="{DynamicResource SubRowTextBrush}"/>
+            </MultiDataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -316,7 +434,10 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Grid.ToolTip>
-            <!-- The stick (the Sticks stage). -->
+            <!-- The stick (the Sticks stage): its ring and its disc as one
+                 shape, so the two keep their sizes to each other. Drawn as
+                 two shapes, each was stretched to the whole icon and the
+                 disc filled the ring. -->
             <Grid Width="14" Height="14">
                 <Grid.Style>
                     <Style TargetType="Grid">
@@ -328,8 +449,7 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickOuterRingGeometry}" Style="{StaticResource StageGlyphShape}"/>
-                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickInnerDiscGeometry}" Style="{StaticResource StageGlyphShape}"/>
+                <Path FlowDirection="LeftToRight" Data="{StaticResource ZackslyStickGeometry}" Style="{StaticResource StageGlyphShape}"/>
             </Grid>
             <!-- The trigger (the Triggers stage). -->
             <Grid Width="14" Height="14">
@@ -455,7 +575,7 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <Border x:Name="Bd" Background="{TemplateBinding Background}"
                             BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0"
-                            CornerRadius="0,0,9,9"
+                            CornerRadius="0,0,11,11"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -493,18 +613,26 @@
          description as its tooltip. The part sets the page's text color
          for what it holds: a control's own Foreground starts at the
          system's black, and text inside with no color of its own would
-         take that and vanish on the dark card. -->
+         take that and vanish on the dark card. The line's inset is the
+         part's Padding: 14 at the start and 16 at the end, unless the
+         page sets its own (the Settings page's fold starts 20 in). The
+         line is 48 tall and its chevron stands 12 from its title unless a
+         page sets HeaderMinHeight and ChevronMargin: the Devices page's
+         folds stand in a table, their chevrons under its icons and their
+         titles under its names. -->
     <Style TargetType="{x:Type controls:FoldCard}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="SummaryForeground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Setter Property="Padding" Value="14,0,16,0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:FoldCard}">
                     <StackPanel>
                         <Grid>
                             <ToggleButton x:Name="HeaderSite" Style="{StaticResource FoldHeaderToggle}"
-                                          MinHeight="48" Padding="14,0,16,0"
+                                          MinHeight="{TemplateBinding HeaderMinHeight}" Padding="{TemplateBinding Padding}"
                                           IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                           ToolTip="{TemplateBinding Description}"
                                           AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
@@ -523,7 +651,7 @@
                                           Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
                                           StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
                                           RenderTransformOrigin="0.5,0.5"
-                                          VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                          VerticalAlignment="Center" Margin="{TemplateBinding ChevronMargin}"/>
                                     <ContentPresenter Grid.Column="1" ContentSource="Header"
                                                       VerticalAlignment="Center"
                                                       TextElement.FontFamily="{StaticResource BodyFontFamily}"
@@ -535,7 +663,7 @@
                                                VerticalAlignment="Center" Margin="10,0,12,0"/>
                                     <TextBlock x:Name="SummaryText" Grid.Column="3" Text="{TemplateBinding Summary}"
                                                FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Foreground="{TemplateBinding SummaryForeground}"
                                                VerticalAlignment="Center"/>
                                     <!-- Room for the action, which lies over
                                          the line's end and outside the
@@ -643,6 +771,65 @@
         </Setter>
     </Style>
 
+    <!-- A More row that is a card of its own (the Extras pages, #574): the
+         line with no hairline over it, 48 tall, in a FoldList that draws the
+         card and clips the line's fill to its corners. Open, the rest of the
+         settings stand under a hairline. Everything else is the More row's. -->
+    <Style x:Key="MoreCardRow" TargetType="{x:Type controls:MoreRow}" BasedOn="{StaticResource {x:Type controls:MoreRow}}">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:MoreRow}">
+                    <StackPanel>
+                        <ToggleButton x:Name="HeaderSite" Style="{StaticResource FoldHeaderToggle}"
+                                      MinHeight="48" Padding="20,0"
+                                      IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                      AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                      AutomationProperties.HelpText="{TemplateBinding Hint}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path x:Name="Chevron" Grid.Column="0" FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3"
+                                      Width="10" Height="10"
+                                      Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header"
+                                                  VerticalAlignment="Center"
+                                                  TextElement.FontFamily="{StaticResource BodyFontFamily}"
+                                                  TextElement.FontSize="14"/>
+                                <TextBlock Grid.Column="2" Text="{TemplateBinding Hint}"
+                                           FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </ToggleButton>
+                        <Border x:Name="ExpandSite" Visibility="Collapsed"
+                                BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0"
+                                Padding="20,6,12,12">
+                            <ContentPresenter/>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Chevron" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ═══════════════════════════════════════════
          Extras parts (#574)
          ═══════════════════════════════════════════ -->
@@ -686,6 +873,7 @@
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="StateText" Property="Text" Value="{Binding Common_On, Source={x:Static strings:Strings.Instance}}"/>
+                            <Setter TargetName="StateText" Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
                             <Setter TargetName="Track" Property="Background" Value="{DynamicResource EmberBrush}"/>
                             <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
                             <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource EmberInkBrush}"/>
@@ -720,83 +908,240 @@
         </Setter>
     </Style>
 
-    <!-- A tile of the Extras catalog: the extra's glyph on a chip, its name,
-         its switch at the corner, one line on what it is for, and at the
-         foot the word On or Off with the extra's live status beside it
-         while it is on. The face is one button that opens the extra's page.
-         The switch is drawn over the face, outside the button, so the two
-         are separate stops for the keyboard and a click on the switch never
-         opens the page. The empty third column keeps the name clear of the
-         switch. The face carries the name as its name for a screen reader,
-         the line as its help text and the status as its item status, since
-         text inside a template is not read on its own. -->
+    <!-- A tile of the Extras catalog, as the catalog's board draws it: the
+         extra's glyph on a square, its name, its switch at the head's end,
+         one line on what it is for, and at its foot one line that reads Off,
+         or a dot and the extra's live status (the word On while it reports
+         none), cut short at the tile's width with the whole status as the
+         face's tooltip. A tile that names an action has a small button at the
+         foot's end while the extra runs (Show QR on the Web Controller's).
+
+         The face is one button under everything else, and it opens the
+         extra's page. The words and the square over it take no click, so a
+         click on them reaches the face, and the name takes the link's light
+         ember while the pointer is on the face. The switch and the action
+         are controls of their own over the face, separate stops for the
+         keyboard, and a click on either never opens the page. The face
+         carries the name as its name for a screen reader, the line as its
+         help text and the status as its item status, since text inside a
+         template is not read on its own.
+
+         A tile is lit while its extra is on and what it stands in is live
+         (Heat.IsLive, which the catalog sets from the engine): an ember
+         edge, a light around the card, a warm wash from its upper corner, a
+         warm square with a light of its own, and the status in ember. An
+         extra that is on while the engine is stopped keeps its switch on
+         and its status, in steel, and nothing glows. A tile has no width of
+         its own: the catalog's TileGridPanel gives it a share of its row. -->
     <Style TargetType="{x:Type controls:ExtraTile}">
-        <Setter Property="Width" Value="300"/>
-        <Setter Property="MinHeight" Value="128"/>
-        <Setter Property="Margin" Value="0,0,12,12"/>
+        <Setter Property="MinHeight" Value="145"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ExtraTile}">
-                    <Border Style="{StaticResource CardBorder}" Padding="0" Margin="0">
+                    <Border x:Name="Card" Style="{StaticResource CardBorder}" Padding="0" Margin="0">
                         <Grid>
+                            <!-- The board's shadow of 30 at 0.13 with its ring
+                                 of one pixel at 0.16. It is the card's own
+                                 child, and its margin takes it out to the
+                                 card's outline. -->
+                            <controls:Halo x:Name="Light" Margin="-1" CornerRadius="12" Radius="37.5" Strength="0.065" Rim="0.16"
+                                           IsHitTestVisible="False"/>
+                            <Border x:Name="Wash" CornerRadius="11" IsHitTestVisible="False" Visibility="Collapsed">
+                                <Border.Background>
+                                    <RadialGradientBrush GradientOrigin="0,0" Center="0,0" RadiusX="0.9" RadiusY="1.3">
+                                        <GradientStop Color="#21FF6B2C" Offset="0"/>
+                                        <GradientStop Color="#00FF6B2C" Offset="0.6"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                            </Border>
                             <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
                                     AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
                                     AutomationProperties.HelpText="{TemplateBinding Line}"
-                                    AutomationProperties.ItemStatus="{TemplateBinding Status}">
-                                <Grid Margin="16">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="44"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Top"
-                                            Background="{DynamicResource SteelRaisedBrush}">
+                                    AutomationProperties.ItemStatus="{TemplateBinding Status}"/>
+                            <Grid x:Name="Parts" Margin="16,16,16,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <controls:Halo x:Name="SquareLight" CornerRadius="11" Radius="20" Strength="0.14"
+                                               VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <Border x:Name="Square" Width="44" Height="44" CornerRadius="11" BorderThickness="1"
+                                            Background="{DynamicResource SteelFieldBrush}"
+                                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
                                         <controls:GlyphText x:Name="Glyph" Text="{TemplateBinding Glyph}"
-                                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                            FontFamily="Segoe MDL2 Assets" FontSize="19"
+                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
-                                    <TextBlock Grid.Column="1" Text="{TemplateBinding Title}"
-                                               Style="{StaticResource CardTitle}" TextWrapping="Wrap"
-                                               MinHeight="36" Margin="12,7,8,0" VerticalAlignment="Top"/>
-                                    <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{TemplateBinding Line}"
-                                               Style="{StaticResource CardDescription}" Margin="0,8,0,0"/>
-                                    <StackPanel Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="0,10,0,0">
-                                        <TextBlock x:Name="StateWord" FontSize="12" FontWeight="SemiBold"
-                                                   Text="{Binding Common_Off, Source={x:Static strings:Strings.Instance}}"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        <TextBlock x:Name="StatusText" Visibility="Collapsed"
-                                                   Text="{TemplateBinding Status}" TextWrapping="Wrap"
-                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                                   Foreground="{DynamicResource ColdBrush}" Margin="0,2,0,0"/>
-                                    </StackPanel>
+                                </controls:Halo>
+                                <TextBlock x:Name="TitleText" Grid.Column="1" Text="{TemplateBinding Title}"
+                                           FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                           Margin="12,0,12,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <CheckBox x:Name="PART_Switch" Grid.Column="2" Style="{StaticResource SwitchCheckBox}"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding SwitchLabel}"
+                                          IsChecked="{Binding IsOn, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                                <TextBlock x:Name="LineText" Grid.Row="1" Grid.ColumnSpan="3" Text="{TemplateBinding Line}"
+                                           Style="{StaticResource CardDescription}" Margin="0,10,0,0"
+                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight" IsHitTestVisible="False"/>
+                                <Grid x:Name="Foot" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="0,10,0,0" MinHeight="30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <controls:Halo x:Name="DotLight" CornerRadius="3.5" Radius="10" Strength="0.45" Visibility="Collapsed"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0" IsHitTestVisible="False">
+                                        <Ellipse x:Name="Dot" Width="7" Height="7" Fill="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    </controls:Halo>
+                                    <TextBlock x:Name="StateWord" Grid.Column="1" FontSize="13" VerticalAlignment="Center" IsHitTestVisible="False"
+                                               Text="{Binding Common_Off, Source={x:Static strings:Strings.Instance}}"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock x:Name="StatusText" Grid.Column="2" Visibility="Collapsed" IsHitTestVisible="False"
+                                               Text="{TemplateBinding Status}"
+                                               FontSize="13" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <Button x:Name="PART_Action" Grid.Column="3" Margin="10,0,0,0" MinHeight="30" Padding="11,0" FontSize="13"
+                                            VerticalAlignment="Center" Visibility="Collapsed"
+                                            Content="{TemplateBinding ActionText}"/>
                                 </Grid>
-                            </Button>
-                            <CheckBox x:Name="PART_Switch" Style="{StaticResource SwitchCheckBox}"
-                                      HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,16,0"
-                                      Content="{TemplateBinding SwitchLabel}"
-                                      IsChecked="{Binding IsOn, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                            </Grid>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <!-- On: the dot, and the status in place of the word. -->
                         <Trigger Property="IsOn" Value="True">
-                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="DotLight" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="StateWord" Property="Text" Value="{Binding Common_On, Source={x:Static strings:Strings.Instance}}"/>
-                            <Setter TargetName="StateWord" Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                            <Setter TargetName="StateWord" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Setter TargetName="StateWord" Property="Visibility" Value="Collapsed"/>
                             <Setter TargetName="StatusText" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <!-- The words take no pointer, so the whole status
+                                 is the face's tooltip while the extra is on. -->
+                            <Setter TargetName="PART_Open" Property="ToolTip" Value="{Binding Status, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Trigger>
-                        <!-- No status line of its own: nothing to show under the word. -->
+                        <!-- On and live: the tile is lit. -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsOn" Value="True"/>
+                                <Condition Property="controls:Heat.IsLive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource EmberRingBrush}"/>
+                            <Setter TargetName="Light" Property="IsLit" Value="True"/>
+                            <Setter TargetName="Wash" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Square" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                            <Setter TargetName="Square" Property="BorderBrush" Value="{DynamicResource EmberRingSoftBrush}"/>
+                            <Setter TargetName="SquareLight" Property="IsLit" Value="True"/>
+                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                            <Setter TargetName="Dot" Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="DotLight" Property="IsLit" Value="True"/>
+                            <Setter TargetName="StateWord" Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                            <Setter TargetName="StateWord" Property="FontWeight" Value="SemiBold"/>
+                            <Setter TargetName="StatusText" Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                            <Setter TargetName="StatusText" Property="FontWeight" Value="SemiBold"/>
+                            <Setter TargetName="PART_Action" Property="Visibility" Value="Visible"/>
+                        </MultiTrigger>
+                        <!-- No status line of its own: the word stands for it.
+                             These come after the triggers above, so they hold
+                             while the extra is on. -->
                         <Trigger Property="Status" Value="">
                             <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="StateWord" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Open" Property="ToolTip" Value="{x:Null}"/>
                         </Trigger>
                         <Trigger Property="Status" Value="{x:Null}">
                             <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="StateWord" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Open" Property="ToolTip" Value="{x:Null}"/>
                         </Trigger>
+                        <!-- Off, whatever the status holds: the word alone. -->
+                        <Trigger Property="IsOn" Value="False">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="StateWord" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!-- No action named: no button. -->
+                        <Trigger Property="ActionText" Value="">
+                            <Setter TargetName="PART_Action" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="ActionText" Value="{x:Null}">
+                            <Setter TargetName="PART_Action" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger SourceName="PART_Open" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TitleText" Property="Foreground" Value="{DynamicResource LinkHoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The square at the head of an extra's page: the extra's glyph on the
+         raised steel while the extra is off, and in the ember text color on
+         the warm square while it is on (the boards' 40 by 40, radius 10). -->
+    <Style TargetType="{x:Type controls:ExtraBadge}">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ExtraBadge}">
+                    <Border x:Name="Well" CornerRadius="10" Background="{DynamicResource SteelRaisedBrush}">
+                        <controls:GlyphText x:Name="Glyph" Text="{TemplateBinding Glyph}"
+                                            FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsOn" Value="True">
+                            <Setter TargetName="Well" Property="Background" Value="{DynamicResource EmberWellBrush}"/>
+                            <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The flame of an extra's status card, 18 square: an outline while the
+         extra is off, gold while it is on and waits, ember while it works.
+         Pinned left to right like every drawing in the app. -->
+    <Style TargetType="{x:Type controls:StatusFlame}">
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:StatusFlame}">
+                    <Path x:Name="Flame" FlowDirection="LeftToRight" Data="{DynamicResource FlameOuterGeometry}"
+                          Width="12" Height="12" Stretch="Uniform"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Fill="Transparent"
+                          Stroke="{DynamicResource TextFillColorTertiaryBrush}" StrokeThickness="1.2"/>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsOn" Value="True"/>
+                                <Condition Property="IsLive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Flame" Property="Fill" Value="{DynamicResource WaitBrush}"/>
+                            <Setter TargetName="Flame" Property="Stroke" Value="{x:Null}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsOn" Value="True"/>
+                                <Condition Property="IsLive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Flame" Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="Flame" Property="Stroke" Value="{x:Null}"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -812,13 +1157,17 @@
          is turned off on its own page or on its tile in the catalog. The
          face carries the name and the status for a screen reader, as the
          catalog's tile does, and its AutomationId starts Home_Extra_, so it
-         never shares one with that tile. -->
+         never shares one with that tile. The tile is lit, a warm square
+         and a faint ember edge, while what it stands in is live
+         (Heat.IsLive, which Home sets from the engine), and steel while
+         the engine is stopped. -->
     <Style x:Key="HomeExtraTile" TargetType="{x:Type controls:ExtraTile}">
         <Setter Property="OpenPrefix" Value="Home_Extra_"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ExtraTile}">
-                    <Border Style="{StaticResource CardBorder}" Padding="0" Margin="0">
+                    <Border x:Name="Card" Style="{StaticResource CardBorder}" Padding="0" Margin="0"
+                            BorderBrush="{DynamicResource EmberRingFaintBrush}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -827,19 +1176,19 @@
                             <Button x:Name="PART_Open" Style="{StaticResource ExtraTileOpenButton}"
                                     AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
                                     AutomationProperties.ItemStatus="{TemplateBinding Status}">
-                                <Grid Margin="16">
+                                <Grid Margin="16,14,16,14">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Width="36" Height="36" CornerRadius="9" VerticalAlignment="Center"
-                                            Background="{DynamicResource SteelRaisedBrush}">
-                                        <controls:GlyphText Text="{TemplateBinding Glyph}"
-                                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                    <Border x:Name="IconSquare" Width="40" Height="40" CornerRadius="10" VerticalAlignment="Center"
+                                            Background="{DynamicResource EmberTintBrush}">
+                                        <controls:GlyphText x:Name="Icon" Text="{TemplateBinding Glyph}"
+                                                            FontFamily="Segoe MDL2 Assets" FontSize="18"
                                                             Foreground="{DynamicResource EmberHotBrush}"
                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
-                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
                                         <TextBlock Text="{TemplateBinding Title}" FontSize="14" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                    TextTrimming="CharacterEllipsis"/>
@@ -874,6 +1223,114 @@
                         </Trigger>
                         <Trigger Property="ActionText" Value="{x:Null}">
                             <Setter TargetName="PART_Action" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="controls:Heat.IsLive" Value="False">
+                            <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
+                            <Setter TargetName="IconSquare" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                            <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════
+         In-window dialogs (#574)
+         ═══════════════════════════════════════════ -->
+
+    <!-- A dialog drawn inside the window (#574): the ground over the pages,
+         then the frame at the top center with the boards' shadow. The shadow
+         is an element of its own under the frame, so the frame's text is not
+         drawn through an effect. The scroll viewer never scrolls sideways,
+         which holds the frame to the page's width: the tile grids need that
+         width to lay out their columns. -->
+    <Style TargetType="{x:Type controls:ShellDialog}">
+        <Setter Property="Background" Value="{DynamicResource ShellDialogGroundBrush}"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle"/>
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Contained"/>
+        <Setter Property="AutomationProperties.IsDialog" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ShellDialog}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Focusable="False">
+                            <Grid x:Name="PART_Frame" Margin="32,40,32,40" MaxWidth="{TemplateBinding FrameMaxWidth}" VerticalAlignment="Top">
+                                <Border CornerRadius="12" IsHitTestVisible="False"
+                                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="60" ShadowDepth="24" Direction="270"/>
+                                    </Border.Effect>
+                                </Border>
+                                <Border CornerRadius="12" BorderThickness="1"
+                                        BorderBrush="{DynamicResource SteelPillLineBrush}"
+                                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                    <ContentPresenter/>
+                                </Border>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsOpen" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- The focus ring of a type tile, on the tile's own corners. -->
+    <Style x:Key="TypeTileFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="-2" RadiusX="12" RadiusY="12" SnapsToDevicePixels="True"
+                               Stroke="{DynamicResource EmberHotBrush}" StrokeThickness="1.5"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- A type of controller to make (#574): Add a Controller's tiles and
+         Home's first-run tiles. Under the pointer its edge turns ember and its
+         fill warm, while the type can be made. A type that cannot shows no
+         such change, and the pointer says so. The button stays an
+         AvailabilityButton, so a screen reader hears the type as
+         unavailable. -->
+    <Style x:Key="TypeTileButton" TargetType="{x:Type controls:AvailabilityButton}">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TypeTileFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:AvailabilityButton}">
+                    <Border x:Name="Bd" CornerRadius="10" SnapsToDevicePixels="True"
+                            Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsAvailable" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource EmberPickBrush}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsAvailable" Value="False">
+                            <Setter Property="Cursor" Value="No"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

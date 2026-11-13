@@ -9,6 +9,8 @@ A private-use glyph shows as the escape NVDA logged, such as \\ue700.
 import re
 import sys
 
+# The log holds any character a name can, and a console's own code page does not.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 path = sys.argv[1]
 text = open(path, encoding="utf-8", errors="replace").read()
 events = []

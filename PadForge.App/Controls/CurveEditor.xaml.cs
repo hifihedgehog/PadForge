@@ -823,6 +823,11 @@ namespace PadForge.Controls
             public override object GetPattern(PatternInterface patternInterface)
                 => patternInterface == PatternInterface.Value ? this : base.GetPattern(patternInterface);
 
+            /// <summary>A UserControl's kind reads as the word custom, which
+            /// tells a listener nothing. The editor says what it is, in the
+            /// language.</summary>
+            protected override string GetLocalizedControlTypeCore() => Strings.Instance.Common_CurveEditor;
+
             string IValueProvider.Value => ((CurveEditor)Owner).PointText;
 
             // The value describes the point. The keys change it, and text

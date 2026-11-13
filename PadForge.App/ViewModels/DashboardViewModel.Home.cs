@@ -22,10 +22,93 @@ namespace PadForge.ViewModels
         /// stopped.</summary>
         public string EngineButtonText => IsEngineOn ? Strings.Instance.Common_Stop : Strings.Instance.Common_Start;
 
-        /// <summary>The line under the engine's state: how many devices are
-        /// connected and how many virtual controllers there are. Both are
-        /// numbers after a label, so the line needs no plural forms.</summary>
-        public string EngineLine => string.Format(Strings.Instance.Home_EngineLine_Format, OnlineDevices, SlotSummaries.Count);
+        /// <summary>The line under the engine's state: what the state means,
+        /// in one sentence with no numbers in it, so it needs no plural
+        /// forms. The numbers stand beside it with labels of their own.</summary>
+        public string HeroLine => EngineStateKey switch
+        {
+            "Running" => Strings.Instance.Home_Hero_Forging,
+            "Idle" => Strings.Instance.Home_Hero_Idle,
+            "Stopping" => Strings.Instance.Common_Stopping,
+            _ => Strings.Instance.Home_Hero_Stopped,
+        };
+
+        /// <summary>How many of the controllers are forging.</summary>
+        public int LiveControllers
+        {
+            get
+            {
+                int live = 0;
+                foreach (var slot in SlotSummaries)
+                    if (slot.Heat == SlotSummary.HeatForging) live++;
+                return live;
+            }
+        }
+
+        /// <summary>How many controllers there are.</summary>
+        public int ControllerCount => SlotSummaries.Count;
+
+        /// <summary>The line under the engine's state at the sidebar's foot:
+        /// how many of the controllers are live.</summary>
+        public string LiveLine => string.Format(Strings.Instance.Shell_Foot_Live_Format, LiveControllers, ControllerCount);
+
+        /// <summary>The polling rate in three parts, so its number can be set
+        /// larger than its unit: what the language puts before the number,
+        /// the number, and what comes after. With no rate the number is the
+        /// dash and the other two are empty.</summary>
+        public string PollingRateLead => PollingFrequency > 0 ? RateParts().Before : string.Empty;
+
+        public string PollingRateNumber => PollingFrequency > 0 ? RateParts().Value : Strings.Instance.Dashboard_PollingDash;
+
+        public string PollingRateTail => PollingFrequency > 0 ? RateParts().After : string.Empty;
+
+        private (string Before, string Value, string After) RateParts()
+            => Common.FormatRuns.SplitValue(Strings.Instance.Dashboard_PollingHz_Format, PollingFrequency);
+
+        private void RaisePollingRateParts()
+        {
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(PollingRateLead)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(PollingRateNumber)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(PollingRateTail)));
+        }
+
+        private void RaiseLiveCounts()
+        {
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LiveControllers)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ControllerCount)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LiveLine)));
+        }
+
+        /// <summary>The list of controllers changed: each one that came is
+        /// told the engine's state and watched for its heat, and the counts
+        /// follow.</summary>
+        private void FollowSlots(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (SlotSummary slot in e.NewItems)
+                {
+                    slot.EngineStopped = EngineStateKey == "Stopped";
+                    slot.PropertyChanged += OnSlotChanged;
+                }
+            if (e.OldItems != null)
+                foreach (SlotSummary slot in e.OldItems)
+                    slot.PropertyChanged -= OnSlotChanged;
+            RaiseLiveCounts();
+        }
+
+        private void OnSlotChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SlotSummary.Heat)) RaiseLiveCounts();
+        }
+
+        /// <summary>The engine's state changed: every controller is told
+        /// whether it is stopped, and the line under the state follows.</summary>
+        private void FollowEngineState()
+        {
+            bool stopped = EngineStateKey == "Stopped";
+            foreach (var slot in SlotSummaries) slot.EngineStopped = stopped;
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HeroLine)));
+        }
 
         // ─────────────────────────────────────────────
         //  The offer (Settings > Assignment Prompts)
@@ -117,10 +200,10 @@ namespace PadForge.ViewModels
 
         private RelayCommand _dismissHomeOfferCommand;
 
-        /// <summary>Not Now. Use It has no command here: it opens the type
-        /// bar under its own button, which the page does, and the offer
-        /// stays until the device is on a virtual controller, so a type bar
-        /// closed with nothing picked leaves it standing.</summary>
+        /// <summary>Not Now. Use It has no command here: it opens Add a
+        /// Controller for the device, which the window does, and the offer
+        /// stays until the device is on a virtual controller, so a dialog
+        /// closed with nothing made leaves it standing.</summary>
         public RelayCommand DismissHomeOfferCommand => _dismissHomeOfferCommand ??= new RelayCommand(() =>
         {
             var guid = _homeOfferGuid;
@@ -184,6 +267,24 @@ namespace PadForge.ViewModels
         private string ExtrasRestPart(int part)
             => BracketPart(string.Format(Strings.Instance.Home_MoreExtras, ExtrasCount - ExtrasInUseCount), part);
 
+        /// <summary>The count at the end of the Extras page's head, 2 of 10
+        /// on, in three parts so the page can draw the number large: what
+        /// the language puts before the number, the number, and what it
+        /// puts after, with the total in its place.</summary>
+        public string ExtrasOnLead => ExtrasOnParts().Lead;
+
+        public string ExtrasOnNumber => ExtrasInUseCount.ToString(System.Globalization.CultureInfo.CurrentCulture);
+
+        public string ExtrasOnTail => ExtrasOnParts().Tail;
+
+        /// <summary>The same count as one sentence, for a screen reader.</summary>
+        public string ExtrasOnSpoken => string.Format(System.Globalization.CultureInfo.CurrentCulture,
+            Strings.Instance.Extras_OnCount_Format, ExtrasInUseCount, ExtrasCount);
+
+        private static (string Lead, string Tail) ExtrasOnParts()
+            => SettingsViewModel.SplitAroundPlace(Strings.Instance.Extras_OnCount_Format,
+                ExtrasCount.ToString(System.Globalization.CultureInfo.CurrentCulture));
+
         /// <summary>One of the three parts of a text around its first pair
         /// of square brackets: 0 is what stands before the pair, 1 what the
         /// pair holds, 2 what stands after. A text with no closed pair is
@@ -212,8 +313,8 @@ namespace PadForge.ViewModels
                 case nameof(IsEngineOn):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
                     break;
-                case nameof(OnlineDevices):
-                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineLine)));
+                case nameof(EngineStateKey):
+                    RaiseFirstRunCard();
                     break;
                 case nameof(EnableWebController):
                 case nameof(HeadTrackingEnabled):
@@ -246,15 +347,25 @@ namespace PadForge.ViewModels
                 HomeOfferText = string.Format(Strings.Instance.Home_Offer_Format, _homeOfferName);
             SetOfferParts();
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
-            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineLine)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HeroLine)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LiveLine)));
+            foreach (var slot in SlotSummaries) slot.RefreshWords();
             RaiseExtrasRestParts();
+            RefreshFirstRunText();
         }
 
+        /// <summary>The two sentences that hold the count of extras: Home's
+        /// line on the others, and the Extras page's count. Both follow the
+        /// count and the language.</summary>
         private void RaiseExtrasRestParts()
         {
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestLead)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestLink)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasRestTail)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasOnLead)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasOnNumber)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasOnTail)));
+            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExtrasOnSpoken)));
         }
     }
 }

@@ -402,21 +402,22 @@ namespace PadForge.Tests
         }
 
         /// <summary>
-        /// The toggle lives in the Settings page's Input Engine card, beside
-        /// the Flydigi protocol switch, not on the Dashboard.
+        /// The toggle lives in the Settings page's Hardware Support card,
+        /// beside the Flydigi protocol switch (#574), not on Home.
         ///
         /// <para>It first shipped as its own Dashboard section, which was
         /// wrong: this is a vendor input path the engine can read, the exact
-        /// shape of the Flydigi switch that already sits in that card, and
-        /// not a live readout the way head tracking is.</para>
+        /// shape of the Flydigi switch that sits in the same card, and not a
+        /// live readout the way head tracking is.</para>
         /// </summary>
         [Fact]
-        public void TheToggleSitsInTheInputEngineCard()
+        public void TheToggleSitsInTheHardwareSupportCard()
         {
             string settingsPage = RepoFile("PadForge.App", "Views", "SettingsPage.xaml");
-            int engine = settingsPage.IndexOf("Binding Settings_InputEngine,", StringComparison.Ordinal);
+            int hardware = settingsPage.IndexOf("Binding Settings_HardwareSupport,", StringComparison.Ordinal);
             int gkeys = settingsPage.IndexOf("Binding Settings_GKeys,", StringComparison.Ordinal);
-            Assert.True(engine > 0 && gkeys > engine, "the G-Keys row is not inside the Input Engine card");
+            int drivers = settingsPage.IndexOf("Binding Settings_Group_Drivers, Source={x:Static strings:Strings.Instance}}\" Style=\"{StaticResource CardTitle}\"", StringComparison.Ordinal);
+            Assert.True(hardware > 0 && gkeys > hardware && drivers > gkeys, "the G-Keys row is not inside the Hardware Support card");
             Assert.Contains("CommandParameter=\"GKeysEnabled\"", settingsPage);
 
             string dashboard = RepoFile("PadForge.App", "Views", "HomePage.xaml");

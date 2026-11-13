@@ -1,164 +1,125 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ManageProfilesDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.ManageProfilesDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        xmlns:controls="clr-namespace:PadForge.Controls"
         xmlns:common="clr-namespace:PadForge.Common"
-        FontFamily="{StaticResource BodyFontFamily}"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
         Title="{Binding ManageProfiles_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="660" Width="640"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        Subtitle="{Binding ManageProfiles_Description, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CloseButton_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <controls:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
-
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Dialog description -->
-            <TextBlock Text="{Binding ManageProfiles_Description, Source={x:Static strings:Strings.Instance}}"
-                       TextWrapping="Wrap" Margin="0,0,0,12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-            <!-- SECTION 1. Imported profiles -->
-            <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" Style="{StaticResource CardTitle}"
-                       Margin="0,4,0,6"/>
-
-            <!-- Ember-select rows (user report 2026-07-05): the stock
-                 selection slab put dark text on the accent fill. Both
-                 lists here take the shared EmberTint container. -->
-            <ListBox Grid.Row="2" x:Name="ImportedList" MinHeight="120"
-                     SelectionMode="Single"
-                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                     SelectionChanged="ImportedList_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="4,3">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding Id}" FontFamily="{StaticResource TelemetryFontFamily}"
-                                       FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                            <!-- Why HIDMaestro left this profile out of the
-                                 pickers (2.0.0 loads profiles strictly). -->
-                            <TextBlock Text="{Binding Problem}" FontSize="12" TextWrapping="Wrap"
-                                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                                       Visibility="{Binding Problem, Converter={StaticResource StringToVisibility}}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <!-- Section strip: file verbs stay neutral. Delete destroys the
-                 selected imported profile (confirms first), so it wears the
-                 shared destructive chrome (#175 dialog language). -->
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-                <Button x:Name="ImportFromFileButton"
-                        Content="{Binding ManageProfiles_ImportFromFile, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="110" Click="ImportFromFileButton_Click"/>
-                <Button x:Name="ExportButton"
-                        Content="{Binding ManageProfiles_Export, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="ExportButton_Click"/>
-                <Button x:Name="DeleteButton"
-                        Content="{Binding ManageProfiles_Delete, Source={x:Static strings:Strings.Instance}}"
-                        Style="{StaticResource EmberDestructiveButton}"
-                        MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="DeleteButton_Click"/>
+    <!-- Controller Presets (#574), as the Links board draws it: the
+         presets added so far, each with its own Export and Delete, then
+         the two ways to add one, from a file or from a controller that is
+         connected now. A preset from a controller is used at once and
+         closes the dialog. One from a file stays, so several files can be
+         added in one visit. -->
+    <views:DialogWindow.Resources>
+        <!-- A row is read by its preset's name. -->
+        <Style x:Key="PresetRow" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemLinks}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding Name, TargetNullValue=''}"/>
+        </Style>
+        <!-- A connected device: its name in the closed picker, and in the
+             list its name over its ids. -->
+        <DataTemplate x:Key="DeviceClosed">
+            <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+        <DataTemplate x:Key="DeviceInList">
+            <StackPanel Margin="0,2">
+                <TextBlock Text="{Binding DisplayName}"/>
+                <TextBlock Text="{Binding DetailLine}" FontSize="13"
+                           FontFamily="{DynamicResource TelemetryFontFamily}"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
             </StackPanel>
+        </DataTemplate>
+        <controls:PickTemplateSelector x:Key="DeviceLook" Closed="{StaticResource DeviceClosed}" List="{StaticResource DeviceInList}"/>
+    </views:DialogWindow.Resources>
 
-            <!-- SECTION 2. Connected devices -->
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,16,0,6">
-                <TextBlock Text="{Binding ManageProfiles_ConnectedDevices, Source={x:Static strings:Strings.Instance}}"
-                           Style="{StaticResource CardTitle}"/>
-                <Button x:Name="RefreshButton"
-                        Content="{Binding ImportFromDevice_Refresh, Source={x:Static strings:Strings.Instance}}"
-                        Margin="12,0,0,0" Padding="10,2" Click="RefreshButton_Click"/>
-            </StackPanel>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="CloseButton" Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                    Click="CloseButton_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-            <ListBox Grid.Row="5" x:Name="DeviceList" MinHeight="120"
-                     SelectionMode="Single"
-                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                     SelectionChanged="DeviceList_SelectionChanged"
-                     MouseDoubleClick="DeviceList_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="4,3">
-                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding DetailLine}" FontFamily="{StaticResource TelemetryFontFamily}"
-                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+    <StackPanel>
+        <!-- The presets added so far. With none, the heading and the list
+             are left out. -->
+        <StackPanel x:Name="ImportedBlock">
+            <TextBlock x:Name="ImportedHeaderText" Style="{StaticResource DialogHead3}" Margin="0,0,0,8"
+                       Text="{Binding ManageProfiles_Imported, Source={x:Static strings:Strings.Instance}}"/>
+            <Border Style="{StaticResource DialogList}" Margin="0,0,0,8">
+                <ListBox x:Name="ImportedList" Style="{StaticResource DialogListBox}" MaxHeight="234"
+                         ItemContainerStyle="{StaticResource PresetRow}"
+                         AutomationProperties.Name="{Binding ManageProfiles_Imported, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                    <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Id}" Style="{StaticResource DialogMonoNote}" TextWrapping="NoWrap"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <!-- Why HIDMaestro left this preset out
+                                         of the pickers (2.0.0 loads presets
+                                         strictly). -->
+                                    <TextBlock Text="{Binding Problem}" FontSize="13" TextWrapping="Wrap"
+                                               Foreground="{DynamicResource WaitBrush}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Problem}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Problem}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                                <Button Grid.Column="1" Style="{StaticResource DialogSmallQuietButton}"
+                                        Content="{Binding ManageProfiles_Export, Source={x:Static strings:Strings.Instance}}"
+                                        Click="ExportRow_Click" Tag="{Binding}"/>
+                                <!-- Delete asks first. Its words are the
+                                     danger color, as the board writes them. -->
+                                <Button Grid.Column="2" Style="{StaticResource DialogSmallQuietButton}"
+                                        Foreground="{DynamicResource DangerInkBrush}"
+                                        Content="{Binding ManageProfiles_Delete, Source={x:Static strings:Strings.Instance}}"
+                                        Click="DeleteRow_Click" Tag="{Binding}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </StackPanel>
 
-            <TextBlock Grid.Row="6" x:Name="StatusText" Margin="0,8,0,0"
-                       FontSize="12" TextWrapping="Wrap"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <controls:SettingRow MinHeight="44">
+            <Button x:Name="ImportFromFileButton" Style="{StaticResource DialogButton}"
+                    Content="{Binding ManageProfiles_ImportFromFile, Source={x:Static strings:Strings.Instance}}"
+                    Click="ImportFromFileButton_Click"/>
+        </controls:SettingRow>
 
-            <!-- Footer band (#175 dialog language): Import from the selected
-                 device is the dialog's primary affirmative and wears the
-                 ember accent. Close stays neutral. -->
-            <StackPanel Grid.Row="7" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="0,18,0,0">
-                <Button x:Name="ImportButton"
-                        Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" Margin="0,0,8,0" IsEnabled="False"
-                        IsDefault="True" Click="ImportButton_Click"
-                        Style="{StaticResource EmberAccentButton}"/>
-                <Button Content="{Binding ManageProfiles_Close, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+        <TextBlock Style="{StaticResource DialogHead3}"
+                   Text="{Binding ManageProfiles_ImportFromDevice, Source={x:Static strings:Strings.Instance}}"/>
+        <!-- The picker lists the devices connected as it opens. -->
+        <controls:SettingRow MinHeight="44">
+            <ComboBox x:Name="DeviceList" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True"
+                      ItemTemplateSelector="{StaticResource DeviceLook}"
+                      SelectionChanged="DeviceList_SelectionChanged" DropDownOpened="DeviceList_DropDownOpened"
+                      AutomationProperties.Name="{Binding ManageProfiles_ImportFromDevice, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="ImportButton" Style="{StaticResource DialogButton}" Margin="10,0,0,0" IsEnabled="False"
+                    Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
+                    Click="ImportButton_Click"/>
+        </controls:SettingRow>
+
+        <TextBlock x:Name="StatusText" common:LiveText.Polite="True" Margin="0,8,0,0" FontSize="13" TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+    </StackPanel>
+</views:DialogWindow>

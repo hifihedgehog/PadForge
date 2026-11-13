@@ -9,7 +9,6 @@ using System.Windows.Shapes;
 using PadForge.Engine;
 using PadForge.Engine.Touchpad;
 using PadForge.Resources.Strings;
-using Wpf.Ui.Controls;
 
 namespace PadForge.Views
 {
@@ -31,16 +30,32 @@ namespace PadForge.Views
     /// <see cref="ShapeRecognizer"/>, then same-index points are
     /// averaged across samples per finger before packing back into the
     /// canonical <see cref="TouchpadCustomGesture"/> shape.
+    ///
+    /// A path is kept in the space it was drawn in. From a touchpad that
+    /// is the touchpad's own 0 to 1 coordinates, which are what the
+    /// recognizer is handed when the gesture is drawn again
+    /// (GestureRecognizer's finger paths), so the shape kept is the shape
+    /// matched whatever the proportions of the surface that mirrors it.
+    /// Drawn on the surface, it is the surface's pixels.
     /// </summary>
-    public partial class TouchpadGestureRecorderDialog : FluentWindow
+    public partial class TouchpadGestureRecorderDialog : DialogWindow
     {
         private sealed class FingerTrack
         {
             public Polyline Visual;
+            /// <summary>The mark at the finger's last point, while it is down.</summary>
+            public Ellipse Dot;
+            /// <summary>The path as the sample keeps it.</summary>
             public List<Vector2> Points = new();
         }
 
+        /// <summary>The live mark's width and the stroke's.</summary>
+        private const double DotSize = 16, StrokeWidth = 5;
+
         private readonly Dictionary<int, FingerTrack> _activeFingers = new();
+        /// <summary>Every finger's path of the gesture being drawn, in the
+        /// order the fingers came down, lifted fingers included.</summary>
+        private readonly List<FingerTrack> _gestureTracks = new();
         private readonly List<List<List<Vector2>>> _capturedSamples = new();
         private int _targetSampleCount = 3;
         private int _expectedFingerCount;
@@ -50,20 +65,21 @@ namespace PadForge.Views
         private readonly int _padIndex;
         private readonly bool _hasLiveDevice;
 
-        // Distinct per-finger colors — mid-saturation / mid-luminance
-        // so the strokes have decent contrast against BOTH the dark-
-        // mode and light-mode canvas backgrounds. Pastel highlights
-        // would wash out on the light-mode SolidBackgroundFillColorBaseBrush;
-        // these darker hues read cleanly on white and still stand
-        // out on Mica-dark.
-        private static readonly Brush[] _fingerBrushes =
+        // A color per finger. The first three are the theme's own: the
+        // cold blue the board draws its stroke in, then ember, then the
+        // wait gold. A gesture of more fingers goes on to six hues of
+        // middle saturation and brightness, which read on the dark
+        // surface and on the light one.
+        private readonly Brush[] _fingerBrushes;
+
+        private static readonly Color[] MoreFingerColors =
         {
-            new SolidColorBrush(Color.FromRgb(0xE6, 0x7E, 0x22)), // orange
-            new SolidColorBrush(Color.FromRgb(0x29, 0x80, 0xB9)), // blue
-            new SolidColorBrush(Color.FromRgb(0x27, 0xAE, 0x60)), // green
-            new SolidColorBrush(Color.FromRgb(0x8E, 0x44, 0xAD)), // purple
-            new SolidColorBrush(Color.FromRgb(0xD3, 0x5D, 0x0E)), // amber
-            new SolidColorBrush(Color.FromRgb(0xC0, 0x39, 0x2B)), // red
+            Color.FromRgb(0xE6, 0x7E, 0x22), // orange
+            Color.FromRgb(0x29, 0x80, 0xB9), // blue
+            Color.FromRgb(0x27, 0xAE, 0x60), // green
+            Color.FromRgb(0x8E, 0x44, 0xAD), // purple
+            Color.FromRgb(0xD3, 0x5D, 0x0E), // amber
+            Color.FromRgb(0xC0, 0x39, 0x2B), // red
         };
 
         public TouchpadGestureRecorderDialog() : this(Guid.Empty, 0, string.Empty) { }
@@ -71,14 +87,12 @@ namespace PadForge.Views
         public TouchpadGestureRecorderDialog(Guid deviceGuid, int padIndex, string deviceName)
         {
             InitializeComponent();
-            // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
-            // WindowChrome.CaptionHeight, and this dialog declares no
-            // <ui:TitleBar>, so no point in the window was non-client and it
-            // could not be moved at all. Same remedy MainWindow uses on its
-            // branding bar. Controls that need the click (Button, TextBox,
-            // ListBoxItem) mark this bubbling event handled, so the drag only
-            // starts on inert chrome.
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+
+            var brushes = new List<Brush>();
+            foreach (string key in new[] { "ColdBrush", "EmberBrush", "WaitBrush" })
+                if (TryFindResource(key) is Brush themed) brushes.Add(themed);
+            foreach (var color in MoreFingerColors) brushes.Add(new SolidColorBrush(color));
+            _fingerBrushes = brushes.ToArray();
 
             _deviceGuid = deviceGuid;
             _padIndex = padIndex;
@@ -157,17 +171,20 @@ namespace PadForge.Views
                     ? pad.FingerContactId[f] : -1;
                 if (down && cid >= 0)
                 {
+                    // The surface shows the finger where it is on the pad.
+                    // The sample keeps the pad's own coordinates.
                     var pt = new Point(pad.FingerX[f] * w, pad.FingerY[f] * h);
+                    var kept = new Vector2(pad.FingerX[f], pad.FingerY[f]);
                     int trackKey;
                     if (!_engineContactToTrack.TryGetValue(cid, out trackKey))
                     {
                         trackKey = 1000 + cid; // namespace away from mouse/stylus keys
                         _engineContactToTrack[cid] = trackKey;
-                        BeginFinger(trackKey, pt);
+                        BeginFinger(trackKey, pt, kept);
                     }
                     else
                     {
-                        ContinueFinger(trackKey, pt);
+                        ContinueFinger(trackKey, pt, kept);
                     }
                 }
             }
@@ -276,7 +293,15 @@ namespace PadForge.Views
 
         // ─── Finger lifecycle (shared by live and fallback paths) ──
 
-        private void BeginFinger(int contactKey, Point pt)
+        // A stroke drawn on the surface is kept in the surface's pixels.
+        private void BeginFinger(int contactKey, Point pt) => BeginFinger(contactKey, pt, new Vector2((float)pt.X, (float)pt.Y));
+
+        private void ContinueFinger(int contactKey, Point pt) => ContinueFinger(contactKey, pt, new Vector2((float)pt.X, (float)pt.Y));
+
+        /// <summary>A finger comes down: its stroke starts at
+        /// <paramref name="pt"/> on the surface with a mark at its end, and
+        /// its path starts at <paramref name="kept"/>.</summary>
+        private void BeginFinger(int contactKey, Point pt, Vector2 kept)
         {
             if (_activeFingers.ContainsKey(contactKey)) return;
             if (!_gestureActive)
@@ -288,38 +313,55 @@ namespace PadForge.Views
             var poly = new Polyline
             {
                 Stroke = brush,
-                StrokeThickness = 3,
+                StrokeThickness = StrokeWidth,
                 StrokeLineJoin = PenLineJoin.Round,
                 StrokeStartLineCap = PenLineCap.Round,
                 StrokeEndLineCap = PenLineCap.Round,
             };
             poly.Points.Add(pt);
             DrawingCanvas.Children.Add(poly);
+            var dot = new Ellipse { Width = DotSize, Height = DotSize, Fill = brush, IsHitTestVisible = false };
+            MoveDot(dot, pt);
+            DrawingCanvas.Children.Add(dot);
 
-            _activeFingers[contactKey] = new FingerTrack
+            var track = new FingerTrack
             {
                 Visual = poly,
-                Points = new List<Vector2> { new Vector2((float)pt.X, (float)pt.Y) },
+                Dot = dot,
+                Points = new List<Vector2> { kept },
             };
+            _activeFingers[contactKey] = track;
+            _gestureTracks.Add(track);
             UpdateUiText();
         }
 
-        private void ContinueFinger(int contactKey, Point pt)
+        private static void MoveDot(Ellipse dot, Point pt)
+        {
+            Canvas.SetLeft(dot, pt.X - DotSize / 2);
+            Canvas.SetTop(dot, pt.Y - DotSize / 2);
+        }
+
+        private void ContinueFinger(int contactKey, Point pt, Vector2 kept)
         {
             if (!_activeFingers.TryGetValue(contactKey, out var f)) return;
-            if (f.Points.Count > 0)
+            // A move of less than half a pixel on the surface draws nothing.
+            if (f.Visual.Points.Count > 0)
             {
-                var last = f.Points[^1];
+                var last = f.Visual.Points[^1];
                 if (Math.Abs(last.X - pt.X) < 0.5 && Math.Abs(last.Y - pt.Y) < 0.5) return;
             }
             f.Visual.Points.Add(pt);
-            f.Points.Add(new Vector2((float)pt.X, (float)pt.Y));
+            f.Points.Add(kept);
+            MoveDot(f.Dot, pt);
         }
 
         private void EndFinger(int contactKey)
         {
-            if (!_activeFingers.TryGetValue(contactKey, out _)) return;
+            if (!_activeFingers.TryGetValue(contactKey, out var f)) return;
             _activeFingers.Remove(contactKey);
+            // The stroke stays until the gesture ends. The mark of a finger
+            // that lifted goes at once.
+            DrawingCanvas.Children.Remove(f.Dot);
             if (_activeFingers.Count == 0 && _gestureActive)
                 CommitSample();
         }
@@ -328,12 +370,17 @@ namespace PadForge.Views
         {
             _gestureActive = false;
             var sample = new List<List<Vector2>>();
-            foreach (var poly in DrawingCanvas.Children)
+            foreach (var track in _gestureTracks)
+                if (track.Points.Count >= 2) sample.Add(track.Points);
+            _gestureTracks.Clear();
+            // A tap draws no stroke, so it is no sample and changes nothing.
+            // Read as a gesture of no fingers, it cleared every sample taken
+            // so far for a touch that only rested on the pad.
+            if (sample.Count == 0)
             {
-                if (poly is not Polyline p) continue;
-                var pts = new List<Vector2>();
-                foreach (var pt in p.Points) pts.Add(new Vector2((float)pt.X, (float)pt.Y));
-                if (pts.Count >= 2) sample.Add(pts);
+                DrawingCanvas.Children.Clear();
+                UpdateUiText();
+                return;
             }
 
             if (_expectedFingerCount == 0) _expectedFingerCount = sample.Count;
@@ -355,6 +402,7 @@ namespace PadForge.Views
         private void TryAgainBtn_Click(object sender, RoutedEventArgs e)
         {
             _activeFingers.Clear();
+            _gestureTracks.Clear();
             _engineContactToTrack.Clear();
             _capturedSamples.Clear();
             _expectedFingerCount = 0;
@@ -375,18 +423,26 @@ namespace PadForge.Views
             string err = ValidateName(name);
             if (err != null)
             {
-                ValidationText.Text = err;
+                ShowProblem(err);
                 SaveBtn.IsEnabled = false;
                 return;
             }
             if (_capturedSamples.Count < _targetSampleCount)
             {
-                ValidationText.Text = string.Empty;
+                ShowProblem(null);
                 SaveBtn.IsEnabled = _capturedSamples.Count > 0;
                 return;
             }
-            ValidationText.Text = string.Empty;
+            ShowProblem(null);
             SaveBtn.IsEnabled = true;
+        }
+
+        /// <summary>The line under the name: why the gesture cannot be
+        /// saved. Empty, it takes no room.</summary>
+        private void ShowProblem(string problem)
+        {
+            ValidationText.Text = problem ?? string.Empty;
+            ValidationText.Visibility = string.IsNullOrEmpty(problem) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private string ValidateName(string name)
@@ -405,10 +461,11 @@ namespace PadForge.Views
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            // What stops the save is said on the line under the name, and
+            // the dialog stays open with the samples it has.
             if (PadPage.InputService == null)
             {
-                System.Windows.MessageBox.Show(Strings.Instance.Recorder_Error_NoEngine,
-                    Strings.Instance.Recorder_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                ShowProblem(Strings.Instance.Recorder_Error_NoEngine);
                 return;
             }
             string name = NameBox.Text.Trim();
@@ -417,18 +474,11 @@ namespace PadForge.Views
             var gesture = BuildGesture(name);
             if (gesture == null)
             {
-                System.Windows.MessageBox.Show(Strings.Instance.Recorder_Error_BadSample,
-                    Strings.Instance.Recorder_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                ShowProblem(Strings.Instance.Recorder_Error_BadSample);
                 return;
             }
             PadPage.InputService.AddCustomTouchpadGesture(gesture);
             DialogResult = true;
-            Close();
-        }
-
-        private void CancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
             Close();
         }
 

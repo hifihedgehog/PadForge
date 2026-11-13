@@ -5,9 +5,9 @@ namespace PadForge.Views
 {
     /// <summary>Sets a Bliss-Box port's player number (issue #469). The
     /// adapter stores the number and reconnects under that player's product
-    /// ID, a new device to Windows, so the dialog wears the confirm dialog's
-    /// chrome: Cancel holds the default and the focus.</summary>
-    public partial class BlissBoxPlayerDialog : Wpf.Ui.Controls.FluentWindow
+    /// ID, a new device to Windows, so Cancel holds the default and the
+    /// focus, as in the shared confirm.</summary>
+    public partial class BlissBoxPlayerDialog : DialogWindow
     {
         private int _player;
         private readonly int _current;
@@ -16,8 +16,6 @@ namespace PadForge.Views
         {
             _current = System.Math.Clamp(current, 1, 4);
             InitializeComponent();
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
-            Title = PadForge.Resources.Strings.Strings.Instance.BlissBoxPlayer_Title;
             DetailText.Text = detail ?? string.Empty;
             DetailText.Visibility = string.IsNullOrEmpty(detail) ? Visibility.Collapsed : Visibility.Visible;
             PlayerBox.SelectedIndex = _current - 1;

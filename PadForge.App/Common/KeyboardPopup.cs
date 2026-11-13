@@ -7,7 +7,7 @@ using System.Windows.Threading;
 namespace PadForge.Common
 {
     /// <summary>
-    /// The keyboard path of a popup built in code (Add Controller, the profile
+    /// The keyboard path of a popup built in code (the type bar, the profile
     /// switcher). Opened by a key press, it takes the keyboard focus on its
     /// first control, Tab and the arrows cycle inside it, Escape closes it,
     /// and the focus returns to what opened it. Opened by the mouse, nothing

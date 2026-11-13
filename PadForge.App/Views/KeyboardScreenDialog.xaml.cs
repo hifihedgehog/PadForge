@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,8 +20,29 @@ namespace PadForge.Views
     /// The preview is drawn by the same composition the screen service
     /// writes, at the screen's own pixels.
     /// </summary>
-    public partial class KeyboardScreenDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class KeyboardScreenDialog : DialogWindow
     {
+        /// <summary>The most the preview's picture takes: the board's 300 by
+        /// 190 box, less 6 of the box showing and 1 of edge at each side.</summary>
+        private const double PreviewWidth = 286, PreviewHeight = 176;
+
+        /// <summary>A screen of <paramref name="width"/> by
+        /// <paramref name="height"/> pixels at the size the preview draws it:
+        /// as large as fits the box, its proportions kept.</summary>
+        internal static Size PreviewSize(double width, double height)
+        {
+            if (!(width > 0) || !(height > 0)) return new Size(0, 0);
+            double fit = Math.Min(PreviewWidth / width, PreviewHeight / height);
+            return new Size(width * fit, height * fit);
+        }
+
+        /// <summary>One choice of the dialog's pickers: its value and its
+        /// words, which are also its name for a screen reader.</summary>
+        internal sealed record Choice<T>(T Value, string Name)
+        {
+            public override string ToString() => Name;
+        }
+
         private readonly KeyboardScreenService _service;
         private readonly KeyboardScreenInfo _screen;
         private readonly KeyboardScreenKind _kind;
@@ -35,10 +58,9 @@ namespace PadForge.Views
         private bool _saved;
 
         private KeyboardScreenDialog(KeyboardScreenService service, KeyboardScreenInfo screen, KeyboardScreenData current,
-            string profileName, string profilePicture, string detail, Size? overlaySize)
+            string profileName, string profilePicture, Size? overlaySize)
         {
             InitializeComponent();
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             _service = service;
             _screen = screen;
             var kind = _kind = screen.Kind;
@@ -54,9 +76,6 @@ namespace PadForge.Views
             var s = Strings.Instance;
             var culture = CultureInfo.CurrentCulture;
             Title = KeyboardScreenService.ScreenName(screen);
-            TitleText.Text = Title;
-            DetailText.Text = detail ?? string.Empty;
-            DetailText.Visibility = string.IsNullOrEmpty(detail) ? Visibility.Collapsed : Visibility.Visible;
             string choose = string.Format(culture, s.DreamcastScreen_ChooseProfilePicture_Format, _profileName);
             ChooseProfilePictureButton.Content = new TextBlock { Text = choose, TextTrimming = TextTrimming.CharacterEllipsis };
             ChooseProfilePictureButton.ToolTip = choose;
@@ -65,35 +84,38 @@ namespace PadForge.Views
             if (_overlay)
             {
                 // The overlay has no size of its own, so the preview takes the
-                // shape of its window, in a box the dialog holds.
+                // shape of its window, as large as the box holds.
                 var window = _overlaySize = overlaySize ?? new Size(320, 240);
-                double fit = Math.Min(480.0 / window.Width, 270.0 / window.Height);
-                OverlayPreview.Width = window.Width * fit;
-                OverlayPreview.Height = window.Height * fit;
+                var size = PreviewSize(window.Width, window.Height);
+                OverlayPreview.Width = size.Width;
+                OverlayPreview.Height = size.Height;
                 OverlayPreview.Visibility = Visibility.Visible;
                 PreviewImage.Visibility = Visibility.Collapsed;
-                // The index is the slot, one past the lowest-slot line.
-                LightbarSlotBox.Items.Add(new ComboBoxItem { Content = s.KeyboardScreen_LightbarSlot_Lowest });
-                for (int slot = 1; slot <= PadForge.Common.Input.InputManager.MaxPads; slot++)
-                    LightbarSlotBox.Items.Add(new ComboBoxItem { Content = slot.ToString(culture) });
+                // The index is the slot, one past the lowest-slot line. The
+                // picker takes a list, which its width is measured from.
+                var slots = new List<Choice<int>> { new(KeyboardScreenData.LowestSlot, s.KeyboardScreen_LightbarSlot_Lowest) };
+                for (int slot = 0; slot < PadForge.Common.Input.InputManager.MaxPads; slot++)
+                    slots.Add(new Choice<int>(slot, (slot + 1).ToString(culture)));
+                LightbarSlotBox.ItemsSource = slots;
                 LightbarSlotBox.SelectedIndex = _lightbarSlot + 1;
             }
             else
             {
-                // The screen at a size the dialog holds: the monochrome screen
-                // doubled, the larger screens shrunk to the dialog's width.
+                // The screen at its own shape, as large as the box holds. A
+                // monochrome screen's pixels stay square-edged, on the pale
+                // field the picture itself carries.
                 var (width, height) = KeyboardScreenFormats.SizeOf(kind);
-                double scale = KeyboardScreenFormats.IsMonochrome(kind) ? 2.0 : Math.Min(1.0, 480.0 / width);
-                PreviewImage.Width = width * scale;
-                PreviewImage.Height = height * scale;
+                var size = PreviewSize(width, height);
+                PreviewImage.Width = size.Width;
+                PreviewImage.Height = size.Height;
                 RenderOptions.SetBitmapScalingMode(PreviewImage, KeyboardScreenFormats.IsMonochrome(kind)
                     ? BitmapScalingMode.NearestNeighbor : BitmapScalingMode.HighQuality);
-                if (KeyboardScreenFormats.IsMonochrome(kind))
-                    PreviewFrame.Background = new SolidColorBrush(Color.FromRgb(0xBF, 0xD0, 0xB4));
             }
 
-            foreach (KeyboardScreenMode mode in Enum.GetValues(typeof(KeyboardScreenMode)))
-                ModeBox.Items.Add(new ComboBoxItem { Content = KeyboardScreenService.ModeName(mode), Tag = mode });
+            // The modes in the enum's own order, so a mode's index is its value.
+            ModeBox.ItemsSource = Enum.GetValues<KeyboardScreenMode>()
+                .Select(mode => new Choice<KeyboardScreenMode>(mode, KeyboardScreenService.ModeName(mode)))
+                .ToList();
             ModeBox.SelectedIndex = (int)_mode;
             Refresh();
         }
@@ -102,9 +124,9 @@ namespace PadForge.Views
         public sealed record Result(KeyboardScreenMode Mode, string Picture, int PanX, int PanY, string ProfilePicture, int Zoom, int LightbarSlot);
 
         internal static Result Show(Window owner, KeyboardScreenService service, KeyboardScreenInfo screen,
-            KeyboardScreenData current, string profileName, string profilePicture, string detail, Size? overlaySize = null)
+            KeyboardScreenData current, string profileName, string profilePicture, Size? overlaySize = null)
         {
-            var dialog = new KeyboardScreenDialog(service, screen, current, profileName, profilePicture, detail, overlaySize);
+            var dialog = new KeyboardScreenDialog(service, screen, current, profileName, profilePicture, overlaySize);
             if (owner != null) dialog.Owner = owner;
             else dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
@@ -147,9 +169,9 @@ namespace PadForge.Views
 
         private void ModeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ModeBox.SelectedItem is ComboBoxItem { Tag: KeyboardScreenMode mode })
+            if (ModeBox.SelectedItem is Choice<KeyboardScreenMode> choice)
             {
-                _mode = mode;
+                _mode = choice.Value;
                 Refresh();
             }
         }
@@ -158,7 +180,7 @@ namespace PadForge.Views
         {
             HintText.Text = _overlay ? OverlayHint(_mode) : ModeHint(_mode);
             bool picture = _mode == KeyboardScreenMode.Picture;
-            ChoosePictureButton.Visibility = picture ? Visibility.Visible : Visibility.Collapsed;
+            PictureRow.Visibility = picture ? Visibility.Visible : Visibility.Collapsed;
             // At 100 percent all of the overlay's picture shows, so it has no window
             // to pan until the zoom gives it one.
             bool hasPicture = picture && !string.IsNullOrEmpty(_picture);
@@ -167,7 +189,7 @@ namespace PadForge.Views
             ZoomBox.Text = _zoom.ToString(CultureInfo.CurrentCulture);
             LightbarSlotRow.Visibility = _overlay && _mode == KeyboardScreenMode.Lightbar ? Visibility.Visible : Visibility.Collapsed;
             bool profile = _mode == KeyboardScreenMode.ProfilePicture;
-            ChooseProfilePictureButton.Visibility = profile ? Visibility.Visible : Visibility.Collapsed;
+            ProfilePicturePanel.Visibility = profile ? Visibility.Visible : Visibility.Collapsed;
             RemoveProfilePictureButton.Visibility = profile && !string.IsNullOrEmpty(_profilePicture)
                 ? Visibility.Visible : Visibility.Collapsed;
 

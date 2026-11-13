@@ -1,123 +1,63 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.RemoteLinkPairDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.RemoteLinkPairDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:reset="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
         Title="{Binding RemoteLink_PairTitle, Source={x:Static strings:Strings.Instance}}"
-        Width="460" SizeToContent="Height"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-             xmlns:reset="clr-namespace:PadForge.Controls"
-             xmlns:common="clr-namespace:PadForge.Common">
+        Subtitle="{Binding RemoteLink_PairPrompt, Source={x:Static strings:Strings.Instance}}">
 
-    <ui:FluentWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </ui:FluentWindow.Resources>
+    <!-- First-contact pairing with another PC (#138, #574), as the Links
+         board draws it: the code to compare with the other screen, the
+         other PC's identity, what a paired PC can do, and the two limits
+         on it. Reject holds the default and the focus, so Enter and Esc
+         both decline: Pair hands another PC this one's inputs, and takes a
+         deliberate click. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="RejectButton" Style="{StaticResource DialogButton}" IsCancel="True" IsDefault="True"
+                    Content="{Binding RemoteLink_Reject, Source={x:Static strings:Strings.Instance}}"
+                    Click="Reject_Click"/>
+            <Button x:Name="PairButton" Style="{StaticResource DialogPrimaryButton}"
+                    Content="{Binding RemoteLink_Pair, Source={x:Static strings:Strings.Instance}}"
+                    Click="Pair_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
-             system title bar, so the localized Title never rendered anywhere.
-             Ember tick + display-face title makes it visible. The X stands in
-             for the caption close button WindowChrome no longer provides.
-             Closing without choosing routes through Reject. -->
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="Reject_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <reset:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
+    <StackPanel>
+        <!-- The code, compared by eye with the other PC's screen. -->
+        <Border Style="{StaticResource DialogCodeBox}">
+            <TextBlock x:Name="SasText" HorizontalAlignment="Center"/>
         </Border>
 
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="20,16,20,16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+            <TextBlock Style="{StaticResource DialogNote}" Margin="0,0,6,0" VerticalAlignment="Center"
+                       Text="{Binding RemoteLink_Identity, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBlock x:Name="IdentityText" Style="{StaticResource DialogMonoNote}"/>
+        </StackPanel>
 
-            <TextBlock Grid.Row="0"
-                       Text="{Binding RemoteLink_PairPrompt, Source={x:Static strings:Strings.Instance}}"
-                       TextWrapping="Wrap" Margin="0,0,0,16"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Border Style="{StaticResource DialogWaitBox}" Margin="0,12,0,0">
+            <TextBlock TextWrapping="Wrap"
+                       Text="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
+        </Border>
 
-            <!-- The SAS digits, compared out of band against the other screen -->
-            <Border Grid.Row="1" CornerRadius="8" Padding="12,16" Margin="0,0,0,16"
-                    Background="{DynamicResource ControlFillColorDefaultBrush}">
-                <TextBlock x:Name="SasText" HorizontalAlignment="Center"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="40" FontWeight="SemiBold"/>
-            </Border>
-
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
-                <TextBlock Text="{Binding RemoteLink_Identity, Source={x:Static strings:Strings.Instance}}"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
-                <TextBlock x:Name="IdentityText" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
-
-            <ui:InfoBar Grid.Row="3" Severity="Warning" IsOpen="True" IsClosable="False"
-                        Margin="0,0,0,12"
-                        Message="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
-
-            <StackPanel Grid.Row="4">
-                <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=GamepadOnlyCheck}">
-                    <CheckBox VerticalAlignment="Center" x:Name="GamepadOnlyCheck"
-                              Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
-                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="GamepadOnly" Visibility="{Binding Visibility, ElementName=GamepadOnlyCheck}" IsEnabled="{Binding IsEnabled, ElementName=GamepadOnlyCheck}" SettingLabel="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_GamepadOnlyCheck_93"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=AssignmentsCheck}" Margin="0,8,0,0">
-                    <CheckBox VerticalAlignment="Center" x:Name="AssignmentsCheck"
-                              Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"/>
-                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="AllowAssignments" Visibility="{Binding Visibility, ElementName=AssignmentsCheck}" IsEnabled="{Binding IsEnabled, ElementName=AssignmentsCheck}" SettingLabel="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AssignmentsCheck_95"/>
-                </StackPanel>
-                <TextBlock Text="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"
-                           TextWrapping="Wrap" FontSize="12" Margin="0,4,0,0"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-            </StackPanel>
-
-            <!-- Footer band (#175 dialog language): Pair is the consent
-                 affirmative and wears the ember accent. Reject declines
-                 without destroying anything, so it stays neutral. -->
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                <ui:Button x:Name="PairButton" MinWidth="90" Margin="0,0,8,0"
-                           Style="{StaticResource EmberPrimaryButton}"
-                           Content="{Binding RemoteLink_Pair, Source={x:Static strings:Strings.Instance}}"
-                           Click="Pair_Click"/>
-                <Button x:Name="RejectButton" MinWidth="90" IsCancel="True"
-                        Content="{Binding RemoteLink_Reject, Source={x:Static strings:Strings.Instance}}"
-                        Click="Reject_Click"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+        <!-- A check box of these rows stands at the row's edge: the app's
+             check box keeps 11 before its mark, which is taken back. -->
+        <controls:SettingRow MinHeight="36" Margin="0,10,0,0">
+            <CheckBox x:Name="GamepadOnlyCheck" VerticalAlignment="Center" Margin="-11,0,0,0"
+                      Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="GamepadOnly" Visibility="{Binding Visibility, ElementName=GamepadOnlyCheck}" IsEnabled="{Binding IsEnabled, ElementName=GamepadOnlyCheck}" SettingLabel="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_GamepadOnlyCheck_93"/>
+        </controls:SettingRow>
+        <!-- Whether the other PC may choose which of this PC's controllers
+             its shared devices drive. The line under the box says what
+             that lets it do. -->
+        <controls:SettingRow MinHeight="36">
+            <CheckBox x:Name="AssignmentsCheck" VerticalAlignment="Center" Margin="-11,0,0,0"
+                      Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"/>
+            <reset:SettingResetButton Click="ResetSetting_Click" Tag="AllowAssignments" Visibility="{Binding Visibility, ElementName=AssignmentsCheck}" IsEnabled="{Binding IsEnabled, ElementName=AssignmentsCheck}" SettingLabel="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AssignmentsCheck_95"/>
+        </controls:SettingRow>
+        <TextBlock Style="{StaticResource DialogNote}" Margin="0,0,32,0"
+                   Text="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"/>
+    </StackPanel>
+</views:DialogWindow>

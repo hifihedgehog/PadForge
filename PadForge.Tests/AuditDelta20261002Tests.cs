@@ -958,15 +958,14 @@ namespace PadForge.Tests
         /// <summary>Every class that stores a number from a box takes the
         /// NaN-refusing base. The classes left on the plain ObservableObject
         /// carry display values only, which no box writes: live readings and
-        /// meters, the on-screen keyboard's key geometry, and a Workshop
-        /// row's vote bar.</summary>
+        /// meters, and the on-screen keyboard's key geometry.</summary>
         [Fact]
         public void EveryClassWithANumberToStoreRefusesNaN()
         {
             var displayOnly = new[]
             {
                 "AxisDisplayItem", "AnalogKeyDisplayItem", "RumbleAudioVoiceItem",
-                "KeyboardKeyItem", "WorkshopConfigItem",
+                "KeyboardKeyItem",
             };
             var plain = typeof(ViewModelBase).Assembly.GetTypes()
                 .Where(t => typeof(CommunityToolkit.Mvvm.ComponentModel.ObservableObject).IsAssignableFrom(t)
@@ -1211,7 +1210,7 @@ namespace PadForge.Tests
         {
             string src = Text("PadForge.App", "Services", "DeviceService.cs");
             var creates = Regex.Matches(src, @"SettingsManager\.SlotCreated\[(\w+)\] = true;");
-            Assert.True(creates.Count >= 3, creates.Count + " create sites");
+            Assert.True(creates.Count >= 2, creates.Count + " create sites");
             foreach (Match m in creates)
             {
                 int from = Math.Max(0, m.Index - 300);

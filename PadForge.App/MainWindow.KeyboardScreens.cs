@@ -26,6 +26,11 @@ namespace PadForge
                 if (_viewModel.Devices.SelectedDevice is { } row) ConfigureKeyboardScreen(row.InstanceGuid);
             };
             _viewModel.Dashboard.ChooseScreenOverlayContentRequested += (_, item) => ConfigureScreenOverlay(item);
+            // What each overlay shows, named on its card (#574), and an
+            // overlay's Reset All, which puts that back to the default.
+            _viewModel.Dashboard.ScreenOverlayModeOf = number => KeyboardScreenService.OverlayMode(settings, number);
+            foreach (var overlay in _viewModel.Dashboard.ScreenOverlays) overlay.RefreshShows();
+            _viewModel.Dashboard.ResetScreenOverlayChoicesRequested += (_, item) => ResetScreenOverlayChoices(item);
 
             // A download that lands is the library from now on, in place of a
             // copy picked before. A failed one leaves the pick alone.
@@ -59,7 +64,7 @@ namespace PadForge
         {
             var service = _inputService?.KeyboardScreens;
             var screen = service?.ScreenOf(row);
-            if (screen != null) ConfigureScreen(service, screen, service.StatusLine(screen));
+            if (screen != null) ConfigureScreen(service, screen);
         }
 
         /// <summary>A Screen Overlay's dialog (#560), from its Dashboard card, whether
@@ -67,13 +72,32 @@ namespace PadForge
         private void ConfigureScreenOverlay(ScreenOverlayItem item)
         {
             var service = _inputService?.KeyboardScreens;
-            if (service != null) ConfigureScreen(service, KeyboardScreenInfo.Overlay(item.Number), null);
+            if (service != null) ConfigureScreen(service, KeyboardScreenInfo.Overlay(item.Number));
+        }
+
+        /// <summary>An overlay's Reset All (#574): what it shows goes back to the
+        /// lightbar's color, the default, with no picture, pan, zoom or slot of
+        /// its own. Update drops an entry left at every default. It is wired
+        /// here and not with the position's reset, which listens only while the
+        /// engine runs, so it works with the engine stopped too, as Choose
+        /// does.</summary>
+        private void ResetScreenOverlayChoices(ScreenOverlayItem item)
+        {
+            _inputService?.KeyboardScreens.Update(KeyboardScreenInfo.OverlayRow(item.Number), d =>
+            {
+                d.Mode = KeyboardScreenData.DefaultMode;
+                d.Picture = null;
+                d.PanX = 0;
+                d.PanY = 0;
+                d.Zoom = KeyboardScreenData.DefaultZoom;
+                d.LightbarSlot = KeyboardScreenData.LowestSlot;
+            });
         }
 
         /// <summary>Opens one screen's dialog and keeps what was saved: the
         /// screen's mode, picture and pan, kept by its row, and the active
         /// profile's picture.</summary>
-        private void ConfigureScreen(KeyboardScreenService service, KeyboardScreenInfo screen, string detail)
+        private void ConfigureScreen(KeyboardScreenService service, KeyboardScreenInfo screen)
         {
             Guid row = screen.RowGuid;
             // The overlay has no size of its own, so the preview takes its window's.
@@ -84,7 +108,7 @@ namespace PadForge
             var profile = string.IsNullOrEmpty(profileId) ? null : SettingsManager.Profiles.Find(p => p.Id == profileId);
             string profilePicture = profile != null ? profile.KeyboardScreenPicture : _viewModel.Settings.DefaultProfileKeyboardScreenPicture;
             var choice = KeyboardScreenDialog.Show(this, service, screen, service.Get(row),
-                DreamcastScreenService.ActiveProfileName(), profilePicture, detail, overlaySize);
+                DreamcastScreenService.ActiveProfileName(), profilePicture, overlaySize);
             if (choice == null) return;
             if (profile != null) profile.KeyboardScreenPicture = choice.ProfilePicture;
             else _viewModel.Settings.DefaultProfileKeyboardScreenPicture = choice.ProfilePicture;

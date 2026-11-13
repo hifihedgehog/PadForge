@@ -1,260 +1,332 @@
-<ui:FluentWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.CustomTelemetryFormatsDialog"
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.CustomTelemetryFormatsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         xmlns:controls="clr-namespace:PadForge.Controls"
         xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:views="clr-namespace:PadForge.Views"
         xmlns:vm="clr-namespace:PadForge.ViewModels"
-        FontFamily="{StaticResource BodyFontFamily}"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
+        IsWide="True" ScrollsBody="False"
+        Width="1040" Height="680" SizeToContent="Manual"
+        HeadPadding="24,20,24,0" BodyPadding="24,16,24,16" FootPadding="24,14,24,14"
         Title="{Binding Telemetry_Formats_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="680" Width="1040"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        Subtitle="{Binding Telemetry_Formats_Description, Source={x:Static strings:Strings.Instance}}">
 
-    <!-- The custom telemetry formats (#531). The Manage Profiles dialog's
-         head, list and footer band, with the selected format's settings and
-         its field rows on the right. The dialog edits copies and writes them
-         back only on Save. -->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- Custom Formats (#531, #574), as the Dialogs-Large board draws it:
+         the formats at the left with what adds, copies and deletes one, and
+         the picked format's settings and field rows at the right. Required
+         Key and the gear values are under More. The dialog edits copies and
+         writes them back only on Save, and the first problem that stops a
+         save shows at the foot's start. The window keeps its size, so each
+         column scrolls by itself and the body does not. -->
+    <views:DialogWindow.Resources>
+        <!-- A row's label: the board's 110 column, 10 before the control. -->
+        <Style x:Key="FormatLabel" TargetType="TextBlock" BasedOn="{StaticResource DialogLabel}">
+            <Setter Property="Width" Value="110"/>
+        </Style>
+        <!-- The label of a setting that follows another on its line. -->
+        <Style x:Key="FormatInlineLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        </Style>
+        <!-- A number as the board draws one: a plain field 34 tall, no spin
+             buttons and no clear button. It stays a NumberBox, so it keeps
+             its Minimum and Maximum. -->
+        <Style x:Key="FormatNumberBox" TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+            <Setter Property="SpinButtonPlacementMode" Value="Hidden"/>
+            <Setter Property="ClearButtonEnabled" Value="False"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <!-- A field row's text box and picker fill their columns. -->
+        <Style x:Key="FieldBox" TargetType="ui:TextBox" BasedOn="{StaticResource DialogTextBox}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </views:DialogWindow.Resources>
 
-        <Border Padding="14"
-                BorderBrush="{DynamicResource SteelLineSoftBrush}"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
-                           Fill="{DynamicResource EmberBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                           FontFamily="{StaticResource DisplayFontFamily}"
-                           FontWeight="SemiBold" FontSize="15"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           VerticalAlignment="Center" Margin="0,0,8,0"
-                           TextTrimming="CharacterEllipsis"/>
-                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
-                           VerticalAlignment="Center" Click="CancelButton_Click"
-                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
-                    <controls:GlyphText Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                </ui:Button>
-            </Grid>
-        </Border>
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <!-- The first problem that stops a save. The dialog stays open. -->
+            <TextBlock x:Name="ProblemText" Style="{StaticResource DialogFootNote}" common:LiveText.Polite="True"
+                       Foreground="{DynamicResource WaitBrush}"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True" Click="CancelButton_Click"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="SaveButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True" Click="SaveButton_Click"
+                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
 
-        <Grid common:InitialFocus.First="True" Grid.Row="1" Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Grid common:InitialFocus.First="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Telemetry_Formats_Description, Source={x:Static strings:Strings.Instance}}"
-                       TextWrapping="Wrap" Margin="0,0,0,12"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <DockPanel Margin="0,0,12,0">
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button x:Name="AddFormatButton" Click="AddFormatButton_Click"
-                                Content="{Binding Telemetry_Formats_Add, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button x:Name="DuplicateFormatButton" Click="DuplicateFormatButton_Click" Margin="8,0,0,0"
-                                Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}"/>
-                    </StackPanel>
-                    <Button x:Name="DeleteFormatButton" DockPanel.Dock="Bottom" Click="DeleteFormatButton_Click" Margin="0,8,0,0"
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource EmberDestructiveButton}"
+        <!-- The formats, and under them what adds, copies and deletes one.
+             The list has no scroll view of its own, so the column scrolls
+             as one. -->
+        <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <ListBox x:Name="FormatList" Style="{StaticResource PartList}" SelectionMode="Single"
+                         SelectionChanged="FormatList_SelectionChanged"
+                         AutomationProperties.Name="{Binding Telemetry_Formats_Title, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource PartListItem}">
+                            <Setter Property="Margin" Value="0,0,0,4"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:TelemetryFormatEdit}">
+                            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <!-- Add reads Add Format to a screen reader, which has no
+                     list beside the word to go by. -->
+                <controls:FlexLinePanel Gap="6" LineGap="6" Margin="0,8,0,0">
+                    <Button x:Name="AddFormatButton" Style="{StaticResource DialogButton}" MinHeight="32" Padding="12,0"
+                            Click="AddFormatButton_Click"
+                            Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Telemetry_Formats_Add, Source={x:Static strings:Strings.Instance}}"/>
+                    <Button x:Name="DuplicateFormatButton" Style="{StaticResource DialogQuietButton}" MinHeight="32" Padding="10,0"
+                            Click="DuplicateFormatButton_Click"
+                            Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}"/>
+                    <Button x:Name="DeleteFormatButton" Style="{StaticResource DialogQuietDangerButton}" MinHeight="32" Padding="10,0"
+                            Click="DeleteFormatButton_Click"
                             Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
-                    <ListBox x:Name="FormatList" SelectionMode="Single"
-                             ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                             SelectionChanged="FormatList_SelectionChanged"
-                             AutomationProperties.Name="{Binding Telemetry_Formats_Title, Source={x:Static strings:Strings.Instance}}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type vm:TelemetryFormatEdit}">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Margin="4,3" TextTrimming="CharacterEllipsis"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-
-                <ScrollViewer Grid.Column="1" x:Name="EditorScroll" VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel x:Name="EditorPanel">
-                        <Grid Margin="0,0,0,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Telemetry_Formats_Name, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                            <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0,0,0,8"
-                                     AutomationProperties.Name="{Binding Telemetry_Formats_Name, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Grid.Row="1" Text="{Binding Telemetry_Formats_Kind, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" Width="260" Margin="0,0,0,8" HorizontalAlignment="Left"
-                                      ItemsSource="{x:Static vm:TelemetryChoices.Kinds}" DisplayMemberPath="Display" SelectedValuePath="Value"
-                                      SelectedValue="{Binding Kind, Mode=TwoWay}"
-                                      AutomationProperties.Name="{Binding Telemetry_Formats_Kind, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Grid.Row="2" Text="{Binding Telemetry_Formats_Length, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                            <ui:NumberBox Grid.Row="2" Grid.Column="1" Value="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
-                                          Minimum="0" Maximum="65507" SpinButtonPlacementMode="Inline" Width="200" HorizontalAlignment="Left" Margin="0,0,0,8"
-                                          ToolTip="{Binding Telemetry_Formats_Length_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                          AutomationProperties.Name="{Binding Telemetry_Formats_Length, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Grid.Row="2" Text="{Binding Telemetry_Formats_Key, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0,0,0,8"
-                                     Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"
-                                     ToolTip="{Binding Telemetry_Formats_Key_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                     AutomationProperties.Name="{Binding Telemetry_Formats_Key, Source={x:Static strings:Strings.Instance}}"/>
-                            <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,8"
-                                      Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
-                                      Content="{Binding Telemetry_Formats_BigEndian, Source={x:Static strings:Strings.Instance}}"
-                                      ToolTip="{Binding Telemetry_Formats_BigEndian_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                      IsChecked="{Binding BigEndian, Mode=TwoWay}"/>
-                        </Grid>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <CheckBox VerticalAlignment="Center" Content="{Binding Telemetry_Formats_GearValues, Source={x:Static strings:Strings.Instance}}"
-                                      ToolTip="{Binding Telemetry_Formats_GearValues_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                      IsChecked="{Binding UseGearValues, Mode=TwoWay}"/>
-                            <TextBlock Text="{Binding Telemetry_Formats_GearReverse, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       IsEnabled="{Binding UseGearValues}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="16,0,8,0"/>
-                            <ui:NumberBox Value="{Binding GearReverse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding UseGearValues}"
-                                          Minimum="-1000" Maximum="1000" SpinButtonPlacementMode="Inline" Width="120"
-                                          AutomationProperties.Name="{Binding Telemetry_Formats_GearReverse, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Text="{Binding Telemetry_Formats_GearNeutral, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                       IsEnabled="{Binding UseGearValues}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="16,0,8,0"/>
-                            <ui:NumberBox Value="{Binding GearNeutral, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding UseGearValues}"
-                                          Minimum="-1000" Maximum="1000" SpinButtonPlacementMode="Inline" Width="120"
-                                          AutomationProperties.Name="{Binding Telemetry_Formats_GearNeutral, Source={x:Static strings:Strings.Instance}}"/>
-                        </StackPanel>
-
-                        <TextBlock Text="{Binding Telemetry_Formats_Fields, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}" Margin="0,0,0,4"/>
-                        <TextBlock Text="{Binding Telemetry_Formats_FieldsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardDescription}"
-                                   TextWrapping="Wrap" Margin="0,0,0,8"/>
-
-                        <!-- Column heads, the same widths as the rows. -->
-                        <Grid Margin="0,0,0,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="170"/>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="64"/>
-                                <ColumnDefinition Width="64"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Telemetry_Formats_ColTarget, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Telemetry_Formats_ColName, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"/>
-                            <TextBlock Grid.Column="2" Width="114" Text="{Binding Telemetry_Formats_ColOffset, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"
-                                       Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <TextBlock Grid.Column="3" Width="86" Text="{Binding Telemetry_Formats_ColType, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"
-                                       Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <TextBlock Grid.Column="4" Width="206" Text="{Binding Telemetry_Formats_ColKey, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"
-                                       Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <TextBlock Grid.Column="5" Text="{Binding Telemetry_Formats_ColScale, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"/>
-                            <TextBlock Grid.Column="6" Text="{Binding Telemetry_Formats_ColMin, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"/>
-                            <TextBlock Grid.Column="7" Text="{Binding Telemetry_Formats_ColMax, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,6,0"/>
-                        </Grid>
-
-                        <ItemsControl ItemsSource="{Binding Fields}" KeyboardNavigation.TabNavigation="Continue">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type vm:TelemetryFieldEdit}">
-                                    <Grid Margin="0,0,0,6">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="170"/>
-                                            <ColumnDefinition Width="130"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="70"/>
-                                            <ColumnDefinition Width="64"/>
-                                            <ColumnDefinition Width="64"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox ItemsSource="{x:Static vm:TelemetryChoices.Targets}" DisplayMemberPath="Display" SelectedValuePath="Value"
-                                                  SelectedValue="{Binding Target, Mode=TwoWay}" Margin="0,0,6,0"
-                                                  AutomationProperties.Name="{Binding Telemetry_Formats_ColTarget, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,6,0"
-                                                 IsEnabled="{Binding IsVariable}"
-                                                 AutomationProperties.Name="{Binding Telemetry_Formats_ColName, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ui:NumberBox Grid.Column="2" Width="114" Value="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,6,0"
-                                                      Minimum="0" Maximum="65506" SpinButtonPlacementMode="Inline"
-                                                      Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                      AutomationProperties.Name="{Binding Telemetry_Formats_ColOffset, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox Grid.Column="3" Width="86" ItemsSource="{x:Static vm:TelemetryChoices.Types}" DisplayMemberPath="Display" SelectedValuePath="Value"
-                                                  SelectedValue="{Binding Type, Mode=TwoWay}" Margin="0,0,6,0"
-                                                  Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                  AutomationProperties.Name="{Binding Telemetry_Formats_ColType, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Grid.Column="4" Width="206" Text="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,6,0"
-                                                 Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                 AutomationProperties.Name="{Binding Telemetry_Formats_ColKey, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Grid.Column="5" Text="{Binding Scale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0,0,6,0"
-                                                 AutomationProperties.Name="{Binding Telemetry_Formats_ColScale, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Grid.Column="6" Text="{Binding Min, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0,0,6,0"
-                                                 IsEnabled="{Binding IsVariable}"
-                                                 AutomationProperties.Name="{Binding Telemetry_Formats_ColMin, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBox Grid.Column="7" Text="{Binding Max, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Margin="0,0,6,0"
-                                                 IsEnabled="{Binding IsVariable}"
-                                                 AutomationProperties.Name="{Binding Telemetry_Formats_ColMax, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ui:Button Grid.Column="8" Style="{StaticResource EmberIconButton}" VerticalAlignment="Center"
-                                                   Click="RemoveFieldButton_Click"
-                                                   ToolTip="{Binding Telemetry_Formats_RemoveField, Source={x:Static strings:Strings.Instance}}"
-                                                   AutomationProperties.Name="{Binding Telemetry_Formats_RemoveField, Source={x:Static strings:Strings.Instance}}">
-                                            <controls:GlyphText Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                                        </ui:Button>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <Button x:Name="AddFieldButton" Click="AddFieldButton_Click" Margin="0,4,0,0" HorizontalAlignment="Left"
-                                Content="{Binding Telemetry_Formats_AddField, Source={x:Static strings:Strings.Instance}}"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-
-            <TextBlock Grid.Row="2" x:Name="ProblemText" Margin="0,8,0,0" FontSize="12" TextWrapping="Wrap"
-                       common:LiveText.Polite="True"
-                       Foreground="{DynamicResource SystemFillColorCautionBrush}"/>
-
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-                <Button x:Name="SaveButton" Click="SaveButton_Click" MinWidth="90" Margin="0,0,8,0" IsDefault="True"
-                        Style="{StaticResource EmberAccentButton}"
-                        Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"/>
-                <Button Click="CancelButton_Click" MinWidth="90" IsCancel="True"
-                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:FlexLinePanel>
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="2" x:Name="EditorScroll" Focusable="False" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="EditorPanel">
+                <controls:SettingRow MinHeight="42">
+                    <TextBlock Style="{StaticResource FormatLabel}"
+                               Text="{Binding Telemetry_Formats_Name, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:TextBox Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True" VerticalAlignment="Center"
+                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.Name="{Binding Telemetry_Formats_Name, Source={x:Static strings:Strings.Instance}}"/>
+                </controls:SettingRow>
+
+                <!-- What the packets are. Length and Byte Order belong to a
+                     binary format. Each setting keeps its label on a line
+                     that wraps, so a longer language loses none of them. -->
+                <controls:FlexLinePanel x:Name="PacketsLine" Gap="22" LineGap="0" MinLineHeight="42">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource FormatLabel}"
+                                   Text="{Binding Telemetry_Formats_Kind, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBox Style="{StaticResource DialogSelect}" common:ComboBoxWidthBehavior.SizeToItems="True"
+                                  ItemsSource="{x:Static vm:TelemetryChoices.Kinds}" DisplayMemberPath="Display" SelectedValuePath="Value"
+                                  SelectedValue="{Binding Kind, Mode=TwoWay}"
+                                  AutomationProperties.Name="{Binding Telemetry_Formats_Kind, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Style="{StaticResource FormatInlineLabel}"
+                                   Text="{Binding Telemetry_Formats_Length, Source={x:Static strings:Strings.Instance}}"/>
+                        <ui:NumberBox Style="{StaticResource FormatNumberBox}" Width="90" Minimum="0" Maximum="65507"
+                                      Value="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{Binding Telemetry_Formats_Length_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                      AutomationProperties.Name="{Binding Telemetry_Formats_Length, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Style="{StaticResource FormatInlineLabel}"
+                                   Text="{Binding Telemetry_Formats_ByteOrder, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBox Style="{StaticResource DialogSelect}" common:ComboBoxWidthBehavior.SizeToItems="True"
+                                  ItemsSource="{x:Static vm:TelemetryChoices.ByteOrders}" DisplayMemberPath="Display" SelectedValuePath="Value"
+                                  SelectedValue="{Binding BigEndian, Mode=TwoWay}"
+                                  ToolTip="{Binding Telemetry_Formats_ByteOrder_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  AutomationProperties.Name="{Binding Telemetry_Formats_ByteOrder, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                </controls:FlexLinePanel>
+
+                <!-- The fields. What a field reads and how its numbers run is
+                     the heading's tooltip and its help text. -->
+                <TextBlock Style="{StaticResource DialogHead3}" Margin="0,14,0,0" HorizontalAlignment="Left"
+                           Text="{Binding Telemetry_Formats_Fields, Source={x:Static strings:Strings.Instance}}"
+                           ToolTip="{Binding Telemetry_Formats_FieldsHint, Source={x:Static strings:Strings.Instance}}"
+                           AutomationProperties.HelpText="{Binding Telemetry_Formats_FieldsHint, Source={x:Static strings:Strings.Instance}}"/>
+
+                <!-- The column heads, in the rows' own columns. A binary
+                     format has an offset and a type, and a JSON one a key
+                     across both. -->
+                <Grid x:Name="FieldHeads" Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="1.55*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="0.75*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="0.6*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="0.6*"/>
+                        <ColumnDefinition Width="6"/>
+                        <ColumnDefinition Width="32"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColName, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Grid.Column="2" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColTarget, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Grid.Column="4" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColOffset, Source={x:Static strings:Strings.Instance}}"
+                               Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock Grid.Column="6" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColType, Source={x:Static strings:Strings.Instance}}"
+                               Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock Grid.Column="4" Grid.ColumnSpan="3" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColKey, Source={x:Static strings:Strings.Instance}}"
+                               Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock Grid.Column="8" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColScale, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Grid.Column="10" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColMin, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Grid.Column="12" Style="{StaticResource EditorSubHead}" TextTrimming="CharacterEllipsis"
+                               Text="{Binding Telemetry_Formats_ColMax, Source={x:Static strings:Strings.Instance}}"/>
+                </Grid>
+
+                <ItemsControl x:Name="FieldRows" ItemsSource="{Binding Fields}" Focusable="False"
+                              KeyboardNavigation.TabNavigation="Continue">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:TelemetryFieldEdit}">
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.1*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="1.55*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="0.7*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="0.75*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="0.7*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="32"/>
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBox Style="{StaticResource FieldBox}"
+                                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEnabled="{Binding IsVariable}"
+                                            AutomationProperties.Name="{Binding Telemetry_Formats_ColName, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBox Grid.Column="2" Style="{StaticResource DialogSelect}"
+                                          ItemsSource="{x:Static vm:TelemetryChoices.Targets}" DisplayMemberPath="Display" SelectedValuePath="Value"
+                                          SelectedValue="{Binding Target, Mode=TwoWay}"
+                                          AutomationProperties.Name="{Binding Telemetry_Formats_ColTarget, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:NumberBox Grid.Column="4" Style="{StaticResource FormatNumberBox}" Minimum="0" Maximum="65506"
+                                              Value="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
+                                              AutomationProperties.Name="{Binding Telemetry_Formats_ColOffset, Source={x:Static strings:Strings.Instance}}"/>
+                                <ComboBox Grid.Column="6" Style="{StaticResource DialogSelect}"
+                                          ItemsSource="{x:Static vm:TelemetryChoices.Types}" DisplayMemberPath="Display" SelectedValuePath="Value"
+                                          SelectedValue="{Binding Type, Mode=TwoWay}"
+                                          Visibility="{Binding IsBinary, Converter={StaticResource BoolToVisibilityConverter}}"
+                                          AutomationProperties.Name="{Binding Telemetry_Formats_ColType, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:TextBox Grid.Column="4" Grid.ColumnSpan="3" Style="{StaticResource FieldBox}"
+                                            Text="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}"
+                                            AutomationProperties.Name="{Binding Telemetry_Formats_ColKey, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:TextBox Grid.Column="8" Style="{StaticResource FieldBox}"
+                                            Text="{Binding Scale, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            AutomationProperties.Name="{Binding Telemetry_Formats_ColScale, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:TextBox Grid.Column="10" Style="{StaticResource FieldBox}"
+                                            Text="{Binding Min, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            IsEnabled="{Binding IsVariable}"
+                                            AutomationProperties.Name="{Binding Telemetry_Formats_ColMin, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:TextBox Grid.Column="12" Style="{StaticResource FieldBox}"
+                                            Text="{Binding Max, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                            IsEnabled="{Binding IsVariable}"
+                                            AutomationProperties.Name="{Binding Telemetry_Formats_ColMax, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Grid.Column="14" Style="{StaticResource DialogIconButton}" VerticalAlignment="Center"
+                                           Click="RemoveFieldButton_Click"
+                                           ToolTip="{Binding Telemetry_Formats_RemoveField, Source={x:Static strings:Strings.Instance}}"
+                                           AutomationProperties.Name="{Binding Telemetry_Formats_RemoveField, Source={x:Static strings:Strings.Instance}}">
+                                    <Path FlowDirection="LeftToRight" Data="M 3.5,3.5 L 10.5,10.5 M 10.5,3.5 L 3.5,10.5" Width="14" Height="14"
+                                          StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"/>
+                                </ui:Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Add Field: quiet, pulled left so its plus stands on the
+                     column's edge. The plus takes the color the button
+                     gives its words. -->
+                <Button x:Name="AddFieldButton" Style="{StaticResource DialogQuietButton}" HorizontalAlignment="Left"
+                        Margin="-16,8,0,0" Click="AddFieldButton_Click"
+                        AutomationProperties.Name="{Binding Telemetry_Formats_AddField, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path FlowDirection="LeftToRight" Data="M 7,2.9 L 7,11.1 M 2.9,7 L 11.1,7" Width="14" Height="14"
+                              Margin="0,0,8,0" VerticalAlignment="Center"
+                              StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{Binding Telemetry_Formats_AddField, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- More: the key a JSON packet must carry, and a gear
+                     field's own numbers for reverse and neutral. It opens by
+                     itself for a format that uses either. -->
+                <controls:MoreRow x:Name="FormatMore" Style="{StaticResource DialogMoreRow}" Margin="0,14,0,0"
+                                  AutomationProperties.AutomationId="TelemetryFormats_More"
+                                  Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                  Hint="{Binding Telemetry_Formats_More, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel>
+                        <controls:SettingRow MinHeight="42"
+                                             Visibility="{Binding IsJson, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Style="{StaticResource FormatLabel}"
+                                       Text="{Binding Telemetry_Formats_Key, Source={x:Static strings:Strings.Instance}}"
+                                       ToolTip="{Binding Telemetry_Formats_Key_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:TextBox Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True" VerticalAlignment="Center"
+                                        Text="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="{Binding Telemetry_Formats_Key_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                        AutomationProperties.Name="{Binding Telemetry_Formats_Key, Source={x:Static strings:Strings.Instance}}"/>
+                        </controls:SettingRow>
+                        <controls:FlexLinePanel x:Name="GearLine" Gap="22" LineGap="0" MinLineHeight="42">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource FormatLabel}"
+                                           Text="{Binding Telemetry_Formats_GearValues, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Telemetry_Formats_GearValues_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                          Content="{Binding Telemetry_Formats_GearValues, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Telemetry_Formats_GearValues_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding UseGearValues, Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource FormatInlineLabel}"
+                                           Text="{Binding Telemetry_Formats_GearReverse, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:NumberBox Style="{StaticResource FormatNumberBox}" Width="90" Minimum="-1000" Maximum="1000"
+                                              Value="{Binding GearReverse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding UseGearValues}"
+                                              AutomationProperties.Name="{Binding Telemetry_Formats_GearReverse, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource FormatInlineLabel}"
+                                           Text="{Binding Telemetry_Formats_GearNeutral, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:NumberBox Style="{StaticResource FormatNumberBox}" Width="90" Minimum="-1000" Maximum="1000"
+                                              Value="{Binding GearNeutral, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding UseGearValues}"
+                                              AutomationProperties.Name="{Binding Telemetry_Formats_GearNeutral, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </controls:FlexLinePanel>
+                    </StackPanel>
+                </controls:MoreRow>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
-</ui:FluentWindow>
+</views:DialogWindow>

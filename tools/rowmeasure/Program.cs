@@ -62,6 +62,7 @@ internal static class Program
 
     // TelemetryFontFamily in App.xaml.
     static readonly FontFamily TelemetryFont = new("Cascadia Code, Consolas, Segoe UI");
+    static readonly FontFamily DisplayFont = new("Segoe UI Variable Display, Segoe UI");
 
     // The reset control is a fixed 28 by 28 with a 4 left margin (the shared
     // ember icon button style), so it costs 32 wherever it appears.
@@ -175,50 +176,100 @@ internal static class Program
         app.Run();
     }
 
-    // ── C226: the Profiles page shortcut row ────────────────────────────
+    // ── C226: the Profiles page shortcut row (#574) ─────────────────────
     //
-    // ProfilesPage.xaml: star columns of 3*, 2*, 3* and * with floors of 120,
-    // 120, 120 and 40, then the action cluster. The row sits in a card (16
-    // padding, 1 border) inside the page scroller's 24 side padding. A mode
-    // name wider than its picker is trimmed, with the full name on hover.
-    const double ProfilesRowAtMinimum = 900 - 248 - 2 * 24 - 2 * 17;
-    static Grid _profilesRow;
+    // ProfilesPage.xaml: a FlexLinePanel line of parts 14 apart that wraps.
+    // The action picker (200 to 280) and its reset. On Specific Profile the
+    // profile picker (160 to 240) and its reset. "when", the recorded
+    // buttons as keys with a plus between two, Record and Clear. "on", the
+    // device picker (200 to 280) and its reset. Delete at the line's end. A
+    // reset there is 32 square in a 4 left margin, and Clear is 32 square in
+    // a 6 left margin. The row is 528 wide at the window's minimum: 900,
+    // less 264 of open pane, 72 of page margin, 34 of the card's padding
+    // (20 and 14) and 2 of edges. An action name wider than its picker's 280
+    // cap is trimmed, with the full name on hover.
+    const double ProfilesRowAtMinimum = 900 - 264 - 72 - 34 - 2;
+    const double ShortcutGap = 14, ShortcutReset = 4 + 32, ShortcutClear = 6 + 32, PickerFloor = 200, PickerCap = 280, ProfilePickerFloor = 160;
+    static readonly string[] ShortcutModeKeys =
+    {
+        "Profiles_ShortcutMode_Next", "Profiles_ShortcutMode_Previous",
+        "Profiles_ShortcutMode_Specific", "Profiles_ShortcutMode_ToggleWindow",
+        "Profiles_ShortcutMode_ToggleVCsDisabled",
+    };
 
     static void BuildProfilesRow()
     {
-        var modeKeys = new[]
-        {
-            "Profiles_ShortcutMode_Next", "Profiles_ShortcutMode_Previous",
-            "Profiles_ShortcutMode_Specific", "Profiles_ShortcutMode_ToggleWindow",
-            "Profiles_ShortcutMode_ToggleVCsDisabled",
-        };
-        // One picker per option. A closed picker is as wide as its selected
-        // item, not its widest.
         foreach (var (tag, _) in Locales)
         {
-            foreach (string key in modeKeys)
+            // One picker per option. A closed picker is as wide as its
+            // selected item, not its widest.
+            foreach (string key in ShortcutModeKeys)
             {
                 string mode = S(key, tag);
                 if (mode != null) Add("profiles-mode", tag, key, Combo(new[] { mode }), 0);
             }
-        }
-
-        // The row itself at the 900 window minimum with the navigation pane
-        // open, so the star columns resolve as WPF resolves them.
-        _profilesRow = new Grid { Width = ProfilesRowAtMinimum };
-        foreach (var (star, floor, cap) in new[]
-                 { (3.0, 120.0, 328.0), (2.0, 120.0, 178.0), (3.0, 120.0, 328.0), (1.0, 40.0, double.PositiveInfinity) })
-        {
-            _profilesRow.ColumnDefinitions.Add(new ColumnDefinition
+            string any = S("Profiles_ShortcutDevice_Any", tag);
+            if (any != null) Add("profiles-device", tag, "Profiles_ShortcutDevice_Any", Combo(new[] { any }), 0);
+            // The joining words, 13 with 8 after each.
+            foreach (string key in new[] { "Profiles_Shortcut_When", "Profiles_Shortcut_On" })
             {
-                Width = new GridLength(star, GridUnitType.Star), MinWidth = floor, MaxWidth = cap,
-            });
+                var word = Text(S(key, tag) ?? "", 13);
+                word.Margin = new Thickness(0, 0, 8, 0);
+                Add("profiles-word", tag, key, word, 0);
+            }
+            // Record, 10 after the keys: the 7 dot, 8 on, and the word at the
+            // button's 14, 12 at each side inside the button's edges.
+            var face = new StackPanel { Orientation = Orientation.Horizontal };
+            face.Children.Add(new Border { Width = 7, Height = 7, Margin = new Thickness(0, 0, 8, 0) });
+            face.Children.Add(Text(S("Common_Record", tag) ?? "", 14));
+            Add("profiles-record", tag, "Common_Record", new Border
+            {
+                Margin = new Thickness(10, 0, 0, 0), Padding = new Thickness(12, 0, 12, 0), BorderThickness = new Thickness(1), Child = face,
+            }, 0);
+            // Delete: the word at 14 with 10 at each side inside the edges.
+            Add("profiles-delete", tag, "Common_Delete", new Border
+            {
+                Padding = new Thickness(10, 0, 10, 0), BorderThickness = new Thickness(1), Child = Text(S("Common_Delete", tag) ?? "", 14),
+            }, 0);
         }
-        _profilesRow.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-        var actions = new Border { Width = 3 * ResetCost };
-        Grid.SetColumn(actions, 4);
-        _profilesRow.Children.Add(actions);
-        Add("profiles-row", "en", "the row at the window minimum", _profilesRow, 0);
+        // The board's buttons as keys: each name at 12.5 with 9 at each side
+        // inside its edges, and before the second a gap of 6, a plus at 13
+        // and 6 more.
+        var keys = new StackPanel { Orientation = Orientation.Horizontal };
+        keys.Children.Add(ShortcutKey("Guide"));
+        var plus = Text("+", 13);
+        plus.Margin = new Thickness(6, 0, 6, 0);
+        keys.Children.Add(plus);
+        keys.Children.Add(ShortcutKey("Right Shoulder"));
+        Add("profiles-keys", "en", "Guide + Right Shoulder", keys, 0);
+    }
+
+    static Border ShortcutKey(string name) => new Border
+    {
+        Padding = new Thickness(9, 0, 9, 0), BorderThickness = new Thickness(1), Child = Text(name, 12.5),
+    };
+
+    /// <summary>How many lines a FlexLinePanel line of these bases takes in
+    /// the width, counted as FlexLinePanel.Lines counts them: parts are
+    /// taken in order while they fit with the gap between them, with a hair
+    /// of slack, and a part wider than the width stands alone.</summary>
+    static int LinesOf(IReadOnlyList<double> bases, double width, double gap)
+    {
+        int lines = 0, count = 0;
+        double used = 0;
+        foreach (double b in bases)
+        {
+            double with = count == 0 ? b : used + gap + b;
+            if (count > 0 && with > width + 0.01)
+            {
+                lines++;
+                count = 0;
+                with = b;
+            }
+            used = with;
+            count++;
+        }
+        return count > 0 ? lines + 1 : lines;
     }
 
     // ── C228: the raw hat strip in the 340-wide device detail pane ───────
@@ -337,8 +388,8 @@ internal static class Program
 
     static void BuildPadHeader()
     {
-        // Type chip and title: a 34 square in a 14 right margin, then the
-        // output type's name at 24 SemiBold in the body face with its
+        // Type tile and title: a 46 square in a 16 right margin, then the
+        // output type's name at 28 SemiBold in the display face with its
         // instance number at 15 in the telemetry face. The longest type
         // name is the one that sizes it.
         var typeKeys = new[]
@@ -356,8 +407,8 @@ internal static class Program
                 if (name == null) continue;
                 var title = new TextBlock
                 {
-                    FontFamily = _bodyFont,
-                    FontSize = 24,
+                    FontFamily = DisplayFont,
+                    FontSize = 28,
                     FontWeight = FontWeights.SemiBold,
                 };
                 title.Inlines.Add(new System.Windows.Documents.Run(name));
@@ -404,9 +455,9 @@ internal static class Program
             }, 0);
         }
 
-        // Power button: a pill with a 1 border and 10,0,12,0 padding in a
-        // 12 left margin, holding a 16 flame in an 8 right margin and the
-        // state word at 14.
+        // Power button: a pill with a 1 border and 12,0,16,0 padding in a
+        // 12 left margin, holding a 17 flame in an 8 right margin and the
+        // state word at 14 SemiBold.
         foreach (var (tag, _) in Locales)
         {
             foreach (string key in StateKeys)
@@ -414,22 +465,22 @@ internal static class Program
                 string word = S(key, tag);
                 if (word == null) continue;
                 var inner = new StackPanel { Orientation = Orientation.Horizontal };
-                inner.Children.Add(new Canvas { Width = 16, Height = 16, Margin = new Thickness(0, 0, 8, 0) });
-                inner.Children.Add(Text(word, 14));
+                inner.Children.Add(new Canvas { Width = 17, Height = 17, Margin = new Thickness(0, 0, 8, 0) });
+                inner.Children.Add(Text(word, 14, FontWeights.SemiBold));
                 Add("hdr-power", tag, key, new Border
                 {
                     Margin = new Thickness(12, 0, 0, 0),
-                    Padding = new Thickness(10, 0, 12, 0),
+                    Padding = new Thickness(12, 0, 16, 0),
                     BorderThickness = new Thickness(1),
                     Child = inner,
                 }, 0);
             }
         }
 
-        // Driven by at 13 in a 12 right margin. Add Device in a -8,2,0,2
-        // margin: a 1 border and 8,0 padding around a 14 plus in a 6 right
+        // Driven by at 13 in a 12 right margin. Add Device in a -2,4,0,4
+        // margin: a 1 border and 10,0 padding around a 14 plus in a 6 right
         // margin and the words at 13. A device's pill between them is as
-        // wide as its name asks, 320 at most, in a 12 right margin.
+        // wide as its name asks, 460 at most, in a 10 right margin.
         foreach (var (tag, _) in Locales)
         {
             string driven = S("Pad_DrivenBy", tag);
@@ -447,16 +498,17 @@ internal static class Program
                 inner.Children.Add(Text(add, 13));
                 Add("hdr-add", tag, "Add Device", new Border
                 {
-                    Margin = new Thickness(-8, 2, 0, 2),
-                    Padding = new Thickness(8, 0, 8, 0),
+                    Margin = new Thickness(-2, 4, 0, 4),
+                    Padding = new Thickness(10, 0, 10, 0),
                     BorderThickness = new Thickness(1),
                     Child = inner,
                 }, 0);
             }
         }
 
-        // Six sections. Each is a RadioButton whose text has a 0,10 margin,
-        // in a 26 right margin. The checked section's text is SemiBold, so
+        // Six sections. Each is a RadioButton whose content, a 16 icon
+        // in an 8 right margin and then its name, has a 2,10,2,12 margin,
+        // in a 30 right margin. The checked section's name is SemiBold, so
         // each is measured both ways.
         foreach (var (tag, _) in Locales)
         {
@@ -487,11 +539,17 @@ internal static class Program
         }
     }
 
-    static Border Section(string text, FontWeight weight) => new Border
+    static Border Section(string text, FontWeight weight)
     {
-        Margin = new Thickness(0, 0, 26, 0),
-        Child = new Border { Margin = new Thickness(0, 10, 0, 10), Child = Text(text, 14, weight) },
-    };
+        var row = new StackPanel { Orientation = Orientation.Horizontal };
+        row.Children.Add(new Canvas { Width = 16, Height = 16, Margin = new Thickness(0, 0, 8, 0) });
+        row.Children.Add(Text(text, 14, weight));
+        return new Border
+        {
+            Margin = new Thickness(0, 0, 30, 0),
+            Child = new Border { Margin = new Thickness(2, 10, 2, 12), Child = row },
+        };
+    }
 
     static Border Part(string text, FontWeight weight) => new Border
     {
@@ -512,16 +570,36 @@ internal static class Program
         }
         string Verdict(bool fits) => fits ? "  fits" : "  OVERFLOWS";
 
-        Console.WriteLine("== Profiles shortcut row (window minimum 900) ==");
-        var columns = _profilesRow.ColumnDefinitions;
-        double floors = columns.Take(4).Sum(c => c.MinWidth) + 3 * ResetCost;
-        double modePicker = columns[0].ActualWidth - 6 - ResetCost;
-        double widestMode = Max("profiles-mode");
-        Console.WriteLine($"  row width                      : {ProfilesRowAtMinimum:F1}");
-        Console.WriteLine($"  column floors plus actions     : {floors:F1}" + Verdict(floors <= ProfilesRowAtMinimum));
-        Console.WriteLine($"  mode picker                    : {modePicker:F1}");
-        Console.WriteLine($"  widest mode option             : {widestMode:F1} (worst {Worst("profiles-mode")})"
-                          + (widestMode > modePicker ? "  trimmed, full name on hover" : "  fits"));
+        // Per language: the widest action picker against its 280 cap, and
+        // the lines the row takes at the window's minimum with the board's
+        // buttons as its keys: on Next Profile, a new shortcut's action, on
+        // the widest action, and on Specific Profile with a profile name
+        // short enough for the profile picker's 160 floor.
+        Console.WriteLine($"== Profiles shortcut row (window minimum 900, row {ProfilesRowAtMinimum:F1}) ==");
+        double Of(string group, string tag, string note = null)
+            => _probes.Where(p => p.Group == group && p.Locale == tag && (note == null || p.Note == note))
+                      .Select(W).DefaultIfEmpty(0).Max();
+        double Picker(double natural) => Math.Min(Math.Max(natural, PickerFloor), PickerCap);
+        double keysWidth = Of("profiles-keys", "en");
+        foreach (var (tag, _) in Locales)
+        {
+            var modes = _probes.Where(p => p.Group == "profiles-mode" && p.Locale == tag).ToList();
+            if (modes.Count == 0) continue;
+            var widest = modes.OrderByDescending(W).First();
+            double ActionOf(string key) => Picker(W(modes.First(p => p.Note == key))) + ShortcutReset;
+            double action = Picker(W(widest)) + ShortcutReset;
+            double profile = ProfilePickerFloor + ShortcutReset;
+            double buttons = Of("profiles-word", tag, "Profiles_Shortcut_When") + keysWidth + Of("profiles-record", tag) + ShortcutClear;
+            double device = Of("profiles-word", tag, "Profiles_Shortcut_On") + Picker(Of("profiles-device", tag)) + ShortcutReset;
+            double delete = Of("profiles-delete", tag);
+            int next = LinesOf(new[] { ActionOf("Profiles_ShortcutMode_Next"), buttons, device, delete }, ProfilesRowAtMinimum, ShortcutGap);
+            int lines = LinesOf(new[] { action, buttons, device, delete }, ProfilesRowAtMinimum, ShortcutGap);
+            int specific = LinesOf(new[] { ActionOf("Profiles_ShortcutMode_Specific"), profile, buttons, device, delete },
+                ProfilesRowAtMinimum, ShortcutGap);
+            Console.WriteLine($"  {tag,-8} widest action picker {W(widest),6:F1} {widest.Note,-40}"
+                              + (W(widest) > PickerCap ? " trimmed at 280" : " fits 280")
+                              + $"  lines on Next Profile {next}, on the widest {lines}, on Specific Profile {specific}");
+        }
         Console.WriteLine();
 
         // DevicesPage.xaml wraps the cells, so a row holds what fits and the
@@ -580,13 +658,13 @@ internal static class Program
         Console.WriteLine();
 
         // ── C275 and #574 ──
-        // The header's margin takes 32 a side. At the 900 window minimum
-        // the sidebar (248, always open) leaves a line 588, and in the
-        // default 1100 window 788.
+        // The header's margin takes 36 a side. At the 900 window minimum
+        // the sidebar (264, always open) leaves a line 564, and in the
+        // default 1100 window 764.
         Console.WriteLine("== Pad page header (window minimum 900) ==");
-        const double chip = 34 + 14;
-        // The More button: 34 in a 14 left margin.
-        const double more = 34 + 14;
+        const double chip = 46 + 16;
+        // The More button: 40 in a 14 left margin.
+        const double more = 40 + 14;
         double title = Max("hdr-title"), preset = Max("hdr-preset"), presetFloor = Max("hdr-preset-floor");
         double power = Max("hdr-power");
         double widestSection = Max("hdr-section-bold");
@@ -598,7 +676,7 @@ internal static class Program
         Console.WriteLine($"  More button                    : {more:F1}");
         // The button's word is capped at 204 and trims past it. The chrome
         // around the word is the button's width less the word's.
-        const double wordCap = 204, powerChrome = 12 + 2 + 22 + 24;
+        const double wordCap = 204, powerChrome = 12 + 2 + 28 + 25;
         foreach (string key in StateKeys)
         {
             var over = _probes.Where(p => p.Group == "hdr-power" && p.Note == key && W(p) - powerChrome > wordCap)
@@ -647,12 +725,12 @@ internal static class Program
         Console.WriteLine($"  Macros & Menus parts, one line : {macrosParts.Width:F1} (worst {macrosParts.Tag})");
 
         // Line 2 wraps. Its widest single piece is a device's pill at its
-        // 320 cap in a 12 right margin, and the three side by side are
+        // 460 cap in a 10 right margin, and the three side by side are
         // Driven by, one such pill and Add Device.
-        const double pill = 320 + 12;
+        const double pill = 460 + 10;
         double deviceLine = Max("hdr-driven") + pill + Max("hdr-add");
         foreach (var (name, line) in new[]
-                 { ("a 900 window", 900.0 - 248 - 64), ("a 1100 window", 1100.0 - 248 - 64) })
+                 { ("a 900 window", 900.0 - 264 - 72), ("a 1100 window", 1100.0 - 264 - 72) })
         {
             // Line 1's first column is what the power button and the More
             // button leave.

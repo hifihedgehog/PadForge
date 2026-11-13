@@ -78,7 +78,7 @@ namespace PadForge.Tests
             string code = RepoText("PadForge.App", "Views", "AboutPage.xaml.cs");
             Assert.Contains("const string Marker = \"ComeUntoChrist.org\";", code);
             Assert.Contains("Strings.CultureChanged += BuildInviteLine;", code);
-            Assert.Contains("link.SetResourceReference(TextElement.ForegroundProperty, \"EmberBrush\");", code);
+            Assert.Contains("link.SetResourceReference(TextElement.ForegroundProperty, \"EmberHotBrush\");", code);
             Assert.Contains("NavigateUri = new Uri(\"https://www.comeuntochrist.org\")", code);
         }
 

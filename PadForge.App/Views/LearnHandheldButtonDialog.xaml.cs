@@ -15,16 +15,20 @@ namespace PadForge.Views
 {
     /// <summary>
     /// Press-to-learn flow for handheld hidden buttons (issue #343), the
-    /// NFC registration dialog's shape. Start runs three timed phases on
-    /// the shared learn session (hands off, press and hold, release);
-    /// whatever the press changed, a key chord through the hooks or a
+    /// NFC registration dialog's shape. A learn runs three timed phases on
+    /// the shared learn session (hands off, press and hold, let go). It
+    /// starts as the dialog opens, and Start Over runs it again.
+    /// Whatever the press changed, a key chord through the hooks or a
     /// field in a vendor report, becomes a candidate the user names and
     /// registers. The list below shows the learned set with Remove, and
     /// the footer exports or imports it as a file so one owner's work
     /// seeds every machine of that model.
     /// </summary>
-    public partial class LearnHandheldButtonDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class LearnHandheldButtonDialog : DialogWindow
     {
+        /// <summary>The steps of a learn, as the live line counts them.</summary>
+        private const int Steps = 3;
+
         private sealed class CandidateRow
         {
             public HandheldLearnSession.Candidate Candidate;
@@ -36,6 +40,8 @@ namespace PadForge.Views
             public string Name { get; set; }
             public int Button { get; set; }
             public string Description { get; set; }
+
+            public override string ToString() => Name;
         }
 
         private sealed class ExportFile
@@ -54,9 +60,8 @@ namespace PadForge.Views
         public LearnHandheldButtonDialog()
         {
             InitializeComponent();
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
-            MachineText.Text = MachineIdentity.Current.DisplayName;
+            ListHead.Text = string.Format(Strings.Instance.Handheld_LearnedOn_Format, MachineIdentity.Current.DisplayName);
             RefreshDaemon();
             _dev = HandheldButtonsDevice.Active;
             if (_dev == null)
@@ -67,12 +72,22 @@ namespace PadForge.Views
             else
             {
                 // Arm the capture: the hooks install and every vendor
-                // collection opens, so the first Start already sees the press.
+                // collection opens, so the first learn already sees the press.
                 HandheldButtonRegistry.LearnCaptureActive = true;
                 _dev.SyncReadersNow();
+                // The learn runs as the dialog opens: the line under the
+                // title says to press the button when asked.
+                RoutedEventHandler opened = null;
+                opened = (_, _) =>
+                {
+                    Loaded -= opened;
+                    StartLearn();
+                };
+                Loaded += opened;
             }
             RefreshList();
             _phaseTimer.Tick += PhaseTimer_Tick;
+            Loaded += (_, _) => NameBox.Focus();
             Closed += (s, e) => Teardown();
         }
 
@@ -81,16 +96,41 @@ namespace PadForge.Views
             string running = HandheldDaemonWatch.Running;
             if (string.IsNullOrEmpty(running))
             {
-                DaemonText.Visibility = Visibility.Collapsed;
+                DaemonBox.Visibility = Visibility.Collapsed;
                 return;
             }
             DaemonText.Text = string.Format(Strings.Instance.Handheld_DaemonWarning_Format, running);
-            DaemonText.Visibility = Visibility.Visible;
+            DaemonBox.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>The dot of the live line: ember while a learn runs, the
+        /// wait color while none does.</summary>
+        private void ShowRunning(bool running)
+            => LiveDot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, running ? "EmberBrush" : "WaitBrush");
+
+        /// <summary>The end of the live line during a learn: which step
+        /// this is, in the body face.</summary>
+        private void ShowStep(int step)
+        {
+            ChordText.ClearValue(System.Windows.Controls.TextBlock.FontFamilyProperty);
+            ChordText.Text = string.Format(Strings.Instance.Handheld_Step_Format, step, Steps);
+            ChordText.ToolTip = null;
+        }
+
+        /// <summary>The end of the live line after a learn: what the press
+        /// changed, in the code face, or nothing. A long source is cut
+        /// short on the line and whole in its tooltip.</summary>
+        private void ShowSource(string source)
+        {
+            ChordText.SetResourceReference(System.Windows.Controls.TextBlock.FontFamilyProperty, "TelemetryFontFamily");
+            ChordText.Text = source ?? string.Empty;
+            ChordText.ToolTip = string.IsNullOrEmpty(source) ? null : source;
         }
 
         private void Teardown()
         {
             _phaseTimer.Stop();
+            ShowRunning(false);
             if (_session != null)
             {
                 _session.SetPhase(HandheldLearnSession.Phase.Done);
@@ -102,7 +142,11 @@ namespace PadForge.Views
 
         // ── Learn ──
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private void StartButton_Click(object sender, RoutedEventArgs e) => StartLearn();
+
+        /// <summary>Runs a learn from its first step. The dialog's opening
+        /// starts one, and Start Over another.</summary>
+        private void StartLearn()
         {
             // The feature can be switched off while this dialog is open,
             // which retires the row; say so instead of running a pass that
@@ -115,9 +159,8 @@ namespace PadForge.Views
             }
             _chord = null;
             _candidates = new List<HandheldLearnSession.Candidate>();
-            CandidateBox.Visibility = Visibility.Collapsed;
+            SourceRow.Visibility = Visibility.Collapsed;
             CandidateBox.ItemsSource = null;
-            ChordText.Text = Strings.Instance.Nfc_Waiting;
             RegisterBtn.IsEnabled = false;
             StartBtn.IsEnabled = false;
 
@@ -125,6 +168,8 @@ namespace PadForge.Views
             _session.SetPhase(HandheldLearnSession.Phase.Idle);
             _dev.BeginLearn(_session);
             StatusText.Text = Strings.Instance.Handheld_PhaseIdle;
+            ShowStep(1);
+            ShowRunning(true);
             _phaseTimer.Interval = TimeSpan.FromMilliseconds(HandheldLearnSession.IdleMs);
             _phaseTimer.Start();
         }
@@ -138,11 +183,13 @@ namespace PadForge.Views
                 case HandheldLearnSession.Phase.Idle:
                     session.SetPhase(HandheldLearnSession.Phase.Press);
                     StatusText.Text = Strings.Instance.Handheld_PhasePress;
+                    ShowStep(2);
                     _phaseTimer.Interval = TimeSpan.FromMilliseconds(HandheldLearnSession.PressMs);
                     break;
                 case HandheldLearnSession.Phase.Press:
                     session.SetPhase(HandheldLearnSession.Phase.Release);
                     StatusText.Text = Strings.Instance.Handheld_PhaseRelease;
+                    ShowStep(3);
                     _phaseTimer.Interval = TimeSpan.FromMilliseconds(HandheldLearnSession.ReleaseMs);
                     break;
                 default:
@@ -159,6 +206,7 @@ namespace PadForge.Views
             _dev?.EndLearn();
             _session = null;
             StartBtn.IsEnabled = true;
+            ShowRunning(false);
 
             var c = session.Counts;
             int collections = _dev?.OpenCollections.Length ?? 0;
@@ -169,6 +217,7 @@ namespace PadForge.Views
             bool any = (_chord != null && _chord.Length > 0) || _candidates.Count > 0;
             if (!any)
             {
+                ShowSource(null);
                 StatusText.Text = Strings.Instance.Handheld_NothingFound + " "
                     + string.Format(Strings.Instance.Handheld_NothingFoundDetail_Format, collections, classes, c.PressReports, c.PressEvents);
                 return;
@@ -179,13 +228,13 @@ namespace PadForge.Views
                 parts.Add(string.Format(Strings.Instance.Handheld_ChordFormat, HandheldKeyNames.Describe(_chord)));
             if (_candidates.Count == 1)
                 parts.Add(_candidates[0].Describe());
-            ChordText.Text = parts.Count > 0 ? string.Join("  |  ", parts) : string.Empty;
+            ShowSource(parts.Count > 0 ? string.Join("  |  ", parts) : null);
 
             if (_candidates.Count > 1)
             {
                 CandidateBox.ItemsSource = _candidates.Select(c => new CandidateRow { Candidate = c }).ToList();
                 CandidateBox.SelectedIndex = 0;
-                CandidateBox.Visibility = Visibility.Visible;
+                SourceRow.Visibility = Visibility.Visible;
             }
 
             StatusText.Text = Strings.Instance.Handheld_Captured;
@@ -222,8 +271,8 @@ namespace PadForge.Views
             if (stored == null) return;
             StatusText.Text = string.Format(Strings.Instance.Handheld_RegisteredFormat, stored.Name);
             NameBox.Text = string.Empty;
-            ChordText.Text = Strings.Instance.Nfc_Waiting;
-            CandidateBox.Visibility = Visibility.Collapsed;
+            ShowSource(null);
+            SourceRow.Visibility = Visibility.Collapsed;
             CandidateBox.ItemsSource = null;
             _chord = null;
             _candidates = new List<HandheldLearnSession.Candidate>();
@@ -237,6 +286,9 @@ namespace PadForge.Views
             {
                 HandheldButtonRegistry.Remove(button);
                 RefreshList();
+                // The row and its button are gone, so the focus they held
+                // goes to the name.
+                NameBox.Focus();
             }
         }
 
@@ -315,12 +367,6 @@ namespace PadForge.Views
             return r.Length == 0 ? "machine" : r;
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Teardown();
-            Close();
-        }
-
         private void RefreshList()
         {
             var rows = HandheldButtonRegistry.Entries.Select(x => new EntryRow
@@ -331,6 +377,7 @@ namespace PadForge.Views
             }).ToList();
             ButtonListBox.ItemsSource = rows;
             EmptyText.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            ListFrame.Visibility = rows.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

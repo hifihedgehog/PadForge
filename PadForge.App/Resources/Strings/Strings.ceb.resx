@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Naka-on</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Naka-off</value></data>
   <data name="Common_More" xml:space="preserve"><value>Dugang pa</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Tan-awa tanan</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Na-install</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Wala ma-install</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Dili magamit sa ARM64</value></data>
@@ -86,7 +87,7 @@
   <data name="Common_Stopping" xml:space="preserve"><value>Nagahunong…</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Ginahunong ang engine…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Nagdagan sa {0}</value></data>
-  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Nagdagan ({0} ka client)</value></data>
+  <data name="Server_RunningClients_Format" xml:space="preserve"><value>Nagdagan, {0} ang nakakonektar</value></data>
   <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Naminaw sa :{0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Gigamit na ang port {0}</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Gidili ang access sa port {0} (padagana isip admin)</value></data>
@@ -98,7 +99,7 @@
   <data name="Common_Online" xml:space="preserve"><value>Konektado</value></data>
   <data name="Common_Offline" xml:space="preserve"><value>Dili konektado</value></data>
   <data name="Common_Unknown" xml:space="preserve"><value>Wala mailhi</value></data>
-  <data name="Common_Browse" xml:space="preserve"><value>Pangitaa...</value></data>
+  <data name="Common_Browse" xml:space="preserve"><value>Pangitaa…</value></data>
   <data name="Common_Proceed" xml:space="preserve"><value>Padayon</value></data>
   <data name="Common_Stop" xml:space="preserve"><value>Hunonga</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Sugdi</value></data>
@@ -123,7 +124,20 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ginalimpyohan ang mga virtual nga controller nga nabilin gikan sa miaging session.</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> ka device</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Idugang og controller</value></data>
+  <data name="AddController_Title" xml:space="preserve"><value>Idugang ang usa ka controller</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Pilia kung unsay makita sa mga dula. Madugang dayon ang controller inig click nimo.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Gipalihok sa</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Pilia unya</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Kasagaran</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Dugang nga mga output</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ang layout nga gilauman sa kadaghanang dula sa PC.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Para sa mga dula nga adunay PlayStation prompt, touchpad ug lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Layout sa button sa Switch, para sa mga dula ug emulator nga naglaum niini.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profile</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Pangitaa ang setting, device ug profile</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Pangita</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Mga resulta</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Papasa ang virtual nga controller</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ipakita ang PadForge</value></data>
   <data name="Main_VirtualController_Format" xml:space="preserve"><value>Virtual nga controller {0}</value></data>
@@ -189,6 +203,7 @@
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Nahimo ang profile nga "{0}".</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Napapas ang profile nga "{0}".</value></data>
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Na-update ang profile nga "{0}".</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Ang profile nga "{0}" karon nagkupot sa kasamtangang setup.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Na-load ang profile: {0}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>Gi-assign ang "{0}" sa virtual nga controller {1}.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Sayop sa pag-load sa mga setting: {0}</value></data>
@@ -205,18 +220,16 @@
   <data name="Status_Error_Format" xml:space="preserve"><value>Sayop: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Dili mahimo ang {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Nausab ang profile: {0}</value></data>
-  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Mga shortcut sa profile</value></data>
+  <data name="Profiles_Shortcuts" xml:space="preserve"><value>Mga shortcut</value></data>
   <data name="Profiles_ShortcutsDescription" xml:space="preserve"><value>I-assign ang mga kombinasyon sa button aron mausab ang profile gikan sa bisan unsang controller.</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Idugang og shortcut</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Sunod nga profile</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Miaging profile</value></data>
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Piho nga profile</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bisan unsang konektado nga device</value></data>
-  <data name="Profiles_ShortcutLearn" xml:space="preserve"><value>Irekord</value></data>
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Nagrekord...</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Walay device nga gipili.</value></data>
-  <data name="Status_InvalidSlotIndex_Format" xml:space="preserve"><value>Dili balido nga index sa slot: {0}</value></data>
-  <data name="Status_FailedAssignDevice" xml:space="preserve"><value>Napakyas sa pag-assign sa device.</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kung</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>sa</value></data>
   <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Gi-assign ang "{0}" sa virtual nga controller {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Gitangtang ang "{0}" gikan sa virtual nga controller {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Natangtang ang device.</value></data>
@@ -226,10 +239,6 @@
   <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Nagdagan ang engine. I-klik aron mohunong.</value></data>
   <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Nahunong ang engine. I-klik aron mosugod.</value></data>
   <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>I-configure kini nga controller</value></data>
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Laktawi</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Sunod</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Nahuman</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Mga slot</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilia ang usa ka macro sa lista, o pislita ang + tupad sa Mga macro aron maghimo og bag-o.</value></data>
   <data name="Dashboard_GameMods" xml:space="preserve"><value>Mga game mod</value></data>
   <data name="Dashboard_GameModsDescription" xml:space="preserve"><value>Gitugotan niini ang mga game mod nga gihimo para sa DSX nga mo-set sa mga adaptive trigger, lightbar, suga sa player ug suga sa mute sa imong mga PlayStation controller.</value></data>
@@ -248,32 +257,37 @@
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Walay nakit-an nga Bliss-Box port.</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>walay controller</value></data>
   <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Tipo {0}</value></data>
-  <data name="Dashboard_WebFooter" xml:space="preserve"><value>Pagkonektar gikan sa browser sa phone o tablet aron gamiton kini isip gamepad.</value></data>
-  <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>I-scan gamit ang camera sa phone, o ablihi kini nga address sa browser niini:</value></data>
   <data name="Dashboard_WebPlainLocalOnly" xml:space="preserve"><value>Kini nga PC lang</value></data>
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Bag-ong code</value></data>
-  <data name="Dashboard_WebPlainLocalAddress" xml:space="preserve"><value>Address niini nga PC:</value></data>
-  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Ipaambit ang mga controller sa usa ka gi-pair nga PadForge sa laing PC, sa imong network o pinaagi sa internet.</value></data>
+  <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Palihoka ang mga virtual nga controller sa laing PC. Human sa usa ka higayon nga pairing, awtomatikong mokonektar pag-usab ang gisaligan nga PC.</value></data>
   <data name="Dashboard_RemoteLinkConnectButton" xml:space="preserve"><value>I-pair / Konektar</value></data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>I-pair</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Konektar</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Konektado</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>I-pair sa layo nga PC</value></data>
-  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Siguroha nga parehas kini nga code sa duha ka screen, dayon pislita ang I-pair.</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>I-pair sa laing PC?</value></data>
+  <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Siguroha nga parehas nga code ang makita sa duha ka screen.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>I-pair</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Isalikway</value></data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Limitahi kini nga PC sa gamepad input lang</value></data>
-  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Ang gi-pair nga PC makapadala og input sa keyboard, mouse, ug macro niini gawas kon limitahan nimo kini sa gamepad lang.</value></data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Gamepad lang</value></data>
+  <data name="RemoteLink_ConsentWarning" xml:space="preserve"><value>Ang gi-pair nga PC makapalihok sa gamepad output niini nga PC, ug gawas kon limitahan nimo kini, ang keyboard, mouse ug mga macro usab niini.</value></data>
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>Mga gi-pair nga PC</value></data>
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Mga PC nga imong gi-pair para sa Remote Link. Bawia ang usa aron dili na kini makakonektar. Kinahanglan kini mag-pair pag-usab.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Bawia</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Bawia tanan</value></data>
+  <data name="RemoteLink_Rename" xml:space="preserve"><value>Usba ang ngalan</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>I-reset ang posisyon</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>I-right-click ug kupti aron i-drag</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Walay device</value></data>
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Mga setting</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Kinatibuk-an</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Mga driver</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Data ug privacy</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Pangitaa ang mga setting</value></data>
+  <data name="Settings_SearchNone_Format" xml:space="preserve"><value>Walay setting nga motakdo sa “{0}”.</value></data>
   <data name="Settings_Appearance" xml:space="preserve"><value>Panagway</value></data>
   <data name="Settings_AppearanceDesc" xml:space="preserve"><value>Pilia ang imong gusto nga tema.</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Tema</value></data>
@@ -300,13 +314,15 @@
   <data name="Update_InstallFailed_Format" xml:space="preserve"><value>Dili ma-install sa PadForge ang update: {0}</value></data>
   <data name="Update_RestartFailed_Format" xml:space="preserve"><value>Dili maka-restart ang PadForge: {0}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Na-update ang PadForge ngadto sa {0}.</value></data>
-  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide nga driver</value></data>
-  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Itago ang pisikal nga mga device gikan sa mga dula aron malikayan ang dobleng input.</value></data>
+  <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
+  <data name="Settings_HidHideDesc" xml:space="preserve"><value>Nagtago sa pisikal nga mga device gikan sa mga dula aron malikayan ang dobleng input.</value></data>
+  <data name="Settings_HidHideOptions" xml:space="preserve"><value>Mga opsyon sa HidHide</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Itago ang mga device gikan sa mga dula, Ipabilin nga natago ang mga device tali sa mga paglansad, Mga aplikasyon nga gi-whitelist</value></data>
   <data name="Settings_AddDots" xml:space="preserve"><value>Idugang...</value></data>
-  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro nga driver</value></data>
+  <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>I-uninstall ang HIDMaestro</value></data>
-  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Tangtangon niini ang HIDMaestro gikan niining PC: ang mga virtual nga controller niini, driver, signing certificate, registry key ug mga file. Hunongon una sa PadForge ang engine niini. Ang ubang programa nga naggamit sa HIDMaestro mawad-an sa driver niini hangtod sa ilang sunod nga pagsugod. I-install kini pag-usab sa PadForge sa sunod nga higayon nga magsugod kini og virtual nga controller.</value></data>
-  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tangtanga usab ang usbip-win2 nga gi-install sa kaugalingon niini nga installer</value></data>
+  <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kini ang tangtangon gikan niining PC. I-install pag-usab sa PadForge ang HIDMaestro uban sa sunod nga virtual nga controller niini.</value></data>
+  <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Tangtanga usab ang usbip-win2</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbipDesc" xml:space="preserve"><value>Ang mas daan nga mga bersyon sa PadForge nag-install sa usbip-win2 gamit ang installer sa usbip-win2. Tangtangon usab niini kana nga pag-install, apil ang filter niini sa USB root hub, gawas kon adunay laing programa nga naggamit sa usbip-win2. Ang pagtangtang sa filter mo-restart sa tanang USB 3 root hub, busa madiskonekta kadiyot ang mga USB device.</value></data>
   <data name="HIDMaestroUninstall_Reading" xml:space="preserve"><value>Ginabasa kung unsa ang gibilin sa HIDMaestro niining PC…</value></data>
   <data name="HIDMaestroUninstall_Nothing" xml:space="preserve"><value>Walay gibilin ang HIDMaestro niining PC nga tangtangon.</value></data>
@@ -315,10 +331,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Magpabilin: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>Dili mabasa: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>Wala matangtang: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 nga Bluetooth driver</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Natangtang</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Gitipigan</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Wala mabasa</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Wala matangtang</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Motugot sa mga PlayStation 3 controller, sa PlayStation Move ug sa Navigation controller nga mokonektar pinaagi sa Bluetooth. Nakalakip sa PadForge ug ma-install sa unang higayon nga ma-pair ang usa niini.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Nagkonektar sa mga PlayStation 3 controller pinaagi sa Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>I-uninstall ang BthPS3</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Tangtangon niini ang BthPS3 gikan niining PC: ang mga driver niini, ang filter nga gidugang niini sa Bluetooth, ug ang WinUSB driver nga gihatag sa PadForge sa mga PlayStation 3 controller para sa pairing. Hunongon una sa PadForge ang engine niini, ug mapalong kadiyot ang Bluetooth samtang gi-unload ang mga driver. Unya ang mga PlayStation 3, Move ug Navigation controller mogana na lang pinaagi sa USB. Ang pag-pair sa usa niini mo-install pag-usab sa BthPS3.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Kini ang tangtangon gikan niining PC. Unya ang mga PlayStation 3, Move ug Navigation controller mogana na lang pinaagi sa USB, hangtod nga ang pag-pair sa usa niini mo-install pag-usab sa BthPS3.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Ginabasa kung unsa ang gibilin sa BthPS3 niining PC…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>Walay gibilin ang BthPS3 niining PC nga tangtangon.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>Gigamit sa DsHidMini kining mga driver, busa magpabilin kini samtang naka-install ang DsHidMini.</value></data>
@@ -358,13 +379,13 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Mga posisyon sa key ug mga key sa base layer sa mga keyboard nga gipakita sa preview sa Keyboard + Mouse, gihimo gikan sa layout data sa QMK ug sa QMK fork sa Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Mga posisyon sa key ug mga key sa base layer sa mga keyboard nga gipakita sa preview sa Keyboard + Mouse, gihimo gikan sa layout data sa QMK ug sa QMK fork sa Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_License" xml:space="preserve"><value>Lisensya</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver para sa pagtago sa pisikal nga mga device gikan sa mga dula. MIT.</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver para sa pagtago sa pisikal nga mga device gikan sa mga dula.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Usa ka imbitasyon</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>“Ug naghisgot kami kang Kristo, nagmaya kami diha kang Kristo, nagsangyaw kami mahitungod kang Kristo, nanagna kami mahitungod kang Kristo, ug nagsulat kami sumala sa among mga panagna, aron ang among mga anak mahibalo kon sa unsang tinubdan sila mosalig alang sa kapasayloan sa ilang mga sala.”</value></data>
   <data name="About_TestimonyRef" xml:space="preserve"><value>2 Nephi 25:26</value></data>
@@ -417,10 +438,11 @@
   <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Pangayoon niini nga PlayStation pad ang mga direksyon niini direkta, aron ang wala ug tuo, o taas ug ubos, magrehistro dungan sa dance mat gikan sa unang lakang. Moabot kini isip mga button nga Up, Down, Left, ug Right Arrow, nga ipadala usab sa firmware 3.34 sa kaugalingon human mapislit ang magkaatbang nga mga direksyon, ug mohunong na dayon ang PadForge sa pagpangayo. Hangtod niana, laktawan sa adapter ang kadaghanan sa kaugalingong pagbasa niini sa pad.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Presyon sa DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Numero sa magdudula</value></data>
-  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Tipigan sa adapter ang numero ug mokonekta pag-usab isip kana nga magdudula. Makakita dayon ang Windows og bag-ong device, busa i-map pag-usab ang port inig balik niini.</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>Tipigan sa adapter ang numero ug mokonekta pag-usab, nga makita sa Windows isip bag-ong device.</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Magdudula</value></data>
   <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Ibutang ang magdudula</value></data>
   <data name="DreamcastScreen_Title" xml:space="preserve"><value>Screen sa Dreamcast</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Walay moabot sa port hangtod nga i-save nimo.</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Ipakita</value></data>
   <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Ang hulagway sa adapter</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Ngalan sa profile</value></data>
@@ -505,6 +527,11 @@
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>Tanang keyboard (gihiusa)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Tanang mouse (gihiusa)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Mga device</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ang nakakonektar</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Pangitaa ang mga device</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Tanan</value></data>
+  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Mga controller</value></data>
+  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard ug mouse</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Basaha ang chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Basaha ang mga chatpad ug uDraw nga tablet</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Basaha ang mga gamepad</value></data>
@@ -525,21 +552,16 @@
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Tangtanga kini nga device ug ang mga setting niini</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Tangtanga ang device</value></data>
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>Tangtangon ang {0} gikan sa listahan sa device ug kalimtan ang natipig nga mga setting niini.</value></data>
-  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Guyora ang device ngadto sa controller card sa sidebar aron i-assign kini.</value></data>
-  <data name="Devices_Product" xml:space="preserve"><value>Produkto: </value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Guyora ang device ngadto sa controller sa sidebar aron i-assign kini.</value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Isumite ang mapping sa device</value></data>
-  <data name="Devices_VCAssignment" xml:space="preserve"><value>Pag-assign sa virtual nga controller</value></data>
-  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>I-toggle ang assignment</value></data>
-  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Wala pay slot sa virtual nga controller. Paghimo og usa sa Dashboard aron i-assign kini nga device.</value></data>
-  <data name="Devices_InputMode" xml:space="preserve"><value>Mode sa input</value></data>
+  <data name="Devices_ToggleAssignment" xml:space="preserve"><value>I-assign kini nga device niini nga controller, o tangtangon kini.</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Basaha ang raw nga HID index imbes sa gamepad mapping sa SDL. Gamita kon sayop ang pag-ila sa SDL sa layout sa button/axis.</value></data>
-  <data name="Devices_InputHiding" xml:space="preserve"><value>Pagtago sa input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Itago gikan sa mga dula (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Itago gayod kini nga device gikan sa ubang aplikasyon pinaagi sa HidHide nga driver. Kon itago sa PadForge ang USB controller nga nakakonektar na, ikonektar kini pag-usab sa Windows, busa mawala kini sa bisan unsang nakaabli niini. Ang Bluetooth controller, o usa nga nakigbahin og receiver sa laing controller, magpabilin sa bisan unsang nakaabli niini sa wala pa kini gitago hangtod sa sunod nga pagkonekta niini.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>I-install ang HidHide nga driver aron magamit kini nga opsyon</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Pugngan lang ang mga key/button nga na-map, ug palusoton ang mga input nga wala na-map</value></data>
-  <data name="Devices_RawInputState" xml:space="preserve"><value>Raw nga kahimtang sa input</value></data>
-  <data name="Devices_EmptyHint" xml:space="preserve"><value>Pili og device aron susihon ang raw nga input niini.</value></data>
+  <data name="Devices_RawInputState" xml:space="preserve"><value>Sulayi ang mga input</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Pili og device aron makita ang mga setting niini ug sulayan ang mga input niini.</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Mga axis</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
@@ -750,27 +772,25 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Ang napili nga device walay axis, button, o hat nga ma-clone.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>I-clone ang {0} niini nga slot isip 1:1 nga passthrough? Mahimong {1} ka axis, {2} ka button, ug {3} ka POV ang layout, ug ang mga laray niini nga device sa slot ilisan sa kaugalingong mga input niini.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Kini nga device adunay mas daghang input kaysa madala sa Extended nga controller. Na-map ang {0} sa {1} ka axis, {2} sa {3} ka button, ug {4} sa {5} ka POV. Ang uban wala na-map.</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Gi-import nga mga profile</value></data>
-  <data name="ManageProfiles_Description" xml:space="preserve"><value>Ang mga HIDMaestro nga profile nga gi-import sa user gitipigan sulod sa PadForge.xml ug makita sa profile dropdown sa matag Extended nga slot. Kuhaa ang bag-o gikan sa nakakonektar nga device sa ubos, o i-export / i-delete ang naa na.</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Imong gi-import nga mga profile ({0})</value></data>
-  <data name="ManageProfiles_ConnectedDevices" xml:space="preserve"><value>Nakakonektar nga mga device nga ma-import</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Mga preset sa controller</value></data>
+  <data name="ManageProfiles_Description" xml:space="preserve"><value>Idugang ang preset para sa controller nga wala gilakip sa PadForge, gikan sa file o gikan sa controller mismo.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Gi-import</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>I-import gikan sa nakakonektar nga device</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>I-delete</value></data>
-  <data name="ManageProfiles_Close" xml:space="preserve"><value>Isira</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>I-export ang profile JSON</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>I-delete ang gi-import nga profile?</value></data>
-  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>I-delete ang "{0}"? Ang bisan unsang slot nga naggamit karon niini nga profile mobalik sa synthetic nga Custom nga entry.</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Papason ang preset?</value></data>
+  <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Ang bisan unsang controller nga naggamit sa {0} mobalik sa Custom nga entry. Dili na kini mabawi.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Na-export sa {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Napakyas ang pag-export: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Na-delete ang "{0}".</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>I-import gikan sa file…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>I-import gikan sa usa ka file…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>I-import ang profile JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Na-import gikan sa {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Napakyas ang pagbasa: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Gibalibaran sa HIDMaestro kini nga profile sa {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Walay HID descriptor kini nga profile, busa walay controller nga mahimo gikan niini.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Walay na-import. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>I-refresh</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>I-import</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(walay ngalan nga HID device)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Nakit-an ang {0} ka HID interface.</value></data>
@@ -995,6 +1015,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Sentro</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Offset sa sentro, porma sa deadzone ug bili matag axis, kurba matag axis, range, pagmaneho</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Ang range sa numero, raw nga mga bili</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Nag-sample...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center offset X</value></data>
@@ -1423,19 +1444,20 @@
   <data name="Pad_ResetTouchpadMatchThreshold" xml:space="preserve"><value>I-reset ang threshold sa pagtugma sa porma</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>I-record ang gesture sa touchpad</value></data>
-  <data name="Recorder_Waiting" xml:space="preserve"><value>Naghulat sa paghikap sa tudlo sa canvas</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>I-record ang gesture</value></data>
+  <data name="Recorder_Waiting" xml:space="preserve"><value>Idrowing dinhi ang gesture.</value></data>
   <data name="Recorder_Waiting_Device" xml:space="preserve"><value>Pagdrowing sa touchpad. Gipakita kini dayon sa canvas.</value></data>
   <data name="Recorder_TargetDevice_Format" xml:space="preserve"><value>Nag-record gikan sa {0}, touchpad {1}</value></data>
   <data name="Recorder_TargetDevice_UnknownName" xml:space="preserve"><value>kini nga touchpad</value></data>
-  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Dili magamit ang touchpad. Gamita ang canvas sa ubos pinaagi sa mouse o paghikap.</value></data>
+  <data name="Recorder_TargetDevice_None" xml:space="preserve"><value>Dili magamit ang touchpad. Pagdrowing dinhi gamit ang mouse, pen o tudlo.</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Nagdrowing…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Nakuha na ang tanang sample. Nganli ang gesture ug i-click ang I-save.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Sample {0} sa {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>{0} / {1} ka sample</value></data>
   <data name="Recorder_SampleCount_Label" xml:space="preserve"><value>Mga sample nga kuhaon</value></data>
+  <data name="Recorder_MoreHint" xml:space="preserve"><value>Mga sample nga kuhaon</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Sulayi pag-usab</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Nganli kini nga gesture</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>Gikinahanglan ang ngalan</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Taas kaayo ang ngalan (max 64 ka karakter)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Adunay dili balido nga karakter ang ngalan</value></data>
@@ -1626,38 +1648,51 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Mga profile</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Pagdumala sa profile</value></data>
-  <data name="Profiles_Description" xml:space="preserve"><value>Paghimo og mga controller profile matag aplikasyon nga awtomatikong mobalhin base sa aktibong dula.</value></data>
-  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Awtomatikong ibalhin ang profile base sa aplikasyon nga anaa sa unahan</value></data>
+  <data name="Profiles_Subtitle" xml:space="preserve"><value>Ang profile usa ka kompleto nga setup: ang mga controller, mapping ug tuning niini.</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Mga sinugdanang profile</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Andam na nga mga profile para sa tibuok genre. Pilia ang usa, i-assign ang bisan unsang controller, ug pagdula.</value></data>
+  <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Ibalhin ang profile sumala sa dula</value></data>
+  <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Awtomatikong pagbalhin</value></data>
+  <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, walay profile nga gitakda para niini</value></data>
+  <data name="Profiles_InFront_Match_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, nga mo-load sa {1}</value></data>
+  <data name="Profiles_InFront_NoGames_Format" xml:space="preserve"><value>Anaa sa unahan karon: {0}, ug wala pay profile nga adunay gitakda nga dula</value></data>
   <data name="Profiles_ExternalControl" xml:space="preserve"><value>Tugoti ang gawas nga pagkontrol sa mga launcher ug script</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Nag-serve og lokal nga named pipe, PadForge.Control, aron ang Playnite, LaunchBox, o usa ka script makapaaktibo ug makapaundang sa mga profile. Ang profile nga gipaaktibo niining paagiha magpabilin nga aktibo hangtod buhian kini sa script o ikaw mismo ang mobalhin og profile. Alang lang sa lokal nga makina.</value></data>
+  <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Gawas nga pagkontrol</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktibong profile:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Walay slot</value></data>
-  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Awtomatikong pagbalhin: {0}</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Walay controller</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ihulog aron i-import ang profile</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Bag-o</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Ihulog dinhi ang profile file</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Bag-ong profile</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>I-save isip</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>I-save ang kasamtangang setup dinhi</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>I-edit</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>I-load</value></data>
-  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Wala pay profile nga adunay executable</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Pagpili una og profile.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Tangtanga ang profile</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Tangtangon ang "{0}"? Ang na-save nga snapshot sa slot ug mapping niini mapapas.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Papason ang {0}?</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Ilisan ang setup nga na-save sa "{0}" sa kasamtangan? Magpabilin ang ngalan ug mga dula niini.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Ilisan</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>I-save isip profile</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>I-edit ang profile</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Ngalan sa profile:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Bag-ong profile</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Ngalan</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Bag-ong profile</value></data>
-  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Mga executable (itandi sa window nga anaa sa unahan):</value></data>
+  <data name="ProfileDialog_Executables" xml:space="preserve"><value>Mga dula nga mo-load niini</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (global nga setting)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Gi-override samtang aktibo ang profile nga “{0}”: {1} ms</value></data>
-  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Mag-snapshot sa mga mapping sa matag slot ug sa mga setting matag device ubos sa usa ka ngalan. Ang mga gi-link nga executable awtomatikong mobalhin niini.</value></data>
-  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Usbon ang ngalan sa profile ug i-update ang mga executable nga mopaaktibo niini. Ang mga na-save nga mapping ug setting dili mausab.</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>I-save ang mga mapping ug setting sa matag controller ubos sa usa ka ngalan. Mo-load kini sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Mo-load ang profile sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Magsugod nga walay controller. Mo-load kini sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>
+  <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Idugang ang nagdagan nga dula</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Walay laing programa nga adunay abli nga window.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tangtanga ang {0}</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopyaha ang mga setting gikan sa...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Pagpili og device nga kopyahan sa mga setting niini:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Kopyaha gikan sa</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Ilisan ang mga mapping ug tuning kada device sa {0} sa iya sa laing controller.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Idugang ang mga macro sa laing controller ngadto sa {0}.</value></data>
+  <data name="CopyFrom_Unassigned" xml:space="preserve"><value>Wala ma-assign, nagpabilin ang mga mapping sukad kaniadto</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
   <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Pagpili og aplikasyon nga i-whitelist</value></data>
@@ -1688,6 +1723,7 @@
   <data name="Pad_BothAxes" xml:space="preserve"><value>Duha ka axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>I-double-click aron magdugang og punto. I-right-click aron tangtangon. I-drag aron i-adjust.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>curve editor</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis sa trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -1939,8 +1975,19 @@
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Pagdugang og shift nga layer. Ikaduhang talaan sa mapping nga moandar samtang gikuptan o gi-toggle ang usa ka button.</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift nga layer</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>I-configure ang Base</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ang ngalan, icon ug kolor sa Base nga layer sa Shift Layer Flyout ug sa laray sa mga layer.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ngalan sa layer</value></data>
-  <data name="Pad_Shift_ActivatorInput" xml:space="preserve"><value>Input sa activator</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Gikuptan gamit ang</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Gipislit gamit ang</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Sunod nga layer gamit ang</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Miaging layer gamit ang</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Ug gamit ang</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Pili og input</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Mga kontrol nga walay mapping</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Mobalik sa Base</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Walay buhaton</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, klase sa input, timing ug kolor</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kupti</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Walay button</value></data>
@@ -1961,13 +2008,10 @@
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Tangtangon ang layer nga "{0}" ug ang tanang mapping row niini? Dili na kini mabawi.</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Ayaw kuhaa gikan sa Base</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Kung naka-check, magpabiling off ang target niini nga layer imbis nga mokuha gikan sa Base nga row.</value></data>
-  <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Ikaduhang input sa chord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Threshold sa axis</value></data>
   <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Samtang naa ra sa layer</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Bisan unsang layer</value></data>
   <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Moihap lang ang input samtang aktibo ang napiling layer. Gisusi kini inig pislit sa input ug magpabilin kini sa tibuok pislit. Ang Bisan unsang layer nagpasabot nga kanunay moihap ang input. Ibutang ang mga exit sa matag layer diha sa maong layer, gamit ang laing activator o Switch Layer nga macro.</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Sunod nga button</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Miaging button</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Mobalik sa sinugdanan</value></data>
   <data name="Pad_Shift_CycleWrap_Tooltip" xml:space="preserve"><value>Kung on, ang paglapas sa katapusang layer mobalik sa una, ug ang paglapas sa una mobalik sa katapusan. Kung off, mohunong ang cursor sa mga tumoy.</value></data>
   <data name="Pad_Shift_CycleIncludeBase" xml:space="preserve"><value>Iapil ang Base</value></data>
@@ -1978,17 +2022,16 @@
   <data name="Pad_Shift_KindButton_Subtitle" xml:space="preserve"><value>Ang pagpislit sa usa ka button (o direksyon sa POV) mopaaktibo sa layer.</value></data>
   <data name="Pad_Shift_KindChord_Subtitle" xml:space="preserve"><value>Kinahanglang kuptan ang duha ka button dungan aron moaktibo. Suportado ang chord gikan sa lain-laing device.</value></data>
   <data name="Pad_Shift_KindAxis_Subtitle" xml:space="preserve"><value>Aktibo samtang ang analog nga axis milapas sa bili sa threshold.</value></data>
-  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Magpabiling aktibo ang layer samtang gikuptan ang activator. Mohunong kung imong buhian.</value></data>
+  <data name="Pad_Shift_ModeHold_Subtitle" xml:space="preserve"><value>Samtang gikuptan ang input niini, ilisan sa mga mapping niini nga layer ang sa Base.</value></data>
   <data name="Pad_Shift_ModeToggle_Subtitle" xml:space="preserve"><value>I-tap aron i-aktibo. I-tap pag-usab aron i-off. Magpabilin ang layer bisan sa daghang pagpislit.</value></data>
   <data name="Pad_Shift_ModeCycle_Subtitle" xml:space="preserve"><value>Matag pislit mosunod sa han-ay nga lista sa mga layer. Mobalik sa Base.</value></data>
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>I-tap kausa aron i-aktibo. Ang sunod nga pagpislit sa button nga may mapping molihok sa layer, unya kusang mohunong.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Walay kaugalingong button. Idugang kini sa pila sa Cycle nga kontrol, ug maabot kini sa cycle.</value></data>
-  <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Kuhaa gikan sa Base ang mga target nga walay mapping</value></data>
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Molihok inig buhi</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Maghulat hangtod buhian ang button una molihok kini nga activator. Kung adunay delay sa pagkupti, kinahanglang molungtad ang pislit nianang gitas-on aron moihap ang pagbuhi.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ipalihok usab ang kaugalingong mapping sa activator</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kung naka-check, ang button sa activator mopalihok gihapon sa bisan unsang row nga naggamit niini isip source. Ang usa ka pislit mobalhin sa layer ug mopalihok usab sa kaugalingong mapping sa button. Kung wala naka-check (default), ang pislit sa activator gamiton lamang sa pagbalhin sa layer.</value></data>
-  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Kung naka-check, ang mga target nga wala tin-aw nga gi-mapping niini nga layer mokuha gikan sa Base nga layer. Kung wala naka-check (default), hingpit nga ilisan sa layer ang Base ug magpabiling off ang mga target nga walay mapping.</value></data>
+  <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Uban sa Mobalik sa Base, ang mga kontrol nga wala gi-map niini nga layer magpabilin sa ilang mga mapping sa Base. Uban sa Walay buhaton, hingpit nga ilisan sa layer ang Base ug magpabiling off kadtong mga kontrol.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Range sa pagtuyok</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>I-set ang range sa pagtuyok</value></data>
@@ -2164,7 +2207,6 @@
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Na-export ang profile nga "{0}".</value></data>
   <data name="Status_ProfileImported_Format" xml:space="preserve"><value>Na-import ang profile nga "{0}" ({1} ka package sa tingog ang narehistro).</value></data>
   <data name="Status_ProfileImportFailed" xml:space="preserve"><value>Ang file dili mabasa nga PadForge profile.</value></data>
-  <data name="Macro_Sound_PickFromPackage_Format" xml:space="preserve"><value>Pagpili og tingog gikan sa {0}</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Mga package sa tingog</value></data>
   <data name="Pad_SoundPackages_FoldHint" xml:space="preserve"><value>Mga zip file sa tingog alang sa mga macro sa tingog</value></data>
   <data name="Pad_Audio_Packages_Desc" xml:space="preserve"><value>Ang package sa tingog usa ka zip file sa mga tingog nga adunay .pfsounds nga extension. Idugang ang usa dinhi, unya pilia ang mga tingog niini sa bisan unsang macro sa tingog. Ang PadForge mobasa direkta gikan sa file ug dili gayud kini i-unpack. Ibutang ang mga package tupad sa PadForge.exe aron magpabiling portable.</value></data>
@@ -2207,20 +2249,13 @@
   <data name="Mapping_MidiCcUp_Format" xml:space="preserve"><value>CC {0} +</value></data>
   <data name="Mapping_MidiCcDown_Format" xml:space="preserve"><value>CC {0} −</value></data>
   <data name="RemoteLink_IdentityTitle" xml:space="preserve">
-    <value>Proteksyon sa identidad</value>
+    <value>Identidad sa pairing</value>
   </data>
   <data name="RemoteLink_IdentityDescription" xml:space="preserve">
     <value>Giunsa pagtipig ang pairing nga identidad niini nga PC. Pagpili og portable nga mode aron madala ang imong mga pairing sa thumb drive tali sa mga makina.</value>
   </data>
-  <data name="RemoteLink_PeerNamePlaceholder" xml:space="preserve"><value>Nganli kini nga PC</value></data>
-  <data name="RemoteLink_NearbyTitle" xml:space="preserve">
-    <value>Duol nga mga PC (Wala ma-pair)</value>
-  </data>
   <data name="Common_Reset" xml:space="preserve">
     <value>I-reset</value>
-  </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Password sa Remote Link</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge Touchpad</value>
@@ -2265,7 +2300,7 @@
     <value>Ablihi ang kasamtangang identidad una usbon ang proteksyon niini.</value>
   </data>
   <data name="RemoteLink_PasswordSetPrompt" xml:space="preserve">
-    <value>Pagbutang og password aron mapanalipdan ang imong portable nga identidad. Isulod nimo kini aron maablihan ang Remote Link sa matag PC.</value>
+    <value>Ang password nanalipod sa identidad sa pairing niini nga PC.</value>
   </data>
   <data name="RemoteLink_StatusIdentityUpdated" xml:space="preserve">
     <value>Na-update ang proteksyon sa identidad.</value>
@@ -2285,7 +2320,7 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Nagkonektar sa {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Awtomatikong mokonektar pag-usab</value></data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Awtomatikong pagkonektar pag-usab</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Naminaw sa {0}</value>
   </data>
@@ -2301,60 +2336,65 @@
   <data name="RemoteLink_StatusPeerConnected" xml:space="preserve">
     <value>Nakonektar ang peer {0}, {1} ka device</value>
   </data>
-  <data name="Macro_Sound_Pick_Description" xml:space="preserve">
-    <value>Pagpili og tingog gikan sa gidugang nga package, o pangitaa ang file.</value>
-  </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Pangitaa ang mga file…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Pagpili og tingog</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ang tingog mogawas sa speaker sa controller, o sa PC kung wala kini.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Gamita ang tingog</value></data>
+  <data name="PickSound_Play_Format" xml:space="preserve"><value>Patugtoga ang {0}</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Offline nga speech recognizer nga makadungog sa mga hugpong sa pulong sa voice macro. Sa Alpha Cephei. Ang modelo naa sulod sa PadForge. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Offline nga speech recognizer nga makadungog sa mga hugpong sa pulong sa voice macro. Sa Alpha Cephei. Ang modelo naa sulod sa PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
-  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptograpiya para sa pairing ug transport sa Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, usa ka lisensya nga sama sa MIT.</value></data>
+  <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kriptograpiya para sa pairing ug transport sa Remote Link (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
   <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
-  <data name="About_BthPS3Desc" xml:space="preserve"><value>Mga Bluetooth profile ug PSM filter driver nga kauban sa PadForge, ni nefarius, nga motugot sa DualShock 3 nga mokonektar pinaagi sa gipaambit nga radyo. Gi-install sulod sa app sa panahon sa pairing. BSD 3-Clause.</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Mga Bluetooth profile ug PSM filter driver nga kauban sa PadForge, ni nefarius, nga motugot sa DualShock 3 nga mokonektar pinaagi sa gipaambit nga radyo. Gi-install sulod sa app sa panahon sa pairing.</value></data>
   <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
-  <data name="About_LibusbDesc" xml:space="preserve"><value>USB access para sa wired driver sa Switch 2 Pro ug sa mga controller nga gi-bind sa PadForge sa WinUSB, gipadala isip libusb-1.0.dll. LGPL-2.1-or-later.</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>USB access para sa wired driver sa Switch 2 Pro ug sa mga controller nga gi-bind sa PadForge sa WinUSB, gipadala isip libusb-1.0.dll.</value></data>
   <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
-  <data name="About_NipplejsDesc" xml:space="preserve"><value>Touch joystick sa web controller sa telepono, ni Yoann Moinet. MIT.</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Touch joystick sa web controller sa telepono, ni Yoann Moinet.</value></data>
   <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
-  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Database sa gamepad mapping sa komunidad nga gipalapdan sa mga mapping nga kauban sa PadForge. zlib.</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Database sa gamepad mapping sa komunidad nga gipalapdan sa mga mapping nga kauban sa PadForge.</value></data>
   <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
-  <data name="About_XbledctlDesc" xml:space="preserve"><value>Panukiduki sa LED sa Xbox Guide button: ang layout sa XboxGIP packet ug ang han-ay sa discovery, ni Leclowndu93150. MIT.</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Panukiduki sa LED sa Xbox Guide button: ang layout sa XboxGIP packet ug ang han-ay sa discovery, ni Leclowndu93150.</value></data>
   <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
-  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematika sa winding-angle nga pagmaneho ug pagkiling, ni JibbSmart ug Electronicks. MIT.</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Matematika sa winding-angle nga pagmaneho ug pagkiling, ni JibbSmart ug Electronicks.</value></data>
   <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
-  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Pagkabig sa gyro sa player-space ug world-space, ni JibbSmart. MIT.</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Pagkabig sa gyro sa player-space ug world-space, ni JibbSmart.</value></data>
   <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
-  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Layout sa haptic report sa Steam Controller (2015) ug matematika sa note-period, ni Pila ug Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Layout sa haptic report sa Steam Controller (2015) ug matematika sa note-period, ni Pila ug Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
-  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptic layout sa LFO-tone sa Steam Controller 2026 ug Steam Deck, ni Pila, Crazy, ug AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptic layout sa LFO-tone sa Steam Controller 2026 ug Steam Deck, ni Pila, Crazy, ug AAGaming.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
-  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika sa SOCD cleaning para sa mga mode sa Snap Tap, ni valignatev. MIT.</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika sa SOCD cleaning para sa mga mode sa Snap Tap, ni valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
   <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam network client nga mokuha sa mga config sa controller sa Steam Workshop pinaagi sa anonymous nga session, ni Ryan Stecker ug sa SteamRE Team. LGPL-2.1-or-later (license.txt), LGPL-2.1-only (NuGet).</value></data>
   <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
-  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializer nga gigamit sa SteamKit2 para sa Steam wire protocol, ni Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializer nga gigamit sa SteamKit2 para sa Steam wire protocol, ni Marc Gravell.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
-  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression nga gigamit sa SteamKit2 para sa mga chunk sa Steam depot, usa ka C# port sa zstd library ni Oleg Stepanischev. MIT.</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression nga gigamit sa SteamKit2 para sa mga chunk sa Steam depot, usa ka C# port sa zstd library ni Oleg Stepanischev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
-  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentasyon sa GIP LED command nga nagpamatuod sa xbledctl. GPL-2.0-or-later, dokumentasyon lamang.</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Dokumentasyon sa GIP LED command nga nagpamatuod sa xbledctl. Dokumentasyon lamang.</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
-  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentasyon sa kinaiya sa Wii IR camera ug Balance Board, ni Brian Peek. MIT.</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Dokumentasyon sa kinaiya sa Wii IR camera ug Balance Board, ni Brian Peek.</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
   <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Dokumentasyon sa wire format sa Joy-Con HD rumble, ni Sergey004. Gibasa para lamang sa mga kamatuoran sa protocol.</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>I-pair</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>I-pair ang controller</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>I-pair ang controller</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>I-pair ang Wii Remote</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Ablihi ang tabon sa baterya ug pislita ang pula nga SYNC button.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Ipaduol ang remote niini nga PC samtang mokidlap ang mga suga niini.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>I-pair ang DualShock 3</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>I-pair ang Move o Navigation controller</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Idugang ang serial controller</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Idugang ang DJI remote</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Pamilya sa controller</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
-  <data name="WiiPair_Instructions" xml:space="preserve"><value>Ablihi ang taklob sa baterya ug pislita ang pula nga SYNC button. Pasagdi nga mangita ang PadForge hangtod makita ang imong controller.</value></data>
   <data name="WiiPair_Temporary" xml:space="preserve"><value>Temporaryong pairing (Kupti ang 1 ug 2)</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>I-pair</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Nangita. Pislita karon ang SYNC button.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Nangita og remote.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Nakit-an nga mga controller</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Wala pay nakit-an nga controller. Siguroha nga nagkidlap ang asul nga mga suga.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Na-pair ang {0}. Makita kini sa imong lista sa device.</value></data>
@@ -2363,7 +2403,7 @@
   <data name="WiiPair_Done" xml:space="preserve"><value>Nahuman</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>Ang OpenVR client API sa Valve (BSD 3-Clause): mga VR headset ug motion controller isip mga tinubdan sa input. Ang native runtime gikarga gikan sa imong kaugalingong SteamVR installation.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Ang OpenVR client API sa Valve: mga VR headset ug motion controller isip mga tinubdan sa input. Ang native runtime gikarga gikan sa imong kaugalingong SteamVR installation.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Nagdagan</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Nagdagan, konektado ang driver</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Nagdagan, aktibo ang mga controller</value></data>
@@ -2400,13 +2440,12 @@
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Wala makompleto ang pairing. Ang lakang nga napakyas gipakita sa ibabaw.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Isira</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Mga NFC tag</value></data>
-  <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Irehistro ang tag</value></data>
-  <data name="Nfc_TapPrompt" xml:space="preserve"><value>I-tap ang tag sa reader aron makuha ang UID niini.</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(naghulat)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Ngalan:</value></data>
+  <data name="Nfc_Subtitle" xml:space="preserve"><value>I-tap ang tag sa reader ug nganli kini. Mahimo kini nga button nga ma-map nimo.</value></data>
+  <data name="Nfc_TapPrompt" xml:space="preserve"><value>I-tap ang tag sa reader.</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Nganli kini nga tag</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Irehistro</value></data>
-  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Narehistro nga mga tag</value></data>
+  <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Narehistro</value></data>
   <data name="Nfc_NoReader" xml:space="preserve"><value>Walay nakit-an nga NFC reader. Ikonektar ang PC/SC reader ug ablihi pag-usab.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Nakuha ang tag. Isulod ang ngalan ug i-klik ang Irehistro. I-tap ang laing tag aron ilisan kini.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Narehistro ang "{0}." I-tap ang laing tag aron makadugang pa.</value></data>
@@ -2481,22 +2520,22 @@
   <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Dili usab maablihan ang FreeTrack shared memory.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Pagkat-on / Pagdumala sa tinagong mga button</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Tinagong mga button</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Pagkat-on og button</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Pislita ang tinagong button kausa kung gipangayo. Gibantayan sa PadForge ang keyboard, ang mouse, matag vendor report, ug matag system event niini nga makina, ug girekord kung hain ang giusab sa button.</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Makina:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Sugdi ang pagkat-on</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Tudloi ang PadForge og button nga wala gipakita sa Windows isip controller. Pislita kini kung gipangayo.</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Ayaw hikapa. Gibasa ang idle nga kahimtang…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pislita karon ang tinagong button, unya buhii…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Kadiyot lang…</value></data>
-  <data name="Handheld_NothingFound" xml:space="preserve"><value>Walay nakita nga kausaban. Pislita ang button sulod sa gi-highlight nga panahon ug sulayi pag-usab.</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pislita ug kuptan karon ang button.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Buhii ang button.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Lakang {0} sa {1}</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Walay nakita nga kausaban. Pilia ang Sugdi pag-usab, dayon pislita ug kuptan ang button kung gipangayo.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Gibantayan ang {0} ka vendor report ug {1} ka klase sa event. Samtang gipislit: {2} ka report, {3} ka event.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Nakuha ang button. Isulod ang ngalan ug i-click ang Irehistro.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Gigikanan:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Ngalan:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Gigikanan</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Nganli kini nga button</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Irehistro</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Mga nakat-unan nga button</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Sugdi pag-usab</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Wala pay nakat-unan nga button.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Narehistro ang "{0}." Sugdi pag-usab aron makakat-on og lain.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nakat-onan sa {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>Narehistro ang "{0}." Pilia ang Sugdi pag-usab aron makakat-on og lain.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Mga key: {0}</value></data>
   <data name="Handheld_NoDevice" xml:space="preserve"><value>Naka-off ang tinagong mga button. I-enable una ang Mga button sa handheld PC sa Mga setting.</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Nagdagan ang {0}. Motubag gihapon kini sa mga button hangtod imong hunongon.</value></data>
@@ -2582,17 +2621,20 @@
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Susiha ang mga gi-import nga profile kung adunay update</value></data>
   <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Nahawan ang Workshop cache</value></data>
   <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Tan-awa ang mga config sa komunidad</value></data>
-  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Tan-awa ang mga config sa komunidad</value></data>
-  <data name="Workshop_DialogPath" xml:space="preserve"><value>Mga profile · Steam Workshop</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Pagkuha og mga profile</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Sugdi gikan sa andam na nga profile, config sa komunidad o file gikan sa laing tool.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Sinugdanan</value></data>
+  <data name="GetProfiles_Community" xml:space="preserve"><value>Komunidad</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>I-import ang file</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Ang pag-save magdugang og ordinaryong profile nga imong ma-edit.</value></data>
   <data name="Workshop_ColdBody" xml:space="preserve"><value>Ang pag-browse sa mga config sa komunidad magkonektar sa PadForge direkta sa Steam, kung mangita ka lamang, dili gayud inig sugod.</value></data>
   <data name="Workshop_EnableButton" xml:space="preserve"><value>I-enable ang mga config sa komunidad</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Pangitaa ang mga dula</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} ka dula</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Mga dula</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Walay nakit-ang dula sa Steam store.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Nangita sa Steam…</value></data>
   <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Gibasa ang mga config gikan sa Steam…</value></data>
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Gibasa ang config gikan sa Steam…</value></data>
-  <data name="Workshop_SortedByRating" xml:space="preserve"><value>gihan-ay sumala sa rating</value></data>
   <data name="Workshop_SortedBy" xml:space="preserve"><value>Gihan-ay sumala sa</value></data>
   <data name="Workshop_SearchConfigs" xml:space="preserve"><value>Pangitaa niini nga mga config</value></data>
   <data name="Workshop_Sort_Newest" xml:space="preserve"><value>Pinakabag-o</value></data>
@@ -2604,7 +2646,6 @@
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} ang nakit-an</value></data>
   <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Gipakita ang {0} sa {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} ka config</value></data>
-  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>mga config sa komunidad</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>bug-os nga suporta sa controller</value></data>
   <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>bahin nga suporta sa controller</value></data>
   <data name="Workshop_BackToSearch" xml:space="preserve"><value>Pangitaa ang mga dula</value></data>
@@ -2623,7 +2664,6 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Sulayi pag-usab</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Kini nga config gikan sa 2016 nauna pa sa config CDN sa Steam. Mag-subscribe niini sa Steam, ug basahon kini sa PadForge gikan sa imong Steam folder.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Ablihi sa Steam Workshop</value></data>
-  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} ka binding ang nabasa</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Limpyo</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Bahin</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Gilaktawan</value></data>
@@ -2649,7 +2689,7 @@
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Nagsusi sa Steam Workshop og mga update…</value></data>
   <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Bag-o ang mga gi-import nga profile ({0} ang gisusi)</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Mga update sa Workshop</value></data>
-  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Kini nga mga gi-import nga profile adunay mas bag-ong bersyon sa Steam Workshop. I-import sila pag-usab gikan sa Tan-awa ang mga config sa komunidad aron makuha ang mga kausaban.</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Kini nga mga gi-import nga profile adunay mas bag-ong bersyon sa Steam Workshop. I-import sila pag-usab gikan sa Pagkuha og mga profile aron makuha ang mga kausaban.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Sa taas nga pislit</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Sa mubo nga pislit</value></data>
@@ -2717,7 +2757,7 @@
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Gigamit sa usa ka mapping o macro</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay sa menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Mga overlay</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga timailhan sa screen nga gipakita sa PadForge samtang nagdula ka. Ang pag-off sa usa dili gayud mousab sa pamatasan, kung gipahibalo lang kini o dili.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga timailhan sa screen nga gipakita sa PadForge samtang nagdula ka. Ang pag-off sa usa dili gayud mousab sa pamatasan, kung gipakita lang kini o dili.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay sa pagbalhin og profile</value></data>
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Device sa output, mga channel, gain, tono alang sa matag motor</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>I-reset ang Rumble ngadto sa audio</value></data>
@@ -2774,16 +2814,16 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
     <value>ds4mac</value>
   </data>
   <data name="About_LibinputDesc" xml:space="preserve">
-    <value>Kurba sa pointer acceleration sa trackpad para sa touchpad-to-mouse nga output. C# port sa touchpad accel profile sa libinput. MIT.</value>
+    <value>Kurba sa pointer acceleration sa trackpad para sa touchpad-to-mouse nga output. C# port sa touchpad accel profile sa libinput.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Mga 3D model sa controller (Xbox 360, Steam Deck) ug ang code sa model ug animation sa 3D view, ni CasperH2O, Lesueur Benjamin, trippyone. Reperensya usab para sa Steam Deck report ug haptic decode, ang power-off report sa Steam Controller (2015), ang watch list sa handheld daemon, ang timing sa update check, ug ang hub port cycle, 500 ms ang gilay-on, nga magkonektar pag-usab sa natago nga USB controller aron mawala kini sa mga programa nga unang nag-abli niini. CC BY-NC-SA 4.0.</value>
+    <value>Mga 3D model sa controller (Xbox 360, Steam Deck) ug ang code sa model ug animation sa 3D view, ni CasperH2O, Lesueur Benjamin, trippyone. Reperensya usab para sa Steam Deck report ug haptic decode, ang power-off report sa Steam Controller (2015), ang watch list sa handheld daemon, ang timing sa update check, ug ang hub port cycle, 500 ms ang gilay-on, nga magkonektar pag-usab sa natago nga USB controller aron mawala kini sa mga programa nga unang nag-abli niini.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
-    <value>Mga 2D schematic sa controller (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), ni AL2009man. MIT.</value>
+    <value>Mga 2D schematic sa controller (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), ni AL2009man.</value>
   </data>
   <data name="About_Ds4MacDesc" xml:space="preserve">
-    <value>Dokumentasyon sa audio protocol sa DualShock 4: mga parameter sa SBC ug layout sa packet, ni khallmark. GPL-2.0, dokumentasyon lang.</value>
+    <value>Dokumentasyon sa audio protocol sa DualShock 4: mga parameter sa SBC ug layout sa packet, ni khallmark. Dokumentasyon lang.</value>
   </data>
   <data name="Starter_Desktop_Name" xml:space="preserve"><value>Desktop</value></data>
   <data name="Starter_Desktop_Description" xml:space="preserve"><value>Gamita ang Windows gikan sa sopa. Cursor, scroll, ug click sa mga trigger.</value></data>
@@ -2796,10 +2836,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Mga fighting game</value></data>
   <data name="Starter_Fighting_Description" xml:space="preserve"><value>Unom ka button nga layout nga adunay SOCD cleaning nga legal sa torneyo sa duha ka axis.</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Gamepad</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Tan-awa ang mga sinugdanang profile</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Mga sinugdanang profile</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Andam na nga mga profile para sa tibuok genre. Pilia ang usa, i-assign ang bisan unsang controller, ug pagdula. Ang pag-save magdugang og ordinaryong profile nga imong ma-edit.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>I-save ang profile</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>Gidugang ang sinugdanang profile nga "{0}".</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Itudlo ug i-click</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Mga adventure game ug bisan unsang dula nga gimaneho sa cursor ug duha ka berbo.</value></data>
@@ -2883,13 +2919,13 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_ResetOutputPath" xml:space="preserve"><value>I-reset ang agianan sa output</value></data>
   <data name="Pad_Audio_OutputPath_FollowJack" xml:space="preserve"><value>Sundi ang headphone jack</value></data>
   <data name="About_DuaLib" xml:space="preserve"><value>duaLib</value></data>
-  <data name="About_DuaLibDesc" xml:space="preserve"><value>Byte map sa output report sa DualSense ug semantics sa Sony scePad ni WujekFoliarz, basehan sa mga effect ug audio writer sa PadForge. MIT.</value></data>
+  <data name="About_DuaLibDesc" xml:space="preserve"><value>Byte map sa output report sa DualSense ug semantics sa Sony scePad ni WujekFoliarz, basehan sa mga effect ug audio writer sa PadForge.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
-  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pattern sa audio routing pinaagi sa jack detect ni SundayMoments, ang reperensya luyo sa Sundi ang headphone jack. Gibasa isip dokumentasyon; AGPL-3.0.</value></data>
+  <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Pattern sa audio routing pinaagi sa jack detect ni SundayMoments, ang reperensya luyo sa Sundi ang headphone jack. Gibasa isip dokumentasyon.</value></data>
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
-  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa mga address sa Web Controller, gi-port gikan sa reference implementation ni Nayuki. MIT.</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder para sa mga address sa Web Controller, gi-port gikan sa reference implementation ni Nayuki.</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
-  <data name="About_MouseArtDesc" xml:space="preserve"><value>Artwork sa mouse sa Keyboard + Mouse nga visualization, ni Igor Budzhak. MIT.</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Artwork sa mouse sa Keyboard + Mouse nga visualization, ni Igor Budzhak.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Rate nga sukad sa presyon</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Ang repeat rate mosunod kung unsa kakusog gipislit ang napiling analog source. Ang hinay nga pislit mosubli sa Hinay nga interval, ang bug-os nga pislit sa Interval sa ibabaw, ug ang tanan sa tunga hapsay nga magsagol.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Hinay nga interval</value></data>
@@ -2904,7 +2940,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Nagkonektar pinaagi sa code…</value></data>
   <data name="RemoteLink_StatusPunchFailed" xml:space="preserve"><value>Dili maabot direkta ang peer. Sulayi ang Connect by Address pinaagi sa VPN.</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code niini nga PC</value></data>
-  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Pagbinayloay og code sa pikas nga tawo: idikit ang ila sa imong Connect box samtang idikit nila ang imo, dayon pareho kamong mo-click sa Connect. Kini moabli og direktang agianan latas sa internet, walay VPN nga kinahanglan. Ang code mag-refresh samtang nagdagan ang Remote Link.</value></data>
+  <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Pagbinayloay og code sa pikas nga tawo: idikit ang ila sa Konektar pinaagi sa address, ubos sa Dugang pa, samtang idikit nila ang imo, dayon pareho kamong mo-click sa I-pair / Konektar. Kini moabli og direktang agianan latas sa internet, walay VPN nga kinahanglan. Ang code mag-refresh samtang nagdagan ang Remote Link.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Kini nga network dili makahimo og direktang koneksyon (morag mobile hotspot o carrier-grade NAT kini). Gamit og VPN sama sa Tailscale, o pagkonektar gikan sa broadband sa balay.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Dili makit-an ang public address niini nga PC (mahimong gibabagan sa network ang kinahanglanong traffic). Dili molihok dinhi ang direktang koneksyon. Gamit og VPN, o Connect by Address sa samang network.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Ubos na ang baterya sa controller</value></data>
@@ -2915,6 +2951,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Pahibaloa kung moabot o ubos sa</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Pakurog usab ang controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Pagsulay nga pahibalo</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Susiha ang pahibalo</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Mga pangutana sa pag-assign</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Kung adunay device nga mokonektar samtang abli ang panid sa virtual nga controller, mahimong motanyag ang PadForge nga i-assign kini didto, ug mahimong motanyag ang Balay og kaugalingong virtual nga controller sa bag-ong device. Walay ma-assign hangtod modawat ka og tanyag. Ang mga keyboard, mouse, touchpad, ug media key dili gyud itanyag.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Itanyag ang bag-ong mga device sa abli nga virtual nga controller</value></data>
@@ -2928,6 +2965,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Dili pa karon</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Bisan unsang hugpong sa pulong</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Mga voice macro</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Isulti ang hugpong sa pulong ug mopislit kini og button nga ma-map nimo. Maminaw ang matag mikropono nga maabot sa PadForge.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Dumalaha ang mga voice macro</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>I-enable ang mga voice macro</value></data>
   <data name="Voice_EnableTooltip" xml:space="preserve"><value>Pagaandaron ang pagpaminaw. Samtang naka-enable, ang matag narehistrong hugpong sa pulong usa ka button nga mo-fire kung imo kining isulti. Ang recognition model naa sa sulod sa PadForge ug molihok nga hingpit nga offline.</value></data>
@@ -2936,25 +2974,28 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Minimum nga kasiguroan</value></data>
   <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Unsa kasiguro ang recognizer sa dili pa mo-fire ang hugpong sa pulong. Patas-a kini kung ang sulagma nga sinultihan mo-trigger og macro, pakunhori kung ang imong mga hugpong sa pulong dili masabtan.</value></data>
   <data name="Voice_ListeningIdle" xml:space="preserve"><value>Naghulat og sinultihan. Ang mga nasabtan makita dinhi uban sa ilang kasiguroan.</value></data>
-  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Nadungog ang "{0}" ({1:F2}). Na-fire.</value></data>
-  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Nadungog ang "{0}" ({1:F2}). Ubos sa minimum nga kasiguroan o wala gipislit ang talk key.</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Naka-off ang pagpaminaw. I-on kini ubos sa Dugang pa.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Nadungog ang {0} sa {1}</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Nadungog ang {0} sa {1}. Ubos kini sa minimum nga kasiguroan, o wala gipislit ang talk key.</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Hugpong sa pulong</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Hugpong sa pulong nga isulti</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Ngalan sa button</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Irehistro</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Mga narehistrong hugpong sa pulong</value></data>
-  <data name="Voice_Registered_Format" xml:space="preserve"><value>Narehistro ang "{0}". Isulti kini aron mo-fire ang button niini, ug i-bind ang mga macro niini sa Pad nga panid.</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Mga hugpong sa pulong</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Narehistro ang "{0}". Isulti kini aron mo-fire ang button niini, ug i-map kini sa panid sa usa ka controller.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Pagpaminaw sa tingog (samtang gikuptan)</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikropono</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (walay ingon nga macro)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
     <value>Interhaptics (Wyvrn)</value>
   </data>
-  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Haptic engine ug Razer provider luyo sa rumble sa Razer Sensa nga row. Ang HAR.dll ug Interhaptics.RazerProvider.dll gilakip sa PadForge, wala giusab gikan sa publiko nga Core SDK. Ni Wyvrn. Wyvrn EULA.</value></data>
+  <data name="About_InterhapticsDesc" xml:space="preserve"><value>Haptic engine ug Razer provider luyo sa rumble sa Razer Sensa nga row. Ang HAR.dll ug Interhaptics.RazerProvider.dll gilakip sa PadForge, wala giusab gikan sa publiko nga Core SDK. Ni Wyvrn.</value></data>
   <data name="About_ValveCad" xml:space="preserve">
     <value>Valve Steam Controller CAD</value>
   </data>
   <data name="About_ValveCadDesc" xml:space="preserve">
-    <value>Ang mga 3D model sa Steam Controller (2015) ug Steam Controller (2026), gi-mesh gikan sa gipatik nga STEP files sa Valve. Copyright Valve Corporation. CC BY-NC-SA 4.0. Ang PadForge dili kauban o gi-endorse sa Valve.</value>
+    <value>Ang mga 3D model sa Steam Controller (2015) ug Steam Controller (2026), gi-mesh gikan sa gipatik nga STEP files sa Valve. Copyright Valve Corporation. Ang PadForge dili kauban o gi-endorse sa Valve.</value>
   </data>
   <data name="About_MingwRuntime" xml:space="preserve">
     <value>Runtime sa MinGW-w64</value>
@@ -2968,7 +3009,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_Colore" xml:space="preserve">
     <value>Colore</value>
   </data>
-  <data name="About_ColoreDesc" xml:space="preserve"><value>Pagpamatuod sa REST API framing sa Razer Chroma para sa suga sa Razer, ni Adam Hellberg ug Brandon Scott. MIT. Dokumentasyon lang, walay code nga gilakip.</value></data>
+  <data name="About_ColoreDesc" xml:space="preserve"><value>Pagpamatuod sa REST API framing sa Razer Chroma para sa suga sa Razer, ni Adam Hellberg ug Brandon Scott. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_LogitechLedRefs" xml:space="preserve">
     <value>Mga reperensya sa Logitech LED SDK</value>
   </data>
@@ -2977,19 +3018,19 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
     <value>opentrack</value>
   </data>
   <data name="About_OpentrackDesc" xml:space="preserve">
-    <value>Datagram sa UDP tracker ug FreeTrack 2.0 shared-memory layout para sa head tracking. ISC. Dokumentasyon lang, walay code nga gilakip.</value>
+    <value>Datagram sa UDP tracker ug FreeTrack 2.0 shared-memory layout para sa head tracking. Dokumentasyon lang, walay code nga gilakip.</value>
   </data>
   <data name="About_LegionToolkit" xml:space="preserve">
     <value>Lenovo Legion Toolkit</value>
   </data>
   <data name="About_LegionToolkitDesc" xml:space="preserve">
-    <value>Ang Lenovo WMI utility-event class nga gi-subscribe-an sa handheld hidden-button learner, ug ang elevated IPC server pattern luyo sa external profile control. GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value>
+    <value>Ang Lenovo WMI utility-event class nga gi-subscribe-an sa handheld hidden-button learner, ug ang elevated IPC server pattern luyo sa external profile control. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value>
   </data>
   <data name="About_InputPlumber" xml:space="preserve">
     <value>InputPlumber</value>
   </data>
   <data name="About_InputPlumberDesc" xml:space="preserve">
-    <value>Mga identity string sa handheld PC ug mga nota sa vendor report nga gi-cross-check para sa hidden-button learner. GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value>
+    <value>Mga identity string sa handheld PC ug mga nota sa vendor report nga gi-cross-check para sa hidden-button learner. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value>
   </data>
   <data name="About_Linuxmotehook" xml:space="preserve">
     <value>linuxmotehook ug WiimoteHook</value>
@@ -3003,11 +3044,11 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_PortMidiRtMidi" xml:space="preserve"><value>PortMidi / RtMidi</value></data>
   <data name="About_PortMidiRtMidiDesc" xml:space="preserve"><value>Ang mga WinMM call sequence luyo sa daan nga MIDI API: pag-abli sa port, pagpadala niini, ug pagsira niini. Gibasa gikan sa PortMidi (MIT, ni Ross Bencina, Phil Burk, ug Roger B. Dannenberg) ug RtMidi (MIT-style RtMidi license, ni Gary P. Scavone). Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Mga reperensya sa Logitech G-key SDK</value></data>
-  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Ang layout sa event word luyo sa G-key input gikan sa LogitechGkeyLib.h sa SDK. Ang search order ug shutdown sa library nagsunod sa GKey.cpp (BSD 3-Clause) sa Mumble. Ang PadForge mo-load sa bisan unsang kopya sa library nga anaa sa makina ug walay Logitech code nga gilakip.</value></data>
+  <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Ang layout sa event word luyo sa G-key input gikan sa LogitechGkeyLib.h sa SDK. Ang search order ug shutdown sa library nagsunod sa GKey.cpp sa Mumble. Ang PadForge mo-load sa bisan unsang kopya sa library nga anaa sa makina ug walay Logitech code nga gilakip.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup, ug AnalogSense</value></data>
   <data name="About_BlissBoxRefs" xml:space="preserve"><value>Mga reperensya sa Bliss-Box</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
-  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport ni Vadym Hrynchyshyn para sa composite USB controller sa HIDMaestro. Gidala sa HIDMaestro ang pirmado nga host controller driver niini ug gi-install kini sa unang higayon nga mahimo ang composite controller. BSD 2-Clause.</value></data>
+  <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport ni Vadym Hrynchyshyn para sa composite USB controller sa HIDMaestro. Gidala sa HIDMaestro ang pirmado nga host controller driver niini ug gi-install kini sa unang higayon nga mahimo ang composite controller.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Pilia kung hain nga katunga niini nga slot ang aktibo. Ang pagpatay sa usa ka katunga motago sa mga row niini ug mohunong sa pagpadala niini, apan ipabilin ang mga mapping niini aron mabalik kini kung andaron pag-usab.</value>
   </data>
@@ -3062,13 +3103,15 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
     <value>I-assign ang gipaambit nga mga device</value>
   </data>
   <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
-    <value>Mga assignment sa {0}</value>
+    <value>Mga device nga gipaambit sa {0}</value>
   </data>
   <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
-    <value>Pilia ang device nga gipaambit niini nga PC, dayon pilia ang mga virtual nga controller niini sa pikas nga PC.</value>
+    <value>Pili og device, dayon ang mga controller sa kana nga PC nga angay niining palihokon.</value>
   </data>
+  <data name="RemoteLink_SharedFromThisPc" xml:space="preserve"><value>Gipaambit gikan niini nga PC</value></data>
+  <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Mga controller sa {0}</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profile: {0}</value>
+    <value>Aktibo nga profile: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
     <value>Dili magamit ang device o ang koneksyon. Pagkonektar pag-usab ug ablihi pag-usab kini nga window.</value>
@@ -3156,60 +3199,60 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_Kaldi" xml:space="preserve"><value>Kaldi, OpenFst, OpenBLAS, ug CLAPACK</value></data>
   <data name="About_KaldiDesc" xml:space="preserve"><value>Ang speech decoder, transducer library, ug linear algebra sulod sa libvosk.dll. Kaldi ug OpenFst: Apache-2.0. OpenBLAS ug CLAPACK: BSD 3-Clause, nga adunay lahi nga mga pahibalo para sa GotoBLAS2 sulod sa OpenBLAS ug para sa f2c runtime.</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
-  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mga layout sa strategy ug desktop nga sinugdanang profile, ug ang turbo behavior nga gilikayan sa turbo nga sukad sa presyon. GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_AntiMicroXDesc" xml:space="preserve"><value>Mga layout sa strategy ug desktop nga sinugdanang profile, ug ang turbo behavior nga gilikayan sa turbo nga sukad sa presyon. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_AudioEndPointLibrary" xml:space="preserve"><value>AudioEndPointLibrary</value></data>
-  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Reperensya ni Antoine Aflalo para sa layout sa wala gidokumento nga IPolicyConfig interface sa Windows, nga gigamit sa PadForge aron i-enable pag-usab ang audio endpoint sa controller. MIT. Dokumentasyon lang, walay code nga gilakip.</value></data>
+  <data name="About_AudioEndPointLibraryDesc" xml:space="preserve"><value>Reperensya ni Antoine Aflalo para sa layout sa wala gidokumento nga IPolicyConfig interface sa Windows, nga gigamit sa PadForge aron i-enable pag-usab ang audio endpoint sa controller. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_AutoEq" xml:space="preserve"><value>AutoEq</value></data>
-  <data name="About_AutoEqDesc" xml:space="preserve"><value>Ang format sa parametric EQ profile nga gi-import sa Parametric EQ sa usa ka controller, ni Jaakko Pasanen. MIT. Dokumentasyon lang, walay code nga gilakip.</value></data>
+  <data name="About_AutoEqDesc" xml:space="preserve"><value>Ang format sa parametric EQ profile nga gi-import sa Parametric EQ sa usa ka controller, ni Jaakko Pasanen. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_AutoHotkey" xml:space="preserve"><value>AutoHotkey</value></data>
-  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Mga teknik sa SendInput luyo sa Text Block nga mga macro ug sa keyboard chord hook: Unicode typing, mga limitasyon sa batch, ang Win-key mask key, ug tagged injected input. GPL-2.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_AutoHotkeyDesc" xml:space="preserve"><value>Mga teknik sa SendInput luyo sa Text Block nga mga macro ug sa keyboard chord hook: Unicode typing, mga limitasyon sa batch, ang Win-key mask key, ug tagged injected input. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_CemuhookProtocol" xml:space="preserve"><value>cemuhook-protocol</value></data>
-  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Reperensya sa DSU protocol luyo sa motion server, ni v1993. Unlicense.</value></data>
+  <data name="About_CemuhookProtocolDesc" xml:space="preserve"><value>Reperensya sa DSU protocol luyo sa motion server, ni v1993.</value></data>
   <data name="About_Ds4Drv" xml:space="preserve"><value>ds4drv</value></data>
-  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Framing sa Bluetooth output report sa DualShock 4, ni Christopher Rosell. MIT.</value></data>
+  <data name="About_Ds4DrvDesc" xml:space="preserve"><value>Framing sa Bluetooth output report sa DualShock 4, ni Christopher Rosell.</value></data>
   <data name="About_Ds4MapperTest" xml:space="preserve"><value>DS4MapperTest</value></data>
-  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Mga range sa baterya sa DualShock 4, timing sa haptic pulse sa touchpad ug mga lakang sa intensity, ug fling behavior sa touchpad. GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_Ds4MapperTestDesc" xml:space="preserve"><value>Mga range sa baterya sa DualShock 4, timing sa haptic pulse sa touchpad ug mga lakang sa intensity, ug fling behavior sa touchpad. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_Ds4WindowsHbashton" xml:space="preserve"><value>DS4Windows (fork ni hbashton)</value></data>
-  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Mga range sa audio volume sa DualSense, signed 8-bit nga haptic sample, ug ang layout sa combined Bluetooth transport. GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_Ds4WindowsHbashtonDesc" xml:space="preserve"><value>Mga range sa audio volume sa DualSense, signed 8-bit nga haptic sample, ug ang layout sa combined Bluetooth transport. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_Ds5Dongle" xml:space="preserve"><value>DS5Dongle</value></data>
-  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Default ug minimum sa gitas-on sa Bluetooth audio buffer sa DualSense, ni awalol. MIT.</value></data>
+  <data name="About_Ds5DongleDesc" xml:space="preserve"><value>Default ug minimum sa gitas-on sa Bluetooth audio buffer sa DualSense, ni awalol.</value></data>
   <data name="About_DualSenseSupport" xml:space="preserve"><value>DualSenseSupport</value></data>
   <data name="About_DualSenseSupportDesc" xml:space="preserve"><value>Mga preset value sa GameCube adaptive-trigger, ni Mxater. Gibasa para sa mga kamatuoran lamang.</value></data>
   <data name="About_Eden" xml:space="preserve"><value>Eden</value></data>
-  <data name="About_EdenDesc" xml:space="preserve"><value>Mga sign sa DSU motion axis, gisusi batok sa UDP decoder niini. GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_EdenDesc" xml:space="preserve"><value>Mga sign sa DSU motion axis, gisusi batok sa UDP decoder niini. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_EdRefCard2" xml:space="preserve"><value>EDRefCard2</value></data>
-  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Mga default preset sa Elite Dangerous luyo sa Space sim nga sinugdanang profile, ni Richard Buckle. MIT.</value></data>
+  <data name="About_EdRefCard2Desc" xml:space="preserve"><value>Mga default preset sa Elite Dangerous luyo sa Space sim nga sinugdanang profile, ni Richard Buckle.</value></data>
   <data name="About_FFmpeg" xml:space="preserve"><value>FFmpeg</value></data>
-  <data name="About_FFmpegDesc" xml:space="preserve"><value>Ang nibble order sa ADPCM sa speaker sa Wii Remote, ug ang SBC decoder nga misusi sa DualShock 4 encoder. LGPL-2.1-or-later, gibasa isip dokumentasyon lang, walay LGPL code nga gilakip.</value></data>
+  <data name="About_FFmpegDesc" xml:space="preserve"><value>Ang nibble order sa ADPCM sa speaker sa Wii Remote, ug ang SBC decoder nga misusi sa DualShock 4 encoder. Gibasa isip dokumentasyon lang, walay LGPL code nga gilakip.</value></data>
   <data name="About_Fusion" xml:space="preserve"><value>Fusion</value></data>
-  <data name="About_FusionDesc" xml:space="preserve"><value>Tilt-compensated nga compass heading para sa compass yaw, gi-port sa C#, ni x-io Technologies. MIT.</value></data>
+  <data name="About_FusionDesc" xml:space="preserve"><value>Tilt-compensated nga compass heading para sa compass yaw, gi-port sa C#, ni x-io Technologies.</value></data>
   <data name="About_GamepadBatteryMonitor" xml:space="preserve"><value>Gamepad Battery Monitor</value></data>
-  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Lagda sa pahibalo sa ubos nga baterya ug ang Identify rumble pattern, ni Lukas Frühstück. MIT.</value></data>
+  <data name="About_GamepadBatteryMonitorDesc" xml:space="preserve"><value>Lagda sa pahibalo sa ubos nga baterya ug ang Identify rumble pattern, ni Lukas Frühstück.</value></data>
   <data name="About_Hado" xml:space="preserve"><value>hado</value></data>
-  <data name="About_HadoDesc" xml:space="preserve"><value>Mga 3D model sa DualShock 4, DualSense, DualSense Edge, Xbox Series, ug Switch 2 Pro Controller, gipalit sa CGTrader. CGTrader Royalty Free License.</value></data>
+  <data name="About_HadoDesc" xml:space="preserve"><value>Mga 3D model sa DualShock 4, DualSense, DualSense Edge, Xbox Series, ug Switch 2 Pro Controller, gipalit sa CGTrader.</value></data>
   <data name="About_3doverstock" xml:space="preserve"><value>3doverstock</value></data>
-  <data name="About_3doverstockDesc" xml:space="preserve"><value>3D model sa DualShock 3, gipalit sa CGTrader ug gibahin ngadto sa mga mesh kada bahin. CGTrader Royalty Free License.</value></data>
+  <data name="About_3doverstockDesc" xml:space="preserve"><value>3D model sa DualShock 3, gipalit sa CGTrader ug gibahin ngadto sa mga mesh kada bahin.</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
-  <data name="About_HidapiDesc" xml:space="preserve"><value>Ang HID layer nga gi-compile sa gilakip nga SDL3.dll, ni Alan Ott, Signal 11 Software. BSD-style nga lisensya.</value></data>
+  <data name="About_HidapiDesc" xml:space="preserve"><value>Ang HID layer nga gi-compile sa gilakip nga SDL3.dll, ni Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Mga gigikanan sa icon</value></data>
   <data name="About_IconSourcesDesc" xml:space="preserve"><value>Ang flame glyph gikan sa Material Design Icons (Pictogrammers, Apache-2.0), ang generic nga gamepad icon gikan sa Ionicons (Ionic, MIT), ang Extended joystick gikan sa Jam Icons (Michael Amprimo, MIT), ug ang mga Xbox ug PlayStation icon gikan sa SVG Repo, ilalom sa lisensya sa panid sa matag icon.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Ang relay protocol luyo sa fallback lane sa Remote Link, gigamit sa libre nga publiko nga mga relay sa n0.computer sama sa gibuhat sa FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
-  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Mga counter sa optical mouse sa Joy-Con 2 ug wraparound delta luyo sa Mouse Motion X ug Y, ni coffincolors, Frano, ug moutella. MIT. Dokumentasyon lang, walay code nga gilakip.</value></data>
+  <data name="About_Jc2MouseDesc" xml:space="preserve"><value>Mga counter sa optical mouse sa Joy-Con 2 ug wraparound delta luyo sa Mouse Motion X ug Y, ni coffincolors, Frano, ug moutella. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_LinuxKernel" xml:space="preserve"><value>Mga driver sa Linux kernel</value></data>
-  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Mga kamatuoran sa protocol sa DualShock 3, Move, DualSense, Steam Deck ug PID force-feedback, ug ang layout sa ACPI WMI block. Gibasa sa PadForge ang mga descriptor sa keyboard ug mouse sumala sa mga lagda sa hid-core. GPL-2.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_LinuxKernelDesc" xml:space="preserve"><value>Mga kamatuoran sa protocol sa DualShock 3, Move, DualSense, Steam Deck ug PID force-feedback, ug ang layout sa ACPI WMI block. Gibasa sa PadForge ang mga descriptor sa keyboard ug mouse sumala sa mga lagda sa hid-core. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_GameInput" xml:space="preserve"><value>Microsoft GameInput</value></data>
-  <data name="About_GameInputDesc" xml:space="preserve"><value>Input sa controller sa Windows, lakip ang mga paddle sa Xbox Elite. Ang SDK loader gi-link sa SDL. MIT (SDK loader).</value></data>
+  <data name="About_GameInputDesc" xml:space="preserve"><value>Input sa controller sa Windows, lakip ang mga paddle sa Xbox Elite. Ang SDK loader gi-link sa SDL.</value></data>
   <data name="About_VcRuntime" xml:space="preserve"><value>Microsoft Visual C++ Runtime</value></data>
-  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Ang C++ runtime nga kinahanglan sa SDL3.dll (msvcp140.dll, vcruntime140.dll ug, sa x64 build, vcruntime140_1.dll), gilakip nga wala giusab sa PadForge. Mga termino sa lisensya sa Microsoft Visual Studio.</value></data>
+  <data name="About_VcRuntimeDesc" xml:space="preserve"><value>Ang C++ runtime nga kinahanglan sa SDL3.dll (msvcp140.dll, vcruntime140.dll ug, sa x64 build, vcruntime140_1.dll), gilakip nga wala giusab sa PadForge.</value></data>
   <data name="About_SwitchResearch" xml:space="preserve"><value>Nintendo_Switch_Reverse_Engineering</value></data>
   <data name="About_SwitchResearchDesc" xml:space="preserve"><value>Mga nota sa HID, HD rumble, ug home LED sa Joy-Con ug Pro Controller, ni dekuNukem, uban ang switch2_controller_research ni ndeadly para sa Switch 2. Gibasa para sa mga kamatuoran sa protocol lamang.</value></data>
   <data name="About_OpenRgb" xml:space="preserve"><value>OpenRGB</value></data>
   <data name="About_OpenTabletDriver" xml:space="preserve"><value>OpenTabletDriver</value></data>
-  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Ang elevated update-verb pattern luyo sa helper sa in-app updater. LGPL-3.0, gibasa isip dokumentasyon lang, walay LGPL code nga gilakip.</value></data>
+  <data name="About_OpenTabletDriverDesc" xml:space="preserve"><value>Ang elevated update-verb pattern luyo sa helper sa in-app updater. Gibasa isip dokumentasyon lang, walay LGPL code nga gilakip.</value></data>
   <data name="About_PcscSharp" xml:space="preserve"><value>pcsc-sharp</value></data>
-  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Mga signature sa WinSCard ug ang call sequence sa reader monitoring luyo sa NFC tag input, ni Daniel Mueller. BSD 2-Clause.</value></data>
+  <data name="About_PcscSharpDesc" xml:space="preserve"><value>Mga signature sa WinSCard ug ang call sequence sa reader monitoring luyo sa NFC tag input, ni Daniel Mueller.</value></data>
   <data name="About_Psmoveapi" xml:space="preserve"><value>psmoveapi</value></data>
   <data name="About_PsmoveapiDesc" xml:space="preserve"><value>Mga layout sa report sa PlayStation Move, kalibrasyon sa sensor, ug ang EXT accessory handshake, ni Thomas Perl, gi-cross-check batok sa moveonpc wiki. Ang implementasyon sa PadForge orihinal nga C#. BSD 2-Clause.</value></data>
   <data name="About_TelemetryRefs" xml:space="preserve"><value>Mga reperensya sa racing telemetry</value></data>
@@ -3217,23 +3260,23 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_Ds3Research" xml:space="preserve"><value>ScpToolkit / sixad / transbt</value></data>
   <data name="About_Ds3ResearchDesc" xml:space="preserve"><value>Dokumentasyon sa Bluetooth pairing ug report sa DualShock 3. GPL-2.0 ug GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_SipSorcery" xml:space="preserve"><value>SIPSorcery</value></data>
-  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Ang STUN message layout ug XOR-MAPPED-ADDRESS decode luyo sa NAT traversal sa Remote Link, gi-vendor gikan sa C# source niini, ni Aaron Clauson. BSD 3-Clause, uban ang pagdili sa paggamit sa seksyon 2 sa lisensya niini.</value></data>
+  <data name="About_SipSorceryDesc" xml:space="preserve"><value>Ang STUN message layout ug XOR-MAPPED-ADDRESS decode luyo sa NAT traversal sa Remote Link, gi-vendor gikan sa C# source niini, ni Aaron Clauson. Ang lisensya niini nagdugang og pagdili sa paggamit sa seksyon 2.</value></data>
   <data name="About_SpaceMouseRefs" xml:space="preserve"><value>Mga reperensya sa SpaceMouse</value></data>
   <data name="About_SpaceMouseRefsDesc" xml:space="preserve"><value>Layout sa report sa 3Dconnexion, table sa device, ug scale sa axis, gibasa gikan sa hid.spacemouse (MIT), PySpaceMouse (MIT), spacemouse ni AndunHH (CC BY-NC-SA 4.0), ug spacenavd (GPL-3.0-or-later). Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_SpecialK" xml:space="preserve"><value>Special K</value></data>
-  <data name="About_SpecialKDesc" xml:space="preserve"><value>Ang Bluetooth link drop pinaagi sa host IOCTL, ang natago nga XInput power-off ug capabilities ordinal, ug mga default sa trigger-vibration sa DualSense. GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_SpecialKDesc" xml:space="preserve"><value>Ang Bluetooth link drop pinaagi sa host IOCTL, ang natago nga XInput power-off ug capabilities ordinal, ug mga default sa trigger-vibration sa DualSense. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_SteamControllerRefs" xml:space="preserve"><value>Mga reperensya sa protocol sa Steam Controller</value></data>
   <data name="About_SteamControllerRefsDesc" xml:space="preserve"><value>Mga swipe-haptic tick, mga button bit sa report 0x42, ang power-off command, ug ang dongle relay, gibasa gikan sa OpenPuck (AGPL-3.0), sc2-research (MIT), steam_controller_tools (GPL-2.0), ug SteamlessController (MIT). Dokumentasyon lang, walay GPL o AGPL code nga gilakip.</value></data>
   <data name="About_ThumbstickDeadzones" xml:space="preserve"><value>Thumbstick Deadzones</value></data>
   <data name="About_ThumbstickDeadzonesDesc" xml:space="preserve"><value>Ang unom ka porma sa deadzone, ni Minimuino. GFDL-1.3-or-later ug GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_Touchmote" xml:space="preserve"><value>Touchmote</value></data>
-  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Behavior sa IR pointer sa Wii Remote: midpoint sa dot-pair, mga margin, offset sa sensor bar, smoothing, ug ang FPS Mouse curve, uban ang mga fork ni Ryochan7, Suegrini, ug Trihy. GPL-3.0, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_TouchmoteDesc" xml:space="preserve"><value>Behavior sa IR pointer sa Wii Remote: midpoint sa dot-pair, mga margin, offset sa sensor bar, smoothing, ug ang FPS Mouse curve, uban ang mga fork ni Ryochan7, Suegrini, ug Trihy. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_TriggerEffectGenerator" xml:space="preserve"><value>TriggerEffectGenerator</value></data>
-  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Mga layout sa adaptive-trigger effect sa DualSense ug zone packing, gihimo pag-usab sa C#, ni John "Nielk1" Klein. MIT.</value></data>
+  <data name="About_TriggerEffectGeneratorDesc" xml:space="preserve"><value>Mga layout sa adaptive-trigger effect sa DualSense ug zone packing, gihimo pag-usab sa C#, ni John "Nielk1" Klein.</value></data>
   <data name="About_ViGEmClient" xml:space="preserve"><value>ViGEmClient</value></data>
-  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Ang DS4_REPORT_EX layout luyo sa input report sa virtual nga DualShock 4, ni Benjamin Höglinger-Stelzer. MIT.</value></data>
+  <data name="About_ViGEmClientDesc" xml:space="preserve"><value>Ang DS4_REPORT_EX layout luyo sa input report sa virtual nga DualShock 4, ni Benjamin Höglinger-Stelzer.</value></data>
   <data name="About_ViiperHbashton" xml:space="preserve"><value>VIIPER (fork ni hbashton)</value></data>
-  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Ang 48 dB attenuation range sa mikropono sa virtual nga DualSense. GPL-3.0-or-later, gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
+  <data name="About_ViiperHbashtonDesc" xml:space="preserve"><value>Ang 48 dB attenuation range sa mikropono sa virtual nga DualSense. Gibasa isip dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_WheelRefs" xml:space="preserve"><value>Mga reperensya sa protocol sa manibela</value></data>
   <data name="About_WheelRefsDesc" xml:space="preserve"><value>Mga report sa native nga force feedback ug RPM shift LED para sa mga manibela sa Fanatec, Thrustmaster, ug Logitech, gibasa gikan sa hid-fanatecff (GPL-2.0), hid-tmff2 (GPL-2.0-or-later), new-lg4ff (GPL-2.0-or-later), oversteer (GPL-3.0), ug thrustmaster-led-linux (GPL-3.0), ug gi-cross-check batok sa SimHub LED plugin ni prodigal.knight (MIT) ug tm-bt-led (MIT). Dokumentasyon lang, walay GPL code nga gilakip.</value></data>
   <data name="About_ArcadeIoRefs" xml:space="preserve"><value>Mga reperensya sa arcade I/O</value></data>
@@ -3263,19 +3306,19 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="About_XboxControllerRefs" xml:space="preserve"><value>Mga reperensya sa Xbox controller</value></data>
   <data name="About_XboxControllerRefsDesc" xml:space="preserve"><value>Ang mga protocol luyo sa original Xbox, Steel Battalion, Xbox 360 chatpad ug Xbox 360 uDraw nga mga driver sa SDL fork, ug sa mga Xbox 360 receiver nga gi-bind sa PadForge sa kaugalingong driver sa Windows, gibasa gikan sa brandonw.net, Chatpad Super Driver (MIT), Cxbx-Reloaded (GPL-2.0-or-later), euc.jp ni ITO Takayuki, JoypadOS (Apache-2.0), libSteelBattalion, libsteelbat, Linux (GPL-2.0-or-later), ogx360 (GPL-3.0-or-later), s-config.com, SBC (MIT), Spivey's Corner, steel-battalion-net (LGPL-3.0), SteelBattalionController (Apache-2.0), SteelBattalionDriver (GPL-3.0), SteelBattalionMapper (GPL-3.0-or-later), tusb_xinput (MIT), uDrawTablet, Xb2XInput (GPL-3.0), xb360ChatpadToKM (GPL-3.0), xbox360wirelesschatpad, xboxdevwiki, xboxdrv (GPL-3.0-or-later), ug xemu (LGPL-2.0-or-later). Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_Libwdi" xml:space="preserve"><value>libwdi</value></data>
-  <data name="About_LibwdiDesc" xml:space="preserve"><value>Ang one-INF-per-device nga packaging ug paglista sa device luyo sa awtomatikong WinUSB binding, ni Pete Batard. Dokumentasyon lang, walay code nga gilakip. LGPL-3.0-or-later.</value></data>
+  <data name="About_LibwdiDesc" xml:space="preserve"><value>Ang one-INF-per-device nga packaging ug paglista sa device luyo sa awtomatikong WinUSB binding, ni Pete Batard. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_Bluepad32" xml:space="preserve"><value>Bluepad32</value></data>
-  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ang Bluetooth HID feature-report request nga gipadala sa PadForge aron mailhan ang PS Move accessory, ni Ricardo Quesada. Dokumentasyon lang, walay code nga gilakip. Apache-2.0.</value></data>
+  <data name="About_Bluepad32Desc" xml:space="preserve"><value>Ang Bluetooth HID feature-report request nga gipadala sa PadForge aron mailhan ang PS Move accessory, ni Ricardo Quesada. Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_Monado" xml:space="preserve"><value>Monado</value></data>
-  <data name="About_MonadoDesc" xml:space="preserve"><value>Ang configuration key sa Windows Mixed Reality sa SDL fork gikan sa Monado. Copyright 2021 Jan Schmidt. Gilakip sa SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_MonadoDesc" xml:space="preserve"><value>Ang configuration key sa Windows Mixed Reality sa SDL fork gikan sa Monado. Copyright 2021 Jan Schmidt. Gilakip sa SDL3.dll.</value></data>
   <data name="About_OpenHmd" xml:space="preserve"><value>OpenHMD</value></data>
-  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Ang sensor fusion sa Rift DK1 sa SDL fork usa ka port sa OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Gilakip sa SDL3.dll. BSL-1.0.</value></data>
+  <data name="About_OpenHmdDesc" xml:space="preserve"><value>Ang sensor fusion sa Rift DK1 sa SDL fork usa ka port sa OpenHMD. Copyright 2013 Fredrik Hultin, Jakob Bornecrantz. Gilakip sa SDL3.dll.</value></data>
   <data name="About_WiiBrew" xml:space="preserve"><value>WiiBrew</value></data>
   <data name="About_WiiBrewDesc" xml:space="preserve"><value>Dokumentasyon sa speaker protocol ug IR calibration sa Wii Remote. Gibasa para sa mga kamatuoran sa protocol lamang.</value></data>
   <data name="About_X1nput" xml:space="preserve"><value>X1nput</value></data>
-  <data name="About_X1nputDesc" xml:space="preserve"><value>Ang 9-byte nga report sa impulse-trigger sa Xbox ug ang write path niini, ni araghon007. MIT.</value></data>
+  <data name="About_X1nputDesc" xml:space="preserve"><value>Ang 9-byte nga report sa impulse-trigger sa Xbox ug ang write path niini, ni araghon007.</value></data>
   <data name="About_ChiakiNg" xml:space="preserve"><value>chiaki-ng</value></data>
-  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Ang PS5 haptic PCM format, signed 16-bit sa 3 kHz, nga misulbad sa signed 8-bit Bluetooth haptics encoding. AGPL-3.0, gibasa isip dokumentasyon lang, walay AGPL code nga gilakip.</value></data>
+  <data name="About_ChiakiNgDesc" xml:space="preserve"><value>Ang PS5 haptic PCM format, signed 16-bit sa 3 kHz, nga misulbad sa signed 8-bit Bluetooth haptics encoding. Gibasa isip dokumentasyon lang, walay AGPL code nga gilakip.</value></data>
   <data name="About_GameModRefs" xml:space="preserve"><value>Mga reperensya sa DSX game mod</value></data>
   <data name="About_GameModRefsDesc" xml:space="preserve"><value>Ang mga UDP instruction, tubag, port file ug trigger effect byte luyo sa mga game mod, gibasa gikan sa opisyal nga DSX v3.1 ug DualSenseX v2 mod example sa Paliverse, sa duha ka bersyon sa DualSenseY ug DualSense4Rockstar (walay gipatik nga lisensya), DSZ ug pydualsense (MIT), ug sa Wujek Dualsense API ug sa DSX server sa DS4Windows fork ni hbashton (GPL-3.0). Dokumentasyon lang, walay code nga gilakip.</value></data>
   <data name="About_Ds4HeadsetRefs" xml:space="preserve"><value>Mga reperensya sa DualShock 4 headset</value></data>
@@ -3350,6 +3393,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>I-pan</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>I-pan X</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>I-pan Y</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilia kung unsay ipakita niini. Walay mausab hangtod nga i-save nimo.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Ang {0} gibutang sa {1}.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Nag-download sa S.T.R.I.K.E. 7 SDK sa Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Ang S.T.R.I.K.E. 7 karon mo-load sa {0}.</value></data>
@@ -3488,8 +3532,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Telemetry_Status_SharedMemory_Format" xml:space="preserve"><value>Nagbasa sa {0} gikan sa shared memory.</value></data>
   <data name="Telemetry_Status_WaitingSharedMemory" xml:space="preserve"><value>Naghulat sa Assetto Corsa o Assetto Corsa Competizione.</value></data>
   <data name="Telemetry_Status_Forwarding_Format" xml:space="preserve"><value>Nagpasa ngadto sa port {0}.</value></data>
-  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Custom nga mga format sa telemetry</value></data>
-  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Ihulagway, matag field, ang mga packet nga ipadala sa usa ka dula, ug basahon usab sa PadForge kana nga dula. Ang matag variable mahimong axis sa Game telemetry nga row ug channel para sa mga trigger sa Custom nga expression. Pilia ang format pinaagi sa ngalan niini sa lista sa Dula, o hatagi kini og gitas-on o key aron makit-an kini sa Awtomatikong pag-ila.</value></data>
+  <data name="Telemetry_Formats_Title" xml:space="preserve"><value>Custom nga mga format</value></data>
+  <data name="Telemetry_Formats_Description" xml:space="preserve"><value>Ihulagway ang mga telemetry packet sa usa ka dula nga wala mailhi sa PadForge.</value></data>
   <data name="Telemetry_Formats_Add" xml:space="preserve"><value>Idugang ang format</value></data>
   <data name="Telemetry_Formats_NewName_Format" xml:space="preserve"><value>Format {0}</value></data>
   <data name="Telemetry_Formats_Name" xml:space="preserve"><value>Ngalan</value></data>
@@ -3500,10 +3544,14 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Ang mga packet lang nga eksakto niining gidaghanon sa bytes ang basahon gamit kini nga format. Kon 0, basahon ang bisan unsang packet, ug dili hilabtan sa Awtomatikong pag-ila ang format, busa pilia kini pinaagi sa ngalan.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Gikinahanglang key</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Ang mga JSON packet lang nga adunay kini nga key ang basahon gamit kini nga format. Kon walay sulod, basahon ang bisan unsang packet, ug dili hilabtan sa Awtomatikong pag-ila ang format, busa pilia kini pinaagi sa ngalan.</value></data>
+  <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Han-ay sa byte</value></data>
+  <data name="Telemetry_Formats_ByteOrder_Tooltip" xml:space="preserve"><value>Ang Little-Endian mag-una sa least significant byte sa matag numero, sama sa kasagarang buhaton sa mga dula sa PC. Ang Big-Endian mag-una sa most significant byte.</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="Telemetry_Formats_GearValues" xml:space="preserve"><value>Mga bili sa gear</value></data>
   <data name="Telemetry_Formats_GearValues_Tooltip" xml:space="preserve"><value>Ang field sa gear adunay kaugalingong mga numero para sa atras ug neutral, sama sa 0 ug 11 sa Forza. Kon patay kini, ang negatibong gear mao ang atras ug ang 0 mao ang neutral.</value></data>
   <data name="Telemetry_Formats_GearReverse" xml:space="preserve"><value>Atras</value></data>
   <data name="Telemetry_Formats_GearNeutral" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Telemetry_Formats_More" xml:space="preserve"><value>Gikinahanglang key para sa JSON packet, mga bili sa gear</value></data>
   <data name="Telemetry_Formats_Fields" xml:space="preserve"><value>Mga field</value></data>
   <data name="Telemetry_Formats_ColTarget" xml:space="preserve"><value>Gibasa ngadto sa</value></data>
   <data name="Telemetry_Formats_ColName" xml:space="preserve"><value>Ngalan sa variable</value></data>
@@ -3569,9 +3617,9 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="MacroAction_TriggerEffect_Held_Format" xml:space="preserve"><value>{0} sa {1} samtang gikuptan</value></data>
   <data name="MacroAction_TriggerEffect_Sticky_Format" xml:space="preserve"><value>{0} sa {1} hangtod hunongon</value></data>
   <data name="MacroAction_TriggerEffectStop_Format" xml:space="preserve"><value>Hunonga ang epekto sa trigger sa {0}</value></data>
-  <data name="Tour_Extras_Body" xml:space="preserve"><value>Ania dinhi ang mga opsyonal nga feature: ang web controller sa phone, ang Remote Link, ang motion server ug uban pa.</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Mga dugang</value></data>
   <data name="Extras_Subtitle" xml:space="preserve"><value>Mga opsyonal nga feature. Dili kini manghilabot hangtod nga i-on nimo.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} sa {1} ang naka-on</value></data>
   <data name="Extras_Group_Play" xml:space="preserve"><value>Dugang nga paagi sa pagdula</value></data>
   <data name="Extras_Group_Send" xml:space="preserve"><value>Ipadala sa laing dapit</value></data>
   <data name="Extras_Group_Screen" xml:space="preserve"><value>Sa screen</value></data>
@@ -3579,19 +3627,36 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Paglingi-lingi gamit ang head tracker o VR headset.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>I-map ang katulin, mga pedal ug mga gear gikan sa mga dula sa pagmaneho.</value></data>
   <data name="Extras_Tile_TwitchChat" xml:space="preserve"><value>Tugoti ang mga tumatan-aw nga mopislit og mga button pinaagi sa pag-type sa chat.</value></data>
-  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Ipaambit ang mga controller sa PadForge sa laing PC.</value></data>
+  <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Palihoka ang mga virtual nga controller sa laing PC.</value></data>
   <data name="Extras_Tile_MotionServer" xml:space="preserve"><value>Ipadala ang motion sa controller ngadto sa mga emulator.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa ang mga epekto sa trigger ug suga gikan sa mga game mod.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer ug pagbalhin og profile samtang nagdula ka.</value></data>
-  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Usa ka touch surface sa screen para sa mga dula nga naggamit sa PlayStation touchpad.</value></data>
+  <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Usa ka touch surface sa screen para sa mga dula nga adunay PlayStation touchpad.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Usa ka hulagway, timer o orasan ibabaw sa ubang mga window.</value></data>
-  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP nga address, access code</value></data>
-  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Pagkonektar pag-usab, port, proteksyon sa identidad, pagkonektar pinaagi sa address</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>OpenXR runtime, UDP port, range kada axis</value></data>
+  <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
+  <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Awtomatikong pagkonektar pag-usab, port, identidad sa pairing, konektar pinaagi sa address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli nga DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, kinatas-ang katulin, custom nga mga format</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga port, Kinatas-ang katulin, Custom nga mga format</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Paglingi-lingi gamit ang head tracker o VR headset samtang ang duha ka kumagko nagpabilin sa mga button.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ang katulin, mga pedal ug gear nga ipadala sa usa ka driving game, sama sa bisan unsang input.</value></data>
+  <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ipadala ang motion sa controller ngadto sa mga emulator nga mobasa og DSU motion source.</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa ang adaptive trigger ug light effect gikan sa mga game mod nga gihimo para sa DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>I-on ang telemetry output sa dula ug itudlo kini niini nga PC ug port.</value></data>
   <data name="Home_Title" xml:space="preserve"><value>Balay</value></data>
-  <data name="Home_EngineLine_Format" xml:space="preserve"><value>Mga device nga konektado: {0}. Mga controller: {1}.</value></data>
+  <data name="Home_Hero_Forging" xml:space="preserve"><value>Makita sa mga dula ang matag controller nga live.</value></data>
+  <data name="Home_Hero_Idle" xml:space="preserve"><value>Naka-on ang engine ug walay controller nga live.</value></data>
+  <data name="Home_Hero_Stopped" xml:space="preserve"><value>Sugdi ang engine aron mabalik ang imong mga controller.</value></data>
+  <data name="Home_Stat_PollingRate" xml:space="preserve"><value>Polling rate</value></data>
+  <data name="Home_Stat_ControllersLive" xml:space="preserve"><value>Mga controller nga live</value></data>
+  <data name="Home_Stat_DevicesConnected" xml:space="preserve"><value>Mga device nga nakakonektar</value></data>
+  <data name="Home_Card_Power" xml:space="preserve"><value>I-on o i-off kini nga controller</value></data>
+  <data name="Home_Card_StartsWithEngine" xml:space="preserve"><value>Magsugod kini kung magsugod ang engine.</value></data>
+  <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Magsugod kini kung makonektar kini nga device.</value></data>
+  <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Magsugod kini kung makonektar ang usa niini nga mga device.</value></data>
+  <data name="Home_Device_NotConnected" xml:space="preserve"><value>Wala makonektar</value></data>
+  <data name="Home_Device_Sending" xml:space="preserve"><value>Nagpadala og input karon</value></data>
+  <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Baterya {0}, ubos</value></data>
+  <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Baterya {0}, nag-charge</value></data>
   <data name="Home_Controllers" xml:space="preserve"><value>Mga controller</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Mga dugang nga gigamit</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Naka-on. {0}</value></data>
@@ -3600,6 +3665,9 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Home_ShowQr" xml:space="preserve"><value>Ipakita ang QR</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>Nakakonektar ang {0} ug wala gigamit.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamita</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Unsay angay makita sa mga dula?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>Himoon sa PadForge kini nga controller nga mao ang gilauman sa imong mga dula. Pili og usa aron magsugod. Mausab nimo kini unya sa usa ka click.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>Himoon sa PadForge ang imong controller nga mao ang gilauman sa imong mga dula. Pili og usa aron magsugod. Mausab nimo kini unya sa usa ka click.</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key ug mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota ug control</value></data>
@@ -3611,6 +3679,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ug menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Idugang og device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Ubos</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hulagway</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>{0} ka output</value></data>
@@ -3663,4 +3732,120 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Kini nga device</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tibuok controller</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Giunsa pagkupot ang controller</value></data>
+  <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mga effect sa usa ka mod moabot sa matag controller nga adunay hardware para niini.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang posisyon sa ulo mao ang Head Tracker nga row sa [Mga device]. I-map ang yaw sa ulo ngadto sa axis sa stick sa seksyon nga Mga button sa usa ka controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga bili mao ang Game telemetry nga row sa [Mga device]. I-map kini sa seksyon nga Mga button sa usa ka controller o gamita kini aron mo-trigger og mga macro.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang kaugalingong dapit, gidak-on ug opacity sa usa ka menu gitakda sa menu mismo, sa seksyon nga [Mga macro ug menu] sa usa ka controller.</value></data>
+  <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Mga tinubdan</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ug bisan unsa nga mopadala sa UDP format niini</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Range kada axis. Ang zero mosunod sa range sa ibabaw.</value></data>
+  <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Mga dula nga wala mailhi sa PadForge</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para sa mga mod nga mangita og nagdagan nga DSX sa dili pa sila mopadala</value></data>
+  <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Unsay makita</value></data>
+  <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar sa usa ka menu samtang abli kini</value></data>
+  <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang ngalan sa profile kung mausab ang profile</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
+  <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Dapit sa screen</value></data>
+  <data name="Extras_WebController_ConnectTitle" xml:space="preserve"><value>Ikonektar ang telepono</value></data>
+  <data name="Extras_WebController_Step1" xml:space="preserve"><value>Ibutang ang telepono sa samang network niini nga PC.</value></data>
+  <data name="Extras_WebController_Step2" xml:space="preserve"><value>I-scan ang code gamit ang camera niini.</value></data>
+  <data name="Extras_WebController_Step3" xml:space="preserve"><value>Pili og layout sa controller.</value></data>
+  <data name="Extras_WebController_Phones" xml:space="preserve"><value>Mga telepono</value></data>
+  <data name="Extras_WebController_NoPhones" xml:space="preserve"><value>Walay telepono nga nakakonektar.</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ang telepono nga mokonektar makita dinhi ug sa panid nga Mga device, diin imo kining i-assign sa usa ka controller.</value></data>
+  <data name="Extras_TwitchChat_ChannelPlaceholder" xml:space="preserve"><value>Imong channel</value></data>
+  <data name="Extras_TwitchChat_Words" xml:space="preserve"><value>Mga pulong sa tumatan-aw</value></data>
+  <data name="Extras_TwitchChat_Words_Tooltip" xml:space="preserve"><value>Mag-type ang usa ka tumatan-aw og pulong sama sa !a, ug pislitan sa PadForge ang gi-map sa !a sa Twitch Chat nga row sa panid nga Mga device. I-assign kana nga row sa usa ka controller sama sa bisan unsang device.</value></data>
+  <data name="Extras_TwitchChat_LiveTitle" xml:space="preserve"><value>Samtang live ka</value></data>
+  <data name="Extras_TwitchChat_DisplayTitle" xml:space="preserve"><value>Hulagway para sa imong broadcast</value></data>
+  <data name="Extras_RemoteLink_NoPaired" xml:space="preserve"><value>Walay gi-pair nga PC.</value></data>
+  <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>I-pair ang laing PC</value></data>
+  <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Walay duol nga PC nga wala pa ma-pair.</value></data>
+  <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>I-on ang Remote Link sa PadForge sa pikas nga PC. Makita kini dinhi, ug itandi nimo ang mubo nga code sa duha ka screen.</value></data>
+  <data name="Extras_TouchpadOverlay_LookAndPlace" xml:space="preserve"><value>Dagway ug dapit</value></data>
+  <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Guyora kini gamit ang tuo nga button sa mouse o tulo ka tudlo aron ibalhin kini.</value></data>
+  <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
+  <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Gipakita</value></data>
+  <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Samtang laing programa ang anaa sa unahan, molusot ang mga click sa overlay. Samtang ang PadForge ang anaa sa unahan, guyora kini gamit ang tuo nga button sa mouse ug usba ang gidak-on gikan sa eskina niini. Ang usa ka macro makapakita o makatago og overlay pinaagi sa numero niini.</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonektar</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Wala makonektar</value></data>
+  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ubang mga input</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Walay device nga motakdo.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Wala gigamit</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>baterya {0}, nag-charge</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Gigamit sa</value></data>
+  <data name="Devices_UsedBy_New" xml:space="preserve"><value>Bag-ong controller</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Mga setting</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Matag axis, button ug sensor</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Gipislit: {0}</value></data>
+  <data name="Devices_Details_FoldHint" xml:space="preserve"><value>Mga ID, path, kapabilidad, Pugson ang raw joystick mode</value></data>
+  <data name="Devices_Details_FoldHintShort" xml:space="preserve"><value>Mga ID, path, kapabilidad</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Kopyaha ang detalye</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Produkto</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Klase</value></data>
+  <data name="Devices_Detail_Capabilities" xml:space="preserve"><value>Mga kapabilidad</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Koneksyon</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterya</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serial number</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebisyon</value></data>
+  <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Walay gitakda nga dula</value></data>
+  <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Mo-load para sa {0}</value></data>
+  <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Gitakda para sa {0}</value></data>
+  <data name="Profiles_Active" xml:space="preserve"><value>Aktibo</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Dugang pa para sa {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Unsay madala</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Mahimong</value></data>
+  <data name="Workshop_Layers" xml:space="preserve"><value>Mga layer</value></data>
+  <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporta sa hardware</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Pakurog usab ang controller, Balika ang pahibalo matag, Pahibaloa kung puno na ang charge</value></data>
+  <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Naghimo sa mga virtual nga controller.</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Unsay gipadala</value></data>
+  <data name="About_UpToDate" xml:space="preserve"><value>Bag-o na.</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_Documentation" xml:space="preserve"><value>Dokumentasyon</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_CheckForUpdates" xml:space="preserve"><value>Susiha ang mga update</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Pangitaa ang mga kredito</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Ipakita ang tanang kredito</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Ipakita ang mas gamay nga kredito</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Walay kredito nga motakdo sa “{0}”.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Mga nota ug control change para sa music software.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Mga virtual nga VR controller pinaagi sa SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Aron usbon ang klase sa ulahi, i-click ang type chip sa controller. Usa ra ka click.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Nagkinahanglan og SteamVR. I-install kini gikan sa card niini sa Mga setting.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Aduna nay VR controller. Usa ra ang mopalihok sa duha ka kamot.</value></data>
+  <data name="AddController_Full_Format" xml:space="preserve"><value>Ang PadForge adunay {0} ka controller, ang labing daghan nga mapadagan niini. Papasa ang usa aron makadugang og lain.</value></data>
+  <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Dugang nga mga klase: [{0}, {1}, {2} ug {3}]</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Ang mga button, stick ug trigger gi-map nga 1:1 samtang gihimo ang controller.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>I-pair ang Bluetooth controller</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Sugdi gikan sa andam na nga profile</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Nakakonektar</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, baterya {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Baterya {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Walay controller nga nakakonektar</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>Ikonektar ang usa gamit ang cable o pinaagi sa Bluetooth.</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} aron mobalhin</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} aron ablihan</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} gikan bisan asa</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Mga panid</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Mga aksyon</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>ubos sa Dugang pa</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>sa mga opsyon sa usa ka row</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Walay bisan unsa sa PadForge nga motakdo sa “{0}”.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Pangitaa ang “{0}” sa dokumentasyon</value></data>
+  <data name="Import_NeedsALook" xml:space="preserve"><value>Kinahanglan susihon</value></data>
+  <data name="Import_ImportedCleanly" xml:space="preserve"><value>Hapsay nga na-import</value></data>
+  <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Pagpaminaw on o off, mode, kasiguroan</value></data>
+  <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Pagbutang og password</value></data>
+  <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Ablihi ang Remote Link</value></data>
+  <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Password</value></data>
+  <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frequency</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Live: {0} sa {1}</value></data>
 </root>

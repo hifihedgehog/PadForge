@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -42,6 +43,12 @@ namespace PadForge.Views.Controls
             InitializeComponent();
             Loaded += (_, _) => { UpdateShape(); UpdateLabel(); };
         }
+
+        /// <summary>The icon repeats the title beside it: a stick or trigger
+        /// shape with the control's letter. A UserControl reads as a custom
+        /// control with no name, so the icon keeps out of the control view,
+        /// as the app's other icons do.</summary>
+        protected override AutomationPeer OnCreateAutomationPeer() => new PadForge.Controls.DecorativeIconPeer(this);
 
         private static void OnShapeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

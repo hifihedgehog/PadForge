@@ -77,6 +77,7 @@
   <data name="Common_On" xml:space="preserve"><value>Tàn</value></data>
   <data name="Common_Off" xml:space="preserve"><value>Pa</value></data>
   <data name="Common_More" xml:space="preserve"><value>Síi</value></data>
+  <data name="Common_SeeAll" xml:space="preserve"><value>Wo gbogbo rẹ̀</value></data>
   <data name="Common_Installed" xml:space="preserve"><value>Ti fi sórí ẹ̀rọ</value></data>
   <data name="Common_NotInstalled" xml:space="preserve"><value>Kò sí lórí ẹ̀rọ</value></data>
   <data name="Common_NotAvailableOnArm64" xml:space="preserve"><value>Kò sí fún ARM64</value></data>
@@ -135,20 +136,16 @@
   <data name="Profile_Default" xml:space="preserve"><value>Àìyípadà</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Profaili tó kàn</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profaili tó ṣáájú</value></data>
-  <data name="Status_NoDeviceSelected" xml:space="preserve"><value>Kò sí ẹ̀rọ tí a yàn.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>A ti yọ ẹ̀rọ kúrò.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>A ti paarẹ́ Ẹ̀rọ ìdarí àfarawé {0}.</value></data>
 
   <!-- ═══ Dashboard ═══ -->
-  <data name="FirstRun_Skip" xml:space="preserve"><value>Fò ó</value></data>
-  <data name="FirstRun_Next" xml:space="preserve"><value>Tó kàn</value></data>
-  <data name="FirstRun_Done" xml:space="preserve"><value>Ó ti parí</value></data>
-  <data name="Tour_Slots_Title" xml:space="preserve"><value>Àwọn àyè</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Àyè</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Ẹ̀rọ</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Orísun</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Fi ẹ̀rọ kún</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Battery_Low" xml:space="preserve"><value>Ó lọ sílẹ̀</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Àwòrán</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Àkójọ</value></data>
   <data name="Pad_Band_Count_Format" xml:space="preserve"><value>ìjáde {0}</value></data>
@@ -194,6 +191,12 @@
 
   <!-- ═══ Settings ═══ -->
   <data name="Settings_Title" xml:space="preserve"><value>Ètò</value></data>
+  <data name="Settings_Group_General" xml:space="preserve"><value>Gbogbogbò</value></data>
+  <data name="Settings_Group_Input" xml:space="preserve"><value>Ìfiwọlé</value></data>
+  <data name="Settings_Group_Hardware" xml:space="preserve"><value>Hardware</value></data>
+  <data name="Settings_Group_Drivers" xml:space="preserve"><value>Àwọn awakọ̀</value></data>
+  <data name="Settings_Group_Data" xml:space="preserve"><value>Dátà àti àṣírí</value></data>
+  <data name="Settings_SearchPlaceholder" xml:space="preserve"><value>Wá àwọn ètò</value></data>
   <data name="Settings_ThemeLight" xml:space="preserve"><value>Ìmọ́lẹ̀</value></data>
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Òkùnkùn</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fèrèsé</value></data>
@@ -204,10 +207,15 @@
   <data name="HIDMaestroUninstall_Stays_Format" xml:space="preserve"><value>Ó wà síbẹ̀: {0}</value></data>
   <data name="HIDMaestroUninstall_CannotRead_Format" xml:space="preserve"><value>A kò lè kà á: {0}</value></data>
   <data name="HIDMaestroUninstall_NotRemoved_Format" xml:space="preserve"><value>A kò yọ ọ́ kúrò: {0}</value></data>
-  <data name="Settings_BthPS3" xml:space="preserve"><value>Awakọ̀ Bluetooth BthPS3</value></data>
+  <data name="HIDMaestroUninstall_OutcomeRemoved" xml:space="preserve"><value>Ti yọ kúrò</value></data>
+  <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ti dúró</value></data>
+  <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Kò ṣeé kà</value></data>
+  <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Kò yọ kúrò</value></data>
+  <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ó jẹ́ kí àwọn ẹ̀rọ ìdarí PlayStation 3, PlayStation Move àti ẹ̀rọ ìdarí Navigation sopọ̀ nípasẹ̀ Bluetooth. Ó wà nínú PadForge, a sì máa ń fi sórí ẹ̀rọ nígbà àkọ́kọ́ tí a bá so ọ̀kan nínú wọn pọ̀.</value></data>
+  <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ó ń so àwọn ẹ̀rọ ìdarí PlayStation 3 pọ̀ nípasẹ̀ Bluetooth.</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Yọ BthPS3 kúrò lórí ẹ̀rọ</value></data>
-  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Èyí yóò yọ BthPS3 kúrò lórí PC yìí: àwọn awakọ̀ rẹ̀, filter tí ó fi kún Bluetooth, àti awakọ̀ WinUSB tí PadForge fún àwọn ẹ̀rọ ìdarí PlayStation 3 fún síso pọ̀. PadForge yóò kọ́kọ́ dá engine rẹ̀ dúró, Bluetooth yóò sì dúró fún ìgbà díẹ̀ nígbà tí a bá ń yọ àwọn awakọ̀ kúrò. Lẹ́yìn náà, àwọn ẹ̀rọ ìdarí PlayStation 3, Move àti Navigation yóò ṣiṣẹ́ nípasẹ̀ USB nìkan. Síso ọ̀kan pọ̀ yóò tún fi BthPS3 sórí ẹ̀rọ.</value></data>
+  <data name="BthPS3Uninstall_Message" xml:space="preserve"><value>Èyí ni ohun tí a ó yọ kúrò lórí PC yìí. Lẹ́yìn náà, àwọn ẹ̀rọ ìdarí PlayStation 3, Move àti Navigation yóò ṣiṣẹ́ nípasẹ̀ USB nìkan, títí síso ọ̀kan pọ̀ yóò fi tún fi BthPS3 sórí ẹ̀rọ.</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>A ń ka ohun tí BthPS3 fi sílẹ̀ lórí PC yìí…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 kò fi nǹkan kan sílẹ̀ lórí PC yìí láti yọ kúrò.</value></data>
   <data name="BthPS3Uninstall_DsHidMini" xml:space="preserve"><value>DsHidMini ń lo àwọn awakọ̀ wọ̀nyí, nítorí náà wọ́n yóò wà síbẹ̀ níwọ̀n ìgbà tí ó bá wà lórí ẹ̀rọ.</value></data>
@@ -232,7 +240,7 @@
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
   <data name="About_Qmk" xml:space="preserve"><value>QMK Firmware</value></data>
-  <data name="About_QmkDesc" xml:space="preserve"><value>Ipò àwọn kọ́kọ́rọ́ àti àwọn kọ́kọ́rọ́ ìpele ìpìlẹ̀ ti àwọn pátákó ìtẹ̀wé tí àwòrán Keyboard + Mouse ń fi hàn, tí a ṣẹ̀dá láti inú dátà ìfilélẹ̀ QMK àti ẹ̀dà QMK ti Keychron. GPL-2.0-or-later.</value></data>
+  <data name="About_QmkDesc" xml:space="preserve"><value>Ipò àwọn kọ́kọ́rọ́ àti àwọn kọ́kọ́rọ́ ìpele ìpìlẹ̀ ti àwọn pátákó ìtẹ̀wé tí àwòrán Keyboard + Mouse ń fi hàn, tí a ṣẹ̀dá láti inú dátà ìfilélẹ̀ QMK àti ẹ̀dà QMK ti Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
@@ -253,7 +261,6 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Tẹ "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kò sí ọ̀rọ̀)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Ọ̀rọ̀</value></data>
-  <data name="Devices_Power" xml:space="preserve"><value>Agbára</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ìṣẹ́jú (0 = láé)</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Nọ́mbà olùṣeré…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Nọ́mbà olùṣeré</value></data>
@@ -268,7 +275,6 @@
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Yan àwòrán…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Yọ àwòrán profaili kúrò</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Mú padà bọ̀ sípò</value></data>
-  <data name="Devices_LightGun" xml:space="preserve"><value>Light gun</value></data>
   <data name="GunCalibration_Instruction" xml:space="preserve"><value>Dojú ìbọn kọ àfojúsùn náà kí o sì fa tírígà.</value></data>
   <data name="GunCalibration_Progress" xml:space="preserve"><value>Àfojúsùn {0} nínú {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Dojú Wii Remote kọ àfojúsùn náà kí o sì tẹ B.</value></data>
@@ -281,7 +287,9 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Sọ di ọ̀tun</value></data>
   <!-- ═══ Devices ═══ -->
   <data name="Devices_Title" xml:space="preserve"><value>Àwọn ẹ̀rọ</value></data>
-  <data name="Devices_Total" xml:space="preserve"><value> lápapọ̀</value></data>
+  <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>ti sopọ̀: {0}</value></data>
+  <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Wá àwọn ẹ̀rọ</value></data>
+  <data name="Devices_Filter_All" xml:space="preserve"><value>Gbogbo</value></data>
   <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Yọ ẹ̀rọ kúrò</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Àwọn ákísì</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Àwọn bọ́tìnnì</value></data>
@@ -384,19 +392,17 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Àwọn tírígà</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Àwọn POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Àwọn bọ́tìnnì</value></data>
-  <data name="ManageProfiles_Title" xml:space="preserve"><value>Àwọn profaili tí a gbé wọlé</value></data>
-  <data name="ManageProfiles_YourProfiles_Format" xml:space="preserve"><value>Àwọn profaili tí o gbé wọlé ({0})</value></data>
+  <data name="ManageProfiles_Title" xml:space="preserve"><value>Àwọn ètò ẹ̀rọ ìdarí</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Gbé jáde…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Parẹ́</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>A ti gbé e jáde sí {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Gbígbé jáde kùnà: {0}</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Gbé wọlé láti fáìlì…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Gbé wọlé láti inú fáìlì…</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>A ti gbé e wọlé láti {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Kíkà kùnà: {0}</value></data>
   <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro kọ profaili yìí ní {1}: {0}</value></data>
   <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profaili yìí kò ní HID descriptor, nítorí náà a kò lè ṣe ẹ̀rọ ìdarí kankan láti inú rẹ̀.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>A kò gbé nǹkan kan wọlé. {0}</value></data>
-  <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Sọ di ọ̀tun</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Gbé wọlé</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -472,6 +478,7 @@
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Àárín</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ìyàsípò àárín, ìrísí deadzone àti iye ákísì kọ̀ọ̀kan, ìtẹ̀ fún ákísì kọ̀ọ̀kan, ìwọ̀n, ìdarí</value></data>
+  <data name="Pad_More_Trigger" xml:space="preserve"><value>Ìwọ̀n ní nọ́ńbà, iye aláìṣàtúnṣe</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Ìwọ̀n</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Àtúnṣe àárín X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Àtúnṣe àárín Y</value></data>
@@ -739,13 +746,13 @@
   <data name="Pad_ResetTouchpadFiveFinger" xml:space="preserve"><value>Tún títẹ̀ pẹ̀lú ìka márùn-ún tò</value></data>
 
   <!-- ═══ Touchpad Gesture Recorder Dialog ═══ -->
-  <data name="Recorder_Title" xml:space="preserve"><value>Gba ìfarajúwe touchpad sílẹ̀</value></data>
+  <data name="Recorder_Title" xml:space="preserve"><value>Gba ìfarajúwe kan sílẹ̀</value></data>
   <data name="Recorder_Drawing" xml:space="preserve"><value>Ń yàwòrán…</value></data>
   <data name="Recorder_Complete" xml:space="preserve"><value>Gbogbo àpẹẹrẹ ti wọlé. Fún ìfarajúwe náà ní orúkọ kí o sì tẹ Fi pamọ́.</value></data>
   <data name="Recorder_NextSample_Format" xml:space="preserve"><value>Àpẹẹrẹ {0} nínú {1}</value></data>
   <data name="Recorder_Samples_Format" xml:space="preserve"><value>Àpẹẹrẹ {0} / {1}</value></data>
   <data name="Recorder_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
-  <data name="Recorder_TryAgain" xml:space="preserve"><value>Tún gbìyànjú</value></data>
+  <data name="Recorder_NamePlaceholder" xml:space="preserve"><value>Fún ìfarajúwe yìí ní orúkọ</value></data>
   <data name="Recorder_Error_NameEmpty" xml:space="preserve"><value>A nílò orúkọ</value></data>
   <data name="Recorder_Error_NameTooLong" xml:space="preserve"><value>Orúkọ ti gùn jù (ohun kíkọ 64 ló pọ̀ jù)</value></data>
   <data name="Recorder_Error_NameInvalidChar" xml:space="preserve"><value>Orúkọ ní àwọn ohun kíkọ tí kò tọ́</value></data>
@@ -872,26 +879,29 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_Title" xml:space="preserve"><value>Àwọn profaili</value></data>
-  <data name="Profiles_Management" xml:space="preserve"><value>Ìṣàkóso profaili</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profaili tó ń ṣiṣẹ́:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Kò sí àyè</value></data>
-  <data name="Profiles_New" xml:space="preserve"><value>Tuntun</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Kò sí ẹ̀rọ ìdarí</value></data>
+  <data name="Profiles_New" xml:space="preserve"><value>Profaili tuntun</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Fi pamọ́ bí</value></data>
+  <data name="Profiles_SaveHere" xml:space="preserve"><value>Fi ètò lọ́wọ́lọ́wọ́ pamọ́ síbí</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Ṣàtúnṣe</value></data>
-  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Kọ́kọ́ yan profaili kan.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Profaili “Àìyípadà” tí ó wà nínú ètò kò ṣeé ṣàtúnṣe tàbí paarẹ́.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Pa profaili rẹ́</value></data>
-  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Ṣé kí a pa “{0}” rẹ́? Àyè àti ìsopọ̀ tí a fi pamọ́ fún un yóò parẹ́.</value></data>
+  <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ṣé kí a pa {0} rẹ́?</value></data>
+  <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>A ó yọ profaili náà àti òfin ìyípadà aládàáṣe rẹ̀ kúrò. A kò lè dá èyí padà.</value></data>
+  <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>A ó yọ profaili náà kúrò. A kò lè dá èyí padà.</value></data>
+  <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Ṣé kí a fi ètò lọ́wọ́lọ́wọ́ rọ́pò èyí tí a fi pamọ́ sínú “{0}”? Orúkọ rẹ̀ àti àwọn eré rẹ̀ yóò dúró bí wọ́n ṣe wà.</value></data>
+  <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Rọ́pò</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Fi pamọ́ bí profaili</value></data>
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Ṣàtúnṣe profaili</value></data>
-  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Orúkọ profaili:</value></data>
+  <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Profaili tuntun</value></data>
+  <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Orúkọ</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Profaili tuntun</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
-  <data name="CopyFrom_Title" xml:space="preserve"><value>Da ètò kọ láti...</value></data>
-  <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Yan ẹ̀rọ kan láti da ètò rẹ̀ kọ:</value></data>
+  <data name="CopyFrom_Title" xml:space="preserve"><value>Da kọ láti</value></data>
+  <data name="CopyFrom_Subtitle_Format" xml:space="preserve"><value>Fi ti ẹ̀rọ ìdarí mìíràn rọ́pò ìsopọ̀ àti àtúnṣe ẹ̀rọ kọ̀ọ̀kan ti {0}.</value></data>
+  <data name="CopyFrom_MacrosSubtitle_Format" xml:space="preserve"><value>Fi àwọn macro ẹ̀rọ ìdarí mìíràn kún {0}.</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
 
@@ -927,6 +937,7 @@
   <data name="Pad_Range" xml:space="preserve"><value>Ìwọ̀n</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Tẹ lẹ́ẹ̀mejì láti fi ojú àmì kún un. Tẹ bọ́tìnnì ọ̀tún láti yọ ọ́ kúrò. Fà á láti ṣàtúnṣe.</value></data>
+  <data name="Common_CurveEditor" xml:space="preserve"><value>olóòtú ìtẹ̀</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ákísì tírígà</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
@@ -1129,7 +1140,19 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Ìpìlẹ̀</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ìpele Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Ṣètò ìpìlẹ̀</value></data>
+  <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Orúkọ, àmì àti àwọ̀ ìpele ìpìlẹ̀ lórí Shift Layer Flyout àti nínú ìlà àwọn ìpele.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Orúkọ ìpele</value></data>
+  <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
+  <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Dì mú pẹ̀lú</value></data>
+  <data name="Pad_Shift_PressedWith" xml:space="preserve"><value>Tẹ̀ pẹ̀lú</value></data>
+  <data name="Pad_Shift_NextLayerWith" xml:space="preserve"><value>Ìpele tó kàn pẹ̀lú</value></data>
+  <data name="Pad_Shift_PreviousLayerWith" xml:space="preserve"><value>Ìpele tó ṣáájú pẹ̀lú</value></data>
+  <data name="Pad_Shift_AndWith" xml:space="preserve"><value>Àti pẹ̀lú</value></data>
+  <data name="Pad_Shift_ChooseInput" xml:space="preserve"><value>Yan ìfiwọlé kan</value></data>
+  <data name="Pad_Shift_UnmappedControls" xml:space="preserve"><value>Àwọn ìdarí tí a kò so pọ̀</value></data>
+  <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Lo ti ìpele ìpìlẹ̀</value></data>
+  <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Má ṣe nǹkan</value></data>
+  <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ipò, irú ìfiwọlé, àkókò àti àwọ̀</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ọ̀nà</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Dì mú</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Yí padà</value></data>
@@ -1148,8 +1171,6 @@
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ìdádúró</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Ààlà ákísì</value></data>
   <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Ìpele èyíkéyìí</value></data>
-  <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Bọ́tìnnì tó kàn</value></data>
-  <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Bọ́tìnnì tó ṣáájú</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bọ́tìnnì</value></data>
   <data name="Pad_Shift_KindAxis" xml:space="preserve"><value>Ákísì tó kọjá ààlà</value></data>
 
@@ -1230,9 +1251,6 @@
   <data name="Common_Reset" xml:space="preserve">
     <value>Tún tò</value>
   </data>
-  <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Ọ̀rọ̀ aṣínà Remote Link</value>
-  </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Touchpad PadForge</value>
   </data>
@@ -1245,9 +1263,6 @@
   <data name="RemoteLink_DefaultPeerName" xml:space="preserve">
     <value>Kọ̀ǹpútà tí a so pọ̀</value>
   </data>
-  <data name="RemoteLink_Online" xml:space="preserve">
-    <value>Lórí ayélujára</value>
-  </data>
   <data name="RemoteLink_Offline" xml:space="preserve">
     <value>Kò sí lórí ayélujára</value>
   </data>
@@ -1259,6 +1274,8 @@
   </data>
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve"><value>Ṣàwárí fáìlì…</value></data>
   <data name="PickSound_Title" xml:space="preserve"><value>Yan ohùn kan</value></data>
+  <data name="PickSound_Subtitle" xml:space="preserve"><value>Ohùn náà yóò dún láti inú agbọ́hùnsọ ẹ̀rọ ìdarí, tàbí ti PC tí kò bá ní.</value></data>
+  <data name="PickSound_Use" xml:space="preserve"><value>Lo ohùn</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
@@ -1282,11 +1299,17 @@
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
   <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
   <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
-  <data name="Devices_Pair" xml:space="preserve"><value>So pọ̀</value></data>
-  <data name="WiiPair_Title" xml:space="preserve"><value>So ẹ̀rọ ìdarí kan pọ̀</value></data>
+  <data name="Devices_Pair" xml:space="preserve"><value>So ẹ̀rọ ìdarí kan pọ̀</value></data>
+  <data name="WiiPair_Title" xml:space="preserve"><value>So Wii Remote kan pọ̀</value></data>
+  <data name="WiiPair_Step1" xml:space="preserve"><value>Ṣí ìbòrí bátìrì kí o sì tẹ bọ́tìnì SYNC pupa.</value></data>
+  <data name="WiiPair_Step2" xml:space="preserve"><value>Jẹ́ kí remote náà wà nítòsí PC yìí nígbà tí àwọn iná rẹ̀ ń ṣẹ́jú.</value></data>
+  <data name="Ds3Pair_Title" xml:space="preserve"><value>So DualShock 3 kan pọ̀</value></data>
+  <data name="MovePair_Title" xml:space="preserve"><value>So ẹ̀rọ ìdarí Move tàbí Navigation kan pọ̀</value></data>
+  <data name="SerialPair_Title" xml:space="preserve"><value>Fi ẹ̀rọ ìdarí serial kan kún</value></data>
+  <data name="DjiPair_Title" xml:space="preserve"><value>Fi remote DJI kan kún</value></data>
   <data name="WiiPair_FamilyWii" xml:space="preserve"><value>Nintendo Wii</value></data>
   <data name="WiiPair_Pair" xml:space="preserve"><value>So pọ̀</value></data>
-  <data name="WiiPair_Searching" xml:space="preserve"><value>Ń wá. Tẹ bọ́tìnnì SYNC báyìí.</value></data>
+  <data name="WiiPair_Searching" xml:space="preserve"><value>Ń wá remote kan.</value></data>
   <data name="WiiPair_Found" xml:space="preserve"><value>Àwọn ẹ̀rọ ìdarí tí a rí</value></data>
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>A kò tíì rí ẹ̀rọ ìdarí kankan. Rí i dájú pé àwọn iná búlúù ń ṣẹ́jú.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>A ti so {0} pọ̀. Yóò hàn nínú àkójọ ẹ̀rọ rẹ.</value></data>
@@ -1307,9 +1330,8 @@
   <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>A kò lè fi awakọ̀ Bluetooth fún àwọn ẹ̀rọ ìdarí PlayStation sórí ẹ̀rọ.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Síso pọ̀ kò parí. Ìgbésẹ̀ tí ó kùnà wà lókè.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Pa dé</value></data>
-  <data name="Nfc_UidLabel" xml:space="preserve"><value>UID:</value></data>
-  <data name="Nfc_Waiting" xml:space="preserve"><value>(ń dúró)</value></data>
-  <data name="Nfc_NameLabel" xml:space="preserve"><value>Orúkọ:</value></data>
+  <data name="Nfc_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
+  <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Fún tag yìí ní orúkọ</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Forúkọsílẹ̀</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Ẹ̀rọ ìdarí VR</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Pátákó ìtẹ̀wé analog</value></data>
@@ -1350,18 +1372,18 @@
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ mìíràn ń lo pọ́ọ̀tì UDP {0}.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Kọ́ / Ṣàkóso àwọn bọ́tìnnì tó farapamọ́</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Àwọn bọ́tìnnì tó farapamọ́</value></data>
-  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Kọ́ bọ́tìnnì kan</value></data>
-  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Kọ̀ǹpútà:</value></data>
-  <data name="Handheld_StartButton" xml:space="preserve"><value>Bẹ̀rẹ̀ kíkọ́</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tẹ̀ bọ́tìnnì tó farapamọ́ náà báyìí, lẹ́yìn náà fi sílẹ̀…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Dúró díẹ̀…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tẹ bọ́tìnì náà mọ́lẹ̀ báyìí kí o sì dì í mú.</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Fi bọ́tìnì náà sílẹ̀.</value></data>
+  <data name="Handheld_Step_Format" xml:space="preserve"><value>Ìgbésẹ̀ {0} nínú {1}</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>A ti gba bọ́tìnnì náà. Tẹ orúkọ kan, kí o sì tẹ Forúkọsílẹ̀.</value></data>
-  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Orísun:</value></data>
-  <data name="Handheld_NameLabel" xml:space="preserve"><value>Orúkọ:</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Orísun</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
+  <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Fún bọ́tìnì yìí ní orúkọ</value></data>
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Forúkọsílẹ̀</value></data>
-  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Àwọn bọ́tìnnì tí a ti kọ́</value></data>
+  <data name="Handheld_StartOver" xml:space="preserve"><value>Bẹ̀rẹ̀ lẹ́ẹ̀kan sí i</value></data>
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>A kò tíì kọ́ bọ́tìnnì kankan.</value></data>
-  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>A ti forúkọ “{0}” sílẹ̀. Bẹ̀rẹ̀ lẹ́ẹ̀kan sí i láti kọ́ òmíràn.</value></data>
+  <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>A kọ́ ọ lórí {0}</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>A ti forúkọ “{0}” sílẹ̀. Yan Bẹ̀rẹ̀ lẹ́ẹ̀kan sí i láti kọ́ òmíràn.</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Àwọn kọ́kọ́rọ́: {0}</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} ń ṣiṣẹ́. Ó ṣì ń dáhùn sí àwọn bọ́tìnnì wọ̀nyí títí o fi dá a dúró.</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>Gbé jáde…</value></data>
@@ -1412,7 +1434,7 @@
   <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Deadzone ìṣípòpadà</value></data>
   <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Ṣàyẹ̀wò àwọn profaili tí a gbé wọlé fún ìmúdójúìwọ̀n</value></data>
   <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Wá àwọn eré</value></data>
-  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>Eré {0}</value></data>
+  <data name="Workshop_Games" xml:space="preserve"><value>Àwọn eré</value></data>
   <data name="Workshop_NoGamesFound" xml:space="preserve"><value>A kò rí eré kankan ní ilé ìtajà Steam.</value></data>
   <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Ń wá lórí Steam…</value></data>
   <data name="Workshop_Sort_Rating" xml:space="preserve"><value>Ìdíyelé</value></data>
@@ -1443,6 +1465,7 @@
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>A kò tíì gbé profaili kankan wọlé láti Steam Workshop</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Ń ṣàyẹ̀wò Steam Workshop fún ìmúdójúìwọ̀n…</value></data>
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Ìmúdójúìwọ̀n Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Àwọn profaili tí a gbé wọlé wọ̀nyí ní ẹ̀dà tuntun lórí Steam Workshop. Tún wọn gbé wọlé láti Gba àwọn profaili láti gba àwọn àyípadà náà.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ní títẹ̀ pẹ́</value></data>
   <data name="Macro_ShortPress" xml:space="preserve"><value>Ní títẹ̀ kúkúrú</value></data>
@@ -1527,10 +1550,6 @@
   <data name="Starter_Fighting_Name" xml:space="preserve"><value>Àwọn eré ìjà</value></data>
   <data name="Starter_OutputKeyboardMouse" xml:space="preserve"><value>Pátákó ìtẹ̀wé + máòsì</value></data>
   <data name="Starter_OutputGamepad" xml:space="preserve"><value>Ẹ̀rọ ìdarí</value></data>
-  <data name="Profiles_BrowseStarters" xml:space="preserve"><value>Wo àwọn profaili ìbẹ̀rẹ̀</value></data>
-  <data name="Starter_DialogTitle" xml:space="preserve"><value>Àwọn profaili ìbẹ̀rẹ̀</value></data>
-  <data name="Starter_Intro" xml:space="preserve"><value>Àwọn profaili tí a ti pèsè sílẹ̀ fún gbogbo irú eré kan. Yan ọ̀kan, yan ẹ̀rọ ìdarí èyíkéyìí, kí o sì ṣeré. Fífi pamọ́ yóò ṣàfikún profaili lásán tí o lè ṣàtúnṣe.</value></data>
-  <data name="Starter_Save" xml:space="preserve"><value>Fi profaili pamọ́</value></data>
   <data name="Status_StarterImported_Format" xml:space="preserve"><value>A ti ṣàfikún profaili ìbẹ̀rẹ̀ "{0}".</value></data>
   <data name="Starter_TwinStick_Description" xml:space="preserve"><value>Àwọn eré ìbọn tí a ń wò láti òkè. Fi ọ̀pá òsì rìn, fi ọ̀pá ọ̀tún fojú sùn.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Eré-ìje</value></data>
@@ -1565,19 +1584,23 @@
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Gba ìfitónilétí nígbà tí bátìrì ẹ̀rọ ìdarí bá ń lọ sílẹ̀, kí ó tó kú láàárín eré.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Sọ fún mi nígbà tí bátìrì bá ń lọ sílẹ̀</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Dán ìfitónilétí wò</value></data>
+  <data name="Settings_BatteryNotifyTestLabel" xml:space="preserve"><value>Wo ìfitónilétí náà</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} ṣẹ̀ṣẹ̀ sopọ̀. Yàn án sí ẹ̀rọ ìdarí àfarawé yìí?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Yàn</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Kì í ṣe báyìí</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Gbólóhùn èyíkéyìí</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Àwọn macro ohùn</value></data>
+  <data name="Voice_Subtitle" xml:space="preserve"><value>Sọ gbólóhùn kan, yóò sì tẹ bọ́tìnì kan tí o lè so pọ̀. Gbogbo máíkírófóònù tí PadForge lè dé ló ń gbọ́.</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Ṣàkóso àwọn macro ohùn</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Mú àwọn macro ohùn ṣiṣẹ́</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Gbígbọ́</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Nígbà gbogbo</value></data>
   <data name="Voice_PhraseLabel" xml:space="preserve"><value>Gbólóhùn</value></data>
+  <data name="Voice_PhrasePlaceholder" xml:space="preserve"><value>Gbólóhùn láti sọ</value></data>
   <data name="Voice_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
+  <data name="Voice_NamePlaceholder" xml:space="preserve"><value>Orúkọ bọ́tìnì</value></data>
   <data name="Voice_RegisterButton" xml:space="preserve"><value>Forúkọsílẹ̀</value></data>
-  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Àwọn gbólóhùn tí a forúkọ sílẹ̀</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Àwọn gbólóhùn</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Gbohùngbohùn</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (kò sí macro bẹ́ẹ̀)</value></data>
   <data name="About_Interhaptics" xml:space="preserve">
@@ -1636,7 +1659,7 @@
   <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (kò sí lórí àyè yìí)</value></data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Ìwọ̀n àmì</value></data>
   <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
-    <value>Profaili: {0}</value>
+    <value>Profaili tí ń ṣiṣẹ́: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
     <value>Ṣẹ̀dá ẹ̀rọ ìdarí àfarawé kan lórí PC kejì, lẹ́yìn náà sọ ọ́ dọ̀tun.</value>
@@ -1877,12 +1900,26 @@
   <data name="Extras_Tile_HeadTracking" xml:space="preserve"><value>Wo àyíká pẹ̀lú ẹ̀rọ ìtọpinpin orí tàbí agbékọrí VR.</value></data>
   <data name="Extras_Tile_GameTelemetry" xml:space="preserve"><value>So ìyára, àwọn ẹsẹ̀ ìtẹ̀ àti gíà láti inú àwọn eré ìwakọ̀ pọ̀.</value></data>
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Gba ipa trigger àti ipa ìmọ́lẹ̀ láti inú àwọn mod eré.</value></data>
-  <data name="Extras_More_HeadTracking" xml:space="preserve"><value>Runtime OpenXR, pọ́ọ̀tì UDP, ìwọ̀n fún ákísì kọ̀ọ̀kan</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pọ́ọ̀tì, àrọ́pò DSX.exe</value></data>
-  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Àwọn pọ́ọ̀tì, ìyára kíkún, àwọn ìlànà àdáni</value></data>
+  <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Àwọn pọ́ọ̀tì, Ìyára kíkún, Àwọn ìlànà àdáni</value></data>
+  <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Wo àyíká pẹ̀lú ẹ̀rọ ìtọpa orí tàbí agbékọrí VR nígbà tí àtàǹpàkò méjèèjì wà lórí àwọn bọ́tìnì.</value></data>
+  <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>So ìyára, àwọn pẹ́dálì àti gíà tí eré awakọ̀ ń fi ránṣẹ́ pọ̀ mọ́ ohun kan, bí ìfiwọlé èyíkéyìí.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaili</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Wá ètò, ẹ̀rọ àti profaili</value></data>
+  <data name="Search_Title" xml:space="preserve"><value>Wíwá</value></data>
+  <data name="Search_Results" xml:space="preserve"><value>Àbájáde</value></data>
+  <data name="Search_Key_Up" xml:space="preserve"><value>Òkè</value></data>
+  <data name="Search_Key_Down" xml:space="preserve"><value>Ìsàlẹ̀</value></data>
+  <data name="Search_Hint_Move_Format" xml:space="preserve"><value>{0} {1} láti gbé</value></data>
+  <data name="Search_Hint_Open_Format" xml:space="preserve"><value>{0} láti ṣí</value></data>
+  <data name="Search_Hint_Anywhere_Format" xml:space="preserve"><value>{0} láti ibikíbi</value></data>
+  <data name="Search_Group_Pages" xml:space="preserve"><value>Àwọn ojú ìwé</value></data>
+  <data name="Search_Group_Actions" xml:space="preserve"><value>Àwọn ìṣe</value></data>
   <data name="Home_Offer_Format" xml:space="preserve"><value>{0} ti sopọ̀ kò sì sí ní lílò.</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Lò ó</value></data>
+  <data name="Home_FirstRun_Title" xml:space="preserve"><value>Kí ni àwọn eré yóò rí?</value></data>
+  <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ń sọ ẹ̀rọ ìdarí yìí di èyí tí àwọn eré rẹ ń retí. Yan ọ̀kan láti bẹ̀rẹ̀. O lè yí i padà nígbà mìíràn pẹ̀lú títẹ̀ kan ṣoṣo.</value></data>
+  <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ń sọ ẹ̀rọ ìdarí rẹ di èyí tí àwọn eré rẹ ń retí. Yan ọ̀kan láti bẹ̀rẹ̀. O lè yí i padà nígbà mìíràn pẹ̀lú títẹ̀ kan ṣoṣo.</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Àmì ní òpin yíyí fún ọ̀pá ní ipò ìdarí</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Ń fi ìmìtìtì àwọn mọ́tò àkọ́kọ́ ránṣẹ́ sí àwọn tírígà</value></data>
   <data name="Pad_AudioTriggerRumble_FoldHint" xml:space="preserve"><value>Ìmìtìtì tírígà láti inú baasi ohùn ètò</value></data>
@@ -1916,4 +1953,95 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ń ṣiṣẹ́</value></data>
   <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Òsì</value></data>
   <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ọ̀tún</value></data>
+  <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Gba ipa adaptive trigger àti ti iná láti inú àwọn mod eré tí a kọ fún DSX.</value></data>
+  <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Tan ìjáde telemetry nínú eré, kí o sì darí rẹ̀ sí PC yìí àti pọ́ọ̀tì yìí.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ipò orí ni ìlà Head Tracker lórí [Àwọn ẹ̀rọ]. So yaw orí pọ̀ mọ́ ákísì ọ̀pá kan ní apá Àwọn bọ́tìnì ti ẹ̀rọ ìdarí kan.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Àwọn iye náà ni ìlà Game Telemetry lórí [Àwọn ẹ̀rọ]. So wọ́n pọ̀ ní apá Àwọn bọ́tìnì ti ẹ̀rọ ìdarí kan, tàbí lò wọ́n láti mú macro ṣiṣẹ́.</value></data>
+  <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ipò, ìtóbi àti ìmọ́lẹ̀kọjá àkójọ àṣàyàn kan ni a ń ṣètò lórí àkójọ náà, ní apá [Macro àti àkójọ àṣàyàn] ti ẹ̀rọ ìdarí kan.</value></data>
+  <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Ìwọ̀n</value></data>
+  <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Ìwọ̀n fún ákísì kọ̀ọ̀kan. Òdo ń tẹ̀lé ìwọ̀n tí ó wà lókè.</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fún àwọn mod tí ń wá DSX tí ń ṣiṣẹ́ kí wọ́n tó fi ránṣẹ́</value></data>
+  <data name="Extras_CopyAddress" xml:space="preserve"><value>Da àdírẹ́sì kọ</value></data>
+  <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Fóònù tí ó bá sopọ̀ yóò hàn níbí àti lójú ìwé Àwọn ẹ̀rọ, níbi tí o ti lè yàn án fún ẹ̀rọ ìdarí kan.</value></data>
+  <data name="Devices_Group_Connected" xml:space="preserve"><value>Ti sopọ̀</value></data>
+  <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Kò sopọ̀</value></data>
+  <data name="Devices_NoMatch" xml:space="preserve"><value>Kò sí ẹ̀rọ tí ó bá a mu.</value></data>
+  <data name="Devices_NotInUse" xml:space="preserve"><value>Kò sí ní lílò</value></data>
+  <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bátìrì {0}</value></data>
+  <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bátìrì {0}, ń gba agbára</value></data>
+  <data name="Devices_UsedBy" xml:space="preserve"><value>Ẹni tí ń lò ó</value></data>
+  <data name="Devices_SettingsCard" xml:space="preserve"><value>Ètò</value></data>
+  <data name="Devices_More_TestInputs" xml:space="preserve"><value>Gbogbo ákísì, bọ́tìnì àti sẹ́ńsọ̀</value></data>
+  <data name="Devices_Pressed_Format" xml:space="preserve"><value>Tí a tẹ̀: {0}</value></data>
+  <data name="Devices_CopyDetails" xml:space="preserve"><value>Da àlàyé kọ</value></data>
+  <data name="Devices_Detail_Product" xml:space="preserve"><value>Ọjà</value></data>
+  <data name="Devices_Detail_Type" xml:space="preserve"><value>Irú</value></data>
+  <data name="Devices_Detail_Link" xml:space="preserve"><value>Ìsopọ̀</value></data>
+  <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bátìrì</value></data>
+  <data name="Devices_Detail_Path" xml:space="preserve"><value>Ipa ọ̀nà</value></data>
+  <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nọ́ńbà ìdánimọ̀</value></data>
+  <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Devices_Detail_Revision" xml:space="preserve"><value>Àtúnyẹ̀wò</value></data>
+  <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Síi fún {0}</value></data>
+  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profaili “{0}” ti ní ètò lọ́wọ́lọ́wọ́ báyìí.</value></data>
+  <data name="Profiles_DropTile" xml:space="preserve"><value>Ju fáìlì profaili kan síbí</value></data>
+  <data name="Profiles_Shortcut_When" xml:space="preserve"><value>nígbà tí</value></data>
+  <data name="Profiles_Shortcut_On" xml:space="preserve"><value>lórí</value></data>
+  <data name="GetProfiles_Title" xml:space="preserve"><value>Gba àwọn profaili</value></data>
+  <data name="GetProfiles_Intro" xml:space="preserve"><value>Bẹ̀rẹ̀ láti profaili tí a ti pèsè sílẹ̀, config àwùjọ, tàbí fáìlì láti irinṣẹ́ mìíràn.</value></data>
+  <data name="GetProfiles_Starters" xml:space="preserve"><value>Ìbẹ̀rẹ̀</value></data>
+  <data name="GetProfiles_File" xml:space="preserve"><value>Gbé fáìlì wọlé</value></data>
+  <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Fífi pamọ́ yóò ṣàfikún profaili lásán tí o lè ṣàtúnṣe.</value></data>
+  <data name="Workshop_Becomes" xml:space="preserve"><value>Yóò di</value></data>
+  <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Mì ẹ̀rọ ìdarí náà pẹ̀lú, Tún ìfitónilétí ṣe ní gbogbo, Sọ fún mi nígbà tí ó bá kún</value></data>
+  <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Fi àwọn ẹ̀rọ pamọ́ fún àwọn eré, Jẹ́ kí àwọn ẹ̀rọ farapamọ́ láàárín ìṣíṣẹ́, Àwọn ohun èlò tí a gbà láàyè</value></data>
+  <data name="Settings_WhatIsSent" xml:space="preserve"><value>Ohun tí a ń fi ránṣẹ́</value></data>
+  <data name="About_SubtitleState_Format" xml:space="preserve"><value>{0}. {1}</value></data>
+  <data name="About_GitHub" xml:space="preserve"><value>GitHub</value></data>
+  <data name="About_SearchCredits" xml:space="preserve"><value>Wá àwọn ìdúpẹ́</value></data>
+  <data name="About_ShowAllCredits" xml:space="preserve"><value>Fi gbogbo ìdúpẹ́ hàn</value></data>
+  <data name="About_ShowFewerCredits" xml:space="preserve"><value>Fi ìdúpẹ́ díẹ̀ hàn</value></data>
+  <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Kò sí ìdúpẹ́ tí ó bá “{0}” mu.</value></data>
+  <data name="AddController_Subtitle" xml:space="preserve"><value>Yan ohun tí àwọn eré yóò rí. A ó fi ẹ̀rọ ìdarí náà kún ní kété tí o bá tẹ̀ ẹ́.</value></data>
+  <data name="AddController_DrivenBy" xml:space="preserve"><value>Orísun</value></data>
+  <data name="AddController_ChooseLater" xml:space="preserve"><value>Yàn án nígbà mìíràn</value></data>
+  <data name="AddController_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, {0}</value></data>
+  <data name="AddController_Common" xml:space="preserve"><value>Èyí tí ó wọ́pọ̀</value></data>
+  <data name="AddController_MoreOutputs" xml:space="preserve"><value>Àwọn ìjáde mìíràn</value></data>
+  <data name="AddController_Xbox_Line" xml:space="preserve"><value>Ìfilélẹ̀ tí ọ̀pọ̀ eré PC ń retí.</value></data>
+  <data name="AddController_PlayStation_Line" xml:space="preserve"><value>Fún àwọn eré tí ó ní àmì PlayStation, touchpad àti lightbar.</value></data>
+  <data name="AddController_Nintendo_Line" xml:space="preserve"><value>Ìfilélẹ̀ bọ́tìnì Switch, fún àwọn eré àti emulator tí ń retí rẹ̀.</value></data>
+  <data name="AddController_Midi_Line" xml:space="preserve"><value>Àwọn nóòtì àti control change fún sọ́fítíwía orin.</value></data>
+  <data name="AddController_Vr_Line" xml:space="preserve"><value>Àwọn ẹ̀rọ ìdarí VR àfojúinú nípasẹ̀ SteamVR.</value></data>
+  <data name="AddController_Foot" xml:space="preserve"><value>Láti yí irú rẹ̀ padà nígbà mìíràn, tẹ àmì irú lórí ẹ̀rọ ìdarí náà. Títẹ̀ kan ṣoṣo ló gbà.</value></data>
+  <data name="AddController_VrNeedsSteamVr" xml:space="preserve"><value>Ó nílò SteamVR. Fi sórí ẹ̀rọ láti káàdì rẹ̀ nínú Ètò.</value></data>
+  <data name="AddController_VrOnlyOne" xml:space="preserve"><value>Ẹ̀rọ ìdarí VR kan ti wà tẹ́lẹ̀. Ọ̀kan ṣoṣo ń darí ọwọ́ méjèèjì.</value></data>
+  <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>A ń so àwọn bọ́tìnì, ọ̀pá àti trigger pọ̀ ní 1:1 bí a ti ń ṣẹ̀dá ẹ̀rọ ìdarí náà.</value></data>
+  <data name="Home_FirstRun_Pair" xml:space="preserve"><value>So ẹ̀rọ ìdarí Bluetooth kan pọ̀</value></data>
+  <data name="Home_FirstRun_Profile" xml:space="preserve"><value>Bẹ̀rẹ̀ láti profaili tí a ti pèsè sílẹ̀</value></data>
+  <data name="Home_FirstRun_Connected" xml:space="preserve"><value>Ti sopọ̀</value></data>
+  <data name="Home_FirstRun_DeviceLine_Format" xml:space="preserve"><value>Bluetooth, bátìrì {0}</value></data>
+  <data name="Home_FirstRun_Battery_Format" xml:space="preserve"><value>Bátìrì {0}</value></data>
+  <data name="Home_FirstRun_NoDevice" xml:space="preserve"><value>Kò sí ẹ̀rọ ìdarí tí ó sopọ̀</value></data>
+  <data name="Home_FirstRun_NoDeviceLine" xml:space="preserve"><value>So ọ̀kan pọ̀ pẹ̀lú okùn tàbí nípasẹ̀ Bluetooth.</value></data>
+  <data name="Search_Where_UnderMore" xml:space="preserve"><value>lábẹ́ Síi</value></data>
+  <data name="Search_Where_RowOptions" xml:space="preserve"><value>nínú àṣàyàn ìlà kan</value></data>
+  <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
+  <data name="Search_NoResults_Format" xml:space="preserve"><value>Kò sí ohunkóhun nínú PadForge tí ó bá “{0}” mu.</value></data>
+  <data name="Search_Docs_Format" xml:space="preserve"><value>Wá “{0}” nínú ìwé àlàyé</value></data>
+  <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ó bẹ̀rẹ̀ láìsí ẹ̀rọ ìdarí kankan. Ó máa ń ṣí fúnra rẹ̀ nígbà tí ọ̀kan nínú àwọn eré rẹ̀ bá wà níwájú.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kò sí ètò mìíràn tí ó ní fèrèsé ṣíṣí.</value></data>
+  <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Yọ {0} kúrò</value></data>
+  <data name="Voice_MoreHint" xml:space="preserve"><value>Gbígbọ́ tàn tàbí pa, ipò, ìdánilójú</value></data>
+  <data name="Voice_ListeningOff" xml:space="preserve"><value>Gbígbọ́ ti pa. Tan án lábẹ́ Síi.</value></data>
+  <data name="ManageProfiles_Imported" xml:space="preserve"><value>Tí a gbé wọlé</value></data>
+  <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Gbé wọlé láti ẹ̀rọ tí ó sopọ̀</value></data>
+  <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
+  <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Yan ohun tí yóò fi hàn. Kò sí ohun tí yóò yí padà títí o fi pamọ́.</value></data>
+  <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Kò sí ohun tí yóò dé pọ́ọ̀tì náà títí o fi pamọ́.</value></data>
+  <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ń ṣiṣẹ́: {0} nínú {1}</value></data>
+  <data name="Profiles_Starters" xml:space="preserve"><value>Àwọn profaili ìbẹ̀rẹ̀</value></data>
+  <data name="Profiles_StartersHint" xml:space="preserve"><value>Àwọn profaili tí a ti pèsè sílẹ̀ fún gbogbo irú eré kan. Yan ọ̀kan, yan ẹ̀rọ ìdarí èyíkéyìí, kí o sì ṣeré.</value></data>
+  <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} nínú {1} ló tàn</value></data>
 </root>

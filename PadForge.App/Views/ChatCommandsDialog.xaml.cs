@@ -14,13 +14,15 @@ namespace PadForge.Views
     /// <see cref="ChatCommandRegistry"/>, whose RegistryChanged re-derives
     /// the row's objects, refreshes the pickers and saves.
     /// </summary>
-    public partial class ChatCommandsDialog : Wpf.Ui.Controls.FluentWindow
+    public partial class ChatCommandsDialog : DialogWindow
     {
         /// <summary>A word in the list, shown as viewers type it.</summary>
         public sealed class WordRow
         {
             public string Word { get; init; }
             public string Display => "!" + Word;
+
+            public override string ToString() => Display;
         }
 
         private readonly ObservableCollection<WordRow> _rows = new();
@@ -28,9 +30,17 @@ namespace PadForge.Views
         public ChatCommandsDialog()
         {
             InitializeComponent();
-            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             WordListBox.ItemsSource = _rows;
             RefreshList();
+            Loaded += (_, _) => WordBox.Focus();
+        }
+
+        /// <summary>The line under the Word box: the last add's result, or
+        /// why the word cannot be one. Empty, it takes no room.</summary>
+        private void Say(string message)
+        {
+            MessageText.Text = message ?? string.Empty;
+            MessageText.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -40,20 +50,20 @@ namespace PadForge.Views
             var problem = ChatCommandRegistry.Check(text);
             if (problem != ChatCommandRegistry.WordProblem.None)
             {
-                MessageText.Text = ProblemText(problem);
+                Say(ProblemText(problem));
                 return;
             }
             string word = ChatCommandRegistry.Normalize(text);
             bool existed = ChatCommandRegistry.ButtonFor(word) > 0;
             if (ChatCommandRegistry.Add(word) < 0)
             {
-                MessageText.Text = string.Format(CultureInfo.CurrentCulture,
-                    Strings.Instance.TwitchChat_Problem_Full_Format, ChatCommandRegistry.MaxWords);
+                Say(string.Format(CultureInfo.CurrentCulture,
+                    Strings.Instance.TwitchChat_Problem_Full_Format, ChatCommandRegistry.MaxWords));
                 return;
             }
-            MessageText.Text = string.Format(CultureInfo.CurrentCulture,
+            Say(string.Format(CultureInfo.CurrentCulture,
                 existed ? Strings.Instance.TwitchChat_Exists_Format : Strings.Instance.TwitchChat_Added_Format,
-                "!" + word);
+                "!" + word));
             WordBox.Text = string.Empty;
             WordBox.Focus();
             RefreshList();
@@ -80,15 +90,18 @@ namespace PadForge.Views
             if ((sender as FrameworkElement)?.Tag is string word && word.Length > 0)
             {
                 ChatCommandRegistry.Remove(word);
-                MessageText.Text = string.Empty;
+                Say(null);
                 RefreshList();
+                // The row and its button are gone, so the focus they held
+                // goes to the Word box.
+                WordBox.Focus();
             }
         }
 
         private void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
             ChatCommandRegistry.RestoreUsualWords();
-            MessageText.Text = string.Empty;
+            Say(null);
             RefreshList();
         }
 
@@ -101,13 +114,12 @@ namespace PadForge.Views
             }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
-
         private void RefreshList()
         {
             _rows.Clear();
             foreach (var w in ChatCommandRegistry.Words)
                 _rows.Add(new WordRow { Word = w.Word });
+            WordsBlock.Visibility = _rows.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

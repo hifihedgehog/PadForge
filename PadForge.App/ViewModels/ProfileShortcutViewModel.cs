@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -28,7 +29,7 @@ namespace PadForge.ViewModels
             ClearCommand = new RelayCommand(() =>
             {
                 Data.TriggerEntries = null;
-                OnPropertyChanged(nameof(ButtonComboDisplay));
+                RaiseCombo();
                 _saveCallback?.Invoke(this);
             });
 
@@ -79,7 +80,7 @@ namespace PadForge.ViewModels
                 if (d.DeviceGuid == Guid.Empty)
                     d.DisplayName = Strings.Instance.Profiles_ShortcutDevice_Any;
             }
-            OnPropertyChanged(nameof(ButtonComboDisplay));
+            RaiseCombo();
             OnPropertyChanged(nameof(LearnButtonText));
         }
 
@@ -181,6 +182,8 @@ namespace PadForge.ViewModels
                 if (Data.TriggerDeviceGuid == value) return;
                 Data.TriggerDeviceGuid = value;
                 OnPropertyChanged();
+                // A key names its device only where this one does not.
+                OnPropertyChanged(nameof(ComboParts));
                 _saveCallback?.Invoke(this);
             }
         }
@@ -229,14 +232,61 @@ namespace PadForge.ViewModels
 
                 string combo = string.Join(" + ", entries.Select(e =>
                 {
-                    string name = e.IsAxis
-                        ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid, e.AxisDirection)
-                        : ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
+                    string name = NameOf(e);
                     string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
                     return deviceName != null ? $"{name} ({deviceName})" : name;
                 }));
                 return _isRecording ? $"{combo} ({_recordingCountdown}s)" : combo;
             }
+        }
+
+        /// <summary>The recorded inputs, one for each key the row draws
+        /// (#574). A key names its device only where the row's own device
+        /// does not: an input of the picked device needs no second
+        /// mention, and with Any Connected Device picked every key says
+        /// which device it is on, since the shortcut answers that device
+        /// alone.</summary>
+        public IReadOnlyList<ShortcutKeyPart> ComboParts
+        {
+            get
+            {
+                var entries = Data.TriggerEntries;
+                if (entries == null || entries.Length == 0) return Array.Empty<ShortcutKeyPart>();
+                return entries.Select(e => new ShortcutKeyPart(NameOf(e),
+                    e.DeviceInstanceGuid == Data.TriggerDeviceGuid ? null : ResolveDeviceName(e.DeviceInstanceGuid))).ToArray();
+            }
+        }
+
+        /// <summary>Whether any input is recorded.</summary>
+        public bool HasCombo => Data.TriggerEntries is { Length: > 0 };
+
+        /// <summary>What the row says after its keys: None while there are
+        /// none, and while it records the seconds left, led by Recording
+        /// until a button is held.</summary>
+        public string ComboNote
+        {
+            get
+            {
+                if (_isRecording)
+                    return HasCombo
+                        ? $"({_recordingCountdown}s)"
+                        : $"{Strings.Instance.Profiles_ShortcutLearning} ({_recordingCountdown}s)";
+                return HasCombo ? string.Empty : Strings.Instance.Common_None;
+            }
+        }
+
+        private static string NameOf(TriggerButtonEntry e) => e.IsAxis
+            ? ResolveAxisName(e.AxisIndex, e.DeviceInstanceGuid, e.AxisDirection)
+            : ResolveButtonName(e.ButtonIndex, e.DeviceInstanceGuid);
+
+        /// <summary>Every reading of the recorded inputs: the sentence, the
+        /// keys and what stands after them.</summary>
+        private void RaiseCombo()
+        {
+            OnPropertyChanged(nameof(ButtonComboDisplay));
+            OnPropertyChanged(nameof(ComboParts));
+            OnPropertyChanged(nameof(HasCombo));
+            OnPropertyChanged(nameof(ComboNote));
         }
 
         /// <summary>
@@ -354,13 +404,17 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(LearnButtonText));
                     OnPropertyChanged(nameof(LearnButtonIcon));
+                    RaiseCombo();
                 }
             }
         }
 
+        /// <summary>The record button's name for a screen reader: the word
+        /// its face draws, Stop while it records and Record otherwise
+        /// (#574, the shared RecordFace).</summary>
         public string LearnButtonText => _isRecording
-            ? Strings.Instance.Profiles_ShortcutLearning
-            : Strings.Instance.Profiles_ShortcutLearn;
+            ? Strings.Instance.Common_Stop
+            : Strings.Instance.Common_Record;
 
         public string LearnButtonIcon => _isRecording ? "" : ""; // Stop : Record
 
@@ -372,7 +426,7 @@ namespace PadForge.ViewModels
         {
             Data.TriggerEntries = entries;
             IsRecording = false;
-            OnPropertyChanged(nameof(ButtonComboDisplay));
+            RaiseCombo();
             OnPropertyChanged(nameof(LearnButtonText));
             _saveCallback?.Invoke(this);
         }
@@ -380,11 +434,11 @@ namespace PadForge.ViewModels
         public void CancelRecording()
         {
             IsRecording = false;
-            OnPropertyChanged(nameof(ButtonComboDisplay));
+            RaiseCombo();
         }
 
         /// <summary>Notifies the UI that the combo display changed (during live recording).</summary>
-        public void NotifyComboChanged() => OnPropertyChanged(nameof(ButtonComboDisplay));
+        public void NotifyComboChanged() => RaiseCombo();
 
         private int _recordingCountdown;
         /// <summary>Seconds remaining in the recording countdown.</summary>
@@ -394,7 +448,7 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _recordingCountdown, value))
-                    OnPropertyChanged(nameof(ButtonComboDisplay));
+                    RaiseCombo();
             }
         }
 
@@ -404,6 +458,28 @@ namespace PadForge.ViewModels
 
         public RelayCommand DeleteCommand { get; }
         public RelayCommand ClearCommand { get; }
+    }
+
+    /// <summary>One recorded input of a shortcut, as its row draws a key
+    /// (#574): the input's name, and the device it is on where the row's
+    /// own device does not say it.</summary>
+    public sealed class ShortcutKeyPart
+    {
+        public ShortcutKeyPart(string name, string device)
+        {
+            Name = name ?? string.Empty;
+            Device = device ?? string.Empty;
+        }
+
+        /// <summary>The input's name: Guide, Right Shoulder, LT+.</summary>
+        public string Name { get; }
+
+        /// <summary>The device the input is on, or empty.</summary>
+        public string Device { get; }
+
+        /// <summary>The device after the name on the key, two spaces in, or
+        /// nothing.</summary>
+        public string DeviceTail => Device.Length == 0 ? string.Empty : "  " + Device;
     }
 
     /// <summary>Mutable mode-list item — the Mode value is stable, the

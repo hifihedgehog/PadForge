@@ -22,13 +22,14 @@ namespace PadForge.Tests
     /// from the bundled HIDMaestro catalog, the driver versions from the
     /// bundled files, the package versions from the project files, the
     /// 500 ms in the Handheld Companion credit from the constant PadForge
-    /// runs on, and the order and numbering of the About page's credits from
-    /// the page and its strings.</para>
+    /// runs on, and the order of the About page's credits from the page and
+    /// its strings.</para>
     ///
     /// <para>Held to recorded wording: another project's license grant or
     /// the technique PadForge took from it, whose source is a clone a test
-    /// run does not have, and two README sentences that were wrong once, on
-    /// the Quest's runtime and on MIDI without Windows MIDI Services. Each
+    /// run does not have, the license each About credit's chip names, and
+    /// two README sentences that were wrong once, on the Quest's runtime and
+    /// on MIDI without Windows MIDI Services. Each
     /// summary names what was read. These tests catch a surface that drifts
     /// from the others, or back to the old text. They do not read the source
     /// again.</para>
@@ -39,6 +40,75 @@ namespace PadForge.Tests
     public class PublishedFactsTests
     {
         private static readonly string[] Locales = PadForge.Tests.LocaleFiles.Complete;
+
+        // The license each About credit's chip names (#574), by chip, as the
+        // credits' keys less "About_". A credit of one project shows that
+        // project's license, a credit of projects under different licenses
+        // shows Several licenses, and Raw Input, a Windows API, shows none.
+        private static readonly (string Chip, string[] Credits)[] AboutChips =
+        {
+            ("About_License_Mit", new[]
+            {
+                "AudioEndPointLibrary", "AutoEq", "Bs2b", "Colore", "Ds4Audio", "Ds4Drv", "Ds5Dongle", "DuaLib",
+                "DsBtHaptics", "DsTester", "DualSenseWindows", "EdRefCard2", "Fusion", "GamepadBatteryMonitor",
+                "GamepadAssetPack", "GamepadMotionHelpers", "HelixToolkit", "HidHide", "HIDMaestro", "Hitboxer",
+                "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
+                "DotNet10", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
+                "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp",
+            }),
+            ("About_License_MitSdkLoader", new[] { "GameInput" }),
+            ("About_License_Apache2", new[] { "Bluepad32", "ProtobufNet", "Vosk" }),
+            ("About_License_Bsd3", new[]
+            {
+                "BthPS3", "Concentus", "DsHidMini", "LogitechGKeyRefs", "OpenVR", "QDollar", "SipSorcery",
+                "SteamControllerSinger", "SteamHapticsSinger",
+            }),
+            ("About_License_Bsd2", new[] { "PcscSharp", "UsbipWin2" }),
+            ("About_License_BsdStyle", new[] { "Hidapi" }),
+            ("About_License_Bsl1", new[] { "Monado", "OpenHmd" }),
+            ("About_License_Isc", new[] { "ForgePlay", "Opentrack" }),
+            ("About_License_Mpl2", new[] { "SAxense" }),
+            ("About_License_Unlicense", new[] { "CemuhookProtocol" }),
+            ("About_License_Zlib", new[] { "SDL3", "GameControllerDb" }),
+            ("About_License_Gpl2", new[] { "Ds4Mac", "GestureSign" }),
+            ("About_License_Gpl2OrLater", new[]
+            {
+                "AutoHotkey", "Dolphin", "Kodi", "LinuxKernel", "ObsBrowser", "OpenRgb", "Qmk", "XoneXow",
+            }),
+            ("About_License_Gpl3", new[] { "Ds4MapperTest", "Ds4WindowsHbashton", "LegionToolkit", "Touchmote" }),
+            ("About_License_Gpl3OrLater", new[]
+            {
+                "AntiMicroX", "Ds4Windows", "Eden", "InputPlumber", "SpecialK", "ViiperHbashton",
+            }),
+            ("About_License_Agpl3", new[] { "ChiakiNg", "Ds5Bridge" }),
+            ("About_License_Lgpl21OrLater", new[] { "FFmpeg", "Libusb" }),
+            ("About_License_Lgpl3", new[] { "OpenTabletDriver" }),
+            ("About_License_Lgpl3OrLater", new[] { "Libwdi" }),
+            ("About_License_CcByNcSa4", new[] { "HandheldCompanion", "ValveCad" }),
+            ("About_License_CcBy3", new[] { "ZackslyIcons" }),
+            ("About_License_CgTrader", new[] { "3doverstock", "Hado" }),
+            ("About_License_BouncyCastle", new[] { "BouncyCastle" }),
+            ("About_License_WyvrnEula", new[] { "Interhaptics" }),
+            ("About_License_VisualStudio", new[] { "VcRuntime" }),
+            ("About_License_CorsairSdk", new[] { "IcueSdk" }),
+            ("About_License_TrademarkOnly", new[] { "OpenXInput" }),
+            ("About_License_NoTermsNamed", new[] { "MysticLightSdk" }),
+            ("About_License_NonePublished", new[]
+            {
+                "DualSenseSupport", "DualSenseY", "JoyconSinger", "SwitchResearch", "WiiBrew",
+            }),
+            ("About_License_Several", new[]
+            {
+                "ArcadeIoRefs", "BlissBoxRefs", "BleControllerRefs", "RfcommIcadeRefs", "DjiRemoteRefs", "GameModRefs",
+                "Ds4HeadsetRefs", "GunConRefs", "AnalogKeyboardRefs", "HidDeviceRefs", "IForceRefs", "IconSources",
+                "InstrumentRefs", "IrohFlexInput", "Kaldi", "KeyboardScreenRefs", "LightingRefs", "Linuxmotehook",
+                "LogitechLedRefs", "MenuRefs", "MingwRuntime", "Nefcon", "FalconRefs", "OpenXrRefs",
+                "PeripheralOutputRefs", "PortMidiRtMidi", "ProfileImportRefs", "Psmoveapi", "TelemetryRefs",
+                "RingConRefs", "Ds3Research", "ScreenColorRefs", "SerialControllerRefs", "SpaceMouseRefs",
+                "SpecialtyUsbRefs", "SteamControllerRefs", "SteamKit2", "ThumbstickDeadzones", "TrainControllerRefs",
+                "TritonLib", "WheelRefs", "XboxControllerRefs",
+            }),
+        };
 
         private const string NewInBlock = @"<details>\s*<summary><b>New in ([0-9.]+):</b>.*?</details>";
 
@@ -327,6 +397,9 @@ namespace PadForge.Tests
         /// tag). It names one as GPL-2.0-only, acer-predator-helios-rgb,
         /// which is what that project's SPDX tags say. That tag is no bare
         /// GPL-2.0.</para>
+        ///
+        /// <para>The About page names OpenRGB's license in its chip, and its
+        /// description names none (#574).</para>
         /// </summary>
         [Fact]
         public void SolaarOpenRazerAndOpenRgbAreCreditedGplTwoOrLater()
@@ -345,6 +418,7 @@ namespace PadForge.Tests
             Assert.Single(Regex.Matches(readme, @"\*\*OpenRGB\*\* \(GPL-2\.0-or-later\)"));
             string row = readme.Split('\n').Single(l => l.StartsWith("| [OpenRGB](", StringComparison.Ordinal));
             Assert.EndsWith("| GPL-2.0-or-later |", row.TrimEnd('\r'));
+            Assert.Equal("About_License_Gpl2OrLater", AboutChip("About_OpenRgb"));
 
             foreach (string locale in Locales)
             {
@@ -353,7 +427,6 @@ namespace PadForge.Tests
                          {
                              ("About_PeripheralOutputRefsDesc", 8),
                              ("About_AnalogKeyboardRefsDesc", 1),
-                             ("About_OpenRgbDesc", 1),
                          })
                 {
                     string value = ResxValue(text, key);
@@ -362,6 +435,9 @@ namespace PadForge.Tests
                     Assert.True(Regex.Matches(value, @"GPL-2\.0-or-later").Count == count,
                                 $"{locale} {key} should name GPL-2.0-or-later {count} times: {value}");
                 }
+                string openRgb = ResxValue(text, "About_OpenRgbDesc");
+                Assert.True(!openRgb.Contains("GPL-2.0", StringComparison.Ordinal),
+                            $"{locale} About_OpenRgbDesc names GPL-2.0, which its chip names: {openRgb}");
             }
         }
 
@@ -376,6 +452,9 @@ namespace PadForge.Tests
         /// force feedback and LED reports are, carries the same tag. Its
         /// LICENSE file is the version 2 text, and only two headers of
         /// declarations are tagged GPL-2.0.
+        ///
+        /// <para>The About page names Dolphin's license in its chip, and its
+        /// description names none (#574).</para>
         /// </summary>
         [Fact]
         public void DolphinAndNewLg4ffAreCreditedGplTwoOrLater()
@@ -407,11 +486,10 @@ namespace PadForge.Tests
                             $"{locale} should tag new-lg4ff GPL-2.0-or-later in two reference lists");
 
                 string dolphin = ResxValue(text, "About_DolphinDesc");
-                Assert.True(Regex.Matches(dolphin, @"GPL-2\.0(?!-or-later)").Count == 0,
-                            $"{locale} About_DolphinDesc keeps a bare GPL-2.0: {dolphin}");
-                Assert.True(Regex.Matches(dolphin, @"GPL-2\.0-or-later").Count == 1,
-                            $"{locale} About_DolphinDesc should name GPL-2.0-or-later once: {dolphin}");
+                Assert.True(!dolphin.Contains("GPL-2.0", StringComparison.Ordinal),
+                            $"{locale} About_DolphinDesc names GPL-2.0, which its chip names: {dolphin}");
             }
+            Assert.Equal("About_License_Gpl2OrLater", AboutChip("About_Dolphin"));
         }
 
         /// <summary>
@@ -692,9 +770,11 @@ namespace PadForge.Tests
                          })
                     Assert.True(credit.Contains(part, StringComparison.Ordinal), $"{locale}: About_PortMidiRtMidiDesc lacks '{part}': {credit}");
                 string wasapi = ResxValue(text, "About_NAudioDesc");
-                foreach (string part in new[] { "WASAPI", "NAudio.Midi", "WinMM", "MIDI", "Mark Heath", "MIT" })
+                foreach (string part in new[] { "WASAPI", "NAudio.Midi", "WinMM", "MIDI", "Mark Heath" })
                     Assert.True(wasapi.Contains(part, StringComparison.Ordinal), $"{locale}: About_NAudioDesc lacks '{part}': {wasapi}");
             }
+            // NAudio's license is in its chip on the About page (#574).
+            Assert.Equal("About_License_Mit", AboutChip("About_NAudio"));
         }
 
         /// <summary>
@@ -890,15 +970,30 @@ namespace PadForge.Tests
                 Assert.True(row.Contains(part, StringComparison.Ordinal), $"README '{start}' should hold '{part}'");
             }
 
+            // A credit of one project states its tag once, in its chip on
+            // the About page (#574), and its description names none.
+            var single = new[]
+            {
+                ("About_AntiMicroX", "GPL-3.0"), ("About_AutoHotkey", "GPL-2.0"), ("About_Ds4Windows", "GPL-3.0"),
+                ("About_Eden", "GPL-3.0"), ("About_InputPlumber", "GPL-3.0"), ("About_LinuxKernel", "GPL-2.0"),
+                ("About_SpecialK", "GPL-3.0"), ("About_ViiperHbashton", "GPL-3.0"), ("About_XoneXow", "GPL-2.0"),
+            };
+            foreach (var (name, bare) in single)
+                Assert.Equal(bare == "GPL-3.0" ? "About_License_Gpl3OrLater" : "About_License_Gpl2OrLater", AboutChip(name));
+
             foreach (string locale in Locales)
             {
                 string text = Text("PadForge.App", "Resources", "Strings", locale);
-                // A credit of one project states its tag once.
+                foreach (var (name, bare) in single)
+                {
+                    string value = ResxValue(text, name + "Desc");
+                    Assert.True(!value.Contains(bare, StringComparison.Ordinal),
+                                $"{locale} {name}Desc names {bare}, which its chip names: {value}");
+                }
+                // A credit of projects under different licenses states each
+                // tag in its description, once.
                 foreach (var (key, bare) in new[]
                          {
-                             ("About_AntiMicroXDesc", "GPL-3.0"), ("About_AutoHotkeyDesc", "GPL-2.0"), ("About_Ds4WindowsDesc", "GPL-3.0"),
-                             ("About_EdenDesc", "GPL-3.0"), ("About_InputPlumberDesc", "GPL-3.0"), ("About_LinuxKernelDesc", "GPL-2.0"),
-                             ("About_SpecialKDesc", "GPL-3.0"), ("About_ViiperHbashtonDesc", "GPL-3.0"), ("About_XoneXowDesc", "GPL-2.0"),
                              ("About_MingwRuntimeDesc", "GPL-3.0"), ("About_ThumbstickDeadzonesDesc", "GPL-3.0"),
                          })
                 {
@@ -982,8 +1077,9 @@ namespace PadForge.Tests
         /// LICENSE, which alone named it: the PS5 haptic PCM format, signed
         /// 16-bit at 3 kHz. Its gui/src/streamsession.cpp, where that stream
         /// is played, is tagged LicenseRef-AGPL-3.0-only-OpenSSL, so the tag
-        /// stays AGPL-3.0. The digits survive translation and anchor the
-        /// check in every locale.
+        /// stays AGPL-3.0, which the About page shows in the credit's chip
+        /// (#574). The digits survive translation and anchor the check in
+        /// every locale.
         /// </summary>
         [Fact]
         public void ChiakiNgIsCreditedOnEverySurface()
@@ -1010,10 +1106,10 @@ namespace PadForge.Tests
                 string text = Text("PadForge.App", "Resources", "Strings", locale);
                 Assert.Equal("chiaki-ng", ResxValue(text, "About_ChiakiNg"));
                 string credit = ResxValue(text, "About_ChiakiNgDesc");
-                foreach (string part in new[] { "PS5", "PCM", "16", "3 kHz", "8", "AGPL-3.0" })
+                foreach (string part in new[] { "PS5", "PCM", "16", "3 kHz", "8" })
                     Assert.True(credit.Contains(part, StringComparison.Ordinal), $"{locale}: About_ChiakiNgDesc lacks '{part}': {credit}");
             }
-            Assert.Contains("{Binding About_ChiakiNg, Source=", Text("PadForge.App", "Views", "AboutPage.xaml"));
+            Assert.Equal("About_License_Agpl3", AboutChip("About_ChiakiNg"));
         }
 
         /// <summary>
@@ -1176,7 +1272,7 @@ namespace PadForge.Tests
                 string text = Text("PadForge.App", "Resources", "Strings", locale);
                 foreach (var (key, parts) in new[]
                          {
-                             ("About_ModernWpfDesc", new[] { "VirtualizingWrapPanel", "fluentui-system-icons", "microsoft-ui-xaml", "MIT" }),
+                             ("About_ModernWpfDesc", new[] { "VirtualizingWrapPanel", "fluentui-system-icons", "microsoft-ui-xaml" }),
                              ("About_KaldiDesc", new[] { "GotoBLAS2", "f2c", "BSD 3-Clause" }),
                              ("About_MingwRuntimeDesc", new[] { "Lockless Inc.", "MIT", "BSD 3-Clause" }),
                              ("About_SteamKit2Desc", new[] { "LGPL-2.1-or-later", "license.txt", "LGPL-2.1-only", "NuGet" }),
@@ -1188,49 +1284,77 @@ namespace PadForge.Tests
                         Assert.True(value.Contains(part, StringComparison.Ordinal), $"{locale}: {key} lacks '{part}': {value}");
                 }
             }
+            // WPF UI's license is in its chip on the About page (#574).
+            Assert.Equal("About_License_Mit", AboutChip("About_ModernWpf"));
         }
 
         /// <summary>
-        /// The About page's credits grid has one row per credit: a name cell
-        /// and a description cell bound to the name's key plus "Desc", rows
-        /// numbered from 0 in file order with a RowDefinition each, sorted by
-        /// the English name without regard to case or a leading symbol. A row
-        /// goes in at its sorted place, and every row below it is numbered
-        /// again by hand.
+        /// The About page's credits are one row each in CreditsList: the
+        /// name bound to the credit's key, the description bound to the key
+        /// plus "Desc", and the chip that names the credit's license, sorted
+        /// by the English name without regard to case or a leading symbol. A
+        /// row goes in at its sorted place. Every name in Strings.resx that
+        /// has its description has its row, and every chip is the license
+        /// AboutChips holds for the credit (#574).
         /// </summary>
         [Fact]
         public void TheAboutCreditsAreOneRowEachInAlphabeticalOrder()
         {
-            string xaml = Text("PadForge.App", "Views", "AboutPage.xaml");
-            var names = Regex.Matches(xaml, @"<TextBlock Grid\.Row=""(\d+)"" common:BidiText\.Text=""\{Binding (About_\w+), Source=");
-            var descriptions = Regex.Matches(xaml, @"<TextBlock Grid\.Row=""(\d+)"" Grid\.Column=""1""\s+common:BidiText\.Text=""\{Binding (About_\w+), Source=");
-            // Positive control: the patterns still find the grid.
-            Assert.True(names.Count > 100, $"found only {names.Count} credit rows");
-            Assert.Equal(names.Count, descriptions.Count);
+            var rows = AboutCreditRows();
+            // Positive control: the pattern still finds the rows.
+            Assert.True(rows.Count > 100, $"found only {rows.Count} credit rows");
+            Assert.Equal(rows.Count, rows.Select(r => r.Name).Distinct().Count());
 
             string english = Text("PadForge.App", "Resources", "Strings", "Strings.resx");
-            string previous = null;
-            for (int i = 0; i < names.Count; i++)
-            {
-                string key = names[i].Groups[2].Value;
-                Assert.True(names[i].Groups[1].Value == i.ToString(), $"{key} is in Grid.Row {names[i].Groups[1].Value}, and it is row {i} of the grid");
-                Assert.True(descriptions[i].Groups[1].Value == i.ToString(), $"the description of {key} is in Grid.Row {descriptions[i].Groups[1].Value}, not {i}");
-                Assert.Equal(key + "Desc", descriptions[i].Groups[2].Value);
-                Assert.True(names[i].Index < descriptions[i].Index
-                            && (i + 1 == names.Count || descriptions[i].Index < names[i + 1].Index),
-                            $"the cells of {key} are not together");
+            var keys = Regex.Matches(english, "<data name=\"(About_\\w+)\"").Select(m => m.Groups[1].Value).ToHashSet();
+            Assert.Equal(keys.Count(k => k.EndsWith("Desc", StringComparison.Ordinal) && keys.Contains(k[..^4])), rows.Count);
 
-                string sortName = Regex.Replace(ResxValue(english, key), @"^[^A-Za-z0-9]+", string.Empty).ToLowerInvariant();
+            var chips = AboutChips.SelectMany(c => c.Credits.Select(n => ("About_" + n, c.Chip))).ToDictionary(p => p.Item1, p => p.Item2);
+            Assert.Empty(chips.Keys.Except(rows.Select(r => r.Name)));
+            string previous = null;
+            foreach (var (name, description, chip) in rows)
+            {
+                Assert.Equal(name + "Desc", description);
+                string license = chips.TryGetValue(name, out string held) ? held : null;
+                Assert.True(license == chip, $"{name} shows {chip ?? "no chip"}, and its license is {license ?? "none"}");
+
+                string sortName = Regex.Replace(ResxValue(english, name), @"^[^A-Za-z0-9]+", string.Empty).ToLowerInvariant();
                 Assert.True(previous == null || string.CompareOrdinal(previous, sortName) <= 0,
-                            $"'{sortName}' ({key}) comes after '{previous}' and sorts before it");
+                            $"'{sortName}' ({name}) comes after '{previous}' and sorts before it");
                 previous = sortName;
             }
-
-            int definitionsEnd = xaml.LastIndexOf("</Grid.RowDefinitions>", names[0].Index, StringComparison.Ordinal);
-            int definitionsStart = xaml.LastIndexOf("<Grid.RowDefinitions>", definitionsEnd, StringComparison.Ordinal);
-            Assert.True(definitionsStart >= 0 && definitionsEnd > definitionsStart, "the credits grid has no RowDefinitions");
-            Assert.Equal(names.Count, Regex.Matches(xaml.Substring(definitionsStart, definitionsEnd - definitionsStart), "<RowDefinition ").Count);
+            Assert.Equal(new[] { "About_RawInput" }, rows.Where(r => r.Chip == null).Select(r => r.Name));
         }
+
+        /// <summary>The About page's credit rows in order, as the keys their
+        /// name, description and chip bind, with no chip for a row that has
+        /// none. Each row is a CreditRow Border of CreditsList.</summary>
+        private static List<(string Name, string Description, string Chip)> AboutCreditRows()
+        {
+            string xaml = Text("PadForge.App", "Views", "AboutPage.xaml");
+            int list = xaml.IndexOf("<StackPanel x:Name=\"CreditsList\">", StringComparison.Ordinal);
+            int end = xaml.IndexOf("x:Name=\"NoCreditMatch\"", StringComparison.Ordinal);
+            Assert.True(list >= 0 && end > list, "the About page has no CreditsList ahead of NoCreditMatch");
+            const string Key = @"common:BidiText\.Text=""\{Binding (About_\w+), Source=";
+            var rows = new List<(string Name, string Description, string Chip)>();
+            foreach (Match row in Regex.Matches(xaml, @"<Border Style=""\{StaticResource CreditRow\}"">\s*<DockPanel>(.*?)</DockPanel>", RegexOptions.Singleline))
+            {
+                Assert.True(row.Index > list && row.Index < end, "a credit row stands outside CreditsList");
+                string body = row.Groups[1].Value;
+                var name = Regex.Match(body, @"Style=""\{StaticResource CreditName\}"" " + Key);
+                var description = Regex.Match(body, @"Style=""\{StaticResource CreditDesc\}"" " + Key);
+                var chip = Regex.Match(body, @"Style=""\{StaticResource CreditChip\}"">\s*<TextBlock " + Key);
+                Assert.True(name.Success && description.Success, "a credit row lacks its name or its description: " + body.Trim());
+                Assert.True(Regex.Matches(body, Key).Count == (chip.Success ? 3 : 2),
+                            "a credit row binds more than its name, description and chip: " + body.Trim());
+                rows.Add((name.Groups[1].Value, description.Groups[1].Value, chip.Success ? chip.Groups[1].Value : null));
+            }
+            return rows;
+        }
+
+        /// <summary>The key the chip of a credit's row binds on the About
+        /// page, or null for a row with no chip.</summary>
+        private static string AboutChip(string name) => AboutCreditRows().Single(r => r.Name == name).Chip;
 
         private static string ReadmeWithoutNewInBlocks() =>
             Regex.Replace(Text("README.md"), NewInBlock, string.Empty, RegexOptions.Singleline);
